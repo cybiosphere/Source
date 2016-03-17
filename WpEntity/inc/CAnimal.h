@@ -1,0 +1,248 @@
+/*
+https://github.com/cybiosphere
+copyright (c) 2005-2014 Frederic RIBERT
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any
+damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any
+purpose, including commercial applications, and to alter it and
+redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must
+not claim that you wrote the original software. If you use this
+software in a product, an acknowledgment in the product documentation
+would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and
+must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.
+*/
+
+//===========================================================================
+// FILE: CAnimal.h
+//   
+// GENERAL DESCRIPTION:
+//         This CLASS represents a thinking and moving entity
+//     
+// (C) COPYRIGHT 2005.  All Rights Reserved.
+//
+//  20/08/2005 : Creation
+//
+//===========================================================================
+
+#if !defined(CANIMAL_INCLUDED_)
+#define CANIMAL_INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+//===========================================================================
+// Includes 
+//===========================================================================
+#include "CBasicEntity.h" 
+#include "CBrainAnimal.h"
+#include "CFeelingFear.h"
+
+//===========================================================================
+// Definitions            
+//===========================================================================
+typedef enum
+{
+  BRAIN_BEHAVIOR_UNSET = -1,
+  BRAIN_BEHAVIOR_NONE,
+  BRAIN_BEHAVIOR_FIRST_TYPE,
+  BRAIN_BEHAVIOR_BABY_STAY_HOME = BRAIN_BEHAVIOR_FIRST_TYPE,
+  BRAIN_BEHAVIOR_NUMBER_TYPE
+} BrainBehaviorType_e;
+
+//===========================================================================
+//                                    CLASS            
+//===========================================================================
+class DLL_CYBIOCORE_API CAnimal : public CBasicEntity 
+{
+//===========================================================================
+// Attributes 
+//===========================================================================
+private:
+  int  m_HeadDirection;	// [0..7] Looking direction of head in the Biotop (Used for turn head action)
+  int  m_BusySecondCounter;
+  bool m_bIsSleeping;
+  int  m_tTasteLevel[TASTE_NUMBER_TYPE];
+  CFeelingFear* m_pFeelingFear;
+
+  // Forbiden action can be used to punish an action sytematically, whatever is the evoluton of feeling welfare.
+  choiceIndType m_forbidenActionInd;
+  int           m_forbidenActionCount;
+
+//---------------------------------------------------------------------------
+// Parameters Ids
+//---------------------------------------------------------------------------
+private:
+  int m_id_Age;
+  int m_id_Decomposition;
+  int m_id_ReproductionRate;
+  int m_id_Health;
+  int m_id_Hunger;
+  int m_id_Thirst;
+  int m_id_StomachFilling;
+  int m_id_Libido;
+  int m_id_Suffering;
+  int m_id_Pleasure;
+  int m_id_Tiredness;
+  int m_id_GrowthSpeed;
+  int m_id_FatWeight;
+  int m_id_AttackFactor;
+  int m_id_Curiosity;
+  int m_id_Learning;
+  int m_id_CurrentSpeed;
+  int m_id_Fear;
+
+//===========================================================================
+// methods 
+//===========================================================================
+
+//---------------------------------------------------------------------------
+// Constructors / Destructors
+//---------------------------------------------------------------------------
+public: 
+  CAnimal(string label, Point_t initCoord, int layer, CGenome* pGenome);   
+  CAnimal(string label, CAnimal& model);
+  CAnimal(string label, CAnimal& mother,CAnimal& father);
+  ~CAnimal();
+
+//---------------------------------------------------------------------------
+// Genetic settings
+//---------------------------------------------------------------------------
+protected: 
+  bool setParamFromGene (CGene* pGen);
+  bool completeParamsWithDefault();
+  bool setPhysicWelfareFromGene (CGene* pGen);
+  bool completePhysicWelfareWithDefault();
+  bool setBrainReactionFromGene (CGene* pGen);
+  bool completeBrainSensorWithDefault();
+  bool completeBrainReactionWithDefault();
+  bool setBrainSizeFromGene (CGene* pGen);
+  bool setBrainInstinctFromGene (CGene* pGen);
+  bool setBrainConfigFromGene (CGene* pGen);
+  bool completeBrainInstinctWithDefault(void);
+  bool setFeelingFromGene (CGene* pGen);
+  bool setPurposeFromGene (CGene* pGen);
+
+public: 
+  bool setBrainInstinctInGenes(void);
+  CSensor* getTemporarySensorFromGene (CGene* pGen);
+
+//---------------------------------------------------------------------------
+// Genetic description
+//---------------------------------------------------------------------------
+public:
+  int  getExpectedBrainSensorWeightSize (CGene* pGen);
+
+protected:
+  string buildParameterString(CGene* pGen);
+  string buildPhysicWellfareString(CGene* pGen);
+  string buildSensorString(CGene* pGen);
+  string buildReactionString(CGene* pGen);
+  string buildBrainSizeString(CGene* pGen);
+  string buildBrainInstinctString(CGene* pGen);
+  string buildBrainConfigString(CGene* pGen);
+  string buildFeelingWellfareString(CGene* pGen);
+  string buildPurposeString(CGene* pGen);
+
+//---------------------------------------------------------------------------
+// Time management
+//---------------------------------------------------------------------------
+public:   
+  void nextSecond();
+  void nextHour();
+  void nextDay(bool forceGrowth = false);
+  int  getAge();
+  bool checkVitalNeedsOk();
+
+protected:
+  void balanceWeightAndMetabolism(bool forceGrowth);
+
+//---------------------------------------------------------------------------
+// Parameters management
+//---------------------------------------------------------------------------
+  void changeHungerRate(double variation);
+  void changeThirstRate(double variation);
+  void changeLibidoRate(double variation);
+  bool changeHealthRate(double variation, CBasicEntity* pAggresor=NULL, bool suffering = true);
+  void changeSufferingRate(double variation);
+  void changePleasureRate(double variation);
+  void changeTirednessRate(double variation);
+  bool changeFatWeight(double variation);
+  void changeFearRate(double variation);
+public:
+  void changeCurrentSpeed(double variation);
+  void forceCurrentSpeed(double newSpeed);
+  void stopCurrentSpeed();
+  void changeStomachFillingRate(double variation);
+
+//---------------------------------------------------------------------------
+// Behavior  
+//---------------------------------------------------------------------------
+public:  
+  virtual feedbackValType forceNextAction(choiceIndType myChoice);
+  virtual choiceIndType   predictNextAction();
+
+  virtual bool ExecuteTurnRightAction(unsigned int nDegree);
+  virtual bool ExecuteTurnLeftAction(unsigned int nDegree);
+  virtual bool ExecuteMoveForwardAction(double successSatisfactionFactor, double failureFrustrationFactor, int nbSteps);
+  virtual bool ExecuteMoveBackwardAction(double successSatisfactionFactor, double failureFrustrationFactor, int nbSteps);
+  virtual bool ExecuteEatAction(int relLayer, double successSatisfactionFactor, double failureFrustrationFactor);
+  virtual bool ExecuteDrinkAction(double successSatisfactionFactor, double failureFrustrationFactor);
+  virtual bool ExecuteCopulateAction(double successSatisfactionFactor, double failureFrustrationFactor);
+  virtual bool ExecuteAttackAction(int relLayer, int stepRange, double successSatisfactionFactor, double failureFrustrationFactor, ReactionIntensityType_e intensity);
+  virtual bool ExecuteSleepAction(void);
+
+  void wakeUp(void);
+  void lookForward(void);
+  void turnHeadLeft(void);
+  void turnHeadRight(void);
+
+  void setForbidenActionInd(choiceIndType actionInd);
+  string getForbidenActionLabel();
+  int getForbidenActionCount();
+
+protected:
+  bool checkConsumeClass(ClassType_e eatenClass);
+
+//---------------------------------------------------------------------------
+// Get / Set for attributes
+//---------------------------------------------------------------------------
+public:   
+  double getReproductionRate();
+  double getLifeExpectation();
+  double getRotenTimeExpectation();
+  double getHungerRate();
+  double getThirstRate();
+  double getStomachFillingRate();
+  double getLibidoRate();
+  double getSufferingRate();
+  double getPleasureRate();
+  double getTirednessRate();
+  double getCuriosityRate();
+  double getLearningRate();
+  void   setCuriosityToNominalRatio(double ratio);
+  void   setLearningToNominalRatio(double ratio);
+  void   setGrowthSpeedToNominalRatio(double ratio);
+  double getAttackFactor();
+  bool   isSleeping();
+  double getFatWeight();
+  int    getCurrentSpeed();
+  int    getHeadDirection();
+  int*   getpTasteLevelTable();
+  double getFearRate();
+}; // end ClAnimal
+
+#endif // !defined(CANIMAL_INCLUDED_)
+
+
+

@@ -1,0 +1,372 @@
+21:49:25: Creating resource group General
+21:49:25: Creating resource group Internal
+21:49:25: Creating resource group Autodetect
+21:49:25: SceneManagerFactory for type 'DefaultSceneManager' registered.
+21:49:25: Registering ResourceManager for type Material
+21:49:25: Registering ResourceManager for type Mesh
+21:49:25: Registering ResourceManager for type Skeleton
+21:49:25: MovableObjectFactory for type 'ParticleSystem' registered.
+21:49:25: ArchiveFactory for archive type FileSystem registered.
+21:49:25: ArchiveFactory for archive type Zip registered.
+21:49:25: ArchiveFactory for archive type EmbeddedZip registered.
+21:49:25: DDS codec registering
+21:49:25: FreeImage version: 3.15.3
+21:49:25: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+21:49:25: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,3fr,arw,bay,bmq,cap,cine,cr2,crw,cs1,dc2,dcr,drf,dsc,dng,erf,fff,ia,iiq,k25,kc2,kdc,mdc,mef,mos,mrw,nef,nrw,orf,pef,ptx,pxn,qtk,raf,raw,rdc,rw2,rwl,rwz,sr2,srf,srw,sti
+21:49:25: Registering ResourceManager for type HighLevelGpuProgram
+21:49:25: Registering ResourceManager for type Compositor
+21:49:25: MovableObjectFactory for type 'Entity' registered.
+21:49:25: MovableObjectFactory for type 'Light' registered.
+21:49:25: MovableObjectFactory for type 'BillboardSet' registered.
+21:49:25: MovableObjectFactory for type 'ManualObject' registered.
+21:49:25: MovableObjectFactory for type 'BillboardChain' registered.
+21:49:25: MovableObjectFactory for type 'RibbonTrail' registered.
+21:49:25: Loading library .\RenderSystem_GL
+21:49:25: Installing plugin: GL RenderSystem
+21:49:25: OpenGL Rendering Subsystem created.
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_ParticleFX
+21:49:25: Installing plugin: ParticleFX
+21:49:25: Particle Emitter Type 'Point' registered
+21:49:25: Particle Emitter Type 'Box' registered
+21:49:25: Particle Emitter Type 'Ellipsoid' registered
+21:49:25: Particle Emitter Type 'Cylinder' registered
+21:49:25: Particle Emitter Type 'Ring' registered
+21:49:25: Particle Emitter Type 'HollowEllipsoid' registered
+21:49:25: Particle Affector Type 'LinearForce' registered
+21:49:25: Particle Affector Type 'ColourFader' registered
+21:49:25: Particle Affector Type 'ColourFader2' registered
+21:49:25: Particle Affector Type 'ColourImage' registered
+21:49:25: Particle Affector Type 'ColourInterpolator' registered
+21:49:25: Particle Affector Type 'Scaler' registered
+21:49:25: Particle Affector Type 'Rotator' registered
+21:49:25: Particle Affector Type 'DirectionRandomiser' registered
+21:49:25: Particle Affector Type 'DeflectorPlane' registered
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_BSPSceneManager
+21:49:25: Installing plugin: BSP Scene Manager
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_CgProgramManager
+21:49:25: Installing plugin: Cg Program Manager
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_PCZSceneManager
+21:49:25: Installing plugin: Portal Connected Zone Scene Manager
+21:49:25: PCZone Factory Type 'ZoneType_Default' registered
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_OctreeZone
+21:49:25: Installing plugin: Octree Zone Factory
+21:49:25: Plugin successfully installed
+21:49:25: Loading library .\Plugin_OctreeSceneManager
+21:49:25: Installing plugin: Octree Scene Manager
+21:49:25: Plugin successfully installed
+21:49:25: *-*-* OGRE Initialising
+21:49:25: *-*-* Version 1.9.0 (Ghadamon)
+21:49:25: Creating resource group Bootstrap
+21:49:25: Added resource location './media/packs/OgreCore2.zip' of type 'Zip' to resource group 'Bootstrap'
+21:49:25: Added resource location './media' of type 'FileSystem' to resource group 'General'
+21:49:25: Added resource location './media/overlays' of type 'FileSystem' to resource group 'General'
+21:49:25: Added resource location './media/gui' of type 'FileSystem' to resource group 'General'
+21:49:25: Added resource location './media/Cybiosphere' of type 'FileSystem' to resource group 'General'
+21:49:25: CPU Identifier & Features
+21:49:25: -------------------------
+21:49:25:  *   CPU ID: GenuineIntel: Intel(R) Core(TM) i5-3320M CPU @ 2.60GHz
+21:49:25:  *      SSE: yes
+21:49:25:  *     SSE2: yes
+21:49:25:  *     SSE3: yes
+21:49:25:  *      MMX: yes
+21:49:25:  *   MMXEXT: yes
+21:49:25:  *    3DNOW: no
+21:49:25:  * 3DNOWEXT: no
+21:49:25:  *     CMOV: yes
+21:49:25:  *      TSC: yes
+21:49:25:  *      FPU: yes
+21:49:25:  *      PRO: yes
+21:49:25:  *       HT: no
+21:49:25: -------------------------
+21:49:25: *** Starting Win32GL Subsystem ***
+21:49:25: Registering ResourceManager for type Texture
+21:49:25: GLRenderSystem::_createRenderWindow "OGRE Render Window", 1024x768 windowed  miscParams: FSAA=0 FSAAHint= colourDepth=32 displayFrequency=0 gamma=false vsync=false vsyncInterval=1 
+21:49:25: Created Win32Window 'OGRE Render Window' : 1040x728, 32bpp
+21:49:25: GL_VERSION = 3.3.0 - Build 8.15.10.2712
+21:49:25: GL_VENDOR = Intel
+21:49:25: GL_RENDERER = Intel(R) HD Graphics 4000
+21:49:25: GL_EXTENSIONS = GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_blend_color GL_EXT_abgr GL_EXT_texture3D GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_SGIS_generate_mipmap GL_EXT_draw_range_elements GL_SGIS_texture_lod GL_EXT_rescale_normal GL_EXT_packed_pixels GL_EXT_texture_edge_clamp GL_EXT_separate_specular_color GL_ARB_multitexture GL_EXT_texture_env_combine GL_EXT_bgra GL_EXT_blend_func_separate GL_EXT_secondary_color GL_EXT_fog_coord GL_EXT_texture_env_add GL_ARB_texture_cube_map GL_ARB_transpose_matrix GL_ARB_texture_env_add GL_IBM_texture_mirrored_repeat GL_EXT_multi_draw_arrays GL_NV_blend_square GL_ARB_texture_compression GL_3DFX_texture_compression_FXT1 GL_EXT_texture_filter_anisotropic GL_ARB_texture_border_clamp GL_ARB_point_parameters GL_ARB_texture_env_combine GL_ARB_texture_env_dot3 GL_ARB_texture_env_crossbar GL_EXT_texture_compression_s3tc GL_ARB_shadow GL_ARB_window_pos GL_EXT_shadow_funcs GL_EXT_stencil_wrap GL_ARB_vertex_program GL_EXT_texture_rectangle GL_ARB_fragment_program GL_EXT_stencil_two_side GL_ATI_separate_stencil GL_ARB_vertex_buffer_object GL_EXT_texture_lod_bias GL_ARB_occlusion_query GL_ARB_fragment_shader GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ARB_texture_non_power_of_two GL_ARB_vertex_shader GL_NV_texgen_reflection GL_ARB_point_sprite GL_ARB_fragment_program_shadow GL_EXT_blend_equation_separate GL_ARB_depth_texture GL_ARB_texture_rectangle GL_ARB_draw_buffers GL_ARB_color_buffer_float GL_ARB_half_float_pixel GL_ARB_texture_float GL_ARB_pixel_buffer_object GL_EXT_framebuffer_object GL_ARB_draw_instanced GL_ARB_half_float_vertex GL_ARB_occlusion_query2 GL_EXT_draw_buffers2 GL_WIN_swap_hint GL_EXT_texture_sRGB GL_ARB_multisample GL_EXT_packed_float GL_EXT_texture_shared_exponent GL_ARB_texture_rg GL_ARB_texture_compression_rgtc GL_NV_conditional_render GL_EXT_texture_swizzle GL_ARB_sync GL_ARB_framebuffer_sRGB GL_EXT_packed_depth_stencil GL_ARB_depth_buffer_float GL_EXT_transform_feedback GL_EXT_framebuffer_blit GL_EXT_framebuffer_multisample GL_ARB_framebuffer_object GL_EXT_texture_array GL_EXT_texture_integer GL_ARB_map_buffer_range GL_EXT_texture_snorm GL_ARB_blend_func_extended GL_INTEL_performance_queries GL_ARB_copy_buffer GL_ARB_sampler_objects GL_NV_primitive_restart GL_ARB_seamless_cube_map GL_ARB_uniform_buffer_object GL_ARB_depth_clamp GL_ARB_vertex_array_bgra GL_ARB_shader_bit_encoding GL_ARB_draw_buffers_blend GL_ARB_geometry_shader4 GL_ARB_texture_query_lod GL_ARB_explicit_attrib_location GL_ARB_draw_elements_base_vertex GL_ARB_instanced_arrays GL_ARB_fragment_coord_conventions GL_EXT_gpu_program_parameters GL_ARB_texture_buffer_object_rgb32 GL_ARB_compatibility GL_ARB_texture_rgb10_a2ui GL_ARB_texture_multisample GL_ARB_vertex_type_2_10_10_10_rev GL_ARB_timer_query GL_ARB_vertex_array_object GL_ARB_provoking_vertex 
+21:49:25: Supported WGL extensions: WGL_EXT_depth_float WGL_ARB_buffer_region WGL_ARB_extensions_string WGL_ARB_make_current_read WGL_ARB_pixel_format WGL_ARB_pbuffer WGL_EXT_extensions_string WGL_EXT_swap_control WGL_ARB_multisample WGL_ARB_pixel_format_float WGL_ARB_framebuffer_sRGB WGL_ARB_create_context WGL_EXT_pixel_format_packed_float WGL_EXT_swap_control_tear 
+21:49:25: ***************************
+21:49:25: *** GL Renderer Started ***
+21:49:25: ***************************
+21:49:25: Registering ResourceManager for type GpuProgram
+21:49:25: GLSL support detected
+21:49:25: GL: Using GL_EXT_framebuffer_object for rendering to textures (best)
+21:49:25: FBO PF_UNKNOWN depth/stencil support: D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_R5G6B5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_B5G6R5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_A8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_B8G8R8A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_A2R10G10B10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_A2B10G10R10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_FLOAT16_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_FLOAT16_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_FLOAT32_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_FLOAT32_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_X8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_X8B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_SHORT_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_R3G3B2 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: FBO PF_SHORT_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+21:49:25: [GL] : Valid FBO targets PF_UNKNOWN PF_A8 PF_R5G6B5 PF_B5G6R5 PF_R8G8B8 PF_B8G8R8 PF_A8R8G8B8 PF_B8G8R8A8 PF_A2R10G10B10 PF_A2B10G10R10 PF_FLOAT16_RGB PF_FLOAT16_RGBA PF_FLOAT32_RGB PF_FLOAT32_RGBA PF_X8R8G8B8 PF_X8B8G8R8 PF_SHORT_RGBA PF_R3G3B2 PF_SHORT_RGB 
+21:49:25: RenderSystem capabilities
+21:49:25: -------------------------
+21:49:25: RenderSystem Name: OpenGL Rendering Subsystem
+21:49:25: GPU Vendor: intel
+21:49:25: Device Name: Intel(R) HD Graphics 4000
+21:49:25: Driver Version: 3.3.0.0
+21:49:25:  * Fixed function pipeline: yes
+21:49:25:  * Hardware generation of mipmaps: no
+21:49:25:  * Texture blending: yes
+21:49:25:  * Anisotropic texture filtering: yes
+21:49:25:  * Dot product texture operation: yes
+21:49:25:  * Cube mapping: yes
+21:49:25:  * Hardware stencil buffer: yes
+21:49:25:    - Stencil depth: 8
+21:49:25:    - Two sided stencil support: yes
+21:49:25:    - Wrap stencil values: yes
+21:49:25:  * Hardware vertex / index buffers: yes
+21:49:25:  * Vertex programs: yes
+21:49:25:  * Number of floating-point constants for vertex programs: 256
+21:49:25:  * Number of integer constants for vertex programs: 0
+21:49:25:  * Number of boolean constants for vertex programs: 0
+21:49:25:  * Fragment programs: yes
+21:49:25:  * Number of floating-point constants for fragment programs: 256
+21:49:25:  * Number of integer constants for fragment programs: 0
+21:49:25:  * Number of boolean constants for fragment programs: 0
+21:49:25:  * Geometry programs: no
+21:49:25:  * Number of floating-point constants for geometry programs: 0
+21:49:25:  * Number of integer constants for geometry programs: 15
+21:49:25:  * Number of boolean constants for geometry programs: 0
+21:49:25:  * Tesselation Hull programs: no
+21:49:25:  * Number of floating-point constants for tesselation hull programs: 0
+21:49:25:  * Number of integer constants for tesselation hull programs: 0
+21:49:25:  * Number of boolean constants for tesselation hull programs: 15
+21:49:25:  * Tesselation Domain programs: no
+21:49:25:  * Number of floating-point constants for tesselation domain programs: 0
+21:49:25:  * Number of integer constants for tesselation domain programs: 194
+21:49:25:  * Number of boolean constants for tesselation domain programs: 0
+21:49:25:  * Compute programs: no
+21:49:25:  * Number of floating-point constants for compute programs: 840
+21:49:25:  * Number of integer constants for compute programs: 0
+21:49:25:  * Number of boolean constants for compute programs: 0
+21:49:25:  * Supported Shader Profiles: arbfp1 arbvp1 glsl
+21:49:25:  * Texture Compression: yes
+21:49:25:    - DXT: yes
+21:49:25:    - VTC: no
+21:49:25:    - PVRTC: no
+21:49:25:    - ATC: no
+21:49:25:    - ETC1: no
+21:49:25:    - ETC2: no
+21:49:25:    - BC4/BC5: no
+21:49:25:    - BC6H/BC7: no
+21:49:25:  * Scissor Rectangle: yes
+21:49:25:  * Hardware Occlusion Query: yes
+21:49:25:  * User clip planes: yes
+21:49:25:  * VET_UBYTE4 vertex element type: yes
+21:49:25:  * Infinite far plane projection: yes
+21:49:25:  * Hardware render-to-texture: yes
+21:49:25:  * Floating point textures: yes
+21:49:25:  * Non-power-of-two textures: yes
+21:49:25:  * 1d textures: yes
+21:49:25:  * Volume textures: yes
+21:49:25:  * Multiple Render Targets: 8
+21:49:25:    - With different bit depths: yes
+21:49:25:  * Point Sprites: yes
+21:49:25:  * Extended point parameters: yes
+21:49:25:  * Max Point Size: 255
+21:49:25:  * Vertex texture fetch: yes
+21:49:25:  * Number of world matrices: 0
+21:49:25:  * Number of texture units: 16
+21:49:25:  * Stencil buffer depth: 8
+21:49:25:  * Number of vertex blend matrices: 0
+21:49:25:    - Max vertex textures: 16
+21:49:25:    - Vertex textures shared: yes
+21:49:25:  * Render to Vertex Buffer : no
+21:49:25:  * Hardware Atomic Counters: no
+21:49:25:  * GL 1.5 without VBO workaround: no
+21:49:25:  * Frame Buffer objects: yes
+21:49:25:  * Frame Buffer objects (ARB extension): no
+21:49:25:  * Frame Buffer objects (ATI extension): no
+21:49:25:  * PBuffer support: yes
+21:49:25:  * GL 1.5 without HW-occlusion workaround: no
+21:49:25:  * Vertex Array Objects: no
+21:49:25:  * Separate shader objects: no
+21:49:25: DefaultWorkQueue('Root') initialising on thread 28b0.
+21:49:25: DefaultWorkQueue('Root')::WorkerFunc - thread 2b8c starting.
+21:49:25: DefaultWorkQueue('Root')::WorkerFunc - thread 1d84 starting.
+21:49:25: DefaultWorkQueue('Root')::WorkerFunc - thread 2af4 starting.
+21:49:25: Particle Renderer Type 'billboard' registered
+21:49:25: DefaultWorkQueue('Root')::WorkerFunc - thread 2a88 starting.
+21:49:25: SceneManagerFactory for type 'BspSceneManager' registered.
+21:49:25: Registering ResourceManager for type BspLevel
+21:49:25: SceneManagerFactory for type 'PCZSceneManager' registered.
+21:49:25: MovableObjectFactory for type 'PCZLight' registered.
+21:49:25: MovableObjectFactory for type 'Portal' registered.
+21:49:25: MovableObjectFactory for type 'AntiPortal' registered.
+21:49:25: PCZone Factory Type 'ZoneType_Octree' registered
+21:49:25: SceneManagerFactory for type 'OctreeSceneManager' registered.
+21:49:25: Parsing scripts for resource group Autodetect
+21:49:25: Finished parsing scripts for resource group Autodetect
+21:49:25: Creating resources for group Autodetect
+21:49:25: All done
+21:49:25: Parsing scripts for resource group Bootstrap
+21:49:25: Parsing script OgreCore.material
+21:49:25: Parsing script OgreProfiler.material
+21:49:25: Finished parsing scripts for resource group Bootstrap
+21:49:25: Creating resources for group Bootstrap
+21:49:25: All done
+21:49:25: Parsing scripts for resource group General
+21:49:25: Parsing script acacia.material
+21:49:25: Compiler error: object name expected in acacia.material(1)
+21:49:25: Compiler error: unknown error in acacia.material(37): token "receive_shadows" is not recognized
+21:49:25: Parsing script Cat.material
+21:49:25: Parsing script chacal.material
+21:49:25: Parsing script cybios.material
+21:49:25: Parsing script deer.material
+21:49:25: Parsing script Elephant.material
+21:49:25: Parsing script Example.material
+21:49:25: Parsing script farn.material
+21:49:25: Parsing script fir.material
+21:49:25: Parsing script fox.material
+21:49:25: Parsing script Gazelle.material
+21:49:25: Compiler error: object name expected in Gazelle.material(1)
+21:49:25: Parsing script Giraffe.material
+21:49:25: Compiler error: object name expected in Giraffe.material(1)
+21:49:25: Parsing script grass.material
+21:49:25: Parsing script grassDry.material
+21:49:25: Compiler error: unknown error in grassDry.material(11): token "receive_shadows" is not recognized
+21:49:25: Parsing script grass_ground.material
+21:49:25: Compiler error: unknown error in grass_ground.material(12): token "#texture" is not recognized
+21:49:25: Parsing script herbe_fleurs.material
+21:49:25: Parsing script LION.material
+21:49:25: Compiler error: object name expected in LION.material(1)
+21:49:25: Compiler error: invalid parameters in LION.material(24): : is not a supported argument to the texture property
+21:49:25: Parsing script rabbit.material
+21:49:25: Compiler error: unknown error in rabbit.material(16): base object named "/base/normalmap/specular" not found in script definition
+21:49:25: Parsing script rock.material
+21:49:25: Parsing script tree.material
+21:49:25: Parsing script water.material
+21:49:25: Compiler error: unknown error in water.material(28): token "#depth_write" is not recognized
+21:49:25: Parsing script wolf.material
+21:49:25: Parsing script wooden_fence.material
+21:49:25: Compiler error: unknown error in wooden_fence.material(7): token "#alpha_rejection" is not recognized
+21:49:25: Parsing script zebra.material
+21:49:25: Compiler error: object name expected in zebra.material(1)
+21:49:25: Finished parsing scripts for resource group General
+21:49:25: Creating resources for group General
+21:49:25: All done
+21:49:25: Parsing scripts for resource group Internal
+21:49:25: Finished parsing scripts for resource group Internal
+21:49:25: Creating resources for group Internal
+21:49:25: All done
+21:49:25: Texture: clouds.jpg: Loading 1 faces(PF_R8G8B8,256x256x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,256x256x1.
+21:49:25: Mesh: Loading chacal.mesh.
+21:49:25: Skeleton: Loading chacal_mesh.skeleton
+21:49:25: WARNING: chacal.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:25: Texture: chacal.dds: Loading 1 faces(PF_A8R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,512x512x1.
+21:49:25: Mesh: Loading giraffe.mesh.
+21:49:25: Skeleton: Loading Giraffe.skeleton
+21:49:25: WARNING: giraffe.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:25: Texture: horn_text.jpg: Loading 1 faces(PF_R8G8B8,26x126x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,26x126x1.
+21:49:25: Texture: EYE_A5.JPG: Loading 1 faces(PF_R8G8B8,300x300x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,300x300x1.
+21:49:25: Texture: GIRACRIN.dds: Loading 1 faces(PF_A8R8G8B8,320x240x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,320x240x1.
+21:49:25: Texture: GIRACOLA.dds: Loading 1 faces(PF_A8R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,512x512x1.
+21:49:25: Texture: GIRATEXT.JPG: Loading 1 faces(PF_R8G8B8,1417x2174x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,1417x2174x1.
+21:49:26: Texture: GIRAFACE.JPG: Loading 1 faces(PF_R8G8B8,596x600x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,596x600x1.
+21:49:26: Mesh: Loading zebra.mesh.
+21:49:26: Skeleton: Loading zebra.skeleton
+21:49:26: WARNING: zebra.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:26: Texture: ZEBBODY.JPG: Loading 1 faces(PF_R8G8B8,1500x1124x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,1500x1124x1.
+21:49:26: Texture: ZEBHAIR.JPG: Loading 1 faces(PF_R8G8B8,652x225x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,652x225x1.
+21:49:26: Texture: ZEBTAIL.JPG: Loading 1 faces(PF_R8G8B8,211x509x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,211x509x1.
+21:49:27: Mesh: Loading lion.mesh.
+21:49:27: Skeleton: Loading lion.skeleton
+21:49:27: WARNING: lion.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: LIONBODY.JPG: Loading 1 faces(PF_R8G8B8,1020x600x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,1020x600x1.
+21:49:27: Texture: LIONFACE.JPG: Loading 1 faces(PF_R8G8B8,250x327x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,250x327x1.
+21:49:27: Texture: LIOBACK.JPG: Loading 1 faces(PF_R8G8B8,945x236x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,945x236x1.
+21:49:27: Texture: LIOCHEST.JPG: Loading 1 faces(PF_R8G8B8,238x532x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,238x532x1.
+21:49:27: Texture: LIONTAIL.JPG: Loading 1 faces(PF_R8G8B8,170x448x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,170x448x1.
+21:49:27: Texture: LIONINTL.JPG: Loading 1 faces(PF_R8G8B8,234x480x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,234x480x1.
+21:49:27: Texture: LIOINTFR.JPG: Loading 1 faces(PF_R8G8B8,238x532x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,238x532x1.
+21:49:27: Texture: LIONBUM.JPG: Loading 1 faces(PF_R8G8B8,756x512x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,756x512x1.
+21:49:27: Texture: LIONEYE.JPG: Loading 1 faces(PF_R8G8B8,294x207x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,294x207x1.
+21:49:27: Mesh: Loading gazelle.mesh.
+21:49:27: Skeleton: Loading Gazelle.skeleton
+21:49:27: WARNING: gazelle.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: gazelle_text.jpg: Loading 1 faces(PF_R8G8B8,700x754x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,700x754x1.
+21:49:27: Mesh: Loading wooden_fence.mesh.
+21:49:27: WARNING: wooden_fence.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: wooden_fence.png: Loading 1 faces(PF_R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,512x512x1.
+21:49:27: Mesh: Loading rock.mesh.
+21:49:27: WARNING: rock.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: rock.png: Loading 1 faces(PF_A8R8G8B8,1024x1024x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,1024x1024x1.
+21:49:27: Mesh: Loading water_puddle.mesh.
+21:49:27: WARNING: water_puddle.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: water_puddle.dds: Loading 1 faces(PF_A8R8G8B8,503x499x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,503x499x1.
+21:49:27: Mesh: Loading grassDry.mesh.
+21:49:27: WARNING: grassDry.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: grassDry.dds: Loading 1 faces(PF_A8R8G8B8,256x256x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,256x256x1.
+21:49:27: Mesh: Loading acacia.mesh.
+21:49:27: WARNING: acacia.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: Trunc1.dds: Loading 1 faces(PF_DXT1,256x256x1) with 5 custom mipmaps from Image. Internal format is PF_DXT1,256x256x1.
+21:49:27: Texture: Branch.dds: Loading 1 faces(PF_DXT3,512x512x1) with 9 custom mipmaps from Image. Internal format is PF_DXT3,512x512x1.
+21:49:27: Mesh: Loading Water.mesh.
+21:49:27: WARNING: Water.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:27: Texture: water_texture.jpg: Loading 1 faces(PF_R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,512x512x1.
+21:49:28: Mesh: Loading Water_deap.mesh.
+21:49:28: WARNING: Water_deap.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:28: Mesh: Loading grass.mesh.
+21:49:28: WARNING: grass.mesh is an older format ([MeshSerializer_v1.40]); you should upgrade it as soon as possible using the OgreMeshUpgrade tool.
+21:49:28: Texture: herbe1.dds: Loading 1 faces(PF_A8R8G8B8,512x512x1) with 9 custom mipmaps from Image. Internal format is PF_A8R8G8B8,512x512x1.
+21:49:28: Texture: herbe2.dds: Loading 1 faces(PF_A8R8G8B8,600x300x1) with 9 custom mipmaps from Image. Internal format is PF_A8R8G8B8,600x300x1.
+21:49:28: Texture: ground.jpg: Loading 1 faces(PF_R8G8B8,256x256x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,256x256x1.
+21:49:28: *** Initializing OIS ***
+21:49:28: Texture: spot_shadow_fade.png: Loading 1 faces(PF_R8G8B8,128x128x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,128x128x1.
+21:49:57: DefaultWorkQueue('Root') shutting down on thread 28b0.
+21:49:57: DefaultWorkQueue('Root')::WorkerFunc - thread 2a88 stopped.
+21:49:57: DefaultWorkQueue('Root')::WorkerFunc - thread 2af4 stopped.
+21:49:57: DefaultWorkQueue('Root')::WorkerFunc - thread 1d84 stopped.
+21:49:57: DefaultWorkQueue('Root')::WorkerFunc - thread 2b8c stopped.
+21:49:57: PCZone Factory Type 'ZoneType_Octree' unregistered
+21:49:57: Unregistering ResourceManager for type BspLevel
+21:49:57: *-*-* OGRE Shutdown
+21:49:57: Unregistering ResourceManager for type Compositor
+21:49:57: Unregistering ResourceManager for type Skeleton
+21:49:57: Unregistering ResourceManager for type Mesh
+21:49:57: Unregistering ResourceManager for type HighLevelGpuProgram
+21:49:57: Uninstalling plugin: Octree Scene Manager
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_OctreeSceneManager
+21:49:57: Uninstalling plugin: Octree Zone Factory
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_OctreeZone
+21:49:57: Uninstalling plugin: Portal Connected Zone Scene Manager
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_PCZSceneManager
+21:49:57: Uninstalling plugin: Cg Program Manager
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_CgProgramManager
+21:49:57: Uninstalling plugin: BSP Scene Manager
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_BSPSceneManager
+21:49:57: Uninstalling plugin: ParticleFX
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\Plugin_ParticleFX
+21:49:57: Uninstalling plugin: GL RenderSystem
+21:49:57: Unregistering ResourceManager for type GpuProgram
+21:49:57: *** Stopping Win32GL Subsystem ***
+21:49:57: Unregistering ResourceManager for type Texture
+21:49:57: Plugin successfully uninstalled
+21:49:57: Unloading library .\RenderSystem_GL
+21:49:57: Unregistering ResourceManager for type Material

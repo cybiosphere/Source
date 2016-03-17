@@ -1,0 +1,15 @@
+material wooden_fence
+{
+	technique
+	{
+		pass
+		{
+			#alpha_rejection greater 128
+
+			texture_unit
+			{
+				texture wooden_fence.png
+			}
+		}
+	}
+}

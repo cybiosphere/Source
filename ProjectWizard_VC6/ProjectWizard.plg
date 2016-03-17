@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ProjectWizard - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSP16F7.tmp" with contents
+[
+..\ExportDll_VC6\lib\CybioCoreD.lib /nologo /subsystem:windows /incremental:yes /pdb:"../Exec/ProjectWizardD.pdb" /debug /machine:I386 /out:"../Exec/ProjectWizardD.exe" /pdbtype:sept 
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ChildFrm.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\DialogTab1.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\DialogTab2.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\DialogTab3.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\DialogTab4.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\FileSelectButton.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\GeneButton.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\MainFrm.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ProjectWizard.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ProjectWizardDoc.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ProjectWizardView.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\StdAfx.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\WizardTabCtrl.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\CWizardBrain.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\CWizardPurpose.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\CWizardSensor.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\GenomeTreeCtrl.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ParameterSlider.obj
+\frederic\ToolLTE\Perso\WinEvolution342\Temp\ProjectWizard.res
+]
+Creating command line "link.exe @C:\Users\fribert\AppData\Local\Temp\RSP16F7.tmp"
+<h3>Output Window</h3>
+Linking...
+
+
+
+<h3>Results</h3>
+ProjectWizardD.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

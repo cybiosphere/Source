@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{010BC237-F114-4FB0-B294-A2CBAA050DD9}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\../Exec\</OutDir>
+    <IntDir>.\../Temp\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\../Exec\</OutDir>
+    <IntDir>.\../Temp\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\../Exec/CybioCore.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../WpMeasure/inc;.;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpGenetic/inc;../WpGui/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;DLL_CYBIOCORE_DLL;WIN32;_WINDOWS;_USRDLL;_AFXDLL;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\../Temp/CybioCore.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../Temp/</AssemblerListingLocation>
+      <ObjectFileName>.\../Temp/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../Temp/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\..\Exec\CybioCore2D.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ModuleDefinitionFile>.\src\CybioCore2D.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\../Exec/CybioCore2D.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\../Temp/CybioCore2D.map</MapFileName>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>.\../Exec/CybioCore2D.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy                                                     ..\Exec\CybioCore2D.lib                                                   ..\ExportDll_VC12e\lib\</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\../Exec/CybioCore.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../ProjectDll/inc;.;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpGenetic/inc;../WpGui/inc;../WpMeasure/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_USRDLL;DLL_CYBIOCORE_DLL;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\../Temp/CybioCore.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../Temp/</AssemblerListingLocation>
+      <ObjectFileName>.\../Temp/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../Temp/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\..\Exec\CybioCore2.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ModuleDefinitionFile>.\src\CybioCore2.def</ModuleDefinitionFile>
+      <ProgramDatabaseFile>.\../Exec/CybioCore2.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>.\../Exec/CybioCore2.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Command>copy  ..\Exec\CybioCore2.lib   ..\ExportDll_VC12e\lib\
+copy ..\Exec\CybioCore2.dll   ..\ExecOgre\CybioCore2.dll</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="res\CybioCore.rc2" />
+    <None Include="src\CybioCore.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="..\WpBehavior\inc\CBrain.h" />
+    <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />
+    <ClInclude Include="..\WpBehavior\inc\CFeelingFear.h" />
+    <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h" />
+    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h" />
+    <ClInclude Include="..\WpBehavior\inc\CPurpose.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReaction.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionCopulate.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionDrink.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionEat.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionHide.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionNothing.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionRuminate.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionSleep.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepBackward.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadLeft.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadRight.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnLeft.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnRight.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionVarySpeed.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensor.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorCompass.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorComposite.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorEar.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorFear.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorHormone.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorHunger.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorLibido.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryAction.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryFeedback.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorObscurity.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorOrientation.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorPheromone.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorPleasure.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorSmell.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorSpeed.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorStatic.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorStomachOverload.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorSuffering.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorTactile.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorTaste.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorTemperature.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorThirst.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorTiredness.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorView.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewFar.h" />
+    <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
+    <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />
+    <ClInclude Include="..\WpEntity\inc\CBasicEntity.h" />
+    <ClInclude Include="..\WpEntity\inc\CGrass.h" />
+    <ClInclude Include="..\WpEntity\inc\CLifeStage.h" />
+    <ClInclude Include="..\WpEntity\inc\CMineral.h" />
+    <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h" />
+    <ClInclude Include="..\WpEntity\inc\CVegetable.h" />
+    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h" />
+    <ClInclude Include="..\WpEntity\inc\CWater.h" />
+    <ClInclude Include="..\WpEnvironment\inc\CBiotop.h" />
+    <ClInclude Include="..\WpEnvironment\inc\CScenarioPlayer.h" />
+    <ClInclude Include="..\WpCommon\inc\CCyclicParam.h" />
+    <ClInclude Include="..\WpCommon\inc\CGenericCaract.h" />
+    <ClInclude Include="..\WpCommon\inc\CGenericParam.h" />
+    <ClInclude Include="..\WpCommon\inc\Definitions.h" />
+    <ClInclude Include="..\WpCommon\inc\Matrix.h" />
+    <ClInclude Include="..\WpGenetic\inc\CChromosome.h" />
+    <ClInclude Include="..\WpGenetic\inc\CGene.h" />
+    <ClInclude Include="..\WpGenetic\inc\CGenome.h" />
+    <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasure.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureBiotopParam.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureEntityParam.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFeeling.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureParam.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasurePopulation.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureReaction.h" />
+    <ClInclude Include="..\WpTinyXml\inc\CybioXmlDef.h" />
+    <ClInclude Include="..\WpTinyXml\inc\targetver.h" />
+    <ClInclude Include="..\WpTinyXml\inc\tinystr.h" />
+    <ClInclude Include="..\WpTinyXml\inc\tinyxml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\WpBehavior\src\CBrain.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CBrainAnimal.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CFeelingFear.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CFeelingWelfare.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CGeoMap.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CNeuronMatrix.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CPurpose.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReaction.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionAttack.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionCopulate.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionDrink.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionEat.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionHide.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionNothing.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionRuminate.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionSleep.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionStepBackward.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnHeadLeft.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnHeadRight.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnLeft.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnRight.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CReactionVarySpeed.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensor.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorCompass.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorComposite.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorEar.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorFear.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorHormone.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorHunger.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorLibido.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorMemoryAction.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorMemoryFeedback.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorObscurity.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorOrientation.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorPheromone.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorPleasure.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorSmell.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorSpeed.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorStatic.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorStomachOverload.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorSuffering.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorTactile.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorTaste.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorTemperature.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorThirst.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorTiredness.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorView.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorViewFar.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorViewIdentify.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CSensorViewIdentifyFar.cpp" />
+    <ClCompile Include="..\WpEntity\src\CAnimal.cpp" />
+    <ClCompile Include="..\WpEntity\src\CAnimMammal.cpp" />
+    <ClCompile Include="..\WpEntity\src\CBasicEntity.cpp" />
+    <ClCompile Include="..\WpEntity\src\CGrass.cpp" />
+    <ClCompile Include="..\WpEntity\src\CLifeStage.cpp" />
+    <ClCompile Include="..\WpEntity\src\CMineral.cpp" />
+    <ClCompile Include="..\WpEntity\src\CPhysicalWelfare.cpp" />
+    <ClCompile Include="..\WpEntity\src\CVegetable.cpp" />
+    <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
+    <ClCompile Include="..\WpEntity\src\CWater.cpp" />
+    <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp" />
+    <ClCompile Include="..\WpEnvironment\src\CScenarioPlayer.cpp" />
+    <ClCompile Include="..\WpCommon\src\CCyclicParam.cpp" />
+    <ClCompile Include="..\WpCommon\src\CGenericCaract.cpp" />
+    <ClCompile Include="..\WpCommon\src\CGenericParam.cpp" />
+    <ClCompile Include="..\WpCommon\src\Definitions.cpp" />
+    <ClCompile Include="..\WpGenetic\src\CChromosome.cpp" />
+    <ClCompile Include="..\WpGenetic\src\CGene.cpp" />
+    <ClCompile Include="..\WpGenetic\src\CGenome.cpp" />
+    <ClCompile Include="..\WpGenetic\src\CPairOfChromosome.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasure.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasureBiotopParam.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasureEntityParam.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasureFeeling.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasureParam.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasurePopulation.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CMeasureReaction.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinystr.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxml.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlerror.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,219 @@
+material 
+{
+	technique
+	{
+		pass
+		{
+		}
+	}
+}
+
+material Material0
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2
+			diffuse 0.8 0.8 0.8
+			specular 0 0 0 0
+			emissive 0.317647 0.317647 0.317647
+
+			texture_unit
+			{
+				texture C:\work\mymodels\dogcatrat\dob.jpg
+				filtering point point point
+			}
+		}
+	}
+}
+material lionbody
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.733333 0.639216 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONBODY.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material lionface
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONFACE.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material lionback
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIOBACK.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material liochest
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIOCHEST.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material liotail
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONTAIL.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material liointer
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONINTL.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material liotras
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIOCHEST.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material liolegt
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.207843 0.12549 0
+			diffuse 0.733333 0.533333 0.396078
+			specular 0.784314 0.713726 0.592157 1.28
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIOINTFR.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material lionbas
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0.247059 0.262745 0.2
+			specular 1 1 1 19.2
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONBUM.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material lioeyes
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0862745 0.0666667 0.0392157
+			diffuse 0.262745 0.164706 0.0392157
+			specular 1 1 1 128
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture LIONEYE.JPG
+				filtering point point point
+			}
+		}
+	}
+}

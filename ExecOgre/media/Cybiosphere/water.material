@@ -1,0 +1,67 @@
+material water/water_lago
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			depth_write off
+
+			texture_unit
+			{
+				texture water_texture.jpg
+				scroll_anim 0.15 0
+			}
+		}
+	}
+}
+
+
+
+material waterplane
+{
+    technique
+    {
+        pass
+        {
+            scene_blend colour_blend
+            #depth_write off
+            texture_unit
+            {
+                texture water_texture.jpg
+                scroll_anim 0.15 0
+            }
+        }
+    }
+} 
+
+material waterdeap
+{
+    technique
+    {
+        pass
+        {
+	    scene_blend alpha_blend
+            texture_unit
+            {
+                texture water_texture.jpg
+                scroll_anim 0.15 0
+            }
+        }
+    }
+} 
+
+material water_puddle
+{
+    technique
+    {
+        pass
+        {
+	          alpha_rejection greater 128
+            texture_unit
+            {
+                texture water_puddle.dds
+            }
+        }
+    }
+} 

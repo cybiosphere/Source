@@ -1,0 +1,48 @@
+material 
+{
+	technique
+	{
+		pass
+		{
+		}
+	}
+}
+
+material Material
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.752941 0.752941 0.752941
+			diffuse 0.752941 0.752941 0.752941
+			specular 0 0 0 40
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture gazelle_text.jpg
+				filtering point point point
+			}
+		}
+	}
+}
+material HornMat
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.752941 0.752941 0.752941
+			diffuse 0.752941 0.752941 0.752941
+			specular 0 0 0 40
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture horn_text.jpg
+				filtering point point point
+			}
+		}
+	}
+}

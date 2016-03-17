@@ -1,0 +1,70 @@
+#pragma once
+
+#include <API/core.h>
+#include <API/network.h>
+#include "CBiotop.h"
+#include "clan_server.h"
+
+using namespace clan;
+
+typedef struct 
+{
+  int        transactionId;
+  int        nb_blocks;
+  int        nb_blocks_received;
+  DataBuffer buffer[SENT_BUFFER_MAX_NB_BLOCKS];
+} LongBufferEvent_t;
+
+
+class Client
+{
+public:
+	Client();
+	~Client();
+
+	void exec();
+  void connect_to_server();
+  void disconnect_from_server();
+  void process_new_events();
+  bool check_if_event_next_second_start_and_clean();
+  bool check_if_event_next_second_end_and_clean();
+  CBiotop* get_pBiotop();
+  bool  is_biotop_config_complete();
+  float get_biotop_speed();
+
+private:
+	void on_connected();
+	void on_disconnected();
+
+	void on_event_received(const NetGameEvent &e);
+
+	void on_event_login_success(const NetGameEvent &e);
+	void on_event_login_fail(const NetGameEvent &e);
+	void on_event_game_loadmap(const NetGameEvent &e);
+	void on_event_game_startgame(const NetGameEvent &e);
+	void on_event_biotop_nextsecond_start(const NetGameEvent &e);
+  void on_event_biotop_nextsecond_end(const NetGameEvent &e);
+	void on_event_biotop_updatefullentity(const NetGameEvent &e);
+	void on_event_biotop_updateentityposition(const NetGameEvent &e);
+
+  void updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer);
+  void displayBiotopEntities();
+  void displayBiotopEntityDetail(entityIdType entityId);
+
+private:
+	NetGameClient network_client;
+	SlotContainer cc;
+
+	NetGameEventDispatcher<> login_events;
+	NetGameEventDispatcher<> game_events;
+
+	bool quit;
+	bool logged_in;
+
+  CBiotop* m_pBiotop;
+  bool     m_bBiotopConfigComplete;
+  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
+  bool m_bEventNextSecondStart;
+  bool m_bEventNextSecondEnd;
+  float m_biotopSpeed; // Controled by server. 1.0 is real time speed. Biotp update every 1sec
+};

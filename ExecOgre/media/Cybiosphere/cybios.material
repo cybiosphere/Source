@@ -1,0 +1,17 @@
+
+material Cybios/Ground
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture ground.jpg
+			}
+		}
+	}
+}
+
+
+

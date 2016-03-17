@@ -1,0 +1,15 @@
+material deer
+{
+	technique
+	{
+		pass
+		{
+			alpha_rejection greater 128
+
+			texture_unit
+			{
+				texture deer.png
+			}
+		}
+	}
+}

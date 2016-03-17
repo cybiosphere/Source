@@ -1,0 +1,17 @@
+material grass_ground
+{
+    technique
+    {
+        pass
+        {
+            ambient 0.5 0.5 0.5
+            diffuse 0.988235 0.988235 0.988235
+            specular 1.0 1.0 1.0 0.0 200
+            texture_unit
+            {
+                #texture water_texture.jpg
+                texture grass_texture.png
+            }
+        }
+    }
+} 

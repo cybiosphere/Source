@@ -1,0 +1,46 @@
+material 
+{
+	technique
+	{
+		pass
+		{
+		}
+	}
+}
+
+material Trunc
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235
+			texture_unit
+			{
+				texture Trunc1.dds
+				filtering point point point
+			}
+		}
+	}
+}
+material Branch
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.752941 0.752941 0.752941
+			diffuse 0.752941 0.752941 0.752941
+			specular 0 0 0 40
+			emissive 0 0 0
+			lighting off
+			receive_shadows off
+      alpha_rejection greater 128 
+			texture_unit
+			{
+				texture Branch.dds
+				filtering point point point
+			}
+		}
+	}
+}

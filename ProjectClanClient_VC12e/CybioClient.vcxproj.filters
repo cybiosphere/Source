@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\WpClanNetwork\src\client.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\connection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\connection_impl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_window_generic.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\databuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\datetime.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\detect_cpu_ext.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event_value.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\exception.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\network_data.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\network_condition_variable.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\server.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\setup_core.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\setupnetwork_win32.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\socket_error.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\socket_name.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\string_format.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\string_help.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\system.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\system_win32.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tcp_connection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tcp_listen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage_impl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tls_instance.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_client.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_client_main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinystr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxml.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlerror.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\iodevice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\iodevice_provider_memory.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\memory_device.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\endianess.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\WpEntity\inc\CAnimal.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CAnimMammal.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CBasicEntity.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CBiotop.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrain.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CChromosome.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGene.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CGenericParam.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGenome.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CMineral.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CLifeStage.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CPurpose.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReaction.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionCopulate.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionDrink.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionEat.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionNothing.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepBackward.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepForward.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnLeft.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnRight.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensor.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorHunger.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorPleasure.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSmell.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSuffering.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTactile.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorThirst.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorView.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetable.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CWater.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Definitions.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Matrix.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\clan_client.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{9f91c39a-517f-44c3-aefb-f258fd78390d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc">
+      <UniqueIdentifier>{660a055c-1092-4719-8b67-23a44c4f464e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

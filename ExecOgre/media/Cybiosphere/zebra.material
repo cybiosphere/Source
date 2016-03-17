@@ -1,0 +1,87 @@
+material 
+{
+	technique
+	{
+		pass
+		{
+		}
+	}
+}
+
+material ZEBEYE
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0.290196 0.254902 0.223529
+			specular 1 1 1 83.2
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture ZEBEYE.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material ZEBSKIN
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 1 1 1 25.6
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture ZEBBODY.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material ZEBHAIR
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0.698039 0.698039 0.698039
+			specular 0.898039 0.898039 0.898039 1.28
+			emissive 0 0 0
+                        alpha_rejection greater 128 
+			texture_unit
+			{
+				texture ZEBHAIR.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+material ZEBTAIL
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0
+			diffuse 0.698039 0.698039 0.698039
+			specular 0.898039 0.898039 0.898039 1.28
+			emissive 0 0 0
+                        alpha_rejection greater 128 
+			texture_unit
+			{
+				texture ZEBTAIL.JPG
+				filtering point point point
+			}
+		}
+	}
+}
+

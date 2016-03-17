@@ -1,0 +1,61 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Evolution - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPE396.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../WpGenetic/inc" /I "../WpBehavior/inc" /I "../WpEntity/inc" /I "../WpEnvironment/inc" /I "../WpCommon/inc" /I "../WpMeasure/inc" /I "../WpTinyXml/inc" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_AFXDLL" /D "_MBCS" /D "DLL_CYBIOCORE_CLIENT" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\frederic\ToolLTE\Perso\WinEvolution340\ProjectConsole_VC6\Evolution.cpp"
+]
+Creating command line "cl.exe @C:\Users\fribert\AppData\Local\Temp\RSPE396.tmp" 
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPE3B6.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib ..\ExportDll_VC6\lib\CybioCore.lib /nologo /subsystem:console /incremental:no /pdb:"Release/Evolution.pdb" /machine:I386 /out:"..\Exec/Evolution.exe" 
+.\Release\Evolution.obj
+]
+Creating command line "link.exe @C:\Users\fribert\AppData\Local\Temp\RSPE3B6.tmp"
+<h3>Output Window</h3>
+Compiling...
+Evolution.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+Evolution.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: Evolution - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPE627.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../WpGenetic/inc" /I "../WpBehavior/inc" /I "../WpEntity/inc" /I "../WpEnvironment/inc" /I "../WpCommon/inc" /I "../WpMeasure/inc" /I "../WpTinyXml/inc" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_AFXDLL" /D "_MBCS" /D "DLL_CYBIOCORE_CLIENT" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\frederic\ToolLTE\Perso\WinEvolution340\ProjectConsole_VC6\Evolution.cpp"
+]
+Creating command line "cl.exe @C:\Users\fribert\AppData\Local\Temp\RSPE627.tmp" 
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPE638.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib ..\ExportDll_VC6\lib\CybioCoreD.lib /nologo /subsystem:console /incremental:no /pdb:"..\Exec/EvolutionD.pdb" /map:"Debug/EvolutionD.map" /debug /machine:I386 /out:"..\Exec/EvolutionD.exe" /pdbtype:sept /fixed:no 
+.\Debug\Evolution.obj
+]
+Creating command line "link.exe @C:\Users\fribert\AppData\Local\Temp\RSPE638.tmp"
+<h3>Output Window</h3>
+Compiling...
+Evolution.cpp
+Linking...
+LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
+Creating command line "bscmake.exe /nologo /o"..\Exec/Evolution.bsc"  .\Debug\Evolution.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+EvolutionD.exe - 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

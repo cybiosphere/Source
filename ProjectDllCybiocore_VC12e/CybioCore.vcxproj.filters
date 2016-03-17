@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{926be59b-0b11-4073-8301-ebdd980d82be}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="ProjectDll">
+      <UniqueIdentifier>{9f8b902f-5f28-4899-b809-cecd8cc40299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ProjectDll\IncDll">
+      <UniqueIdentifier>{86b9a893-dfc9-4718-ae94-ecfdbee35762}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="ProjectDll\SrcDll">
+      <UniqueIdentifier>{dc7eaa54-9ea6-43fd-bc09-41587182071a}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpBehavior">
+      <UniqueIdentifier>{b2b8b18e-6415-464f-8b60-b1a2f0b6b664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpBehavior\IncBehavior">
+      <UniqueIdentifier>{c45de4eb-f627-421a-806f-8995874579af}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpBehavior\SrcBehavior">
+      <UniqueIdentifier>{73f43eca-298a-4ca5-852c-741cc67b1f35}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpEntity">
+      <UniqueIdentifier>{fbab012c-4a25-4788-a553-e29e108f4fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpEntity\IncEntity">
+      <UniqueIdentifier>{ff35f5ef-3b02-4e02-91d8-3dd94a6bc882}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpEntity\SrcEntity">
+      <UniqueIdentifier>{263806f3-697a-4186-89ba-fc95bebdcebe}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpEnvironment">
+      <UniqueIdentifier>{558a1525-03bb-4f43-90ad-9bf5004634f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpEnvironment\IncEnvironment">
+      <UniqueIdentifier>{8ef76d8c-92cd-45db-908d-6f6d5eabf3f3}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpEnvironment\SrcEnvironment">
+      <UniqueIdentifier>{af87370d-e804-425f-9a0d-044ea9b632f6}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpCommon">
+      <UniqueIdentifier>{118a36bf-a741-43e0-bc0c-9a9e7ab3732d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpCommon\IncCommon">
+      <UniqueIdentifier>{a3510a22-2119-49bc-9521-127682b8fc4b}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpCommon\SrcCommon">
+      <UniqueIdentifier>{88588790-6c15-4c73-883c-4fb608dcf9c8}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpGenetic">
+      <UniqueIdentifier>{130e2de4-9f9d-4231-bead-5440bc3cafa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpGenetic\IncGenetic">
+      <UniqueIdentifier>{91f6cdf2-43cd-4e65-b71b-7aafe2850886}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpGenetic\SrcGenetic">
+      <UniqueIdentifier>{3d45aa26-1a6d-4a69-97b9-cd5ba4263648}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpMeasure">
+      <UniqueIdentifier>{b3b8f83a-0605-4a3a-83d7-f05684db7c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpMeasure\IncMeasure">
+      <UniqueIdentifier>{2e5d07d8-615c-491c-9629-0c82aecca401}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpMeasure\SrcMeasure">
+      <UniqueIdentifier>{99304643-a511-440e-9994-df73fb806d71}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpTinyXml">
+      <UniqueIdentifier>{cc5715e3-2d0c-4dad-84cd-56dd338c28ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpTinyXml\IncTinyXml">
+      <UniqueIdentifier>{a280e251-5a79-467d-b436-f44d02b8b76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpTinyXml\SrcTinyXml">
+      <UniqueIdentifier>{723fafe0-e6f1-4394-8c74-1d91086d650c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\CybioCore.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\CybioCore.def">
+      <Filter>ProjectDll\SrcDll</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H">
+      <Filter>ProjectDll\IncDll</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>ProjectDll\IncDll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrain.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CFeelingFear.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CPurpose.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReaction.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionCopulate.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionDrink.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionEat.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionHide.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionNothing.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionRuminate.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionSleep.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepBackward.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadLeft.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadRight.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnLeft.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnRight.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionVarySpeed.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensor.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorCompass.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorComposite.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorEar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorFear.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorHormone.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorHunger.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorLibido.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryAction.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryFeedback.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorObscurity.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorOrientation.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorPheromone.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorPleasure.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSmell.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSpeed.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorStatic.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorStomachOverload.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSuffering.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTactile.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTaste.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTemperature.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorThirst.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTiredness.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorView.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewFar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CAnimal.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CAnimMammal.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CBasicEntity.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CGrass.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CLifeStage.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CMineral.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetable.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CWater.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CBiotop.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CScenarioPlayer.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CCyclicParam.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CGenericCaract.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CGenericParam.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Definitions.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Matrix.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CChromosome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGene.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGenome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasure.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureBiotopParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureEntityParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFeeling.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasurePopulation.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureReaction.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\CybioXmlDef.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\targetver.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\tinystr.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\tinyxml.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CBrainAnimal.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CFeelingFear.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CFeelingWelfare.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CGeoMap.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CPurpose.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReaction.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionAttack.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionCopulate.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionDrink.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionEat.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionHide.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionNothing.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionRuminate.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionSleep.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionStepBackward.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnHeadLeft.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnHeadRight.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnLeft.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionTurnRight.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CReactionVarySpeed.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensor.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorCompass.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorComposite.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorEar.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorFear.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorHormone.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorHunger.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorLibido.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorMemoryAction.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorMemoryFeedback.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorObscurity.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorOrientation.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorPheromone.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorPleasure.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorSmell.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorSpeed.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorStatic.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorStomachOverload.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorSuffering.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorTactile.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorTaste.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorTemperature.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorThirst.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorTiredness.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorView.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorViewFar.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CAnimal.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CAnimMammal.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CBasicEntity.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CGrass.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CLifeStage.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CMineral.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CPhysicalWelfare.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CVegetable.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CWater.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp">
+      <Filter>WpEnvironment\SrcEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEnvironment\src\CScenarioPlayer.cpp">
+      <Filter>WpEnvironment\SrcEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpCommon\src\CCyclicParam.cpp">
+      <Filter>WpCommon\SrcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpCommon\src\CGenericCaract.cpp">
+      <Filter>WpCommon\SrcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpCommon\src\CGenericParam.cpp">
+      <Filter>WpCommon\SrcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpCommon\src\Definitions.cpp">
+      <Filter>WpCommon\SrcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGenetic\src\CChromosome.cpp">
+      <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGenetic\src\CGene.cpp">
+      <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGenetic\src\CGenome.cpp">
+      <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGenetic\src\CPairOfChromosome.cpp">
+      <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasure.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasureBiotopParam.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasureEntityParam.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasureFeeling.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasureParam.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasurePopulation.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CMeasureReaction.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinystr.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxml.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlerror.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CNeuronMatrix.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorViewIdentify.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CSensorViewIdentifyFar.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

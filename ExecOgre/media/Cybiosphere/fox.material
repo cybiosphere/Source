@@ -1,0 +1,15 @@
+material fox_texture
+{
+	technique
+	{
+		pass
+		{
+			alpha_rejection greater 128
+
+			texture_unit
+			{
+				texture fox.dds
+			}
+		}
+	}
+}

@@ -1,0 +1,389 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ProjectWizard - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"../Temp/ProjectWizard.res" /d "_DEBUG" /d "_AFXDLL" "C:\frederic\ToolLTE\Cybiosphere\Sources\ProjectWizardFull_VC6\ProjectWizard.rc"" 
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPF789.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../WpGui/inc" /I "../ProjectWizard" /I "../WpEntity/inc" /I "../WpEnvironment/inc" /I "../WpCommon/inc" /I "../WpBehavior/inc" /I "../WpGenetic/inc" /I "../WpWizardGui/inc" /I "../WpWizardProc/inc" /I "../WpMeasure/inc" /I "./" /I "../WpTinyXml/inc" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /D "TIXML_USE_STL" /FR"../Temp/" /Fo"../Temp/" /Fd"../Temp/" /FD /GZ /c 
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CBrain.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CBrainAnimal.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CFeelingFear.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CFeelingWelfare.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CGeoMap.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CNeuronMatrix.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CPurpose.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReaction.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionAttack.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionCopulate.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionDrink.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionEat.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionHide.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionNothing.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionRuminate.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionSleep.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionStepBackward.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionTurnHeadLeft.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionTurnHeadRight.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionTurnLeft.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionTurnRight.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CReactionVarySpeed.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensor.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorCompass.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorComposite.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorEar.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorFear.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorHormone.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorHunger.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorLibido.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorMemoryAction.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorMemoryFeedback.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorObscurity.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorOrientation.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorPheromone.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorPleasure.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorSmell.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorSpeed.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorStatic.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorStomachOverload.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorSuffering.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorTactile.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorTaste.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorTemperature.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorThirst.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorTiredness.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorView.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorViewFar.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorViewIdentify.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpBehavior\src\CSensorViewIdentifyFar.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CAnimal.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CAnimMammal.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CBasicEntity.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CGrass.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CLifeStage.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CMineral.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CPhysicalWelfare.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CVegetable.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CVegetSpermatophyta.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEntity\src\CWater.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGenetic\src\CChromosome.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGenetic\src\CGene.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGenetic\src\CGenome.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGenetic\src\CPairOfChromosome.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpCommon\src\CCyclicParam.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpCommon\src\CGenericCaract.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpCommon\src\CGenericParam.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpCommon\src\Definitions.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\ChildFrm.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\DialogTab1.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\DialogTab2.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\DialogTab3.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\DialogTab4.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\FileSelectButton.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\GeneButton.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\MainFrm.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\ProjectWizard.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\ProjectWizardDoc.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\ProjectWizardView.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\StdAfx.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardGui\src\WizardTabCtrl.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardProc\src\CWizardBrain.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardProc\src\CWizardPurpose.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpWizardProc\src\CWizardSensor.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGui\src\GenomeTreeCtrl.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpGui\src\ParameterSlider.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEnvironment\src\CBiotop.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpEnvironment\src\CScenarioPlayer.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasure.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasureBiotopParam.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasureEntityParam.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasureFeeling.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasureParam.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasurePopulation.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpMeasure\src\CMeasureReaction.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpTinyXml\src\tinystr.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpTinyXml\src\tinyxml.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpTinyXml\src\tinyxmlerror.cpp"
+"C:\frederic\ToolLTE\Cybiosphere\Sources\WpTinyXml\src\tinyxmlparser.cpp"
+]
+Creating command line "cl.exe @C:\Users\fribert\AppData\Local\Temp\RSPF789.tmp" 
+Creating temporary file "C:\Users\fribert\AppData\Local\Temp\RSPF78A.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"../Exec/ProjectWizardD.pdb" /debug /machine:I386 /out:"../Exec/ProjectWizardD.exe" /pdbtype:sept 
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CBrain.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CBrainAnimal.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CFeelingFear.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CFeelingWelfare.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGeoMap.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CNeuronMatrix.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CPurpose.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReaction.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionAttack.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionCopulate.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionDrink.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionEat.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionHide.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionNothing.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionRuminate.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionSleep.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionStepBackward.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionTurnHeadLeft.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionTurnHeadRight.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionTurnLeft.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionTurnRight.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CReactionVarySpeed.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensor.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorCompass.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorComposite.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorEar.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorFear.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorHormone.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorHunger.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorLibido.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorMemoryAction.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorMemoryFeedback.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorObscurity.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorOrientation.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorPheromone.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorPleasure.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorSmell.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorSpeed.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorStatic.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorStomachOverload.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorSuffering.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorTactile.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorTaste.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorTemperature.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorThirst.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorTiredness.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorView.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorViewFar.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorViewIdentify.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CSensorViewIdentifyFar.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CAnimal.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CAnimMammal.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CBasicEntity.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGrass.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CLifeStage.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMineral.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CPhysicalWelfare.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CVegetable.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CVegetSpermatophyta.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CWater.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CChromosome.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGene.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGenome.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CPairOfChromosome.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CCyclicParam.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGenericCaract.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CGenericParam.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\Definitions.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ChildFrm.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\DialogTab1.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\DialogTab2.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\DialogTab3.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\DialogTab4.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\FileSelectButton.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\GeneButton.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\MainFrm.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ProjectWizard.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ProjectWizardDoc.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ProjectWizardView.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\StdAfx.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\WizardTabCtrl.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CWizardBrain.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CWizardPurpose.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CWizardSensor.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\GenomeTreeCtrl.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ParameterSlider.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CBiotop.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CScenarioPlayer.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasure.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasureBiotopParam.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasureEntityParam.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasureFeeling.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasureParam.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasurePopulation.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\CMeasureReaction.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\tinystr.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\tinyxml.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\tinyxmlerror.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\tinyxmlparser.obj
+\frederic\ToolLTE\Cybiosphere\Sources\Temp\ProjectWizard.res
+]
+Creating command line "link.exe @C:\Users\fribert\AppData\Local\Temp\RSPF78A.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+C:\frederic\ToolLTE\Cybiosphere\Sources\ProjectWizardFull_VC6\ProjectWizard.rc (168): warning RC4206 : title string too long; truncated at 256
+Compiling...
+CBrain.cpp
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(48) : warning C4786: '??0?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAE@IABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@ABV?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(61) : warning C4786: '??0?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAE@PBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@0ABV?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(103) : warning C4786: '?rbegin@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAE?AV?$reverse_iterator@PAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@AAV12@PAV12@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(105) : warning C4786: '?rbegin@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QBE?AV?$reverse_iterator@PBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@ABV12@PBV12@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(107) : warning C4786: '?rend@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAE?AV?$reverse_iterator@PAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@AAV12@PAV12@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(108) : warning C4786: '?rend@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QBE?AV?$reverse_iterator@PBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V12@ABV12@PBV12@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(791) : see reference to class template instantiation 'std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >' being compiled
+c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(911) : warning C4786: 'std::reverse_iterator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const *,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const *,int>' : identifier was truncated to '255' characters in the debug information
+c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(911) : warning C4786: 'std::reverse_iterator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > &,std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,int>' : identifier was truncated to '255' characters in the debug information
+c:\frederic\toollte\cybiosphere\sources\wpbehavior\src\cbrain.cpp(863) : warning C4101: 'j' : unreferenced local variable
+CBrainAnimal.cpp
+CFeelingFear.cpp
+CFeelingWelfare.cpp
+CGeoMap.cpp
+CNeuronMatrix.cpp
+CPurpose.cpp
+CReaction.cpp
+CReactionAttack.cpp
+CReactionCopulate.cpp
+CReactionDrink.cpp
+CReactionEat.cpp
+CReactionHide.cpp
+CReactionNothing.cpp
+CReactionRuminate.cpp
+CReactionSleep.cpp
+CReactionStepBackward.cpp
+CReactionTurnHeadLeft.cpp
+CReactionTurnHeadRight.cpp
+CReactionTurnLeft.cpp
+Generating Code...
+Compiling...
+CReactionTurnRight.cpp
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(39) : warning C4786: 'std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >' : identifier was truncated to '255' characters in the debug information
+c:\program files (x86)\microsoft visual studio\vc98\include\vector(60) : warning C4786: 'std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::~vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >' : identifier was truncated to '255' characters in the debug information
+CReactionVarySpeed.cpp
+CSensor.cpp
+CSensorCompass.cpp
+CSensorComposite.cpp
+CSensorEar.cpp
+CSensorFear.cpp
+CSensorHormone.cpp
+CSensorHunger.cpp
+CSensorLibido.cpp
+CSensorMemoryAction.cpp
+CSensorMemoryFeedback.cpp
+CSensorObscurity.cpp
+CSensorOrientation.cpp
+CSensorPheromone.cpp
+CSensorPleasure.cpp
+CSensorSmell.cpp
+CSensorSpeed.cpp
+CSensorStatic.cpp
+CSensorStomachOverload.cpp
+Generating Code...
+Compiling...
+CSensorSuffering.cpp
+CSensorTactile.cpp
+CSensorTaste.cpp
+CSensorTemperature.cpp
+CSensorThirst.cpp
+CSensorTiredness.cpp
+CSensorView.cpp
+CSensorViewFar.cpp
+CSensorViewIdentify.cpp
+CSensorViewIdentifyFar.cpp
+CAnimal.cpp
+CAnimMammal.cpp
+CBasicEntity.cpp
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2743) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2768) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2793) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2825) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2927) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpentity\src\cbasicentity.cpp(2981) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+CGrass.cpp
+CLifeStage.cpp
+CMineral.cpp
+CPhysicalWelfare.cpp
+CVegetable.cpp
+CVegetSpermatophyta.cpp
+CWater.cpp
+Generating Code...
+Compiling...
+CChromosome.cpp
+CGene.cpp
+CGenome.cpp
+c:\frederic\toollte\cybiosphere\sources\wpgenetic\src\cgenome.cpp(487) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpgenetic\src\cgenome.cpp(690) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+CPairOfChromosome.cpp
+CCyclicParam.cpp
+CGenericCaract.cpp
+CGenericParam.cpp
+Definitions.cpp
+ChildFrm.cpp
+DialogTab1.cpp
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\dialogtab1.cpp(583) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+DialogTab2.cpp
+DialogTab3.cpp
+DialogTab4.cpp
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\dialogtab4.cpp(1697) : warning C4129: '%' : unrecognized character escape sequence
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\dialogtab4.cpp(1707) : warning C4129: '%' : unrecognized character escape sequence
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\dialogtab4.cpp(1717) : warning C4129: '%' : unrecognized character escape sequence
+FileSelectButton.cpp
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\fileselectbutton.cpp(130) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+GeneButton.cpp
+c:\frederic\toollte\cybiosphere\sources\wpwizardgui\src\genebutton.cpp(104) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+MainFrm.cpp
+ProjectWizard.cpp
+ProjectWizardDoc.cpp
+ProjectWizardView.cpp
+StdAfx.cpp
+Generating Code...
+Compiling...
+WizardTabCtrl.cpp
+CWizardBrain.cpp
+c:\program files (x86)\microsoft visual studio\vc98\mfc\include\afx.h(226) : warning C4005: 'ASSERT' : macro redefinition
+        c:\frederic\toollte\cybiosphere\sources\wpcommon\inc\definitions.h(60) : see previous definition of 'ASSERT'
+CWizardPurpose.cpp
+c:\program files (x86)\microsoft visual studio\vc98\mfc\include\afx.h(226) : warning C4005: 'ASSERT' : macro redefinition
+        c:\frederic\toollte\cybiosphere\sources\wpcommon\inc\definitions.h(60) : see previous definition of 'ASSERT'
+CWizardSensor.cpp
+c:\program files (x86)\microsoft visual studio\vc98\mfc\include\afx.h(226) : warning C4005: 'ASSERT' : macro redefinition
+        c:\frederic\toollte\cybiosphere\sources\wpcommon\inc\definitions.h(60) : see previous definition of 'ASSERT'
+GenomeTreeCtrl.cpp
+ParameterSlider.cpp
+c:\frederic\toollte\cybiosphere\sources\wpgui\src\parameterslider.cpp(93) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+CBiotop.cpp
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2060) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2070) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2072) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2074) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2076) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2086) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2100) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2106) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2109) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2112) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2115) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\frederic\toollte\cybiosphere\sources\wpenvironment\src\cbiotop.cpp(2117) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+CScenarioPlayer.cpp
+CMeasure.cpp
+CMeasureBiotopParam.cpp
+CMeasureEntityParam.cpp
+CMeasureFeeling.cpp
+CMeasureParam.cpp
+CMeasurePopulation.cpp
+CMeasureReaction.cpp
+tinystr.cpp
+tinyxml.cpp
+tinyxmlerror.cpp
+tinyxmlparser.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+ProjectWizardD.exe - 0 error(s), 42 warning(s)
+</pre>
+</body>
+</html>

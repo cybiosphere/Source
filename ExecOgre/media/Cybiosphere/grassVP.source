@@ -1,0 +1,38 @@
+float4x4 matViewProjection;
+float4x4 view_matrix;
+float lodDist;
+float time;
+
+struct VS_OUTPUT 
+{
+   float4 Position : POSITION0;
+   float2 Texcoord : TEXCOORD0;
+   float Length   : TEXCOORD1;
+
+   float2 ShadowCoord:TEXCOORD4;
+};
+
+VS_OUTPUT vs_main(  float4 Position : POSITION0,
+   float2 Texcoord : TEXCOORD0)
+{
+   VS_OUTPUT Output;
+   float4 mypos = Position;
+Output.Length =length( -lodDist * mul(view_matrix, mypos));
+
+if(Output.Length<=1)
+{
+mypos.z+=(Texcoord.y-1.0f)*sin(mypos.z+time*15)*5;
+mypos.x+=(Texcoord.y-1.0f)*sin(mypos.x+time*15)*5;
+}
+
+
+   Output.Position = mul( matViewProjection, mypos );
+   Output.Texcoord = Texcoord;
+   
+   Output.ShadowCoord.x=Position.x/133328+0.5;
+   Output.ShadowCoord.y=Position.z/133328+0.5;
+   return( Output );
+   
+}
+
+

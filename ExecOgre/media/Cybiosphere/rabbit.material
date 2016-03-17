@@ -1,0 +1,26 @@
+material /global/creature/mottled_oker
+{
+	technique
+	{
+		pass
+		{
+			alpha_rejection greater 128
+
+			texture_unit
+			{
+				texture rabbit.png
+			}
+		}
+	}
+}
+material /global/creature/rabbit : /base/normalmap/specular
+
+{
+	
+	set_texture_alias DiffuseMap rabbitD.png
+
+	set_texture_alias NormalHeightMap rabbitN.png
+
+	set_texture_alias SpecularMap rabbitS.png
+
+}
