@@ -2,6 +2,7 @@
 #include "clan_server_user.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
+#include <time.h>
 
 Server::Server(CBiotop* pBiotop)
 : next_user_id(1)
@@ -18,6 +19,7 @@ Server::Server(CBiotop* pBiotop)
 	users_connected = false;
   m_pBiotop = pBiotop;
   m_biotopSpeed = 1.0;
+  m_LastRunTick = clock();
 }
 
 Server::~Server()
@@ -28,7 +30,7 @@ Server::~Server()
 void Server::exec()
 {
   int timeCount = 0;
-
+  clock_t curTick;
 	network_server.start("4556");
 
 	log_event("system", "SERVER started");
@@ -39,8 +41,11 @@ void Server::exec()
 		network_server.process_events();
 
     // Run biotop every sec
+    //
     timeCount += round(10.0 * m_biotopSpeed);
-    if (timeCount >= 980) // temporaire
+    curTick = clock();
+
+    if (((curTick - m_LastRunTick) * m_biotopSpeed * 1000 / CLOCKS_PER_SEC) >= 1000) // temporaire
     {
       CBasicEntity* pCurEntity = NULL;
       if (users_connected)
@@ -53,11 +58,12 @@ void Server::exec()
         network_server.send_event(bioNextSecEventStart);
       }
 
-      System::sleep(20); // temporaire
+      //System::sleep(20); // temporary . wait to ensure bioNextSecEventStart alone 
       // Next second in biotop
       m_pBiotop->nextSecond();
       // Reset timer
       timeCount = 0;
+      m_LastRunTick = clock();
 
       // Update clients with biotop evolution
       if (users_connected)
@@ -190,12 +196,13 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     // Send empty map without entities
 	  NetGameEvent loadMapEvent("Game-LoadMap");
     loadMapEvent.add_argument(xmlZipBuffer);
-	  network_server.send_event(loadMapEvent);
+	  user->send_event(loadMapEvent);
 
     // Provide all entities position
     for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
     {
-      send_event_update_entity_position(m_pBiotop->getEntityByIndex(i));
+      // Send only to new user
+      send_event_update_entity_position(m_pBiotop->getEntityByIndex(i), user);
     }
 
     // Update entitiy data. Send info only 1 time if several entities has same name
@@ -206,25 +213,27 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       pCurEntity = m_pBiotop->getEntityByIndex(i);
       if (pCurEntity->getLabel() != prevEntityLabel)
       {
-        send_event_update_entity_data(pCurEntity);
+        // Send only to new user
+        send_event_update_entity_data(pCurEntity, user);
         prevEntityLabel = pCurEntity->getLabel();
       }
     }
 
-	  network_server.send_event(NetGameEvent("Game-Start"));
+	  user->send_event(NetGameEvent("Game-Start"));
   }
 
   // Update again all animal to set action and status
   for (i=0; i<m_pBiotop->getNbOfAnimals(); i++)
   {
-    send_event_update_entity_position(m_pBiotop->getEntityByIndex(i));
+    // Send only to new user
+    send_event_update_entity_position(m_pBiotop->getEntityByIndex(i), user);
   }
 
   // Restore biotop time
   m_biotopSpeed = biotopSpeed;
 }
 
-void Server::send_event_update_entity_data(CBasicEntity* pEntity)
+void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user)
 {
   if (pEntity == NULL)
   {
@@ -244,10 +253,10 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity)
   DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
   DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-  send_generic_event_long_string("Biotop-Update entity data", xmlZipBuffer);
+  send_generic_event_long_string("Biotop-Update entity data", xmlZipBuffer, user);
 }
 
-void Server::send_event_update_entity_position(CBasicEntity* pEntity)
+void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)
 {
   if (pEntity == NULL)
   {
@@ -270,10 +279,13 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity)
   bioUpdateEntityPosEvent.add_argument(float(pEntity->getWeight()));
   bioUpdateEntityPosEvent.add_argument(reactionIndex);
   bioUpdateEntityPosEvent.add_argument(pEntity->getStatus());
-  network_server.send_event(bioUpdateEntityPosEvent);
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioUpdateEntityPosEvent);
+  else
+    user->send_event(bioUpdateEntityPosEvent);
 }
 
-void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data)
+void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data, ServerUser *user)
 {
   int nbBlocks = data.get_size()/SENT_BUFFER_MAX_SIZE + 1;
   int transactionId = data.get_size(); // temporary
@@ -292,7 +304,10 @@ void Server::send_generic_event_long_string(const std::string event_label, DataB
     genericEvent.add_argument(nbBlocks);
     genericEvent.add_argument(i);
     genericEvent.add_argument(dataBlock);
-    network_server.send_event(genericEvent);
+    if (user == NULL) // If user not define, broadcast info to all
+      network_server.send_event(genericEvent);
+    else
+      user->send_event(genericEvent);
   }
 
   NetGameEvent genericEvent(event_label);
@@ -301,5 +316,8 @@ void Server::send_generic_event_long_string(const std::string event_label, DataB
   genericEvent.add_argument(nbBlocks);
   genericEvent.add_argument(nbBlocks-1);
   genericEvent.add_argument(dataBlock);
-  network_server.send_event(genericEvent);
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(genericEvent);
+  else
+    user->send_event(genericEvent);
 }

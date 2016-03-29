@@ -79,7 +79,7 @@ protected:
   CBasicEntity* m_pEntity;
 
   // Sensitivity table
-  vector<FearSensitivity_t*> m_tSensitivity;
+  std::vector<FearSensitivity_t*> m_tSensitivity;
 
   double m_CurFear;
 

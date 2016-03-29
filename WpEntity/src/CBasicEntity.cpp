@@ -308,6 +308,8 @@ CBasicEntity::CBasicEntity()
   m_StepCoord.y = -1;
   m_PrevGridCoord.x = -1;
   m_PrevGridCoord.y = -1;
+  m_PrevStepCoord.x = -1;
+  m_PrevStepCoord.y = -1;
   m_bIsImmortal = false;
   m_bIsDrinkable = false;
 
@@ -2219,6 +2221,9 @@ choiceIndType CBasicEntity::predictNextAction()
 //---------------------------------------------------------------------------
 bool CBasicEntity::moveLinear(int nbSteps)
 { 
+  // Update prev step coord
+  m_PrevStepCoord = m_StepCoord;
+
   Point_t relPos = {nbSteps,0};
   Point_t newStepCoord = getStepCoordRelative(relPos);
   Point_t newGridCoord;
@@ -2279,6 +2284,8 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
   {
     m_PrevGridCoord.x = -1;
     m_PrevGridCoord.y = -1;
+    m_PrevStepCoord.x = -1;
+    m_PrevStepCoord.y = -1;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
     m_bHasChanged = true;
@@ -2297,6 +2304,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
   {
     // newCoord valid ... Move
     m_PrevGridCoord = m_GridCoord;
+    m_PrevStepCoord = m_StepCoord;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
     m_bHasChanged = true;
@@ -2331,18 +2339,21 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
 //---------------------------------------------------------------------------
 bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, int newLayer)
 {
+  // Update prev step coord
+  m_PrevStepCoord = m_StepCoord;
+
+  // Update grid coord if needed
   Point_t newGridCoord;
   newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
   newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE;
-
   if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) )
   {
     if (!jumpToGridCoord(newGridCoord, newLayer))
       return (false);
   }
 
-  m_StepCoord.x = newStepCoord.x;
-  m_StepCoord.y = newStepCoord.y;
+  // Update new step coord
+  m_StepCoord = newStepCoord;
 
   return (true);
 }
@@ -2361,6 +2372,10 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, int newLayer)
 //---------------------------------------------------------------------------
 bool CBasicEntity::moveToGridCenterPos()
 {
+  // Update prev step coord
+  m_PrevStepCoord = m_StepCoord;
+
+  // Update new step coord
   m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2;   // center in square
   m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2;   // center in square
   return (true);
@@ -2379,6 +2394,9 @@ bool CBasicEntity::moveToGridCenterPos()
 //---------------------------------------------------------------------------
 bool CBasicEntity::moveToGridEdgePos()
 {
+  // Update prev step coord
+  m_PrevStepCoord = m_StepCoord;
+
   switch (m_Direction)
   {
   case 0:
@@ -3557,6 +3575,11 @@ Point_t CBasicEntity::getPrevGridCoord()
   return (m_PrevGridCoord);
 }
 
+Point_t CBasicEntity::getPrevStepCoord()
+{
+  return (m_PrevStepCoord);
+}
+
 Point_t CBasicEntity::getGuiGridCoord()
 {
   return (m_GuiGridCoord);
@@ -3612,7 +3635,7 @@ Point_t CBasicEntity::getGridCoordRelative(Point_t relativeCoord)
   else
   {
     // Distant cell: use trigo
-    double aRad = (double)m_Direction * PI / 4.0;
+    double aRad = (double)m_Direction * CYBIO_PI / 4.0;
     position.x= m_GridCoord.x + round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y); 
     position.y= m_GridCoord.y + round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
   }
@@ -3630,7 +3653,7 @@ Point_t CBasicEntity::getStepCoordRelative(Point_t relativeCoord)
   Point_t position;
  
   // Distant cell: use trigo
-  double aRad = (double)m_StepDirection * PI / 180.0;
+  double aRad = (double)m_StepDirection * CYBIO_PI / 180.0;
   position.x= m_StepCoord.x + round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y); 
   position.y= m_StepCoord.y + round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
 

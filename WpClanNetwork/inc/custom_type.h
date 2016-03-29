@@ -17,7 +17,7 @@ public:
 			z = value.get_member(2);
 		}
 		else
-			throw Exception("Invalid CustomType NetGameEventValue");
+			throw clan::Exception("Invalid CustomType NetGameEventValue");
 	}
 
 	operator NetGameEventValue() const 

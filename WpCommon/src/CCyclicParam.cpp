@@ -45,7 +45,7 @@ CCyclicParam::CCyclicParam(double valMin, double valMax, int nbStepPerCycle, str
 {
   m_nbStepPerCycle = nbStepPerCycle;
   m_CurPhase = 0;
-  m_PhaseStep = 2*PI/nbStepPerCycle;
+  m_PhaseStep = 2*CYBIO_PI/nbStepPerCycle;
 }
 
 CCyclicParam::~CCyclicParam()
@@ -59,7 +59,7 @@ CCyclicParam::~CCyclicParam()
 void CCyclicParam::NextStep(void)
 {
   m_CurPhase += m_PhaseStep;
-  if (m_CurPhase>2*PI)
+  if (m_CurPhase>2*CYBIO_PI)
   {
     m_CurPhase = 0;
   }

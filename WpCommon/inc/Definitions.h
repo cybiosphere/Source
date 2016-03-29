@@ -62,7 +62,7 @@ typedef unsigned short      WORD;
 
 typedef unsigned int entitySignatureType;
 
-#define PI 3.1415926535
+#define CYBIO_PI 3.1415926535
 
 /* Maximum among two C expressions */
 #define  max(a,b)  (((a) > (b)) ? (a) : (b))

@@ -1,9 +1,11 @@
+
 #include "clan_client.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
+#include "CybiOgre3D.h"
 
-Client::Client()
+Client::Client(CybiOgre3DApp* pCybiOgre3DApp)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_client.sig_event_received(), clan::bind_member(this, &Client::on_event_received));
@@ -27,6 +29,7 @@ Client::Client()
   m_bEventNextSecondStart = false;
   m_bEventNextSecondEnd = false;
   m_biotopSpeed = 1.0;
+  m_pCybiOgre3DApp = pCybiOgre3DApp;
 }
 
 Client::~Client()
@@ -37,7 +40,10 @@ void Client::exec()
 {
 	log_event("system", "CLIENT started");
 
-	connect_to_server();
+  std::string serverAddr = "192.168.1.14"; //"localhost"; //"192.168.1.67"
+  std::string portId     = "4556";
+
+	connect_to_server(serverAddr, portId);
 
 	while (!quit)
 	{
@@ -47,13 +53,13 @@ void Client::exec()
 }
 
 // Connect to localhost server
-void Client::connect_to_server()
+void Client::connect_to_server(const std::string &serverAddr, const std::string &portId)
 {
 	try
 	{
-		network_client.connect("localhost", "4556");
+    network_client.connect(serverAddr, portId);
 	}
-	catch(const Exception &e)
+	catch(const clan::Exception &e)
 	{
 		log_event("error", e.message);
 	}
@@ -65,7 +71,7 @@ void Client::disconnect_from_server()
 	{
 		network_client.disconnect();
 	}
-	catch(const Exception &e)
+	catch(const clan::Exception &e)
 	{
 		log_event("error", e.message);
 	}
@@ -295,6 +301,7 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
     if (!m_pBiotop->addRemoteCtrlEntity(entityId, pEntity, pos, layer))
     {  
       delete pEntity;
+      return;
     }
   }
   else // If entity exists, check name and update position
@@ -310,14 +317,22 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
       pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
 
       log_event("events", "Biotop update entity position: %1 prevOld x=%2 y=%3 old x=%4 y=%5 new x=%6 y=%7", pEntity->getLabel(),  
-                pEntity->getPrevGridCoord().x, pEntity->getPrevGridCoord().y, 
+                pEntity->getPrevStepCoord().x, pEntity->getPrevStepCoord().y, 
                 pEntity->getStepCoord().x, pEntity->getStepCoord().y,
                 pos.x, pos.y );
     }
   }
-    
+  
+  // Force finishing previous move in screen
+  //FRI if (m_pCybiOgre3DApp != NULL)
+  // FRI    m_pCybiOgre3DApp->setMeshEntityPosition(pEntity);
+
   pEntity->jumpToStepCoord(pos, layer);
   pEntity->setStepDirection(dir);
+
+  // Prepare new movement and animation
+  //if (m_pCybiOgre3DApp != NULL)
+  //  m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
 }
 
 void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)

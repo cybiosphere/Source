@@ -1,9 +1,11 @@
-#pragma once
+#ifndef __ClanClient_h_
+#define __ClanClient_h_
 
 #include <API/core.h>
 #include <API/network.h>
 #include "CBiotop.h"
 #include "clan_server.h"
+//#include "CybiOgre3D.h"
 
 using namespace clan;
 
@@ -15,15 +17,16 @@ typedef struct
   DataBuffer buffer[SENT_BUFFER_MAX_NB_BLOCKS];
 } LongBufferEvent_t;
 
+class CybiOgre3DApp;
 
 class Client
 {
 public:
-	Client();
+	Client(CybiOgre3DApp* pCybiOgre3DApp);
 	~Client();
 
 	void exec();
-  void connect_to_server();
+  void connect_to_server(const std::string &serverAddr, const std::string &portId);
   void disconnect_from_server();
   void process_new_events();
   bool check_if_event_next_second_start_and_clean();
@@ -67,4 +70,8 @@ private:
   bool m_bEventNextSecondStart;
   bool m_bEventNextSecondEnd;
   float m_biotopSpeed; // Controled by server. 1.0 is real time speed. Biotp update every 1sec
+
+  CybiOgre3DApp* m_pCybiOgre3DApp;
 };
+
+#endif // #ifndef __ClanClient_h_

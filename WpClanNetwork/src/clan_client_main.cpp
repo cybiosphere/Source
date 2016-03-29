@@ -15,7 +15,7 @@ int main(int, char**)
 		ConsoleWindow console("Console", 160, 1000);
 		ConsoleLogger logger;
 
-		Client client;
+		Client client(NULL);
 		client.exec();
 
 		return 0;
