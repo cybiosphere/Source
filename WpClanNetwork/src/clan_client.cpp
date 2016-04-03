@@ -333,6 +333,11 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   // Prepare new movement and animation
   //if (m_pCybiOgre3DApp != NULL)
   //  m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
+  if (m_pCybiOgre3DApp != NULL)
+  {
+    m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
+    m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
+  }
 }
 
 void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)

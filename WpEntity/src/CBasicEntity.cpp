@@ -2453,6 +2453,7 @@ bool CBasicEntity::moveToGridEdgePos()
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnToCenterDir()
 {
+  m_PrevStepDirection = m_StepDirection;
   // Go exactely in view direction
   m_StepDirection = 45*m_Direction;
   return (true);
@@ -2471,6 +2472,7 @@ bool CBasicEntity::turnToCenterDir()
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnRight(unsigned int nDegree)
 {
+  m_PrevStepDirection = m_StepDirection;
   m_StepDirection += 360 - nDegree;
   m_StepDirection = m_StepDirection%360;
   m_Direction = ((m_StepDirection+22)/45)%8;
@@ -2491,6 +2493,7 @@ bool CBasicEntity::turnRight(unsigned int nDegree)
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnLeft(unsigned int nDegree)
 {
+  m_PrevStepDirection = m_StepDirection;
   m_StepDirection += nDegree;
   m_StepDirection = m_StepDirection%360;
   m_Direction = ((m_StepDirection+22)/45)%8;
@@ -3684,6 +3687,7 @@ int CBasicEntity::getDirection()
 void CBasicEntity::setDirection(int direction)
 {
   m_Direction = direction%8; // avoid invalid direction
+  m_PrevStepDirection = m_StepDirection;
   m_StepDirection = 45*m_Direction;
   m_bHasChanged = true;
 }
@@ -3696,8 +3700,14 @@ int CBasicEntity::getStepDirection()
 void  CBasicEntity::setStepDirection(int stepDirection)
 {
   m_Direction = (stepDirection/45)%8; // avoid invalid direction
+  m_PrevStepDirection = m_StepDirection;
   m_StepDirection = stepDirection;
   m_bHasChanged = true;
+}
+
+int CBasicEntity::getPrevStepDirection()
+{
+  return (m_PrevStepDirection);
 }
 
 entityIdType CBasicEntity::getId() 

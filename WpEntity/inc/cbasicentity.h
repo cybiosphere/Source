@@ -274,6 +274,7 @@ private:
 
   int m_Direction;	    // [0..7] Direction in the Biotop
   int m_StepDirection;  // [0..360] Detailed direction in the Biotop
+  int m_PrevStepDirection;  // [0..360] Detailed direction in the Biotop
 
   //
   //        /______/ 2   First layer for entities
@@ -567,6 +568,7 @@ public:
   void            setDirection(int direction);
   int             getStepDirection();
   void            setStepDirection(int stepDirection);
+  int             getPrevStepDirection();
   entityIdType    getId();
   void            setId(entityIdType id);
   COLORREF        getColorRgb();
