@@ -36,6 +36,7 @@ namespace clan
 {
 	ConsoleLogger::ConsoleLogger()
 	{
+    m_currentCommand = "";
 #ifdef WIN32
 		AllocConsole();
 #endif
@@ -60,4 +61,47 @@ namespace clan
 		write(1, log_line.data(), log_line.length());
 #endif
 	}
+
+  bool ConsoleLogger::get_console_input(std::string &input_cmd) //FRI
+  {
+#ifdef WIN32
+    INPUT_RECORD irInBuf[128];  // a record of input events
+    DWORD cNumEvent = 0; // how many events took place
+    DWORD cNumRead = 0; // how many events took place
+    input_cmd = "";
+    bool newCommandReady = false;
+
+    // Check event
+    GetNumberOfConsoleInputEvents(GetStdHandle(STD_INPUT_HANDLE), &cNumEvent);
+    if (cNumEvent<1)
+      return false;
+
+    // read and process event
+    if (ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), irInBuf, 128, &cNumRead) == 0)
+      return false;
+    
+    for (int i = 0; i < cNumRead; i++) 
+    {
+      if(irInBuf[i].EventType == KEY_EVENT && irInBuf[i].Event.KeyEvent.bKeyDown)
+      { // A key was pressed, so return it.
+        DWORD bytesWritten = 0;
+        if ((irInBuf[i].Event.KeyEvent.uChar.AsciiChar) == '\r')
+        {
+          WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), "\n", 2, &bytesWritten, 0);
+          //log("Command:", m_currentCommand);
+          input_cmd = m_currentCommand;
+          m_currentCommand = "";
+          newCommandReady = true;
+        }
+        else
+        {
+          m_currentCommand+=irInBuf[i].Event.KeyEvent.uChar.AsciiChar;
+          WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), &(irInBuf[i].Event.KeyEvent.uChar), 1, &bytesWritten, 0);
+        }
+      }
+    }
+#endif
+    return newCommandReady;
+  }
+
 }

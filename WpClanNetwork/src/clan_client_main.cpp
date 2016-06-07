@@ -12,10 +12,10 @@ int main(int, char**)
 {
 	try
 	{
-		ConsoleWindow console("Console", 160, 1000);
+		ConsoleWindow console("Client Console", 160, 1000);
 		ConsoleLogger logger;
 
-		Client client(NULL);
+		Client client("localhost", "4556");
 		client.exec();
 
 		return 0;

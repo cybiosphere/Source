@@ -9,7 +9,7 @@ int main(int, char**)
 {
 	try
 	{
-		ConsoleWindow console("Console", 160, 1000);
+		ConsoleWindow console("Server Console", 160, 1000);
 		ConsoleLogger logger;
 
     CBiotop* pBiotop;

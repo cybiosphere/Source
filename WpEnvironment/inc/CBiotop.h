@@ -67,11 +67,11 @@ class CBasicEntity;
 #define MAXIMUM_NB_ENTITIES   100000
 #define MAX_FOUND_ENTITIES    1000
 
-// Sectors arround entity O:
+// Sectors arround entity X:
 //  44443332222
 //  55443332211
 //  55554321111
-//  55555O11111  
+//  55555X11111  
 //  55556781111
 //  55667778811
 //  66667778888
@@ -159,7 +159,6 @@ private:
 
   BiotopCube_t***  m_tBioGrid;    // Contain the info for all volumes in biotop
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
-  string           m_DataPath;
 
   FoundEntity_t*  m_tFoundIds;   // temporary structure to store found entities 
 

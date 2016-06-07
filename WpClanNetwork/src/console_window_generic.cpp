@@ -72,6 +72,15 @@ namespace clan
 		SetConsoleActiveScreenBuffer(scrbuf);
 		SetConsoleScreenBufferSize(scrbuf, coord);
 
+    //FRI
+    HANDLE hStdin; 
+    hStdin = GetStdHandle(STD_INPUT_HANDLE); 
+    if (hStdin == INVALID_HANDLE_VALUE) 
+        throw Exception("GetStdHandle"); 
+    if (! SetConsoleMode(hStdin, ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT) ) 
+        throw Exception("SetConsoleMode"); 
+
+
 #endif
 	}
 

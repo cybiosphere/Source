@@ -60,6 +60,9 @@ namespace clan
 		/// \brief Log text.
 		virtual void log(const std::string &type, const std::string &text) = 0;
 
+		/// \brief read text.
+		virtual bool get_console_input(std::string &input_cmd) = 0; //FRI
+
 	protected:
 		static StringFormat get_log_string(const std::string &type, const std::string &text);
 	};
@@ -67,7 +70,8 @@ namespace clan
 	/// \brief Log text to logger.
 	///
 	void log_event(const std::string &type, const std::string &text);
-
+  bool log_get_console_input(std::string &input_cmd); //FRI
+      
 	template <class Arg1>
 	void log_event(const std::string &type, const std::string &format, Arg1 arg1)
 	{

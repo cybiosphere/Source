@@ -83,6 +83,15 @@ void Server::exec()
         network_server.send_event(bioNextSecEventEnd);
       }
     }
+    else
+    {
+      std::string inputcommand;
+      bool resu = log_get_console_input(inputcommand);
+      if (resu)
+      {
+        log_event("Input command:", inputcommand);
+      }
+    }
 	}
 
 	network_server.stop();

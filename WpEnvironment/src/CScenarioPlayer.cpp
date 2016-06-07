@@ -45,7 +45,7 @@ distribution.
 CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER_TYPE] =
 {
 // cmd name                      cmd function                                 parameters
-  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop},           // Time in second
+  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop},           // Time in second.This cmd needs to stay at first
   {"LOAD_BIOTOP",                CScenarioPlayer::CmdLoadBiotop},          // Biotop file name 
   {"CHANGE_BIOTOP_PARAM",        CScenarioPlayer::CmdChangeBiotopParam},   // Param name + value
   {"ADD_ENTITY",                 CScenarioPlayer::CmdAddEntity},           // Entity file name + coord
@@ -200,6 +200,23 @@ bool CScenarioPlayer::NextCmdNextSecond()
     CYBIOCORE_LOG_FLUSH;
   }
 
+  return resu;
+}
+
+bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string biotopFilesPath, int &successScore, int &totalScore)
+{
+  bool resu = true;
+  int startInd = -1;
+  for(int i=1; i<SCENARIO_CMD_NUMBER_TYPE; i++)
+  {
+    startInd = commandString.find(ScenarioCmdNameList[i].commandName, 0);
+    if ( startInd > -1)
+    {
+      int cmdSize = strlen(ScenarioCmdNameList[i].commandName);
+      resu = ScenarioCmdNameList[i].commandFonction(pBiotop, biotopFilesPath, commandString.substr(startInd+cmdSize+1), &successScore, &totalScore);
+      break;
+    }
+  }
   return resu;
 }
 

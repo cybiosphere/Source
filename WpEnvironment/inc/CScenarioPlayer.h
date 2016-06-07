@@ -95,6 +95,7 @@ public:
   bool NextCmdNextSecond();
   bool IsScenarioFileOpened();
 
+  static bool ExecuteCmd(CBiotop* pBiotop, string commandString, string biotopFilesPath, int &successScore, int &totalScore);
   static string GetParamFromString(string commandParam,int paramIndex);
 
   static bool CmdLoadBiotop          (CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore);

@@ -121,4 +121,13 @@ namespace clan
 		for (auto & instance : Logger::instances)
 			(instance)->log(type, text);
 	}
+
+	bool log_get_console_input(std::string &input_cmd) //FRI
+	{
+		std::unique_lock<std::recursive_mutex> mutex_lock(Logger::mutex);
+		if (Logger::instances.empty())
+			return false;
+		for (auto & instance : Logger::instances)
+			return ((instance)->get_console_input(input_cmd));
+	}
 }

@@ -5,8 +5,12 @@
 #include "CAnimal.h"
 #include "CybiOgre3D.h"
 
-Client::Client(CybiOgre3DApp* pCybiOgre3DApp)
+Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp)
 {
+  // Update attributes
+  m_ServerAddr = serverAddr;
+  m_PortId = portId;
+
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_client.sig_event_received(), clan::bind_member(this, &Client::on_event_received));
 	cc.connect(network_client.sig_connected(), clan::bind_member(this, &Client::on_connected));
@@ -40,24 +44,28 @@ void Client::exec()
 {
 	log_event("system", "CLIENT started");
 
-  std::string serverAddr = "192.168.1.14"; //"localhost"; //"192.168.1.67"
-  std::string portId     = "4556";
+  //std::string serverAddr = "192.168.1.14"; //"localhost"; //"192.168.1.67"
+  //std::string portId     = "4556";
 
-	connect_to_server(serverAddr, portId);
+	connect_to_server();
 
 	while (!quit)
 	{
 		System::sleep(10);
 		network_client.process_events();
+    std::string inputcommand;
+    bool resu = log_get_console_input(inputcommand);
+    if (resu)
+      log_event("Input command:", inputcommand);
 	}
 }
 
 // Connect to localhost server
-void Client::connect_to_server(const std::string &serverAddr, const std::string &portId)
+void Client::connect_to_server()
 {
 	try
 	{
-    network_client.connect(serverAddr, portId);
+    network_client.connect(m_ServerAddr, m_PortId);
 	}
 	catch(const clan::Exception &e)
 	{
@@ -330,14 +338,14 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   pEntity->jumpToStepCoord(pos, layer);
   pEntity->setStepDirection(dir);
 
-  // Prepare new movement and animation
-  //if (m_pCybiOgre3DApp != NULL)
-  //  m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
+#ifndef _CONSOLE
+  // Prepare new movement and animation in case of Ogre3D Application
   if (m_pCybiOgre3DApp != NULL)
   {
     m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
     m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
   }
+#endif // _CONSOLE
 }
 
 void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)

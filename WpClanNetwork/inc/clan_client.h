@@ -22,11 +22,11 @@ class CybiOgre3DApp;
 class Client
 {
 public:
-	Client(CybiOgre3DApp* pCybiOgre3DApp);
+	Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp = NULL);
 	~Client();
 
 	void exec();
-  void connect_to_server(const std::string &serverAddr, const std::string &portId);
+  void connect_to_server();
   void disconnect_from_server();
   void process_new_events();
   bool check_if_event_next_second_start_and_clean();
@@ -63,6 +63,9 @@ private:
 
 	bool quit;
 	bool logged_in;
+
+  std::string m_ServerAddr; //"localhost"; //"192.168.1.67"
+  std::string m_PortId;
 
   CBiotop* m_pBiotop;
   bool     m_bBiotopConfigComplete;

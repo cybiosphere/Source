@@ -38,13 +38,17 @@ namespace clan
 	/// \brief Console logger.
 	class ConsoleLogger : public Logger
 	{
+  private:
+    std::string m_currentCommand;
 	public:
 		/// \brief Constructs a console logger.
 		ConsoleLogger();
 		~ConsoleLogger();
 
 		/// \brief Log text to console.
-		void log(const std::string &type, const std::string &text) override;
+		void log(const std::string &type, const std::string &input_cmd) override;
+
+    bool get_console_input(std::string &text); //FRI
 	};
 
 	/// \}
