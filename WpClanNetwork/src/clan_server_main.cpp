@@ -29,7 +29,7 @@ int main(int, char**)
         pBiotop->loadFromXmlFile(resuStr, resuDataPath);
       else
         pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
-      log_event("Biotop", "Biotop loaded");
+      log_event("Biotop  ", "Biotop loaded");
     }
     else
     {
@@ -38,7 +38,7 @@ int main(int, char**)
       pBiotop->initGridDefaultAltitude();
       pBiotop->initGridEntity();
       pBiotop->setDefaultEntitiesForTest();
-      log_event("biotop", "Default empty biotop created");
+      log_event("Biotop  ", "Default empty biotop created");
     }
 
 		Server server(pBiotop);

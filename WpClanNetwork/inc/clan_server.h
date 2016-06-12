@@ -43,6 +43,8 @@ private:
 
   void send_generic_event_long_string(const std::string event_label, DataBuffer data, ServerUser *user = NULL);
 
+  bool process_cmd_line(const std::string input_cmd_string);
+
 private:
 	NetGameServer network_server;
 	SlotContainer cc;
@@ -55,4 +57,12 @@ private:
   CBiotop* m_pBiotop;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
   clock_t m_LastRunTick;
+
+public:
+  // Functions for CMD line
+  static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
+  static bool CmdStopBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
+  static bool CmdStartBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
+  static bool CmdSetBiotopSpeed(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
+
 };

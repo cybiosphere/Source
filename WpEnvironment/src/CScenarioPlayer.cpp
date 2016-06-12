@@ -42,24 +42,24 @@ distribution.
 // Definitions            
 //===========================================================================
 
-CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER_TYPE] =
+CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
 {
-// cmd name                      cmd function                                 parameters
-  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop},           // Time in second.This cmd needs to stay at first
-  {"LOAD_BIOTOP",                CScenarioPlayer::CmdLoadBiotop},          // Biotop file name 
-  {"CHANGE_BIOTOP_PARAM",        CScenarioPlayer::CmdChangeBiotopParam},   // Param name + value
-  {"ADD_ENTITY",                 CScenarioPlayer::CmdAddEntity},           // Entity file name + coord
-  {"CHANGE_PARAM",               CScenarioPlayer::CmdChangeParam},         // Entity name + Param name + value
-  {"SAVE_ENTITY",                CScenarioPlayer::CmdSaveEntity},          // Entity file name
-  {"SAVE_BRAIN",                 CScenarioPlayer::CmdSaveBrain},           // Entity brain file name
-  {"QUICK_AGEING",               CScenarioPlayer::CmdQuickAgeing},         // Entity file name + day number
-  {"MOVE_ENTITY",                CScenarioPlayer::CmdMoveEntity},          // Entity name + coord
-  {"CHECK_PARAM_OVER",           CScenarioPlayer::CmdCheckParamOver},      // Entity name + Param name + value
-  {"CHECK_PARAM_UNDER",          CScenarioPlayer::CmdCheckParamUnder},     // Entity name + Param name + value
-  {"SET_IMMORTAL",               CScenarioPlayer::CmdSetImmortal},         // Entity name
-  {"DELETE_ENTITY",              CScenarioPlayer::CmdDeleteEntity},        // Entity name  
-  {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction},   // Entity name + Action name
-  {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder} // Entity name + value
+// cmd name                      cmd function                              help string
+  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop,           "RUN_BIOTOP <duration>"},          
+  {"LOAD_BIOTOP",                CScenarioPlayer::CmdLoadBiotop,          "LOAD_BIOTOP <biotop name>"},         
+  {"CHANGE_BIOTOP_PARAM",        CScenarioPlayer::CmdChangeBiotopParam,   "CHANGE_BIOTOP_PARAM <parameter name> <param int value>"},    
+  {"ADD_ENTITY",                 CScenarioPlayer::CmdAddEntity,           "ADD_ENTITY <entity file name> <coord X> <coord Y>"},
+  {"CHANGE_PARAM",               CScenarioPlayer::CmdChangeParam,         "CHANGE_PARAM <entity name> <param name> <param int value>"},
+  {"SAVE_ENTITY",                CScenarioPlayer::CmdSaveEntity,          "SAVE_ENTITY <entity file name>"},      
+  {"SAVE_BRAIN",                 CScenarioPlayer::CmdSaveBrain,           "SAVE_BRAIN <entity brain file name>"}, 
+  {"QUICK_AGEING",               CScenarioPlayer::CmdQuickAgeing,         "QUICK_AGEING <entity file name> <number of days>"}, 
+  {"MOVE_ENTITY",                CScenarioPlayer::CmdMoveEntity,          "MOVE_ENTITY <entity name> <coord X> <coord Y>"},
+  {"CHECK_PARAM_OVER",           CScenarioPlayer::CmdCheckParamOver,      "CHECK_PARAM_OVER <entity name> <param name> <param int value>"},    
+  {"CHECK_PARAM_UNDER",          CScenarioPlayer::CmdCheckParamUnder,     "CHECK_PARAM_UNDER <entity name> <param name> <param int value>"},
+  {"SET_IMMORTAL",               CScenarioPlayer::CmdSetImmortal,         "SET_IMMORTAL <entity name>"},    
+  {"DELETE_ENTITY",              CScenarioPlayer::CmdDeleteEntity,        "DELETE_ENTITY <entity name>"}, 
+  {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction,   "SET_FORBIDEN_ACTION <entity name> <action name>"}, 
+  {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder,"CHECK_FORBID_ACT_CNT_UNDER <entity name> <max forbiden action>"}
 };
 
 //===========================================================================
@@ -182,7 +182,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
   }
 
   // Other cmds
-  for(int i=1; i<SCENARIO_CMD_NUMBER_TYPE; i++)
+  for(int i=1; i<SCENARIO_CMD_NUMBER; i++)
   {
     startInd = curLine.find(ScenarioCmdNameList[i].commandName, 0);
     if ( startInd > -1)
@@ -203,17 +203,32 @@ bool CScenarioPlayer::NextCmdNextSecond()
   return resu;
 }
 
-bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string biotopFilesPath, int &successScore, int &totalScore)
+bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string biotopFilesPath, int &customVar1, int &customVar2, CommandHandler_t* pCustomCmdList, int customCmdListSize)
 {
-  bool resu = true;
+  bool resu = false;
   int startInd = -1;
-  for(int i=1; i<SCENARIO_CMD_NUMBER_TYPE; i++)
+  CommandHandler_t* pCmdList = pCustomCmdList;
+  int listSize = customCmdListSize;
+
+  // If no custom command, use ScenarioCmdNameList
+  if (pCmdList==NULL)
   {
-    startInd = commandString.find(ScenarioCmdNameList[i].commandName, 0);
+    pCmdList = ScenarioCmdNameList;
+    listSize = SCENARIO_CMD_NUMBER;
+  }
+
+  for(int i=0; i<listSize; i++)
+  {
+    startInd = commandString.find(pCmdList[i].commandName, 0);
     if ( startInd > -1)
     {
-      int cmdSize = strlen(ScenarioCmdNameList[i].commandName);
-      resu = ScenarioCmdNameList[i].commandFonction(pBiotop, biotopFilesPath, commandString.substr(startInd+cmdSize+1), &successScore, &totalScore);
+      int cmdSize = strlen(pCmdList[i].commandName);
+      string paramStr = "";
+      if (cmdSize < commandString.size())
+      {
+        paramStr = commandString.substr(startInd+cmdSize+1);
+      }
+      resu = pCmdList[i].commandFonction(pBiotop, biotopFilesPath, paramStr, &customVar1, &customVar2);
       break;
     }
   }
@@ -264,6 +279,13 @@ string CScenarioPlayer::GetParamFromString(string commandParam,int paramIndex)
   return (commandParam.substr(indexStart, indexEnd-indexStart));
 }
 
+string CScenarioPlayer::GetHelpCmdString(int index)
+{
+  if (index<SCENARIO_CMD_NUMBER)
+    return ScenarioCmdNameList[index].helpString;
+  else
+    return "";
+}
 
 bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {

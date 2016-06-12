@@ -3,6 +3,19 @@
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include <time.h>
+#include "CScenarioPlayer.h"
+
+#define SERVER_CMD_NUMBER 4
+
+CommandHandler_t ScenarioCmdNameList[SERVER_CMD_NUMBER] =
+{
+// cmd name                 cmd function                help string
+  {"HELP",                  Server::CmdHelp,           "HELP"}, 
+  {"STOP_BIOTOP",           Server::CmdStopBiotop,     "STOP_BIOTOP"}, 
+  {"START_BIOTOP",          Server::CmdStartBiotop,    "START_BIOTOP"}, 
+  {"SET_BIOTOP_SPEED",      Server::CmdSetBiotopSpeed, "SET_BIOTOP_SPEED <speed int>"}
+};
+
 
 Server::Server(CBiotop* pBiotop)
 : next_user_id(1)
@@ -33,7 +46,7 @@ void Server::exec()
   clock_t curTick;
 	network_server.start("4556");
 
-	log_event("system", "SERVER started");
+	log_event("System  ", "SERVER started");
 	while (true)
 	{
 		// Lets not worry about exiting this function!
@@ -89,7 +102,8 @@ void Server::exec()
       bool resu = log_get_console_input(inputcommand);
       if (resu)
       {
-        log_event("Input command:", inputcommand);
+        log_event("User cmd", inputcommand);
+        process_cmd_line(inputcommand);
       }
     }
 	}
@@ -97,10 +111,44 @@ void Server::exec()
 	network_server.stop();
 }
 
+bool Server::process_cmd_line(const std::string input_cmd_string)
+{
+  int var1=-1;
+  int var2=-1;
+  bool resu;
+
+  if (input_cmd_string == "")
+    return false;
+
+  // Check command for biotop
+  resu = CScenarioPlayer::ExecuteCmd(m_pBiotop, input_cmd_string, "C:\\temp", var1, var2);
+  if (resu == false)
+  {
+    // Check command for server
+    resu = CScenarioPlayer::ExecuteCmd(m_pBiotop, input_cmd_string, "C:\\temp", var1, var2, ScenarioCmdNameList, SERVER_CMD_NUMBER);
+    if (resu == true)
+    {
+      // Var1 is used to set speed
+      if (var1>=0)
+      {
+        m_biotopSpeed = var1;
+        log_event("User cmd", "Biotop speed set to %1", var1);
+      }
+    }
+    else
+    {
+      log_event("User cmd", "Invalid command");
+    }
+  }
+    
+  return resu;
+}
+
+
 // A new client is connecting
 void Server::on_client_connected(NetGameConnection *connection)
 {
-	log_event("network", "Client connected");
+	log_event("Network ", "Client connected");
 
 	// Create user and attach it to connection
 	ServerUser *user = new ServerUser();
@@ -110,7 +158,7 @@ void Server::on_client_connected(NetGameConnection *connection)
 // A client disconnected
 void Server::on_client_disconnected(NetGameConnection *connection, const std::string &message)
 {
-	log_event("network", "Client disconnected");
+	log_event("Network ", "Client disconnected");
 
 	ServerUser *user = ServerUser::get_user(connection);
 	if(user)
@@ -124,7 +172,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
 // An event was received from a client
 void Server::on_event_received(NetGameConnection *connection, const NetGameEvent &e)
 {
-	log_event("events", "Client sent event: %1", e.to_string());
+	log_event("Events  ", "Client sent event: %1", e.to_string());
 
 	ServerUser *user = ServerUser::get_user(connection);
 	if(user)
@@ -145,7 +193,7 @@ void Server::on_event_received(NetGameConnection *connection, const NetGameEvent
 		if (!handled_event)
 		{
 			// We received an event which we didn't hook up
-			log_event("events", "Unhandled event: %1", e.to_string());
+			log_event("Events  ", "Unhandled event: %1", e.to_string());
 		}
 	}
 }
@@ -153,7 +201,7 @@ void Server::on_event_received(NetGameConnection *connection, const NetGameEvent
 // "Login" event was received
 void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 {
-	log_event("events", "Client requested login");
+	log_event("Events  ", "Client requested login");
 
 	std::string user_name = e.get_argument(0);
 
@@ -174,7 +222,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 // "Game-RequestStartGame" event was received
 void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 {
-	log_event("events", "Client requested game start");
+	log_event("Events  ", "Client requested game start");
 
 	if(users_connected == false)
 	{
@@ -198,7 +246,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 
   if (xmlZipBuffer.get_size() > SENT_BUFFER_MAX_SIZE)
   {
-    log_event("ERROR", "Client requested game error: Biotop to big to be sent");
+    log_event("-ERROR- ", "Client requested game error: Biotop to big to be sent");
   }
   else
   {
@@ -246,11 +294,11 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
 {
   if (pEntity == NULL)
   {
-  	log_event("events", "Update entity data: NULL entity");
+  	log_event("Events  ", "Update entity data: NULL entity");
     return;
   }
 
-	log_event("events", "Update entity data: %1", pEntity->getLabel());
+	log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
 
   TiXmlDocument xmlDoc;
   pEntity->saveInXmlFile(&xmlDoc);
@@ -269,7 +317,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
 {
   if (pEntity == NULL)
   {
-  	log_event("events", "Update entity position: NULL");
+  	log_event("Events  ", "Update entity position: NULL");
     return;
   }
 
@@ -301,7 +349,7 @@ void Server::send_generic_event_long_string(const std::string event_label, DataB
 
   if (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS)
   {
-    log_event("ERROR", "Generic event: Event too big to be sent");
+    log_event("-ERROR- ", "Generic event: Event too big to be sent");
     return;
   }
 
@@ -329,4 +377,42 @@ void Server::send_generic_event_long_string(const std::string event_label, DataB
     network_server.send_event(genericEvent);
   else
     user->send_event(genericEvent);
+}
+
+bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  int i;
+  for (i=0; i<SERVER_CMD_NUMBER; i++)
+  {
+    log_event("Server cmd", ScenarioCmdNameList[i].helpString);
+  }
+  string bioCmdStr = "";
+  for (i=0; i<100; i++)
+  {
+    bioCmdStr = CScenarioPlayer::GetHelpCmdString(i);
+    if (bioCmdStr != "")
+    {
+      log_event("Biotop cmd", bioCmdStr);
+    }
+  }
+  return true;
+}
+
+bool Server::CmdStopBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused)
+{
+  *pBiotopSpeed = 0;
+  return true;
+}
+
+bool Server::CmdStartBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused)
+{
+  *pBiotopSpeed = 1;
+  return true;
+}
+
+bool Server::CmdSetBiotopSpeed(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused)
+{
+  int newSpeed = atoi(CScenarioPlayer::GetParamFromString(commandParam,0).c_str());
+  *pBiotopSpeed = newSpeed;
+  return true;
 }

@@ -87,13 +87,13 @@ namespace clan
         DWORD bytesWritten = 0;
         if ((irInBuf[i].Event.KeyEvent.uChar.AsciiChar) == '\r')
         {
-          WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), "\n", 2, &bytesWritten, 0);
+          WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), "\n", 1, &bytesWritten, 0);
           //log("Command:", m_currentCommand);
           input_cmd = m_currentCommand;
           m_currentCommand = "";
           newCommandReady = true;
         }
-        else
+        else if ((irInBuf[i].Event.KeyEvent.uChar.AsciiChar) != '\0')
         {
           m_currentCommand+=irInBuf[i].Event.KeyEvent.uChar.AsciiChar;
           WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), &(irInBuf[i].Event.KeyEvent.uChar), 1, &bytesWritten, 0);
