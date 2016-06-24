@@ -19,6 +19,7 @@ LGPL like the rest of the OGRE engine.
 */
 
 #include "CybiOgre3D.h"
+#include "clan_client.h"
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -27,6 +28,14 @@ LGPL like the rest of the OGRE engine.
 
 #define OFFSET_COORD_X 150
 #define OFFSET_COORD_Y 150
+
+Real mAnimChop = 7.96666f;
+Real mAnimChopBlend = 0.3f;
+bool initComplete = false;
+std::vector<MeshEntity_t*>   m_tMesh;
+CBiotop*                     m_pBiotop;
+PlayerEntity_t               m_Player;
+Client*                      m_pClient;
 
 CybiOgre3DFrameListener::CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam)
 : ExampleFrameListener(win, cam), mSceneMgr(sceneMgr)
@@ -85,24 +94,16 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
 
   m_pClient->process_new_events();
  
-  // wait synchro from server
-  if (m_pClient->check_if_event_next_second_start_and_clean())
-  {
-    for ( i=0; i<m_tMesh.size(); i++)
-    {
-      // Set exact position
-      setMeshEntityPosition(i);
-    }
-  }
-  if (m_pClient->check_if_event_next_second_end_and_clean()) 
+  if(m_pClient->check_if_event_next_second_end_and_clean()) //  (m_secCnt >= 1) 
   {
     forcePlayerAction();
     m_pBiotop->nextSecond();
     m_secCnt = 0;
-    for ( i=m_tMesh.size()-1; i>=0; i--)
+    /*for ( i=m_tMesh.size()-1; i>=0; i--)
     {
+      setMeshEntityPosition(i);
       updateMeshEntityNewSecond(i);
-    }
+    }*/
     updateInfoParamTime();
     updateInfoPopulation();
     // reset player to idle
@@ -112,29 +113,29 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   return true;
 }
 
-void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int index)
+void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 {
-  CBasicEntity* pBasicEntity = m_tMesh[index]->pBasicEntity;
+  CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
   if ( pBasicEntity->isToBeRemoved() )
   {
-    mSceneMgr->destroyEntity(m_tMesh[index]->pMeshEnt);
-    m_tMesh.erase(m_tMesh.begin() + index);
+    mSceneMgr->destroyEntity(m_tMesh[meshIndex]->pMeshEnt);
+    m_tMesh.erase(m_tMesh.begin() + meshIndex);
     return;
   }
 
-  if ( ( pBasicEntity->getStatus() == STATUS_DEAD ) /*&& (m_tMesh[index]->strCurACtion != "Sleep")*/ )
+  if ( ( pBasicEntity->getStatus() == STATUS_DEAD ) /*&& (m_tMesh[meshIndex]->strCurACtion != "Sleep")*/ )
   {
     if ( pBasicEntity->getClass()>=CLASS_ANIMAL_FIRST )
     {
       Point_t coord = pBasicEntity->getStepCoord();
-      m_tMesh[index]->pAnimState->setEnabled(false);
-      m_tMesh[index]->pAnimState = m_tMesh[index]->pMeshEnt->getAnimationState("Dead");
-      m_tMesh[index]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, coord.x-OFFSET_COORD_X) );
-      m_tMesh[index]->pAnimState->setLoop(false);
-      m_tMesh[index]->strCurACtion = "Dead";
-      m_tMesh[index]->pAnimState->setEnabled(true);
-      m_tMesh[index]->translateVect3 = Vector3(0,0,0);
-      m_tMesh[index]->isMoving = false;
+      m_tMesh[meshIndex]->pAnimState->setEnabled(false);
+      m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState("Dead");
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, coord.x-OFFSET_COORD_X) );
+      m_tMesh[meshIndex]->pAnimState->setLoop(false);
+      m_tMesh[meshIndex]->strCurACtion = "Dead";
+      m_tMesh[meshIndex]->pAnimState->setEnabled(true);
+      m_tMesh[meshIndex]->translateVect3 = Vector3(0,0,0);
+      m_tMesh[meshIndex]->isMoving = false;
       return;
     }
     // Fred: else use dead mesh
@@ -143,31 +144,33 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int index)
   if ( pBasicEntity->isAlive()/*pBasicEntity->checkIfhasChangedAndClear()*/ )
   {
     Point_t coord = pBasicEntity->getStepCoord();
-    Point_t prevCoord = m_tMesh[index]->targetBiotopCoord;
+    Point_t prevCoord = m_tMesh[meshIndex]->targetBiotopCoord;
 
-    if ( (coord.x != prevCoord.x) || (coord.y != prevCoord.y) || (pBasicEntity->getStepDirection() != m_tMesh[index]->curDirection) )
+    m_tMesh[meshIndex]->curMoveRate = 0;
+
+    if ( (coord.x != prevCoord.x) || (coord.y != prevCoord.y) || (pBasicEntity->getStepDirection() != m_tMesh[meshIndex]->curDirection) )
     {
-      m_tMesh[index]->translateVect3 = Vector3(coord.y - prevCoord.y, 0, coord.x - prevCoord.x);
-      m_tMesh[index]->curRotation = (pBasicEntity->getStepDirection() - m_tMesh[index]->curDirection) % 360;
-      if (m_tMesh[index]->curRotation > 180)
-        m_tMesh[index]->curRotation -= 360;
-      if (m_tMesh[index]->curRotation < -180)
-        m_tMesh[index]->curRotation += 360;
+      m_tMesh[meshIndex]->translateVect3 = Vector3((coord.y - prevCoord.y), 0, (coord.x - prevCoord.x));
+      m_tMesh[meshIndex]->curRotation = (pBasicEntity->getStepDirection() - m_tMesh[meshIndex]->curDirection) % 360;
+      if (m_tMesh[meshIndex]->curRotation > 180)
+        m_tMesh[meshIndex]->curRotation -= 360;
+      if (m_tMesh[meshIndex]->curRotation < -180)
+        m_tMesh[meshIndex]->curRotation += 360;
 
-      m_tMesh[index]->isMoving = true;
-      m_tMesh[index]->targetBiotopCoord = coord;
-      m_tMesh[index]->curDirection = pBasicEntity->getStepDirection();
+      m_tMesh[meshIndex]->isMoving = true;
+      m_tMesh[meshIndex]->targetBiotopCoord = coord;
+      m_tMesh[meshIndex]->curDirection = pBasicEntity->getStepDirection();
     }
     else
     {
-      m_tMesh[index]->translateVect3 = Vector3(0,0,0);
-      m_tMesh[index]->isMoving = false;
+      m_tMesh[meshIndex]->translateVect3 = Vector3(0,0,0);
+      m_tMesh[meshIndex]->isMoving = false;
     }
   }
 
   if (pBasicEntity->getBrain() != NULL)
   {
-    double squareLen = m_tMesh[index]->translateVect3.squaredLength();
+    double squareLen = m_tMesh[meshIndex]->translateVect3.squaredLength();
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
     if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") || (labelAction == "Accelerate") )
@@ -188,42 +191,44 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int index)
       labelAction = "Walk";
     }
 
-    if (m_tMesh[index]->strCurACtion != labelAction)
+    if (m_tMesh[meshIndex]->strCurACtion != labelAction)
     {
-      m_tMesh[index]->pAnimState->setEnabled(false);
-      m_tMesh[index]->pAnimState = m_tMesh[index]->pMeshEnt->getAnimationState(labelAction);
-      m_tMesh[index]->pAnimState->setEnabled(true);
+      m_tMesh[meshIndex]->pAnimState->setEnabled(false);
+      m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState(labelAction);
+      m_tMesh[meshIndex]->pAnimState->setEnabled(true);
     }
 
     if ( (labelAction != "Sleep") && (labelAction != "Turn_head_left") && (labelAction != "Turn_head_right") && (labelAction != "Hide") )
-      m_tMesh[index]->pAnimState->setLoop(true);
+      m_tMesh[meshIndex]->pAnimState->setLoop(true);
     else
-      m_tMesh[index]->pAnimState->setLoop(false);
+      m_tMesh[meshIndex]->pAnimState->setLoop(false);
 
-    m_tMesh[index]->strCurACtion = labelAction;
+    m_tMesh[meshIndex]->strCurACtion = labelAction;
   }
 }
 
 
-void CybiOgre3DFrameListener::updateMeshEntityPosition(int index, Real rate)
+void CybiOgre3DFrameListener::updateMeshEntityPosition(int meshIndex, Real rate)
 {
-  if (m_tMesh[index]->isMoving)
+  if ((m_tMesh[meshIndex]->isMoving) && (m_tMesh[meshIndex]->curMoveRate<1))
   {
-    m_tMesh[index]->pMeshNode->translate( rate*m_tMesh[index]->translateVect3 );
-    m_tMesh[index]->pMeshNode->yaw(Degree(rate*m_tMesh[index]->curRotation));
+    m_tMesh[meshIndex]->pMeshNode->translate( rate*m_tMesh[meshIndex]->translateVect3 );
+    m_tMesh[meshIndex]->pMeshNode->yaw(Degree(rate*m_tMesh[meshIndex]->curRotation));
+    m_tMesh[meshIndex]->curMoveRate += rate;
   }
 }
 
-void CybiOgre3DFrameListener::setMeshEntityPosition(int index)
+void CybiOgre3DFrameListener::setMeshEntityPreviousPosition(int meshIndex)
 {
-  CBasicEntity* pBasicEntity = m_tMesh[index]->pBasicEntity;
+  CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
   if ( pBasicEntity->isAlive() )
   {  
-    Point_t coord = pBasicEntity->getStepCoord();
-    m_tMesh[index]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, coord.x-OFFSET_COORD_X) );
+    Point_t coord = pBasicEntity->getPrevStepCoord();
+    if (coord.x != -1)
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, coord.x-OFFSET_COORD_X) );
     Quaternion q;
-    q.FromAngleAxis(Degree(pBasicEntity->getStepDirection()), Vector3::UNIT_Y);
-    m_tMesh[index]->pMeshNode->setOrientation(q); 
+    q.FromAngleAxis(Degree(pBasicEntity->getPrevStepDirection()), Vector3::UNIT_Y);
+    m_tMesh[meshIndex]->pMeshNode->setOrientation(q); 
   }
 }
 
@@ -612,6 +617,21 @@ void CybiOgre3DApp::createScene(void)
 /*	m_Overlay = OverlayManager::getSingleton().getByName("Cybiosphere/InfoOverlay");    
 	m_Overlay->show();*/
 
+  // clean server event
+  //m_pClient->process_new_events();
+  //m_pClient->check_if_event_next_second_end_and_clean();
+ // wait for next_second event
+ /*while (!initComplete)
+  {
+    System::sleep(10);
+    m_pClient->process_new_events();
+    if (m_pClient->check_if_event_next_second_end_and_clean())
+    {
+      System::sleep(500/m_pClient->get_biotop_speed()); // desynchro server and display
+      initComplete = true;
+    }
+  }*/
+
   initComplete = true;
 }
 
@@ -622,6 +642,7 @@ void CybiOgre3DApp::createFrameListener(void)
   mRoot->addFrameListener(mFrameListener);
   mFrameListener->speedVariation(0);
 }
+
 
 bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity, int insertIndex)
 {
@@ -670,6 +691,40 @@ bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity, int insertInde
   return true;
 }
 
+int CybiOgre3DApp::getMeshEntityIndex(CBasicEntity* pBasicEntity)
+{
+  int meshIndex = -1;
+  for (int i = 0; i < m_tMesh.size(); ++i)
+  {
+    if (m_tMesh[i]->pBasicEntity == pBasicEntity)
+    {
+      meshIndex = i;
+      break;
+    }
+  }
+  return meshIndex;
+}
+
+void CybiOgre3DApp::setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity)
+{
+  int meshIndex = getMeshEntityIndex(pBasicEntity);
+  if (meshIndex>=0)
+  {
+   ((CybiOgre3DFrameListener*)mFrameListener)->setMeshEntityPreviousPosition(meshIndex);
+  }
+  return ;
+}
+
+void CybiOgre3DApp::updateMeshEntityNewSecond(CBasicEntity* pBasicEntity)
+{
+  int meshIndex = getMeshEntityIndex(pBasicEntity);
+  if (meshIndex>=0)
+  {
+   ((CybiOgre3DFrameListener*)mFrameListener)->updateMeshEntityNewSecond(meshIndex);
+  }
+  return ;
+}
+
 bool CybiOgre3DApp::SetEntityPlayer(CBasicEntity* pEntity)
 {
   if (pEntity!=NULL)
@@ -713,7 +768,20 @@ extern "C" {
     // Create application object
     CybiOgre3DApp app;
 
-    m_pClient = new Client();
+    // Get Server info in ini file
+    string ServerAddrStr;
+    string ServerPortStr;
+    char resuBuffer[512];
+    string fileIni = "Cybiosphere.ini";
+    int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
+    ServerAddrStr = resuBuffer;
+    resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
+    ServerPortStr = resuBuffer;
+
+    //std::string serverAddr = "localhost"; //"192.168.1.67"
+    //std::string portId     = "4556";
+
+    m_pClient = new Client(ServerAddrStr, ServerPortStr, &app);
     // Connect to server and wait for biotop init from server
     m_pClient->connect_to_server();
     while (!(m_pClient->is_biotop_config_complete()))

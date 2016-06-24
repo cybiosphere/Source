@@ -180,53 +180,17 @@ bool CMapConfigView::BuildOdorMap(OdorType_e odorType)
   BiotopSquare_t** tBioSquare;
   tBioSquare = m_pBiotop->getpBioSquare();
 
+  double odorLevel[NUMBER_ODORS];
+  Point_t coord;
   // Trace odor map
   for (i=0;i<m_pBiotop->getDimension()->x;i++)
   {
     for (j=0; j<m_pBiotop->getDimension()->y; j++)
-    {   
-      tBioSquare[i][j].customColor = 0x00FFFFFF - (DWORD)(floor(25.0*tBioSquare[i][j].odorTrace[odorType])*257);  
-    }
-  }
-
-  // Entity odor map
-  FoundEntity_t* pFoundIds = NULL;
-  CBasicEntity* pEntity = NULL;
-  int coordX,coordY,range, rangeDisplay;
-  COLORREF color;
-
-  rangeDisplay = theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetCurrentGridCenterPos().x - theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetGridCoordFromScreenPos(CPoint(1,1)).x;
-
-  int nbIds = m_pBiotop->findEntities(pFoundIds , theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetCurrentGridCenterPos(), rangeDisplay);
-  for (int ind=0;ind<nbIds;ind++)
-  {
-    pEntity = pFoundIds[ind].pEntity;
-    if ( (pEntity!=NULL) && (pEntity->getOdor() == odorType) )
-    {
-      coordX = pEntity->getGridCoord().x;
-      coordY = pEntity->getGridCoord().y;
-      // Limit range
-      range = 5;
-      if ( coordX < range )
-          range = coordX;
-      if ( coordX > (m_pBiotop->getDimension()->x-range) )
-          range = coordX - m_pBiotop->getDimension()->x;
-      if ( coordY < range )
-          range = coordY;
-      if ( coordY > (m_pBiotop->getDimension()->y-range) )
-          range = coordY - m_pBiotop->getDimension()->y;
-      // Odor squares around entities   ;
-      for (k=1; k<range; k++)
-      {
-        color = 0x00FFFFFF ^ (0x8080>>(k-1));
-        for (i=-k; i<k; i++)
-        {
-          tBioSquare[coordX+i][coordY-k].customColor &= color;
-          tBioSquare[coordX+i+1][coordY+k].customColor &= color;
-          tBioSquare[coordX-k][coordY+i+1].customColor &= color;
-          tBioSquare[coordX+k][coordY+i].customColor &= color;
-        }
-      }
+    { 
+      coord.x = i;
+      coord.y = j;
+      m_pBiotop->getOdorLevels(coord,5, odorLevel);
+      tBioSquare[i][j].customColor = 0x00FFFFFF - (DWORD)(floor(25.0*odorLevel[odorType-ODOR_FIRST_TYPE])*257);  
     }
   }
 

@@ -22,7 +22,7 @@ LGPL like the rest of the OGRE engine.
 
 
 #include "CybiOgreApplication.h"
-#include "clan_client.h"
+//#include "clan_client.h"
 
 /*
 #include "ItemSelectorViewManager.h"
@@ -45,10 +45,6 @@ LGPL like the rest of the OGRE engine.
 
 #include "CBiotop.h"
 
-Real mAnimChop = 7.96666f;
-Real mAnimChopBlend = 0.3f;
-
-bool initComplete = false;
 
 typedef struct 
 {
@@ -64,6 +60,7 @@ typedef struct
   string               strCurACtion;
   double               scale;
   double               yPos;
+  double               curMoveRate;
 } MeshEntity_t;
 
 typedef struct 
@@ -77,10 +74,6 @@ typedef struct
   choiceIndType        actionId_attack;
 } PlayerEntity_t;
 
-std::vector<MeshEntity_t*>   m_tMesh;
-CBiotop*                     m_pBiotop;
-PlayerEntity_t               m_Player;
-Client*                      m_pClient;
 
 class CybiOgre3DFrameListener : public ExampleFrameListener//, ItemSelectorInterface
 {
@@ -110,9 +103,9 @@ private:
 public:
   CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam);
   bool frameStarted(const FrameEvent& evt);
-  void updateMeshEntityNewSecond(int index);
-  void updateMeshEntityPosition(int index, Real rate);
-  void setMeshEntityPosition(int index);
+  void updateMeshEntityNewSecond(int meshIndex);
+  void updateMeshEntityPosition(int meshIndex, Real rate);
+  void setMeshEntityPreviousPosition(int meshIndex);
   void updateInfoParamTime();
   void updateInfoPopulation();
   void speedVariation(int variation);
@@ -136,6 +129,9 @@ public:
   CybiOgre3DApp();
   ~CybiOgre3DApp();
 
+  void setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity);
+  void updateMeshEntityNewSecond(CBasicEntity* pBasicEntity);
+
 protected:
 
   virtual void createCamera(void);
@@ -148,6 +144,7 @@ protected:
   void createFrameListener(void);
 
   bool createMeshEntity (CBasicEntity* pBasicEntity, int insertIndex);
+  int getMeshEntityIndex(CBasicEntity* pBasicEntity);
   bool SetEntityPlayer(CBasicEntity* pEntity);
 };
 

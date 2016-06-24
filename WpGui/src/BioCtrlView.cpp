@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CBioCtrlView, CFormView)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_ZOOM, OnReleasedcaptureSliderZoom)
 	ON_BN_CLICKED(IDC_EDIT_BIOTOP, OnEdit)
 	ON_BN_CLICKED(IDC_CHECK2, OnCheckStopOnEv)
+	ON_CBN_SELCHANGE(IDC_COMBO_WIND, OnSelchangeComboWind)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CFormView::OnFilePrint)
@@ -95,6 +96,7 @@ void CBioCtrlView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CBioCtrlView)
+	DDX_Control(pDX, IDC_COMBO_WIND, m_ComboWind);
 	DDX_Control(pDX, IDC_SLIDER_SPEED, m_SliderSpeed);
 	DDX_Control(pDX, IDC_SLIDER_ZOOM, m_SliderZoom);
 	DDX_Check(pDX, IDC_CHECK1, m_bManualMode);
@@ -127,6 +129,11 @@ void CBioCtrlView::OnInitialUpdate()
   //theApp.GetBiotopViewPtr()->SetSpeedRate(0);
 
   m_UserSpeed = 1;
+
+  if (theApp.GetBiotop()->getWindStrenght()==0)
+    m_ComboWind.SetCurSel(0);
+  else
+   m_ComboWind.SetCurSel(theApp.GetBiotop()->getWindDirection()+1);
 
 	ResizeParentToFit();
 
@@ -308,4 +315,18 @@ void CBioCtrlView::SetStrScenarioScore(CString text)
 {
   m_StrScenarioScore = text;
   UpdateData(false);
+}
+
+
+void CBioCtrlView::OnSelchangeComboWind() 
+{
+  if (m_ComboWind.GetCurSel() == 0)
+  {
+    theApp.GetBiotop()->setWindStrenght(0);
+  }
+  else
+  {
+    theApp.GetBiotop()->setWindStrenght(1);
+    theApp.GetBiotop()->setWindDirection(m_ComboWind.GetCurSel()-1);
+  }
 }

@@ -44,22 +44,24 @@ distribution.
 
 CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
 {
-// cmd name                      cmd function                              help string
-  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop,           "RUN_BIOTOP <duration>"},          
-  {"LOAD_BIOTOP",                CScenarioPlayer::CmdLoadBiotop,          "LOAD_BIOTOP <biotop name>"},         
-  {"CHANGE_BIOTOP_PARAM",        CScenarioPlayer::CmdChangeBiotopParam,   "CHANGE_BIOTOP_PARAM <parameter name> <param int value>"},    
-  {"ADD_ENTITY",                 CScenarioPlayer::CmdAddEntity,           "ADD_ENTITY <entity file name> <coord X> <coord Y>"},
-  {"CHANGE_PARAM",               CScenarioPlayer::CmdChangeParam,         "CHANGE_PARAM <entity name> <param name> <param int value>"},
-  {"SAVE_ENTITY",                CScenarioPlayer::CmdSaveEntity,          "SAVE_ENTITY <entity file name>"},      
-  {"SAVE_BRAIN",                 CScenarioPlayer::CmdSaveBrain,           "SAVE_BRAIN <entity brain file name>"}, 
-  {"QUICK_AGEING",               CScenarioPlayer::CmdQuickAgeing,         "QUICK_AGEING <entity file name> <number of days>"}, 
-  {"MOVE_ENTITY",                CScenarioPlayer::CmdMoveEntity,          "MOVE_ENTITY <entity name> <coord X> <coord Y>"},
-  {"CHECK_PARAM_OVER",           CScenarioPlayer::CmdCheckParamOver,      "CHECK_PARAM_OVER <entity name> <param name> <param int value>"},    
-  {"CHECK_PARAM_UNDER",          CScenarioPlayer::CmdCheckParamUnder,     "CHECK_PARAM_UNDER <entity name> <param name> <param int value>"},
-  {"SET_IMMORTAL",               CScenarioPlayer::CmdSetImmortal,         "SET_IMMORTAL <entity name>"},    
-  {"DELETE_ENTITY",              CScenarioPlayer::CmdDeleteEntity,        "DELETE_ENTITY <entity name>"}, 
-  {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction,   "SET_FORBIDEN_ACTION <entity name> <action name>"}, 
-  {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder,"CHECK_FORBID_ACT_CNT_UNDER <entity name> <max forbiden action>"}
+// cmd name                      cmd function                                help string
+  {"RUN_BIOTOP",                 CScenarioPlayer::CmdRunBiotop,             "RUN_BIOTOP <duration>"},          
+  {"LOAD_BIOTOP",                CScenarioPlayer::CmdLoadBiotop,            "LOAD_BIOTOP <biotop name>"},         
+  {"CHANGE_BIOTOP_PARAM",        CScenarioPlayer::CmdChangeBiotopParam,     "CHANGE_BIOTOP_PARAM <parameter name> <param int value>"},    
+  {"ADD_ENTITY",                 CScenarioPlayer::CmdAddEntity,             "ADD_ENTITY <entity file name> <coord X> <coord Y>"},
+  {"CHANGE_PARAM",               CScenarioPlayer::CmdChangeParam,           "CHANGE_PARAM <entity name> <param name> <param int value>"},
+  {"SAVE_ENTITY",                CScenarioPlayer::CmdSaveEntity,            "SAVE_ENTITY <entity file name>"},      
+  {"SAVE_BRAIN",                 CScenarioPlayer::CmdSaveBrain,             "SAVE_BRAIN <entity brain file name>"}, 
+  {"QUICK_AGEING",               CScenarioPlayer::CmdQuickAgeing,           "QUICK_AGEING <entity file name> <number of days>"}, 
+  {"MOVE_ENTITY",                CScenarioPlayer::CmdMoveEntity,            "MOVE_ENTITY <entity name> <coord X> <coord Y>"},
+  {"CHECK_PARAM_OVER",           CScenarioPlayer::CmdCheckParamOver,        "CHECK_PARAM_OVER <entity name> <param name> <param int value>"},    
+  {"CHECK_PARAM_UNDER",          CScenarioPlayer::CmdCheckParamUnder,       "CHECK_PARAM_UNDER <entity name> <param name> <param int value>"},
+  {"SET_IMMORTAL",               CScenarioPlayer::CmdSetImmortal,           "SET_IMMORTAL <entity name>"},    
+  {"DELETE_ENTITY",              CScenarioPlayer::CmdDeleteEntity,          "DELETE_ENTITY <entity name>"}, 
+  {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction,     "SET_FORBIDEN_ACTION <entity name> <action name>"}, 
+  {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder,  "CHECK_FORBID_ACT_CNT_UNDER <entity name> <max forbiden action>"},
+  {"SET_BIOTOP_WIND_SPEED",     CScenarioPlayer::CmdSetBiotopWindSpeed,     "SET_BIOTOP_WIND_SPEED <speed int>"},
+  {"SET_BIOTOP_WIND_DIRECTION", CScenarioPlayer::CmdSetBiotopWindDirection, "SET_BIOTOP_WIND_DIRECTION <direction 0..7>"}
 };
 
 //===========================================================================
@@ -72,6 +74,7 @@ CScenarioPlayer::CScenarioPlayer(CBiotop* pBiotop)
   m_successScore = 0;
   m_totalScore = 0;
   m_remainingTimeToRunBiotop = 0;
+  m_currentCmd = "";
 }
 
 
@@ -107,6 +110,7 @@ bool CScenarioPlayer::ReadScenarioFile(string fileName, string pathName)
   m_successScore = 0;
   m_totalScore = 0;
   m_remainingTimeToRunBiotop = 0;
+  m_currentCmd = "";
 
   if (resu)
   {
@@ -128,6 +132,7 @@ bool CScenarioPlayer::PlayScenario()
   // Run Scenario
   m_successScore = 0;
   m_totalScore = 0;
+  m_currentCmd = "";
   m_remainingTimeToRunBiotop = 0;
 
   bool cmdFound = true;
@@ -170,6 +175,9 @@ bool CScenarioPlayer::NextCmdNextSecond()
     // NO action but command found
     return true;
   }
+
+  // memorize command
+  m_currentCmd = curLine;
 
   // Run biotop cmd
   startInd = curLine.find(ScenarioCmdNameList[0].commandName, 0);
@@ -691,4 +699,17 @@ bool CScenarioPlayer::IsScenarioFileOpened()
   return (bool)m_curScenarioFile.is_open();
 }
 
+bool CScenarioPlayer::CmdSetBiotopWindSpeed(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  int newSpeed = atoi(CScenarioPlayer::GetParamFromString(commandParam,0).c_str());
+  pBiotop->setWindStrenght(newSpeed);
+  return true;
+}
+
+bool CScenarioPlayer::CmdSetBiotopWindDirection(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  int newDirection = atoi(CScenarioPlayer::GetParamFromString(commandParam,0).c_str());
+  pBiotop->setWindDirection(newDirection);
+  return true;
+}
 

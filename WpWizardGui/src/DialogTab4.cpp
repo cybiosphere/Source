@@ -1573,7 +1573,7 @@ void CDialogTab4::OnButtonSaveEntity()
     if (endName>0)
       entityName = entityName.Left(endName); 
 
-	specieName = m_pEntity->getGenome()->getSpecieName().c_str();
+    specieName = m_pEntity->getGenome()->getSpecieName().c_str();
 
     learningFolderName = "..\\DataTraining_" + specieName;
 

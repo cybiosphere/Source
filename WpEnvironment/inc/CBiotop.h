@@ -57,7 +57,8 @@ distribution.
 #include "CMeasureFeeling.h"
 #include "CMeasurePopulation.h"
 #include "CMeasureReaction.h"
-
+// For odor mgt
+#include "CSensorSmell.h"
 
 //===========================================================================
 // Definitions            
@@ -133,6 +134,8 @@ typedef enum
   ENTITY_ID_FIRST_USER_ENTITY
 } ReservedEntityIdType_e;
 
+
+
 //===========================================================================
 //                                    CLASS            
 //=========================================================================== 
@@ -161,6 +164,16 @@ private:
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
 
   FoundEntity_t*  m_tFoundIds;   // temporary structure to store found entities 
+
+  //        3   2   1    
+  //          \ | /          
+  //        4 --+-->0     
+  //          / | \       
+  //        5   6   7      
+  //       m_WindDirection
+int m_WindDirection;
+int m_WindStrenght; // 0,1 or 2
+
 
 //---------------------------------------------------------------------------
 // associations
@@ -312,10 +325,15 @@ public:
   CGenericParam* getParameter(int id);
   CGenericParam* getParameterByName(string label);
   double getOdorTrace(Point_t coord, OdorType_e odor);
+  bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS]);
   COLORREF getCustomColor(Point_t coord);
   WORD getMapId(Point_t coord);
   BiotopSquare_t** getpBioSquare();
   string getLabel();
+  int  getWindDirection();
+  void setWindDirection(int direction);
+  int  getWindStrenght(); 
+  void setWindStrenght(int strenght); 
 
 }; // end CBiotop
 

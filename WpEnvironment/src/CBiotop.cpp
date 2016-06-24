@@ -48,6 +48,8 @@ distribution.
 #include "CAnimal.h"
 #include "CAnimMammal.h"
 
+Point_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
+
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
@@ -64,6 +66,9 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_BioTime.hours    = 12;
   m_BioTime.days     = 0;
   m_BioTime.years    = 0;
+
+  m_WindDirection = 1;
+  m_WindStrenght  = 1; // 0,1 or 2
 
   m_tParam.resize(0);
   m_pFertilityRate = new CCyclicParam(30,50,8760,"Avarage fertility",PARAM_ENVIRONMENT);
@@ -548,6 +553,8 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   {
     m_IndexLastAnimal++;
   }
+
+  return true;
 }
 
 int CBiotop::deleteEntity(entityIdType idEntity) 
@@ -2745,6 +2752,59 @@ double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor)
   return (m_tBioSquare[coord.x][coord.y].odorTrace[odor]);    
 }
 
+bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS])
+{
+  // Init to 0
+  int i;
+  for (i=0; i<NUMBER_ODORS; i++)
+    odorLevel[i]=0;
+
+  // Check input coord
+  if (!isCoordValid(coord,1))
+    return false;
+
+  Point_t coordWind = coord;
+  if (m_WindStrenght>0)
+  {
+    coordWind.x -= vectorDirection[m_WindDirection].x;
+    coordWind.y -= vectorDirection[m_WindDirection].y;
+  }
+
+  // Find entities
+  CBasicEntity* pCurEntity = NULL;
+  FoundEntity_t* pFoundIds = NULL;
+
+  int nbIds = findEntities(pFoundIds, coordWind, range);
+  for (int ind=0;ind<nbIds;ind++)
+  {
+    pCurEntity = pFoundIds[ind].pEntity;
+    if (pCurEntity!=NULL)
+    {
+      for (int odor=0; odor<NUMBER_ODORS; odor++)
+      {
+        // Add odor for entities
+        if (pCurEntity->getOdor() == (ODOR_FIRST_TYPE+odor) )
+        {
+          odorLevel[odor] += MAX_SENSOR_VAL / ((double)pFoundIds[ind].distance + 2); // 1/R
+        }
+      }
+    }
+  }
+
+  // Add trace odor
+  for (i=0; i<NUMBER_ODORS; i++)
+  {
+    // Add odor trace
+    odorLevel[i] += getOdorTrace(coord, (OdorType_e)(ODOR_FIRST_TYPE+i));
+
+    // Use first threshold
+    if (odorLevel[i] > MAX_SENSOR_VAL)
+      odorLevel[i] = MAX_SENSOR_VAL;
+  }
+
+  return true;
+}
+
 COLORREF CBiotop::getCustomColor(Point_t coord)
 {
   // coord may be used later
@@ -2768,4 +2828,24 @@ BiotopSquare_t** CBiotop::getpBioSquare()
 string CBiotop::getLabel()
 {
   return (m_Label);
+}
+
+int CBiotop::getWindDirection()
+{
+  return m_WindDirection;
+}
+
+void CBiotop::setWindDirection(int direction)
+{
+  m_WindDirection = direction%8;
+}
+
+int CBiotop::getWindStrenght()
+{
+  return m_WindStrenght;
+}
+
+void CBiotop::setWindStrenght(int strenght)
+{
+  m_WindStrenght = strenght;
 }

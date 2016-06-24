@@ -103,7 +103,15 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
   Point_t relPos = {1,0};
   Point_t frontPos = pAnimal->getGridCoordRelative(relPos);
 
-  if (!pAnimal->getBiotop()->isCoordValid(frontPos,1))
+  // New itf
+  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, m_pStimulationValues);
+  for (i=0; i<m_SubCaptorNumber; i++)
+  {
+    // Use weight
+    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
+  }
+
+  /*if (!pAnimal->getBiotop()->isCoordValid(frontPos,1))
   {
     // Invalid coord
     pStimulationVal = m_pStimulationValues;
@@ -136,7 +144,7 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
       m_pStimulationValues[i] = MAX_SENSOR_VAL;
     // Use weight
     m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-  }
+  }*/
 
   pStimulationVal = m_pStimulationValues;
   return m_SubCaptorNumber;

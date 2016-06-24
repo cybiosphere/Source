@@ -252,11 +252,24 @@ void CBiotopView::OnTimer(UINT nIDEvent)
       }
       else
       {
+        int prevSucessScore = theApp.GetScenarioPlayer()->m_successScore;
+        int prevTotalScore  = theApp.GetScenarioPlayer()->m_totalScore;
+
         if (theApp.GetScenarioPlayer()->NextCmdNextSecond())
         {
           CString scoreText;
           scoreText.Format("Score:%d / %d", theApp.GetScenarioPlayer()->m_successScore, theApp.GetScenarioPlayer()->m_totalScore);  
           theApp.GetBioCtrlViewPtr()->SetStrScenarioScore(scoreText);
+          // In case of failure
+          if ((theApp.GetScenarioPlayer()->m_totalScore > prevTotalScore) && (theApp.GetScenarioPlayer()->m_successScore == prevSucessScore))
+          {
+            // If stop on event, auto freeze
+            if (theApp.IsModeStopOnEvent())
+            {
+              theApp.SetModeManual(true);
+              AfxMessageBox(theApp.GetScenarioPlayer()->GetCurrentCmd().c_str(), MB_ICONEXCLAMATION);
+            }
+          }
         }
         else
         {

@@ -170,7 +170,11 @@ int DLL_CYBIOCORE_API getStringSection(
   indexEnd = lpSourceString.find("\n",indexStart);
 
   if ((indexStart<0) || (indexEnd<0))
-    return -1;
+  {
+    lenght = lpDefault.length();
+    memcpy(lpReturnedString, lpDefault.c_str(), lenght+1);
+    return (lenght);
+  }
 
   foundStr = lpSourceString.substr(indexStart,indexEnd-indexStart);
   indexStart = foundStr.find("=",0);
@@ -178,12 +182,10 @@ int DLL_CYBIOCORE_API getStringSection(
   
   if ( (lenght>0) && (lenght<nSize) )
   {
-    //lpReturnedString = foundStr.substr(foundStr.length()-lenght, lenght);
     memcpy(lpReturnedString, (foundStr.substr(foundStr.length()-lenght, lenght)).c_str(), lenght+1);
   }
   else
   {
-    //lpReturnedString = lpDefault;
     lenght = lpDefault.length();
     memcpy(lpReturnedString, lpDefault.c_str(), lenght+1);
   }

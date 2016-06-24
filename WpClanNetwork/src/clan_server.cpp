@@ -9,11 +9,11 @@
 
 CommandHandler_t ScenarioCmdNameList[SERVER_CMD_NUMBER] =
 {
-// cmd name                 cmd function                help string
-  {"HELP",                  Server::CmdHelp,           "HELP"}, 
-  {"STOP_BIOTOP",           Server::CmdStopBiotop,     "STOP_BIOTOP"}, 
-  {"START_BIOTOP",          Server::CmdStartBiotop,    "START_BIOTOP"}, 
-  {"SET_BIOTOP_SPEED",      Server::CmdSetBiotopSpeed, "SET_BIOTOP_SPEED <speed int>"}
+// cmd name                     cmd function                       help string
+  {"HELP",                      Server::CmdHelp,                   "HELP"}, 
+  {"STOP_BIOTOP",               Server::CmdStopBiotop,             "STOP_BIOTOP"}, 
+  {"START_BIOTOP",              Server::CmdStartBiotop,            "START_BIOTOP"}, 
+  {"SET_BIOTOP_SPEED",          Server::CmdSetBiotopSpeed,         "SET_BIOTOP_SPEED <speed int>"}
 };
 
 

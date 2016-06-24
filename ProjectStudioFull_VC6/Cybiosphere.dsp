@@ -308,7 +308,6 @@ SOURCE=.\Cybiosphere.rc
 
 SOURCE=.\Resource.h
 # End Source File
-
 # End Group
 # End Group
 # Begin Group "WpGui"

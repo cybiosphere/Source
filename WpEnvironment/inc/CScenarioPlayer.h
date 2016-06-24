@@ -48,13 +48,13 @@ distribution.
 #include "CBiotop.h"
 #include <fstream>
 
-#define SCENARIO_CMD_NUMBER 15
+#define SCENARIO_CMD_NUMBER 17
 
 typedef struct 
 {
   const char* commandName;
   bool (*commandFonction)(CBiotop* pBiotop, string path, string commandParam, int* customVar1, int* customVar2);
-  std::string helpString;
+  const char* helpString;
 } CommandHandler_t;
 
 //===========================================================================
@@ -73,6 +73,7 @@ protected:
    CBiotop*  m_pBiotop;
    ifstream  m_curScenarioFile; 
    string    m_ScenarioPath;
+   string    m_currentCmd;
 
 public:
    int m_successScore;
@@ -115,9 +116,12 @@ public:
   static bool CmdDeleteEntity        (CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore);
   static bool CmdSetForbidenAction   (CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore);
   static bool CmdChkForbidActCntUnder(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore);
+  static bool CmdSetBiotopWindSpeed  (CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
+  static bool CmdSetBiotopWindDirection(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
 
-  int GetSuccessScore() {return m_successScore;};
-  int GetTotalScore()   {return m_totalScore;};
+  int GetSuccessScore()  {return m_successScore;};
+  int GetTotalScore()    {return m_totalScore;};
+  string GetCurrentCmd() {return m_currentCmd;};
 };
 
 #endif // !defined(CSCENARIOPLAYER_INCLUDED_)

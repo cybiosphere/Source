@@ -47,6 +47,7 @@ protected: // create from serialization only
 public:
 	//{{AFX_DATA(CBioCtrlView)
 	enum { IDD = IDD_BIOCTRL_FORMVIEW };
+	CComboBox	m_ComboWind;
 	CSliderCtrl	m_SliderSpeed;
 	CSliderCtrl	m_SliderZoom;
 	BOOL	m_bManualMode;
@@ -110,6 +111,7 @@ protected:
 	afx_msg void OnReleasedcaptureSliderZoom(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEdit();
 	afx_msg void OnCheckStopOnEv();
+	afx_msg void OnSelchangeComboWind();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

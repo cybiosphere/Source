@@ -186,6 +186,7 @@
 #define IDC_RADIO_PURPOSE7              1108
 #define IDC_PURPOSE_TXT1                1109
 #define IDC_PURPOSE_TXT2                1110
+#define IDC_COMBO_WIND                  1110
 #define IDC_PURPOSE_TXT3                1111
 #define IDC_PURPOSE_TXT4                1112
 #define IDC_PURPOSE_TXT5                1113
@@ -227,9 +228,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        203
+#define _APS_NEXT_RESOURCE_VALUE        204
 #define _APS_NEXT_COMMAND_VALUE         32809
-#define _APS_NEXT_CONTROL_VALUE         1110
+#define _APS_NEXT_CONTROL_VALUE         1111
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

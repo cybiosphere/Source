@@ -15,7 +15,17 @@ int main(int, char**)
 		ConsoleWindow console("Client Console", 160, 1000);
 		ConsoleLogger logger;
 
-		Client client("localhost", "4556");
+    // Get Server info in ini file
+    string ServerAddrStr;
+    string ServerPortStr;
+    char resuBuffer[512];
+    string fileIni = "Cybiosphere.ini";
+    int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
+    ServerAddrStr = resuBuffer;
+    resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
+    ServerPortStr = resuBuffer;
+
+		Client client(ServerAddrStr, ServerPortStr);
 		client.exec();
 
 		return 0;
