@@ -134,9 +134,6 @@ public:
   specieSignatureType getSpecieSignature();
   bool checkSpecieCompatibility(CGenome* pOther);
 
-  bool saveInFile(string fileNameWithPath);
-  bool loadFromFile(string fileNameWithPath);
-
   bool saveInXmlFile(string fileNameWithPath);
   bool saveInXmlFile(TiXmlDocument *pXmlDoc);
   bool loadFromXmlFile(string fileNameWithPath);

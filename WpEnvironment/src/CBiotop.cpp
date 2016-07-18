@@ -69,6 +69,8 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
 
   m_WindDirection = 1;
   m_WindStrenght  = 1; // 0,1 or 2
+  
+  m_DefaultFilePath = "";
 
   m_tParam.resize(0);
   m_pFertilityRate = new CCyclicParam(30,50,8760,"Avarage fertility",PARAM_ENVIRONMENT);
@@ -283,7 +285,7 @@ CBasicEntity* CBiotop::createEntity(string name, CGenome* pGenome)
 }
 
 
-CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc)
+CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc, string pathNameForBabies)
 {
   string name;
   CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
@@ -295,7 +297,7 @@ CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc)
 
   if(pNewEntity != NULL)
   {
-    pNewEntity->loadDataFromXmlFile(pXmlDoc);
+    pNewEntity->loadDataFromXmlFile(pXmlDoc, pathNameForBabies);
     pNewEntity->loadBrainFromXmlFile(pXmlDoc);
   }
   else
@@ -415,13 +417,13 @@ entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point
     delete pXmlDoc;
     return -1;
   }
-  newEntityId = createAndAddEntity(pXmlDoc, coord);
+  newEntityId = createAndAddEntity(pXmlDoc, pathName, coord);
   CYBIOCORE_LOG_FLUSH;
   delete pXmlDoc;
   return newEntityId;
 }
 
-entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord)
+entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord)
 {
   int startLayer;
   string name;
@@ -436,7 +438,7 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord)
   CBasicEntity* pEntity = getEntityById(newEntityId);
   if (pEntity!=NULL)
   {
-    pEntity->loadDataFromXmlFile(pXmlDoc);
+    pEntity->loadDataFromXmlFile(pXmlDoc, pathName);
     pEntity->loadBrainFromXmlFile(pXmlDoc);
 
     // Set home position if needed
@@ -2059,244 +2061,6 @@ bool CBiotop::checkMeasureEvents()
 //===========================================================================
 // Save/Load in file
 //===========================================================================
-bool CBiotop::saveInFile(string fileName, string pathName)
-{
-  string fileString = "";
-  bool resu = false;
-  char* pbuf = NULL;
-  unsigned long int begin, end;
-  long int fLength; 
-  ifstream f1;
-  string fileNameWithPath = pathName + fileName;
-  string prevFileStr = "none";
-
-  f1.open( fileNameWithPath.c_str());
-  begin = f1.tellg();
-  f1.seekg(0, ios::end);
-  end = f1.tellg();
-  fLength = (end - begin);
-  f1.seekg(0, ios::beg);
-
-  if ( (fLength>0) && (fLength<1000000) )
-  {
-    pbuf = new char[fLength+1];
-    memset(pbuf,0,fLength+1);
-    f1.read(pbuf,fLength);
-    fileString = pbuf;
-    f1.close();
-    delete[] pbuf;
-  }
-
-  string strSection,strData;
-  CBasicEntity* pCurEntity;
-  int i,j,k;
-  
-  resu = writeStringSection("BIOTOP","Label",m_Label,fileString);
-  if (!resu)
-    return(false);
-  strData = FormatString("%d",m_Dimension.x);
-  resu = writeStringSection("BIOTOP","SizeX",strData,fileString);
-  strData = FormatString("%d",m_Dimension.y);
-  resu = writeStringSection("BIOTOP","SizeY",strData,fileString);
-  strData = FormatString("%d",m_nbLayer);
-  resu = writeStringSection("BIOTOP","SizeZ",strData,fileString);
-  strData = FormatString("%d",convertBioTimeToCount(m_BioTime));
-  resu = writeStringSection("BIOTOP","Time",strData,fileString);
-
-  strData = FormatString("%d",getNbOfEntities());
-  resu = writeStringSection("BIOTOP","NumberEntities",strData,fileString);
-
-  for (k=0;k<m_nbLayer;k++)
-  {
-    strData = "";
-    for (i=0;i<m_Dimension.x;i++)
-    {
-      for (j=0;j<m_Dimension.y;j++)
-      {
-        strData += FormatString("%02x",(BYTE)m_tBioGrid[i][j][k].layerType); 
-      }
-    }
-    strSection = FormatString("GRID_L%d",k);
-    resu = writeStringSection(strSection, "Data", strData, fileString);
-  }
-
-  for (i=0; i<getNbOfEntities(); i++)
-  {
-    strSection = FormatString("ENTITY%d",i);
-    pCurEntity = getEntityByIndex(i);
-
-    strData = FormatString("%d", pCurEntity->getStepCoord().x);
-    resu = writeStringSection(strSection,"StepCoordX",strData,fileString);
-
-    strData = FormatString("%d", pCurEntity->getStepCoord().y);
-    resu = writeStringSection(strSection,"StepCoordY",strData,fileString);
-
-    strData = FormatString("%d", pCurEntity->getLayer());
-    resu = writeStringSection(strSection,"Layer",strData,fileString);
-
-    strData = FormatString("%d", pCurEntity->getDirection());
-    resu = writeStringSection(strSection,"Direction",strData,fileString);
-
-    strData = pCurEntity->getLabel() + ".xml";
-    resu = writeStringSection(strSection,"File",strData,fileString);
-    
-    if (prevFileStr != strData)
-    {
-      // Don't save twice the same file
-      pCurEntity->saveInXmlFile(pathName + strData); 
-    }
-
-    prevFileStr = strData;
-  }
-
-  // FRED TBC: m_pSunlightRate...
-
-  ofstream f2;
-  f2.open(fileNameWithPath.c_str());
-  f2 << fileString;
-  f2.close();  
-
-  return (true);
-}
-
-
-bool CBiotop::loadFromFile(string fileName, string pathName)
-{
-  string fileNameWithPath = pathName + fileName;
-  string fileString;
-  char* pbuf = NULL;
-  unsigned long int begin, end;
-  long int fLength; 
-  ifstream f1;
-  bool resu = false;
-
-  f1.open( fileNameWithPath.c_str());
-  begin = f1.tellg();
-  f1.seekg(0, ios::end);
-  end = f1.tellg();
-  fLength = (end - begin);
-  f1.seekg(0, ios::beg);
-
-  if ( (fLength==0) || (fLength>1000000) )
-  {
-    return (false);
-  }
-
-  pbuf = new char[fLength+1];
-  memset(pbuf,0,fLength+1);
-  f1.read(pbuf,fLength);
-  fileString = pbuf;
-  f1.close();
-  delete[] pbuf;
-
-  // NOW, Parse the string file
-  string strSection, strData, prevFileStr;
-  char resuStr[100000];
-  char fileStr[500];
-  string specieName;
-  DWORD readLen = 0;
-  string tmpStr = "00";
-  int i,j,k,count;
-  Point_t gridCoord;
-  Point_t stepCoord;
-  int layer, direction;
-  entityIdType resuId;
-  CBasicEntity* pEntity = NULL;
-  int dataGrid; // ! sscanf needs int as argument, do not use BYTE
-
-  resu = getStringSection("BIOTOP","Label","Unset",resuStr,100,fileString);
-  if (!resu)
-    return(false);
-  m_Label = FormatString("%s",resuStr);
-
-  // Clear Previous Biotop
-  deleteAllEntities();
-  deleteAllMeasures();
-  deleteGrid(); 
-
-  resu = getStringSection("BIOTOP","SizeX","0",resuStr,10,fileString);
-  m_Dimension.x = atoi(resuStr);
-  resu = getStringSection("BIOTOP","SizeY","0",resuStr,10,fileString);
-  m_Dimension.y = atoi(resuStr);
-  resu = getStringSection("BIOTOP","SizeZ","0",resuStr,10,fileString);
-  m_nbLayer = atoi(resuStr);
-  resu = getStringSection("BIOTOP","Time","0",resuStr,10,fileString);
-  m_BioTime = convertCountToBioTime(atoi(resuStr));
-
-  buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
-
-  for (k=0;k<m_nbLayer;k++)
-  {
-    int strOffset = 0;
-    strSection = FormatString("GRID_L%d",k);
-    memset(resuStr,0,100000);
-    resu = getStringSection(strSection, "Data","00",resuStr,100000,fileString);
-    for (i=0;i<m_Dimension.x;i++)
-    {
-      for (j=0;j<m_Dimension.y;j++)
-      {
-        sscanf (resuStr + strOffset,"%02X",&dataGrid);
-        m_tBioGrid[i][j][k].layerType = (LayerType_e)dataGrid;
-        strOffset += 2;
-      }
-    }
-  }
-
-  initGridEntity();
-
-  resu = getStringSection("BIOTOP","NumberEntities","0",resuStr,10,fileString);
-  count = atoi(resuStr);
-
-  for (i=0; i<count; i++)
-  {
-    strSection = FormatString("ENTITY%d",i);
-    resu = getStringSection(strSection,"File","Unknown",fileStr,500,fileString); 
-    if (resu)
-    { 
-      resu = getStringSection(strSection,"StepCoordX","0",resuStr,10,fileString);
-      stepCoord.x = atoi(resuStr);
-      gridCoord.x  = stepCoord.x / NB_STEPS_PER_GRID_SQUARE;
-      resu = getStringSection(strSection,"StepCoordY","0",resuStr,10,fileString);
-      stepCoord.y = atoi(resuStr);
-      gridCoord.y  = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
-      resu = getStringSection(strSection,"Layer","0",resuStr,10,fileString);
-      layer = atoi(resuStr);
-      resu = getStringSection(strSection,"Direction","0",resuStr,10,fileString);
-      direction = atoi(resuStr);
-
-      if ( (prevFileStr == fileStr) && (pEntity) )
-      {
-        resuId = createAndAddCloneEntity(pEntity->getId(), gridCoord, layer);
-        pEntity = getEntityById(resuId);
-        if (pEntity)
-        {
-          pEntity->setDirection(direction);
-          pEntity->jumpToStepCoord(stepCoord);
-          pEntity->checkIfhasMovedAndClear();
-          pEntity->checkIfhasChangedAndClear();
-        }
-      }
-      else
-      {   
-        resuId = createAndAddEntity(fileStr, pathName, gridCoord);
-        pEntity = getEntityById(resuId);
-        if (pEntity)
-        {
-          pEntity->setDirection(direction);
-        }
-      }
-      prevFileStr = fileStr;
-    }
-  }
-
-  // FRED TBC: m_pSunlightRate...
-
-  f1.close();
-
-  return (true);
-}
-
-
 bool CBiotop::saveInXmlFile(string fileName, string pathName)
 {
   bool resu = false;
@@ -2497,6 +2261,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     m_Dimension.y = sizeY;
     m_nbLayer = nbLayer;
     m_BioTime = convertCountToBioTime(atoi(timeCountStr.c_str()));
+    m_DefaultFilePath = pathNameForEntities;
 
     buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
 

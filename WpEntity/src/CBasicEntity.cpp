@@ -2605,403 +2605,6 @@ void CBasicEntity::deleteAllGestationChilds()
   m_tGestationChilds.clear();
 }
 
-//===========================================================================
-// Save/Load in file
-//===========================================================================
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::saveInFile
-//  
-// DESCRIPTION:  Save all entity data
-// 
-// ARGUMENTS:    string fileNameWithPath
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      None
-//---------------------------------------------------------------------------
-bool CBasicEntity::saveInFile(string fileName, string pathName, string newLabel)
-{
-  string strSection,strData,tempLabel;
-  BOOL resu;
-  unsigned int i;
-  string fileNameWithPath = pathName + fileName;
-
-  if (newLabel == "")
-    tempLabel = m_Label;
-  else
-    tempLabel = newLabel;
-
-
-  resu = writeStringSectionToFile("ENTITY","Label",tempLabel,fileNameWithPath);
-  if (!resu)
-    return(false);
-
-  strData = FormatString("%d",m_Generation);
-  resu = writeStringSectionToFile("ENTITY","Generation",strData,fileNameWithPath);
-  strData = FormatString("%d",m_TotalChildNumber);
-  resu = writeStringSectionToFile("ENTITY","TotalChildNumber",strData,fileNameWithPath);
-  strData = FormatString("%d",m_Status);
-  resu = writeStringSectionToFile("ENTITY","Status",strData,fileNameWithPath);
-
-  strData = FormatString("%d",m_Layer);
-  resu = writeStringSectionToFile("ENTITY","Layer",strData,fileNameWithPath);
-  strData = FormatString("%d",m_Direction);
-  resu = writeStringSectionToFile("ENTITY","Direction",strData,fileNameWithPath);
-  strData = FormatString("%d",m_HourCounter);
-  resu = writeStringSectionToFile("ENTITY","HourCounter",strData,fileNameWithPath);
- 
-  strData = FormatString("%d",m_indCurrentLifeStage);
-  resu = writeStringSectionToFile("ENTITY","LifeStage",strData,fileNameWithPath);
-
-  for (i=0; i<getNbLifeStages(); i++)
-  {
-    strData = FormatString("%d",getLifeStage(i)->getCurDayCount());
-    strSection = FormatString("DayCountStage%02d",i);
-    resu = writeStringSectionToFile("ENTITY",strSection,strData,fileNameWithPath);
-  }
-
-  if (m_pBrain!=NULL)
-  {
-    strData = FormatString("%d",m_pBrain->GetNumberReaction());
-    resu = writeStringSectionToFile("ENTITY","ActionNumber",strData,fileNameWithPath);
-
-    for (i=0; i<m_pBrain->GetNumberReaction(); i++)
-    {
-      strData = FormatString("%5.2f",m_pBrain->GetReactionByIndex(i)->GetSuccessSatisfactionFactor());
-      strSection = FormatString("SuccessAction%02d",i);
-      resu = writeStringSectionToFile("ENTITY",strSection,strData,fileNameWithPath);  
- 
-      strData = FormatString("%5.2f",m_pBrain->GetReactionByIndex(i)->GetFailureFrustrationFactor());
-      strSection = FormatString("FrustrationAction%02d",i);
-      resu = writeStringSectionToFile("ENTITY",strSection,strData,fileNameWithPath);  
-    }
-  }
-
-  if (m_pGenome!=NULL)
-  {
-    strData = tempLabel + ".gno";
-    resu = writeStringSectionToFile("DEPENDENCIES","Genome",strData,fileNameWithPath);
-    m_pGenome->saveInFile(pathName + strData);
-  }
-
-  if (m_pBrain!=NULL)
-  {
-    strData = tempLabel + ".brn";
-    resu = writeStringSectionToFile("DEPENDENCIES","Brain",strData,fileNameWithPath);
-    m_pBrain->GetDecisionNeuronTable()->saveInFile(pathName + strData);
-    m_pBrain->GetIndentifyNeuronTable()->saveInFile(pathName + strData);
-  }
-
-  // Save parameters
-  for (i=0; i<getNumParameter(); i++)
-  {
-    strSection = FormatString("NameParamet%03d",i);
-    resu = writeStringSectionToFile("PARAMETERS",strSection,getParameter(i)->getLabel(),fileNameWithPath);
-    strData = FormatString("%.3f",getParameter(i)->getVal());
-    strSection = FormatString("CurValParam%03d",i);
-    resu = writeStringSectionToFile("PARAMETERS",strSection,strData,fileNameWithPath);
-  }
-
-  // Save caracters
-  strData = FormatString("%d",m_ColorRgb);
-  resu = writeStringSectionToFile("CARACTERS", "ColorRGB", strData, fileNameWithPath);
-  strData = FormatString("%d",m_Odor);
-  resu = writeStringSectionToFile("CARACTERS", "Odor", strData, fileNameWithPath);
-  strData = FormatString("%d",m_Pheromone);
-  resu = writeStringSectionToFile("CARACTERS", "Pheromone", strData, fileNameWithPath);
-  strData = FormatString("%d",m_Silhouette);
-  resu = writeStringSectionToFile("CARACTERS", "Form", strData, fileNameWithPath);
-  strData = FormatString("%d",m_Texture);
-  resu = writeStringSectionToFile("CARACTERS", "Texture", strData, fileNameWithPath);
-  strData = FormatString("%d",m_pPhyAttribute->getPresenceMask());
-  resu = writeStringSectionToFile("CARACTERS", "Attribute", strData, fileNameWithPath);
-
-  // Gestation Babies
-  strData = FormatString("%d",m_tGestationChilds.size());
-  resu = writeStringSectionToFile("GESTATION","GestationChildNumber",strData,fileNameWithPath);
-
-  // Save babies
-  CBasicEntity* pBaby;
-  for (i=0; i<m_tGestationChilds.size(); i++)
-  {
-    pBaby = m_tGestationChilds[i];
-    strSection = FormatString("GestationBaby%03d",i);
-    strData = pBaby->getLabel() + ".ent";
-    resu = writeStringSectionToFile("GESTATION",strSection,strData,fileNameWithPath);
-    pBaby->saveInFile(strData, pathName);
-  }  
-
-  return (true);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::getGenomeFromFile
-//  
-// DESCRIPTION:  Load all entity data except params,brain values and babies.
-//               Genetic reconstruction is required.
-// 
-// ARGUMENTS:    string fileNameWithPath
-//               CGenome genome   
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      Reserved for non attached entities
-//---------------------------------------------------------------------------
-bool CBasicEntity::getGenomeFromFile(string fileName, string pathName, CGenome& genome)
-{
-  string strSection,strData;
-  char resuStr[100];
-  BOOL resu =  false;
-  string fileNameWithPath = pathName + fileName;
-
-  resu = getStringSectionFromFile("DEPENDENCIES","Genome","",resuStr,100,fileNameWithPath);
-  strData = resuStr;
-  if (resu)
-  {
-    genome.loadFromFile(pathName + strData);
-  }  
-
-  return (resu);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::getDefaultLayerFromFile
-//  
-// DESCRIPTION:  Load all entity data except params,brain values and babies.
-// 
-// ARGUMENTS:    string fileNameWithPath
-//               int& layer  
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      
-//---------------------------------------------------------------------------
-bool CBasicEntity::getDefaultLayerFromFile(string fileName, string pathName, int& layer)
-{
-  string strSection,strData;
-  char resuStr[100];
-  BOOL resu = false;
-  string fileNameWithPath = pathName + fileName;
-
-  resu = getStringSectionFromFile("ENTITY","Layer","0",resuStr,10,fileNameWithPath);
-  layer = atoi(resuStr);
-
-  return (resu);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::getEntityNameFromFile
-//  
-// DESCRIPTION:  Get entity name
-// 
-// ARGUMENTS:    string fileNameWithPath
-//               stringt& name: result
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      
-//---------------------------------------------------------------------------
-bool CBasicEntity::getEntityNameFromFile(string fileName, string pathName, string& name)
-{
-  string strSection,strData;
-  char resuStr[100];
-  BOOL resu = false;
-  string fileNameWithPath = pathName + fileName;
-
-  resu = getStringSectionFromFile("ENTITY","Label","Unset",resuStr,100,fileNameWithPath);
-  name = resuStr;
-
-  return (resu);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::loadInfoFromFile
-//  
-// DESCRIPTION:  Load all entity parameters and age values.
-// 
-// ARGUMENTS:    string fileNameWithPath
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      
-//---------------------------------------------------------------------------
-bool CBasicEntity::loadInfoFromFile(string fileName, string pathName)
-{
-  string strSection,strData;
-  char resuStr[100];
-  BOOL resu = false;
-  string fileNameWithPath = pathName + fileName;
-
-  resu = getStringSectionFromFile("ENTITY","Label","Unset",resuStr,100,fileNameWithPath);
-  m_Label = resuStr;
-  resu = getStringSectionFromFile("ENTITY","Generation","0",resuStr,10,fileNameWithPath);
-  m_Generation = atoi(resuStr);
-  resu = getStringSectionFromFile("ENTITY","Direction","0",resuStr,10,fileNameWithPath);
-  setDirection(atoi(resuStr));
-  resu = getStringSectionFromFile("ENTITY","TotalChildNumber","0",resuStr,10,fileNameWithPath);
-  m_TotalChildNumber = atoi(resuStr);
-  resu = getStringSectionFromFile("ENTITY","Status","0",resuStr,10,fileNameWithPath);
-  m_Status = (StatusType_e)atoi(resuStr);
-
-  return (resu);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::loadParametersFromFile
-//  
-// DESCRIPTION:  Load all entity parameters and age values.
-// 
-// ARGUMENTS:    string fileNameWithPath
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      
-//---------------------------------------------------------------------------
-bool CBasicEntity::loadParametersFromFile(string fileName, string pathName)
-{
-  string strSection,strData;
-  char resuStr[100];
-  double curVal;
-  BOOL resu = false;
-  unsigned int i;
-  string fileNameWithPath = pathName + fileName;
-
-  getStringSectionFromFile("ENTITY","Label","Unset",resuStr,100,fileNameWithPath);
-  if (resuStr == m_Label)
-  {
-    int prevLifeStage = m_indCurrentLifeStage;
-
-    // Load Age info
-    resu = getStringSectionFromFile("ENTITY","HourCounter","0",resuStr,10,fileNameWithPath);
-    m_HourCounter = atoi(resuStr);
-
-    resu = getStringSectionFromFile("ENTITY","LifeStage","0",resuStr,10,fileNameWithPath);
-    m_indCurrentLifeStage = atoi(resuStr);
-
-    if ( (m_indCurrentLifeStage != prevLifeStage) && (getNbLifeStages()>0) )
-    {
-      CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
-      enterInNewLifeStage(pLifeStage);
-    }
-
-    for (i=0; i<getNbLifeStages(); i++)
-    {
-      strSection = FormatString("DayCountStage%02d",i);
-      resu = getStringSectionFromFile("ENTITY",strSection,"0",resuStr,100,fileNameWithPath);
-      getLifeStage(i)->setCurDayCount(atoi(resuStr));
-    }
-
-    // load parameters
-    for (i=0; i<getNumParameter(); i++)
-    {
-      strSection = FormatString("CurValParam%03d",i);
-      resu = getStringSectionFromFile("PARAMETERS",strSection,"0",resuStr,100,fileNameWithPath);
-      if (resu)
-      {
-        curVal = atof(resuStr);
-        getParameter(i)->setVal(curVal);
-      }
-    }
-
-    // Load caracters
-    resu = getStringSectionFromFile("CARACTERS","ColorRGB","0",resuStr,100,fileNameWithPath);
-    m_ColorRgb = atoi(resuStr); 
-    resu = getStringSectionFromFile("CARACTERS","Odor","0",resuStr,100,fileNameWithPath);
-    m_Odor = (OdorType_e)atoi(resuStr); 
-    resu = getStringSectionFromFile("CARACTERS","Pheromone","0",resuStr,100,fileNameWithPath);
-    m_Pheromone =(PheromoneType_e)atoi(resuStr); 
-    resu = getStringSectionFromFile("CARACTERS","Form","0",resuStr,100,fileNameWithPath);
-    m_Silhouette = (FormType_e)atoi(resuStr); 
-    resu = getStringSectionFromFile("CARACTERS","Texture","0",resuStr,100,fileNameWithPath);
-    m_Texture = (TextureType_e)atoi(resuStr); 
-    resu = getStringSectionFromFile("CARACTERS","Attribute","0",resuStr,100,fileNameWithPath);
-    m_pPhyAttribute->setPresenceMask(((DWORD)atoi(resuStr)));
-
-    // Gestation Babies
-    resu = getStringSectionFromFile("GESTATION","GestationChildNumber","0",resuStr,100,fileNameWithPath);
-    int numBabies = atoi(resuStr);
-
-    // Load babies
-    CGenome* pBabyGenome;
-    CBasicEntity* pEntity;
-    string fileStr;
-    for (i=0; i<numBabies; i++)
-    {
-      strSection = FormatString("GestationBaby%03d",i);
-      resu = getStringSectionFromFile("GESTATION",strSection,"",resuStr,100,fileNameWithPath);
-      fileStr = resuStr;
-      pBabyGenome = new CGenome(CLASS_NONE,"");
-      getGenomeFromFile(fileStr,pathName,*pBabyGenome);
-      getEntityNameFromFile(fileStr,pathName,strData);    
-      pEntity = m_pBiotop->createEntity(strData,pBabyGenome);
-      if (pEntity)
-      {
-        pEntity->loadBrainFromFile(fileStr, pathName);
-        pEntity->loadInfoFromFile(fileStr, pathName);
-        pEntity->loadParametersFromFile(fileStr, pathName);
-        m_tGestationChilds.push_back(pEntity);
-      }
-    }  
-
-  }
-
-  return (resu);
-}
-
-//---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::loadBrainFromFile
-//  
-// DESCRIPTION:  Load all entity brain.
-// 
-// ARGUMENTS:    string fileNameWithPath
-//   
-// RETURN VALUE: bool: success
-//  
-// REMARKS:      
-//---------------------------------------------------------------------------
-bool CBasicEntity::loadBrainFromFile(string fileName, string pathName)
-{
-  string strSection,strData;
-  char resuStr[100];
-  BOOL resu = false;
-  string fileNameWithPath = pathName + fileName;
-
-  getStringSectionFromFile("ENTITY","Label","Unset",resuStr,100,fileNameWithPath);
-  if (resuStr == m_Label)
-  {
-    resu = getStringSectionFromFile("DEPENDENCIES","Brain","",resuStr,100,fileNameWithPath);
-    strData = resuStr;
-    if (resu)
-    {
-      m_pBrain->GetDecisionNeuronTable()->loadFromFile(pathName + strData);
-    }
-  }
-
-  if (m_pBrain!=NULL)
-  {
-    resu = getStringSectionFromFile("ENTITY","ActionNumber","0",resuStr,10,fileNameWithPath);
-    int numberReaction = atoi(resuStr);
-
-    double tmpVal = 0;
-    for (int i=0; (i<m_pBrain->GetNumberReaction())&&(i<numberReaction); i++)
-    {
-      strSection = FormatString("SuccessAction%02d",i);
-      resu = getStringSectionFromFile("ENTITY",strSection,"-1.0",resuStr,10,fileNameWithPath);
-      tmpVal = atof(resuStr);
-      if (tmpVal>-1.0)
-        m_pBrain->GetReactionByIndex(i)->SetSuccessSatisfactionFactor(tmpVal);
-
-      strSection = FormatString("FrustrationAction%02d",i);
-      resu = getStringSectionFromFile("ENTITY",strSection,"-1.0",resuStr,10,fileNameWithPath);
-      tmpVal = atof(resuStr);
-      if (tmpVal>-1.0)
-        m_pBrain->GetReactionByIndex(i)->SetFailureFrustrationFactor(tmpVal);
-    }
-  }
-
-  return (resu);
-}
 
 //===========================================================================
 // Save/Load in XML file
@@ -3021,6 +2624,12 @@ bool CBasicEntity::loadBrainFromFile(string fileName, string pathName)
 bool CBasicEntity::saveInXmlFile(string fileName, string newLabel)
 {
   bool resu = false;
+
+  if (fileName == ".xml")
+  {
+    int titi = 10;
+  }
+
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileName);
   saveInXmlFile(pXmlDoc, newLabel);
   resu = pXmlDoc->SaveFile();
@@ -3303,12 +2912,12 @@ bool CBasicEntity::getEntityNameFromXmlFile(TiXmlDocument *pXmlDoc, string& name
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CBasicEntity::loadDataFromXmlFile(string fileName)
+bool CBasicEntity::loadDataFromXmlFile(string fileName, string pathNameForBabies)
 {
   bool resu = false;
   TiXmlDocument xmlDoc(fileName);
   resu = xmlDoc.LoadFile();
-  loadDataFromXmlFile(&xmlDoc);
+  loadDataFromXmlFile(&xmlDoc, pathNameForBabies);
   return resu;
 }
 
@@ -3324,7 +2933,7 @@ bool CBasicEntity::loadDataFromXmlFile(string fileName)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
+bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForBabies)
 {
   TiXmlElement* pElement;
   TiXmlNode* pNode = NULL;
@@ -3466,14 +3075,15 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
         pElement = (TiXmlElement*)pNode;
         if ((pElement!=NULL) &&  (pElement->QueryStringAttribute(XML_ATTR_FILE_NAME, &fileStr) != TIXML_NO_ATTRIBUTE))
         { 
+          string fileNameWithPathStr = pathNameForBabies + fileStr;
           pBabyGenome = new CGenome(CLASS_NONE,"");
-          getGenomeFromXmlFile(fileStr,*pBabyGenome);
-          getEntityNameFromXmlFile(fileStr,babName);    
+          getGenomeFromXmlFile(fileNameWithPathStr,*pBabyGenome);
+          getEntityNameFromXmlFile(fileNameWithPathStr,babName);    
           pEntity = m_pBiotop->createEntity(babName,pBabyGenome);
           if (pEntity)
           {
-            pEntity->loadBrainFromXmlFile(fileStr);
-            pEntity->loadDataFromXmlFile(fileStr);
+            pEntity->loadBrainFromXmlFile(fileNameWithPathStr);
+            pEntity->loadDataFromXmlFile(fileNameWithPathStr, pathNameForBabies);
             m_tGestationChilds.push_back(pEntity);
           }
         }

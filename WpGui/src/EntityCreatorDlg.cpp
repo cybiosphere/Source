@@ -207,7 +207,7 @@ void CEntityCreatorDlg::OnOK()
     {
       CString filenameWithPath = m_OpenedDirectoryName + m_OpenedFileName;
       CBasicEntity* pEntity = theApp.GetBiotop()->getEntityById(m_NewEntityId);
-      pEntity->loadDataFromXmlFile(filenameWithPath.GetBuffer(0));
+      pEntity->loadDataFromXmlFile(filenameWithPath.GetBuffer(0),"");
       pEntity->loadBrainFromXmlFile(filenameWithPath.GetBuffer(0));
     } 
   }

@@ -171,9 +171,10 @@ private:
   //          / | \       
   //        5   6   7      
   //       m_WindDirection
-int m_WindDirection;
-int m_WindStrenght; // 0,1 or 2
+  int m_WindDirection;
+  int m_WindStrenght; // 0,1 or 2
 
+  string m_DefaultFilePath;
 
 //---------------------------------------------------------------------------
 // associations
@@ -204,7 +205,7 @@ public:
   bool         addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, int newLayer=-2); 
   entityIdType createAndAddEntity(string name, Point_t coord, int layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);
-  entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord);
+  entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord);
   entityIdType createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, int cloneLayer = -2, string cloneName = "");
 
   bool resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome);
@@ -226,7 +227,7 @@ public:
 
 public:
   static CBasicEntity* createEntity(string name, CGenome* pGenome);
-  static CBasicEntity* createEntity(TiXmlDocument *pXmlDoc);
+  static CBasicEntity* createEntity(TiXmlDocument *pXmlDoc, string pathNameForBabies);
   static CBasicEntity* createCloneEntity(CBasicEntity* pModelEntity);
 
 //---------------------------------------------------------------------------
@@ -296,9 +297,6 @@ public:
 // Save/Load in file
 //---------------------------------------------------------------------------
 public:
-
-  bool saveInFile(string fileName, string pathName);
-  bool loadFromFile(string fileName, string pathName);
 
   bool saveInXmlFile(string fileName, string pathName);
   bool saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntities=true);

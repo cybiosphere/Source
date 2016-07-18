@@ -104,7 +104,7 @@ void CEntityEditorDlg::OnButtonLoad()
     if (endPath>0)
       pathName = pathName.Left(endPath+1); 
 
-    bool resu = m_pEntity->loadDataFromXmlFile(fileDlg.GetPathName().GetBuffer(0));
+    bool resu = m_pEntity->loadDataFromXmlFile(fileDlg.GetPathName().GetBuffer(0), pathName.GetBuffer(0));
 
     if (!resu)
     {

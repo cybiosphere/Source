@@ -518,18 +518,6 @@ private:
   void deleteAllGestationChilds(); 
 
 //---------------------------------------------------------------------------
-// Save/Load in file
-//---------------------------------------------------------------------------
-public:
-  bool saveInFile(string fileName, string pathName, string newLabel="");
-  static bool getGenomeFromFile(string fileName, string pathName, CGenome& genome);
-  static bool getDefaultLayerFromFile(string fileName, string pathName, int& layer);
-  static bool getEntityNameFromFile(string fileName, string pathName, string& name);
-  bool loadInfoFromFile(string fileName, string pathName);
-  bool loadParametersFromFile(string fileName, string pathName);
-  bool loadBrainFromFile(string fileName, string pathName);
-
-//---------------------------------------------------------------------------
 // Save/Load in XML file
 //---------------------------------------------------------------------------
 public:
@@ -541,8 +529,8 @@ public:
   static bool getDefaultLayerFromXmlFile(TiXmlDocument *pXmlDoc, int& layer);
   static bool getEntityNameFromXmlFile(string fileName, string& name);
   static bool getEntityNameFromXmlFile(TiXmlDocument *pXmlDoc, string& name);
-  bool loadDataFromXmlFile(string fileName);
-  bool loadDataFromXmlFile(TiXmlDocument *pXmlDoc);
+  bool loadDataFromXmlFile(string fileName, string pathNameForBabies);
+  bool loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForBabies);
   bool loadBrainFromXmlFile(string fileName);
   bool loadBrainFromXmlFile(TiXmlDocument *pXmlDoc);
   
