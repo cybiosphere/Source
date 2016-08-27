@@ -46,7 +46,7 @@ CParameterSlider::CParameterSlider(bool allowRangeEditMin, bool allowRangeEditMa
    m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(70, "Arial");
+   m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
    m_bIsChanging = false;
    m_bAllowRangeEditMin = allowRangeEditMin;
    m_bAllowRangeEditMax = allowRangeEditMax;
@@ -97,7 +97,7 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   CRect rectText = rect;
   rectText.top -= 11;
   rectText.bottom = rect.top;
-  m_pTextStatic->Create(m_pParam->getLabel().c_str(),SS_CENTER,rectText,pParentWnd);
+  m_pTextStatic->Create(LPCTSTR(m_pParam->getLabel().c_str()),SS_CENTER,rectText,pParentWnd);
   m_pTextStatic->SetFont(m_pFont);
   m_pTextStatic->ShowWindow(SW_SHOW);
 
@@ -107,7 +107,7 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   rectMin.top += 9;
   rectMin.bottom += 14;
   rectMin.right = rect.left + 30;
-  tmpStr.Format("%.1f",m_pParam->getMin());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMin());
   if (m_bAllowRangeEditMin)
     m_pMinStatic->Create(SS_CENTER,rectMin,pParentWnd, nID+101);
   else
@@ -122,7 +122,7 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   rectVal.bottom += 14;
   rectVal.left = rect.left + 26;
   rectVal.right = rect.right - 26;
-  tmpStr.Format("%.1f",m_pParam->getVal());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getVal());
   m_pValStatic->Create(SS_CENTER|WS_DISABLED,rectVal,pParentWnd, nID+100);
   m_pValStatic->SetFont(m_pFont);
   m_pValStatic->SetWindowText(tmpStr);
@@ -133,7 +133,7 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   rectMax.top += 9;
   rectMax.bottom += 14;
   rectMax.left = rect.right - 30;
-  tmpStr.Format("%.1f",m_pParam->getMax());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMax());
   if (m_bAllowRangeEditMax)
     m_pMaxStatic->Create(SS_CENTER,rectMax,pParentWnd, nID+102);
   else
@@ -160,7 +160,7 @@ bool CParameterSlider::RefreshDisplayParam()
   if (!m_bIsChanging)
   {
     // refresh Val
-    tmpStr.Format("%.1f",m_pParam->getVal());
+    tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getVal());
     m_pValStatic->SetWindowText(tmpStr);
     m_pValStatic->UpdateWindow();
 
@@ -171,7 +171,7 @@ bool CParameterSlider::RefreshDisplayParam()
   else
   {
     // refresh Val
-    tmpStr.Format("%.1f",(double)GetPos());
+    tmpStr.Format(LPCTSTR("%.1f"),(double)GetPos());
     m_pValStatic->SetWindowText(tmpStr);
     m_pValStatic->UpdateWindow();
   }
@@ -216,14 +216,14 @@ void CParameterSlider::OnDestroy()
   {
     CString textMin;
     m_pMinStatic->GetWindowText(textMin);
-    m_pParam->setValMin(atof(textMin));
+    m_pParam->setValMin(atof((char*)textMin.GetBuffer(0)));
   }
 
   if (m_bAllowRangeEditMax)
   {
     CString textMax;
     m_pMaxStatic->GetWindowText(textMax);
-    m_pParam->setValMax(atof(textMax));
+    m_pParam->setValMax(atof((char*)textMax.GetBuffer(0)));
   }
 
 	CSliderCtrl::OnDestroy();

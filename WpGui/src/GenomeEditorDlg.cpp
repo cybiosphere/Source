@@ -1461,7 +1461,7 @@ void CGenomeEditorDlg::OnButtonSave()
 
 void CGenomeEditorDlg::OnSetBrainInGenes() 
 {
-  int resu = AfxMessageBox ( "Do you want to include indentification?",  MB_YESNOCANCEL | MB_ICONINFORMATION );
+  int resu = AfxMessageBox ( "Do you want to include identification?",  MB_YESNOCANCEL | MB_ICONINFORMATION );
   if (resu == IDYES)
   {
     m_pNewGenome->setBrainIdentifyInGenes(m_pOldEntity->getBrain());

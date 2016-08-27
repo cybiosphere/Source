@@ -283,7 +283,7 @@ int CWizardBrain::ApplyDefaultBonusOnBrain()
   ApplyMemoryActionBonus(10);
 
   // Normalize matrix
-  m_pBrain->GetIndentifyNeuronTable()->NormalizeNeuronMatrix();
+  m_pBrain->GetIdentifyNeuronTable()->NormalizeNeuronMatrix();
   m_pBrain->GetDecisionNeuronTable()->NormalizeNeuronMatrix();
   return bonusCount;
 }
@@ -366,7 +366,7 @@ int CWizardBrain::ApplyIdentifyBonusList()
   }
 
   // Normalize matrix
-  m_pBrain->GetIndentifyNeuronTable()->NormalizeNeuronMatrix();
+  m_pBrain->GetIdentifyNeuronTable()->NormalizeNeuronMatrix();
   return bonusCount;
 }
 

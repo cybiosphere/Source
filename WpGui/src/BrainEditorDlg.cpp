@@ -53,7 +53,7 @@ CBrainEditorDlg::CBrainEditorDlg(CBrain* pBrain, bool identifyBrain, CString use
   m_strWindowsTitle = userTitle;
 
   if (m_bIdentifyBrain == true)
-    m_pNeuronMatrix = pBrain->GetIndentifyNeuronTable();
+    m_pNeuronMatrix = pBrain->GetIdentifyNeuronTable();
   else
     m_pNeuronMatrix = pBrain->GetDecisionNeuronTable();
 

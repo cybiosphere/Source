@@ -218,12 +218,12 @@ bool CBrainGridCtrl::SetIdentifyBrain(CBrain* pBrain)
 
   if (m_pBrain!=NULL)
   {
-    SetNeuronMatrix(m_pBrain->GetIndentifyNeuronTable());
+    SetNeuronMatrix(m_pBrain->GetIdentifyNeuronTable());
 
-    for (i=0; i<m_pBrain->GetIndentifyNeuronTable()->GetNeuronTableColumnCount(); i++)
+    for (i=0; i<m_pBrain->GetIdentifyNeuronTable()->GetNeuronTableColumnCount(); i++)
       SetItemText(0,i+2,m_pBrain->getIdentificationLabel(i).c_str());
 
-    for (i=0; i<m_pBrain->GetIndentifyNeuronTable()->GetNeuronTableRowCount(); i++)
+    for (i=0; i<m_pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
       SetItemText(i+2,0,m_pBrain->getIdentifyInputLabel(i).c_str());
 
     RefreshIdentifyBrainData();

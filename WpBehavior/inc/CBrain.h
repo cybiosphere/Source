@@ -57,7 +57,7 @@ typedef int choiceIndType;
 
 #define UID_UNSET                    0xFFFFFFFF
 
-#define INDENTIFY_INPUT_SIZE (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES)
+#define IDENTIFY_INPUT_SIZE (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES)
 
 class CNeuronMatrix;
 class CSensor;
@@ -188,13 +188,13 @@ private:
   bool m_bIdentificationUsed;
   // VMATRIX/VECTORS for identification neuronal table (Associate category to all visible entities)
   // Neuronal matrix table for identification
-  CNeuronMatrix m_mIndentifyNeuronTable;
+  CNeuronMatrix m_mIdentifyNeuronTable;
   // Current Input
-  int m_nInputIndentification;
-  CMatrix m_vCurrentIndentifyInput;
+  int m_nInputIdentification;
+  CMatrix m_vCurrentIdentifyInput;
   // Current choice vector
-  CMatrix m_vCurrentIndentifyOutput; // raw vector result
-  CMatrix m_vCurrentIndenticationChoice; // threhold vector result
+  CMatrix m_vCurrentIdentifyOutput; // raw vector result
+  CMatrix m_vCurrentIdentificationChoice; // threhold vector result
   std::vector<BrainMemorizedEntityIdentity_t*> m_tBrainMemorizedEntityIdentities;
 public:
   static string  getIdentityStrName(IdentificationType_e type);
@@ -316,9 +316,9 @@ public:
 // Brain identification process
 //---------------------------------------------------------------------------
 public:
-  CNeuronMatrix* GetIndentifyNeuronTable();
+  CNeuronMatrix* GetIdentifyNeuronTable();
 
-  // Indentification methodes
+  // Identification methodes
   string getIdentificationLabel(int columnIndex);
   string getIdentifyInputLabel(int rowIndex);
   bool IsIdentifyRowSexSpecific(int rowIndex);
@@ -331,7 +331,7 @@ public:
   bool CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignature, IdentificationType_e identity);
   bool MemorizeIdentificationExperience(feedbackValType currentFeedback,double learningRate, CBasicEntity* pEntity, IdentificationType_e identity);
   bool ChangeIdentifyNeuronTableVal(int row, int col, double variation, bool normalize=true);
-  bool IsIndentificationUsed();
+  bool IsIdentificationUsed();
 
 protected:
   void UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors);

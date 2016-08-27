@@ -110,7 +110,7 @@ typedef unsigned char UCHAR;
 
 typedef unsigned long  timeCountType; 
 
-int  DLL_CYBIOCORE_API round(double val);
+//int  DLL_CYBIOCORE_API round(double val);
 
 int  DLL_CYBIOCORE_API getRandInt (int max); // Return random number in [0..max]
 bool DLL_CYBIOCORE_API testChance (double luckRate);

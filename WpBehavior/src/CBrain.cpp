@@ -619,7 +619,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
 
   // Save Neurone tables
   GetDecisionNeuronTable()->saveInXmlFile(pXmlDoc);
-  GetIndentifyNeuronTable()->saveInXmlFile(pXmlDoc);
+  GetIdentifyNeuronTable()->saveInXmlFile(pXmlDoc);
 
   return true;
 }
@@ -640,7 +640,7 @@ bool CBrain::loadFromTiXmlFile(TiXmlDocument *pXmlDoc)
   if (pXmlDoc==NULL)
     return resu;
 
-  resu = GetIndentifyNeuronTable()->loadFromXmlFile(pXmlDoc);
+  resu = GetIdentifyNeuronTable()->loadFromXmlFile(pXmlDoc);
   resu = GetDecisionNeuronTable()->loadFromXmlFile(pXmlDoc);
 
   if (resu == true)
@@ -951,11 +951,11 @@ bool CBrain::InitializeNeuronTableNeutral()
   m_mDecisionHistory.SetSize(nOutputReactions,m_nExperienceHistory);
 
   // Initialize identification table
-  m_nInputIndentification = INDENTIFY_INPUT_SIZE;
-  m_vCurrentIndentifyInput.SetSize(m_nInputIndentification,1);
-  m_vCurrentIndentifyOutput.SetSize(IDENTIFICATION_NUMBER_TYPE,1);
-  m_vCurrentIndenticationChoice.SetSize(IDENTIFICATION_NUMBER_TYPE,1);
-  m_mIndentifyNeuronTable.InitializeNeuronMatrixNeutral(XML_NODE_INDENTIFY, m_nInputIndentification,IDENTIFICATION_NUMBER_TYPE);
+  m_nInputIdentification = IDENTIFY_INPUT_SIZE;
+  m_vCurrentIdentifyInput.SetSize(m_nInputIdentification,1);
+  m_vCurrentIdentifyOutput.SetSize(IDENTIFICATION_NUMBER_TYPE,1);
+  m_vCurrentIdentificationChoice.SetSize(IDENTIFICATION_NUMBER_TYPE,1);
+  m_mIdentifyNeuronTable.InitializeNeuronMatrixNeutral(XML_NODE_IDENTIFY, m_nInputIdentification,IDENTIFICATION_NUMBER_TYPE);
   ReenforceFullIdentity(4, IDENTIFICATION_NEUTRAL); // Initialize identification to neutral
   return true;
 }
@@ -1388,14 +1388,14 @@ bool CBrain::AddFeelingWelfareSensitivity(CSensor* pSens, int tableSensiSize, do
 // Brain identification process
 //---------------------------------------------------------------------------
 
-bool CBrain::IsIndentificationUsed()
+bool CBrain::IsIdentificationUsed()
 {
   return m_bIdentificationUsed;
 }
 
-CNeuronMatrix* CBrain::GetIndentifyNeuronTable()
+CNeuronMatrix* CBrain::GetIdentifyNeuronTable()
 {
-  return (&m_mIndentifyNeuronTable);
+  return (&m_mIdentifyNeuronTable);
 }
 
 int CBrain::GetIdentifyMatrixRowIndex(DWORD sensorUidbase, int subCaptorIndex)
@@ -1425,7 +1425,7 @@ int CBrain::GetIdentifyMatrixRowIndex(DWORD sensorUidbase, int subCaptorIndex)
 
 bool CBrain::ChangeIdentifyNeuronTableVal(int row, int col, double variation, bool normalize)
 {
-  return m_mIndentifyNeuronTable.ChangeNeuronTableVal( row, col, variation, normalize);
+  return m_mIdentifyNeuronTable.ChangeNeuronTableVal( row, col, variation, normalize);
 
 }
 
@@ -1440,7 +1440,7 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
 {
   string captorStr;
   
-  if (rowIndex>INDENTIFY_INPUT_SIZE)
+  if (rowIndex>IDENTIFY_INPUT_SIZE)
     captorStr = "captor error";
   else if (rowIndex>=(VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
   {
@@ -1483,7 +1483,7 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
 
 bool CBrain::IsIdentifyRowSexSpecific(int rowIndex)
 {
-  if (rowIndex>INDENTIFY_INPUT_SIZE)
+  if (rowIndex>IDENTIFY_INPUT_SIZE)
   {
     return false;
   }
@@ -1532,12 +1532,12 @@ bool CBrain::GetVectorIdentifyThresholds (neuroneValType &highThreshold, neurone
   for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
   {   
     // compute avarage
-    avarageVal += m_vCurrentIndentifyOutput(i,0);
+    avarageVal += m_vCurrentIdentifyOutput(i,0);
     // compute max
-    if (m_vCurrentIndentifyOutput(i,0) > maxVal)
+    if (m_vCurrentIdentifyOutput(i,0) > maxVal)
     {
       // New max
-      maxVal = m_vCurrentIndentifyOutput(i,0);
+      maxVal = m_vCurrentIdentifyOutput(i,0);
     }
   }
 
@@ -1559,49 +1559,49 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   neuroneValType highThreshold, midThreshold, lowThreshold;
 
   UpdateIdentifyInputVector(pEntity, useOdors);
-  m_mIndentifyNeuronTable.ComputeVectorChoice(&m_vCurrentIndentifyInput, &m_vCurrentIndentifyOutput);
+  m_mIdentifyNeuronTable.ComputeVectorChoice(&m_vCurrentIdentifyInput, &m_vCurrentIdentifyOutput);
   GetVectorIdentifyThresholds(highThreshold, midThreshold, lowThreshold);
   
-  // Initialize m_vCurrentIndenticationChoice
+  // Initialize m_vCurrentIdentificationChoice
   for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
   {   
-    m_vCurrentIndenticationChoice(i,0) = 0;
+    m_vCurrentIdentificationChoice(i,0) = 0;
   }
 
   // If vector is flat, just raise NEUTRAL
   if (highThreshold == lowThreshold)
   {
-    m_vCurrentIndenticationChoice(IDENTIFICATION_NEUTRAL,0) = MAX_SENSOR_VAL;
+    m_vCurrentIdentificationChoice(IDENTIFICATION_NEUTRAL,0) = MAX_SENSOR_VAL;
   }
   else
   {
     double count=0;
     for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
     { 
-      if (m_vCurrentIndentifyOutput(i,0) >= highThreshold)
+      if (m_vCurrentIdentifyOutput(i,0) >= highThreshold)
       {
-        m_vCurrentIndenticationChoice(i,0) = MAX_SENSOR_VAL;
+        m_vCurrentIdentificationChoice(i,0) = MAX_SENSOR_VAL;
         count+=16;
       }
-      else if (m_vCurrentIndentifyOutput(i,0) >= midThreshold)
+      else if (m_vCurrentIdentifyOutput(i,0) >= midThreshold)
       {
-        m_vCurrentIndenticationChoice(i,0) = MAX_SENSOR_VAL/4;
+        m_vCurrentIdentificationChoice(i,0) = MAX_SENSOR_VAL/4;
         count+=4;
       }
-      else if (m_vCurrentIndentifyOutput(i,0) >= lowThreshold)
+      else if (m_vCurrentIdentifyOutput(i,0) >= lowThreshold)
       {
-        m_vCurrentIndenticationChoice(i,0) = MAX_SENSOR_VAL/16;
+        m_vCurrentIdentificationChoice(i,0) = MAX_SENSOR_VAL/16;
         count+=1;
       }
     }
     // Adjust weight
     for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
     { 
-      m_vCurrentIndenticationChoice(i,0) = m_vCurrentIndenticationChoice(i,0) * 16.0 / count;
+      m_vCurrentIdentificationChoice(i,0) = m_vCurrentIdentificationChoice(i,0) * 16.0 / count;
     }
   }
 
-  return &m_vCurrentIndenticationChoice;
+  return &m_vCurrentIdentificationChoice;
 }
 
 void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
@@ -1610,68 +1610,68 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 
   if (pEntity==NULL)
   {
-    for (offset=0; offset<m_nInputIndentification; offset++)
-      m_vCurrentIndentifyInput(offset,0) = 0;
+    for (offset=0; offset<m_nInputIdentification; offset++)
+      m_vCurrentIdentifyInput(offset,0) = 0;
     return;
   }
 
   // Size big
-  m_vCurrentIndentifyInput(offset,0) = pEntity->getWeight() / m_pEntity->getWeight();
-  if (m_vCurrentIndentifyInput(offset,0) <= 1)
-    m_vCurrentIndentifyInput(offset,0) = 0;
-  else if (m_vCurrentIndentifyInput(offset,0) > MAX_SENSOR_VAL)
-    m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL;
+  m_vCurrentIdentifyInput(offset,0) = pEntity->getWeight() / m_pEntity->getWeight();
+  if (m_vCurrentIdentifyInput(offset,0) <= 1)
+    m_vCurrentIdentifyInput(offset,0) = 0;
+  else if (m_vCurrentIdentifyInput(offset,0) > MAX_SENSOR_VAL)
+    m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
   offset++;
   // Size small
-  m_vCurrentIndentifyInput(offset,0) = m_pEntity->getWeight() / pEntity->getWeight();
-  if (m_vCurrentIndentifyInput(offset,0) <= 1)
-    m_vCurrentIndentifyInput(offset,0) = 0;
-  else if (m_vCurrentIndentifyInput(offset,0) > MAX_SENSOR_VAL)
-    m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL;
+  m_vCurrentIdentifyInput(offset,0) = m_pEntity->getWeight() / pEntity->getWeight();
+  if (m_vCurrentIdentifyInput(offset,0) <= 1)
+    m_vCurrentIdentifyInput(offset,0) = 0;
+  else if (m_vCurrentIdentifyInput(offset,0) > MAX_SENSOR_VAL)
+    m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
   offset++;
   // Distance
   /*if (m_bDistanceEval)
-    m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL/(pFoundIds[i].distance);
-  distanceWeight = m_vCurrentIndentifyInput(offset,0);*/
-  m_vCurrentIndentifyInput(offset,0) = 0;
+    m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL/(pFoundIds[i].distance);
+  distanceWeight = m_vCurrentIdentifyInput(offset,0);*/
+  m_vCurrentIdentifyInput(offset,0) = 0;
   offset++;
   // Movement
-  m_vCurrentIndentifyInput(offset,0) = pEntity->getCurrentSpeed() * MAX_SENSOR_VAL / 100.0;
+  m_vCurrentIdentifyInput(offset,0) = pEntity->getCurrentSpeed() * MAX_SENSOR_VAL / 100.0;
   offset++;
   // Color:
   for (int colo=0; colo<VIEW_NUMBER_COLORS; colo++)
   {
     if ( pEntity->getColorType() == (COLOR_CARACTER_FIRST_TYPE+colo) )
-      m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL ;
+      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL ;
     else
-      m_vCurrentIndentifyInput(offset,0) = 0;
+      m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Form:
   for (int form=0; form<VIEW_NUMBER_FORMS; form++)
   {
     if ( pEntity->getForm() == (FORM_FIRST_TYPE+form) )
-      m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL;
+      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
-      m_vCurrentIndentifyInput(offset,0) = 0;
+      m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Texture:
   for (int textu=0; textu<VIEW_NUMBER_TEXTURES; textu++)
   {
     if (pEntity->getTexture() == (TEXTURE_FIRST_TYPE+textu) )
-      m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL;
+      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
-      m_vCurrentIndentifyInput(offset,0) = 0;
+      m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Physical attribute:
   for (int attribu=0; attribu<VIEW_NUMBER_PHY_ATTRIBUT; attribu++)
   {
     if (pEntity->isPhyAttributePresent((PhyAttributeType_e)(PHY_ATTRIBUTE_FIRST_TYPE+attribu)))
-      m_vCurrentIndentifyInput(offset,0) = MAX_SENSOR_VAL;
+      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
-      m_vCurrentIndentifyInput(offset,0) = 0;
+      m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
 
@@ -1679,12 +1679,12 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
   {
     for (i=0; i<NUMBER_ODORS; i++)
     {
-      m_vCurrentIndentifyInput(offset,0) = m_pSensorSmell->GetSubCaptorStimulationLevel(i);
-    offset++;
+      m_vCurrentIdentifyInput(offset,0) = m_pSensorSmell->GetSubCaptorStimulationLevel(i) / 2; // reduce weight because not directional
+      offset++;
     }
     for (i=0; i<NUMBER_PHEROMONES; i++)
     {
-      m_vCurrentIndentifyInput(offset,0) = m_pSensorPheromone->GetSubCaptorStimulationLevel(i);
+      m_vCurrentIdentifyInput(offset,0) = m_pSensorPheromone->GetSubCaptorStimulationLevel(i) / 2; // reduce weight because not directional
       offset++;
     }
   }
@@ -1692,12 +1692,12 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 
 CMatrix* CBrain::GetIdentifyInputVect()
 {
-  return (&m_vCurrentIndentifyInput);
+  return (&m_vCurrentIdentifyInput);
 }
 
 CMatrix* CBrain::GetIdentifyOutputVect()
 {
-  return (&m_vCurrentIndentifyOutput);
+  return (&m_vCurrentIdentifyOutput);
 }
 
 bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignature, IdentificationType_e identity)
@@ -1744,9 +1744,9 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
   // Prepare outpu
   for (int i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
   { 
-    m_vCurrentIndenticationChoice(i,0) = 0;
+    m_vCurrentIdentificationChoice(i,0) = 0;
   }
-  m_vCurrentIndenticationChoice(identity,0) = MAX_FEEDBACK_VAL;
+  m_vCurrentIdentificationChoice(identity,0) = MAX_FEEDBACK_VAL;
 
   neuroneValType coef = currentFeedback*learningRate/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/10000; 
 
@@ -1754,7 +1754,7 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
   CYBIOCORE_LOG("BRAIN - MemorizeIdentificationExperience : name %s currentFeedback=%f learningRate=%f identity=%s entity=%s coef=%f\n", 
              this->GetEntity()->getLabel().c_str(), currentFeedback, learningRate, IdentificationTypeNameList[identity], pEntity->getLabel().c_str(), coef);
 
-  return m_mIndentifyNeuronTable.MemorizeExperience(coef, &m_vCurrentIndentifyInput, &m_vCurrentIndenticationChoice);
+  return m_mIdentifyNeuronTable.MemorizeExperience(coef, &m_vCurrentIdentifyInput, &m_vCurrentIdentificationChoice);
 }
 
 bool CBrain::ReenforceFullIdentity(feedbackValType currentFeedback, IdentificationType_e identity)
@@ -1767,20 +1767,20 @@ bool CBrain::ReenforceFullIdentity(feedbackValType currentFeedback, Identificati
 
   // Prepare input
   int i;
-  for (i=0; i<m_nInputIndentification; i++)
+  for (i=0; i<m_nInputIdentification; i++)
   { 
-    m_vCurrentIndentifyInput(i,0) = MAX_SENSOR_VAL;
+    m_vCurrentIdentifyInput(i,0) = MAX_SENSOR_VAL;
   }
   // Prepare output
   for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
   { 
-    m_vCurrentIndenticationChoice(i,0) = 0;
+    m_vCurrentIdentificationChoice(i,0) = 0;
   }
-  m_vCurrentIndenticationChoice(identity,0) = MAX_FEEDBACK_VAL;
+  m_vCurrentIdentificationChoice(identity,0) = MAX_FEEDBACK_VAL;
 
   neuroneValType coef = currentFeedback/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/100; 
 
-  return m_mIndentifyNeuronTable.MemorizeExperience(coef, &m_vCurrentIndentifyInput, &m_vCurrentIndenticationChoice);
+  return m_mIdentifyNeuronTable.MemorizeExperience(coef, &m_vCurrentIdentifyInput, &m_vCurrentIdentificationChoice);
 }
 
 

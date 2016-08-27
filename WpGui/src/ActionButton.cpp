@@ -46,7 +46,7 @@ CActionButton::CActionButton(CReaction* pReact, int reactIndex, CBrainView* pBra
   m_ReactionIndex = reactIndex;
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(85, "Arial");
+  m_pFont->CreatePointFont(85, LPCTSTR("Arial"));
 }
 
 CActionButton::~CActionButton()
@@ -86,7 +86,7 @@ bool CActionButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nI
   // Create button
   if (m_pReaction != NULL)
   {
-    resu = Create(m_pReaction->GetLabel().c_str(), WS_VISIBLE|WS_TABSTOP|WS_CHILD, rect, pParentWnd, nID);
+    resu = Create(LPCTSTR(m_pReaction->GetLabel().c_str()), WS_VISIBLE|WS_TABSTOP|WS_CHILD, rect, pParentWnd, nID);
     SetFont(m_pFont);
   }
 

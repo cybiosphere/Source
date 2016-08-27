@@ -1500,7 +1500,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   }
   else if (subType == GENE_BRAIN_IDENTIFY_LINE)
   {
-    resu = m_pBrain->GetIndentifyNeuronTable()->buildNeuronLineFromRawData(lineId,len,pData+1);
+    resu = m_pBrain->GetIdentifyNeuronTable()->buildNeuronLineFromRawData(lineId,len,pData+1);
   }
   return (resu);
 }

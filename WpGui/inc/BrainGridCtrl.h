@@ -42,7 +42,7 @@ class CNeuronMatrixCtrl : public CGridCtrl
 {
 // Construction
 public:
-	CBrainGridCtrl();
+	int CBrainGridCtrl();
 
 // Attributes
 public:

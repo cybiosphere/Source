@@ -684,7 +684,7 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
   CChromosome* pChromoSexP = pPaireSex->getPaterChromosome();
 
   // Store Identification table
-  for (i=0; i<pBrain->GetIndentifyNeuronTable()->GetNeuronTableRowCount(); i++)
+  for (i=0; i<pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
   {
     if (pBrain->IsIdentifyRowSexSpecific(i))
     {
@@ -701,7 +701,7 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
       pGen1P = pChromoBrainP->getGene(indexGen);
     }
 
-    lineSize = pBrain->GetIndentifyNeuronTable()->buildRawDataFromNeuronLine(i,pData);
+    lineSize = pBrain->GetIdentifyNeuronTable()->buildRawDataFromNeuronLine(i,pData);
     pGen1M->setAsBrainIdentificationLine(10,i,lineSize,pData);
     pGen1P->setAsBrainIdentificationLine(10,i,lineSize,pData);
     if (pData)

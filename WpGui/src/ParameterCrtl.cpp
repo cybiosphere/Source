@@ -46,7 +46,7 @@ CParameterCrtl::CParameterCrtl()
 	 m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(70, "Arial");
+   m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
 }
 
 CParameterCrtl::~CParameterCrtl()
@@ -89,7 +89,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   CRect rectText = rect;
   rectText.top -= 11;
   rectText.bottom = rect.top;
-  m_pTextStatic->Create(m_pParam->getLabel().c_str(),SS_CENTER,rectText,pParentWnd);
+  m_pTextStatic->Create(LPCTSTR(m_pParam->getLabel().c_str()),SS_CENTER,rectText,pParentWnd);
 	m_pTextStatic->SetFont(m_pFont);
   m_pTextStatic->ShowWindow(SW_SHOW);
 
@@ -99,7 +99,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   rectMin.top += 9;
   rectMin.bottom += 14;
   rectMin.right = rect.left + 30;
-  tmpStr.Format("%.1f",m_pParam->getMin());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMin());
   m_pMinStatic->Create(tmpStr,SS_LEFT,rectMin,pParentWnd);
 	m_pMinStatic->SetFont(m_pFont);
 
@@ -110,7 +110,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   rectVal.bottom += 14;
   rectVal.left = rect.left + 26;
   rectVal.right = rect.right - 26;
-  tmpStr.Format("%.1f",m_pParam->getVal());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getVal());
   m_pValStatic->Create(/*tmpStr,*/SS_CENTER|WS_DISABLED,rectVal,pParentWnd, nID+100);
 	m_pValStatic->SetFont(m_pFont);
 
@@ -120,7 +120,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   rectMax.top += 9;
   rectMax.bottom += 14;
   rectMax.left = rect.right - 30;
-  tmpStr.Format("%.1f",m_pParam->getMax());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMax());
   m_pMaxStatic->Create(tmpStr,SS_RIGHT,rectMax,pParentWnd);
 	m_pMaxStatic->SetFont(m_pFont);
   
@@ -141,17 +141,17 @@ bool CParameterCrtl::RefreshDisplayParam(bool resetMinMax)
   CString tmpStr;
 
   // refresh Val
-  tmpStr.Format("%.1f",m_pParam->getVal());
+  tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getVal());
   m_pValStatic->SetWindowText(tmpStr);
   m_pValStatic->UpdateWindow();
   
   if (resetMinMax)
   {
-    tmpStr.Format("%.1f",m_pParam->getMin());
+    tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMin());
     m_pMinStatic->SetWindowText(tmpStr);
     m_pMinStatic->UpdateWindow();
 
-    tmpStr.Format("%.1f",m_pParam->getMax());
+    tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMax());
     m_pMaxStatic->SetWindowText(tmpStr);
     m_pMaxStatic->UpdateWindow();
   }

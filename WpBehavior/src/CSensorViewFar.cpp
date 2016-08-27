@@ -379,7 +379,7 @@ bool CSensorViewFar::Scan45degSector(int stimulationTabOffset,
       }
 
       // Adjust weight to ViewIdentify if needed
-      if (pAnimal->getBrain()->IsIndentificationUsed())
+      if (pAnimal->getBrain()->IsIdentificationUsed())
         m_pEntityViewFarTab[i].computedWeight = m_pEntityViewFarTab[i].computedWeight/3; // TBC
 
       // Fill followed entity

@@ -383,6 +383,10 @@ CBasicEntity* CBiotop::createCloneEntity(CBasicEntity* pModelEntity)
 
 entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, int layer, CGenome* pGenome)
 {
+  // Check coords
+  if ( !isCoordValidAndFree(coord,layer) )
+     return (-1); 
+
   // Create entity
   CBasicEntity* pNewEntity = createEntity(name,pGenome);
   if (pNewEntity==NULL)
@@ -423,14 +427,20 @@ entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point
   return newEntityId;
 }
 
+
 entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord)
 {
   int startLayer;
   string name;
-  CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
 
-  CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
   CBasicEntity::getDefaultLayerFromXmlFile(pXmlDoc, startLayer);
+
+  // Check coords
+  if ( !isCoordValidAndFree(coord,startLayer) )
+     return (-1); 
+
+  CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
+  CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
   CBasicEntity::getEntityNameFromXmlFile(pXmlDoc, name);
 
   entityIdType newEntityId = createAndAddEntity(name, coord, startLayer, pTempGenome);
@@ -456,6 +466,7 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName
   return newEntityId;
 }
 
+
 entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, int cloneLayer, string cloneName)
 {
   CBasicEntity* pModelEntity = getEntityById(idModelEntity);
@@ -469,6 +480,10 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
 
   if (name == "")
     name = pModelEntity->getLabel();
+
+  // Check coords
+  if ( !isCoordValidAndFree(cloneCoord,layer) )
+     return (-1); 
 
   pNewEntity = createCloneEntity(pModelEntity);
 
@@ -486,6 +501,7 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
 
   return (resuId);
 }
+
 
 bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome)
 {
@@ -527,6 +543,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   return (true);
 }
 
+
 bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity)
 {
   CBasicEntity* pOldEntity = getEntityById(idEntity);
@@ -559,6 +576,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   return true;
 }
 
+
 int CBiotop::deleteEntity(entityIdType idEntity) 
 { 
   CBasicEntity* pEntity = NULL;
@@ -585,6 +603,7 @@ int CBiotop::deleteEntity(entityIdType idEntity)
   return (-1);
 }
  
+
 void CBiotop::deleteAllEntities() 
 {
   // loop from top to bottom 
@@ -596,6 +615,7 @@ void CBiotop::deleteAllEntities()
   m_tEntity.clear();
 }          
 
+
 void CBiotop::deleteAllMeasures() 
 {
   // loop from top to bottom 
@@ -606,6 +626,7 @@ void CBiotop::deleteAllMeasures()
   }
   m_tMeasures.clear();
 }   
+
 
 void CBiotop::deleteAllParameters() 
 {
@@ -623,6 +644,7 @@ void CBiotop::deleteAllParameters()
   m_pTemperature = NULL;
 }  
 
+
 void CBiotop::displayEntities(void)
 {
   for (int i=0; i<getNbOfEntities(); i++)   
@@ -632,6 +654,7 @@ void CBiotop::displayEntities(void)
     printf("ID=%3d Direction=%3d \n",m_tEntity[i]->getId(),m_tEntity[i]->getDirection());
   }  
 }
+
 
 void CBiotop::setDefaultEntitiesForTest(void)
 {
@@ -737,6 +760,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
   delete pGenome6;
   delete pGenome8;
 }
+
 
 int CBiotop::getNbOfEntities() 
 {

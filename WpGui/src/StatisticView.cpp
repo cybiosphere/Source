@@ -90,7 +90,7 @@ CStatisticView::CStatisticView()
   m_pTmpPointTable = new POINT[MAX_MEASUREMENT_DATA_SIZE];
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(70, "Arial");
+  m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
 
 }
 
@@ -253,8 +253,9 @@ void CStatisticView::OnSize(UINT nType, int cx, int cy)
 
 void CStatisticView::RebuildMeasChkBox()
 {
+  int i;
   // Delete previous Button in Table
-  for (int i=0;i<MAX_NB_DISPLAY_MEASURES;i++)
+  for (i=0;i<MAX_NB_DISPLAY_MEASURES;i++)
   {
     if (m_pMeasDisplayList[i].pChkBox != NULL)
     {
@@ -276,7 +277,7 @@ void CStatisticView::RebuildMeasChkBox()
       {
         m_pMeasDisplayList[i].pChkBox = new CColorButton();
         CRect rect(startX, startY, startX+260, startY+15);
-        m_pMeasDisplayList[i].pChkBox->Create(pMeas->GetLabel().c_str(),BS_AUTOCHECKBOX|WS_VISIBLE|WS_TABSTOP,rect,this,2100+i );
+        m_pMeasDisplayList[i].pChkBox->Create(LPCTSTR(pMeas->GetLabel().c_str()),BS_AUTOCHECKBOX|WS_VISIBLE|WS_TABSTOP,rect,this,2100+i );
         m_pMeasDisplayList[i].pMeasure = pMeas;
         m_pMeasDisplayList[i].color    = RGB(startY*4,(255-startY*3),startY*2);
         m_pMeasDisplayList[i].coord.SetRect(startX-1,startY-1,startX+261,startY+16);
@@ -420,9 +421,9 @@ void CStatisticView::DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF col
     pDC->SetTextColor(color);    
     
     CString valStr;
-    valStr.Format("%5.1f",maxData);
+    valStr.Format(LPCTSTR("%5.1f"),maxData);
     pDC->TextOut(m_GraphRect.left+10+30*index, m_GraphRect.top-12, valStr); 
-    valStr.Format("%5.1f",minData);
+    valStr.Format(LPCTSTR("%5.1f"),minData);
     pDC->TextOut(m_GraphRect.left+10+30*index, m_GraphRect.bottom+1, valStr); 
 
     // Check if end is reached
