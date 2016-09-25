@@ -39,6 +39,49 @@ Server::~Server()
 {
 }
 
+void Server::startServer()
+{
+  network_server.start("4556");
+  log_event("System  ", "SERVER started");
+}
+
+void Server::ProcessEvents(bool isNewSec)
+{
+  network_server.process_events();
+
+  if (isNewSec)
+  {
+	// Update clients with biotop evolution
+	  if (users_connected)
+	  {
+      CBasicEntity* pCurEntity = NULL;
+
+      // Send event next second start update
+      NetGameEvent bioNextSecEventStart("Biotop-Next second start");
+      CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+      bioNextSecEventStart.add_argument(biotopTime);
+      bioNextSecEventStart.add_argument(m_biotopSpeed);
+      network_server.send_event(bioNextSecEventStart);
+
+      // Update all entities
+      for (int i = 0; i<m_pBiotop->getNbOfEntities(); i++)
+      {
+        pCurEntity = m_pBiotop->getEntityByIndex(i);
+        if (pCurEntity->isAlive())
+          send_event_update_entity_position(pCurEntity);
+        // FRED TBC: Check if new entity arrived and advise clients
+      }
+
+		  // Send event next second end
+		  log_event("System  ", "New second event");
+		  NetGameEvent bioNextSecEventEnd("Biotop-Next second end");
+		  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
+		  network_server.send_event(bioNextSecEventEnd);
+	  }
+  }
+}
+
 // Server main loop
 void Server::exec()
 {

@@ -126,18 +126,18 @@ void CBrainEditorDlg::OnButtonLoad()
     // Open module
     CString fileName;
 
-	CFileDialog fileDlg(true,"xml","",0,"Brain Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Select brain";
+	CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Brain Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select brain");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
 	{
     fileName = fileDlg.GetPathName();
     
-    bool resu = m_pNeuronMatrix->loadFromXmlFile(fileName.GetBuffer(0));
+    bool resu = m_pNeuronMatrix->loadFromXmlFile((char*)(fileName.GetBuffer(0)));
     if (!resu)
     {
-      AfxMessageBox("Impossible to load file " + fileName);
+      AfxMessageBox(LPCTSTR("Impossible to load file ") + fileName);
     }
 
     m_BrainGrid.SetNeuronMatrix(m_pNeuronMatrix); // Refresh grid
@@ -155,18 +155,18 @@ void CBrainEditorDlg::OnButtonSave()
   // Open module
   CString fileName;
 
-	CFileDialog fileDlg(false,"xml","",0,"Brain Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Select brain";
+	CFileDialog fileDlg(false, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Brain Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select brain");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
 	{
     fileName = fileDlg.GetPathName();
 
-    bool resu = m_pNeuronMatrix->saveInXmlFile(fileName.GetBuffer(0));
+    bool resu = m_pNeuronMatrix->saveInXmlFile((char*)(fileName.GetBuffer(0)));
     if (!resu)
     {
-      AfxMessageBox("Impossible to save file " + fileName);
+      AfxMessageBox(LPCTSTR("Impossible to save file ") + fileName);
     }
   }
 }
@@ -221,27 +221,27 @@ void CBrainEditorDlg::OnCancel()
 void CBrainEditorDlg::OnButtonExport() 
 {
   CString fileName;
-	CFileDialog fileDlg(false,"csv","",0,"Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Export in csv file";
+	CFileDialog fileDlg(false, LPCTSTR("csv"), LPCTSTR(""),0, LPCTSTR("Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Export in csv file");
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
 
-    bool resu = m_pBrain->exportDecisionInCsvFile(fileName.GetBuffer(0));
+    bool resu = m_pBrain->exportDecisionInCsvFile((char*)fileName.GetBuffer(0));
   }
 }
 
 void CBrainEditorDlg::OnButtonImport() 
 {
   CString fileName;
-	CFileDialog fileDlg(true,"csv","",0,"Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Export in csv file";
+	CFileDialog fileDlg(true, LPCTSTR("csv"), LPCTSTR(""),0, LPCTSTR("Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Export in csv file");
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    bool resu = m_pBrain->importDecisionFromCsvFile(fileName.GetBuffer(0));
+    bool resu = m_pBrain->importDecisionFromCsvFile((char*)fileName.GetBuffer(0));
     m_BrainGrid.SetNeuronMatrix(m_pNeuronMatrix); // Refresh grid
   }
 }

@@ -232,7 +232,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
       if (vectorDir.y < 0)
         angle = -angle;
 
-      absoluteDirection = round(angle * 4 / CYBIO_PI + 8) % 8;
+      absoluteDirection = cybio_round(angle * 4 / CYBIO_PI + 8) % 8;
     }
     else
     {

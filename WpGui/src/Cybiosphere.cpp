@@ -33,6 +33,7 @@ distribution.
 #include "BiotopDoc.h"
 #include "BiotopView.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -68,6 +69,9 @@ CCybiosphereApp::CCybiosphereApp()
   m_pScenarioPlayer = NULL;
   m_OpenedBiotopPath = "";
   m_OpenedBiotopFile = "";
+#ifdef USE_CLAN_SERVER
+  m_pServer = NULL;
+#endif
 }
 
 CCybiosphereApp::~CCybiosphereApp()
@@ -194,18 +198,18 @@ BOOL CCybiosphereApp::InitInstance()
   string resuStr = "";
   char bufferStr[512];
   CString fileIni = m_AppliPath + "\\Cybiosphere.ini";
-  BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", bufferStr, 512, fileIni.GetBuffer(0));
+  BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", bufferStr, 512, (char*)fileIni.GetBuffer(0));
   resuStr= bufferStr;
   if (resuStr != "")
   {
     string resuDataPath = "";
     m_pBiotop = new CBiotop(0,0,0);
-    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, fileIni.GetBuffer(0));
+    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, (char*)fileIni.GetBuffer(0));
     resuDataPath= bufferStr;
     if (resuDataPath != "")
       m_pBiotop->loadFromXmlFile(resuStr, resuDataPath);
     else
-      m_pBiotop->loadFromXmlFile(resuStr, m_AppliPath.GetBuffer(0));
+      m_pBiotop->loadFromXmlFile(resuStr, (char*)m_AppliPath.GetBuffer(0));
   }
   else
   {
@@ -214,6 +218,13 @@ BOOL CCybiosphereApp::InitInstance()
   }
 
   m_pScenarioPlayer = new CScenarioPlayer(m_pBiotop);
+
+#ifdef USE_CLAN_SERVER
+  ConsoleWindow console("Server Console", 160, 1000);
+  ConsoleLogger logger;
+  m_pServer = new Server(m_pBiotop);
+  m_pServer->startServer();
+#endif
 
   CreateEntityView();
   CreateNewBiotopView(m_pBiotop);
@@ -291,8 +302,8 @@ void CCybiosphereApp::OnAppViewLog()
 {
   CYBIOCORE_LOG_FLUSH;
 
-  CString execString = "notepad " + GetAppliPath() + "CybioCore.log";
-  WinExec(execString,SW_SHOW);
+  CString execString = LPCTSTR("notepad ") + GetAppliPath() + LPCTSTR("CybioCore.log");
+  WinExec((char*)(execString.GetBuffer(0)),SW_SHOW);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -468,12 +479,20 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
   GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
   GetStatisticViewPtr()->NextSecond();
   GetMapConfigViewPtr()->NextSecond();
+
+#ifdef USE_CLAN_SERVER
+  m_pServer->ProcessEvents(true);
+#endif
 }
 
 void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 {
   CheckSelectedEntity();
   GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
+
+#ifdef USE_CLAN_SERVER
+  m_pServer->ProcessEvents(true);
+#endif
 }
 
 void CCybiosphereApp::CheckSelectedEntity()

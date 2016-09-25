@@ -3,7 +3,9 @@
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
+#ifndef _CONSOLE
 #include "CybiOgre3D.h"
+#endif
 
 Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp)
 {
@@ -354,7 +356,7 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
   TiXmlDocument xmlDoc;
   xmlDoc.Parse(xmlBuffer.get_data());
 
-  CBasicEntity* pNewEntity = m_pBiotop->createEntity(&xmlDoc);
+  CBasicEntity* pNewEntity = m_pBiotop->createEntity(&xmlDoc, ".\\temp\\");
 	log_event("events", "Biotop update full entity: %1", pNewEntity->getLabel());
 
   // Update all entities with same name

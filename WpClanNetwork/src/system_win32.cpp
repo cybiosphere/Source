@@ -86,7 +86,11 @@ namespace clan
 	std::string System::get_exe_path()
 	{
 		WCHAR exe_filename[_MAX_PATH];
-		DWORD len = GetModuleFileName(NULL, exe_filename, _MAX_PATH);
+#if defined UNICODE
+    DWORD len = GetModuleFileName(NULL, LPWSTR(exe_filename), _MAX_PATH);
+#else
+    DWORD len = GetModuleFileName(NULL, LPSTR(exe_filename), _MAX_PATH);
+#endif
 		if (len == 0 || len == _MAX_PATH)
 			throw Exception("GetModuleFileName failed!");
 

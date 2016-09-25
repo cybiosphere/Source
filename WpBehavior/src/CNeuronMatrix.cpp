@@ -223,7 +223,7 @@ int CNeuronMatrix::buildRawDataFromNeuronLine (int lineId, WORD*& pRawData)
 
   for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
   {
-    pRawData[j] = round( (m_mNeuronTable(lineId,j) + 1.0) * 32767.0 );
+    pRawData[j] = cybio_round( (m_mNeuronTable(lineId,j) + 1.0) * 32767.0 );
   }
 
   return ( (int)m_mNeuronTable.ColNo() );

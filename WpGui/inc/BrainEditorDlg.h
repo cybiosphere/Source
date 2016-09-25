@@ -39,7 +39,7 @@ class CBrainEditorDlg : public CDialog
 {
 // Construction
 public:
-	CBrainEditorDlg(CBrain* pBrain, bool identifyBrain = false, CString userTitle = "", CWnd* pParent = NULL);   // standard constructor 
+	CBrainEditorDlg(CBrain* pBrain, bool identifyBrain = false, CString userTitle = LPCTSTR(""), CWnd* pParent = NULL);   // standard constructor 
 
 protected:
 // Dialog Data

@@ -25,6 +25,7 @@ distribution.
 // BiotopView.cpp : implementation of the CBiotopView class
 //
 
+#include "stdafx.h"
 #include "stdafxGL.h"
 #include "BiotopDisplayGL.h"
 #include "BiotopDisplayMFC.h"

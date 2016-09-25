@@ -92,8 +92,8 @@ void CEntityEditorDlg::OnButtonLoad()
   CString pathName;
   CString strSection,strData;
 
-  CFileDialog fileDlg(true,"xml","",0,"Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-  fileDlg.m_ofn.lpstrTitle = "Select entity";
+  CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select entity");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
   long nResp = fileDlg.DoModal(); 
   if (nResp == IDOK)
@@ -104,11 +104,11 @@ void CEntityEditorDlg::OnButtonLoad()
     if (endPath>0)
       pathName = pathName.Left(endPath+1); 
 
-    bool resu = m_pEntity->loadDataFromXmlFile(fileDlg.GetPathName().GetBuffer(0), pathName.GetBuffer(0));
+    bool resu = m_pEntity->loadDataFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), (char*)pathName.GetBuffer(0));
 
     if (!resu)
     {
-      AfxMessageBox("Current entity has a different label from file entity");
+      AfxMessageBox(LPCTSTR("Current entity has a different label from file entity"));
     }
 
     DisplayParamSliders();
@@ -125,10 +125,10 @@ void CEntityEditorDlg::OnButtonSave()
   CString pathName;
   CString entityName;
   CString strSection,strData;
-  CString initFileName = m_pEntity->getLabel().c_str();
+  CString initFileName = LPCTSTR(m_pEntity->getLabel().c_str());
 
-  CFileDialog fileDlg(false,"xml",initFileName,0,"Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-  fileDlg.m_ofn.lpstrTitle = "Select entity";
+  CFileDialog fileDlg(false, LPCTSTR("xml"), initFileName, 0, LPCTSTR("Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select entity");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
   long nResp = fileDlg.DoModal(); 
   if (nResp == IDOK)
@@ -154,11 +154,11 @@ void CEntityEditorDlg::OnButtonSave()
     if (endName>0)
       entityName = entityName.Left(endName); 
     
-    bool resu = m_pEntity->saveInXmlFile(fileDlg.GetPathName().GetBuffer(0), entityName.GetBuffer(0));
+    bool resu = m_pEntity->saveInXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), (char*)entityName.GetBuffer(0));
 
     if (!resu)
     {
-      AfxMessageBox("Impossible to save file " + fileName);
+      AfxMessageBox(LPCTSTR("Impossible to save file ") + fileName);
     }
   }
 }

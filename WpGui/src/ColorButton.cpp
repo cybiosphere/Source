@@ -40,7 +40,7 @@ static char THIS_FILE[] = __FILE__;
 CColorButton::CColorButton()
 {
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(85, "Arial");
+  m_pFont->CreatePointFont(85, LPCTSTR("Arial"));
 }
 
 CColorButton::~CColorButton()

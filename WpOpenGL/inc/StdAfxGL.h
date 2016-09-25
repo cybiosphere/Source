@@ -38,13 +38,13 @@ distribution.
 
 // Include OpenGL header files
 #include <gl\gl.h>			// opengl32.lib 
-#include <gl\glaux.h>		// glaux.lib 
+//#include <gl\glaux.h>		// glaux.lib 
 #include <gl\glu.h>			// glu32.lib 
 #include <mmsystem.h>		// winmm.lib (used for timeGetTime function)
 
 // Generate auto linkage for OpenGL libraries
 #pragma comment(lib, "OPENGL32.LIB")
-#pragma comment(lib, "GLAUX.LIB")
+//#pragma comment(lib, "GLAUX.LIB")
 #pragma comment(lib, "GLU32.LIB")
 
 // Generate auto linkage for Direct Sound libraries

@@ -32,7 +32,7 @@ distribution.
 //
 
 //////////////////////////////////////////////////
-// CMemDC - memory DC
+// CMemDCGr - memory DC
 //
 // Author: Keith Rule
 // Email:  keithr@europa.com
@@ -47,12 +47,12 @@ distribution.
 //
 // This class implements a memory Device Context
 
-class CMemDC : public CDC
+class CMemDCGr : public CDC
 {
 public:
 
     // constructor sets up the memory DC
-    CMemDC(CDC* pDC) : CDC()
+	CMemDCGr(CDC* pDC) : CDC()
     {
         ASSERT(pDC != NULL);
 
@@ -90,7 +90,7 @@ public:
     }
 
     // Destructor copies the contents of the mem DC to the original DC
-    ~CMemDC()
+    ~CMemDCGr()
     {
         if (m_bMemDC)
         {
@@ -109,10 +109,10 @@ public:
     }
 
     // Allow usage as a pointer
-    CMemDC* operator->() {return this;}
+	CMemDCGr* operator->() {return this;}
         
     // Allow usage as a pointer
-    operator CMemDC*() {return this;}
+    operator CMemDCGr*() {return this;}
 
 private:
     CBitmap  m_bitmap;      // Offscreen bitmap

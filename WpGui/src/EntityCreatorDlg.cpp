@@ -105,7 +105,7 @@ void CEntityCreatorDlg::OnRadioMineral()
 	m_ComboClass.ResetContent();
   for (ClassType_e i=CLASS_MINERAL_FIRST;i<=CLASS_MINERAL_LAST;i=(ClassType_e)(i+1))
   {
-    index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
+    index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
     m_ComboClass.SetItemData(index,(DWORD)i);
   }
   m_ComboClass.SetCurSel(0);
@@ -118,7 +118,7 @@ void CEntityCreatorDlg::OnRadioVegetal()
 	m_ComboClass.ResetContent();
   for (ClassType_e i=CLASS_VEGETAL_FIRST;i<=CLASS_VEGETAL_LAST;i=(ClassType_e)(i+1))
   {
-    index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
+    index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
     m_ComboClass.SetItemData(index,(DWORD)i);
   }
   m_ComboClass.SetCurSel(0);
@@ -131,7 +131,7 @@ void CEntityCreatorDlg::OnRadioAnimal()
 	m_ComboClass.ResetContent();
   for (ClassType_e i=CLASS_ANIMAL_FIRST;i<=CLASS_ANIMAL_LAST;i=(ClassType_e)(i+1))
   {
-    index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
+    index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
     m_ComboClass.SetItemData(index,(DWORD)i);
   }
   m_ComboClass.SetCurSel(0);
@@ -197,18 +197,18 @@ void CEntityCreatorDlg::OnOK()
 
     if (m_pTempGenome == NULL)
     {
-      m_pTempGenome = new CGenome(selectedClass,m_EditBoxSpecieName.GetBuffer(0));
+      m_pTempGenome = new CGenome(selectedClass,(char*)m_EditBoxSpecieName.GetBuffer(0));
     }
 
-    m_NewEntityId = theApp.GetBiotop()->createAndAddEntity(m_EditBoxName.GetBuffer(0),coord,m_StartLayer,m_pTempGenome);
+    m_NewEntityId = theApp.GetBiotop()->createAndAddEntity((char*)m_EditBoxName.GetBuffer(0),coord,m_StartLayer,m_pTempGenome);
     m_pTempGenome = NULL;
 
     if ( (m_GenomeEditRequired==false) && (m_NewEntityId>0) )
     {
       CString filenameWithPath = m_OpenedDirectoryName + m_OpenedFileName;
       CBasicEntity* pEntity = theApp.GetBiotop()->getEntityById(m_NewEntityId);
-      pEntity->loadDataFromXmlFile(filenameWithPath.GetBuffer(0),"");
-      pEntity->loadBrainFromXmlFile(filenameWithPath.GetBuffer(0));
+      pEntity->loadDataFromXmlFile((char*)filenameWithPath.GetBuffer(0),"");
+      pEntity->loadBrainFromXmlFile((char*)filenameWithPath.GetBuffer(0));
     } 
   }
 
@@ -226,8 +226,8 @@ void CEntityCreatorDlg::OnButtonLoad()
   CString fileName;
   CString strSection,strData;
 
-  CFileDialog fileDlg(true,"xml","",0,"Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-  fileDlg.m_ofn.lpstrTitle = "Select entity";
+  CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select entity");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
   long nResp = fileDlg.DoModal(); 
   if (nResp == IDOK)
@@ -246,9 +246,9 @@ void CEntityCreatorDlg::OnButtonLoad()
     m_pTempGenome = new CGenome(CLASS_NONE,"");
 
     string name;
-    CBasicEntity::getGenomeFromXmlFile(fileDlg.GetPathName().GetBuffer(0), *m_pTempGenome);
-    CBasicEntity::getDefaultLayerFromXmlFile(fileDlg.GetPathName().GetBuffer(0), m_StartLayer);
-    CBasicEntity::getEntityNameFromXmlFile(fileDlg.GetPathName().GetBuffer(0), name);
+    CBasicEntity::getGenomeFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), *m_pTempGenome);
+    CBasicEntity::getDefaultLayerFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), m_StartLayer);
+    CBasicEntity::getEntityNameFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), name);
 
     //m_ComboClass;
     m_EditBoxName = name.c_str();

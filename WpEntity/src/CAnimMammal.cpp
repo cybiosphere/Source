@@ -182,7 +182,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
       if (m_id_GestationTime != -1) delete(getParameter(m_id_GestationTime)); // delete if already set
       minVal = 0;
       defVal = 0;
-      maxVal = round(scaledVal3);
+      maxVal = cybio_round(scaledVal3);
       pParam = new CGenericParam(minVal,0,defVal,maxVal,"Gestation time",PARAM_REPRODUCTION,subType);
       m_id_GestationTime = addParameter(pParam);
       resu = true;
@@ -192,8 +192,8 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
     {
       if (m_id_GestationNumberRange != -1) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
       minVal = 0;
-      defVal = round(scaledVal2);
-      maxVal = round(scaledVal3);
+      defVal = cybio_round(scaledVal2);
+      maxVal = cybio_round(scaledVal3);
       pParam = new CGenericParam(minVal,0,defVal,maxVal,"Gestation baby number",PARAM_REPRODUCTION,subType);
       m_id_GestationNumberRange = addParameter(pParam);
       resu = true;

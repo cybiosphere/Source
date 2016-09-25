@@ -122,19 +122,19 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   m_ButtonSave.SetIcon(saveIco);
   m_ButtonLoad.SetIcon(loadIco);
   
-  m_Title1.SetWindowText("Period in second");
-  m_Title2.SetWindowText("Entity name");
-  m_Title3.SetWindowText("Type");
-  m_Title4.SetWindowText("Reaction");
-  m_Title5.SetWindowText("Specie name");
+  m_Title1.SetWindowText(LPCTSTR("Period in second"));
+  m_Title2.SetWindowText(LPCTSTR("Entity name"));
+  m_Title3.SetWindowText(LPCTSTR("Type"));
+  m_Title4.SetWindowText(LPCTSTR("Reaction"));
+  m_Title5.SetWindowText(LPCTSTR("Specie name"));
 
   InitMeasureList();
 
-  int index;
+  int index, i;
 	m_ComboType.ResetContent();
   for (MeasureType_e id=MEASURE_TYPE_GENERIC; id<MEASURE_NUMBER_TYPE; id=(MeasureType_e)(id+1))
   {
-    index = m_ComboType.AddString(CMeasure::getMeasureTypeStrName(id).c_str());
+    index = m_ComboType.AddString(LPCTSTR(CMeasure::getMeasureTypeStrName(id).c_str()));
     m_ComboType.SetItemData(index,(DWORD)id);
   }
   m_ComboType.SetCurSel(0);
@@ -142,9 +142,9 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   RefreshEditSection();
 
   m_ComboEntity.ResetContent();
-  for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
+  for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
-    index = m_ComboEntity.AddString(m_pBiotop->getEntityByIndex(i)->getLabel().c_str());
+    index = m_ComboEntity.AddString(LPCTSTR(m_pBiotop->getEntityByIndex(i)->getLabel().c_str()));
     m_ComboType.SetItemData(index,(DWORD)m_pBiotop->getEntityByIndex(i)->getId());
   }
 
@@ -152,7 +152,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   CString specieName;
   for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
-    specieName = m_pBiotop->getEntityByIndex(i)->getGenome()->getSpecieName().c_str();
+    specieName = LPCTSTR(m_pBiotop->getEntityByIndex(i)->getGenome()->getSpecieName().c_str());
     index = m_ComboSpecie.FindStringExact(0,specieName);
     if (index==CB_ERR)
     {  
@@ -163,7 +163,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
 	m_ComboEvent.ResetContent();
   for (EventType_e idEv=EVENT_TYPE_NONE; idEv<EVENT_NUMBER_TYPE; idEv=(EventType_e)(idEv+1))
   {
-    index = m_ComboEvent.AddString(CMeasure::getEventTypeStrName(idEv).c_str());
+    index = m_ComboEvent.AddString(LPCTSTR(CMeasure::getEventTypeStrName(idEv).c_str()));
     m_ComboEvent.SetItemData(index,(DWORD)idEv);
   }
   m_ComboEvent.SetCurSel(0);
@@ -184,11 +184,11 @@ void CMeasureEditorDlg::InitMeasureList()
       pCurMeasure = m_pBiotop->getMeasureById(i);
       if (pCurMeasure!=NULL)
       {
-        m_MeasureList.AddString(pCurMeasure->GetLabel().c_str());
+        m_MeasureList.AddString(LPCTSTR(pCurMeasure->GetLabel().c_str()));
       }
       else
       {
-        m_MeasureList.AddString("empty");
+        m_MeasureList.AddString(LPCTSTR("empty"));
       }
     }
   }
@@ -387,28 +387,28 @@ void CMeasureEditorDlg::UpdateComboSubType ()
   case MEASURE_TYPE_FEELING:
     for (i=0;i<MEASURE_FEELING_NB_TYPE;i++)
     {
-      m_ComboSubtype.AddString(CMeasureFeeling::GetMeasureFeelingTypeStrName((MeasureFeelingType_e)i).c_str());
+      m_ComboSubtype.AddString(LPCTSTR(CMeasureFeeling::GetMeasureFeelingTypeStrName((MeasureFeelingType_e)i).c_str()));
     }
     break;
 
   case MEASURE_TYPE_REACTION:
     for (i=0;i<MEASURE_ACTION_NB_TYPE;i++)
     {
-      m_ComboSubtype.AddString(CMeasureReaction::GetMeasureReactionTypeStrName((MeasureReactionType_e)i).c_str());
+      m_ComboSubtype.AddString(LPCTSTR(CMeasureReaction::GetMeasureReactionTypeStrName((MeasureReactionType_e)i).c_str()));
     }
     break;
 
   case MEASURE_TYPE_POPULATION:
     for (i=0;i<MEASURE_POPULATION_NUMBER_TYPE;i++)
     {
-      m_ComboSubtype.AddString(CMeasurePopulation::GetMeasurePopulationTypeStrName((MeasurePopulationType_e)i).c_str());
+      m_ComboSubtype.AddString(LPCTSTR(CMeasurePopulation::GetMeasurePopulationTypeStrName((MeasurePopulationType_e)i).c_str()));
     }
     break;
 
   case MEASURE_TYPE_PARAMETER_BIOTOP:
     for (i=0;i<BIO_PARAM_NUMBERT_TYPE;i++)
     {
-      m_ComboSubtype.AddString(m_pBiotop->getParameter(i)->getLabel().c_str());
+      m_ComboSubtype.AddString(LPCTSTR(m_pBiotop->getParameter(i)->getLabel().c_str()));
     }
     break;
 
@@ -420,7 +420,7 @@ void CMeasureEditorDlg::UpdateComboSubType ()
       {
         for (i=0; i<pEntity->getNumParameter(); i++)
         {
-          m_ComboSubtype.AddString(pEntity->getParameter(i)->getLabel().c_str());
+          m_ComboSubtype.AddString(LPCTSTR(pEntity->getParameter(i)->getLabel().c_str()));
         }
       }
     }
@@ -448,7 +448,7 @@ void CMeasureEditorDlg::UpdateAndInitComboReaction(CMeasure* pMeas)
       {
         for (i=0;i<pEntity->getBrain()->GetNumberReaction();i++)
         {
-          m_ComboReaction.AddString(pEntity->getBrain()->GetReactionByIndex(i)->GetLabel().c_str());
+          m_ComboReaction.AddString(LPCTSTR(pEntity->getBrain()->GetReactionByIndex(i)->GetLabel().c_str()));
         }
 
         if (pMeas==NULL)
@@ -480,7 +480,7 @@ void CMeasureEditorDlg::InitSelComboSpecie (CMeasure* pMeas)
   case MEASURE_TYPE_POPULATION:
     if (pMeas->GetSubTypeId()==MEASURE_POPULATION_SPECIFIC)
     {
-      m_ComboSpecie.SelectString(0, ((CMeasurePopulation*)pMeas)->GetSpecieName().c_str());
+      m_ComboSpecie.SelectString(0, LPCTSTR(((CMeasurePopulation*)pMeas)->GetSpecieName().c_str()));
     }
     break;
 
@@ -553,7 +553,7 @@ void CMeasureEditorDlg::RebuildNewMeasure()
       int combInd = m_ComboSpecie.GetCurSel();
       m_ComboSpecie.GetLBText(combInd,specieName);
       MeasurePopulationType_e measureType = (MeasurePopulationType_e)m_ComboSubtype.GetCurSel();
-      m_pNewMeasure = new CMeasurePopulation( m_pBiotop, m_EditPeriod, index, measureType, 100, specieName.GetBuffer(0)); 
+      m_pNewMeasure = new CMeasurePopulation( m_pBiotop, m_EditPeriod, index, measureType, 100, (char*)specieName.GetBuffer(0)); 
     }
     break;
 

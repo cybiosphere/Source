@@ -293,8 +293,8 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     {
       if (m_id_Age != -1) delete(getParameter(m_id_Age)); // delete if already set
       minVal  = 0.0;
-      initVal = round(scaledVal2);
-      maxVal  = round(scaledVal3);
+      initVal = cybio_round(scaledVal2);
+      maxVal  = cybio_round(scaledVal3);
       pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Age",PARAM_DURATION,subType);
       m_id_Age = addParameter(pParam);
       resu = true;
@@ -305,7 +305,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
       if (m_id_Decomposition != -1) delete(getParameter(m_id_Decomposition)); // delete if already set
       minVal  = 0.0;
       initVal = 0.0;
-      maxVal  = round(scaledVal3);
+      maxVal  = cybio_round(scaledVal3);
       pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Decomposition",PARAM_DURATION,subType);
       m_id_Decomposition = addParameter(pParam);
       resu = true;
@@ -679,7 +679,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   pWeight = new double[nbWeight];
   for (int i=0;i<nbWeight;i++)
   {
-    pWeight[i] = round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
+    pWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
   }
 
   double scaledVal1, scaledVal2, scaledVal3, scaledVal4;
@@ -693,9 +693,9 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   {
   case GENE_SENS_TACTILE:
     {
-      if ( nbWeight==(round(scaledVal2-10.0)-round(scaledVal1-10.0)+1) )
+      if ( nbWeight==(cybio_round(scaledVal2-10.0)-cybio_round(scaledVal1-10.0)+1) )
       {
-        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain,pWeight,round(scaledVal1-10.0),round(scaledVal2-10.0));
+        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1-10.0), cybio_round(scaledVal2-10.0));
         resu = true;
       }
       else
@@ -707,11 +707,11 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     }
   case GENE_SENS_VIEW:
     {
-      if ( nbWeight==(round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
+      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorView((CBrainAnimal*)m_pBrain,pWeight,
-                                  round(scaledVal1),round(scaledVal2),
-                                  (ViewAngleType_e)round(scaledVal3),round(scaledVal4));
+                                  cybio_round(scaledVal1), cybio_round(scaledVal2),
+                                  (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
       }
       else
@@ -725,7 +725,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_ODORS )
       {
-        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain,pWeight,round(scaledVal1));
+        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -739,7 +739,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_PHEROMONES )
       {
-        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain,pWeight,round(scaledVal1));
+        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -767,7 +767,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==8 )
       {
-        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, pWeight, round(scaledVal1));
+        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, pWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -905,11 +905,11 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     }
   case GENE_SENS_VIEW_FAR:
     {
-      if ( nbWeight==(round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
+      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain,pWeight,
-                                     round(scaledVal1),round(scaledVal2),
-                                     (ViewAngleType_e)round(scaledVal3),round(scaledVal4));
+                                     cybio_round(scaledVal1), cybio_round(scaledVal2),
+                                     (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
       }
       break;
@@ -975,7 +975,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight>0)
       {
         DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
-        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, pWeight, nbWeight, sensUid, round(scaledVal3));
+        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, pWeight, nbWeight, sensUid, cybio_round(scaledVal3));
         resu = true;
       }
       else
@@ -1002,11 +1002,11 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
 
   case GENE_SENS_VIEW_IDENTIFY:
     {
-      if ( nbWeight==(round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
+      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain,pWeight,
-                                          round(scaledVal1),round(scaledVal2),
-                                          (ViewAngleType_e)round(scaledVal3),round(scaledVal4));
+                                          cybio_round(scaledVal1), cybio_round(scaledVal2),
+                                          (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
       }
       else
@@ -1018,11 +1018,11 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     }
   case GENE_SENS_VIEW_IDENT_FAR:
     {
-      if ( nbWeight==(round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
+      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain,pWeight,
-                                             round(scaledVal1),round(scaledVal2),
-                                             (ViewAngleType_e)round(scaledVal3),round(scaledVal4));
+                                             cybio_round(scaledVal1), cybio_round(scaledVal2),
+                                             (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
       }
       else
@@ -1097,13 +1097,13 @@ int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   {
   case GENE_SENS_TACTILE:
     {
-      nbWeight = round(scaledVal2-10.0) - round(scaledVal1-10.0) + 1;
+      nbWeight = cybio_round(scaledVal2-10.0) - cybio_round(scaledVal1-10.0) + 1;
       break;
     }
   case GENE_SENS_VIEW:
   case GENE_SENS_VIEW_FAR:
     {
-      nbWeight = (round(scaledVal4)*VIEW_SIZE_PER_FOCUS);
+      nbWeight = (cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS);
       break;
     }
   case GENE_SENS_SMELL:
@@ -1173,7 +1173,7 @@ int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   case GENE_SENS_VIEW_IDENTIFY:
   case GENE_SENS_VIEW_IDENT_FAR:
     {
-      nbWeight = (round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS);
+      nbWeight = (cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS);
       break;
     }
   default:
@@ -1250,7 +1250,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   case GENE_REACT_MOVEFORWARD:
     {
       data1 = pData[2] * getGeneScaleData3(subType);
-      pReaction = new CReactionVarySpeed((CBrainAnimal*)m_pBrain,success,failure,round(data1));
+      pReaction = new CReactionVarySpeed((CBrainAnimal*)m_pBrain,success,failure, cybio_round(data1));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1258,7 +1258,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   case GENE_REACT_STEPBACKWARD:
     {
       data1 = pData[2] * getGeneScaleData3(subType);
-      pReaction = new CReactionStepBackward((CBrainAnimal*)m_pBrain,success,failure,round(data1));
+      pReaction = new CReactionStepBackward((CBrainAnimal*)m_pBrain,success,failure, cybio_round(data1));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1280,7 +1280,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   case GENE_REACT_EAT:
     {
       data1 = pData[2] * getGeneScaleData3(subType) - 10.0;
-      pReaction = new CReactionEat((CBrainAnimal*)m_pBrain,success,failure,round(data1));
+      pReaction = new CReactionEat((CBrainAnimal*)m_pBrain,success,failure, cybio_round(data1));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1302,7 +1302,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   case GENE_REACT_ATTACK:
     {
       data1 = pData[2] * getGeneScaleData3(subType) - 10.0;
-      pReaction = new CReactionAttack((CBrainAnimal*)m_pBrain,success,failure,round(data1));
+      pReaction = new CReactionAttack((CBrainAnimal*)m_pBrain,success,failure, cybio_round(data1));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1432,7 +1432,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
   }
 
   GeneSubType_e subType = pGen->getGeneSubType();
-  int brainSize = round((double)pData[0] * getGeneScaleData1(subType));
+  int brainSize = cybio_round((double)pData[0] * getGeneScaleData1(subType));
 
   switch(subType)
   {
@@ -1492,7 +1492,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   len = len*sizeof(BYTE)/sizeof(WORD) - 1;
   // Process Line Id
   GeneSubType_e subType = pGen->getGeneSubType();
-  int lineId = round((double)pData[0] * getGeneScaleData1(subType));
+  int lineId = cybio_round((double)pData[0] * getGeneScaleData1(subType));
   // Build Line
   if (subType == GENE_BRAIN_LINE)
   {
@@ -1694,10 +1694,10 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       {
         return (false);
       }
-      int duration           = round((double)pData[0] * getGeneScaleData1(subType));
-      int subCaptorIndex     = round((double)pData[1] * getGeneScaleData2(subType));
-      int startRateThreshold = round((double)pData[2] * getGeneScaleData3(subType));
-      int stopRateThreshold  = round((double)pData[3] * getGeneScaleData4(subType));
+      int duration           = cybio_round((double)pData[0] * getGeneScaleData1(subType));
+      int subCaptorIndex     = cybio_round((double)pData[1] * getGeneScaleData2(subType));
+      int startRateThreshold = cybio_round((double)pData[2] * getGeneScaleData3(subType));
+      int stopRateThreshold  = cybio_round((double)pData[3] * getGeneScaleData4(subType));
       char* pLabel = (char*)pData + 12;
 
       PurposeTriggerType_e trigType = PURPOSE_TRIG_UP;
@@ -1733,7 +1733,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       int* pBonusTable = new int[bonusTableSize];
       for (int index=0; index<bonusTableSize; index++)
       {
-        pBonusTable[index] = round((double)pData[4+index] * 20000.0/65536.0);
+        pBonusTable[index] = cybio_round((double)pData[4+index] * 20000.0/65536.0);
       }
       resu = pPurpose->AddSensorBonus(pSensor,bonusTableSize,pBonusTable);
       delete [] pBonusTable;
@@ -1749,7 +1749,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       DWORD* pPurposeUid = (DWORD*)pData;
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(*pPurposeUid);
       CReaction* pReaction = m_pBrain->GetReactionByUniqueId(*(pPurposeUid+1));
-      int bonus = round((double)pData[4] * getGeneScaleData1(subType));
+      int bonus = cybio_round((double)pData[4] * getGeneScaleData1(subType));
       if (pPurpose && pReaction)
         resu = pPurpose->AddReactionBonus(pReaction,bonus);
       break;
@@ -2005,12 +2005,12 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1-10.0) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1-10.0) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       if (getGeneScaleData2(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal2-10.0) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal2-10.0) );
         paramStr += getGeneNameData2(subType) + tempStr;
       }
       break;
@@ -2023,23 +2023,23 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       if (getGeneScaleData2(subType)!=0)
       {
         // Fred TBD : use angle string
-        tempStr = FormatString("=%d ", round(scaledVal2) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal2) );
         paramStr += getGeneNameData2(subType) + tempStr;
       }
       if (getGeneScaleData3(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal3) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal3) );
         paramStr += getGeneNameData3(subType) + tempStr;
       }
       if (getGeneScaleData4(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal4) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal4) );
         paramStr += getGeneNameData4(subType) + tempStr;
       }
       break;
@@ -2049,7 +2049,7 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       break;
@@ -2059,7 +2059,7 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       break;
@@ -2069,7 +2069,7 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       break;
@@ -2079,7 +2079,7 @@ string CAnimal::buildSensorString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       break;
@@ -2106,7 +2106,7 @@ string CAnimal::buildSensorString(CGene* pGen)
     {
       DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
-      CGenericParam* pParam = getParameter(round(scaledVal3));
+      CGenericParam* pParam = getParameter(cybio_round(scaledVal3));
       paramStr = getGeneNameString(pGen);
 
       if (pParam!=NULL)
@@ -2191,22 +2191,22 @@ string CAnimal::buildReactionString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       if (getGeneScaleData2(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal2) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal2) );
         paramStr += getGeneNameData2(subType) + tempStr;
       }
       if (getGeneScaleData3(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal3) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal3) );
         paramStr += getGeneNameData3(subType) + tempStr;
       }
       if (getGeneScaleData4(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal4) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal4) );
         paramStr += getGeneNameData4(subType) + tempStr;
       }
       break;
@@ -2217,17 +2217,17 @@ string CAnimal::buildReactionString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       if (getGeneScaleData2(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal2) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal2) );
         paramStr += getGeneNameData2(subType) + tempStr;
       }
       if (getGeneScaleData3(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal3-10.0) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal3-10.0) );
         paramStr += getGeneNameData3(subType) + tempStr;
       }
       break;
@@ -2237,17 +2237,17 @@ string CAnimal::buildReactionString(CGene* pGen)
       paramStr = getGeneNameString(pGen) + " : ";
       if (getGeneScaleData1(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal1) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
         paramStr += getGeneNameData1(subType) + tempStr;
       }
       if (getGeneScaleData2(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal2) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal2) );
         paramStr += getGeneNameData2(subType) + tempStr;
       }
       if (getGeneScaleData3(subType)!=0)
       {
-        tempStr = FormatString("=%d ", round(scaledVal3) );
+        tempStr = FormatString("=%d ", cybio_round(scaledVal3) );
         paramStr += getGeneNameData3(subType) + tempStr;
       }
       break;
@@ -2298,7 +2298,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
   }
 
   GeneSubType_e subType = pGen->getGeneSubType();
-  int brainSize = round((double)pData[0] * getGeneScaleData1(subType));
+  int brainSize = cybio_round((double)pData[0] * getGeneScaleData1(subType));
 
   switch(subType)
   {
@@ -2356,7 +2356,7 @@ string CAnimal::buildBrainInstinctString(CGene* pGen)
   }
 
   GeneSubType_e subType = pGen->getGeneSubType();
-  int brainSize = round((double)pData[0] * getGeneScaleData1(subType));
+  int brainSize = cybio_round((double)pData[0] * getGeneScaleData1(subType));
 
   switch(subType)
   {
@@ -2536,10 +2536,10 @@ string CAnimal::buildPurposeString(CGene* pGen)
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(*pSensUid);
       if ( pSens == NULL )
         break;
-      int duration           = round((double)pData[0] * getGeneScaleData1(subType));
-      int subCaptorIndex     = round((double)pData[1] * getGeneScaleData2(subType));
-      int startRateThreshold = round((double)pData[2] * getGeneScaleData3(subType));
-      int stopRateThreshold  = round((double)pData[3] * getGeneScaleData4(subType));
+      int duration           = cybio_round((double)pData[0] * getGeneScaleData1(subType));
+      int subCaptorIndex     = cybio_round((double)pData[1] * getGeneScaleData2(subType));
+      int startRateThreshold = cybio_round((double)pData[2] * getGeneScaleData3(subType));
+      int stopRateThreshold  = cybio_round((double)pData[3] * getGeneScaleData4(subType));
       char* pLabel = (char*)pData + 12;
 
       tempStr = " <"; tempStr += pLabel; tempStr += ">";
@@ -2580,7 +2580,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
       DWORD* pPurposeUid = (DWORD*)pData;
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(*pPurposeUid);
       CReaction* pReaction = m_pBrain->GetReactionByUniqueId(*(pPurposeUid+1));
-      int bonus = round((double)pData[4] * getGeneScaleData1(subType));
+      int bonus = cybio_round((double)pData[4] * getGeneScaleData1(subType));
       tempStr = FormatString("=%d ", bonus );
       if (pPurpose && pReaction)
         purposeStr = getGeneNameString(pGen) + " for " + pPurpose->GetLabel() 

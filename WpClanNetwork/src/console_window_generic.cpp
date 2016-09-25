@@ -53,7 +53,11 @@ namespace clan
 	{
 #ifdef WIN32
 		AllocConsole();
-		SetConsoleTitle(StringHelp::utf8_to_ucs2(title).c_str());
+#if defined UNICODE
+		SetConsoleTitle(LPCWSTR(StringHelp::utf8_to_ucs2(title).c_str()));
+#else
+    SetConsoleTitle(LPSTR(StringHelp::utf8_to_ucs2(title).c_str()));
+#endif
 		COORD coord;
 		coord.X = width;
 		coord.Y = height;

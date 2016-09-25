@@ -257,9 +257,9 @@ void CGeneticView::DisplayGenome(CGenome* pGenome)
     m_strData1 = pGenome->getSpecieName().c_str();
     m_strData2 = pGenome->getOwnClassStrName().c_str();
     CString tmpStr;
-    tmpStr.Format("%d",pGenome->getSpecieSignature());
+    tmpStr.Format(LPCTSTR("%d"),pGenome->getSpecieSignature());
     m_strData3 = tmpStr;
-    m_strData4 = "";
+    m_strData4 = LPCTSTR("");
   }
 
   // Update windows
@@ -281,7 +281,7 @@ void CGeneticView::DisplayPair(CPairOfChromosome* pPair)
   m_strLabel3 = "";
   m_strLabel4 = "";
 
-  tmpStr.Format("id %d",pPair->getIdNumber());
+  tmpStr.Format(LPCTSTR("id %d"),pPair->getIdNumber());
   m_strData1 = tmpStr;
 
   switch (pPair->getSex())
@@ -322,9 +322,9 @@ void CGeneticView::DisplayChromosome(CChromosome* pChromosome)
   m_strLabel4 = "Raw data";
 
   m_strData1 = pChromosome->getLabel().c_str();
-  tmpStr.Format("%d",pChromosome->getIdNumber());
+  tmpStr.Format(LPCTSTR("%d"),pChromosome->getIdNumber());
   m_strData2 = tmpStr;
-  m_strData3 = "";
+  m_strData3 = LPCTSTR("");
   m_strData4 = pChromosome->buildStringDataFromGenes().c_str();
 
   // Update windows
@@ -346,9 +346,9 @@ void CGeneticView::DisplayGene(CGene* pGene)
   m_strLabel4 = "Raw data";
 
   m_strData1 = pGene->getLabel().c_str();
-  tmpStr.Format("type:%d rate:%d",pGene->getMuteType(),pGene->getMuteRate());
+  tmpStr.Format(LPCTSTR("type:%d rate:%d"),pGene->getMuteType(),pGene->getMuteRate());
   m_strData2 = tmpStr;
-  tmpStr.Format("%d",pGene->getDominanceFactor());
+  tmpStr.Format(LPCTSTR("%d"),pGene->getDominanceFactor());
   m_strData3 = tmpStr;
   m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str(); //pGene->buildStringDataFromGene();
 

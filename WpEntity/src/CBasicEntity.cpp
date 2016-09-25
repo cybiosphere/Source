@@ -3249,8 +3249,8 @@ Point_t CBasicEntity::getGridCoordRelative(Point_t relativeCoord)
   {
     // Distant cell: use trigo
     double aRad = (double)m_Direction * CYBIO_PI / 4.0;
-    position.x= m_GridCoord.x + round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y); 
-    position.y= m_GridCoord.y + round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
+    position.x= m_GridCoord.x + cybio_round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y);
+    position.y= m_GridCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
   }
 
   return (position);
@@ -3267,8 +3267,8 @@ Point_t CBasicEntity::getStepCoordRelative(Point_t relativeCoord)
  
   // Distant cell: use trigo
   double aRad = (double)m_StepDirection * CYBIO_PI / 180.0;
-  position.x= m_StepCoord.x + round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y); 
-  position.y= m_StepCoord.y + round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
+  position.x= m_StepCoord.x + cybio_round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y);
+  position.y= m_StepCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
 
   // avoid <0 coord
   if (position.x < 0)

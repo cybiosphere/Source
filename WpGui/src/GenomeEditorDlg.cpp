@@ -276,7 +276,7 @@ void CGenomeEditorDlg::DisplayGenome(CGenome* pGenome)
   m_pCurrentChromosome = NULL;
   m_pCurrentGene       = NULL;
 
-  m_ButtonAdd.SetWindowText("Add paire");
+  m_ButtonAdd.SetWindowText(LPCTSTR("Add paire"));
   m_ButtonAdd.ShowWindow(SW_SHOW);  
   m_Combo1.ShowWindow(SW_HIDE);
   m_Combo2.ShowWindow(SW_HIDE);
@@ -305,7 +305,7 @@ void CGenomeEditorDlg::DisplayPair(CPairOfChromosome* pPair)
   m_pCurrentChromosome = NULL;
   m_pCurrentGene       = NULL;
 
-  m_ButtonAdd.SetWindowText("Add Gene");
+  m_ButtonAdd.SetWindowText(LPCTSTR("Add Gene"));
   m_ButtonAdd.ShowWindow(SW_SHOW);
   m_Combo1.ShowWindow(SW_SHOW);
   m_Combo2.ShowWindow(SW_HIDE);
@@ -325,11 +325,11 @@ void CGenomeEditorDlg::DisplayPair(CPairOfChromosome* pPair)
   int indexInitSel = 0;
 	m_Combo1.ResetContent();
 
-  index = m_Combo1.AddString("neutral");
+  index = m_Combo1.AddString(LPCTSTR("neutral"));
   m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_NEUTRAL);
-  index = m_Combo1.AddString("sexual male");
+  index = m_Combo1.AddString(LPCTSTR("sexual male"));
   m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_SEX_MALE);
-  index = m_Combo1.AddString("sexual female");
+  index = m_Combo1.AddString(LPCTSTR("sexual female"));
   m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_SEX_FEMALE);
 
   m_Combo1.SetCurSel(m_pCurrentPair->getSex());
@@ -347,7 +347,7 @@ void CGenomeEditorDlg::DisplayChromosome(CChromosome* pChromosome)
   m_pCurrentGene       = NULL;
 
   //m_ButtonAdd.ShowWindow(SW_HIDE);
-  m_ButtonAdd.SetWindowText("Add Gene");
+  m_ButtonAdd.SetWindowText(LPCTSTR("Add Gene"));
   m_ButtonAdd.ShowWindow(SW_SHOW);
   m_Combo1.ShowWindow(SW_HIDE);
   m_Combo2.ShowWindow(SW_HIDE);
@@ -473,7 +473,7 @@ bool CGenomeEditorDlg::EditGenePair()
 	m_Combo1.ResetContent();
   for (GeneType_e i=GENE_GENERIC; i<GENE_NUMBER_TYPE; i=(GeneType_e)(i+1))
   {
-    index = m_Combo1.AddString(CGene::getGeneTypeStrName(i).c_str());
+    index = m_Combo1.AddString(LPCTSTR(CGene::getGeneTypeStrName(i).c_str()));
     m_Combo1.SetItemData(index,(DWORD)i);
     if (m_pCurrentEditGeneM->getGeneType() == i)
       indexInitSel = index;
@@ -484,7 +484,7 @@ bool CGenomeEditorDlg::EditGenePair()
 	m_ComboMuteType.ResetContent();
   for (GeneMuteType_e j=GENE_MUTE_RANDOM_BIT; j<GENE_MUTE_NUMBER_TYPE; j=(GeneMuteType_e)(j+1))
   {
-    index = m_ComboMuteType.AddString(CGene::getGeneMuteTypeStrName(j).c_str());
+    index = m_ComboMuteType.AddString(LPCTSTR(CGene::getGeneMuteTypeStrName(j).c_str()));
     m_ComboMuteType.SetItemData(index,(DWORD)j);
     if (m_pCurrentEditGeneM->getMuteType() == j)
       indexInitSel = index;
@@ -520,7 +520,7 @@ void CGenomeEditorDlg::UpdateCombo1(bool rebuildGene)
     {
       if ( CGene::getExpectedGeneType(i) == geneType )
       {
-        index = m_Combo2.AddString(CGene::getGeneSubTypeStrName(i).c_str());
+        index = m_Combo2.AddString(LPCTSTR(CGene::getGeneSubTypeStrName(i).c_str()));
         m_Combo2.SetItemData(index,(DWORD)i);
         if (m_pCurrentEditGeneM->getGeneSubType() == i)
           indexInitSel = index;
@@ -572,7 +572,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
   m_ComboLeft.ShowWindow(SW_HIDE);
   m_ComboRight.ShowWindow(SW_HIDE);
   m_EditLabel.ShowWindow(SW_HIDE);
-  CString strEditLabel = "";
+  CString strEditLabel = LPCTSTR("");
 
 	if (m_EditMode == EDIT_MODE_GENE)
   {
@@ -666,7 +666,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (int i=0; i<pBrain->GetNumberSensor(); i++)
           {
-            int index = m_ComboLeft.AddString(pBrain->GetSensorByIndex(i)->GetLabel().c_str());
+            int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
             m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSens)
@@ -736,7 +736,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (int i=0; i<pBrain->GetNumberSensor(); i++)
           {
-            int index = m_ComboLeft.AddString(pBrain->GetSensorByIndex(i)->GetLabel().c_str());
+            int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
             m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSens)
@@ -765,7 +765,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (int i=0; i<pBrain->GetNumberPurpose(); i++)
           {
-            int index = m_ComboLeft.AddString(pBrain->GetPurposeByIndex(i)->GetLabel().c_str());
+            int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetPurposeByIndex(i)->GetLabel().c_str()));
             m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetPurposeByIndex(i));
 
             if (pBrain->GetPurposeByIndex(i) == pPurpose)
@@ -780,7 +780,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (i=0; i<pBrain->GetNumberSensor(); i++)
           {
-            int index = m_ComboRight.AddString(pBrain->GetSensorByIndex(i)->GetLabel().c_str());
+            int index = m_ComboRight.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
             m_ComboRight.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSensor)
@@ -810,7 +810,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (int i=0; i<pBrain->GetNumberPurpose(); i++)
           {
-            int index = m_ComboLeft.AddString(pBrain->GetPurposeByIndex(i)->GetLabel().c_str());
+            int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetPurposeByIndex(i)->GetLabel().c_str()));
             m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetPurposeByIndex(i));
 
             if (pBrain->GetPurposeByIndex(i) == pPurpose)
@@ -825,7 +825,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 
           for (i=0; i<pBrain->GetNumberReaction(); i++)
           {
-            int index = m_ComboRight.AddString(pBrain->GetReactionByIndex(i)->GetLabel().c_str());
+            int index = m_ComboRight.AddString(LPCTSTR(pBrain->GetReactionByIndex(i)->GetLabel().c_str()));
             m_ComboRight.SetItemData(index,(DWORD)pBrain->GetReactionByIndex(i));
 
             if (pBrain->GetReactionByIndex(i) == pReaction)
@@ -1081,7 +1081,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
           CSensor* pSens = (CSensor*)m_ComboLeft.GetItemData(curSensSel);
           CString label; 
           m_EditLabel.GetWindowText(label);
-          m_pCurrentEditGeneM->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,label.GetBuffer(0));
+          m_pCurrentEditGeneM->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
         }
         else if (geneSubType==GENE_PURPOSE_SENSOR)
         {
@@ -1288,7 +1288,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
           CSensor* pSens = (CSensor*)m_ComboLeft.GetItemData(curSensSel);
           CString label; 
           m_EditLabel.GetWindowText(label);
-          m_pCurrentEditGeneP->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,label.GetBuffer(0));
+          m_pCurrentEditGeneP->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
         }
         else if (geneSubType==GENE_PURPOSE_SENSOR)
         {
@@ -1417,19 +1417,19 @@ void CGenomeEditorDlg::OnButtonLoad()
   CString fileName;
   CString strSection,strData;
 
-	CFileDialog fileDlg(true,"xml","",0,"Genome Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Select genome";
+	CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Genome Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select genome");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
 	{
     fileName = fileDlg.GetPathName();
 
-    bool resu = m_pNewGenome->loadFromXmlFile(fileName.GetBuffer(0));
+    bool resu = m_pNewGenome->loadFromXmlFile((char*)fileName.GetBuffer(0));
 
     if (!resu)
     {
-      AfxMessageBox("Impossible to save file " + fileName);
+      AfxMessageBox(LPCTSTR("Impossible to save file ") + fileName);
     }
 
     m_GenomeTreeEdit.SetGenome(m_pNewGenome,true);
@@ -1442,26 +1442,26 @@ void CGenomeEditorDlg::OnButtonSave()
   CString fileName;
   CString strSection,strData;
 
-	CFileDialog fileDlg(false,"xml","",0,"Genome Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
-	fileDlg.m_ofn.lpstrTitle = "Select genome";
+	CFileDialog fileDlg(false, LPCTSTR("xml"), LPCTSTR(""),0, LPCTSTR("Genome Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select genome");
   //fileDlg.m_ofn.lpstrInitialDir = GetAppliPath();
 	long nResp = fileDlg.DoModal(); 
 	if (nResp == IDOK)
 	{
     fileName = fileDlg.GetPathName();	
 
-    bool resu = m_pNewGenome->saveInXmlFile(fileName.GetBuffer(0));
+    bool resu = m_pNewGenome->saveInXmlFile((char*)fileName.GetBuffer(0));
 
     if (!resu)
     {
-      AfxMessageBox("Impossible to save file " + fileName);
+      AfxMessageBox(LPCTSTR("Impossible to save file ") + fileName);
     }
   }
 }
 
 void CGenomeEditorDlg::OnSetBrainInGenes() 
 {
-  int resu = AfxMessageBox ( "Do you want to include identification?",  MB_YESNOCANCEL | MB_ICONINFORMATION );
+  int resu = AfxMessageBox (LPCTSTR("Do you want to include identification?"),  MB_YESNOCANCEL | MB_ICONINFORMATION );
   if (resu == IDYES)
   {
     m_pNewGenome->setBrainIdentifyInGenes(m_pOldEntity->getBrain());

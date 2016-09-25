@@ -188,11 +188,12 @@ CBrainDoc* CBrainView::GetDocument() // non-debug version is inline
 
 bool CBrainView::SetBrain(CBrain* pBrain)
 {
+  int i;
   m_pBrain = pBrain;
   m_LabelAction = "";
 
   // Delete previous ButtonTable
-  for (int i=0;i<MAX_NUMBER_BUTTONS_ACTION;i++)
+  for (i=0;i<MAX_NUMBER_BUTTONS_ACTION;i++)
   {
     if (m_pActionButtonTable[i] != NULL)
     {
@@ -288,9 +289,9 @@ void CBrainView::ExecuteActionAndGetAutoFeedback(int actionIndex)
   double prevFeel = m_pBrain->GetPreviousFeelingWelfare();
   double curFeel  = m_pBrain->GetCurrentFeelingWelfare();
 
-  m_FeelingPrevious.Format("%.1f",prevFeel);
-  m_FeelingCurrent.Format("%.1f",curFeel);
-  m_FeelingDif.Format("%.1f",curFeel-prevFeel);
+  m_FeelingPrevious.Format(LPCTSTR("%.1f"),prevFeel);
+  m_FeelingCurrent.Format(LPCTSTR("%.1f"),curFeel);
+  m_FeelingDif.Format(LPCTSTR("%.1f"),curFeel-prevFeel);
 
   int curActionInd = m_pBrain->GetCurrentReactionIndex();
   m_LabelAction = m_pBrain->GetReactionByIndex(curActionInd)->GetLabel().c_str();
@@ -319,9 +320,9 @@ void CBrainView::ExecuteActionAndGetAutoFeedback(int actionIndex)
   }
   
   if (resuMemorize)
-    m_Feedback.Format("%.2f",curFeedback);
+    m_Feedback.Format(LPCTSTR("%.2f"),curFeedback);
   else
-    m_Feedback.Format("%.2f",0);
+    m_Feedback.Format(LPCTSTR("%.2f"),0);
 
   m_BrainGrid.RefreshBrainData();
 
@@ -370,15 +371,15 @@ void CBrainView::OnButtonPrediction()
 
   int curActionInd = theApp.GetBiotop()->predictEntityAction(m_pBrain->GetEntity()->getId());
 
-  m_FeelingPrevious.Format("NA");
-  m_FeelingCurrent.Format("NA");
-  m_FeelingDif.Format("NA");
+  m_FeelingPrevious.Format(LPCTSTR("NA"));
+  m_FeelingCurrent.Format(LPCTSTR("NA"));
+  m_FeelingDif.Format(LPCTSTR("NA"));
 
   m_LabelAction = m_pBrain->GetReactionByIndex(curActionInd)->GetLabel().c_str();
   
   m_BrainGrid.RefreshBrainData();
 
-  m_Feedback.Format("NA");
+  m_Feedback.Format(LPCTSTR("NA"));
 
   // Update windows
   UpdateData(false);	

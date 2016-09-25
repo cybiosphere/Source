@@ -73,16 +73,16 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
   CString tmpLabel;
   int nPair,nGene;
   CChromosome* pChromo = NULL;
-  hGenomeNode = InsertItem(m_pGenome->getSpecieName().c_str(), 0, 1, TVI_ROOT);
+  hGenomeNode = InsertItem(LPCTSTR(m_pGenome->getSpecieName().c_str()), 0, 1, TVI_ROOT);
   SetItemData(hGenomeNode,(DWORD)m_pGenome);
 
   for (nPair=0; nPair<m_pGenome->getNumPair(); nPair++)
   {
-    tmpLabel.Format("Pair %d", m_pGenome->getPair(nPair)->getIdNumber());
+    tmpLabel.Format(LPCTSTR("Pair %d"), m_pGenome->getPair(nPair)->getIdNumber());
     hPairNode = InsertItem(tmpLabel, 2, 3, hGenomeNode);
     SetItemData(hPairNode,(DWORD)m_pGenome->getPair(nPair));
 
-    hChromoNode = InsertItem("mother", 4, 5, hPairNode);
+    hChromoNode = InsertItem(LPCTSTR("mother"), 4, 5, hPairNode);
     if (showChromos)
       EnsureVisible(hChromoNode);
     pChromo = m_pGenome->getPair(nPair)->getMaterChromosome();
@@ -98,7 +98,7 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       SetItemData(hGeneNode,(DWORD)pChromo->getGene(nGene));
     }
 
-    hChromoNode = InsertItem("father", 4, 5, hPairNode); 
+    hChromoNode = InsertItem(LPCTSTR("father"), 4, 5, hPairNode);
     pChromo = m_pGenome->getPair(nPair)->getPaterChromosome();
     SetItemData(hChromoNode,(DWORD)pChromo);
     for (nGene=0; nGene<pChromo->getNumGene(); nGene++)

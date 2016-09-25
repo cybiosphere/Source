@@ -77,14 +77,14 @@ BOOL CEntityFindDlg::OnInitDialog()
 	CBasicEntity* pCurEnt= NULL;
   CString tempStr;
 
-  m_EntityList.InsertColumn(0, "Name", LVCFMT_LEFT, 200);
-  m_EntityList.InsertColumn(1, "Id",   LVCFMT_LEFT, 54);
+  m_EntityList.InsertColumn(0, LPCTSTR("Name"), LVCFMT_LEFT, 200);
+  m_EntityList.InsertColumn(1, LPCTSTR("Id"),   LVCFMT_LEFT, 54);
   
   for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
     pCurEnt = m_pBiotop->getEntityByIndex(i);
-    m_EntityList.InsertItem(i,pCurEnt->getLabel().c_str());
-    tempStr.Format("%d",pCurEnt->getId());
+    m_EntityList.InsertItem(i, LPCTSTR(pCurEnt->getLabel().c_str()));
+    tempStr.Format(LPCTSTR("%d"),pCurEnt->getId());
     m_EntityList.SetItemText(i, 1, tempStr);
   }
   

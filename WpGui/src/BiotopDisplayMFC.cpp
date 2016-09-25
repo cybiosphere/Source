@@ -80,7 +80,7 @@ bool CBiotopDisplayMFC::Initialize(CScrollView* pView)
 
     if (  m_pView == NULL )	{							// Did We Get A Device Context?																	
         KillWindow ();													// Reset The Display
-        AfxMessageBox ( "Can't Create A Device Context.", MB_OK | MB_ICONEXCLAMATION );
+        AfxMessageBox (LPCTSTR("Can't Create A Device Context."), MB_OK | MB_ICONEXCLAMATION );
         return FALSE;												
     }
 
@@ -271,7 +271,7 @@ void CBiotopDisplayMFC::RedrawSceneIdleNoCPU()
   CPaintDC* pDc = &dc;//m_pPaintDC;
   pDc->FillSolidRect(0, 0, m_pView->GetTotalSize().cx, m_pView->GetTotalSize().cy,0x00FFFFFF);
   CRect rect(10, 10, 600,30);
-  pDc->DrawText("DISPLAY STOPPED TO SAVE CPU",rect,DT_CENTER);
+  pDc->DrawText(LPCTSTR("DISPLAY STOPPED TO SAVE CPU"),rect,DT_CENTER);
 }
 
 /////////////////////////////////////////////////////////////////////////////

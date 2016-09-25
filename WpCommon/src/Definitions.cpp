@@ -46,7 +46,8 @@ distribution.
 ofstream gLogFile;
 #endif  /* CYBIOCORE_LOG_IN_FILE */
 
-int DLL_CYBIOCORE_API round(double val)
+
+int DLL_CYBIOCORE_API cybio_round(double val)
 {
   if (val==0.0)
     return 0;

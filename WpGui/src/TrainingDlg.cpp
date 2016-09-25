@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 void CTrainingDlg::OnChangeIteration() 
 {
   UpdateData(true);
-	m_estimatedTime = round((double)m_iteration * 70.0 / 60.0);
+	m_estimatedTime = cybio_round((double)m_iteration * 70.0 / 60.0);
   UpdateData(false);
 }
 
@@ -75,13 +75,13 @@ void CTrainingDlg::OnOK()
   for (int i=0; i<m_iteration; i++)
   { 
     theApp.PumpMessage();
-    player.ReadScenarioFile("babyLearning.scp", m_strTrainFilesDirectory.GetBuffer(0));
+    player.ReadScenarioFile("babyLearning.scp", (char*)m_strTrainFilesDirectory.GetBuffer(0));
     theApp.PumpMessage();
     player.PlayScenario();
     if (player.GetTotalScore()>0)
     {
-      tmpStr.Format("%d", player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += "\tScen1:" + tmpStr + "\t ";
+      tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
+      scoreDisplay += LPCTSTR("\tScen1:") + tmpStr + LPCTSTR("\t ");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }
@@ -93,13 +93,13 @@ void CTrainingDlg::OnOK()
     theApp.PumpMessage();
     //EnableWindow(FALSE);
 
-    player.ReadScenarioFile("childLearning.scp", m_strTrainFilesDirectory.GetBuffer(0));
+    player.ReadScenarioFile("childLearning.scp", (char*)m_strTrainFilesDirectory.GetBuffer(0));
     theApp.PumpMessage();
     player.PlayScenario();
     if (player.GetTotalScore()>0)
     {
-      tmpStr.Format("%d", player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += "\tScen2: " + tmpStr + "\t ";
+      tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
+      scoreDisplay += LPCTSTR("\tScen2: ") + tmpStr + LPCTSTR("\t ");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }
@@ -111,13 +111,13 @@ void CTrainingDlg::OnOK()
     theApp.PumpMessage();
     //EnableWindow(FALSE);
 
-    player.ReadScenarioFile("adultLearning.scp", m_strTrainFilesDirectory.GetBuffer(0));
+    player.ReadScenarioFile("adultLearning.scp", (char*)m_strTrainFilesDirectory.GetBuffer(0));
     theApp.PumpMessage();
     player.PlayScenario();
     if (player.GetTotalScore()>0)
     {
-      tmpStr.Format("%d", player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += "\tScen3: " + tmpStr + "\n ";
+      tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
+      scoreDisplay += LPCTSTR("\tScen3: ") + tmpStr + LPCTSTR("\n ");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }
@@ -129,8 +129,8 @@ void CTrainingDlg::OnOK()
     //EnableWindow(FALSE);
   }
 
-  tmpStr.Format("%d", scoreSuccess * 100 / scoreTotal);
-  scoreDisplay += "TOTAL: " + tmpStr;
+  tmpStr.Format(LPCTSTR("%d"), scoreSuccess * 100 / scoreTotal);
+  scoreDisplay += LPCTSTR("TOTAL: ") + tmpStr;
 
   //EnableWindow(TRUE);
 

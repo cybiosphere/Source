@@ -54,6 +54,10 @@ distribution.
 #include "MapConfigView.h"
 #include "CScenarioPlayer.h"
 
+#ifdef USE_CLAN_SERVER
+#include "clan_server.h"
+#endif
+
 /////////////////////////////////////////////////////////////////////////////
 // CCybiosphereApp:
 // See Cybiosphere.cpp for the implementation of this class
@@ -134,7 +138,9 @@ private:
   CStatisticView* m_pStatisticView;
   CMapConfigDoc*  m_pMapConfigDoc;
   CMapConfigView* m_pMapConfigView;
-
+#ifdef USE_CLAN_SERVER
+  Server*         m_pServer;
+#endif
   BOOL m_bModeManual;
   BOOL m_bModeStopOnEvent;
   CString m_AppliPath;

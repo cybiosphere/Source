@@ -70,8 +70,8 @@ bool CSensWeightListCtrl::SetSensor(CSensor* pSens, WORD* geneDataBuf, bool bUse
   DeleteAllItems();
   if (GetColumnWidth(0)!=32)
   {
-    InsertColumn(0, "rate", LVCFMT_CENTER, 32);
-    InsertColumn(1, "name", LVCFMT_LEFT, 200);  
+    InsertColumn(0, LPCTSTR("rate"), LVCFMT_CENTER, 32);
+    InsertColumn(1, LPCTSTR("name"), LVCFMT_LEFT, 200);
   }
 
   m_pSensor = pSens;  
@@ -93,13 +93,13 @@ bool CSensWeightListCtrl::SetSensor(CSensor* pSens, WORD* geneDataBuf, bool bUse
       else
       {
         if (bUseNegative)
-          m_pCurWeightBuf[i] = (short)round(((double)geneDataBuf[i] * 2000.0) / 65535.0 - 1000.0);
+          m_pCurWeightBuf[i] = (short)cybio_round(((double)geneDataBuf[i] * 2000.0) / 65535.0 - 1000.0);
         else
-          m_pCurWeightBuf[i] = (short)round(((double)geneDataBuf[i] * 2000.0) / 65535.0);
+          m_pCurWeightBuf[i] = (short)cybio_round(((double)geneDataBuf[i] * 2000.0) / 65535.0);
       }
-      tmpStr.Format("%5.01f", (double)m_pCurWeightBuf[i]/10.0);
+      tmpStr.Format(LPCTSTR("%5.01f"), (double)m_pCurWeightBuf[i]/10.0);
       InsertItem(i,tmpStr); // Set 10% as def values
-      SetItemText(i, 1, m_pSensor->GetSubCaptorLabel(i).c_str());
+      SetItemText(i, 1, LPCTSTR(m_pSensor->GetSubCaptorLabel(i).c_str()));
     }
   }
 
@@ -137,8 +137,8 @@ void CSensWeightListCtrl::UdpateSelectedData(void)
   { 
     CString newTxt;
     m_pTmpEdtitBox->GetWindowText(newTxt);
-    double newRate = atof(newTxt);
-    newTxt.Format("%5.01f",newRate);
+    double newRate = atof((char*)newTxt.GetBuffer(0));
+    newTxt.Format(LPCTSTR("%5.01f"),newRate);
     SetItemText(index, 0, newTxt);
     m_pCurWeightBuf[index] =  (WORD)(newRate * 10.0);
   }

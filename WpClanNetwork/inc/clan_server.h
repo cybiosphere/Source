@@ -27,6 +27,11 @@ public:
 	Server(CBiotop* pBiotop);
 	~Server();
 
+	// start only
+	void startServer();
+	void ProcessEvents(bool isNewSec);
+
+	// Start and loop on ProcessEvents
 	void exec();
 
 private:

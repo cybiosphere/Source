@@ -640,8 +640,8 @@ void CDialogTab1::DisplayParamSliders()
       if ( (pEntity->getParameter(i)->getType() == PARAM_PHYSIC) && (label == "Weight") )
       {
         m_weightParamId = i;
-        m_Weight    = round(pEntity->getParameter(i)->getMax());
-        m_WeightMin = round(pEntity->getParameter(i)->getMin());
+        m_Weight    = cybio_round(pEntity->getParameter(i)->getMax());
+        m_WeightMin = cybio_round(pEntity->getParameter(i)->getMin());
         UpdateData(false);
       }
       else if (label == "Growth speed rate")

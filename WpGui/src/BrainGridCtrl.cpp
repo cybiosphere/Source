@@ -91,7 +91,7 @@ void CNeuronMatrixCtrl::RefreshNeuronMatrixData()
   {
     for (size_t j=0; j<m_pNeuronMatrix->GetNeuronTableColumnCount();j++)
     {
-      curTxt.Format("%02.2f", m_pNeuronMatrix->GetNeuronTableData(i,j));
+      curTxt.Format(LPCTSTR("%02.2f"), m_pNeuronMatrix->GetNeuronTableData(i,j));
       SetItemText(i+2,j+2,curTxt); 
     }
   }
@@ -102,22 +102,23 @@ void CNeuronMatrixCtrl::RefreshNeuronMatrixData()
 
 void CNeuronMatrixCtrl::RefreshInputOutputVectAndThresholds(CMatrix* pInputVect, CMatrix* pOutputVect, double highThreshold, double midThreshold, double lowThreshold)
 {
-	if (m_pNeuronMatrix == NULL)
+  if (m_pNeuronMatrix == NULL)
     return;
 
   CString curTxt;
   double curVal=0;
+  size_t i;
 
-  for (size_t i=0; i<pInputVect->RowNo(); i++)
+  for (i=0; i<pInputVect->RowNo(); i++)
   {
-    curTxt.Format("%02.2f", (*pInputVect)(i,0));
+    curTxt.Format(LPCTSTR("%02.2f"), (*pInputVect)(i,0));
     SetItemText(i+2,1,curTxt);
   }
 
   for (i=0; i<pOutputVect->RowNo(); i++)
   {
     curVal = (*pOutputVect)(i,0);
-    curTxt.Format("%02.2f", curVal);
+    curTxt.Format(LPCTSTR("%02.2f"), curVal);
     SetItemText(1,i+2,curTxt);
 
     if (curVal >= highThreshold)
@@ -159,9 +160,9 @@ bool CBrainGridCtrl::SetBrain(CBrain* pBrain)
     SetNeuronMatrix(m_pBrain->GetDecisionNeuronTable());
 
     for (i=0; i<m_pBrain->GetDecisionNeuronTable()->GetNeuronTableColumnCount(); i++)
-      SetItemText(0,i+2,m_pBrain->GetColumnLabel(i).c_str());
+      SetItemText(0,i+2, LPCTSTR(m_pBrain->GetColumnLabel(i).c_str()));
     for (i=0; i<m_pBrain->GetDecisionNeuronTable()->GetNeuronTableRowCount(); i++)
-      SetItemText(i+2,0,m_pBrain->GetRowLabel(i).c_str());
+      SetItemText(i+2,0, LPCTSTR(m_pBrain->GetRowLabel(i).c_str()));
 
     // Set a few color lines as reference marks
     SetItemBkColour( 2 + m_pBrain->GetBrainMatrixRowIndex(UID_BASE_SENS_HUNGER, 1, 0, 0)      , 0, 0x00D0E0D0); // green
@@ -221,10 +222,10 @@ bool CBrainGridCtrl::SetIdentifyBrain(CBrain* pBrain)
     SetNeuronMatrix(m_pBrain->GetIdentifyNeuronTable());
 
     for (i=0; i<m_pBrain->GetIdentifyNeuronTable()->GetNeuronTableColumnCount(); i++)
-      SetItemText(0,i+2,m_pBrain->getIdentificationLabel(i).c_str());
+      SetItemText(0,i+2, LPCTSTR(m_pBrain->getIdentificationLabel(i).c_str()));
 
     for (i=0; i<m_pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
-      SetItemText(i+2,0,m_pBrain->getIdentifyInputLabel(i).c_str());
+      SetItemText(i+2,0, LPCTSTR(m_pBrain->getIdentifyInputLabel(i).c_str()));
 
     RefreshIdentifyBrainData();
   }

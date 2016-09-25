@@ -279,7 +279,7 @@ bool CBioCtrlView::RestoreUserSpeed()
 
 void CBioCtrlView::UpdateTimerDisplay(BiotopTime_t* pNewTime)
 {
-  m_StrTime.Format("Y%d D%d %02d:%02d:%02d", pNewTime->years, pNewTime->days, 
+  m_StrTime.Format(LPCTSTR("Y%d D%d %02d:%02d:%02d"), pNewTime->years, pNewTime->days,
                    pNewTime->hours, pNewTime->seconds/60, pNewTime->seconds%60); 
 
   // Update also parameter bars
