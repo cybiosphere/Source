@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CybioCore", "..\ProjectDllCybiocore_VC15\CybioCore.vcxproj", "{010BC237-F114-4FB0-B294-A2CBAA050DD9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Evolution", "..\ProjectConsole_VC15\Evolution.vcxproj", "{C64A77AD-F674-40EE-B4CA-14E55DF787D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CybioServer", "..\ProjectClanServer_VC15\CybioServer.vcxproj", "{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CybioClient", "..\ProjectClanClient_VC15\CybioClient.vcxproj", "{B623E87C-20BD-42F6-BD75-0816884B4308}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cybiosphere", "..\ProjectStudio_VC15\Cybiosphere.vcxproj", "{D69A057C-E01A-46AE-8840-F6464F8CD599}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectWizard", "..\ProjectWizard_VC15\ProjectWizard.vcxproj", "{78D7D43A-C7E8-4018-A044-16850CF17C16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Debug|Win32.Build.0 = Debug|Win32
+		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Release|Win32.ActiveCfg = Release|Win32
+		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Release|Win32.Build.0 = Release|Win32
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Debug|Win32.Build.0 = Debug|Win32
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|Win32.ActiveCfg = Release|Win32
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|Win32.Build.0 = Release|Win32
+		{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}.Debug|Win32.ActiveCfg = Debug|Win32
+		{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}.Debug|Win32.Build.0 = Debug|Win32
+		{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}.Release|Win32.ActiveCfg = Release|Win32
+		{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}.Release|Win32.Build.0 = Release|Win32
+		{B623E87C-20BD-42F6-BD75-0816884B4308}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B623E87C-20BD-42F6-BD75-0816884B4308}.Debug|Win32.Build.0 = Debug|Win32
+		{B623E87C-20BD-42F6-BD75-0816884B4308}.Release|Win32.ActiveCfg = Release|Win32
+		{B623E87C-20BD-42F6-BD75-0816884B4308}.Release|Win32.Build.0 = Release|Win32
+		{D69A057C-E01A-46AE-8840-F6464F8CD599}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D69A057C-E01A-46AE-8840-F6464F8CD599}.Debug|Win32.Build.0 = Debug|Win32
+		{D69A057C-E01A-46AE-8840-F6464F8CD599}.Release|Win32.ActiveCfg = Release|Win32
+		{D69A057C-E01A-46AE-8840-F6464F8CD599}.Release|Win32.Build.0 = Release|Win32
+		{78D7D43A-C7E8-4018-A044-16850CF17C16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{78D7D43A-C7E8-4018-A044-16850CF17C16}.Debug|Win32.Build.0 = Debug|Win32
+		{78D7D43A-C7E8-4018-A044-16850CF17C16}.Release|Win32.ActiveCfg = Release|Win32
+		{78D7D43A-C7E8-4018-A044-16850CF17C16}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
