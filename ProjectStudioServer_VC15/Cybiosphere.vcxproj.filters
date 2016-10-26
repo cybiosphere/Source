@@ -1,0 +1,1011 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5617d8fa-f139-4393-88fe-eae6512a3911}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Project2D">
+      <UniqueIdentifier>{8f101401-dd46-4fc9-8e3e-adc4aaadc5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project2D\Src2D">
+      <UniqueIdentifier>{1a86318b-fd57-4f1a-b0b8-2edc8656e3dc}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Project2D\Inc2D">
+      <UniqueIdentifier>{86d3df6d-3a4d-411a-b1fa-fc5aa49571d1}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="WpGui">
+      <UniqueIdentifier>{65e9603f-28e4-4c72-add5-dac43484d6ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpGui\IncGui">
+      <UniqueIdentifier>{7da99900-b10b-46c6-ab61-522f1aaf0eff}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpGui\SrcGui">
+      <UniqueIdentifier>{e8eb36cc-83c3-41dd-9738-b88c37e79da8}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpMeasure">
+      <UniqueIdentifier>{999e507c-acc2-4433-9108-a01765c4454f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpMeasure\IncMeasure">
+      <UniqueIdentifier>{763a63ba-e797-400c-a011-1009a314d3a7}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpOpenGL">
+      <UniqueIdentifier>{8b2f4c22-e89f-4d92-8848-d79fdf0dc90a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpOpenGL\IncOpenGL">
+      <UniqueIdentifier>{3caa6bd0-7ee2-40ec-889f-613734e8d8af}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpOpenGL\SrcOpenGL">
+      <UniqueIdentifier>{cb56e2d0-401f-4f04-8d62-ba85c2f6264f}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpBehavior">
+      <UniqueIdentifier>{d1bec241-f6e2-41c4-a449-d73b6039d671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpBehavior\IncBehavior">
+      <UniqueIdentifier>{b905ba7f-7294-4f19-9903-d80ac211b5c4}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpEntity">
+      <UniqueIdentifier>{07c1d72a-cc71-41aa-ae7b-fe153b731e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpEntity\IncEntity">
+      <UniqueIdentifier>{874df6b6-2554-4195-ba12-9d49438ab60b}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpEnvironment">
+      <UniqueIdentifier>{c18e1e22-a78c-4f37-b4a3-16a74fb63c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpEnvironment\IncEnvironment">
+      <UniqueIdentifier>{17fa534c-f186-4e5d-976c-c5d3954294a2}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpCommon">
+      <UniqueIdentifier>{bcb7b230-3829-4e88-802c-a3662c3753a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpCommon\IncCommon">
+      <UniqueIdentifier>{959fc2dc-77bc-4161-ab07-1d41342ae989}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpGenetic">
+      <UniqueIdentifier>{fd7c426c-1a3e-44b9-926d-fd75fd179468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpGenetic\IncGenetic">
+      <UniqueIdentifier>{bdbb9e0d-37e8-4ac3-8caf-8c80cbf0cb9a}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpTinyXml">
+      <UniqueIdentifier>{2f806670-7c6c-4121-a4d2-066afcec9bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpTinyXml\IncTinyXml">
+      <UniqueIdentifier>{52f832ce-5aef-48e7-af68-bad1510e61eb}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="WpTinyXml\SrcTinyXml">
+      <UniqueIdentifier>{e6a4999d-71ef-4199-aae7-c6a197f37927}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="WpClanNetwork">
+      <UniqueIdentifier>{88ba8a3d-1271-4d74-be67-7160d9e32abe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpClanNetwork\IncClan">
+      <UniqueIdentifier>{fe67a67c-a717-4a97-9d95-f6a6884f4efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WpClanNetwork\SrcClan">
+      <UniqueIdentifier>{694e28f2-a198-480e-b365-48e15d98f60f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\WpGui\res\anim.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim5.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\anim6.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\AttributeIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\BiotopDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\bitmap2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cybiosphere.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="WpGui\res\Cybiosphere.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\Cybiosphere.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\CybiosphereDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="WpGui\res\CybiosphereDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\form_ico.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\FormIcons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\GenomeIcons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\ico00001.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\ico00002.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\ico00003.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\ico00004.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\ico00005.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icoLess.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icoMore.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon3.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon4.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon_col.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icon_red.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icoOpen.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\icoSave.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\Logo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\mineral.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\OdorIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\PheromonIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\red.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\SexIcons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\TasteIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\TemperColors.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\TextureIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="WpGui\res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\WpGui\res\veget.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Cybiosphere.rc">
+      <Filter>Project2D\Src2D</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Project2D\Inc2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\ActionButton.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BioCtrlDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BioCtrlView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopDisplay.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopDisplayMFC.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopEditorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BrainDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BrainEditorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BrainGridCtrl.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BrainView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\CellRange.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\ChildFrm.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\ColorButton.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\Cybiosphere.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\EntityCreatorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\EntityDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\EntityEditorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\EntityFindDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\EntityView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GeneticDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GeneticView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GenomeEditorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GenomeTreeCtrl.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GridCell.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GridCellBase.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GridCtrl.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\GridDropTarget.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\InPlaceEdit.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\mainfrm.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MapConfigDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MapConfigView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MeasureEditorDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MemDC.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\ParameterCrtl.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\ParameterSlider.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\SensWeightListCtrl.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\StatisticDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\StatisticView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\StdAfx.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\TitleTip.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\TrainingDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasure.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureBiotopParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureEntityParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFeeling.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureParam.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasurePopulation.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureReaction.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\AnimatedSprite.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\BiotopDisplayGL.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\CSortedArray.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\Map.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\Sprite.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\StdAfxGL.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\Texture.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\Tile.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrain.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CFeelingFear.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CPurpose.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReaction.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionCopulate.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionDrink.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionEat.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionHide.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionNothing.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionRuminate.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionSleep.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepBackward.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadLeft.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnHeadRight.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnLeft.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnRight.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CReactionVarySpeed.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensor.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorCompass.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorComposite.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorEar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorFear.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorHormone.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorHunger.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorLibido.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryAction.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorMemoryFeedback.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorObscurity.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorOrientation.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorPheromone.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorPleasure.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSmell.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSpeed.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorStatic.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorStomachOverload.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorSuffering.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTactile.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTaste.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTemperature.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorThirst.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorTiredness.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorView.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewFar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CAnimal.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CAnimMammal.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CBasicEntity.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CGrass.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CLifeStage.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CMineral.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetable.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CWater.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CBiotop.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CScenarioPlayer.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CCyclicParam.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CGenericCaract.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CGenericParam.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Definitions.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\Matrix.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CChromosome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGene.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGenome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\CybioXmlDef.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\targetver.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\tinystr.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpTinyXml\inc\tinyxml.h">
+      <Filter>WpTinyXml\IncTinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpOpenGL\inc\Bmp.h">
+      <Filter>WpOpenGL\IncOpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\clan_client.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\clan_server.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\clan_server_user.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\client_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\connection_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\console_window_generic.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\custom_type.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\iodevice_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\iodevice_provider_memory.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\miniz.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\network_data.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\network_event.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\server_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\setup_core.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\setupnetwork.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\socket_error.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\socket_name_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\tcp_socket.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\thread_local_storage_impl.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\tls_instance.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\WpGui\src\ActionButton.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BioCtrlDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BioCtrlView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BiotopDisplayMFC.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BiotopDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BiotopEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BiotopView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BrainDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BrainEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BrainGridCtrl.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\brainview.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\ChildFrm.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\ColorButton.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\Cybiosphere.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\CybiosphereSet.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\EntityCreatorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\EntityDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\EntityEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\EntityFindDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\EntityView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GeneticDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GeneticView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GenomeEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GenomeTreeCtrl.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GridCell.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GridCellBase.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GridCtrl.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\GridDropTarget.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\InPlaceEdit.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MainFrm.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MapConfigDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MapConfigView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MeasureEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\ParameterCrtl.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\ParameterSlider.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\SensWeightListCtrl.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\StatisticDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\StatisticView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\StdAfx.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\TitleTip.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\TrainingDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\AnimatedSprite.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\BiotopDisplayGL.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\CSortedArray.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\Map.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\Sprite.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\Texture.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\Tile.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinystr.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxml.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlerror.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp">
+      <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpOpenGL\src\Bmp.cpp">
+      <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_server.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_server_main.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_server_user.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\client.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\connection.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\connection_impl.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_logger.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_window.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\console_window_generic.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\databuffer.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\datetime.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\detect_cpu_ext.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\endianess.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event_value.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\exception.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\iodevice.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\iodevice_provider_memory.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\logger.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\memory_device.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\network_condition_variable.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\network_data.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\server.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\setup_core.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\setupnetwork_win32.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\socket_error.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\socket_name.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\string_format.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\string_help.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\system.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\system_win32.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tcp_connection.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tcp_listen.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage_impl.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\tls_instance.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="WpGui\res\Cybiosphere.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+; CybioCore.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CybioCore3D"
+DESCRIPTION  'CybioCore3D Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here

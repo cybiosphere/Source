@@ -1,0 +1,1061 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ENTITY_FORMVIEW DIALOG DISCARDABLE  0, 0, 131, 566
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT1,63,7,19,12,ES_AUTOHSCROLL | NOT WS_VISIBLE | 
+                    WS_DISABLED | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT2,7,7,71,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT3,7,20,42,12,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "Im",IDC_CHECK_IMMORTAL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,83,7,20,13
+    PUSHBUTTON      "Edit",IDC_EDIT,106,7,18,12
+    EDITTEXT        IDC_EDIT4,7,33,42,12,ES_AUTOHSCROLL | WS_DISABLED
+END
+
+IDD_BIOCTRL_FORMVIEW DIALOG DISCARDABLE  0, 0, 139, 110
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Freeze",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,7,36,11
+    CONTROL         "Slider1",IDC_SLIDER_ZOOM,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | TBS_ENABLESELRANGE | WS_TABSTOP,31,40,71,
+                    11
+    LTEXT           "Zoom",IDC_STATIC,7,40,23,10
+    CONTROL         "Slider1",IDC_SLIDER_SPEED,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | TBS_ENABLESELRANGE | WS_TABSTOP,31,31,71,
+                    11
+    LTEXT           "Speed",IDC_STATIC,7,31,23,10
+    EDITTEXT        IDC_EDIT_TIMER,51,7,58,12,ES_CENTER | WS_DISABLED | NOT 
+                    WS_BORDER
+    PUSHBUTTON      "Edit",IDC_EDIT_BIOTOP,114,7,18,12
+    CONTROL         "Stop on event",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,16,62,11
+    EDITTEXT        IDC_EDIT_SCENARIO,77,19,55,12,WS_DISABLED | NOT 
+                    WS_BORDER
+    COMBOBOX        IDC_COMBO_WIND,103,29,29,72,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "wind",IDC_STATIC,112,42,20,10
+END
+
+IDD_BRAIN_FORMVIEW DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FEEDBACK,169,121,32,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_CUR_ACTION,7,121,69,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_LEARNING,132,7,21,12,ES_AUTOHSCROLL
+    CTEXT           "Learning rate",IDC_STATIC,87,7,44,8
+    EDITTEXT        IDC_FEEL_PREV,111,121,22,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_FEEL_CUR,81,121,22,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_FEEL_DIF,143,121,22,12,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "Custom1",IDC_BRAIN_GRID,"MFCGridCtrl",WS_TABSTOP,208,7,
+                    72,126
+    PUSHBUTTON      "Edit",IDC_BUTTON_EDIT,189,7,18,12
+    PUSHBUTTON      "Automatic choice",IDC_BUTTON_EXEC,104,24,93,9
+    CTEXT           "-",IDC_STATIC,104,123,8,10
+    CTEXT           "=",IDC_STATIC,134,123,8,10
+    CTEXT           "Feeling evolution",IDC_STATIC,87,112,65,8
+    CONTROL         "Auto",IDC_RADIO_AUTO,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,7,7,41,9
+    CONTROL         "Stick",IDC_RADIO_STICK,"Button",BS_AUTORADIOBUTTON,53,7,
+                    41,9
+    CONTROL         "Carrot",IDC_RADIO_CARROT,"Button",BS_AUTORADIOBUTTON,53,
+                    15,41,9
+    CONTROL         "None",IDC_RADIO_NONE,"Button",BS_AUTORADIOBUTTON,7,15,
+                    41,9
+    CTEXT           "Current action",IDC_STATIC,7,112,69,8
+    CTEXT           "Feedback",IDC_STATIC,169,112,32,8
+    PUSHBUTTON      "Prediction",IDC_BUTTON_PRED,7,24,93,9
+    PUSHBUTTON      "Identify",IDC_BUTTON_EDIT_IDENTIFY,160,7,27,12
+END
+
+IDD_GENETIC_FORMVIEW DIALOGEX 0, 0, 290, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_DATA1,89,7,95,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_DATA2,89,24,95,12,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,
+                    209,7,74,126
+    EDITTEXT        IDC_DATA3,89,43,95,12,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_DATA4,6,62,192,57,ES_MULTILINE | WS_DISABLED
+    EDITTEXT        IDC_LABEL1,6,7,82,12,ES_AUTOHSCROLL | WS_DISABLED | NOT 
+                    WS_BORDER,WS_EX_RIGHT
+    EDITTEXT        IDC_LABEL2,6,24,82,12,ES_AUTOHSCROLL | WS_DISABLED | NOT 
+                    WS_BORDER,WS_EX_RIGHT
+    EDITTEXT        IDC_LABEL3,6,43,82,12,ES_AUTOHSCROLL | WS_DISABLED | NOT 
+                    WS_BORDER,WS_EX_RIGHT
+    PUSHBUTTON      "Edit",IDC_EDIT,189,7,18,12
+    EDITTEXT        IDC_LABEL4,6,121,170,12,ES_AUTOHSCROLL | WS_DISABLED | 
+                    NOT WS_BORDER
+END
+
+IDD_DLG_GENOME_EDITOR DIALOG DISCARDABLE  0, 0, 400, 330
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Genetic editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,274,309,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,343,309,50,14
+    GROUPBOX        "",IDC_STATIC,7,7,386,137
+    CONTROL         "Tree1",IDC_TREE_GENOME,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,
+                    177,18,209,117
+    GROUPBOX        "Paternal",IDC_STATIC,203,151,190,155
+    GROUPBOX        "Maternal",IDC_STATIC,7,151,190,155
+    PUSHBUTTON      "Add",IDC_BUTTON_ADD,16,41,83,13
+    COMBOBOX        IDC_COMBO1,15,62,151,63,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO2,15,82,151,63,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Slider1",IDC_SLIDER_M1,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,15,159,30,64
+    CONTROL         "Slider1",IDC_SLIDER_M2,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,60,159,30,64
+    CONTROL         "Slider1",IDC_SLIDER_M3,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,105,159,30,64
+    CONTROL         "Slider1",IDC_SLIDER_M4,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,150,158,30,64
+    CONTROL         "Slider1",IDC_SLIDER_P1,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,214,158,30,64
+    CONTROL         "Slider1",IDC_SLIDER_P2,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,259,158,30,64
+    CONTROL         "Slider1",IDC_SLIDER_P3,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,304,158,30,64
+    CONTROL         "Slider1",IDC_SLIDER_P4,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_VERT | TBS_BOTH | TBS_ENABLESELRANGE | 
+                    WS_TABSTOP,349,158,30,64
+    EDITTEXT        IDC_EDIT_SLIDEM1,13,223,37,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEM2,53,223,37,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEM3,99,223,37,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEM4,145,223,37,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_DESCM,14,233,174,17,ES_CENTER | ES_MULTILINE | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEP1,210,223,37,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEP2,256,223,37,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEP3,302,223,37,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SLIDEP4,348,223,37,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_DESCP,214,233,173,17,ES_CENTER | ES_MULTILINE | 
+                    WS_DISABLED | NOT WS_BORDER
+    PUSHBUTTON      "ButtonSave",IDC_BUTTON_SAVE,44,18,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,21,18,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "Set brain in genes",IDC_SET_BRAIN,68,18,63,15
+    COMBOBOX        IDC_COMBO3,16,122,73,63,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO4,95,122,73,63,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO5,15,102,107,63,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDIT_MUTE_RATE,129,102,39,12,ES_AUTOHSCROLL
+    CONTROL         "List1",IDC_LIST_WEIGHT_M,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,
+                    16,253,171,47
+    CONTROL         "List1",IDC_LIST_WEIGHT_P,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,
+                    213,253,171,47
+    EDITTEXT        IDC_EDIT_AGE,207,310,51,13,ES_AUTOHSCROLL
+    LTEXT           "Starting age (days)",IDC_STATIC,144,312,59,11
+    EDITTEXT        IDC_EDIT_LABEL,93,122,73,13,ES_AUTOHSCROLL
+END
+
+IDD_DLG_ENTITY_CREATOR DIALOG DISCARDABLE  0, 0, 388, 69
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Entity Creator"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,273,48,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,331,48,50,14
+    EDITTEXT        IDC_ENTITY_NAME,278,20,103,13,ES_AUTOHSCROLL
+    CTEXT           "Entity name",IDC_STATIC,278,7,103,10
+    CTEXT           "Class",IDC_STATIC,62,7,103,10
+    COMBOBOX        IDC_COMBO_CLASS,62,21,103,73,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Mineral",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,7,29,50,
+                    10
+    CONTROL         "Vegetal",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,7,40,50,
+                    10
+    CONTROL         "Animal",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,7,51,50,
+                    10
+    EDITTEXT        IDC_SPECIE_NAME,170,20,103,13,ES_AUTOHSCROLL
+    CTEXT           "Spece name",IDC_STATIC,170,7,103,10
+    EDITTEXT        IDC_EDIT_CY,187,49,26,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CX,137,49,26,13,ES_AUTOHSCROLL
+    CTEXT           "Starting coord  X",IDC_STATIC,75,52,56,10
+    CTEXT           "Y",IDC_STATIC,170,52,12,10
+    EDITTEXT        IDC_EDIT_LAYER,241,49,26,13,ES_AUTOHSCROLL
+    CTEXT           "Layer",IDC_STATIC,217,52,23,10
+    PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,7,7,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+END
+
+IDD_DLG_BRAIN_EDITOR DIALOG DISCARDABLE  0, 0, 400, 300
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Brain editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,288,279,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,343,279,50,14
+    PUSHBUTTON      "ButtonSave",IDC_BUTTON_SAVE,28,278,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,7,278,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    CONTROL         "Custom1",IDC_BRAIN_EDIT_GRID,"MFCGridCtrl",WS_TABSTOP,7,
+                    7,386,266
+    PUSHBUTTON      "ButtonMore",IDC_BUTTON_MORE,178,278,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonLess",IDC_BUTTON_LESS,206,278,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "Export csv",IDC_BUTTON_EXPORT,49,279,43,14
+    PUSHBUTTON      "Import csv",IDC_BUTTON_IMPORT,98,279,43,14
+END
+
+IDD_STATISTIC_FORMVIEW DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Edit",IDC_EDIT,189,7,18,12
+    CONTROL         "Second",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,7,125,37,8
+    CONTROL         "Minute",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,47,125,
+                    37,8
+    CONTROL         "Hour",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,87,125,37,
+                    8
+    CONTROL         "Day",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,127,125,37,
+                    8
+    CONTROL         "Year",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,167,125,37,
+                    8
+END
+
+IDD_DLG_ENTITY_EDITOR DIALOG DISCARDABLE  0, 0, 400, 330
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Entity editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,284,309,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,343,309,50,14
+    PUSHBUTTON      "ButtonSave",IDC_BUTTON_SAVE,35,308,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,7,308,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+END
+
+IDD_DLG_BIOTOP_EDITOR DIALOG DISCARDABLE  0, 0, 400, 330
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Biotop editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,274,309,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,343,309,50,14
+END
+
+IDD_DLG_MEASURE_EDITOR DIALOG DISCARDABLE  0, 0, 400, 330
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Measures editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,343,309,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,219,309,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "ButtonSave",IDC_BUTTON_SAVE,35,308,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,7,308,15,15,BS_ICON | 
+                    BS_CENTER | BS_VCENTER
+    GROUPBOX        "",IDC_STATIC,7,100,386,204
+    EDITTEXT        IDC_EDIT_NAME,15,265,180,12,ES_AUTOHSCROLL | WS_DISABLED
+    LISTBOX         IDC_LIST_MEASURES,7,7,189,89,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_TYPE,204,83,189,72,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDIT_TITLE1,203,118,180,13,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_TITLE2,203,143,180,13,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_TITLE3,203,168,180,13,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_TITLE4,203,193,180,13,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_TITLE5,203,218,180,13,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_PERIOD,15,115,180,12,ES_AUTOHSCROLL | ES_NUMBER
+    COMBOBOX        IDC_COMBO_SUBTYPE,15,167,180,54,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_ENTITY,15,141,180,135,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_REACTION,15,193,180,54,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_SPECIE,15,219,180,58,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Accept change",IDC_BUTTON_ACCEPT,203,265,180,12
+    LTEXT           "Stop event type",IDC_STATIC,15,243,58,11
+    COMBOBOX        IDC_COMBO_EVENT,79,242,116,58,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDIT_THRESHOLD,250,242,133,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "threshold",IDC_STATIC,205,243,39,11
+END
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 281, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Cybiosphere"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Cybiosphere Version 2.0",IDC_STATIC,229,44,45,21,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2014",IDC_STATIC,231,74,43,28
+    DEFPUSHBUTTON   "OK",IDOK,224,141,50,14,WS_GROUP
+    CONTROL         199,IDC_STATIC,"Static",SS_BITMAP,7,7,213,148
+END
+
+IDD_DLG_ENTITY_FIND DIALOG DISCARDABLE  0, 0, 197, 233
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find entity"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,212,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,140,212,50,14
+    CTEXT           "Choose entity you want to find",IDC_STATIC,7,7,183,10
+    CONTROL         "List1",IDC_LIST_ENTITY,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOLABELWRAP | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,7,31,183,179
+    CONTROL         "Find and select",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,20,126,8
+END
+
+IDD_MAP_FORMVIEW DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Aromatic",IDC_RADIO_ODOR1,"Button",BS_AUTORADIOBUTTON,
+                    14,28,63,10
+    CONTROL         "Fragrant",IDC_RADIO_ODOR2,"Button",BS_AUTORADIOBUTTON,
+                    14,42,63,10
+    CONTROL         "Alliaceous",IDC_RADIO_ODOR3,"Button",BS_AUTORADIOBUTTON,
+                    14,56,63,10
+    CONTROL         "Ambrosial",IDC_RADIO_ODOR4,"Button",BS_AUTORADIOBUTTON,
+                    14,70,63,10
+    CONTROL         "Hircine",IDC_RADIO_ODOR5,"Button",BS_AUTORADIOBUTTON,14,
+                    84,63,10
+    CONTROL         "Repulsive",IDC_RADIO_ODOR6,"Button",BS_AUTORADIOBUTTON,
+                    14,98,63,10
+    CONTROL         "Nauseous",IDC_RADIO_ODOR7,"Button",BS_AUTORADIOBUTTON,
+                    14,112,63,10
+    GROUPBOX        "",IDC_STATIC,7,15,71,118
+    CONTROL         "Odor map",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,7,71,11
+    CONTROL         "Temperature map",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,85,7,71,11
+    GROUPBOX        "",IDC_STATIC,85,15,71,118
+    LTEXT           "45°C",IDC_STATIC,116,33,22,11,SS_CENTERIMAGE
+    CONTROL         194,IDC_STATIC,"Static",SS_BITMAP,98,33,11,69
+    LTEXT           "35°C",IDC_STATIC,116,43,22,11,SS_CENTERIMAGE
+    LTEXT           "25°C",IDC_STATIC,116,53,22,11,SS_CENTERIMAGE
+    LTEXT           "20°C",IDC_STATIC,116,63,22,11,SS_CENTERIMAGE
+    LTEXT           "10°C",IDC_STATIC,116,73,22,11,SS_CENTERIMAGE
+    LTEXT           "00°C",IDC_STATIC,116,83,22,11,SS_CENTERIMAGE
+    LTEXT           "<-10°C",IDC_STATIC,116,93,22,11,SS_CENTERIMAGE
+    CONTROL         "Purpose memory",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,163,7,71,11
+    GROUPBOX        "",IDC_STATIC,163,15,71,118
+    CONTROL         "",IDC_RADIO_PURPOSE1,"Button",BS_AUTORADIOBUTTON,168,28,
+                    11,10
+    CONTROL         "",IDC_RADIO_PURPOSE2,"Button",BS_AUTORADIOBUTTON,168,42,
+                    12,10
+    CONTROL         "",IDC_RADIO_PURPOSE3,"Button",BS_AUTORADIOBUTTON,168,56,
+                    14,10
+    CONTROL         "",IDC_RADIO_PURPOSE4,"Button",BS_AUTORADIOBUTTON,168,70,
+                    11,10
+    CONTROL         "",IDC_RADIO_PURPOSE5,"Button",BS_AUTORADIOBUTTON,168,84,
+                    12,10
+    CONTROL         "",IDC_RADIO_PURPOSE6,"Button",BS_AUTORADIOBUTTON,168,98,
+                    13,10
+    CONTROL         "",IDC_RADIO_PURPOSE7,"Button",BS_AUTORADIOBUTTON,168,
+                    112,12,10
+    EDITTEXT        IDC_PURPOSE_TXT1,183,28,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT2,183,42,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT3,183,56,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT4,183,70,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT5,183,84,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT6,183,98,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_PURPOSE_TXT7,183,112,46,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED | NOT WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ENTITY_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 124
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 559
+    END
+
+    IDD_BIOCTRL_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 132
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_BRAIN_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 280
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_GENETIC_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_DLG_GENOME_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_DLG_ENTITY_CREATOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 381
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 62
+    END
+
+    IDD_DLG_BRAIN_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 293
+    END
+
+    IDD_STATISTIC_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_DLG_ENTITY_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_DLG_BIOTOP_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_DLG_MEASURE_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 274
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 155
+    END
+
+    IDD_DLG_ENTITY_FIND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 190
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 226
+    END
+
+    IDD_MAP_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW_BIOTOP
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN_BIOTOP
+        MENUITEM "&Save...\tCtrl+S",            ID_FILE_SAVE_BIOTOP
+        MENUITEM "&Save as...\t",               ID_FILE_SAVE_AS_BIOTOP
+        MENUITEM "&Run learning scenario...\t", ID_FILE_RUN_SCENARIO_BIOTOP
+        MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "&Find\tCtrl+F",               ID_EDIT_FIND
+        MENUITEM SEPARATOR
+        MENUITEM "Add new",                     ID_APP_ADD_NEW_ENTITY
+        MENUITEM "Add from file",               ID_APP_ADD_GROUP_ENTITY
+        MENUITEM "Remove",                      ID_APP_REMOVE_ENTITY
+        MENUITEM "Edit genome",                 ID_APP_EDIT_GENOME
+        MENUITEM "Edit brain",                  ID_APP_EDIT_BRAIN
+        MENUITEM "Monitor short term",          ID_APP_MONITOR_SHORT
+        MENUITEM "Monitor long term",           ID_APP_MONITOR_LONG
+        MENUITEM "Train and grade",             ID_APP_EDIT_TRAIN_AND_GRADE
+        MENUITEM "Identify by selection",       ID_APP_EDIT_IDENTIFY
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "Display2D",                   ID_APP_DISPLAY_2D
+        MENUITEM "Display3D",                   ID_APP_DISPLAY_3D
+        MENUITEM SEPARATOR
+        MENUITEM "Genetic tab",                 ID_APP_DISPLAY_GENETIC
+        MENUITEM "Brain tab",                   ID_APP_DISPLAY_BRAIN
+        MENUITEM "Stat tab",                    ID_APP_DISPLAY_STAT
+        MENUITEM "Map tab",                     ID_APP_DISPLAY_MAP
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Cybiosphere...",       ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_BIOCTRL_FORMVIEW DLGINIT
+BEGIN
+    IDC_COMBO_WIND, 0x403, 2, 0
+0x0058, 
+    IDC_COMBO_WIND, 0x403, 2, 0
+0x0057, 
+    IDC_COMBO_WIND, 0x403, 3, 0
+0x5753, "\000" 
+    IDC_COMBO_WIND, 0x403, 2, 0
+0x0053, 
+    IDC_COMBO_WIND, 0x403, 3, 0
+0x4553, "\000" 
+    IDC_COMBO_WIND, 0x403, 2, 0
+0x0045, 
+    IDC_COMBO_WIND, 0x403, 3, 0
+0x454e, "\000" 
+    IDC_COMBO_WIND, 0x403, 2, 0
+0x004e, 
+    IDC_COMBO_WIND, 0x403, 3, 0
+0x574e, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_FIND            "Find a specific entity\nFind"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_MONITOR_SHORT    "Monitor longterm parameters"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_TRAIN DIALOG DISCARDABLE  0, 0, 186, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Train and grade"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,72,50,14
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    7,47,172,13
+    EDITTEXT        IDC_EDIT1,7,22,36,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Number of iteration",IDC_STATIC,7,7,73,11
+    EDITTEXT        IDC_EDIT2,106,22,36,13,ES_AUTOHSCROLL | ES_NUMBER | 
+                    WS_DISABLED
+    LTEXT           "Estimated time",IDC_STATIC,106,7,73,11
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG_TRAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""..\\WpGui\\res\\Cybiosphere.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.fra\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "..\\WpGui\\res\\Cybiosphere.ico"
+IDR_BIOTOP_TYPE         ICON    DISCARDABLE     "..\\WpGui\\res\\BiotopDoc.ico"
+IDR_ENTITY_TYPE         ICON    DISCARDABLE     "..\\WpGui\\res\\icon1.ico"
+IDR_BIOCTRL_TYPE        ICON    DISCARDABLE     "..\\WpGui\\res\\icon2.ico"
+IDR_BRAIN_TYPE          ICON    DISCARDABLE     "..\\WpGui\\res\\icon3.ico"
+IDR_GENETIC_TYPE        ICON    DISCARDABLE     "..\\WpGui\\res\\icon4.ico"
+IDI_ICON_SAVE           ICON    DISCARDABLE     "..\\wpgui\\res\\icoSave.ico"
+IDI_ICON_OPEN           ICON    DISCARDABLE     "..\\wpgui\\res\\icoOpen.ico"
+IDI_ICON_LESS           ICON    DISCARDABLE     "..\\WpGui\\res\\icoLess.ico"
+IDI_ICON_MORE           ICON    DISCARDABLE     "..\\WpGui\\res\\icoMore.ico"
+IDR_STATISTIC_TYPE      ICON    DISCARDABLE     "..\\wpgui\\res\\ico00001.ico"
+IDR_MAPCONFIG_TYPE      ICON    DISCARDABLE     "..\\wpgui\\res\\ico00002.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "..\\WpGui\\res\\Toolbar.bmp"
+IDB_VEGET               BITMAP  DISCARDABLE     "..\\WpGui\\res\\veget.bmp"
+IDB_GENOME_ICONS        BITMAP  DISCARDABLE     "..\\WpGui\\res\\GenomeIcons.bmp"
+IDB_SEX_ICONS           BITMAP  DISCARDABLE     "..\\WpGui\\res\\SexIcons.bmp"
+IDB_MINERAL             BITMAP  DISCARDABLE     "..\\WpGui\\res\\mineral.bmp"
+IDB_ODOR_ICONS          BITMAP  DISCARDABLE     "..\\WpGui\\res\\OdorIcon.bmp"
+IDB_FORM_ICONS          BITMAP  DISCARDABLE     "..\\wpgui\\res\\FormIcons.bmp"
+IDB_PHEROMON_ICONS      BITMAP  DISCARDABLE     "..\\WpGui\\res\\PheromonIcon.bmp"
+IDB_TASTE_ICONS         BITMAP  DISCARDABLE     "..\\WpGui\\res\\TasteIcon.bmp"
+IDB_ANIM1               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim1.bmp"
+IDB_ANIM2               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim2.bmp"
+IDB_ANIM3               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim3.bmp"
+IDB_ANIM4               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim4.bmp"
+IDB_ANIM5               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim5.bmp"
+IDB_ANIM6               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim6.bmp"
+IDB_ANIM0               BITMAP  DISCARDABLE     "..\\WpGui\\res\\anim0.bmp"
+IDB_TEXTURE_ICONS       BITMAP  DISCARDABLE     "..\\WpGui\\res\\TextureIcon.bmp"
+IDB_ATTRIBUTE_ICONS     BITMAP  DISCARDABLE     "..\\WpGui\\res\\AttributeIcon.bmp"
+IDB_TEMPER_COLOR        BITMAP  DISCARDABLE     "..\\WpGui\\res\\TemperColors.bmp"
+IDB_HEALTH_ICONS        BITMAP  DISCARDABLE     "..\\WpGui\\res\\HealthIcon.bmp"
+IDB_LOGO                BITMAP  DISCARDABLE     "..\\WpGui\\res\\Logo.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW_BIOTOP
+    BUTTON      ID_FILE_OPEN_BIOTOP
+    BUTTON      ID_FILE_SAVE_BIOTOP
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    BUTTON      ID_EDIT_FIND
+    SEPARATOR
+    BUTTON      ID_APP_DISPLAY_GENETIC
+    BUTTON      ID_APP_DISPLAY_BRAIN
+    BUTTON      ID_APP_DISPLAY_STAT
+    BUTTON      ID_APP_DISPLAY_MAP
+    SEPARATOR
+    BUTTON      ID_APP_DISPLAY_2D
+    BUTTON      ID_APP_DISPLAY_3D
+    SEPARATOR
+    BUTTON      ID_APP_VIEW_LOG
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW_BIOTOP,     VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN_BIOTOP,    VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE_BIOTOP,    VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040C04B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Cybiosphere MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Cybiosphere\0"
+            VALUE "LegalCopyright", "Copyright (C) 2006\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Cybiosphere.EXE\0"
+            VALUE "ProductName", "Cybiosphere Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_FAILED_OPEN_DATABASE "Cannot open database."
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Cybiosphere"
+    IDR_BIOTOP_TYPE         "\nBiotop\nBiotop\n\n\nBiotop.Document\nBiotop Document"
+    IDR_ENTITY_TYPE         "\nEntity\nEntity\n\n\nEntity.Document\nEntity Document"
+    IDR_BIOCTRL_TYPE        "\nBioCtrl\nBioCtrl\n\n\nBioCtrl.Document\nBioCtrl Document"
+    IDR_BRAIN_TYPE          "\nBrain\nBrain\n\n\nBrain.Document\nBrain Document"
+    IDR_GENETIC_TYPE        "\nGenetic\nGenetic\n\n\nGenetic.Document\nGenetic Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Cybiosphere"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "MAJ"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "DEF"
+    ID_INDICATOR_OVR        "ECR"
+    ID_INDICATOR_REC        "ENR"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW_BIOTOP      "Create a new document\nNew"
+    ID_FILE_OPEN_BIOTOP     "Open an existing document\nOpen"
+    ID_FILE_SAVE_BIOTOP     "Save the active document\nSave"
+    ID_FILE_SAVE_AS_BIOTOP  "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_CLOSE           "Close the active document\nClose"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified entity\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_RECORD_FIRST         "Move to first record\nFirst Record"
+    ID_RECORD_LAST          "Move to final record\nLast Record"
+    ID_RECORD_NEXT          "Move to next record\nNext Record"
+    ID_RECORD_PREV          "Move to previous record\nPrevious Record"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "..\WpGui\res\Cybiosphere.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#include "l.fra\afxprint.rc"        // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
