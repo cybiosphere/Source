@@ -6,6 +6,15 @@
 #ifndef _CONSOLE
 #include "CybiOgre3D.h"
 #endif
+#include "CScenarioPlayer.h"
+
+#define CLIENT_CMD_NUMBER 2
+CommandHandler_t ClientCmdNameList[CLIENT_CMD_NUMBER] =
+{
+  // cmd name                     cmd function                       help string
+  { "HELP",                      Client::CmdHelp,                   "HELP" },
+  { "DISPLAY_BIOTOP",            Client::CmdDisplayBiotop,          "DISPLAY_BIOTOP" }
+};
 
 Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp)
 {
@@ -58,7 +67,12 @@ void Client::exec()
     std::string inputcommand;
     bool resu = log_get_console_input(inputcommand);
     if (resu)
+    {
+      int var1 = -1;
+      int var2 = -1;
       log_event("Input command:", inputcommand);
+      CScenarioPlayer::ExecuteCmd(m_pBiotop, inputcommand, "C:\\temp", var1, var2, ClientCmdNameList, CLIENT_CMD_NUMBER);
+    }
 	}
 }
 
@@ -406,4 +420,24 @@ void Client::displayBiotopEntities()
 void Client::displayBiotopEntityDetail(entityIdType entityId)
 {
 
+}
+
+bool Client::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  int i;
+  for (i = 0; i<CLIENT_CMD_NUMBER; i++)
+  {
+    log_event("Server cmd", ClientCmdNameList[i].helpString);
+  }
+  return true;
+}
+
+bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  CBasicEntity* pEntity;
+  for (int i = 0; i<pBiotop->getNbOfEntities(); i++)
+  {
+    pEntity = pBiotop->getEntityByIndex(i);
+    log_event("INFO", "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
+  }
 }

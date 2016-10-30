@@ -1757,7 +1757,11 @@ void CBasicEntity::autoRemove()
   m_Status = STATUS_TOBEREMOVED;
   Point_t coord = {-1,-1};
   jumpToGridCoord(coord, -1);
-  // To avoid problem until biotop removal
+
+  if (m_pBiotop!=NULL)
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_REMOVED, this);
+
+  // To avoid problem until biotop removal (TBC)
   m_Id = -1; 
 }
 
@@ -2316,6 +2320,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
       m_Layer = newLayer;
     }    
     resu = true;
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
     m_pBiotop->updateGridEntity(this);
   }
   else

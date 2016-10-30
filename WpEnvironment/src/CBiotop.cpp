@@ -167,6 +167,8 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, int newLay
     pEntity->getBrain()->SetHomePurposePositionInGeoMap();
   }
 
+  addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
+
   return (m_IdLastEntity);
 }
 
@@ -572,6 +574,8 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   {
     m_IndexLastAnimal++;
   }
+
+  addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, pNewEntity);
 
   return true;
 }
@@ -1653,6 +1657,8 @@ void CBiotop::nextSecond(void)
     } 
   }
 
+  resetBiotopEvents();
+
   // Loop on all animals for basic action  
   for (i=0; i<getNbOfAnimals(); i++)    
   {
@@ -2080,6 +2086,25 @@ bool CBiotop::checkMeasureEvents()
     }
   }
   return (resu);
+}
+
+//===========================================================================
+// Event management
+//===========================================================================
+bool CBiotop::addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity)
+{
+  BiotopEvent_t newEvent;
+  newEvent.eventType = biotopEvent;
+  newEvent.pEntity = pEntity;
+  newEvent.entityId = pEntity->getId();
+  m_tEvents.push_back(std::move(newEvent));
+  return true;
+}
+
+bool CBiotop::resetBiotopEvents()
+{
+  m_tEvents.resize(0);
+  return true;
 }
 
 //===========================================================================

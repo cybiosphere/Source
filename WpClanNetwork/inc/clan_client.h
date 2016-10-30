@@ -35,6 +35,9 @@ public:
   bool  is_biotop_config_complete();
   float get_biotop_speed();
 
+  static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
+  static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
+
 private:
 	void on_connected();
 	void on_disconnected();

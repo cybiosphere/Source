@@ -7,7 +7,7 @@
 
 #define SERVER_CMD_NUMBER 4
 
-CommandHandler_t ScenarioCmdNameList[SERVER_CMD_NUMBER] =
+CommandHandler_t ServerCmdNameList[SERVER_CMD_NUMBER] =
 {
 // cmd name                     cmd function                       help string
   {"HELP",                      Server::CmdHelp,                   "HELP"}, 
@@ -168,7 +168,7 @@ bool Server::process_cmd_line(const std::string input_cmd_string)
   if (resu == false)
   {
     // Check command for server
-    resu = CScenarioPlayer::ExecuteCmd(m_pBiotop, input_cmd_string, "C:\\temp", var1, var2, ScenarioCmdNameList, SERVER_CMD_NUMBER);
+    resu = CScenarioPlayer::ExecuteCmd(m_pBiotop, input_cmd_string, "C:\\temp", var1, var2, ServerCmdNameList, SERVER_CMD_NUMBER);
     if (resu == true)
     {
       // Var1 is used to set speed
@@ -427,7 +427,7 @@ bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* un
   int i;
   for (i=0; i<SERVER_CMD_NUMBER; i++)
   {
-    log_event("Server cmd", ScenarioCmdNameList[i].helpString);
+    log_event("Server cmd", ServerCmdNameList[i].helpString);
   }
   string bioCmdStr = "";
   for (i=0; i<100; i++)

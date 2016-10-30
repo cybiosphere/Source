@@ -134,6 +134,21 @@ typedef enum
   ENTITY_ID_FIRST_USER_ENTITY
 } ReservedEntityIdType_e;
 
+typedef enum
+{
+  BIOTOP_EVENT_ENTITY_ADDED = 0,
+  BIOTOP_EVENT_ENTITY_MOVED,
+  BIOTOP_EVENT_ENTITY_CHANGED,
+  BIOTOP_EVENT_ENTITY_MODIFIED,
+  BIOTOP_EVENT_ENTITY_REMOVED,
+} BiotopEventType_e;
+
+typedef struct
+{
+  BiotopEventType_e eventType;
+  entityIdType      entityId;
+  CBasicEntity*     pEntity;
+} BiotopEvent_t;
 
 
 //===========================================================================
@@ -185,6 +200,7 @@ private:
   CGrass* m_pGrassGlobalEntity;
   std::vector<CMeasure*> m_tMeasures;
   std::vector<CGenericParam*> m_tParam;
+  std::vector<BiotopEvent_t> m_tEvents;
 
 //===========================================================================
 // Methods 
@@ -292,6 +308,14 @@ public:
    int       getNbOfMeasures(void); 
    void      replaceMeasure(int id, CMeasure* pMeasure);
    bool      checkMeasureEvents();
+
+//---------------------------------------------------------------------------
+// Event management
+//---------------------------------------------------------------------------
+public:
+   bool      addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity);
+private:
+   bool      resetBiotopEvents();
 
 //---------------------------------------------------------------------------
 // Save/Load in file
