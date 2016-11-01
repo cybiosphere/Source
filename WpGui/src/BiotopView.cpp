@@ -632,6 +632,7 @@ void CBiotopView::OnAppRemoveEntity()
   }
   // force redraw all
   ForceRefreshDisplay();
+  theApp.NextSecondRefreshAllViews();
   m_MenuSelCoord.x = 1;
   m_MenuSelCoord.y = 1;
 }

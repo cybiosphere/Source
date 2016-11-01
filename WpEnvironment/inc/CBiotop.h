@@ -313,9 +313,10 @@ public:
 // Event management
 //---------------------------------------------------------------------------
 public:
-   bool      addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity);
-private:
-   bool      resetBiotopEvents();
+   bool          addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity);
+   int           getNbOfBiotopEvents(void);
+   BiotopEvent_t getBiotopEvent(unsigned int index);
+   bool          resetBiotopEvents();
 
 //---------------------------------------------------------------------------
 // Save/Load in file

@@ -36,6 +36,7 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
   game_events.func_event("Biotop-Next second end") = clan::bind_member(this, &Client::on_event_biotop_nextsecond_end);
   game_events.func_event("Biotop-Update entity data") = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
   game_events.func_event("Biotop-Update entity position") = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
+  game_events.func_event("Biotop-Remove entity") = clan::bind_member(this, &Client::on_event_biotop_removeentity);
 
 	quit = false;
 	logged_in = false;
@@ -364,6 +365,23 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
 #endif // _CONSOLE
 }
 
+void Client::on_event_biotop_removeentity(const NetGameEvent &e)
+{
+  int entityId = e.get_argument(0);
+  std::string  entityLabel = e.get_argument(1);
+  CBasicEntity* pEntity = m_pBiotop->getEntityById(entityId);
+
+  if ((pEntity!=NULL) && (entityLabel == pEntity->getLabel()))
+  {
+    log_event("events", "Biotop remove entity: entityID %1 label %2", entityId, pEntity->getLabel());
+    pEntity->autoRemove();
+  }
+  else
+  {
+    log_event("events", "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
+  }
+}
+
 void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
 {
   DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
@@ -427,7 +445,7 @@ bool Client::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* un
   int i;
   for (i = 0; i<CLIENT_CMD_NUMBER; i++)
   {
-    log_event("Server cmd", ClientCmdNameList[i].helpString);
+    log_event("Client cmd", ClientCmdNameList[i].helpString);
   }
   return true;
 }
@@ -440,4 +458,5 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
     pEntity = pBiotop->getEntityByIndex(i);
     log_event("INFO", "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
   }
+  return true;
 }

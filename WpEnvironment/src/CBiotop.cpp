@@ -1666,6 +1666,8 @@ void CBiotop::nextSecond(void)
     if (pEntity != NULL)
     {
       pEntity->nextSecond();
+      if (pEntity->checkIfhasChanged())
+        addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
     }
   }
 
@@ -1690,6 +1692,8 @@ void CBiotop::nextSecond(void)
       if ( (pEntity != NULL) && (!pEntity->isToBeRemoved()) )
       {
         pEntity->nextHour();
+        if (pEntity->checkIfhasChanged())
+          addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
       }
     } 
 
@@ -2106,6 +2110,17 @@ bool CBiotop::resetBiotopEvents()
   m_tEvents.resize(0);
   return true;
 }
+
+int CBiotop::getNbOfBiotopEvents(void)
+{
+  return m_tEvents.size();
+}
+
+BiotopEvent_t CBiotop::getBiotopEvent(unsigned int index)
+{
+  return m_tEvents[index];
+}
+
 
 //===========================================================================
 // Save/Load in file

@@ -45,6 +45,7 @@ private:
 
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
+  void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);
 
   void send_generic_event_long_string(const std::string event_label, DataBuffer data, ServerUser *user = NULL);
 

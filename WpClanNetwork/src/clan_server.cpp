@@ -54,7 +54,7 @@ void Server::ProcessEvents(bool isNewSec)
 	// Update clients with biotop evolution
 	  if (users_connected)
 	  {
-      CBasicEntity* pCurEntity = NULL;
+      //CBasicEntity* pCurEntity = NULL;
 
       // Send event next second start update
       NetGameEvent bioNextSecEventStart("Biotop-Next second start");
@@ -64,13 +64,38 @@ void Server::ProcessEvents(bool isNewSec)
       network_server.send_event(bioNextSecEventStart);
 
       // Update all entities
-      for (int i = 0; i<m_pBiotop->getNbOfEntities(); i++)
+      /*for (int i = 0; i<m_pBiotop->getNbOfEntities(); i++)
       {
         pCurEntity = m_pBiotop->getEntityByIndex(i);
         if (pCurEntity->isAlive())
           send_event_update_entity_position(pCurEntity);
         // FRED TBC: Check if new entity arrived and advise clients
+      }*/
+      BiotopEvent_t bioEvent;
+      for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
+      {
+        bioEvent = m_pBiotop->getBiotopEvent(i);
+        switch (bioEvent.eventType)
+        {
+        case BIOTOP_EVENT_ENTITY_MOVED:
+        case BIOTOP_EVENT_ENTITY_CHANGED:
+          send_event_update_entity_position(bioEvent.pEntity);
+          break;
+        case BIOTOP_EVENT_ENTITY_MODIFIED:
+          send_event_update_entity_data(bioEvent.pEntity);
+          break;
+        case BIOTOP_EVENT_ENTITY_ADDED:
+          send_event_update_entity_position(bioEvent.pEntity);
+          send_event_update_entity_data(bioEvent.pEntity);
+          break;
+        case BIOTOP_EVENT_ENTITY_REMOVED:
+          send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
+          break;
+        default:
+          break;
+        }
       }
+      m_pBiotop->resetBiotopEvents();
 
 		  // Send event next second end
 		  log_event("System  ", "New second event");
@@ -383,6 +408,19 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
     network_server.send_event(bioUpdateEntityPosEvent);
   else
     user->send_event(bioUpdateEntityPosEvent);
+}
+
+void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
+{
+  log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
+
+  NetGameEvent bioRemoveEntityEvent("Biotop-Remove entity");
+  bioRemoveEntityEvent.add_argument(entityId);
+  bioRemoveEntityEvent.add_argument(pEntity->getLabel());
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioRemoveEntityEvent);
+  else
+    user->send_event(bioRemoveEntityEvent);
 }
 
 void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data, ServerUser *user)
