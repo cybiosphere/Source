@@ -226,6 +226,8 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
   if (m_IdLastEntity <= idEntity)
     m_IdLastEntity = idEntity + 1;
 
+  addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
+
   return true;
 }
 
@@ -1656,8 +1658,6 @@ void CBiotop::nextSecond(void)
       }
     } 
   }
-
-  resetBiotopEvents();
 
   // Loop on all animals for basic action  
   for (i=0; i<getNbOfAnimals(); i++)    

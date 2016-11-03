@@ -37,6 +37,70 @@ CBiotop*                     m_pBiotop;
 PlayerEntity_t               m_Player;
 Client*                      m_pClient;
 
+void removeMeshEntity(SceneManager* pSceneMgr, CBasicEntity* pEntity )
+{
+  std::vector<MeshEntity_t*>::iterator it;
+  for (it = m_tMesh.begin(); it != m_tMesh.end(); ++it)
+  {
+    MeshEntity_t* pMesh = *it;
+    if (pMesh->pBasicEntity == pEntity)
+    {
+      pSceneMgr->destroyEntity(pMesh->pMeshEnt);
+      m_tMesh.erase(it);
+      return;
+    }
+  }
+  return;
+}
+
+bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
+{
+  if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
+    return false;
+
+  Point_t coord = pBasicEntity->getStepCoord();
+
+  Entity *meshEnt;
+  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
+  string nameFile = pBasicEntity->getSpecieName() + ".mesh";
+  double scale = pBasicEntity->getSizeRate();
+  meshEnt = pSceneMgr->createEntity(nameEnt, nameFile);
+
+  MeshEntity_t* pNewMesh = new MeshEntity_t;
+
+  if (pNewMesh!=NULL)
+  {
+    pNewMesh->pBasicEntity = pBasicEntity;
+    pNewMesh->pMeshEnt = meshEnt;
+    pNewMesh->targetBiotopCoord = coord;
+    pNewMesh->curDirection = pBasicEntity->getStepDirection();
+    pNewMesh->isMoving = false;
+    pNewMesh->scale = scale;
+    pNewMesh->yPos = scale-1.0;
+    pNewMesh->pMeshNode = pSceneMgr->getRootSceneNode()->createChildSceneNode();
+    pNewMesh->pMeshNode->attachObject(meshEnt);
+    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
+    pNewMesh->pMeshNode->setScale(scale,scale,scale);
+
+    if (pBasicEntity->getBrain() != NULL)
+    {
+      pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
+      pNewMesh->pAnimState->setEnabled(true);
+      pNewMesh->pAnimState->setLoop(true); 
+    }
+    else
+    {
+      pNewMesh->pAnimState = NULL;
+    }
+
+    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
+    m_tMesh.push_back(pNewMesh);
+  }
+
+  return true;
+}
+
 CybiOgre3DFrameListener::CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam)
 : ExampleFrameListener(win, cam), mSceneMgr(sceneMgr)
 {
@@ -104,6 +168,33 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
       setMeshEntityPosition(i);
       updateMeshEntityNewSecond(i);
     }*/
+
+    BiotopEvent_t bioEvent;
+    CBasicEntity* pEntity;
+    MeshEntity_t* pMesh;
+    for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
+    {
+      bioEvent = m_pBiotop->getBiotopEvent(i); 
+      switch (bioEvent.eventType)
+      {
+      case BIOTOP_EVENT_ENTITY_MOVED:
+      case BIOTOP_EVENT_ENTITY_CHANGED:
+        break;
+      case BIOTOP_EVENT_ENTITY_MODIFIED:
+        break;
+      case BIOTOP_EVENT_ENTITY_ADDED:
+        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
+        createMeshEntity(mSceneMgr, pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_REMOVED:
+        removeMeshEntity(mSceneMgr, bioEvent.pEntity);
+        break;
+      default:
+        break;
+      }
+    }
+    m_pBiotop->resetBiotopEvents();
+
     updateInfoParamTime();
     updateInfoPopulation();
     // reset player to idle
@@ -113,15 +204,63 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   return true;
 }
 
+/*bool CybiOgre3DFrameListener::createMeshEntity (CBasicEntity* pBasicEntity)
+{
+  if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
+    return false;
+
+  Point_t coord = pBasicEntity->getStepCoord();
+
+  Entity *meshEnt;
+  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
+  string nameFile = pBasicEntity->getSpecieName() + ".mesh";
+  double scale = pBasicEntity->getSizeRate();
+  meshEnt = mSceneMgr->createEntity(nameEnt, nameFile);
+
+  MeshEntity_t* pNewMesh = new MeshEntity_t;
+
+  if (pNewMesh!=NULL)
+  {
+    pNewMesh->pBasicEntity = pBasicEntity;
+    pNewMesh->pMeshEnt = meshEnt;
+    pNewMesh->targetBiotopCoord = coord;
+    pNewMesh->curDirection = pBasicEntity->getStepDirection();
+    pNewMesh->isMoving = false;
+    pNewMesh->scale = scale;
+    pNewMesh->yPos = scale-1.0;
+    pNewMesh->pMeshNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    pNewMesh->pMeshNode->attachObject(meshEnt);
+    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
+    pNewMesh->pMeshNode->setScale(scale,scale,scale);
+
+    if (pBasicEntity->getBrain() != NULL)
+    {
+      pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
+      pNewMesh->pAnimState->setEnabled(true);
+      pNewMesh->pAnimState->setLoop(true); 
+    }
+    else
+    {
+      pNewMesh->pAnimState = NULL;
+    }
+
+    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
+    m_tMesh.push_back(pNewMesh);
+  }
+
+  return true;
+}*/
+
 void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 {
   CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
-  if ( pBasicEntity->isToBeRemoved() )
+  /*if ( pBasicEntity->isToBeRemoved() )
   {
     mSceneMgr->destroyEntity(m_tMesh[meshIndex]->pMeshEnt);
     m_tMesh.erase(m_tMesh.begin() + meshIndex);
     return;
-  }
+  }*/
 
   if ( ( pBasicEntity->getStatus() == STATUS_DEAD ) /*&& (m_tMesh[meshIndex]->strCurACtion != "Sleep")*/ )
   {
@@ -513,11 +652,11 @@ void CybiOgre3DApp::createScene(void)
   // Put in a bit of fog for the hell of it
   mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0002);
 
-  int i;
+  /*int i;
   for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
-    createMeshEntity(m_pBiotop->getEntityByIndex(i), i);
-  }
+    createMeshEntity(m_pBiotop->getEntityByIndex(i));
+  }*/
 
   CWater* waterGlobalEntity = new CWater();
   CGrass* grassGlobalEntity = new CGrass();
@@ -532,16 +671,16 @@ void CybiOgre3DApp::createScene(void)
       if (m_pBiotop->getLayerType(coord,1) == LAYER_OVER_WET_GROUND)
       {
         waterGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(waterGlobalEntity, i);
+        createMeshEntity(mSceneMgr, waterGlobalEntity);
         waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
-        i++;
+        //i++;
       }
       else if (m_pBiotop->getLayerType(coord,1) == LAYER_GLOBAL_GRASS)
       {
         grassGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(grassGlobalEntity, i);
+        createMeshEntity(mSceneMgr, grassGlobalEntity);
         grassGlobalEntity->setId(grassGlobalEntity->getId()+1);
-        i++;
+        //i++;
       }
     }
   }
@@ -556,9 +695,9 @@ void CybiOgre3DApp::createScene(void)
       if (m_pBiotop->getLayerType(coord,1) == LAYER_OVER_WATER)
       {
         waterGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(waterGlobalEntity, i);
+        createMeshEntity(mSceneMgr, waterGlobalEntity);
         waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
-        i++;
+        //i++;
       }
     }
   }
@@ -644,7 +783,7 @@ void CybiOgre3DApp::createFrameListener(void)
 }
 
 
-bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity, int insertIndex)
+/*bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity)
 {
   if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
     return false;
@@ -685,11 +824,12 @@ bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity, int insertInde
       pNewMesh->pAnimState = NULL;
     }
 
-    m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
+    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
+    m_tMesh.push_back(pNewMesh);
   }
 
   return true;
-}
+}*/
 
 int CybiOgre3DApp::getMeshEntityIndex(CBasicEntity* pBasicEntity)
 {
