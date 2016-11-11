@@ -77,8 +77,8 @@ void Server::ProcessEvents(bool isNewSec)
         bioEvent = m_pBiotop->getBiotopEvent(i);
         switch (bioEvent.eventType)
         {
-        case BIOTOP_EVENT_ENTITY_MOVED:
-        case BIOTOP_EVENT_ENTITY_CHANGED:
+        //case BIOTOP_EVENT_ENTITY_MOVED:  // Move is reserved for studio 
+        case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
           send_event_update_entity_position(bioEvent.pEntity);
           break;
         case BIOTOP_EVENT_ENTITY_MODIFIED:

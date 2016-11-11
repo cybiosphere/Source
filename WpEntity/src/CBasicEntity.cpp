@@ -2346,6 +2346,7 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, int newLayer)
 {
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
+  m_bHasChanged = true;
 
   // Update grid coord if needed
   Point_t newGridCoord;

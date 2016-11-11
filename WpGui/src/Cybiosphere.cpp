@@ -482,6 +482,8 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true);
+#else
+  m_pBiotop->resetBiotopEvents();
 #endif
 }
 
@@ -492,6 +494,8 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true);
+#else
+  m_pBiotop->resetBiotopEvents();
 #endif
 }
 
