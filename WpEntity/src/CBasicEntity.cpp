@@ -3844,6 +3844,21 @@ int CBasicEntity::getCurrentSpeed()
   return(0);
 }
 
+int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
+{
+  int relativeSpeed = 0;
+  if (m_pBiotop != NULL)
+  {
+    int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
+    Point_t relPos    = getGridCoordFromStepCoord({ getCurrentSpeed(), 0 });
+    Point_t relPosRef = getGridCoordFromStepCoord({ pReference->getCurrentSpeed(), 0 });
+    int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
+    relativeSpeed = distInitial - distFuture;
+  }
+  return relativeSpeed;
+}
+
+
 ColorCaracterType_e CBasicEntity::getColorType()
 {
   return(m_ColorCaracter);

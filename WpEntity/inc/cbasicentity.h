@@ -624,6 +624,7 @@ public:
   
       
   virtual int    getCurrentSpeed();
+  int            getRelativeSpeed(CBasicEntity* pReference);
 
   static string  getColorStrName(ColorCaracterType_e type);
   static string  getOdorStrName(OdorType_e type);

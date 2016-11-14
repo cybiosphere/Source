@@ -1932,6 +1932,11 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
   }
 }
 
+int CBiotop::getGridDistance(Point_t gridCoord1, Point_t gridCoord2)
+{
+  return max(abs(gridCoord1.x - gridCoord2.x), abs(gridCoord1.y - gridCoord2.y));
+}
+
 void CBiotop::updateGridAllEntities(void)
 {
   CBasicEntity* pCurEntity = NULL;

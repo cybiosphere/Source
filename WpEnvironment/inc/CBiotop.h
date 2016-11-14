@@ -288,6 +288,7 @@ public:
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
   void updateGridEntity(CBasicEntity* pEntity);
+  int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
 
 private:
   void buildGrid(int dimX, int dimY, int dimZ);

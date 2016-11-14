@@ -1465,9 +1465,9 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
   else if (rowIndex>3)
     captorStr = "colr " + CBasicEntity::getColorStrName( (ColorCaracterType_e)(rowIndex-4+COLOR_CARACTER_FIRST_TYPE) );
   else if (rowIndex==3)
-    captorStr = "moving";
+    captorStr = "Relative speed escape";
   else if (rowIndex==2)
-    captorStr = "proximity";
+    captorStr = "Relative speed approach";
   else if (rowIndex==1)
     captorStr = "smaller";
   else
@@ -1629,14 +1629,18 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
   else if (m_vCurrentIdentifyInput(offset,0) > MAX_SENSOR_VAL)
     m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
   offset++;
-  // Distance
-  /*if (m_bDistanceEval)
-    m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL/(pFoundIds[i].distance);
-  distanceWeight = m_vCurrentIdentifyInput(offset,0);*/
-  m_vCurrentIdentifyInput(offset,0) = 0;
+  // Relative speed escape
+  int relativeSpeed = this->m_pEntity->getRelativeSpeed(pEntity);
+  if (relativeSpeed > 0)
+    m_vCurrentIdentifyInput(offset,0) = relativeSpeed;
+  else
+    m_vCurrentIdentifyInput(offset,0) = 0;
   offset++;
-  // Movement
-  m_vCurrentIdentifyInput(offset,0) = pEntity->getCurrentSpeed() * MAX_SENSOR_VAL / 100.0;
+  // Relative speed approach
+  if (relativeSpeed < 0)
+    m_vCurrentIdentifyInput(offset, 0) = -relativeSpeed;
+  else
+    m_vCurrentIdentifyInput(offset, 0) = 0;
   offset++;
   // Color:
   for (int colo=0; colo<VIEW_NUMBER_COLORS; colo++)
