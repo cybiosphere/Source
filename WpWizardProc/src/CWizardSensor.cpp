@@ -158,7 +158,8 @@ bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, sh
                                                  bool isMoving, bool isDirLft, bool isDirRight)
 {
   int subOffsetProxy    = -1;
-  int subOffsetMove     = -1;
+  int subOffsetEscape   = -1;
+  int subOffsetAppraoch = -1;
   int subOffsetdirLeft  = -1;
   int subOffsetdirRight = -1;
 
@@ -170,7 +171,9 @@ bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, sh
 
   if (isMoving)
   {
-    subOffsetMove  = CSensorViewIdentify::GetSubCaptorSubIndexForMoving(identity);
+    subOffsetEscape = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
+    count++;
+    subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
     count++;
   }
   if (isDirLft)
@@ -188,8 +191,10 @@ bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, sh
   {
     if (subOffsetProxy>-1)
       pWeight[offset + subOffsetProxy]    += bonusRate / count;
-    if (subOffsetMove>-1)
-      pWeight[offset + subOffsetMove]     += bonusRate / count;
+    if (subOffsetEscape>-1)
+      pWeight[offset + subOffsetEscape]   += bonusRate / count;
+    if (subOffsetAppraoch>-1)
+      pWeight[offset + subOffsetAppraoch] += bonusRate / count;
     if (subOffsetdirLeft>-1) 
       pWeight[offset + subOffsetdirLeft]  += bonusRate / count / 2;
     if (subOffsetdirRight>-1)

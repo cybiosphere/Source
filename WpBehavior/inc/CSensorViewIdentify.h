@@ -56,7 +56,7 @@ distribution.
 //===========================================================================
 class CBrainAnimal;
 
-#define VIEW_IDENTIFY_SIZE_PER_FOCUS ( IDENTIFICATION_STATIC_NUMBER_TYPE + 4*IDENTIFICATION_MOBILE_NUMBER_TYPE )
+#define VIEW_IDENTIFY_SIZE_PER_FOCUS ( IDENTIFICATION_STATIC_NUMBER_TYPE + 5*IDENTIFICATION_MOBILE_NUMBER_TYPE )
 
 typedef struct 
 {
@@ -142,7 +142,8 @@ public:
   double GetViewedEntityWeight(CBasicEntity* pEntity);
 
   static int GetSubCaptorSubIndexForProximity(IdentificationType_e identity);
-  static int GetSubCaptorSubIndexForMoving(IdentificationType_e identity);
+  static int GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity);
+  static int GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity);
   static int GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity);
   static int GetSubCaptorSubIndexForDirRight(IdentificationType_e identity);
 

@@ -279,7 +279,8 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
         }
 
         int subOffsetProxy    = -1;
-        int subOffsetMove     = -1;
+        int subOffsetEscape   = -1;
+        int subOffsetAppraoch = -1;
         int subOffsetdirLeft  = -1;
         int subOffsetdirRight = -1;
         int offset = 0;
@@ -287,7 +288,8 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
         {
-          subOffsetMove  = CSensorViewIdentify::GetSubCaptorSubIndexForMoving(identity);
+          subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
+          subOffsetEscape   = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
         }
         if (isDirLeft)
         {
@@ -304,8 +306,10 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
         {
           if (subOffsetProxy>-1)
             pCurBonusTable[offset + subOffsetProxy]    = bonus;
-          if (subOffsetMove>-1)
-            pCurBonusTable[offset + subOffsetMove]     = bonus;
+          if (subOffsetEscape>-1)
+            pCurBonusTable[offset + subOffsetEscape]   = bonus;
+          if (subOffsetAppraoch>-1)
+            pCurBonusTable[offset + subOffsetAppraoch] = bonus;
           if (subOffsetdirLeft>-1)
             pCurBonusTable[offset + subOffsetdirLeft]  = bonus;
           if (subOffsetdirRight>-1)
@@ -327,7 +331,8 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
       }
 
       int subOffsetProxy    = -1;
-      int subOffsetMove     = -1;
+      int subOffsetEscape   = -1;
+      int subOffsetAppraoch = -1;
       int subOffsetdirLeft  = -1;
       int subOffsetdirRight = -1;
       int offset = 0;
@@ -335,7 +340,8 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
       subOffsetProxy = CSensorViewIdentifyFar::GetSubCaptorSubIndexForProximity(identity);
       if (isMoving)
       {
-        subOffsetMove  = CSensorViewIdentifyFar::GetSubCaptorSubIndexForMoving(identity);
+        subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
+        subOffsetEscape = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
       }
       if (isDirLeft)
       {
@@ -352,8 +358,10 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
       {
         if (subOffsetProxy>-1)
           pCurBonusTable[offset + subOffsetProxy]    = bonus;
-        if (subOffsetMove>-1)
-          pCurBonusTable[offset + subOffsetMove]     = bonus;
+        if (subOffsetEscape>-1)
+          pCurBonusTable[offset + subOffsetEscape]   = bonus;
+        if (subOffsetAppraoch>-1)
+          pCurBonusTable[offset + subOffsetAppraoch] = bonus;
         if (subOffsetdirLeft>-1)
           pCurBonusTable[offset + subOffsetdirLeft]  = bonus;
         if (subOffsetdirRight>-1)

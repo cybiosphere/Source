@@ -1630,7 +1630,7 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
     m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
   offset++;
   // Relative speed escape
-  int relativeSpeed = this->m_pEntity->getRelativeSpeed(pEntity);
+  int relativeSpeed = m_pEntity->getRelativeSpeed(pEntity);
   if (relativeSpeed > 0)
     m_vCurrentIdentifyInput(offset,0) = relativeSpeed;
   else

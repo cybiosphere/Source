@@ -331,16 +331,27 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
           else
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           offset++;
-          // 2 speed
-          m_pEntityViewIdentifyTab[i].weightTab[offset] = pCurEntity->getCurrentSpeed() * curWeight / 100.0;
+          // 2 Relative speed escape
+          int relativeSpeed = pAnimal->getRelativeSpeed(pCurEntity);
+          if (relativeSpeed > 0)
+            m_pEntityViewIdentifyTab[i].weightTab[offset] = relativeSpeed;
+          else
+            m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
           offset++;
-          // 3 direction left
+          // 3 Relative speed approach
+          if (relativeSpeed < 0)
+            m_pEntityViewIdentifyTab[i].weightTab[offset] = -relativeSpeed;
+          else
+            m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
+          offset++;
+          // 4 direction left
           relativeAngle = (pAnimal->getDirection() + 8 - pCurEntity->getDirection())%8 - 4;
           if (relativeAngle>0) 
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           else
             m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
           offset++;
+          // 5 direction right
           if ((relativeAngle < 0) && (relativeAngle != -4))
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           else
@@ -540,10 +551,12 @@ string CSensorViewIdentify::GetSubCaptorLabel(int index)
       case 0:
         captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " proxi"; break;
       case 1:
-        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " speed"; break;
+        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " relative speed escape"; break;
       case 2:
-        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " dir left"; break;
+        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " relative speed approach"; break;
       case 3:
+        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " dir left"; break;
+      case 4:
         captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " dir right"; break;
       default:
         captorStr = "error";
@@ -620,7 +633,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForProximity(IdentificationType_e i
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4);
 }
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForMoving(IdentificationType_e identity)
+int CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
       return -1;
@@ -630,6 +643,16 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForMoving(IdentificationType_e iden
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 1;
 }
 
+int CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity)
+{
+  if (identity >= IDENTIFICATION_NUMBER_TYPE)
+    return -1;
+  else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
+    return -1;
+  else
+    return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity - IDENTIFICATION_STATIC_NUMBER_TYPE) * 4) + 1;
+}
+
 int CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
@@ -637,7 +660,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e ide
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return -1;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 2;
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 3;
 }
 
 
@@ -648,7 +671,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForDirRight(IdentificationType_e id
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return -1;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 3;
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 4;
 }
 
 
@@ -688,11 +711,13 @@ bool CSensorViewIdentify::IsSexSpecific(int captorIndex)
 {
   int index = captorIndex % VIEW_IDENTIFY_SIZE_PER_FOCUS;
   if ( (index == GetSubCaptorSubIndexForProximity(IDENTIFICATION_SEX_PARTNER))
-    || (index == GetSubCaptorSubIndexForMoving(IDENTIFICATION_SEX_PARTNER))
+    || (index == GetSubCaptorSubIndexForEscapeSpeed(IDENTIFICATION_SEX_PARTNER))
+    || (index == GetSubCaptorSubIndexForApproachSpeed(IDENTIFICATION_SEX_PARTNER))
     || (index == GetSubCaptorSubIndexForDirLeft(IDENTIFICATION_SEX_PARTNER))
     || (index == GetSubCaptorSubIndexForDirRight(IDENTIFICATION_SEX_PARTNER))
     || (index == GetSubCaptorSubIndexForProximity(IDENTIFICATION_BABY))
-    || (index == GetSubCaptorSubIndexForMoving(IDENTIFICATION_BABY))
+    || (index == GetSubCaptorSubIndexForEscapeSpeed(IDENTIFICATION_BABY))
+    || (index == GetSubCaptorSubIndexForApproachSpeed(IDENTIFICATION_BABY))
     || (index == GetSubCaptorSubIndexForDirLeft(IDENTIFICATION_BABY))
     || (index == GetSubCaptorSubIndexForDirRight(IDENTIFICATION_BABY)) )
     return true;

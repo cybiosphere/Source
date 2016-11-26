@@ -565,14 +565,16 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
         int subOffsetProxy    = -1;
-        int subOffsetMove     = -1;
+        int subOffsetEscape   = -1;
+        int subOffsetAppraoch = -1;
         int subOffsetdirLeft  = -1;
         int subOffsetdirRight = -1;
 
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
         {
-          subOffsetMove  = CSensorViewIdentify::GetSubCaptorSubIndexForMoving(identity);
+          subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
+          subOffsetEscape   = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
         }
         if (isDirLeft)
         {
@@ -588,27 +590,32 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
 
           // Adjacent: Stop and don't run nor walk !
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_NOTHING,   1,  level/8);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_NOTHING,   1,  level/8);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_NOTHING,   1,  level/4);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_NOTHING,   1,  level/16);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_NOTHING,   1,  level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_NOTHING,   1,  level/8);
 
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_MOVEFORWARD + 12, 200, -level);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_MOVEFORWARD + 12, 200, -level);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_MOVEFORWARD + 12, 200, -level);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/2);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_MOVEFORWARD + 12, 200, -level);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_MOVEFORWARD + 12, 200, -level);
 
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_MOVEFORWARD, 11, -level);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_MOVEFORWARD, 11, -level);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_MOVEFORWARD, 11, -level);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_MOVEFORWARD, 11, -level/2);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_MOVEFORWARD, 11, -level);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_MOVEFORWARD, 11, -level);
 
           // Turn
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_TURNLEFT,  1,  level/4);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_TURNLEFT,  1,  level/8);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_TURNLEFT,  1,  level/8);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_TURNLEFT, 1,   level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_TURNLEFT,  1,  level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_TURNLEFT,  1,  level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_TURNRIGHT, 1,  level/4);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_TURNRIGHT, 1,  level/8);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_TURNRIGHT, 1,  level/8);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_TURNRIGHT, 1,  level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_TURNRIGHT, 1,  level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_TURNRIGHT, 1,  level/8);
 
@@ -616,13 +623,15 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
           {
             // On the Left: Avoid turn left
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetProxy,    UID_BASE_REACT_TURNLEFT, 1, -level/6);
-            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetMove,     UID_BASE_REACT_TURNLEFT, 1, -level/8);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetAppraoch, UID_BASE_REACT_TURNLEFT, 1, -level/8);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetEscape,   UID_BASE_REACT_TURNLEFT, 1, -level/4);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirLeft,  UID_BASE_REACT_TURNLEFT, 1, -level/8);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirRight, UID_BASE_REACT_TURNLEFT, 1, -level/8);
 
             // On the Right: Avoid turn right
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetProxy,    UID_BASE_REACT_TURNRIGHT, 1, -level/6);
-            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetMove,     UID_BASE_REACT_TURNRIGHT, 1, -level/8);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetAppraoch, UID_BASE_REACT_TURNRIGHT, 1, -level/8);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetEscape,   UID_BASE_REACT_TURNRIGHT, 1, -level/4);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirLeft,  UID_BASE_REACT_TURNRIGHT, 1, -level/8);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirRight, UID_BASE_REACT_TURNRIGHT, 1, -level/8);
           }
@@ -630,13 +639,15 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
           {
             // On the Left: Don't turn left
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetProxy,    UID_BASE_REACT_TURNLEFT, 1, -level/2);
-            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetMove,     UID_BASE_REACT_TURNLEFT, 1, -level/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetAppraoch, UID_BASE_REACT_TURNLEFT, 1, -level/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetEscape,   UID_BASE_REACT_TURNLEFT, 1, -level/8);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirLeft,  UID_BASE_REACT_TURNLEFT, 1, -level/4);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirRight, UID_BASE_REACT_TURNLEFT, 1, -level/4);
 
             // On the Right: Don't turn right
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetProxy,    UID_BASE_REACT_TURNRIGHT, 1, -level/2);
-            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetMove,     UID_BASE_REACT_TURNRIGHT, 1, -level/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetAppraoch, UID_BASE_REACT_TURNRIGHT, 1, -level/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetEscape,   UID_BASE_REACT_TURNRIGHT, 1, -level/8);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirLeft,  UID_BASE_REACT_TURNRIGHT, 1, -level/4);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirRight, UID_BASE_REACT_TURNRIGHT, 1, -level/4);
           }
@@ -645,17 +656,20 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
         {
           // In front: Don't run
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/4);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/6);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/6);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/8);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/6);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_MOVEFORWARD + 12, 200, -level/6);
 
           // Turn
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_TURNLEFT,  100, level/6);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_TURNLEFT,  100, level/10);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_TURNLEFT,  100, level/10);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_TURNLEFT,  100, level/10);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_TURNLEFT,  100, level/10);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_TURNLEFT,  100, level/10);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,    UID_BASE_REACT_TURNRIGHT, 100, level/6);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,     UID_BASE_REACT_TURNRIGHT, 100, level/10);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch, UID_BASE_REACT_TURNRIGHT, 100, level/10);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,   UID_BASE_REACT_TURNRIGHT, 100, level/10);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft,  UID_BASE_REACT_TURNRIGHT, 100, level/10);
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight, UID_BASE_REACT_TURNRIGHT, 100, level/10);
         }
@@ -1138,14 +1152,16 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
         int subOffsetProxy    = -1;
-        int subOffsetMove     = -1;
+        int subOffsetEscape   = -1;
+        int subOffsetAppraoch = -1;
         int subOffsetdirLeft  = -1;
         int subOffsetdirRight = -1;
 
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
         {
-          subOffsetMove = CSensorViewIdentify::GetSubCaptorSubIndexForMoving(identity);
+          subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
+          subOffsetEscape   = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
         }
         if (isDirLeft)
         {
@@ -1163,7 +1179,8 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
             // Adjacent attraction
             // In front: Do action
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   targetReacUid, targetReacRange, bonusRate);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    targetReacUid, targetReacRange, bonusRate/2);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  targetReacUid, targetReacRange, bonusRate/2);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,targetReacUid, targetReacRange, bonusRate/2);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, targetReacUid, targetReacRange, bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,targetReacUid, targetReacRange, bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNLEFT,  1   , bonusRate/8);
@@ -1191,10 +1208,12 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
 
             // On the back: Turn
             AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT,  1, bonusRate/5);
-            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetMove,    UID_BASE_REACT_TURNLEFT,  1, bonusRate/10);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT,  1, bonusRate/10);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, bonusRate / 10);
             AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetdirLeft, UID_BASE_REACT_TURNLEFT,  1, bonusRate/10);
             AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, bonusRate/5);
-            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, bonusRate/10);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, bonusRate/10);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, bonusRate / 10);
             AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetdirRight,UID_BASE_REACT_TURNRIGHT, 1, bonusRate/10);
           }
           else
@@ -1202,39 +1221,48 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
             // Adjacent repulsion
             // In front: Turn
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
             // Front Left: Turn right
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
             // Front Right: Turn left
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetMove,    UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirLeft, UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
 
             // Otherwise: Accelerate
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityL0, subOffsetEscape,   moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityL0, subOffsetAppraoch, moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityR0, subOffsetEscape,   moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityR0, subOffsetAppraoch, moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetEscape,   moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityB0, subOffsetAppraoch, moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
           }
@@ -1246,7 +1274,8 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
             // Close attraction
             // In front: Walk
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_MOVEFORWARD, 11, bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNLEFT,     1, bonusRate/8);
@@ -1254,7 +1283,8 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
             if (doRun)
             {
               AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
-              AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
+              AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
+              AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate / 6);
             }
 
             // On the Left: Turn left
@@ -1284,38 +1314,47 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
             // Close repulsion
             // In front: Turn
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
-            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+            AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 6);
             AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
             // Front Left: Turn right
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
             // Front Right: Turn left
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetMove,    UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirRight,UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
             // Otherwise: Accelerate
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityL0, subOffsetEscape,   moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityL0, subOffsetAppraoch, moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityR0, subOffsetEscape,   moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityR0, subOffsetAppraoch, moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-            AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+            AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
             AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
           }
@@ -1336,14 +1375,16 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
       int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
       int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
       int subOffsetProxy    = -1;
-      int subOffsetMove     = -1;
+      int subOffsetEscape   = -1;
+      int subOffsetAppraoch = -1;
       int subOffsetdirLeft  = -1;
       int subOffsetdirRight = -1;
 
       subOffsetProxy = CSensorViewIdentifyFar::GetSubCaptorSubIndexForProximity(identity);
       if (isMoving)
       {
-        subOffsetMove = CSensorViewIdentifyFar::GetSubCaptorSubIndexForMoving(identity);
+        subOffsetAppraoch = CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(identity);
+        subOffsetEscape   = CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(identity);
       }
       if (isDirLeft)
       {
@@ -1359,7 +1400,8 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
         // far attraction
         // In front: Walk
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_MOVEFORWARD, 11, bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,UID_BASE_REACT_MOVEFORWARD, 11, bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNLEFT,     1, bonusRate/8);
@@ -1367,7 +1409,8 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
         if (doRun)
         {
           AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
-          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate/6);
+          AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_MOVEFORWARD + 12, 200, bonusRate / 6);
         }
 
         // On the Left: Turn left
@@ -1397,38 +1440,47 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
         // far repulsion
         // In front: Turn
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
-        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 6);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirRight,UID_BASE_REACT_TURNLEFT,  1, -bonusRate/6);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
-        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
+        AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 6);
         AddBrainBonusInList(curSensUid, offsetEntityF0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/6);
         // Front Left: Turn right
         AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetProxy,   UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetMove,    UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetEscape,  UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetAppraoch,UID_BASE_REACT_TURNRIGHT, 1, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityFL0, subOffsetdirLeft, UID_BASE_REACT_TURNRIGHT, 1, -bonusRate/4);
         // Front Right: Turn left
         AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetProxy,   UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetMove,    UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetEscape,  UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetAppraoch,UID_BASE_REACT_TURNLEFT, 1, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityFR0, subOffsetdirRight,UID_BASE_REACT_TURNLEFT, 1, -bonusRate/4);
         // Otherwise: Accelerate
         AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityL0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityR0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityBL0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityBR0, subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetProxy,   moveReacUniqueId, moveReacRange, -bonusRate/4);
-        AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetMove,    moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetEscape,  moveReacUniqueId, moveReacRange, -bonusRate/4);
+        AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetAppraoch,moveReacUniqueId, moveReacRange, -bonusRate / 4);
         AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirLeft, moveReacUniqueId, moveReacRange, -bonusRate/4);
         AddBrainBonusInList(curSensUid, offsetEntityB0,  subOffsetdirRight,moveReacUniqueId, moveReacRange, -bonusRate/4);
       }
