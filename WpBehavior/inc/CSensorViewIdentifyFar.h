@@ -55,8 +55,8 @@ distribution.
 // Definitions            
 //===========================================================================
 class CBrainAnimal;
-
-#define VIEW_IDENTIFY_SIZE_PER_FOCUS ( IDENTIFICATION_STATIC_NUMBER_TYPE + 5*IDENTIFICATION_MOBILE_NUMBER_TYPE )
+#define VIEW_IDENTIFY_SIZE_PER_DYNAMIC 5
+#define VIEW_IDENTIFY_SIZE_PER_FOCUS ( IDENTIFICATION_STATIC_NUMBER_TYPE + VIEW_IDENTIFY_SIZE_PER_DYNAMIC*IDENTIFICATION_MOBILE_NUMBER_TYPE )
 
 typedef struct 
 {

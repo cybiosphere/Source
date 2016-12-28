@@ -367,7 +367,9 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
           m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
           offset++;    
           m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
-          offset++;    
+          offset++;
+          m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
+          offset++;
         }
       }
 
@@ -544,16 +546,16 @@ string CSensorViewIdentify::GetSubCaptorLabel(int index)
       captorStr = CBrain::getIdentityStrName((IdentificationType_e)pos)  + " proxi";
     else
     {
-      int subindex  = IDENTIFICATION_STATIC_NUMBER_TYPE + (pos-IDENTIFICATION_STATIC_NUMBER_TYPE)/4;
-      int suboffset = (pos-IDENTIFICATION_STATIC_NUMBER_TYPE)%4;
+      int subindex  = IDENTIFICATION_STATIC_NUMBER_TYPE + (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) / VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
+      int suboffset = (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) % VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
       switch (suboffset)
       {
       case 0:
         captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " proxi"; break;
       case 1:
-        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " relative speed escape"; break;
-      case 2:
         captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " relative speed approach"; break;
+      case 2:
+        captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " relative speed escape"; break;
       case 3:
         captorStr = CBrain::getIdentityStrName((IdentificationType_e)subindex) + " dir left"; break;
       case 4:
@@ -630,7 +632,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForProximity(IdentificationType_e i
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return (int)identity;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4);
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC);
 }
 
 int CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity)
@@ -640,7 +642,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return -1;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 1;
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 1;
 }
 
 int CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity)
@@ -650,7 +652,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(IdentificationType
   else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
     return -1;
   else
-    return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity - IDENTIFICATION_STATIC_NUMBER_TYPE) * 4) + 1;
+    return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity - IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 1;
 }
 
 int CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity)
@@ -660,7 +662,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e ide
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return -1;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 3;
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 3;
 }
 
 
@@ -671,7 +673,7 @@ int CSensorViewIdentify::GetSubCaptorSubIndexForDirRight(IdentificationType_e id
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
       return -1;
     else
-      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE)*4) + 4;
+      return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 4;
 }
 
 

@@ -1548,7 +1548,7 @@ void CDialogTab4::OnButtonSaveEntity()
 
   // Open module
   CString fileName;
-  CString pathName;
+  CString fileNameWithPath;
   CString entityName;
   CString specieName;
   CString strSection,strData;
@@ -1562,10 +1562,7 @@ void CDialogTab4::OnButtonSaveEntity()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetFileName();	
-    pathName = fileDlg.GetPathName();	 
-    int endPath = pathName.ReverseFind ('\\');
-    if (endPath>0)
-      pathName = pathName.Left(endPath+1); 
+    fileNameWithPath = fileDlg.GetPathName();
 
     // If name has changed, rename entity
     entityName = fileName;
@@ -1575,7 +1572,7 @@ void CDialogTab4::OnButtonSaveEntity()
 
     specieName = m_pEntity->getGenome()->getSpecieName().c_str();
 
-    learningFolderName = "..\\DataTraining_" + specieName;
+    learningFolderName = "..\\..\\DataTraining_" + specieName;
 
     if (m_pEntity->getClass() >= CLASS_ANIMAL_FIRST)
     {
@@ -1593,7 +1590,7 @@ void CDialogTab4::OnButtonSaveEntity()
     {
       m_pEntity->setLabel(entityName.GetBuffer(0));
       m_pEntity->quickAgeing(m_Age);
-      bool resu = m_pEntity->saveInXmlFile(fileName.GetBuffer(0));
+      bool resu = m_pEntity->saveInXmlFile(fileNameWithPath.GetBuffer(0));
       if (!resu)
       {
         AfxMessageBox("Impossible to save file " + fileName);
@@ -1731,7 +1728,7 @@ void CDialogTab4::OnButtonSaveEntity()
       m_pEntity->setLabel(entityName.GetBuffer(0));
       m_pEntity->quickAgeing(m_Age);
       ((CAnimal*)m_pEntity)->setBrainInstinctInGenes();
-      resu = m_pEntity->saveInXmlFile(fileName.GetBuffer(0));
+      resu = m_pEntity->saveInXmlFile(fileNameWithPath.GetBuffer(0));
       if (!resu)
       {
         AfxMessageBox("Impossible to save file " + fileName);
