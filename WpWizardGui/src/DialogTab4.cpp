@@ -1276,10 +1276,10 @@ void CDialogTab4::AddGenesForBrain()
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   geneIndex = pCurPaire->getMaterChromosome()->addGene();
   pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 3.0);
+  pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 2.0);
   geneIndex = pCurPaire->getPaterChromosome()->addGene();
   pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 3.0);
+  pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 2.0);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
