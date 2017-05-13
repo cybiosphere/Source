@@ -91,7 +91,10 @@ CSensorView::	CSensorView(CBrainAnimal* pBrain,
   m_nFocusObjectsSect6 = 0;
   m_nFocusObjectsSect7 = 0;
   m_nFocusObjectsSect8 = 0;
-  m_Label = "View";
+  if (range == 1)
+    m_Label = FormatString("View old adj L%d", layer);
+  else
+    m_Label = FormatString("View old L%d", layer);
 
   // Add adjacent sectors for turn head management
   switch (m_Angle)
@@ -449,7 +452,7 @@ string CSensorView::GetSubCaptorLabel(int index)
     int pos = index % VIEW_SIZE_PER_FOCUS;
 
     string directionStr; // according to offset
-    directionStr = FormatString("L%dN%d ", m_Layer, offset);
+    directionStr = FormatString("N%d ", offset);
     int index = 0;
     int count=m_nFocusObjectsSect1;
 

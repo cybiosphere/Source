@@ -92,9 +92,9 @@ CSensorViewIdentify::	CSensorViewIdentify(CBrainAnimal* pBrain,
   m_nFocusObjectsSect7 = 0;
   m_nFocusObjectsSect8 = 0;
   if (range == 1)
-    m_Label = "View adj";
+    m_Label = FormatString("View adj L%d", layer);
   else
-    m_Label = "View";
+    m_Label = FormatString("View L%d", layer);
   m_pFollowedEntity = NULL;
 
   // Add adjacent sectors for turn head management
@@ -481,7 +481,7 @@ string CSensorViewIdentify::GetSubCaptorLabel(int index)
     int pos = index % VIEW_IDENTIFY_SIZE_PER_FOCUS;
 
     string directionStr; // according to offset
-    directionStr = FormatString("L%dN%d ", m_Layer, offset);
+    directionStr = FormatString("N%d ", offset);
     int index = 0;
     int count=m_nFocusObjectsSect1;
 
