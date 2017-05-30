@@ -93,7 +93,7 @@ void CTrainingDlg::OnOK()
     theApp.PumpMessage();
     //EnableWindow(FALSE);
 
-    Sleep(2000); // To ensure saved file is closed
+    Sleep(100); // allow Gui refresh
 
     player.ReadScenarioFile("childLearning.scp", (char*)m_strTrainFilesDirectory.GetBuffer(0));
     theApp.PumpMessage();
@@ -113,7 +113,7 @@ void CTrainingDlg::OnOK()
     theApp.PumpMessage();
     //EnableWindow(FALSE);
 
-    Sleep(2000); // To ensure saved file is closed
+    Sleep(100); // allow Gui refresh
 
     player.ReadScenarioFile("adultLearning.scp", (char*)m_strTrainFilesDirectory.GetBuffer(0));
     theApp.PumpMessage();
@@ -132,7 +132,7 @@ void CTrainingDlg::OnOK()
     UpdateData(false);
     //EnableWindow(FALSE);
 
-    Sleep(2000); // To ensure saved file is closed
+    Sleep(100); // allow Gui refresh
   }
 
   tmpStr.Format(LPCTSTR("%d"), scoreSuccess * 100 / scoreTotal);

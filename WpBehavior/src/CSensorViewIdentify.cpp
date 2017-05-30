@@ -45,7 +45,7 @@ distribution.
 // Global
 //===========================================================================
 // Buffer used to store focused entity. Always init before use so that it can be shared between all.
-static EntityViewWeight_t m_pEntityViewIdentifyTab[MAX_FOUND_ENTITIES];
+static EntityViewIdentifyWeight_t m_pEntityViewIdentifyTab[MAX_FOUND_ENTITIES];
 
 //===========================================================================
 // Construction/Destruction
@@ -446,6 +446,16 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
     for (i=0; i<VIEW_IDENTIFY_SIZE_PER_FOCUS; i++)
     {
       m_pStimulationValues[offset] = m_pEntityViewIdentifyTab[maxWeightViewTabIndex].weightTab[i];
+      if (m_pStimulationValues[offset] > MAX_SENSOR_VAL)
+      {
+        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_pStimulationValues offset%d too big: %f\n", offset, m_pStimulationValues[offset]);
+        m_pStimulationValues[offset] = MAX_SENSOR_VAL;
+      }
+      else if (m_pStimulationValues[offset] < -MAX_SENSOR_VAL)
+      {
+        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_pStimulationValues offset%d too big: %f\n", offset, m_pStimulationValues[offset]);
+        m_pStimulationValues[offset] = -MAX_SENSOR_VAL;
+      }
       offset++;
     }
 

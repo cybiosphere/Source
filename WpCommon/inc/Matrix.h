@@ -423,7 +423,7 @@ matrixT::operator *= (const matrixT& m) _THROW_MATRIX_ERROR
          temp._m->Val[i][j] = T(0);
          for (size_t k=0; k < _m->Col; k++)
            if (_m->Val[i][k]!=0) // Optim Cybiosphere
-              temp._m->Val[i][j] += _m->Val[i][k] * m._m->Val[k][j];
+              temp._m->Val[i][j] += _m->Val[i][k] * _m->Val[i][k];
       }
    *this = temp;
 

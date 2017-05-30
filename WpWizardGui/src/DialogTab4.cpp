@@ -46,8 +46,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-#define WIZ_DATA_TEMP_DIR "..\\DataTemp\\"
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogTab4 dialog
 
@@ -1506,27 +1504,27 @@ bool CDialogTab4::PrepareLearningFilesMammal(CString newFolder)
 
   // Copy xml
   tmpFileName = newFolder + "\\rock.xml";
-  resu = copy_file("..\\DataScriptMammal\\rock.xml", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\rock.xml", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\water_puddle.xml";
-  resu = copy_file("..\\DataScriptMammal\\water_puddle.xml", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\water_puddle.xml", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\wooden_fence.xml";
-  resu = copy_file("..\\DataScriptMammal\\wooden_fence.xml", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\wooden_fence.xml", tmpFileName.GetBuffer(0));
 
   // Copy bio
   tmpFileName = newFolder + "\\biotop_empty.bio";
-  resu = copy_file("..\\DataScriptMammal\\biotop_empty.bio", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\biotop_empty.bio", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\biotop_river.bio";
-  resu = copy_file("..\\DataScriptMammal\\biotop_river.bio", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\biotop_river.bio", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\biotop_prairie.bio";
-  resu = copy_file("..\\DataScriptMammal\\biotop_prairie.bio", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\biotop_prairie.bio", tmpFileName.GetBuffer(0));
 
   // Copy scp
   tmpFileName = newFolder + "\\babyLearning.scp";
-  resu = copy_file("..\\DataScriptMammal\\babyLearning.scp", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\babyLearning.scp", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\childLearning.scp";
-  resu = copy_file("..\\DataScriptMammal\\childLearning.scp", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\childLearning.scp", tmpFileName.GetBuffer(0));
   tmpFileName = newFolder + "\\adultLearning.scp";
-  resu = copy_file("..\\DataScriptMammal\\adultLearning.scp", tmpFileName.GetBuffer(0));
+  resu = copy_file("..\\..\\DataScriptMammal\\adultLearning.scp", tmpFileName.GetBuffer(0));
 
 
   return resu;

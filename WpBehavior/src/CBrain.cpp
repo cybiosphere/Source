@@ -515,14 +515,14 @@ double CBrain::GetViewedEntityWeight(CBasicEntity* pEntity)
       CSensorViewFar* pViewSens = (CSensorViewFar*)m_tSensors[i];
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
       if (foundWeight>0)
-        return -foundWeight; // FRI temporary - !!!!!!!!!!!!!
+        return foundWeight;
     }
     if ( (m_tSensors[i]->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY_FAR )
     {
       CSensorViewIdentifyFar* pViewSens = (CSensorViewIdentifyFar*)m_tSensors[i];
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
       if (foundWeight>0)
-        return -foundWeight; // FRI temporary - !!!!!!!!!!!!!
+        return foundWeight;
     }
   }
   return foundWeight;
@@ -1172,14 +1172,19 @@ bool CBrain::HistorizeDecision (choiceIndType index)
 bool CBrain::MemorizeExperience (feedbackValType currentFeedback, double learningRate)
 {
   // Small feedback should not be memorize because it is most of the time non significative but occurs very often
-  if ( (currentFeedback < MEMORIZATION_FEEDBACK_THRESHOLD) && (currentFeedback > -MEMORIZATION_FEEDBACK_THRESHOLD))
+  if ((currentFeedback < MEMORIZATION_FEEDBACK_THRESHOLD) && (currentFeedback > -MEMORIZATION_FEEDBACK_THRESHOLD))
     return false;
 
   if (currentFeedback > MAX_FEEDBACK_VAL)
+  {
+    CYBIOCORE_LOG("BRAIN - warning MemorizeExperience :currentFeedback too big: %f\n", currentFeedback);
     currentFeedback = MAX_FEEDBACK_VAL;
+  }
   else if (currentFeedback < -MAX_FEEDBACK_VAL)
+  {
+    CYBIOCORE_LOG("BRAIN - warning MemorizeExperience :currentFeedback too big negative: %f\n", currentFeedback);
     currentFeedback = -MAX_FEEDBACK_VAL;
-
+  }
   // coef is the coefficient of effect of the previous action
   // The effect of an action cannot exceed 1% when learningRate is at 100%
   neuroneValType coef = currentFeedback*learningRate/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/10000; 
