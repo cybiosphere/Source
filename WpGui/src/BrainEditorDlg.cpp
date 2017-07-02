@@ -78,6 +78,7 @@ void CBrainEditorDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CBrainEditorDlg, CDialog)
 	//{{AFX_MSG_MAP(CBrainEditorDlg)
+  ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, OnButtonLoad)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_MORE, OnButtonMore)
@@ -114,6 +115,18 @@ BOOL CBrainEditorDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CBrainEditorDlg::OnSize(UINT nType, int cx, int cy)
+{
+  CDialog::OnSize(nType, cx, cy);
+
+  if (m_BrainGrid.m_hWnd != NULL)
+  {
+    m_BrainGrid.MoveWindow(10, 40, cx - 20, cy - 50, true);
+    UpdateWindow();
+    m_BrainGrid.Refresh();
+  }
 }
 
 void CBrainEditorDlg::OnButtonLoad() 
