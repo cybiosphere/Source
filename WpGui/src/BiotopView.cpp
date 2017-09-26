@@ -38,6 +38,7 @@ distribution.
 #include "CBrain.h"
 #include "CBiotop.h"
 #include "CBasicEntity.h"
+#include "CIdentifyChecker.h"
 
 #include "CLifeStage.h"
 
@@ -81,6 +82,7 @@ BEGIN_MESSAGE_MAP(CBiotopView, CView)
 	ON_COMMAND(ID_APP_EDIT_GENOME, OnAppEditGenome)
 	ON_COMMAND(ID_APP_EDIT_TRAIN_AND_GRADE, OnAppEditTrainAndGrade)
   ON_COMMAND(ID_APP_EDIT_IDENTIFY, OnAppEditIdentifyBySelection)
+  ON_COMMAND(ID_APP_EDIT_CHECK_IDENTIFY, OnAppEditCheckIdentify)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_WM_CANCELMODE()
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
@@ -528,13 +530,15 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
     p_popup->EnableMenuItem(ID_APP_EDIT_GENOME, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_EDIT_BRAIN, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED); 
-    p_popup->EnableMenuItem(ID_APP_EDIT_IDENTIFY, MF_GRAYED);    
+    p_popup->EnableMenuItem(ID_APP_EDIT_IDENTIFY, MF_GRAYED);
+    p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
   }
   else 
   {
     if (pEntity->getClass() < CLASS_ANIMAL_FIRST)
     {
-      p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED); 
+      p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED);
+      p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
     }
     if ((theApp.GetpSelectedEntity() != NULL) && (theApp.GetpSelectedEntity()->getClass() < CLASS_ANIMAL_FIRST))
     {
@@ -718,6 +722,34 @@ void CBiotopView::OnAppEditIdentifyBySelection()
 
 	m_MenuSelCoord.x = 1;
 	m_MenuSelCoord.y = 1;	
+}
+
+void CBiotopView::OnAppEditCheckIdentify()
+{
+  CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord);
+  if ((pEntity != NULL) && (pEntity->getClass() >= CLASS_ANIMAL_FIRST))
+  {
+    CFileDialog fileDlg(true, "scp", "", 0, "Check Files (*.chk)|*.chk; *.chk|All Files (*.*)|*.*||");
+    fileDlg.m_ofn.lpstrTitle = "Select a check file in training directory";
+    long nResp = fileDlg.DoModal();
+    if (nResp == IDOK)
+    {
+      // Force ModeManual
+      theApp.SetModeManual(true);
+
+      CString openedDirectoryName = fileDlg.GetPathName();
+      int endPath = openedDirectoryName.ReverseFind('\\');
+      if (endPath>0)
+        openedDirectoryName = openedDirectoryName.Left(endPath + 1);
+      
+      CIdentifyChecker checker(pEntity);
+      checker.ReadCheckerFile(fileDlg.GetFileName().GetBuffer(0), openedDirectoryName.GetBuffer(0));
+      checker.StartCheck();
+      CString resuStr;
+      resuStr.Format("Check result : OK  %d, total %d", checker.GetSuccessScore(), checker.GetTotalScore());
+      AfxMessageBox(resuStr);
+    }
+  }
 }
 
 void CBiotopView::SwitchToDisplay2d()

@@ -60,6 +60,12 @@ typedef enum
   BRAIN_BEHAVIOR_NUMBER_TYPE
 } BrainBehaviorType_e;
 
+#define VIGILANCE_RATE_MAX     100.0
+#define VIGILANCE_RATE_NORMAL   80.0
+#define VIGILANCE_RATE_LOW      60.0
+#define VIGILANCE_RATE_SLEEP     1.0
+
+
 //===========================================================================
 //                                    CLASS            
 //===========================================================================
@@ -101,6 +107,7 @@ private:
   int m_id_Learning;
   int m_id_CurrentSpeed;
   int m_id_Fear;
+  int m_id_Vigilance;
 
 //===========================================================================
 // methods 
@@ -240,6 +247,8 @@ public:
   int    getHeadDirection();
   int*   getpTasteLevelTable();
   double getFearRate();
+  double getVigilance();
+  void   setVigilance(double rate);
 }; // end ClAnimal
 
 #endif // !defined(CANIMAL_INCLUDED_)

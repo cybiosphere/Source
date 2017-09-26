@@ -47,7 +47,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\../Exec\</OutDir>
+    <OutDir>.\../ExecOgre\</OutDir>
     <IntDir>.\../Temp\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -135,14 +135,14 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\..\Exec\CybioCore2.dll</OutputFile>
+      <OutputFile>.\..\ExecOgre\CybioCore2.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\src\CybioCore2.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>.\../Exec/CybioCore2.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\../ExecOgre/CybioCore2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
-      <ImportLibrary>.\../Exec/CybioCore2.lib</ImportLibrary>
+      <ImportLibrary>.\../ExecOgre/CybioCore2.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
@@ -150,7 +150,7 @@
       <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy  ..\Exec\CybioCore2.lib   ..\ExportDll_VC12e\lib\
+      <Command>copy  ..\ExecOgre\CybioCore2.lib   ..\ExportDll_VC12e\lib\
 copy ..\Exec\CybioCore2.dll   ..\ExecOgre\CybioCore2.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

@@ -92,6 +92,7 @@ void CReactionVarySpeed::ExecuteAction(ReactionIntensityType_e intensity)
 {
   bool resu = true;
   m_pBrain->getAnimal()->wakeUp();
+  m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL);
 
   double accelerationRate = 50 + (intensity-2) * 10;  // Use value from new parameter
   double targetSpeed = m_stepSpeed;

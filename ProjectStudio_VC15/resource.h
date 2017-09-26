@@ -222,6 +222,7 @@
 #define ID_FILE_RUN_SCENARIO_BIOTOP     32805
 #define ID_APP_EDIT_TRAIN_AND_GRADE     32807
 #define ID_APP_EDIT_IDENTIFY            32808
+#define ID_APP_EDIT_CHECK_IDENTIFY      32809
 
 // Next default values for new objects
 // 

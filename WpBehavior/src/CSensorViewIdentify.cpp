@@ -292,8 +292,8 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
 
     if ((pCurEntity != pBrainFocused->pEntity) && (m_nRange>1)) // keep seeing focused and just in front entities
     {
-      // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
-      viewChance = 100.0 - pCurEntity->getCamouflage(); 
+      // view chance depends on vigliance, target camouflage and sunlight. TBD can include view accuity of entity and distance
+      viewChance = pAnimal->getVigilance() - pCurEntity->getCamouflage();
       if (pBiotop->getSunlight() < 10)
         viewChance = viewChance/2; 
     }

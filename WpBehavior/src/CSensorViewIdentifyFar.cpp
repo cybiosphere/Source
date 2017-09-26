@@ -291,8 +291,8 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
 
     if (pCurEntity != pBrainFocused->pEntity)
     {
-      // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
-      viewChance = 100.0 - 2*pCurEntity->getCamouflage(); 
+      // view chance depends on vigilance, target camouflage and sunlight. TBD can include view accuity of entity and distance
+      viewChance = pAnimal->getVigilance() - 2*pCurEntity->getCamouflage();
       if (pBiotop->getSunlight() < 20)
         viewChance = viewChance/2; 
     }

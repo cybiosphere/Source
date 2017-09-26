@@ -85,5 +85,6 @@ void CReactionSleep::ExecuteAction(ReactionIntensityType_e intensity)
 {
   m_pBrain->getAnimal()->stopCurrentSpeed();
   m_pBrain->getAnimal()->ExecuteSleepAction();
+  m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_SLEEP);
   return;
 }

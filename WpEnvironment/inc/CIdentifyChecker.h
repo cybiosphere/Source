@@ -23,72 +23,75 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CReactionStepBackward.cpp
+// FILE: CIdentifyChecker.h
 //   
 // GENERAL DESCRIPTION:
-//         This CLASS represents an action step backward
+//         This CLASS represents a cyclic parameter
 //     
-// (C) COPYRIGHT 2005.  All Rights Reserved.
+// (C) COPYRIGHT 2010.  All Rights Reserved.
 //
-//  24/10/2005 : Creation
+//  26/05/2010 : Creation
 //
 //===========================================================================
 
-#include "CReactionStepBackward.h"
-#include "CAnimal.h"
+#if !defined(CIDENTIFYCHECKER_INCLUDED_)
+#define CIDENTIFYCHECKER_INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
 
 //===========================================================================
-// Construction/Destruction
+// Includes 
 //===========================================================================
 
-//---------------------------------------------------------------------------
-// METHOD:       CReactionStepBackward::CReactionStepBackward
-//  
-// DESCRIPTION:  Constructor 
-// 
-// ARGUMENTS:    CBrainAnimal* pBrain: reference on Brain
-//               double successFactor: {0..100} - feedback weight in case of success
-//               double failureFactor: {0..100} - feedback weight in case of failure
-//   
-// RETURN VALUE: None
-//  
-// REMARKS:      None
-//---------------------------------------------------------------------------
-CReactionStepBackward::CReactionStepBackward(CBrainAnimal*  pBrain, double successFactor, double failureFactor, int stepSpeed)
-:CReaction(successFactor, failureFactor, UID_BASE_REACT_STEPBACKWARD,1)
+#include "CBiotop.h"
+#include <fstream>
+
+
+//===========================================================================
+//                                    CLASS            
+//===========================================================================
+class DLL_CYBIOCORE_API CIdentifyChecker
 {
-  m_pBrain    = pBrain;
-  m_stepSpeed = stepSpeed;
-  m_Label = FormatString("StepBack");
-}
-
-CReactionStepBackward::~CReactionStepBackward()
-{
-
-}
-
 //===========================================================================
-// Virtual overload
+// Attributes 
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CReactionStepBackward::ExecuteAction
-//  
-// DESCRIPTION:  Evaluate feedback after action 
-// 
-// ARGUMENTS:    ReactionIntensityType_e intensity
-//   
-// RETURN VALUE: None 
-//  
-// REMARKS:      None
+// internal proprieties:
 //---------------------------------------------------------------------------
-void CReactionStepBackward::ExecuteAction(ReactionIntensityType_e intensity)
-{
-  m_pBrain->getAnimal()->wakeUp();
-  m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL);
-  if (m_pBrain->getAnimal()->ExecuteMoveBackwardAction(m_SuccessSatisfactionFactor, m_FailureFrustrationFactor, m_stepSpeed))
-    m_ConsecutiveFailures = 0;
-  else
-    m_ConsecutiveFailures++;  
-  return;
-}
+protected:
+   CBasicEntity*  m_pEntity;
+   ifstream       m_curCheckerFile; 
+   string         m_CheckerPath;
+   string         m_currentCheck;
+
+   int m_successScore;
+   int m_totalScore;
+
+//===========================================================================
+// Methods 
+//===========================================================================
+
+//---------------------------------------------------------------------------
+// Constructors / Destructors
+//---------------------------------------------------------------------------
+public:
+	CIdentifyChecker(CBasicEntity* pEntity);
+	virtual ~CIdentifyChecker();
+
+public:
+  bool ReadCheckerFile(string fileName, string pathName);
+  bool StartCheck();
+  bool NextCheck();
+
+  int GetSuccessScore()  {return m_successScore;};
+  int GetTotalScore()    {return m_totalScore;};
+  string GetCurrentCheck() {return m_currentCheck;};
+
+private:
+  bool checkIdentify(int level, string identityStr, std::vector<std::pair<std::string, int>> vectorExpected);
+};
+
+#endif // !defined(CIDENTIFYCHECKER_INCLUDED_)

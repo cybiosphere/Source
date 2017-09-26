@@ -101,6 +101,7 @@ CAnimal::CAnimal(string label, Point_t initCoord, int layer, CGenome* pGenome)
   m_id_Learning         = -1;
   m_id_CurrentSpeed     = -1;
   m_id_Fear             = -1;
+  m_id_Vigilance        = -1;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
@@ -156,6 +157,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_id_Learning         = -1;
   m_id_CurrentSpeed     = -1;
   m_id_Fear             = -1;
+  m_id_Vigilance        = -1;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
@@ -211,6 +213,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_id_Learning         = -1;
   m_id_CurrentSpeed     = -1;
   m_id_Fear             = -1;
+  m_id_Vigilance        = -1;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
@@ -542,6 +545,12 @@ bool CAnimal::completeParamsWithDefault()
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Fear rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Fear = addParameter(pParam);
   } 
+
+  if (m_id_Vigilance == -1)
+  {
+    CGenericParam* pParam = new CGenericParam(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR, GENE_GENERIC_UNKNOWN);
+    m_id_Vigilance = addParameter(pParam);
+  }
 
   return (true);
 }
@@ -4046,4 +4055,14 @@ int* CAnimal::getpTasteLevelTable()
 double CAnimal::getFearRate()
 {
   return (getParameter(m_id_Fear)->getVal());
+}
+
+double CAnimal::getVigilance()
+{
+  return (getParameter(m_id_Vigilance)->getVal());
+}
+
+void CAnimal::setVigilance(double rate)
+{
+  getParameter(m_id_Vigilance)->setVal(rate);
 }

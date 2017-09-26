@@ -85,5 +85,6 @@ void CReactionTurnHeadRight::ExecuteAction(ReactionIntensityType_e intensity)
 {
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->turnHeadRight();
+  m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_MAX);
   return;
 }

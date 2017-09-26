@@ -119,6 +119,7 @@ protected:
 	afx_msg void OnAppEditGenome();
 	afx_msg void OnAppEditTrainAndGrade();
   afx_msg void OnAppEditIdentifyBySelection();
+  afx_msg void OnAppEditCheckIdentify();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
 	afx_msg void OnAppMonitorShort();

@@ -84,6 +84,7 @@ CReactionTurnLeft::~CReactionTurnLeft()
 void CReactionTurnLeft::ExecuteAction(ReactionIntensityType_e intensity)
 {
   m_pBrain->getAnimal()->wakeUp();
+  m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_LOW);
 
   // reduce speed
   double curSpeed = m_pBrain->getAnimal()->getCurrentSpeed();
