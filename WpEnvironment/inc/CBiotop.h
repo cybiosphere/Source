@@ -129,6 +129,7 @@ typedef enum
 
 typedef enum
 {
+  ENTITY_ID_INVALID =  -1,
   ENTITY_ID_WATER =     0,
   ENTITY_ID_GRASS,
   ENTITY_ID_FIRST_USER_ENTITY
@@ -349,7 +350,7 @@ public:
   CGenericParam* getParameter(int id);
   CGenericParam* getParameterByName(string label);
   double getOdorTrace(Point_t coord, OdorType_e odor);
-  bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS]);
+  bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
   COLORREF getCustomColor(Point_t coord);
   WORD getMapId(Point_t coord);
   BiotopSquare_t** getpBioSquare();

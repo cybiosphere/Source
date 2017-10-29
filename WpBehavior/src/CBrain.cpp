@@ -153,18 +153,16 @@ void CBrain::NextSecond()
 
   if (m_pCurrentPurpose!=NULL)
   {
+    if (m_pGeoMap == NULL)
+      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 400, 6);
+
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
     {
       // Purpose is a success. Fill map
       if (m_pCurrentPurpose->IsMemorizeSuccess())
       {
-        // Create memory map if not done before
-        if(m_pGeoMap==NULL)
-          m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 400, 6);
-        // Memorize success position
-        if (m_pGeoMap!=NULL)
-          m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 10);
+        m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 10);
       }
     }
     else
@@ -172,8 +170,10 @@ void CBrain::NextSecond()
       // Check timeout
       purposeEnd = m_pCurrentPurpose->IncreaseCountAndCheckEnd();
       // Memorize failure position
-      if ((purposeEnd) && (m_pGeoMap!=NULL) && m_pCurrentPurpose->IsMemorizeSuccess())
+      if ((purposeEnd) && (m_pGeoMap != NULL) && m_pCurrentPurpose->IsMemorizeSuccess())
+      {
         m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGridCoord(), -1);
+      }
     }
   }
 

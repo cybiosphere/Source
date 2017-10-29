@@ -746,7 +746,8 @@ void CBiotopView::OnAppEditCheckIdentify()
       checker.ReadCheckerFile(fileDlg.GetFileName().GetBuffer(0), openedDirectoryName.GetBuffer(0));
       checker.StartCheck();
       CString resuStr;
-      resuStr.Format("Check result : OK  %d, total %d", checker.GetSuccessScore(), checker.GetTotalScore());
+      resuStr.Format("Check result : OK  %d, total %d\n", checker.GetSuccessScore(), checker.GetTotalScore());
+      resuStr += checker.GetResultInfo().c_str();
       AfxMessageBox(resuStr);
     }
   }

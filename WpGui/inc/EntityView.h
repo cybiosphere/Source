@@ -36,7 +36,7 @@ distribution.
 #include "CBasicEntity.h" 
 #include "ParameterCrtl.h"
 
-#define MAX_NUMBER_PARAMETER_DISPLAY  30
+#define MAX_NUMBER_PARAMETER_DISPLAY  27
 
 class CEntityView : public CFormView
 {

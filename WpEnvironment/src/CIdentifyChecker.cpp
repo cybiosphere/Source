@@ -50,6 +50,7 @@ CIdentifyChecker::CIdentifyChecker(CBasicEntity* pEntity)
    m_pEntity = pEntity;
    m_successScore = 0;
    m_totalScore = 0;
+   m_resultInfo = "";
 }
 
 
@@ -105,6 +106,7 @@ bool CIdentifyChecker::StartCheck()
   m_successScore = 0;
   m_totalScore = 0;
   m_currentCheck = "";
+  m_resultInfo = "";
 
   bool cmdFound = true;
 
@@ -126,12 +128,14 @@ bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector
       if (level == pairChk.second)
       {
         found = true;
+        m_resultInfo += FormatString("CHECK - Identity %s level %d: OK\n", identityStr.c_str(), level);
         CYBIOCORE_LOG("CHECK - Identity %s level %d: OK\n", identityStr.c_str(), level);
         m_successScore++;
       }
       else
       {
         found = true;
+        m_resultInfo += FormatString("CHECK - Identity %s level %d: WARN (expected level = %d)\n", identityStr.c_str(), level, pairChk.second);
         CYBIOCORE_LOG("CHECK - Identity %s level %d: WARN (expected level = %d)\n", identityStr.c_str(), level, pairChk.second);
       }
     }
@@ -139,6 +143,7 @@ bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector
 
   if (!found)
   {
+    m_resultInfo += FormatString("CHECK - Identity %s level %d: ERR\n", identityStr.c_str(), level);
     CYBIOCORE_LOG("CHECK - Identity %s level %d: ERR\n", identityStr.c_str(), level);
   }
 
@@ -221,6 +226,7 @@ bool CIdentifyChecker::NextCheck()
   double highThreshold = 0, midThreshold = 0, lowThreshold = 0;
   m_pEntity->getBrain()->GetVectorIdentifyThresholds(highThreshold, midThreshold, lowThreshold);
 
+  m_resultInfo += FormatString("CHECK - entity=%s\n", pTargetEntity->getLabel().c_str());
   CYBIOCORE_LOG("CHECK - entity=%s\n", pTargetEntity->getLabel().c_str());
 
   double curVal = 0;

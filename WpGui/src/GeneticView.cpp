@@ -346,6 +346,7 @@ void CGeneticView::DisplayGene(CGene* pGene)
   m_strLabel4 = "Raw data";
 
   m_strData1 = pGene->getLabel().c_str();
+  m_strData1 += FormatString(" (size=%d)", pGene->getDataLen()).c_str();
   tmpStr.Format(LPCTSTR("type:%d rate:%d"),pGene->getMuteType(),pGene->getMuteRate());
   m_strData2 = tmpStr;
   tmpStr.Format(LPCTSTR("%d"),pGene->getDominanceFactor());

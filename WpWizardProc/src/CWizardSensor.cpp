@@ -368,7 +368,7 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
   }
 
   // Init View Far
-  int nbWeightViewFar = nbFocus * VIEW_SIZE_PER_FOCUS;
+  int nbWeightViewFar = nbFocus * VIEW_IDENTIFY_SIZE_PER_FOCUS;
   short* pWeightViewFar = new short[nbWeightViewFar];
   for(i=0;i<nbWeightViewFar;i++)
     pWeightViewFar[i] = 100; // stand for 10.0

@@ -103,8 +103,8 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
   Point_t relPos = {1,0};
   Point_t frontPos = pAnimal->getGridCoordRelative(relPos);
 
-  // New itf
-  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, m_pStimulationValues);
+  // Get odor in biotop, excluding own odor
+  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, m_pStimulationValues, pAnimal->getId());
   for (i=0; i<m_SubCaptorNumber; i++)
   {
     // Use weight

@@ -1027,7 +1027,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     }
   case GENE_SENS_VIEW_IDENT_FAR:
     {
-      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
+      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain,pWeight,
                                              cybio_round(scaledVal1), cybio_round(scaledVal2),
@@ -2694,11 +2694,11 @@ void CAnimal::nextSecond()
     {
       CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
       if (checkVitalNeedsOk())
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare (coordx %d coordy %d)\n", 
+                     getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
       else
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs (coordx %d coordy %d)\n", 
+                     getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
     }
 
     // Decraese slowly Pleasure, suffer, Tiredness

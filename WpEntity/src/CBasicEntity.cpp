@@ -297,7 +297,7 @@ CBasicEntity::CBasicEntity()
   m_bHasMoved   = true;
   m_indCurrentLifeStage = -1;
   m_HourCounter = 0;
-  m_Id = -1;
+  m_Id = ENTITY_ID_INVALID;
   m_Direction   = 0;
   m_StepDirection   = 0;
   m_Layer = -1;
@@ -1762,7 +1762,7 @@ void CBasicEntity::autoRemove()
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_REMOVED, this);
 
   // To avoid problem until biotop removal (TBC)
-  m_Id = -1; 
+  m_Id = ENTITY_ID_INVALID;
 }
 
 
@@ -3850,8 +3850,10 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
   if (m_pBiotop != NULL)
   {
     int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
-    Point_t relPos    = getGridCoordFromStepCoord({ getCurrentSpeed(), 0 });
-    Point_t relPosRef = getGridCoordFromStepCoord({ pReference->getCurrentSpeed(), 0 });
+    Point_t relOffset = { getCurrentSpeed(), 0 };
+    Point_t relPos = getGridCoordFromStepCoord(relOffset);
+    Point_t relOffsetRef = { pReference->getCurrentSpeed(), 0 };
+    Point_t relPosRef = getGridCoordFromStepCoord(relOffsetRef); 
     int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
     relativeSpeed = distInitial - distFuture;
   }

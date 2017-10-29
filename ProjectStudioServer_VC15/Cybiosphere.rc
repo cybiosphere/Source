@@ -468,6 +468,7 @@ BEGIN
         MENUITEM "Monitor long term",           ID_APP_MONITOR_LONG
         MENUITEM "Train and grade",             ID_APP_EDIT_TRAIN_AND_GRADE
         MENUITEM "Identify by selection",       ID_APP_EDIT_IDENTIFY
+        MENUITEM "Check identify",              ID_APP_EDIT_CHECK_IDENTIFY
     END
     POPUP "&View"
     BEGIN

@@ -66,6 +66,7 @@ protected:
    ifstream       m_curCheckerFile; 
    string         m_CheckerPath;
    string         m_currentCheck;
+   string         m_resultInfo;
 
    int m_successScore;
    int m_totalScore;
@@ -89,6 +90,7 @@ public:
   int GetSuccessScore()  {return m_successScore;};
   int GetTotalScore()    {return m_totalScore;};
   string GetCurrentCheck() {return m_currentCheck;};
+  string GetResultInfo() { return m_resultInfo;};
 
 private:
   bool checkIdentify(int level, string identityStr, std::vector<std::pair<std::string, int>> vectorExpected);

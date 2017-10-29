@@ -2586,7 +2586,7 @@ double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor)
   return (m_tBioSquare[coord.x][coord.y].odorTrace[odor]);    
 }
 
-bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS])
+bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
 {
   // Init to 0
   int i;
@@ -2612,7 +2612,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   for (int ind=0;ind<nbIds;ind++)
   {
     pCurEntity = pFoundIds[ind].pEntity;
-    if (pCurEntity!=NULL)
+    if ((pCurEntity!=NULL) && (pCurEntity->getId() != excludedEntityId))
     {
       for (int odor=0; odor<NUMBER_ODORS; odor++)
       {
