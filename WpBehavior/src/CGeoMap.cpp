@@ -205,14 +205,21 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
         {
           foundSuccess = true;
           delta = maxWeight-initialWeight;
-          if (delta>12)
+          if (delta > 12)
+          {
             foundIntensity = FOUND_INTENSITY_HIGH;
-          else if (delta>2)
+            break;
+          }
+          else if (delta > 2)
+          {
             foundIntensity = FOUND_INTENSITY_MEDIUM;
-          else 
+            break; 
+          }
+          else
+          {
             foundIntensity = FOUND_INTENSITY_LOW;
-
-          break;
+            // No break: try to find better
+          }
         }
       }
     }
@@ -341,8 +348,8 @@ DWORD CGeoMap::GettPurposeUniqueId (int index)
 
 int CGeoMap::GetSuccessWeight(int purposeIndex, Point_t geoMapPos)
 {
-  // If pose out of teritory map, give negative weight -1
-  int weight = -1;
+  // If pose out of teritory map, give negative weight -100
+  int weight = -100;
 
   if (purposeIndex > -1)
   {

@@ -103,10 +103,10 @@ void CReactionTurnRight::ExecuteAction(ReactionIntensityType_e intensity)
     m_pBrain->getAnimal()->ExecuteTurnRightAction(15);
     break;
   case REACTION_INTENSITY_HIGH:
-    m_pBrain->getAnimal()->ExecuteTurnRightAction(60);
+    m_pBrain->getAnimal()->ExecuteTurnRightAction(45);
     break;
   default:
-    m_pBrain->getAnimal()->ExecuteTurnRightAction(45);
+    m_pBrain->getAnimal()->ExecuteTurnRightAction(30);
     break;
   }
 

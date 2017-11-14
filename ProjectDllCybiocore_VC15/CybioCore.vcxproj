@@ -65,7 +65,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../WpMeasure/inc;.;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpGenetic/inc;../WpGui/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;DLL_CYBIOCORE_DLL;WIN32;_WINDOWS;_USRDLL;_AFXDLL;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;DLL_CYBIOCORE_DLL;WIN32;_WINDOWS;_USRDLL;_AFXDLL;TIXML_USE_STL;CYBIOCORE_LOG_IN_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -121,7 +121,7 @@
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>../ProjectDll/inc;.;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpGenetic/inc;../WpGui/inc;../WpMeasure/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_USRDLL;DLL_CYBIOCORE_DLL;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_USRDLL;DLL_CYBIOCORE_DLL;TIXML_USE_STL;CYBIOCORE_LOG_IN_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H" />
+    <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrain.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
     <ClCompile Include="..\WpEntity\src\CWater.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp" />
+    <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CScenarioPlayer.cpp" />
     <ClCompile Include="..\WpCommon\src\CCyclicParam.cpp" />
     <ClCompile Include="..\WpCommon\src\CGenericCaract.cpp" />
