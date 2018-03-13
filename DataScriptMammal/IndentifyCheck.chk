@@ -1,0 +1,6 @@
+water_puddle.xml;Drink 1;Danger 2;Neutral 3;
+rock.xml;Neutral 1;Danger 3;
+wooden_fence.xml;Neutral 1;Danger 3;
+prey0.xml;Food 1;Prey 1;
+predator0.xml;Predator 1;
+mother.xml;Mother 1;Friend 2;

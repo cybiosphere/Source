@@ -204,22 +204,16 @@ bool CBrainView::SetBrain(CBrain* pBrain)
 
   if (m_pBrain!=NULL)
   {
-    int startX = 10;
-    int startY = 55;
+    int startX = 15;
+    int startY = 70;
     for (i=0;(i<MAX_NUMBER_BUTTONS_ACTION)&&(i<m_pBrain->GetNumberReaction());i++)
     {
       m_pActionButtonTable[i] = new CActionButton(m_pBrain->GetReactionByIndex(i),i,this);
-      startX = 11 + (i&0x01) * 145;
-      CRect rect(startX, startY, startX+140, startY+15);
+      startX = 15 + (i&0x01) * 192;
+      CRect rect(startX, startY, startX+186, startY+18);
       m_pActionButtonTable[i]->CreateNewButton(rect,this,2000+i);
-      startY += (i&0x01) * 16;
+      startY += (i&0x01) * 20;
     }
-
-    /* FRED TBD: support purpose
-    if (m_pBrain->GetCurrentPurpose()!=NULL)
-    {
-      m_LabelPurpose = m_pBrain->GetCurrentPurpose()->GetLabel();
-    }*/
 
     m_BrainGrid.SetBrain(m_pBrain);
     m_ButtonAutoChoice.EnableWindow(true);
@@ -251,7 +245,7 @@ void CBrainView::OnSize(UINT nType, int cx, int cy)
 	
 	if (m_BrainGrid.m_hWnd != NULL)
 	{
-		m_BrainGrid.MoveWindow(310, 10, cx-320, cy-20, true);
+		m_BrainGrid.MoveWindow(420, 10, cx-430, cy-20, true);
 		UpdateWindow ();
         m_BrainGrid.Refresh();
 	}

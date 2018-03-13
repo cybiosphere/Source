@@ -52,7 +52,7 @@ CGeneButton::CGeneButton(GeneSubType_e geneSubTtype, CView* pView, bool defaultC
   m_bDefaultChecked = defaultChecked;
   m_defParam = defaultValue;
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(85, "Arial");
+  m_pFont->CreatePointFont(90, "Arial");
 
   m_pName1Static = NULL;
   m_pParam1Edit  = NULL;
@@ -115,7 +115,7 @@ bool CGeneButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nID)
   {
     // Add Title
     m_pName1Static = new CStatic();
-    rectText.left += 140;
+	rectText.left += 175; // 140;
     rectText.right = rectText.left + 46;
     m_pName1Static->Create(m_ParamName1, SS_RIGHT, rectText, pParentWnd);
     m_pName1Static->SetFont(m_pFont);
@@ -123,8 +123,8 @@ bool CGeneButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nID)
 
     // Add Value
     m_pParam1Edit = new CEdit();
-    rectText.left += 50;
-    rectText.right = rectText.left + 40;
+	rectText.left += 62;// 50;
+	rectText.right = rectText.left + 58;// 40;
     m_pParam1Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER, rectText, pParentWnd, nID+151);
     m_pParam1Edit->SetFont(m_pFont);
     tmpStr.Format("%d",m_ParamDefVal1);
@@ -137,16 +137,16 @@ bool CGeneButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nID)
   {
     // Add Title
     m_pName2Static = new CStatic();
-    rectText.left += 50;
-    rectText.right = rectText.left + 46;
+	rectText.left += 62;// 50;
+	rectText.right = rectText.left + 58;// 46;
     m_pName2Static->Create(m_ParamName2, SS_RIGHT, rectText, pParentWnd);
     m_pName2Static->SetFont(m_pFont);
     m_pName2Static->ShowWindow(SW_SHOW);
 
     // Add Value
     m_pParam2Edit = new CEdit();
-    rectText.left += 50;
-    rectText.right = rectText.left + 40;
+    rectText.left += 62;// 50;
+    rectText.right = rectText.left + 58;// 40;
     m_pParam2Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER, rectText, pParentWnd, nID+152);
     m_pParam2Edit->SetFont(m_pFont);
     tmpStr.Format("%d",m_ParamDefVal2);

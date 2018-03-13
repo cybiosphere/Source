@@ -110,21 +110,22 @@ BOOL CDialogTab2::OnInitDialog()
     m_pSensorButtonTable[16] = new CGeneButton(GENE_SENS_HORMONE,(CView*)this, true, 300);
     m_pSensorButtonTable[17] = new CGeneButton(GENE_SENS_ORIENTATION,(CView*)this, true, 300);
 
-    int startX = 20;
-    int startY = 40;
-    startX = 20;
-    CRect rect(startX, startY, startX+130, startY+15);
+	int startX = 25;// 20;
+	int startY = 48;// 40;
+    //CRect rect(startX, startY, startX+130, startY+15);
+	CRect rect(startX, startY, startX + 160, startY + 18);
     m_pSensorButtonTable[0]->CreateNewButton(rect,this,2000);
-    startY += 30;
+	startY += 38;// 30;
 
     for (int i=0;i<MAX_NUMBER_BUTTONS_SENSOR-1;i++)
     {
       if (m_pSensorButtonTable[i+1] != NULL)
       {
-        startX = 20 + (i&0x01) * 380;
-        CRect rect(startX, startY, startX+130, startY+15);
+        startX = 25 + (i & 0x01) * 455; //20 + (i&0x01) * 380;
+        //CRect rect(startX, startY, startX+130, startY+15);
+		CRect rect(startX, startY, startX + 160, startY + 18);
         m_pSensorButtonTable[i+1]->CreateNewButton(rect,this,2000+i);
-        startY += (i&0x01) * 30;
+        startY += (i&0x01) * 38; // 30;
       }
     }
     

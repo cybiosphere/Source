@@ -159,22 +159,22 @@ BOOL CDialogTab3::OnInitDialog()
     m_pActionButtonTable[12] = new CGeneButton(GENE_REACT_SLEEP,(CView*)this,true,0);
 
     int i;
-    int startX = 20;
-    int startY = 30;
+	int startX = 25;// 20;
+	int startY = 38;// 30;
     for (i=0;i<MAX_NUMBER_BUTTONS_ACTION;i++)
     {
       if (m_pActionButtonTable[i] != NULL)
       {
-        startX = 20 + (i&0x01) * 380;
-        CRect rect(startX, startY, startX+130, startY+15);
+        startX = 25 + (i&0x01) * 480;
+        CRect rect(startX, startY, startX+160, startY+18);
         m_pActionButtonTable[i]->CreateNewButton(rect,this,2000+i);
-        startY += (i&0x01) * 30;
+        startY += (i&0x01) * 38;
       }
     }
 
     // Prey list
-    startX = 20;
-    startY = 390;
+	startX = 25;// 20;
+    startY = 480;
     for (i=0;i<MAX_NUMBER_BUTTONS_PREY;i++)
     {
       CString label;
@@ -183,15 +183,15 @@ BOOL CDialogTab3::OnInitDialog()
 
       if (m_pPreyButtonTable[i] != NULL)
       {
-        CRect rect(startX, startY, startX+140, startY+20);
+        CRect rect(startX, startY, startX+160, startY+25);
         m_pPreyButtonTable[i]->CreateNewButton(rect,this,2000+i);
-        startY += 40;
+		startY += 50;// 40;
       }
     }
 
     // Predator list
-    startX = 390;
-    startY = 390;
+	startX = 530;// 390;
+	startY = 480;// 390;
     for (i=0;i<MAX_NUMBER_BUTTONS_PREDATOR;i++)
     {
       CString label;
@@ -200,9 +200,9 @@ BOOL CDialogTab3::OnInitDialog()
 
       if (m_pPredatorButtonTable[i] != NULL)
       {
-        CRect rect(startX, startY, startX+140, startY+20);
+        CRect rect(startX, startY, startX+160, startY+25);
         m_pPredatorButtonTable[i]->CreateNewButton(rect,this,2100+i);
-        startY += 40;
+		startY += 50;// 40;
       }
     }
 

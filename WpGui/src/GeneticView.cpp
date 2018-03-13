@@ -377,7 +377,7 @@ void CGeneticView::OnSize(UINT nType, int cx, int cy)
 	
 	if (m_GenomeTree.m_hWnd != NULL)
 	{
-		m_GenomeTree.MoveWindow(310, 10, cx-320, cy-20, true);
+		m_GenomeTree.MoveWindow(420, 10, cx-430, cy-20, true);
 		UpdateWindow ();
 	}
 	

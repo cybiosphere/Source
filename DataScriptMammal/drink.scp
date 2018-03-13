@@ -1,0 +1,59 @@
+# Load biotop and entity. Set age to adult
+LOAD_BIOTOP biotop_river.bio
+
+ADD_ENTITY water_puddle.xml 190 105
+ADD_ENTITY prey0.xml 190 95
+ADD_ENTITY newEntity.xml 180 105
+MOVE_ENTITY newEntity 180 105 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+
+ADD_ENTITY rock.xml 185 105
+MOVE_ENTITY newEntity 180 105 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+
+MOVE_ENTITY newEntity 180 110 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+
+MOVE_ENTITY newEntity 180 95 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+
+MOVE_ENTITY newEntity 80 100 2
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+CHECK_PARAM_UNDER newEntity "Suffering rate" 10
+
+MOVE_ENTITY newEntity 50 100 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 200
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+MOVE_ENTITY newEntity 150 150 0
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+SAVE_BRAIN newEntity.xml
+
+RUN_BIOTOP 10

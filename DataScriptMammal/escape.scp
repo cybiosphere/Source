@@ -1,0 +1,54 @@
+# Load biotop and entity. Set age to adult
+LOAD_BIOTOP biotop_river.bio
+
+ADD_ENTITY water_puddle.xml 190 95
+ADD_ENTITY prey0.xml 190 105
+ADD_ENTITY newEntity.xml 180 105
+SET_IMMORTAL newEntity
+
+MOVE_ENTITY newEntity 180 105 0
+ADD_ENTITY predator0.xml 170 105
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+MOVE_ENTITY newEntity 195 100 0
+MOVE_ENTITY predator0 190 100 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+MOVE_ENTITY newEntity 189 105 0
+ADD_ENTITY prey0.xml 195 105
+CHANGE_PARAM newEntity "Hunger rate" 40
+MOVE_ENTITY predator0 180 105 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+ADD_ENTITY rock.xml 185 105
+MOVE_ENTITY newEntity 180 105 0
+MOVE_ENTITY predator0 170 105 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+ADD_ENTITY prey0.xml 110 100
+ADD_ENTITY prey0.xml 100 85
+MOVE_ENTITY newEntity 90 100 0
+MOVE_ENTITY predator0 80 105 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+MOVE_ENTITY newEntity 95 100 0
+MOVE_ENTITY predator0 90 105 0
+CHANGE_PARAM newEntity "Thirst rate" 40
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+SAVE_BRAIN newEntity.xml
+
+RUN_BIOTOP 10

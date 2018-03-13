@@ -1,13 +1,3 @@
-material 
-{
-	technique
-	{
-		pass
-		{
-		}
-	}
-}
-
 material Trunc
 {
 	technique
@@ -34,8 +24,8 @@ material Branch
 			specular 0 0 0 40
 			emissive 0 0 0
 			lighting off
-			receive_shadows off
-      alpha_rejection greater 128 
+
+            alpha_rejection greater 128 
 			texture_unit
 			{
 				texture Branch.dds

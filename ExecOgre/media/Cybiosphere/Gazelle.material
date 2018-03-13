@@ -1,13 +1,3 @@
-material 
-{
-	technique
-	{
-		pass
-		{
-		}
-	}
-}
-
 material Material
 {
 	technique

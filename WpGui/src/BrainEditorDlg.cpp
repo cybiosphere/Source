@@ -123,7 +123,7 @@ void CBrainEditorDlg::OnSize(UINT nType, int cx, int cy)
 
   if (m_BrainGrid.m_hWnd != NULL)
   {
-    m_BrainGrid.MoveWindow(10, 40, cx - 20, cy - 50, true);
+    m_BrainGrid.MoveWindow(10, 50, cx - 20, cy - 60, true);
     UpdateWindow();
     m_BrainGrid.Refresh();
   }

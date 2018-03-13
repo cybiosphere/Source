@@ -1,0 +1,97 @@
+# Load biotop and entity. Set age to baby
+LOAD_BIOTOP biotop_empty.bio
+ADD_ENTITY newEntity.xml 100 100
+QUICK_AGEING newEntity 1
+SET_IMMORTAL newEntity
+MOVE_ENTITY newEntity 100 100 0
+RUN_BIOTOP 300
+
+# Introduce mother and check baby's behavior
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY mother.xml 120 100
+MOVE_ENTITY mother 120 100 0
+
+SET_FORBIDEN_ACTION newEntity "Eat-1"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Ruminate"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Copulate"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "None"
+
+SET_FORBIDEN_ACTION newEntity "Drink"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "None"
+
+MOVE_ENTITY newEntity 100 100 0
+MOVE_ENTITY mother 110 100 0
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 30
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 20
+
+# Force mother to move and check baby's behavior
+MOVE_ENTITY newEntity 100 100 0
+MOVE_ENTITY mother 110 100 0
+ADD_ENTITY prey0.xml 130 100
+ADD_ENTITY rock.xml 108 100
+
+CHANGE_PARAM mother "Hunger rate" 50
+CHANGE_PARAM prey0 "Tiredness rate" 80
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 30
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 20
+
+MOVE_ENTITY prey0 120 120 5
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 30
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 20
+
+# Force mother to runaway and check baby's behavior
+MOVE_ENTITY newEntity 100 100 0
+MOVE_ENTITY mother 110 100 0
+ADD_ENTITY predator0.xml 120 100
+CHANGE_PARAM predator0 "Tiredness rate" 90
+RUN_BIOTOP 200
+DELETE_ENTITY predator0
+
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 30
+
+RUN_BIOTOP 60
+SAVE_BRAIN newEntity.xml
+RUN_BIOTOP 60

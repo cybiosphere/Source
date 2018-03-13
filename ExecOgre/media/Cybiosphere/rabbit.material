@@ -13,7 +13,7 @@ material /global/creature/mottled_oker
 		}
 	}
 }
-material /global/creature/rabbit : /base/normalmap/specular
+material /global/creature/rabbit
 
 {
 	

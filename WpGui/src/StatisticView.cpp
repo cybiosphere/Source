@@ -90,7 +90,7 @@ CStatisticView::CStatisticView()
   m_pTmpPointTable = new POINT[MAX_MEASUREMENT_DATA_SIZE];
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
+  m_pFont->CreatePointFont(80, LPCTSTR("Arial"));
 
 }
 
@@ -210,8 +210,8 @@ void CStatisticView::OnPaint()
   CRect frameRect = m_GraphRect;
   COLORREF black = 0x00000000;
 
-  frameRect.top -= 15;
-  frameRect.bottom += 15;
+  frameRect.top -= 18;
+  frameRect.bottom += 18;
 
   dc.FillRect(frameRect,&brush);
   dc.SelectObject(m_pFont);
@@ -228,12 +228,12 @@ void CStatisticView::OnPaint()
   dc.Draw3dRect(frameRect, black, 0x00BBBBBB);
   CPen penBlack(PS_SOLID,1,black);
   dc.SelectObject(&penBlack);
-  dc.MoveTo(m_GraphRect.left+8, m_GraphRect.top - 10);
-  dc.LineTo(m_GraphRect.left+8, m_GraphRect.bottom + 10);
-  dc.MoveTo(m_GraphRect.left+5, m_GraphRect.top);
-  dc.LineTo(m_GraphRect.left+12, m_GraphRect.top);
-  dc.MoveTo(m_GraphRect.left+5, m_GraphRect.bottom);
-  dc.LineTo(m_GraphRect.left+12, m_GraphRect.bottom);
+  dc.MoveTo(m_GraphRect.left+10, m_GraphRect.top - 12);
+  dc.LineTo(m_GraphRect.left+10, m_GraphRect.bottom + 12);
+  dc.MoveTo(m_GraphRect.left+6, m_GraphRect.top);
+  dc.LineTo(m_GraphRect.left+14, m_GraphRect.top);
+  dc.MoveTo(m_GraphRect.left+6, m_GraphRect.bottom);
+  dc.LineTo(m_GraphRect.left+14, m_GraphRect.bottom);
 
 
 	// Do not call CFormView::OnPaint() for painting messages
@@ -244,9 +244,9 @@ void CStatisticView::OnSize(UINT nType, int cx, int cy)
 	CFormView::OnSize(nType, cx, cy);
 
 	// TODO: Add your message handler code here
-  if (cx>310)
+  if (cx>420)
   {
-	  m_GraphRect.SetRect(310,25,cx-10,cy-25);
+	  m_GraphRect.SetRect(420, 30, cx-12, cy-30);
     ResetMinMaxTime();
   }
 }
@@ -268,21 +268,21 @@ void CStatisticView::RebuildMeasChkBox()
 
   if (m_pBiotop!=NULL)
   {
-    int startX = 10;
-    int startY = 20;
+    int startX = 12;
+    int startY = 24;
     for (i=0;i<MAX_NB_DISPLAY_MEASURES;i++)
     {
       CMeasure* pMeas = m_pBiotop->getMeasureById(i);
       if (pMeas!=NULL)
       {
         m_pMeasDisplayList[i].pChkBox = new CColorButton();
-        CRect rect(startX, startY, startX+260, startY+15);
+        CRect rect(startX, startY, startX+325, startY+18);
         m_pMeasDisplayList[i].pChkBox->Create(LPCTSTR(pMeas->GetLabel().c_str()),BS_AUTOCHECKBOX|WS_VISIBLE|WS_TABSTOP,rect,this,2100+i );
         m_pMeasDisplayList[i].pMeasure = pMeas;
-        m_pMeasDisplayList[i].color    = RGB(startY*4,(255-startY*3),startY*2);
-        m_pMeasDisplayList[i].coord.SetRect(startX-1,startY-1,startX+261,startY+16);
+        m_pMeasDisplayList[i].color    = RGB(startY*4,(325-startY*3),startY*2);
+        m_pMeasDisplayList[i].coord.SetRect(startX-1,startY-1,startX+ 325,startY+20);
       }
-      startY += 18;
+      startY += 22;
     }
   }
   else
@@ -344,8 +344,8 @@ void CStatisticView::NextSecond()
     m_RefreshCounter = 0;
 
     CRect frameRect = m_GraphRect;
-    frameRect.top -= 15;
-    frameRect.bottom += 15;
+    frameRect.top -= 18;
+    frameRect.bottom += 18;
     InvalidateRect(frameRect,false);
   }
   

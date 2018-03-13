@@ -386,52 +386,52 @@ void CMainFrame::OnAppDisplayStat()
 
 void CMainFrame::resizeAllChildFrames(int cx, int cy)
 {
-  int clientW = cx - 5;
-  int clientH = cy - 46;
+  int clientW = cx - 7;
+  int clientH = cy - 48;
 
-  theApp.GetBioCtrlViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,0,0,225,240,SWP_SHOWWINDOW);
-  theApp.GetEntityViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,0,240,225,clientH-240,SWP_SHOWWINDOW);
+  theApp.GetBioCtrlViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,0,0,290,300,SWP_SHOWWINDOW);
+  theApp.GetEntityViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,0,300,290,clientH-300,SWP_SHOWWINDOW);
 
   switch (m_DisplayMode)
   {
   case DISPLAY_MODE_FULL_SIZE:
-    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,clientH,SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,clientH,SWP_SHOWWINDOW);
+    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
     break;
 
   case DISPLAY_MODE_LAB_GENETIC:
-    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,240,clientW-225,clientH-240,SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_SHOWWINDOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,300,clientW-290,clientH-300,SWP_SHOWWINDOW);
+    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_SHOWWINDOW);
+    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
     break;
 
   case DISPLAY_MODE_LAB_BRAIN:
-    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,240,clientW-225,clientH-240,SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_SHOWWINDOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,300,clientW-290,clientH-300,SWP_SHOWWINDOW);
+    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_SHOWWINDOW);
+    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
     break;
 
   case DISPLAY_MODE_STATISTIC:
-    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,240,clientW-225,clientH-240,SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_SHOWWINDOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,300,clientW-290,clientH-300,SWP_SHOWWINDOW);
+    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_SHOWWINDOW);
+    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
     break;
 
   case DISPLAY_MODE_MAP:
-    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,240,clientW-225,clientH-240,SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_HIDEWINDOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,225,0,clientW-225,240,SWP_SHOWWINDOW);
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,300,clientW-290,clientH-300,SWP_SHOWWINDOW);
+    theApp.GetBrainViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetGeneticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_HIDEWINDOW);
+    theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop,290,0,clientW-290,300,SWP_SHOWWINDOW);
     break;
   }
 }

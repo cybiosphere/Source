@@ -1,0 +1,105 @@
+# Load biotop and entity. Set age to child
+LOAD_BIOTOP biotop_prairie.bio
+ADD_ENTITY newEntity.xml 60 100
+QUICK_AGEING newEntity 10
+SET_IMMORTAL newEntity
+RUN_BIOTOP 6
+
+# Check behavior in front of obstacles
+ADD_ENTITY rock.xml 198 100
+MOVE_ENTITY newEntity 196 100 0
+
+CHANGE_PARAM newEntity "Thirst rate" 10
+CHANGE_PARAM newEntity "Stomach filling" 0
+
+SET_FORBIDEN_ACTION newEntity "Drink"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 196 100 0
+
+SET_FORBIDEN_ACTION newEntity "Eat0"
+RUN_BIOTOP 50
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 196 100 0
+
+SET_FORBIDEN_ACTION newEntity "Attack"
+RUN_BIOTOP 50
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 196 100 0
+
+SET_FORBIDEN_ACTION newEntity "Sleep"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "none"
+
+MOVE_ENTITY newEntity 196 100 0
+
+SET_FORBIDEN_ACTION newEntity "Copulate"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "none"
+
+# Check behavior in front of prey
+MOVE_ENTITY newEntity 60 100 0
+ADD_ENTITY prey0.xml 110 105
+CHANGE_PARAM prey0 "Tiredness rate" 90
+CHANGE_PARAM newEntity "Stomach filling" 0
+CHANGE_PARAM newEntity "Thirst rate" 50
+CHANGE_PARAM newEntity "Hunger rate" 60
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Suffering rate" 10
+CHANGE_PARAM newEntity "Stomach filling" 0
+RUN_BIOTOP 200
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+CHECK_PARAM_UNDER newEntity "Thirst rate" 40
+CHECK_PARAM_UNDER newEntity "Suffering rate" 10
+
+# Check behavior when stomach is full
+MOVE_ENTITY newEntity 60 100 0
+CHANGE_PARAM newEntity "Stomach filling" 98
+CHANGE_PARAM newEntity "Hunger rate" 20
+RUN_BIOTOP 10
+SET_FORBIDEN_ACTION newEntity "Eat-1"
+RUN_BIOTOP 200
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "Eat0"
+RUN_BIOTOP 200
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+# Check behavior with predator
+MOVE_ENTITY newEntity 60 100 0
+ADD_ENTITY predator0.xml 50 100
+CHANGE_PARAM predator0 "Tiredness rate" 40
+SET_FORBIDEN_ACTION newEntity "Sleep"
+
+RUN_BIOTOP 1
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 200
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+RUN_BIOTOP 200
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+DELETE_ENTITY predator0
+MOVE_ENTITY newEntity 60 100 0
+ADD_ENTITY mother.xml 50 100
+SET_FORBIDEN_ACTION newEntity "Copulate"
+
+RUN_BIOTOP 300
+CHANGE_BIOTOP_PARAM "Sunlight" 1
+RUN_BIOTOP 100
+
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Walk"
+RUN_BIOTOP 200
+
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+RUN_BIOTOP 60
+SAVE_BRAIN newEntity.xml
+RUN_BIOTOP 60

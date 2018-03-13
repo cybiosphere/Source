@@ -423,12 +423,14 @@ void CDialogTab1::OnButtonColor()
 void CDialogTab1::OnPaint() 
 {
   CPaintDC dc(this); // device context for painting
-  CRect rect(13,95,73,115);
+  //CRect rect(13,95,73,115);
+  CRect rect(14, 120, 98, 142);
   dc.FillSolidRect(rect,m_color);
   
   CBrush brush(0x00FFFFFF);
   CBrush brushgrey(0x00888888);
-  CRect frameRect(13,380,733,520);
+  //CRect frameRect(13,380,733,520);
+  CRect frameRect(14, 465, 980, 630);
   COLORREF black = 0x00000000;
   
   dc.FillRect(frameRect,&brush);
@@ -613,8 +615,9 @@ void CDialogTab1::DisplayParamSliders()
   if (pEntity!=NULL)
   {
     // Set new params
-    int startX = 230;
-    int startY = 110;
+	int startX = 290; //230;
+	int startY = 140; //110;
+
     int count = 0;
     CString label;
     
@@ -626,14 +629,14 @@ void CDialogTab1::DisplayParamSliders()
       {
         if (count == MAX_NUMBER_PARAMETER_DISPLAY/3)
         {
-          startX +=175;
-          startY = 110;
+		  startX += 220; //175;
+		  startY = 140; //110;
           count = 0;
         }
         m_pParamSlider[count] = new CParameterSlider();
         CRect rect(startX,startY,startX+160,startY+8);
         m_pParamSlider[count]->CreateNewParam(pEntity->getParameter(i),rect,this,1003);
-        startY +=32;
+        startY += 36; //32;
         count ++;
       }
       
@@ -649,8 +652,8 @@ void CDialogTab1::DisplayParamSliders()
         m_growthSpeedParamId = i;
       }
     }
-    startX +=175;
-    startY = 110;
+	startX += 220; // 175;
+	startY = 140; // 110;
     
     // Display PARAM_REPRODUCTION
     for (i=0;(count<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<pEntity->getNumParameter());i++)
@@ -660,7 +663,7 @@ void CDialogTab1::DisplayParamSliders()
         m_pParamSlider[count] = new CParameterSlider();
         CRect rect(startX,startY,startX+160,startY+8);
         m_pParamSlider[count]->CreateNewParam(pEntity->getParameter(i),rect,this,1003);
-        startY +=32;
+        startY += 36; //32;
         count ++;
       }
     }

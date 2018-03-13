@@ -344,6 +344,7 @@
     <ClInclude Include="..\WpTinyXml\inc\tinyxml.h">
       <Filter>WpTinyXml\IncTinyXml</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
@@ -589,6 +590,7 @@
     <ClCompile Include="..\WpBehavior\src\CSensorViewIdentifyFar.cpp">
       <Filter>WpBehavior\SrcBehavior</Filter>
     </ClCompile>
+    <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -195,22 +195,22 @@ bool CBioCtrlView::SetBiotop(CBiotop* pBiotop)
   m_pBiotop = pBiotop;
 
   m_pParamCtrl[0] = new CParameterCrtl();
-  CRect rect(20,94,180,102);
+  CRect rect(25, 118, 225, 128);
   m_pParamCtrl[0]->CreateNewParam(m_pBiotop->getParamFertility(),rect,this,1004);
 
   m_pParamCtrl[1] = new CParameterCrtl();
-  rect.top += 32;
-  rect.bottom += 32;
+  rect.top += 40;
+  rect.bottom += 40;
   m_pParamCtrl[1]->CreateNewParam(m_pBiotop->getParamSunlight(),rect,this,1004);
 
   m_pParamCtrl[2] = new CParameterCrtl();
-  rect.top += 32;
-  rect.bottom += 32;
+  rect.top += 40;
+  rect.bottom += 40;
   m_pParamCtrl[2]->CreateNewParam(m_pBiotop->getParamRadioactivity(),rect,this,1004);
 
   m_pParamCtrl[3] = new CParameterCrtl();
-  rect.top += 32;
-  rect.bottom += 32;
+  rect.top += 40;
+  rect.bottom += 40;
   m_pParamCtrl[3]->CreateNewParam(m_pBiotop->getParamTemperature(),rect,this,1004);
 
   return (true);

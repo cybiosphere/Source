@@ -237,6 +237,9 @@
     <Image Include="..\WpGui\res\veget.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\WpGui\res\HealthIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Cybiosphere.rc">
@@ -691,9 +694,6 @@
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpGui\src\Cybiosphere.cpp">
-      <Filter>WpGui\SrcGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpGui\src\CybiosphereSet.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpGui\src\EntityCreatorDlg.cpp">

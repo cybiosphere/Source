@@ -1,0 +1,198 @@
+# Load biotop and entity. Set age to adult
+LOAD_BIOTOP biotop_empty.bio
+ADD_ENTITY newEntity.xml 100 100
+QUICK_AGEING newEntity 40
+SET_IMMORTAL newEntity
+RUN_BIOTOP 300
+
+# Check behavior without stimulation
+CHANGE_PARAM newEntity "Hunger rate" 50
+
+SET_FORBIDEN_ACTION newEntity "Sleep"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Drink"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Eat0"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Eat-1"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "Copulate"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "None"
+
+# Check behavior with prey
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY prey0.xml 110 105
+CHANGE_PARAM prey0 "Tiredness rate" 90
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+MOVE_ENTITY newEntity 100 100 0
+MOVE_ENTITY prey0 110 95 0
+CHANGE_PARAM prey0 "Tiredness rate" 90
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+
+CHANGE_PARAM newEntity "Hunger rate" 1
+RUN_BIOTOP 100
+
+DELETE_ENTITY prey0
+CHANGE_PARAM newEntity "Thirst rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+RUN_BIOTOP 100
+
+# Check behavior with water
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY water_puddle.xml 110 100
+RUN_BIOTOP 600
+CHECK_PARAM_UNDER newEntity "Thirst rate" 20
+
+CHANGE_PARAM newEntity "Thirst rate" 50
+CHANGE_PARAM newEntity "Stomach filling" 0
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY rock.xml 108 100
+RUN_BIOTOP 600
+CHECK_PARAM_UNDER newEntity "Thirst rate" 20
+
+# Check behavior with obstacles
+DELETE_ENTITY water_puddle
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY rock.xml 108 101
+ADD_ENTITY rock.xml 108 99
+ADD_ENTITY prey0.xml 110 100
+CHECK_PARAM_UNDER newEntity "Hunger rate" 40
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 100
+CHECK_PARAM_UNDER newEntity "Suffering rate" 10
+
+# Check behavior with predator
+MOVE_ENTITY newEntity 100 100 0
+ADD_ENTITY predator0.xml 80 100
+CHANGE_PARAM predator0 "Tiredness rate" 40
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 20
+CHECK_PARAM_UNDER newEntity "Suffering rate" 1
+
+CHANGE_PARAM newEntity "Stomach filling" 0
+SET_FORBIDEN_ACTION newEntity "Ruminate"
+RUN_BIOTOP 300
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+SET_FORBIDEN_ACTION newEntity "None"
+
+SAVE_BRAIN newEntity.xml
+
+DELETE_ENTITY newEntity
+RUN_BIOTOP 60
+
+# Check behavior in front of a river
+LOAD_BIOTOP biotop_river.bio
+ADD_ENTITY newEntity.xml 100 100
+QUICK_AGEING newEntity 40
+SET_IMMORTAL newEntity
+RUN_BIOTOP 300
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 102 100 0
+SET_FORBIDEN_ACTION newEntity "Copulate"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 102 100 0
+SET_FORBIDEN_ACTION newEntity "Sleep"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 102 100 0
+SET_FORBIDEN_ACTION newEntity "Eat0"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+MOVE_ENTITY newEntity 102 100 0
+SET_FORBIDEN_ACTION newEntity "Eat-1"
+RUN_BIOTOP 100
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+SET_FORBIDEN_ACTION newEntity "None"
+
+MOVE_ENTITY newEntity 98 100 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Thirst rate" 40
+RUN_BIOTOP 200
+CHECK_PARAM_UNDER newEntity "Thirst rate" 10
+RUN_BIOTOP 20
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+ADD_ENTITY prey0.xml 115 100
+CHANGE_PARAM prey0 "Tiredness rate" 90
+CHANGE_PARAM newEntity "Suffering rate" 0
+MOVE_ENTITY newEntity 98 100 0
+RUN_BIOTOP 120
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 98 100 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 120
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 98 100 0
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 120
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 98 100 0
+CHANGE_PARAM newEntity "Hunger rate" 50
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 120
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+ADD_ENTITY prey0.xml 100 108
+ADD_ENTITY prey0.xml 100 92
+MOVE_ENTITY newEntity 98 100 0
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 180
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 180
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 180
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 98 100 0
+RUN_BIOTOP 60
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 1000
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+MOVE_ENTITY newEntity 98 100 0
+ADD_ENTITY predator0.xml 80 100
+CHANGE_PARAM predator0 "Tiredness rate" 40
+SET_FORBIDEN_ACTION newEntity "Sleep"
+
+RUN_BIOTOP 1
+
+CHANGE_PARAM newEntity "Suffering rate" 0
+RUN_BIOTOP 500
+CHECK_PARAM_UNDER newEntity "Suffering rate" 20
+
+RUN_BIOTOP 10
+CHECK_FORBID_ACT_CNT_UNDER newEntity 1
+
+RUN_BIOTOP 10
+SAVE_BRAIN newEntity.xml
+RUN_BIOTOP 10

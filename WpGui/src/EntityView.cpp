@@ -286,13 +286,13 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
         }
       }
       // Set new params   
-      int startY = 90 - GetScrollPos(SB_VERT);
+      int startY = 112 - GetScrollPos(SB_VERT);
       for (i=0;(i<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<m_pEntity->getNumParameter());i++)
       {
         m_pParamCtrl[i] = new CParameterCrtl();
-        CRect rect(20,startY,180,startY+8);
+        CRect rect(25, startY, 225, startY+10);
         m_pParamCtrl[i]->CreateNewParam(m_pEntity->getParameter(i),rect,this,1003);
-        startY +=32;
+        startY += 40;
       }
 
       // Update Brain view
@@ -354,29 +354,29 @@ void CEntityView::OnPaint()
 
   CPoint coord;
 
-  coord.x = 80;
-  coord.y = 40 - GetScrollPos(SB_VERT);
+  coord.x = 100;
+  coord.y = 50 - GetScrollPos(SB_VERT);
   // Color
   m_pIconSex->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
   if (m_pEntity != NULL)
-    pDc->FillSolidRect( coord.x + 1, coord.y + 1, 13, 13, m_pEntity->getColorRgb() );
+    pDc->FillSolidRect( coord.x + 1, coord.y + 1, 14, 14, m_pEntity->getColorRgb() );
 
   // Form
-  coord.x += 16;
+  coord.x += 18;
   if (m_pEntity != NULL)
     m_pIconForm->Draw(pDc,m_pEntity->getForm(),coord,ILD_NORMAL);
   else
     m_pIconSex->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
 
   // Texture
-  coord.x += 16;
+  coord.x += 18;
   if (m_pEntity != NULL)
     m_pIconTexture->Draw(pDc,m_pEntity->getTexture(),coord,ILD_NORMAL);
   else
     m_pIconTexture->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
 
   // Taste
-  coord.x += 16;
+  coord.x += 18;
   if (m_pEntity != NULL)
     m_pIconTaste->Draw(pDc,m_pEntity->getTaste(),coord,ILD_NORMAL);
   else
@@ -389,33 +389,33 @@ void CEntityView::OnPaint()
     {
       if (m_pEntity->isPhyAttributePresent(attrib))
       {
-        coord.x += 16;
+        coord.x += 18;
         m_pIconAttribute->Draw(pDc,attrib,coord,ILD_NORMAL);
       }
     }
   }
 
   // Sex
-  coord.x = 80;
-  coord.y = 56 - GetScrollPos(SB_VERT);
+  coord.x = 100;
+  coord.y = 70 - GetScrollPos(SB_VERT);
   if (m_pEntity != NULL)
     m_pIconSex->Draw(pDc,m_pEntity->getSex(),coord,ILD_NORMAL);
   else
     m_pIconSex->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
 
   // Repro type
-  coord.x += 16;
+  coord.x += 18;
   m_pIconSex->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
 
   // Odor
-  coord.x += 16;
+  coord.x += 18;
   if (m_pEntity != NULL)
     m_pIconOdor->Draw(pDc,m_pEntity->getOdor(),coord,ILD_NORMAL);
   else
     m_pIconOdor->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
 
   // Pherom
-  coord.x += 16;
+  coord.x += 18;
   if (m_pEntity != NULL)
     m_pIconPheromon->Draw(pDc,m_pEntity->getPheromone(),coord,ILD_NORMAL);
   else
@@ -427,15 +427,15 @@ void CEntityView::OnPaint()
     CPhysicalWelfare* pPhysWelfare = m_pEntity->getpPhysicalWelfare();
     if (pPhysWelfare != NULL)
     {
-      coord.x += 16;
+      coord.x += 18;
       if (pPhysWelfare->GetInjuryMalus()>0.2)
         m_pIconHealth->Draw(pDc,1,coord,ILD_NORMAL); // Draw icon
       else if (pPhysWelfare->GetInjuryMalus()>0)
         m_pIconHealth->Draw(pDc,0,coord,ILD_NORMAL); // Draw icon
       else 
-        coord.x -= 16;
+        coord.x -= 18;
 
-      coord.x += 16;
+      coord.x += 18;
       if (pPhysWelfare->GetDiseaseMalus()>0.2)
         m_pIconHealth->Draw(pDc,3,coord,ILD_NORMAL); // Draw icon
       else if (pPhysWelfare->GetDiseaseMalus()>0)

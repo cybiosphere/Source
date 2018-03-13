@@ -66,8 +66,10 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
-  cs.cx = 1000;
-  cs.cy = 600;
+  //cs.cx = 1000;
+  //cs.cy = 600;
+  //cs.cx = 400;
+  //cs.cy = 400;
 	if( !CMDIChildWnd::PreCreateWindow(cs) )
 		return FALSE;
 

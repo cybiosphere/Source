@@ -46,7 +46,7 @@ CParameterCrtl::CParameterCrtl()
 	 m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
+   m_pFont->CreatePointFont(72, LPCTSTR("Arial"));
 }
 
 CParameterCrtl::~CParameterCrtl()

@@ -25,7 +25,6 @@ material waterplane
         pass
         {
             scene_blend colour_blend
-            #depth_write off
             texture_unit
             {
                 texture water_texture.jpg
@@ -57,7 +56,7 @@ material water_puddle
     {
         pass
         {
-	          alpha_rejection greater 128
+	        alpha_rejection greater 128
             texture_unit
             {
                 texture water_puddle.dds
