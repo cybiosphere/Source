@@ -297,6 +297,8 @@
     <ClInclude Include="..\WpGui\inc\GridCtrl.h" />
     <ClInclude Include="..\WpGui\inc\GridDropTarget.h" />
     <ClInclude Include="..\WpGui\inc\InPlaceEdit.h" />
+    <ClInclude Include="..\WpGui\inc\LogServerDoc.h" />
+    <ClInclude Include="..\WpGui\inc\LogServerView.h" />
     <ClInclude Include="..\WpGui\inc\mainfrm.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigDoc.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigView.h" />
@@ -361,6 +363,8 @@
     <ClCompile Include="..\WpGui\src\GridCtrl.cpp" />
     <ClCompile Include="..\WpGui\src\GridDropTarget.cpp" />
     <ClCompile Include="..\WpGui\src\InPlaceEdit.cpp" />
+    <ClCompile Include="..\WpGui\src\LogServerDoc.cpp" />
+    <ClCompile Include="..\WpGui\src\LogServerView.cpp" />
     <ClCompile Include="..\WpGui\src\MainFrm.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigDoc.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigView.cpp" />

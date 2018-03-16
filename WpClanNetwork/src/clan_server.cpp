@@ -29,7 +29,7 @@ Server::Server(CBiotop* pBiotop)
 	login_events.func_event("Login") = clan::bind_member(this, &Server::on_event_login);
 	game_events.func_event("Game-RequestStart") = clan::bind_member(this, &Server::on_event_game_requeststart);
 
-	users_connected = false;
+  nb_users_connected = 0;
   m_pBiotop = pBiotop;
   m_biotopSpeed = 1.0;
   m_LastRunTick = clock();
@@ -52,7 +52,7 @@ void Server::ProcessEvents(bool isNewSec)
   if (isNewSec)
   {
 	// Update clients with biotop evolution
-	  if (users_connected)
+	  if (nb_users_connected > 0)
 	  {
       //CBasicEntity* pCurEntity = NULL;
 
@@ -129,7 +129,7 @@ void Server::exec()
     if (((curTick - m_LastRunTick) * m_biotopSpeed * 1000 / CLOCKS_PER_SEC) >= 1000) // temporaire
     {
       CBasicEntity* pCurEntity = NULL;
-      if (users_connected)
+      if (nb_users_connected > 0)
       {
         // Send event next second start update
         NetGameEvent bioNextSecEventStart("Biotop-Next second start");
@@ -147,7 +147,7 @@ void Server::exec()
       m_LastRunTick = clock();
 
       // Update clients with biotop evolution
-      if (users_connected)
+      if (nb_users_connected > 0)
       {
         // Update all entities
         for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
@@ -232,9 +232,9 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
 	if(user)
 		delete user;
 
-	// Shut down running game for test-purposes
-	//if(users_connected)
-	//	users_connected = false;
+  if (nb_users_connected > 0)
+    nb_users_connected--;
+
 }
 
 // An event was received from a client
@@ -292,10 +292,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 {
 	log_event("Events  ", "Client requested game start");
 
-	if(users_connected == false)
-	{
-		users_connected = true;
-  }
+  nb_users_connected++;
 
   // Freeze biotop time during new player configuration
   double biotopSpeed = m_biotopSpeed;

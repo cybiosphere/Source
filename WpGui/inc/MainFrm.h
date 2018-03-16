@@ -40,7 +40,8 @@ typedef enum
   DISPLAY_MODE_LAB_GENETIC,
   DISPLAY_MODE_LAB_BRAIN,
   DISPLAY_MODE_STATISTIC,
-  DISPLAY_MODE_MAP
+  DISPLAY_MODE_MAP,
+  DISPLAY_MODE_LOGSERVER
 } AppliDisplayMode_e;
 
 typedef enum
@@ -103,6 +104,7 @@ protected:
 	afx_msg void OnAppSaveBiotop();
 	afx_msg void OnAppSaveAsBiotop();
 	afx_msg void OnAppRunLearningScenario();
+  afx_msg void OnAppDisplayLogServer();
 	afx_msg void OnAppDisplayMap();
 	afx_msg void OnAppDisplayBrain();
 	afx_msg void OnAppDisplayGenetic();

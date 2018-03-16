@@ -652,6 +652,12 @@
     <ClInclude Include="..\WpOpenGL\inc\Bmp.h">
       <Filter>WpOpenGL\IncOpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\LogServerDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\LogServerView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -809,6 +815,12 @@
     </ClCompile>
     <ClCompile Include="..\WpOpenGL\src\Bmp.cpp">
       <Filter>WpOpenGL\SrcOpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\LogServerDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\LogServerView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

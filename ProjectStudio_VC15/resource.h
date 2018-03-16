@@ -1,7 +1,8 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by Cybiosphere.rc
 //
+#define IDD_LOGSERVER_FORMVIEW          9
 #define IDD_ABOUTBOX                    100
 #define IDD_ENTITY_FORMVIEW             101
 #define IDD_BIOCTRL_FORMVIEW            102
@@ -54,6 +55,7 @@
 #define IDD_DIALOG_TRAIN                202
 #define IDP_FAILED_OPEN_DATABASE        203
 #define IDR_MAPCONFIG_TYPE              210
+#define IDR_LOGSERVER_TYPE              211
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -188,6 +190,7 @@
 #define IDC_PURPOSE_TXT2                1110
 #define IDC_COMBO_WIND                  1110
 #define IDC_PURPOSE_TXT3                1111
+#define IDC_EDIT_LOG                    1111
 #define IDC_PURPOSE_TXT4                1112
 #define IDC_PURPOSE_TXT5                1113
 #define IDC_PURPOSE_TXT6                1114
@@ -223,15 +226,16 @@
 #define ID_APP_EDIT_TRAIN_AND_GRADE     32807
 #define ID_APP_EDIT_IDENTIFY            32808
 #define ID_APP_EDIT_CHECK_IDENTIFY      32809
+#define ID_APP_DISPLAY_LOGSERVER        32809
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        204
-#define _APS_NEXT_COMMAND_VALUE         32809
-#define _APS_NEXT_CONTROL_VALUE         1111
+#define _APS_NEXT_RESOURCE_VALUE        205
+#define _APS_NEXT_COMMAND_VALUE         32810
+#define _APS_NEXT_CONTROL_VALUE         1112
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -22,54 +22,43 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-// StatisticView.h : interface of the CStatisticView class
+// LogServerView.h : interface of the CLogServerView class
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_STATISTIC_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_)
-#define AFX_STATISTIC_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_
+#if !defined(AFX_LOGSERVER_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_)
+#define AFX_LOGSERVER_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "CBiotop.h" 
-#include "ParameterCrtl.h"
-#include "ColorButton.h"
+#include "stdafx.h"
+#include "LogServerDoc.h"
 
-#define MAX_NB_DISPLAY_MEASURES 10
-
-typedef struct 
-{
-  CMeasure*     pMeasure;
-  CColorButton* pChkBox;
-  COLORREF      color;
-  CRect         coord;
-} MeasureDisplay_t;
-
-
-class CStatisticView : public CFormView
+class CLogServerView : public CFormView
 {
 protected: // create from serialization only
-	CStatisticView();
-	DECLARE_DYNCREATE(CStatisticView)
+	CLogServerView();
+	DECLARE_DYNCREATE(CLogServerView)
 
 public:
-	//{{AFX_DATA(CStatisticView)
-	enum { IDD = IDD_STATISTIC_FORMVIEW };
-	int		m_radioDuration;
+	//{{AFX_DATA(CLogServerView)
+	enum { IDD = IDD_LOGSERVER_FORMVIEW };
+  CEdit m_ServerLogEditBox;
+  CString	m_strLog;
 	//}}AFX_DATA
 
 // Attributes
 public:
-  CStatisticDoc* GetDocument();
+  CLogServerDoc* GetDocument();
 
 // Operations
 public:
-
+  void AddLog(std::string newLog);
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CStatisticView)
+	//{{AFX_VIRTUAL(CLogServerView)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	protected:
@@ -81,12 +70,9 @@ public:
 	virtual void OnPrint(CDC* pDC, CPrintInfo* pInfo);
 	//}}AFX_VIRTUAL
 
-public:
-  bool SetBiotop(CBiotop* pBiotop);
-
 // Implementation
 public:
-	virtual ~CStatisticView();
+	virtual ~CLogServerView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -94,43 +80,12 @@ public:
 
 public:
 
-  void RebuildMeasChkBox();
-  void NextSecond();
 
-protected:
-  void ResetMinMaxTime();
-  void ResetMinMaxMeasures();
-  void DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF color, int index);
-
-protected:
-
-  CBiotop* m_pBiotop;
-  CRect    m_GraphRect;
-
-  //CButton*         m_pMeasChkBoxTable[MAX_NB_DISPLAY_MEASURES];
-  MeasureDisplay_t m_pMeasDisplayList[MAX_NB_DISPLAY_MEASURES];
-
-  timeCountType m_TimeScaleSecPerPix;
-  timeCountType m_RefreshCounter;
-  timeCountType m_TimeMin;
-  timeCountType m_TimeMax;
-
-  POINT* m_pTmpPointTable;
-  CFont* m_pFont;
-
-  bool m_IsScrollMode;
 
 // Generated message map functions
 protected:
-	//{{AFX_MSG(CStatisticView)
-	afx_msg void OnPaint();
+	//{{AFX_MSG(CLogServerView)
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnRadio1();
-	afx_msg void OnRadio2();
-	afx_msg void OnRadio3();
-	afx_msg void OnRadio4();
-	afx_msg void OnRadio5();
-	afx_msg void OnEditMeasure();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -141,4 +96,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_STATISTIC_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_)
+#endif // !defined(AFX_LOGSERVER_H__58782761_4F5D_4E50_829A_0F3B31591B0D__INCLUDED_)

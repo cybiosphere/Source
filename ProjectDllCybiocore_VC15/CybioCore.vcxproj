@@ -105,7 +105,8 @@
       <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy                                                     ..\Exec\CybioCore3D.lib                                                   ..\ExportDll_VC15\lib\</Command>
+      <Command>copy                                                     ..\Exec\CybioCore3D.lib                                                   ..\ExportDll_VC15\lib\
+copy                                                     ..\Exec\CybioCore3D.dll                                                   ..\ExecOgre\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,6 +156,7 @@
     </Bscmake>
     <PostBuildEvent>
       <Command>copy  ..\Exec\CybioCore3.lib   ..\ExportDll_VC15\lib\
+copy  ..\Exec\CybioCore3.dll   ..\ExecOgre\
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

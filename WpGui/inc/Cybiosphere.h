@@ -50,12 +50,15 @@ distribution.
 #include "GeneticView.h"
 #include "StatisticDoc.h"
 #include "StatisticView.h"
+#include "LogServerDoc.h"
+#include "LogServerView.h"
 #include "MapConfigDoc.h"
 #include "MapConfigView.h"
 #include "CScenarioPlayer.h"
 
 #ifdef USE_CLAN_SERVER
 #include "clan_server.h"
+#include "API/Core/Text/logger.h"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -77,8 +80,9 @@ public:
   CBrainView*     GetBrainViewPtr(void);
   CGeneticView*   GetGeneticViewPtr(void);
   CStatisticView* GetStatisticViewPtr(void);
+  CLogServerView* GetLogServerViewPtr(void);
   CMapConfigView* GetMapConfigViewPtr(void);
-
+ 
   BOOL IsModeManual();
   void SetModeManual(BOOL isManual);
   BOOL IsModeStopOnEvent();
@@ -122,6 +126,7 @@ private:
 	void CreateGeneticView();
 	void CreateStatisticView(CBiotop* pBiotop);
 	void CreateMapConfigView(CBiotop* pBiotop);
+  void CreateLogServerView();
 
   CBiotop*        m_pBiotop;
   CBiotopDoc*     m_pBiotopDoc;
@@ -136,6 +141,8 @@ private:
   CGeneticView*   m_pGeneticView;
   CStatisticDoc*  m_pStatisticDoc;
   CStatisticView* m_pStatisticView;
+  CLogServerDoc*  m_pLogServerDoc;
+  CLogServerView* m_pLogServerView;
   CMapConfigDoc*  m_pMapConfigDoc;
   CMapConfigView* m_pMapConfigView;
 #ifdef USE_CLAN_SERVER

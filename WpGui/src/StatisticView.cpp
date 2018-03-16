@@ -180,10 +180,10 @@ void CStatisticView::Dump(CDumpContext& dc) const
 	CFormView::Dump(dc);
 }
 
-CBioCtrlDoc* CStatisticView::GetDocument() // non-debug version is inline
+CStatisticDoc* CStatisticView::GetDocument() // non-debug version is inline
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CBioCtrlDoc)));
-	return (CBioCtrlDoc*)m_pDocument;
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStatisticDoc)));
+	return (CStatisticDoc*)m_pDocument;
 }
 #endif //_DEBUG
 

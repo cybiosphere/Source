@@ -173,6 +173,14 @@ BOOL CCybiosphereApp::InitInstance()
 		RUNTIME_CLASS(CMapConfigView));
 	AddDocTemplate(pDocTemplateMapConfig);
 
+  CMultiDocTemplate* pDocTemplateLogServer;
+  pDocTemplateLogServer = new CMultiDocTemplate(
+    IDR_LOGSERVER_TYPE,
+    RUNTIME_CLASS(CLogServerDoc),
+    RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+    RUNTIME_CLASS(CLogServerView));
+  AddDocTemplate(pDocTemplateLogServer);
+
 	// create main MDI Frame window
 	CMainFrame* pMainFrame = new CMainFrame;
 	if (!pMainFrame->LoadFrame(IDR_MAINFRAME))
@@ -220,8 +228,8 @@ BOOL CCybiosphereApp::InitInstance()
   m_pScenarioPlayer = new CScenarioPlayer(m_pBiotop);
 
 #ifdef USE_CLAN_SERVER
-  ConsoleWindow console("Server Console", 160, 1000);
-  ConsoleLogger logger;
+  //ConsoleWindow console("Server Console", 160, 1000);
+  //ConsoleLogger logger;
   m_pServer = new Server(m_pBiotop);
   m_pServer->startServer();
 #endif
@@ -233,6 +241,7 @@ BOOL CCybiosphereApp::InitInstance()
   CreateGeneticView();
   CreateStatisticView(m_pBiotop);
   CreateMapConfigView(m_pBiotop);
+  CreateLogServerView();
 
   // Start timers
   GetBiotopViewPtr()->StartTimers();
@@ -452,6 +461,22 @@ CMapConfigView* CCybiosphereApp::GetMapConfigViewPtr()
   return (m_pMapConfigView);
 }
 
+void CCybiosphereApp::CreateLogServerView()
+{
+  CDocTemplate* pDocTempl;
+  POSITION pos = GetFirstDocTemplatePosition();
+  for (int i = 0; i<8; i++)
+    pDocTempl = GetNextDocTemplate(pos);
+  m_pLogServerDoc = (CLogServerDoc*)pDocTempl->OpenDocumentFile(NULL);
+  pos = m_pLogServerDoc->GetFirstViewPosition();
+  m_pLogServerView = (CLogServerView*)(m_pLogServerDoc->GetNextView(pos));
+}
+
+CLogServerView* CCybiosphereApp::GetLogServerViewPtr()
+{
+  return (m_pLogServerView);
+}
+
 bool CCybiosphereApp::RefreshAllWithNewEntity(CBasicEntity* pEntity)
 {
   m_pSelectedEntity = pEntity;
@@ -482,6 +507,7 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true);
+  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();
 #endif
@@ -494,6 +520,7 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true);
+  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();
 #endif

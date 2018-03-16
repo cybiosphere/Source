@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Anglais (États-Unis) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -309,6 +309,13 @@ BEGIN
     EDITTEXT        IDC_PURPOSE_TXT7,183,112,46,12,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
 END
 
+IDD_LOGSERVER_FORMVIEW DIALOGEX 0, 0, 290, 140
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_LOG,7,7,276,126,ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -429,6 +436,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 133
     END
+
+    IDD_LOGSERVER_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -529,6 +544,11 @@ BEGIN
     0
 END
 
+IDD_LOGSERVER_FORMVIEW AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -545,12 +565,12 @@ BEGIN
     ID_APP_MONITOR_SHORT    "Monitor longterm parameters"
 END
 
-#endif    // Anglais (États-Unis) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Français (France) resources
+// French (France) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
@@ -663,7 +683,9 @@ IDI_ICON_MORE           ICON                    "..\\WpGui\\res\\icoMore.ico"
 
 IDR_STATISTIC_TYPE      ICON                    "..\\wpgui\\res\\ico00001.ico"
 
-IDR_MAPCONFIG_TYPE      ICON                    "..\\wpgui\\res\\ico00002.ico"
+IDR_MAPCONFIG_TYPE      ICON                    "..\\wpgui\\res\\ico00003.ico"
+
+IDR_LOGSERVER_TYPE      ICON                    "..\\wpgui\\res\\idr_logs.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -734,6 +756,7 @@ BEGIN
     BUTTON      ID_APP_DISPLAY_BRAIN
     BUTTON      ID_APP_DISPLAY_STAT
     BUTTON      ID_APP_DISPLAY_MAP
+    BUTTON      ID_APP_DISPLAY_LOGSERVER
     SEPARATOR
     BUTTON      ID_APP_DISPLAY_2D
     BUTTON      ID_APP_DISPLAY_3D
@@ -944,7 +967,7 @@ BEGIN
     AFX_IDS_MDICHILD        "Activate this window"
 END
 
-#endif    // Français (France) resources
+#endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

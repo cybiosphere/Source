@@ -246,6 +246,12 @@
     <Image Include="..\WpGui\res\veget.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\WpGui\res\HealthIcon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\wpgui\res\idr_logs.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Cybiosphere.rc">
@@ -718,6 +724,15 @@
     <ClInclude Include="..\WpClanNetwork\inc\tls_instance.h">
       <Filter>WpClanNetwork\IncClan</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\LogServerView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\LogServerDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -882,9 +897,6 @@
     <ClCompile Include="..\WpClanNetwork\src\clan_server.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
-    <ClCompile Include="..\WpClanNetwork\src\clan_server_main.cpp">
-      <Filter>WpClanNetwork\SrcClan</Filter>
-    </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\clan_server_user.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
@@ -895,18 +907,6 @@
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\connection_impl.cpp">
-      <Filter>WpClanNetwork\SrcClan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpClanNetwork\src\console.cpp">
-      <Filter>WpClanNetwork\SrcClan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpClanNetwork\src\console_logger.cpp">
-      <Filter>WpClanNetwork\SrcClan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpClanNetwork\src\console_window.cpp">
-      <Filter>WpClanNetwork\SrcClan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpClanNetwork\src\console_window_generic.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\databuffer.cpp">
@@ -998,6 +998,12 @@
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\LogServerView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\LogServerDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

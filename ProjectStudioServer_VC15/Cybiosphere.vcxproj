@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -15,18 +15,18 @@
     <SccLocalPath />
     <Keyword>MFCProj</Keyword>
     <ProjectGuid>{D69A057C-E01A-46AE-8840-F6464F8CD599}</ProjectGuid>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -156,6 +156,7 @@
     <Image Include="..\WpGui\res\FormIcons.bmp" />
     <Image Include="..\WpGui\res\form_ico.bmp" />
     <Image Include="..\WpGui\res\GenomeIcons.bmp" />
+    <Image Include="..\WpGui\res\HealthIcon.bmp" />
     <Image Include="..\WpGui\res\ico00001.ico" />
     <Image Include="..\WpGui\res\ico00002.ico" />
     <Image Include="..\WpGui\res\ico00003.ico" />
@@ -171,6 +172,7 @@
     <Image Include="..\WpGui\res\icon_red.ico" />
     <Image Include="..\WpGui\res\icoOpen.ico" />
     <Image Include="..\WpGui\res\icoSave.ico" />
+    <Image Include="..\wpgui\res\idr_logs.ico" />
     <Image Include="..\WpGui\res\Logo.bmp" />
     <Image Include="..\WpGui\res\mineral.bmp" />
     <Image Include="..\WpGui\res\OdorIcon.bmp" />
@@ -317,6 +319,8 @@
     <ClInclude Include="..\WpGui\inc\GridCtrl.h" />
     <ClInclude Include="..\WpGui\inc\GridDropTarget.h" />
     <ClInclude Include="..\WpGui\inc\InPlaceEdit.h" />
+    <ClInclude Include="..\WpGui\inc\LogServerDoc.h" />
+    <ClInclude Include="..\WpGui\inc\LogServerView.h" />
     <ClInclude Include="..\WpGui\inc\mainfrm.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigDoc.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigView.h" />
@@ -354,15 +358,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpClanNetwork\src\clan_server.cpp" />
-    <ClCompile Include="..\WpClanNetwork\src\clan_server_main.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\clan_server_user.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\client.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\connection.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\connection_impl.cpp" />
-    <ClCompile Include="..\WpClanNetwork\src\console.cpp" />
-    <ClCompile Include="..\WpClanNetwork\src\console_logger.cpp" />
-    <ClCompile Include="..\WpClanNetwork\src\console_window.cpp" />
-    <ClCompile Include="..\WpClanNetwork\src\console_window_generic.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\databuffer.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\datetime.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\detect_cpu_ext.cpp" />
@@ -422,6 +421,8 @@
     <ClCompile Include="..\WpGui\src\GridCtrl.cpp" />
     <ClCompile Include="..\WpGui\src\GridDropTarget.cpp" />
     <ClCompile Include="..\WpGui\src\InPlaceEdit.cpp" />
+    <ClCompile Include="..\WpGui\src\LogServerDoc.cpp" />
+    <ClCompile Include="..\WpGui\src\LogServerView.cpp" />
     <ClCompile Include="..\WpGui\src\MainFrm.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigDoc.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigView.cpp" />

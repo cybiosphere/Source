@@ -57,14 +57,19 @@ namespace clan
 		/// \brief Disable logging.
 		void disable();
 
+    // FRI: used for private console display
+    static void addOnGoingString(std::string text) {mOnGoingString += text;}
+    static std::string getOnGoingString() { std::string strResp = mOnGoingString; mOnGoingString = "";  return strResp; }
+
 		/// \brief Log text.
 		virtual void log(const std::string &type, const std::string &text) = 0;
 
 		/// \brief read text.
 		virtual bool get_console_input(std::string &input_cmd) = 0; //FRI
 
-	protected:
 		static StringFormat get_log_string(const std::string &type, const std::string &text);
+
+    static std::string mOnGoingString;
 	};
 
 	/// \brief Log text to logger.

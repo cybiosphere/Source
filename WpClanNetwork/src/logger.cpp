@@ -35,8 +35,11 @@
 
 namespace clan
 {
+  std::string Logger::mOnGoingString;
+
 	Logger::Logger()
 	{
+    mOnGoingString = "";
 		enable();
 	}
 
@@ -116,8 +119,11 @@ namespace clan
 	void log_event(const std::string &type, const std::string &text)
 	{
 		std::unique_lock<std::recursive_mutex> mutex_lock(Logger::mutex);
-		if (Logger::instances.empty())
-			return;
+    if (Logger::instances.empty())
+    {
+      Logger::addOnGoingString (Logger::get_log_string(type, text).get_result());
+      return;
+    }
 		for (auto & instance : Logger::instances)
 			(instance)->log(type, text);
 	}
