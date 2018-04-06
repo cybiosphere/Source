@@ -61,7 +61,7 @@ bool CNeuronMatrixCtrl::SetNeuronMatrix(CNeuronMatrix* pNeuronMatrix)
     SetEditable(true);
     SetFixedRowCount(2);
     SetFixedColumnCount(2);
-    SetColumnWidth(0, 80);
+    SetColumnWidth(0, 180);
     for (i=1; i<GetColumnCount(); i++)
       SetColumnWidth(i, 50);
   }

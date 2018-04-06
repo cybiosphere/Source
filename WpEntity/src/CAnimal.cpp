@@ -3425,23 +3425,29 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
       if (pHitEntity != NULL)
       {
         // Hurt moving entity
-        injuryLevel = (double)nbSteps/(double)NB_STEPS_PER_GRID_SQUARE*pHitEntity->getProtection()/100.0;
-        if (changeHealthRate(-injuryLevel) == false)
+        if (pHitEntity->getProtection() > getProtection())
         {
-          CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-          CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to run in obstacle %s\n", 
-                     getSpecieName().c_str(), getLabel().c_str(), pHitEntity->getLabel().c_str());
+          injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(pHitEntity->getProtection() - getProtection()) / 100.0;
+          if (changeHealthRate(-injuryLevel) == false)
+          {
+            CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+            CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to run in obstacle %s\n",
+              getSpecieName().c_str(), getLabel().c_str(), pHitEntity->getLabel().c_str());
+          }
         }
 
         // Hurt hit entity
-        if ((pHitEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pHitEntity->isAlive()))
+        if (getAttackFactor() > pHitEntity->getProtection())
         {
-          injuryLevel = (double)nbSteps/(double)NB_STEPS_PER_GRID_SQUARE*(getAttackFactor()+1)/100.0;
-          if (((CAnimal*)pHitEntity)->changeHealthRate(-injuryLevel, this) == false)
+          if ((pHitEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pHitEntity->isAlive()))
           {
-            CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-            CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to shock by animal %s\n", 
-                     pHitEntity->getSpecieName().c_str(), pHitEntity->getLabel().c_str(), getLabel().c_str());
+            injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(getAttackFactor() - pHitEntity->getProtection()) / 100.0;
+            if (((CAnimal*)pHitEntity)->changeHealthRate(-injuryLevel, this) == false)
+            {
+              CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+              CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to shock by animal %s\n",
+                pHitEntity->getSpecieName().c_str(), pHitEntity->getLabel().c_str(), getLabel().c_str());
+            }
           }
         }
       }
@@ -3614,7 +3620,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
           // Meat contains more calories
           // 50% of this eaten food is digested:
           changeFatWeight(eatenWeight/2.0);
-          changeHungerRate(-1.0);
+          changeHungerRate(-0.5);
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
 
@@ -3806,7 +3812,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
 
   changePleasureRate(pleasureRate);
 
-  changeTirednessRate(1);
+  changeTirednessRate(0.2);
 
   if (pleasureRate<0)
     return (false);

@@ -64,13 +64,6 @@ void Server::ProcessEvents(bool isNewSec)
       network_server.send_event(bioNextSecEventStart);
 
       // Update all entities
-      /*for (int i = 0; i<m_pBiotop->getNbOfEntities(); i++)
-      {
-        pCurEntity = m_pBiotop->getEntityByIndex(i);
-        if (pCurEntity->isAlive())
-          send_event_update_entity_position(pCurEntity);
-        // FRED TBC: Check if new entity arrived and advise clients
-      }*/
       BiotopEvent_t bioEvent;
       for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
       {
@@ -104,6 +97,10 @@ void Server::ProcessEvents(bool isNewSec)
 		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
 		  network_server.send_event(bioNextSecEventEnd);
 	  }
+    else
+    {
+      m_pBiotop->resetBiotopEvents();
+    }
   }
 }
 

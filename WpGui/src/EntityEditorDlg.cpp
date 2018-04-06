@@ -202,12 +202,12 @@ void CEntityEditorDlg::DisplayParamSliders()
     for (i=0;(i<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<m_pEntity->getNumParameter());i++)
     {
       m_pParamSlider[i] = new CParameterSlider();
-      CRect rect(startX,startY,startX+160,startY+8);
+      CRect rect(startX,startY,startX+180,startY+10);
       m_pParamSlider[i]->CreateNewParam(m_pEntity->getParameter(i),rect,this,1003);
-      startY +=32;
+      startY +=40;
       if (i==MAX_NUMBER_PARAMETER_DISPLAY/2)
       {
-        startX +=180;
+        startX +=200;
         startY = 50;
       }
     }

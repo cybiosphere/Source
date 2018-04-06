@@ -88,14 +88,14 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   m_pParam = pParam;
   RECT tmpRect = rect;
   // Create Progress bar
-  tmpRect.top -= 1;
-  tmpRect.bottom += 3;
+  tmpRect.top -= 2;
+  tmpRect.bottom += 1;
   bool resu = Create(TBS_NOTICKS,tmpRect,pParentWnd,nID);
 
   // Add Title
   m_pTextStatic = new CStatic();
   CRect rectText = rect;
-  rectText.top -= 11;
+  rectText.top -= 12;
   rectText.bottom = rect.top;
   m_pTextStatic->Create(LPCTSTR(m_pParam->getLabel().c_str()),SS_CENTER,rectText,pParentWnd);
   m_pTextStatic->SetFont(m_pFont);

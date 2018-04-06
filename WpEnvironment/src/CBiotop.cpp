@@ -1648,11 +1648,26 @@ void CBiotop::nextSecond(void)
 
   if (m_BioTime.seconds>=3600)
   {
+    // Loop on Animals to clean dependancies
+    for (i=0; i<getNbOfAnimals(); i++)
+    {
+      pEntity = m_tEntity[i];
+      if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
+      {
+        if ((pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity != NULL) && (pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity->isToBeRemoved()))
+        {
+          CYBIOCORE_LOG_TIME(m_BioTime);
+          CYBIOCORE_LOG("BIOTOP - nextSecond WARNING: %s has focus on removed entity %s\n", pEntity->getLabel().c_str(), pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity->getLabel().c_str());
+          pEntity->getBrain()->clearBrainFocusedEntityInfo();
+        }
+      }
+    }
+
     // loop from top to bottom to clear entities each hour
     for (i=getNbOfEntities()-1; i>=0; i--)   
     {
       pEntity = m_tEntity[i];
-      if ( (pEntity != NULL) && (pEntity->isToBeRemoved()) )
+      if ((pEntity != NULL) && (pEntity->isToBeRemoved()))
       {
         deleteEntity(pEntity->getId());
       }
@@ -2107,6 +2122,13 @@ bool CBiotop::addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntit
   newEvent.pEntity = pEntity;
   newEvent.entityId = pEntity->getId();
   m_tEvents.push_back(std::move(newEvent));
+
+  // Avoid overload by cleaning oldest events
+  if (m_tEvents.size() > 100000)
+  {
+    m_tEvents.erase(m_tEvents.begin(), m_tEvents.begin() + 1000);
+  }
+
   return true;
 }
 

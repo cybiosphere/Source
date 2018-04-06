@@ -57,9 +57,11 @@ CBiotopDisplayMFC::CBiotopDisplayMFC()
   m_nBitmapNumberY = 0;
   m_nBitmapPixSizeX = 16;
   m_nBitmapPixSizeY = 16;
+  m_ZoomFactor = 1.0;
 
   m_curViewSizeX = 0;
   m_curViewSizeY = 0;
+
 
   m_pView = NULL;
 }
@@ -200,19 +202,19 @@ void CBiotopDisplayMFC::RedrawScene()
       {
         coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
         coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
-        pDc->FillSolidRect(coordX, coordY, 16, 16, 0x00DDCCBB);
+        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00DDCCBB);
       }
       else if (curLayer == LAYER_OVER_WET_GROUND)
       {
         coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
         coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
-        pDc->FillSolidRect(coordX, coordY, 16, 16, 0x00FFEEDD);
+        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00FFEEDD);
       }
       else if (curLayer == LAYER_GLOBAL_GRASS)
       {
         coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
         coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
-        pDc->FillSolidRect(coordX, coordY, 16, 16, 0x00EEFFEE);
+        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00EEFFEE);
       }
 
       // draw user color
@@ -221,7 +223,7 @@ void CBiotopDisplayMFC::RedrawScene()
       {
         coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
         coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
-        pDc->FillSolidRect(coordX+1, coordY+1, 14, 14, custColor);       
+        pDc->FillSolidRect(coordX+1, coordY+1, m_nBitmapPixSizeX-2, m_nBitmapPixSizeY-2, custColor);
       }
 
       // Draw entity
@@ -232,18 +234,30 @@ void CBiotopDisplayMFC::RedrawScene()
         coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
         pos = (int)(m_nBitmapPixSizeX * pEntity->getDirection());
 
-        // Select the new bitmap
-	    if ( (pEntity->getClass() >= CLASS_VEGETAL_FIRST) && (pEntity->getClass() <= CLASS_VEGETAL_LAST) ) 
-	        MemDCEnt.SelectObject(&m_bmpVeget);
-        else if ( (pEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pEntity->getClass() <= CLASS_ANIMAL_LAST) ) 
-	        MemDCEnt.SelectObject(&m_bmpAnim[pEntity->getCurrentLifeStage()->getStageType()]);
-        else 
-	        MemDCEnt.SelectObject(&m_bmpMineral);
+        // Display bitmap when zoom is max or squares with smaller zoom
+        if (m_nBitmapPixSizeX == 16)
+        {
+          if ((pEntity->getClass() >= CLASS_VEGETAL_FIRST) && (pEntity->getClass() <= CLASS_VEGETAL_LAST))
+            MemDCEnt.SelectObject(&m_bmpVeget);
+          else if ((pEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pEntity->getClass() <= CLASS_ANIMAL_LAST))
+            MemDCEnt.SelectObject(&m_bmpAnim[pEntity->getCurrentLifeStage()->getStageType()]);
+          else
+            MemDCEnt.SelectObject(&m_bmpMineral);
 
-        // Copy the bits from the memory DC into the current dc
-        pDc->BitBlt(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, &MemDCEnt, pos, 0, SRCCOPY);
-        // Draw a little color square with real color
-        pDc->FillSolidRect(coordX+7, coordY+7, 2, 2, pEntity->getColorRgb());  
+          // Copy the bits from the memory DC into the current dc
+          pDc->BitBlt(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, &MemDCEnt, pos, 0, SRCCOPY);
+          // Draw a little color square with real color
+          pDc->FillSolidRect(coordX + 6, coordY + 6, 4, 4, pEntity->getColorRgb());
+        }
+        else
+        {
+          pDc->FillSolidRect(coordX + 1, coordY + 1, m_nBitmapPixSizeX-2, m_nBitmapPixSizeY-2, pEntity->getColorRgb());
+          // Draw a square around animals
+          if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+          {
+            pDc->Draw3dRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x000F0F0F, 0x000E0E0E);
+          }
+        }
 
         // Draw frame around selected entity
         if (pEntity->getId() == m_nSelectedEntityId)
@@ -352,5 +366,53 @@ Point_t CBiotopDisplayMFC::GetCurrentGridCenterPos()
   return gridCoord;
 }
 
+void CBiotopDisplayMFC::SetZoomFactor(double zoomFactor)
+{
+  m_ZoomFactor = zoomFactor;
+
+  if (m_ZoomFactor > 0.8)
+  {
+    m_nBitmapPixSizeX = 16;
+    m_nBitmapPixSizeY = 16;
+  }
+  else if (m_ZoomFactor > 0.7)
+  {
+    m_nBitmapPixSizeX = 9;
+    m_nBitmapPixSizeY = 9;
+  }
+  else if (m_ZoomFactor > 0.6)
+  {
+    m_nBitmapPixSizeX = 8;
+    m_nBitmapPixSizeY = 8;
+  }
+  else if (m_ZoomFactor > 0.5)
+  {
+    m_nBitmapPixSizeX = 7;
+    m_nBitmapPixSizeY = 7;
+  }
+  else if (m_ZoomFactor > 0.4)
+  {
+    m_nBitmapPixSizeX = 6;
+    m_nBitmapPixSizeY = 6;
+  }
+  else if (m_ZoomFactor > 0.3)
+  {
+    m_nBitmapPixSizeX = 5;
+    m_nBitmapPixSizeY = 5;
+  }
+  else if (m_ZoomFactor > 0.1)
+  {
+    m_nBitmapPixSizeX = 4;
+    m_nBitmapPixSizeY = 4;
+  }
+  else
+  {
+    m_nBitmapPixSizeX = 3;
+    m_nBitmapPixSizeY = 3;
+  }
+
+  DisplayView();
+  RefreshSceneIdleNoCPU();
+}
 /////////////////////////////////////////////////////////////////////////////
 

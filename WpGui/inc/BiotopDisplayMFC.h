@@ -50,6 +50,8 @@ protected:
 	int m_curViewSizeX;
 	int m_curViewSizeY;
 
+  double m_ZoomFactor;
+
 // Operations
 public:
 	CBiotopDisplayMFC();
@@ -70,6 +72,7 @@ public:
   void OnMouseMove(CPoint point);
   void ScrollToGridCoord(Point_t centerPos); 
   Point_t GetCurrentGridCenterPos();
+  void SetZoomFactor(double zoomFactor);
 
   CBitmap m_bmpVeget;
   CBitmap m_bmpAnim[7];

@@ -105,17 +105,22 @@ CBrain::CBrain()
   m_CurrentReactionChoice = 0;
   m_tBrainMemorizedEntityIdentities.resize(0);
 
-  m_FocusedEntityInfo.pEntity         = NULL;
-  m_FocusedEntityInfo.computedWeight  = 0;
-  m_FocusedEntityInfo.captorUid       = UID_UNSET;
-  m_FocusedEntityInfo.subcaptorIndex  = -1;
-  m_FocusedEntityInfo.subcaptorsSize  = 0;
-
   m_pSensorPheromone = NULL;
   m_pSensorSmell = NULL;
 
   m_bBabyStayHome = false;
   m_bIdentificationUsed=false;
+
+  clearBrainFocusedEntityInfo();
+}
+
+void CBrain::clearBrainFocusedEntityInfo(void)
+{
+  m_FocusedEntityInfo.pEntity = NULL;
+  m_FocusedEntityInfo.computedWeight = 0;
+  m_FocusedEntityInfo.captorUid = UID_UNSET;
+  m_FocusedEntityInfo.subcaptorIndex = -1;
+  m_FocusedEntityInfo.subcaptorsSize = 0;
 }
 
 CBrain::~CBrain()
@@ -472,14 +477,25 @@ bool CBrain::PollAllSensors (void)
     }
   }
 
-  // Update Identification on focused entity for GUI 
-  ComputeAndGetIdentification(m_FocusedEntityInfo.pEntity);
+  if (m_FocusedEntityInfo.pEntity != NULL)
+  {
+    if (m_FocusedEntityInfo.pEntity->isToBeRemoved())
+    {
+      CYBIOCORE_LOG("BRAIN - WARNING PollAllSensors : FocusedEntity is NULL\n");
+      m_FocusedEntityInfo.pEntity = NULL;
+    }
+    else
+    {
+      // Update Identification on focused entity for GUI 
+      ComputeAndGetIdentification(m_FocusedEntityInfo.pEntity);
+    }
+  }
 
   // reset m_FocusedEntityInfo
-  m_FocusedEntityInfo.computedWeight  = 0;
-  m_FocusedEntityInfo.captorUid       = UID_UNSET;
-  m_FocusedEntityInfo.subcaptorIndex  = -1;
-  m_FocusedEntityInfo.subcaptorsSize  = 0;
+  m_FocusedEntityInfo.computedWeight = 0;
+  m_FocusedEntityInfo.captorUid = UID_UNSET;
+  m_FocusedEntityInfo.subcaptorIndex = -1;
+  m_FocusedEntityInfo.subcaptorsSize = 0;
 
   return true;
 }
@@ -1447,19 +1463,23 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
   
   if (rowIndex>IDENTIFY_INPUT_SIZE)
     captorStr = "captor error";
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES))
+  {
+    captorStr = "non static";
+  }
   else if (rowIndex>=(VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
   {
     if (m_pSensorPheromone != NULL)
       captorStr ="phero " + m_pSensorPheromone->GetSubCaptorLabel(rowIndex - VIEW_SIZE_PER_FOCUS - NUMBER_ODORS);
     else
-      captorStr = "No Pheromone captor";
+      captorStr = "no Pheromone captor";
   }
   else if (rowIndex>=(VIEW_SIZE_PER_FOCUS))
   {
     if (m_pSensorSmell != NULL)
       captorStr = "odor " + m_pSensorSmell->GetSubCaptorLabel(rowIndex - VIEW_SIZE_PER_FOCUS);
     else
-      captorStr = "No Smell captor";
+      captorStr = "no Smell captor";
   }
   else if (rowIndex>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS+VIEW_NUMBER_TEXTURES))
     captorStr = "attr " + CBasicEntity::getPhyAttributeStrName( (PhyAttributeType_e)(rowIndex+PHY_ATTRIBUTE_NUMBER_TYPE-VIEW_SIZE_PER_FOCUS) );
@@ -1470,9 +1490,9 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
   else if (rowIndex>3)
     captorStr = "colr " + CBasicEntity::getColorStrName( (ColorCaracterType_e)(rowIndex-4+COLOR_CARACTER_FIRST_TYPE) );
   else if (rowIndex==3)
-    captorStr = "Relative speed escape";
+    captorStr = "relative speed escape";
   else if (rowIndex==2)
-    captorStr = "Relative speed approach";
+    captorStr = "relative speed approach";
   else if (rowIndex==1)
     captorStr = "smaller";
   else
@@ -1489,6 +1509,10 @@ string CBrain::getIdentifyInputLabel(int rowIndex)
 bool CBrain::IsIdentifyRowSexSpecific(int rowIndex)
 {
   if (rowIndex>IDENTIFY_INPUT_SIZE)
+  {
+    return false;
+  }
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES))
   {
     return false;
   }
@@ -1563,16 +1587,23 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   int i;
   neuroneValType highThreshold, midThreshold, lowThreshold;
 
+  // Initialize m_vCurrentIdentificationChoice
+  for (i = 0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+  {
+    m_vCurrentIdentificationChoice(i, 0) = 0;
+  }
+
+  // If error, just raise NEUTRAL
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
+  {
+    CYBIOCORE_LOG("BRAIN - ERROR ComputeAndGetIdentification : pEntity is NULL or ToBeRemoved\n");
+    m_vCurrentIdentificationChoice(IDENTIFICATION_NEUTRAL, 0) = MAX_SENSOR_VAL;
+  }
+
   UpdateIdentifyInputVector(pEntity, useOdors);
   m_mIdentifyNeuronTable.ComputeVectorChoice(&m_vCurrentIdentifyInput, &m_vCurrentIdentifyOutput);
   GetVectorIdentifyThresholds(highThreshold, midThreshold, lowThreshold);
   
-  // Initialize m_vCurrentIdentificationChoice
-  for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
-  {   
-    m_vCurrentIdentificationChoice(i,0) = 0;
-  }
-
   // If vector is flat, just raise NEUTRAL
   if (highThreshold == lowThreshold)
   {
@@ -1613,7 +1644,7 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 {
   int i, offset = 0;
 
-  if (pEntity==NULL)
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
     for (offset=0; offset<m_nInputIdentification; offset++)
       m_vCurrentIdentifyInput(offset,0) = 0;
@@ -1697,6 +1728,24 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
       offset++;
     }
   }
+  else
+  {
+    offset += NUMBER_ODORS + NUMBER_PHEROMONES;
+  }
+
+  // Set as non static animals when dead or not sleeping nor hiding
+  m_vCurrentIdentifyInput(offset, 0) = 0;
+  DWORD reactionUid = 0;
+  if (pEntity->isAlive() && (pEntity->getBrain() != NULL))
+  {
+    reactionUid = pEntity->getBrain()->GetReactionByIndex(pEntity->getBrain()->GetCurrentReactionIndex())->GetUniqueId();
+    if (((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_SLEEP) && ((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_HIDE))
+    {
+      m_vCurrentIdentifyInput(offset, 0) = MAX_SENSOR_VAL;
+    }
+  }
+  offset++;
+
 }
 
 CMatrix* CBrain::GetIdentifyInputVect()

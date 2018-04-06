@@ -57,7 +57,7 @@ typedef int choiceIndType;
 
 #define UID_UNSET                    0xFFFFFFFF
 
-#define IDENTIFY_INPUT_SIZE (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES)
+#define IDENTIFY_INPUT_SIZE (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES + 1)
 
 class CNeuronMatrix;
 class CSensor;
@@ -256,6 +256,8 @@ public:
   bool AddFeelingWelfareSensitivity(CSensor* pSens, int tableSensiSize, double* pTableSensi);
 
   BrainFocusedEntityView_t* getpBrainFocusedEntityInfo(void);
+  void clearBrainFocusedEntityInfo(void);
+
   void ResetReactionsFailureSuccessFactor();
 
   double GetViewedEntityWeight(CBasicEntity* pEntity);

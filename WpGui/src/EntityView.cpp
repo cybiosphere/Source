@@ -290,9 +290,9 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
       for (i=0;(i<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<m_pEntity->getNumParameter());i++)
       {
         m_pParamCtrl[i] = new CParameterCrtl();
-        CRect rect(25, startY, 225, startY+10);
+        CRect rect(25, startY, 230, startY+11);
         m_pParamCtrl[i]->CreateNewParam(m_pEntity->getParameter(i),rect,this,1003);
-        startY += 40;
+        startY += 39;
       }
 
       // Update Brain view
