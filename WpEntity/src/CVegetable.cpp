@@ -443,12 +443,12 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
 
   if (m_pPhysicWelfare->IsTemperSensSet() == false)
   {
-    m_pPhysicWelfare->SetTemperatureSensitivity(0.0, 40.0, 1.0);
+    m_pPhysicWelfare->SetTemperatureSensitivity(0.0, 40.0, 10.0);
   }
 
   if (m_pPhysicWelfare->IsFertilSensSet() == false)
   {
-    m_pPhysicWelfare->SetFertilitySensitivity(20.0, 100.0, 1.0);
+    m_pPhysicWelfare->SetFertilitySensitivity(20.0, 100.0, 10.0);
   }
 
   // TBD: temporary. must be confirmed
@@ -703,6 +703,7 @@ void CVegetable::nextDay(bool forceGrowth)
     getParameter(m_id_Age)->changeVal(1);
     if (getParameter(m_id_Age)->isMaxReached())
     {
+      setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
       autoKill();
     }
   }
@@ -751,6 +752,7 @@ bool CVegetable::changeHealthRate(double variation)
 
   if (getParameter(m_id_Health)->isMinReached())
   {
+    setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
     autoKill();
     return false;
   }
@@ -801,7 +803,7 @@ double CVegetable::changeWeight(double variation)
     minVal  = pParam->getMin();
     remaining = curVal-minVal;
 
-    if ((-variation > remaining) && testChance(80))
+    if ((-variation > remaining) && testChance(80)) // Todo: change according to specie: higher chance to survive for trees
     {
       // Vegetal is totaly eaten but will survive
       // change temporaly color and protection

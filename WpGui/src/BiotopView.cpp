@@ -862,7 +862,8 @@ void CBiotopView::OnAppMonitorShort()
   {
     if (pEntity->getClass()>=CLASS_VEGETAL_FIRST)
     {
-      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 1, 0); 
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Weight"), 1, 0);
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 1, 1); 
     }
 
     if (pEntity->getClass()>=CLASS_ANIMAL_FIRST)
@@ -918,7 +919,7 @@ void CBiotopView::OnAppMonitorLong()
     }
     if (pEntity->getClass()>=CLASS_VEGETAL_FIRST)
     {
-      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Age"), 36000, 6);
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 3600, 3);
     }
     if (pEntity->getClass()==CLASS_MAMMAL)
     {

@@ -79,8 +79,8 @@ BOOL CEntityFindDlg::OnInitDialog()
 
   m_EntityList.InsertColumn(0, LPCTSTR("Name"), LVCFMT_LEFT, 200);
   m_EntityList.InsertColumn(1, LPCTSTR("Id"),   LVCFMT_LEFT, 54);
-  
-  for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
+  // Limit search to 10000 entities
+  for (int i=0; i<min(m_pBiotop->getNbOfEntities(), 10000); i++)
   {
     pCurEnt = m_pBiotop->getEntityByIndex(i);
     m_EntityList.InsertItem(i, LPCTSTR(pCurEnt->getLabel().c_str()));

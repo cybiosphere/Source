@@ -73,13 +73,13 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_DefaultFilePath = "";
 
   m_tParam.resize(0);
-  m_pFertilityRate = new CCyclicParam(30,50,8760,"Avarage fertility",PARAM_ENVIRONMENT);
+  m_pFertilityRate = new CCyclicParam(0,50,864,"Avarage fertility",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pFertilityRate);
   m_pSunlightRate = new CCyclicParam(0,100,24,"Sunlight",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
   m_pRadioactivity = new CGenericParam(0,50,50,100,"Radioactivity",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pRadioactivity);
-  m_pTemperature = new CCyclicParam(20,26,8760,"Avarage Temperature",PARAM_ENVIRONMENT); // TBD use global min/max temperature
+  m_pTemperature = new CCyclicParam(20,26,864,"Avarage Temperature",PARAM_ENVIRONMENT); // TBD use global min/max temperature
   m_tParam.push_back(m_pTemperature);
 
   // Build 3D dynamic table
@@ -1714,7 +1714,11 @@ void CBiotop::nextSecond(void)
 
     m_BioTime.seconds=0;
     m_BioTime.hours++;
+    // Cyclic parameters updates
     m_pSunlightRate->NextStep();
+    //m_pFertilityRate->NextStep();
+    m_pTemperature->NextStep();
+
     if (m_BioTime.hours>=24) 
     {
       m_BioTime.hours=0;
