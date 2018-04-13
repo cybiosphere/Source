@@ -194,7 +194,10 @@
 #define IDC_PURPOSE_TXT4                1112
 #define IDC_PURPOSE_TXT5                1113
 #define IDC_PURPOSE_TXT6                1114
+#define IDC_PHYS_WELFARE                1114
 #define IDC_PURPOSE_TXT7                1115
+#define IDC_PHYS_WELFARE2               1115
+#define IDC_FEELING_WELFARE             1115
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -233,9 +236,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        205
+#define _APS_NEXT_RESOURCE_VALUE        207
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1112
+#define _APS_NEXT_CONTROL_VALUE         1115
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

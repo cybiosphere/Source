@@ -157,3 +157,29 @@ double CFeelingWelfare::GetCurFeelingWelfare()
 {
   return (m_CurSatisfaction);
 }
+
+double CFeelingWelfare::GetSensorFeelingImpact(int index, std::string &infoStr)
+{
+  double satisfaction = 0;
+  Sensitivity_t* pSensitivity = NULL;
+  sensorValType* pStimulation = NULL;
+  int captorNb;
+
+  if (index < m_tSensitivity.size())
+  {
+    pSensitivity = m_tSensitivity[index];
+    captorNb = pSensitivity->m_pSens->UpdateAndGetStimulationTable(pStimulation);
+    for (int j = 0; j < captorNb; j++)
+    {
+      satisfaction = pSensitivity->m_pSensitivityTableMask[j] * pStimulation[j];
+    }
+    infoStr = pSensitivity->m_pSens->GetLabel();
+  }
+  else
+  {
+    infoStr = "Bad index";
+  }
+
+  return (satisfaction);
+}
+

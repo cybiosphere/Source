@@ -2497,7 +2497,7 @@ Point_t* CBiotop::getDimension()
 double CBiotop::getFertility(Point_t coord) 
 {
   // coord may be used later
-  return (m_pFertilityRate->getVal() / 24.0);    
+  return m_pFertilityRate->getVal();    
 }
    
 void CBiotop::setFertilityRate(int fertilityRate) 

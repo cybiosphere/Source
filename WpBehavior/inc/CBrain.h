@@ -286,7 +286,8 @@ public:
   int  GetReactionIndexByLabel(string label);
   double GetPreviousFeelingWelfare();
   double GetCurrentFeelingWelfare();
-
+  CFeelingWelfare* GetpFeelingWelfare();
+ 
   bool InitializeNeuronTableNeutral();
   bool HistorizeInput (void);
   bool GetVectorChoiceThresholds (double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold);

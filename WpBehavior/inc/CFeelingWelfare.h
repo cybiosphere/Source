@@ -99,7 +99,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   double ComputeAndGetFeelingWelfare();
-
+  double GetSensorFeelingImpact(int index, std::string &infoStr);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
@@ -108,6 +108,7 @@ public:
   bool AddSensitivity(CSensor* pSens, int tableMaskSize, double* pTableMask);
 
   double GetCurFeelingWelfare();
+
 
 };// end CPhysicalWelfare
 

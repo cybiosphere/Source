@@ -1231,6 +1231,11 @@ double CBrain::GetCurrentFeelingWelfare()
   return (m_CurrentFeelingWelfare);
 }
 
+CFeelingWelfare* CBrain::GetpFeelingWelfare()
+{
+  return (m_pFeelingWelfare);
+}
+
 int CBrain::GetCurrentReactionIndex(void)
 {
   return ((int)m_CurrentReactionChoice);

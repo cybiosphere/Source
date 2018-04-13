@@ -100,48 +100,12 @@ double CPhysicalWelfare::ComputeAndGetHealthVariation()
 {
   double variation = 0;
 
-  if (m_TemperSensitivity != 0)
-  {
-    double temper = m_pEntity->getBiotop()->getTemperature(m_pEntity->getGridCoord(), m_pEntity->getLayer());
-    
-    if (temper<m_TemperMin)
-      variation -= (m_TemperMin-temper) * m_TemperSensitivity / 100.0;
-    else if (temper>m_TemperMax)
-      variation -= (temper-m_TemperMax) * m_TemperSensitivity / 100.0;
-  }
-
-  if (m_HabitatSensitivity != 0)
-  {
-    bool compliant = m_pEntity->checkHabitat();
-    
-    if (compliant == false)
-      variation -= m_HabitatSensitivity;
-  }
-
-  if (m_FertilSensitivity != 0)
-  {
-    double fertil = m_pEntity->getBiotop()->getFertility(m_pEntity->getGridCoord());
-    
-    if (fertil<m_FertilMin)
-      variation -= (m_FertilMin-fertil) * m_FertilSensitivity / 100.0;
-    else if (fertil>m_FertilMax)
-      variation -= (fertil-m_FertilMax) * m_FertilSensitivity / 100.0;
-  }
-
-  if (m_SunlightSensitivity != 0)
-  {
-    double sunlight = m_pEntity->getBiotop()->getSunlight();
-    
-    if (sunlight<m_SunlightMin)
-      variation -= (m_SunlightMin-sunlight) * m_SunlightSensitivity / 100.0;
-    else if (sunlight>m_SunlightMax)
-      variation -= (sunlight-m_SunlightMax) * m_SunlightSensitivity / 100.0;
-  }
-
+  variation += ComputeTemperatureHealthVariation();
+  variation += ComputeHabitatHealthVariation();
+  variation += ComputeFertilityHealthVariation();
+  variation += ComputeSunlightHealthVariation();
   variation -= m_DiseaseMalus;
-
   variation -= m_InjuryMalus;
-  
   variation += m_RecoveryBonus;
 
   // Vital needs not reached => quick death
@@ -149,6 +113,64 @@ double CPhysicalWelfare::ComputeAndGetHealthVariation()
     variation -= 10.0;
 
   return (variation);
+}
+
+double CPhysicalWelfare::ComputeTemperatureHealthVariation()
+{
+  double variation = 0;
+  if (m_TemperSensitivity != 0)
+  {
+    double temper = m_pEntity->getBiotop()->getTemperature(m_pEntity->getGridCoord(), m_pEntity->getLayer());
+
+    if (temper < m_TemperMin)
+      variation = - (m_TemperMin - temper) * m_TemperSensitivity / 100.0;
+    else if (temper > m_TemperMax)
+      variation = - (temper - m_TemperMax) * m_TemperSensitivity / 100.0;
+  }
+  return variation;
+}
+
+double CPhysicalWelfare::ComputeHabitatHealthVariation()
+{
+  double variation = 0;
+  if (m_HabitatSensitivity != 0)
+  {
+    bool compliant = m_pEntity->checkHabitat();
+
+    if (compliant == false)
+      variation = - m_HabitatSensitivity;
+  }
+  return variation;
+}
+
+double CPhysicalWelfare::ComputeFertilityHealthVariation()
+{
+  double variation = 0;
+  if (m_FertilSensitivity != 0)
+  {
+    double fertil = m_pEntity->getBiotop()->getFertility(m_pEntity->getGridCoord());
+
+    if (fertil < m_FertilMin)
+      variation = - (m_FertilMin - fertil) * m_FertilSensitivity / 100.0;
+    else if (fertil > m_FertilMax)
+      variation = - (fertil - m_FertilMax) * m_FertilSensitivity / 100.0;
+  }
+  return variation;
+}
+
+double CPhysicalWelfare::ComputeSunlightHealthVariation()
+{
+  double variation = 0;
+  if (m_SunlightSensitivity != 0)
+  {
+    double sunlight = m_pEntity->getBiotop()->getSunlight();
+
+    if (sunlight < m_SunlightMin)
+      variation = - (m_SunlightMin - sunlight) * m_SunlightSensitivity / 100.0;
+    else if (sunlight > m_SunlightMax)
+      variation = - (sunlight - m_SunlightMax) * m_SunlightSensitivity / 100.0;
+  }
+  return variation;
 }
 
 //===========================================================================
@@ -208,6 +230,11 @@ double CPhysicalWelfare::GetInjuryMalus  (void)
 void CPhysicalWelfare::SetRecoveryBonus  (double bonus)
 {
   m_RecoveryBonus = bonus;
+}
+
+double CPhysicalWelfare::GetRecoveryBonus(void)
+{
+  return m_RecoveryBonus;
 }
 
 bool CPhysicalWelfare::IsTemperSensSet()

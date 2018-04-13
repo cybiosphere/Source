@@ -116,6 +116,10 @@ public:
 public:
   double ComputeAndGetHealthVariation();
 
+  double ComputeTemperatureHealthVariation();
+  double ComputeHabitatHealthVariation();
+  double ComputeFertilityHealthVariation();
+  double ComputeSunlightHealthVariation();
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
@@ -132,6 +136,7 @@ public:
   void   SetInjuryMalus   (double malus);
   double GetInjuryMalus   (void);
   void   SetRecoveryBonus (double bonus);
+  double GetRecoveryBonus(void);
 
   bool IsTemperSensSet();
   bool IsHabitatSensSet();

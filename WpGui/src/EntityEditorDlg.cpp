@@ -28,6 +28,7 @@ distribution.
 #include "stdafx.h"
 #include "cybiosphere.h"
 #include "EntityEditorDlg.h"
+#include "CPhysicalWelfare.h""
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,6 +45,9 @@ extern CCybiosphereApp theApp;
 CEntityEditorDlg::CEntityEditorDlg(CBasicEntity* pEntity,CWnd* pParent /*=NULL*/)
 	: CDialog(CEntityEditorDlg::IDD, pParent)
 {
+  m_PhysWelfareText = _T("");
+  m_FeelingWelfareText = _T("");
+
   m_pEntity = pEntity;
 
   for (int i=0;i<MAX_NUMBER_PARAMETER_DISPLAY;i++)
@@ -71,6 +75,8 @@ void CEntityEditorDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CEntityEditorDlg)
 	DDX_Control(pDX, IDC_BUTTON_SAVE, m_ButtonSave);
 	DDX_Control(pDX, IDC_BUTTON_LOAD, m_ButtonLoad);
+  DDX_Text(pDX, IDC_PHYS_WELFARE, m_PhysWelfareText);
+  DDX_Text(pDX, IDC_FEELING_WELFARE, m_FeelingWelfareText);
 	//}}AFX_DATA_MAP
 }
 
@@ -172,6 +178,58 @@ BOOL CEntityEditorDlg::OnInitDialog()
   HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN); 
   m_ButtonSave.SetIcon(saveIco);
   m_ButtonLoad.SetIcon(loadIco);
+
+  // Fill physical welfare string
+  m_PhysWelfareText = "";
+  if ((m_pEntity != NULL) && (m_pEntity->getpPhysicalWelfare() != NULL))
+  {
+    CString tempStr;
+    tempStr.Format("Recovery :\t %f \r\nTemperature :\t %f \r\nHabitat :\t\t %f \r\nDeases :\t\t-%f \r\nInjury :\t\t-%f \r\n",
+      m_pEntity->getpPhysicalWelfare()->GetRecoveryBonus(),
+      m_pEntity->getpPhysicalWelfare()->ComputeTemperatureHealthVariation(),
+      m_pEntity->getpPhysicalWelfare()->ComputeHabitatHealthVariation(),
+      m_pEntity->getpPhysicalWelfare()->GetDiseaseMalus(),
+      m_pEntity->getpPhysicalWelfare()->GetInjuryMalus());
+    m_PhysWelfareText += tempStr;
+
+    if ((m_pEntity->getClass() >= CLASS_VEGETAL_FIRST) && (m_pEntity->getClass() < CLASS_ANIMAL_FIRST))
+    {
+      tempStr.Format("Fertility :\t\t %f \r\nSunlight :\t\t %f \r\n",
+        m_pEntity->getpPhysicalWelfare()->ComputeFertilityHealthVariation(),
+        m_pEntity->getpPhysicalWelfare()->ComputeSunlightHealthVariation());
+      m_PhysWelfareText += tempStr;
+    }
+
+    if (!m_pEntity->checkVitalNeedsOk())
+    {
+      tempStr.Format("Vital needs :\t-10.000000 \r\n");
+      m_PhysWelfareText += tempStr;
+    }
+
+    tempStr.Format("\r\nTotal :\t\t %f \r\n",
+      m_pEntity->getpPhysicalWelfare()->ComputeAndGetHealthVariation());
+    m_PhysWelfareText += tempStr;
+  }
+
+  // Fill feeling welfare string
+  m_FeelingWelfareText = "";
+  if ((m_pEntity != NULL) && (m_pEntity->getBrain() != NULL) && (m_pEntity->getBrain()->GetpFeelingWelfare() != NULL))
+  {
+    CFeelingWelfare* pFeeling = m_pEntity->getBrain()->GetpFeelingWelfare();
+    CString tempStr;
+    std::string sensorStr;
+    double level = 0;
+    level = pFeeling->GetSensorFeelingImpact(0, sensorStr);
+    tempStr.Format(" :\t\t %f \r\n", level);
+    m_FeelingWelfareText += sensorStr.c_str() + tempStr;
+    level = pFeeling->GetSensorFeelingImpact(1, sensorStr);
+    tempStr.Format(" :\t\t %f \r\n", level);
+    m_FeelingWelfareText += sensorStr.c_str() + tempStr;
+    tempStr.Format("\r\nTotal :\t\t %f \r\n", pFeeling->ComputeAndGetFeelingWelfare());
+    m_FeelingWelfareText += tempStr;
+  }
+
+  UpdateData(false);
   
   DisplayParamSliders();
 

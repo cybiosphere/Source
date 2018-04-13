@@ -48,6 +48,8 @@ public:
 	enum { IDD = IDD_DLG_ENTITY_EDITOR };
 	CButton	m_ButtonSave;
 	CButton	m_ButtonLoad;
+  CString	m_PhysWelfareText;
+  CString	m_FeelingWelfareText;
 	//}}AFX_DATA
 
 
@@ -73,6 +75,8 @@ protected:
     CParameterSlider* m_pParamSlider[MAX_NUMBER_PARAMETER_DISPLAY];
 
     void DisplayParamSliders();
+public:
+  afx_msg void OnLbnSelchangeList2();
 };
 
 //{{AFX_INSERT_LOCATION}}
