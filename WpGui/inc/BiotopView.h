@@ -47,7 +47,7 @@ protected: // create from serialization only
 public:
 	CBiotopDoc* GetDocument();
   void SetZoomRate (int zoomRate);
-  void SetSpeedRate (int speedRate);
+  void SetSpeedRate (double speedRate);
   void StartTimers();
   void SwitchToDisplay2d();
   void SwitchToDisplay3d();

@@ -2627,7 +2627,7 @@ void CAnimal::nextSecond()
   {
     int currentSpeed = getCurrentSpeed();
 
-    // Speed management step1
+    // Speed management step1 (inertia on initial speed)
     if (currentSpeed>0)
       ExecuteMoveForwardAction(0,0,currentSpeed/4);
     else if (currentSpeed<0)
@@ -2679,7 +2679,7 @@ void CAnimal::nextSecond()
     if (m_pBrain->GetCurrentReactionIndex() != prevReactIndex)
       forceHasChanged();
 
-    // Speed management step2
+    // Speed management step2 (new speed)
     currentSpeed = getCurrentSpeed();
     if (currentSpeed>0)
       ExecuteMoveForwardAction(0,0,3*currentSpeed/4);

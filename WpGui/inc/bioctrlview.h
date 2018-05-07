@@ -110,6 +110,7 @@ protected:
 	afx_msg void OnReleasedcaptureSliderSpeed(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnReleasedcaptureSliderZoom(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEdit();
+  afx_msg void OnDefaultSpeed();
 	afx_msg void OnCheckStopOnEv();
 	afx_msg void OnSelchangeComboWind();
 	//}}AFX_MSG

@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CBioCtrlView, CFormView)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_SPEED, OnReleasedcaptureSliderSpeed)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_ZOOM, OnReleasedcaptureSliderZoom)
 	ON_BN_CLICKED(IDC_EDIT_BIOTOP, OnEdit)
+  ON_BN_CLICKED(IDC_EDIT_BIOTOP2, OnDefaultSpeed)
 	ON_BN_CLICKED(IDC_CHECK2, OnCheckStopOnEv)
 	ON_CBN_SELCHANGE(IDC_COMBO_WIND, OnSelchangeComboWind)
 	//}}AFX_MSG_MAP
@@ -126,8 +127,7 @@ void CBioCtrlView::OnInitialUpdate()
   m_SliderSpeed.SetRange(0,100);
   m_SliderSpeed.SetPos(1);
   m_SliderSpeed.SetPageSize(5);
-  //theApp.GetBiotopViewPtr()->SetSpeedRate(0);
-
+  theApp.GetBiotopViewPtr()->SetSpeedRate(1.2);
   m_UserSpeed = 1;
 
   if (theApp.GetBiotop()->getWindStrenght()==0)
@@ -195,22 +195,22 @@ bool CBioCtrlView::SetBiotop(CBiotop* pBiotop)
   m_pBiotop = pBiotop;
 
   m_pParamCtrl[0] = new CParameterCrtl();
-  CRect rect(25, 118, 225, 128);
+  CRect rect(25, 118, 225, 127);
   m_pParamCtrl[0]->CreateNewParam(m_pBiotop->getParamFertility(),rect,this,1004);
 
   m_pParamCtrl[1] = new CParameterCrtl();
-  rect.top += 40;
-  rect.bottom += 40;
+  rect.top += 37;
+  rect.bottom += 37;
   m_pParamCtrl[1]->CreateNewParam(m_pBiotop->getParamSunlight(),rect,this,1004);
 
   m_pParamCtrl[2] = new CParameterCrtl();
-  rect.top += 40;
-  rect.bottom += 40;
+  rect.top += 37;
+  rect.bottom += 37;
   m_pParamCtrl[2]->CreateNewParam(m_pBiotop->getParamRadioactivity(),rect,this,1004);
 
   m_pParamCtrl[3] = new CParameterCrtl();
-  rect.top += 40;
-  rect.bottom += 40;
+  rect.top += 37;
+  rect.bottom += 37;
   m_pParamCtrl[3]->CreateNewParam(m_pBiotop->getParamTemperature(),rect,this,1004);
 
   return (true);
@@ -302,6 +302,15 @@ void CBioCtrlView::OnEdit()
   // Redraw biotop View
   theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
 }
+
+void CBioCtrlView::OnDefaultSpeed()
+{
+  theApp.GetBiotopViewPtr()->SetSpeedRate(1.2);
+  m_SliderSpeed.SetPos(1);
+  m_UserSpeed = m_SliderSpeed.GetPos();
+  RedrawWindow();
+}
+
 
 void CBioCtrlView::OnCheckStopOnEv() 
 {

@@ -475,14 +475,14 @@ void CBiotopView::StartTimers()
   SetSpeedRate(0);
 }
 
-void CBiotopView::SetSpeedRate (int speedRate)
+void CBiotopView::SetSpeedRate (double speedRate)
 {
   KillTimer(SECOND_TIMER_ID);
   
   if (speedRate>0)
   {
     m_pBioDisplay->SetNbRefreshPerStep((1000/speedRate-9)/200+1);
-    SetTimer(SECOND_TIMER_ID,1000/speedRate-9,NULL);  
+    SetTimer(SECOND_TIMER_ID,1000.0/speedRate-9.0,NULL);  
   }
   else
   {
