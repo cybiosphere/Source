@@ -389,7 +389,7 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
   xmlDoc.Parse(xmlBuffer.get_data());
 
   CBasicEntity* pNewEntity = m_pBiotop->createEntity(&xmlDoc, ".\\temp\\");
-	log_event("events", "Biotop update full entity: %1", pNewEntity->getLabel());
+	log_event("events", "Biotop update full entity: %1 state %2", pNewEntity->getLabel(), pNewEntity->getStatus());
 
   // Update all entities with same name
   CBasicEntity* pCurEntity;
@@ -416,7 +416,7 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
   if (bFound == false)
   {
     CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
-    log_event("events", "Biotop add entity position: entityID %1 label %2 ",pClonedNewEntity->getId(),  pClonedNewEntity->getLabel());
+    log_event("events", "Biotop add entity position: entityID %1 label %2 state %3",pClonedNewEntity->getId(),  pClonedNewEntity->getLabel(), pClonedNewEntity->getStatus());
     if (!m_pBiotop->addRemoteCtrlEntity(pClonedNewEntity->getId(), pClonedNewEntity, pClonedNewEntity->getStepCoord(), pClonedNewEntity->getLayer()))
     {
       delete pClonedNewEntity;

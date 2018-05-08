@@ -381,6 +381,9 @@ CBasicEntity* CBiotop::createCloneEntity(CBasicEntity* pModelEntity)
   for (int i=0; i<pNewEntity->getNumParameter(); i++)
     pNewEntity->getParameter(i)->forceVal(pModelEntity->getParameter(i)->getVal());
 
+  // Copie Status
+  pNewEntity->setStatus(pModelEntity->getStatus());
+
   return pNewEntity;
 }
 

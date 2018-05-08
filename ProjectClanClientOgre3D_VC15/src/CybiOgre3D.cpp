@@ -71,6 +71,7 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
   if (pNewMesh!=NULL)
   {
     pNewMesh->pBasicEntity = pBasicEntity;
+    pNewMesh->entityId = pBasicEntity->getId();
     pNewMesh->pMeshEnt = meshEnt;
     pNewMesh->targetBiotopCoord = coord;
     pNewMesh->curDirection = pBasicEntity->getStepDirection();
@@ -101,6 +102,26 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
   return true;
 }
 
+void updateMeshEntityPtr(int meshIndex, CBasicEntity* pBasicEntity)
+{
+  m_tMesh[meshIndex]->pBasicEntity = pBasicEntity;
+  m_tMesh[meshIndex]->entityId = pBasicEntity->getId();
+}
+
+int getMeshEntityIndex(entityIdType entityId)
+{
+  int meshIndex = -1;
+  for (int i = 0; i < m_tMesh.size(); ++i)
+  {
+    if (m_tMesh[i]->entityId == entityId)
+    {
+      meshIndex = i;
+      break;
+    }
+  }
+  return meshIndex;
+}
+
 CybiOgre3DFrameListener::CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam)
 : ExampleFrameListener(win, cam), mSceneMgr(sceneMgr)
 {
@@ -112,30 +133,6 @@ CybiOgre3DFrameListener::CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderW
   m_bPlayerActionTurnLeftOnGoing = false;
   m_bPlayerActionTurnRightOnGoing = false;
   m_bPlayerActionAttacktOnGoing = false;
-
-  /*
-  // setup GUI system
-  mGUIRenderer = new CEGUI::OgreCEGUIRenderer(mWindow, Ogre::RENDER_QUEUE_OVERLAY, false, 3000, mSceneMgr);
-  // load scheme and set up defaults
-  mGUISystem = new CEGUI::System(mGUIRenderer, (CEGUI::ResourceProvider *)0, (CEGUI::XMLParser*)0,
-      (CEGUI::ScriptModule*)0, (CEGUI::utf8*)"CybiosphereCegui.config");
-  CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-
-  mGuiRenderer = CEGUI::System::getSingleton().getRenderer();
-  mGuiAvg   = CEGUI::WindowManager::getSingleton().getWindow("OPAverageFPS");
-  mGuiCurr  = CEGUI::WindowManager::getSingleton().getWindow("OPCurrentFPS");
-  mGuiBest  = CEGUI::WindowManager::getSingleton().getWindow("OPBestFPS");
-  mGuiWorst = CEGUI::WindowManager::getSingleton().getWindow("OPWorstFPS");
-  mGuiTris  = CEGUI::WindowManager::getSingleton().getWindow("OPTriCount");
-  mGuiDbg   = CEGUI::WindowManager::getSingleton().getWindow("OPDebugMsg");
-  mRoot	  = CEGUI::WindowManager::getSingleton().getWindow("root");
-
-  mCompositorSelectorViewManager = new ItemSelectorViewManager("CompositorSelectorWin");
-  // tell view manager to notify us when an item changes selection state
-  mCompositorSelectorViewManager->setItemSelectorController(this);
-
-  mCompositorSelectorViewManager->addItemSelector("Toto");
-  */
 }
 
 bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
@@ -163,11 +160,6 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
     forcePlayerAction();
     m_pBiotop->nextSecond();
     m_secCnt = 0;
-    /*for ( i=m_tMesh.size()-1; i>=0; i--)
-    {
-      setMeshEntityPosition(i);
-      updateMeshEntityNewSecond(i);
-    }*/
 
     BiotopEvent_t bioEvent;
     CBasicEntity* pEntity;
@@ -179,9 +171,22 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
       {
       case BIOTOP_EVENT_ENTITY_MOVED:
       case BIOTOP_EVENT_ENTITY_CHANGED:
+      {
+        /* TODO: Replace from Client::on_event_biotop_updateentityposition
+        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
+        int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+        setMeshEntityPreviousPosition(meshIndex);
+        updateMeshEntityNewSecond(meshIndex);*/
         break;
+      }
       case BIOTOP_EVENT_ENTITY_MODIFIED:
+      {
+        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
+        int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+        updateMeshEntityPtr(meshIndex, pEntity);
+        updateMeshEntityNewSecond(meshIndex);
         break;
+      }
       case BIOTOP_EVENT_ENTITY_ADDED:
         pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
         createMeshEntity(mSceneMgr, pEntity);
@@ -204,67 +209,13 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   return true;
 }
 
-/*bool CybiOgre3DFrameListener::createMeshEntity (CBasicEntity* pBasicEntity)
-{
-  if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
-    return false;
-
-  Point_t coord = pBasicEntity->getStepCoord();
-
-  Entity *meshEnt;
-  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
-  string nameFile = pBasicEntity->getSpecieName() + ".mesh";
-  double scale = pBasicEntity->getSizeRate();
-  meshEnt = mSceneMgr->createEntity(nameEnt, nameFile);
-
-  MeshEntity_t* pNewMesh = new MeshEntity_t;
-
-  if (pNewMesh!=NULL)
-  {
-    pNewMesh->pBasicEntity = pBasicEntity;
-    pNewMesh->pMeshEnt = meshEnt;
-    pNewMesh->targetBiotopCoord = coord;
-    pNewMesh->curDirection = pBasicEntity->getStepDirection();
-    pNewMesh->isMoving = false;
-    pNewMesh->scale = scale;
-    pNewMesh->yPos = scale-1.0;
-    pNewMesh->pMeshNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
-    pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
-    pNewMesh->pMeshNode->setScale(scale,scale,scale);
-
-    if (pBasicEntity->getBrain() != NULL)
-    {
-      pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
-      pNewMesh->pAnimState->setEnabled(true);
-      pNewMesh->pAnimState->setLoop(true); 
-    }
-    else
-    {
-      pNewMesh->pAnimState = NULL;
-    }
-
-    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
-    m_tMesh.push_back(pNewMesh);
-  }
-
-  return true;
-}*/
-
 void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 {
   CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
-  /*if ( pBasicEntity->isToBeRemoved() )
-  {
-    mSceneMgr->destroyEntity(m_tMesh[meshIndex]->pMeshEnt);
-    m_tMesh.erase(m_tMesh.begin() + meshIndex);
-    return;
-  }*/
 
-  if ( ( pBasicEntity->getStatus() == STATUS_DEAD ) /*&& (m_tMesh[meshIndex]->strCurACtion != "Sleep")*/ )
+  if ( pBasicEntity->getStatus() == STATUS_DEAD )
   {
-    if ( pBasicEntity->getClass()>=CLASS_ANIMAL_FIRST )
+    if ( pBasicEntity->getClass() >= CLASS_ANIMAL_FIRST )
     {
       Point_t coord = pBasicEntity->getStepCoord();
       m_tMesh[meshIndex]->pAnimState->setEnabled(false);
@@ -280,7 +231,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     // Fred: else use dead mesh
   }
 
-  if ( pBasicEntity->isAlive()/*pBasicEntity->checkIfhasChangedAndClear()*/ )
+  if ( pBasicEntity->isAlive() )
   {
     Point_t coord = pBasicEntity->getStepCoord();
     Point_t prevCoord = m_tMesh[meshIndex]->targetBiotopCoord;
@@ -312,11 +263,11 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     double squareLen = m_tMesh[meshIndex]->translateVect3.squaredLength();
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
-    if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") || (labelAction == "Accelerate") )
+    if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") || (labelAction == "Walk") )
     {
       labelAction = "Walk";
     }
-    else if ( (labelAction == "Nothing") || (labelAction == "Decelerate") || (labelAction == "Stop"))
+    else if ( (labelAction == "Nothing") || (labelAction == "Idle") || (labelAction == "Stop"))
     {
       labelAction = "Idle";
     }
@@ -373,21 +324,12 @@ void CybiOgre3DFrameListener::setMeshEntityPreviousPosition(int meshIndex)
 
 void CybiOgre3DFrameListener::updateInfoParamTime()
 {
-	// Diffusion rate for chemical 2
-  //BiotopTime_t time = m_pBiotop->getBiotopTime();
-/*	OverlayManager::getSingleton().getOverlayElement("Cybiosphere/Info/Param_Time")->setCaption("Time: " +
-                                                    StringConverter::toString(time.days,4) + " "  +
-                                                    StringConverter::toString(time.hours,2,'0') + ":" + 
-                                                    StringConverter::toString(time.seconds/60,2,'0') + ":" + 
-                                                    StringConverter::toString(time.seconds%60,2,'0') ) ;		*/
+
 }
 
 void CybiOgre3DFrameListener::updateInfoPopulation()
 {
-/*OverlayManager::getSingleton().getOverlayElement("Cybiosphere/Info/Param_NbAnim")->setCaption("Nb animals: " +
-                                                    StringConverter::toString(m_pBiotop->getNbOfAnimals(),4) ) ;
-OverlayManager::getSingleton().getOverlayElement("Cybiosphere/Info/Param_NbVeget")->setCaption("Nb vegetals: " +
-                                                    StringConverter::toString(m_pBiotop->getNbOfVegetals(),4) ) ;*/
+
 }
 
 void CybiOgre3DFrameListener::speedVariation(int variation)
@@ -403,9 +345,6 @@ void CybiOgre3DFrameListener::speedVariation(int variation)
       m_TimeSpeed += variation;
     }
   }
-
- /* OverlayManager::getSingleton().getOverlayElement("Cybiosphere/Info/Param_Speed")->setCaption("[+/-] Speed: " +
-                                                    StringConverter::toString(m_TimeSpeed,3) );*/
 }
 
 void CybiOgre3DFrameListener::setPlayerActionIdle()
@@ -544,44 +483,6 @@ int getStringSectionFromFileOgre(
 
 CybiOgre3DApp::CybiOgre3DApp()
 {
-  /*m_pBiotop = new CBiotop(60,40,3);
-  m_pBiotop->initGridDefaultLayerType();
-  m_pBiotop->initGridDefaultAltitude();
-  m_pBiotop->initGridEntity();
-  m_pBiotop->setDefaultEntitiesForTest();*/
-
-  /*m_pBiotop = new CBiotop(0,0,0);
-  m_pBiotop->loadFromXmlFile("biotop.bio", ".\\Data\\");*/
-  /*string resuStr = "";
-  string fileIni = ".\\Cybiosphere.ini";
-  BOOL resu = getStringSectionFromFileOgre("CYBIOSPHERE", "Biotop", "", resuStr, 512, fileIni);
-
-  if (resuStr != "")
-  {
-    string resuDataPath = "";
-    m_pBiotop = new CBiotop(0,0,0);
-    BOOL resu = getStringSectionFromFileOgre("CYBIOSPHERE", "DataPath", "", resuDataPath, 512, fileIni);
-    if (resuDataPath != "")
-      m_pBiotop->loadFromXmlFile(resuStr, resuDataPath);
-    else
-      m_pBiotop->loadFromXmlFile(resuStr, ".\\");
-  }
-  else
-  {
-    m_pBiotop = new CBiotop(80,40,3);
-    m_pBiotop->initGridDefaultLayerType();
-    m_pBiotop->initGridDefaultAltitude();
-    m_pBiotop->initGridEntity();
-    m_pBiotop->setDefaultEntitiesForTest();
-  }
-
-  CBasicEntity* pPlayer = m_pBiotop->getEntityByName("player");
-
-  if ((pPlayer != NULL) && (pPlayer->getClass() >= CLASS_ANIMAL_FIRST))
-    SetEntityPlayer(pPlayer);
-  else
-    SetEntityPlayer(NULL);*/
-
   m_pBiotop = NULL;
 }
 
@@ -652,12 +553,6 @@ void CybiOgre3DApp::createScene(void)
   // Put in a bit of fog for the hell of it
   mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0002);
 
-  /*int i;
-  for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
-  {
-    createMeshEntity(m_pBiotop->getEntityByIndex(i));
-  }*/
-
   CWater* waterGlobalEntity = new CWater();
   CGrass* grassGlobalEntity = new CGrass();
   Point_t coord;
@@ -718,17 +613,6 @@ void CybiOgre3DApp::createScene(void)
 #endif
   l->setDiffuseColour(1.0, 0.9, 0.8);
 
-        /*mSunLight = mSceneMgr->createLight("SunLight");
-        mSunLight->setType(Light::LT_SPOTLIGHT);
-        mSunLight->setPosition(1500,1750,1300);
-        mSunLight->setSpotlightRange(Degree(30), Degree(50));
-        Vector3 dir;
-        dir = -mSunLight->getPosition();
-        dir.normalise();
-        mSunLight->setDirection(dir);
-        mSunLight->setDiffuseColour(0.35, 0.35, 0.38);
-        mSunLight->setSpecularColour(0.9, 0.9, 1);*/
-
   // Position the camera
   mCamera->setPosition(100,20,0);
   mCamera->lookAt(0,10,0);
@@ -736,10 +620,6 @@ void CybiOgre3DApp::createScene(void)
   // Report whether hardware skinning is enabled or not
   Technique* t = ent->getSubEntity(0)->getMaterial()->getBestTechnique();
   Pass* p = t->getPass(0);
-  /*if (p->hasVertexProgram() && p->getVertexProgram()->isSkeletalAnimationIncluded())
-  mDebugText = "Hardware skinning is enabled";
-  else
-  mDebugText = "Software skinning is enabled";*/
 
   Plane plane;
   plane.normal = Vector3::UNIT_Y;
@@ -748,29 +628,9 @@ void CybiOgre3DApp::createScene(void)
     ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
     4000,4000,20,20,true,1,60,60,Vector3::UNIT_Z);
   Entity* pPlaneEnt = mSceneMgr->createEntity( "plane", "Myplane" );
-  //pPlaneEnt->setMaterialName("Examples/Rockwall");
   pPlaneEnt->setMaterialName("Cybios/Ground");
   pPlaneEnt->setCastShadows(false);
   mSceneMgr->getRootSceneNode()->createChildSceneNode(Vector3(0,99,0))->attachObject(pPlaneEnt);
-
-	// show GUI
-/*	m_Overlay = OverlayManager::getSingleton().getByName("Cybiosphere/InfoOverlay");    
-	m_Overlay->show();*/
-
-  // clean server event
-  //m_pClient->process_new_events();
-  //m_pClient->check_if_event_next_second_end_and_clean();
- // wait for next_second event
- /*while (!initComplete)
-  {
-    System::sleep(10);
-    m_pClient->process_new_events();
-    if (m_pClient->check_if_event_next_second_end_and_clean())
-    {
-      System::sleep(500/m_pClient->get_biotop_speed()); // desynchro server and display
-      initComplete = true;
-    }
-  }*/
 
   initComplete = true;
 }
@@ -782,55 +642,6 @@ void CybiOgre3DApp::createFrameListener(void)
   mRoot->addFrameListener(mFrameListener);
   mFrameListener->speedVariation(0);
 }
-
-
-/*bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity)
-{
-  if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
-    return false;
-
-  Point_t coord = pBasicEntity->getStepCoord();
-
-  Entity *meshEnt;
-  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
-  string nameFile = pBasicEntity->getSpecieName() + ".mesh";
-  double scale = pBasicEntity->getSizeRate();
-  meshEnt = mSceneMgr->createEntity(nameEnt, nameFile);
-
-  MeshEntity_t* pNewMesh = new MeshEntity_t;
-
-  if (pNewMesh!=NULL)
-  {
-    pNewMesh->pBasicEntity = pBasicEntity;
-    pNewMesh->pMeshEnt = meshEnt;
-    pNewMesh->targetBiotopCoord = coord;
-    pNewMesh->curDirection = pBasicEntity->getStepDirection();
-    pNewMesh->isMoving = false;
-    pNewMesh->scale = scale;
-    pNewMesh->yPos = scale-1.0;
-    pNewMesh->pMeshNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
-    pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
-    pNewMesh->pMeshNode->setScale(scale,scale,scale);
-
-    if (pBasicEntity->getBrain() != NULL)
-    {
-      pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
-      pNewMesh->pAnimState->setEnabled(true);
-      pNewMesh->pAnimState->setLoop(true); 
-    }
-    else
-    {
-      pNewMesh->pAnimState = NULL;
-    }
-
-    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
-    m_tMesh.push_back(pNewMesh);
-  }
-
-  return true;
-}*/
 
 int CybiOgre3DApp::getMeshEntityIndex(CBasicEntity* pBasicEntity)
 {
@@ -845,6 +656,7 @@ int CybiOgre3DApp::getMeshEntityIndex(CBasicEntity* pBasicEntity)
   }
   return meshIndex;
 }
+
 
 void CybiOgre3DApp::setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity)
 {
@@ -865,6 +677,7 @@ void CybiOgre3DApp::updateMeshEntityNewSecond(CBasicEntity* pBasicEntity)
   }
   return ;
 }
+
 
 bool CybiOgre3DApp::SetEntityPlayer(CBasicEntity* pEntity)
 {

@@ -49,6 +49,7 @@ LGPL like the rest of the OGRE engine.
 typedef struct 
 {
   CBasicEntity*        pBasicEntity;
+  entityIdType         entityId;
   Entity*              pMeshEnt;
   SceneNode*           pMeshNode;
   AnimationState*      pAnimState;
@@ -143,9 +144,8 @@ protected:
 
   // Create new frame listener
   void createFrameListener(void);
-
-  //bool createMeshEntity (CBasicEntity* pBasicEntity);
   int getMeshEntityIndex(CBasicEntity* pBasicEntity);
+  int getMeshEntityIndex(entityIdType entityId);
   bool SetEntityPlayer(CBasicEntity* pEntity);
 };
 
