@@ -192,6 +192,37 @@ bool CMeasure::CheckEvent(void)
 }
 
 //===========================================================================
+// Save in File
+//===========================================================================
+bool CMeasure::saveInFile(string fileNameWithPath)
+{
+  int i;
+  string tmpStr;
+  string savedMeasure = GetLabel() + "\n";
+  int nbPoints = min(MAX_MEASUREMENT_DATA_SIZE, m_TotalMeasNbFromStart);
+
+  for (i = 0; i < nbPoints; i++)
+  {
+    tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
+    savedMeasure += tmpStr;
+  }
+  savedMeasure += "\n";
+  for (i = 0; i < nbPoints; i++)
+  {
+    tmpStr = FormatString("%f;", m_tCurValTable[i].value);
+    savedMeasure += tmpStr;
+  }
+  savedMeasure += "\n\n";
+
+  ofstream f1;
+  f1.open(fileNameWithPath.c_str(), std::ofstream::out | std::ofstream::app);
+  f1.write(savedMeasure.c_str(), savedMeasure.length());
+  f1.close();
+
+  return (true);
+}
+
+//===========================================================================
 // Get / Set for attributes
 //===========================================================================
 int CMeasure::GetId()

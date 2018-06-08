@@ -310,6 +310,7 @@ public:
    int       getNbOfMeasures(void); 
    void      replaceMeasure(int id, CMeasure* pMeasure);
    bool      checkMeasureEvents();
+   void      saveAllMeasuresInFile(string fileNameWithPath);
 
 //---------------------------------------------------------------------------
 // Event management

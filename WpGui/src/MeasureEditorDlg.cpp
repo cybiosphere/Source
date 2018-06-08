@@ -108,8 +108,16 @@ void CMeasureEditorDlg::OnButtonLoad()
 
 void CMeasureEditorDlg::OnButtonSave() 
 {
-  // FRED: TBD
-
+  CString fileName;
+  CFileDialog fileDlg(false, LPCTSTR("csv"), LPCTSTR(""), 0, LPCTSTR("Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Export in csv file");
+  long nResp = fileDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    fileName = fileDlg.GetPathName();
+    if (m_pBiotop!=NULL)
+      m_pBiotop->saveAllMeasuresInFile((char*)fileName.GetBuffer(0));
+  }
 }
 
 BOOL CMeasureEditorDlg::OnInitDialog() 

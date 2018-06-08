@@ -2119,6 +2119,15 @@ bool CBiotop::checkMeasureEvents()
   return (resu);
 }
 
+void CBiotop::saveAllMeasuresInFile(string fileNameWithPath)
+{
+  for (int i = 0; i<m_tMeasures.size(); i++)
+  {
+    m_tMeasures[i]->saveInFile(fileNameWithPath);
+  }
+}
+
+
 //===========================================================================
 // Event management
 //===========================================================================
