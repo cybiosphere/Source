@@ -108,7 +108,7 @@ public:
   GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection);
   void NextDay();
 
-  bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos);
+  bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut = false);
   int GetSuccessWeight(int purposeIndex, Point_t geoMapPos);
   DWORD GettPurposeUniqueId (int index);
 

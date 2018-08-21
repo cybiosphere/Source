@@ -151,7 +151,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
   if (UidIdx > -1)
   {
     Point_t currentMapCoord;
-    if (GridCoordToGeoMapCoord(gridCenterPos, centerMapCoord) == true)
+    if (GridCoordToGeoMapCoord(gridCenterPos, centerMapCoord, true) == true)
     {
       curWeight = GetSuccessWeight(UidIdx, centerMapCoord);
       if (curWeight>0)
@@ -297,18 +297,33 @@ void CGeoMap::NextDay()
 // private methods
 //===========================================================================
 
-bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos)
+bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut)
 {
   Point_t geoMapCoord;
   geoMapCoord.x = gridPos.x / NB_GRID_PER_GEOMAP_SQUARE;
   geoMapCoord.y = gridPos.y / NB_GRID_PER_GEOMAP_SQUARE;
 
-  if( (geoMapCoord.x < m_GeoCoordStart.x) || (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize)) 
-   || (geoMapCoord.y < m_GeoCoordStart.y) || (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize)) )
+  if(giveEdgePositionWhenOut)
   {
-    geoMapPos.x = -1;
-    geoMapPos.y = -1;
-    return false;
+    if (geoMapCoord.x < m_GeoCoordStart.x)
+      geoMapCoord.x = m_GeoCoordStart.x;
+    else if (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize))
+      geoMapCoord.x = m_GeoCoordStart.x + m_GeoMapSize - 1;
+
+    if (geoMapCoord.y < m_GeoCoordStart.y)
+      geoMapCoord.y = m_GeoCoordStart.y;
+    else if (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize))
+      geoMapCoord.y = m_GeoCoordStart.y + m_GeoMapSize - 1;
+  }
+  else
+  {
+    if( (geoMapCoord.x < m_GeoCoordStart.x) || (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize))
+     || (geoMapCoord.y < m_GeoCoordStart.y) || (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize)) )
+    {
+      geoMapPos.x = -1;
+      geoMapPos.y = -1;
+      return false;
+    }
   }
 
   geoMapPos.x = geoMapCoord.x - m_GeoCoordStart.x;
