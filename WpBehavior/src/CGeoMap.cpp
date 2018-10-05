@@ -151,7 +151,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
   if (UidIdx > -1)
   {
     Point_t currentMapCoord;
-    if (GridCoordToGeoMapCoord(gridCenterPos, centerMapCoord, true) == true)
+    if (GridCoordToGeoMapCoord(gridCenterPos, centerMapCoord) == true)
     {
       curWeight = GetSuccessWeight(UidIdx, centerMapCoord);
       if (curWeight>0)
@@ -222,6 +222,12 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
           }
         }
       }
+    }
+    else // Entity is out of GeoMap: Go back to territory
+    {
+      foundSuccess = true;
+      GridCoordToGeoMapCoord(gridCenterPos, foundMapPos, true);
+      foundIntensity = FOUND_INTENSITY_MEDIUM;
     }
   }
 
@@ -299,6 +305,7 @@ void CGeoMap::NextDay()
 
 bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut)
 {
+  bool gridPosIsInsideGeoMap = true;
   Point_t geoMapCoord;
   geoMapCoord.x = gridPos.x / NB_GRID_PER_GEOMAP_SQUARE;
   geoMapCoord.y = gridPos.y / NB_GRID_PER_GEOMAP_SQUARE;
@@ -320,15 +327,13 @@ bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool g
     if( (geoMapCoord.x < m_GeoCoordStart.x) || (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize))
      || (geoMapCoord.y < m_GeoCoordStart.y) || (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize)) )
     {
-      geoMapPos.x = -1;
-      geoMapPos.y = -1;
-      return false;
+      gridPosIsInsideGeoMap = false;
     }
   }
 
   geoMapPos.x = geoMapCoord.x - m_GeoCoordStart.x;
   geoMapPos.y = geoMapCoord.y - m_GeoCoordStart.y;
-  return true;
+  return gridPosIsInsideGeoMap;
 }
 
 int CGeoMap::GetPurposeUidTabIndex(DWORD purposeUid)

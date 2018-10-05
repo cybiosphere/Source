@@ -1023,7 +1023,7 @@ bool CBrain::GetVectorChoiceThresholds (double curiosityRate, neuroneValType &ma
   neuroneValType avarageVal = 0;
 
   // Find max value
-  maxVal = 0;
+  maxVal = -100;
   for (i=0; i<nOutputReactions; i++)
   {
     // Add purpose bonus
@@ -1058,8 +1058,8 @@ bool CBrain::GetVectorChoiceThresholds (double curiosityRate, neuroneValType &ma
 choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
 {
   int i,j;
-  neuroneValType maxVal = 0;
-  neuroneValType curVal = 0;
+  neuroneValType maxVal = -100;
+  neuroneValType curVal = -100;
   neuroneValType thresholdVal = 0;
   neuroneValType thresholdMidVal = 0;
   neuroneValType avarageVal = 0;
