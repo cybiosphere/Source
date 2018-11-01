@@ -1750,6 +1750,12 @@ void CBiotop::nextHour(void)
       }
     }
   }
+
+  // Rain management
+  if (testChance(10.0, getFertility({ 1,1 }) / 24.0))
+  {
+    spreadWaterPuddlesByRain(getRandInt(100));
+  }
 }
 
 
@@ -2089,11 +2095,13 @@ void CBiotop::replaceMeasure(int id, CMeasure* pMeasure)
     {
       foundMeas = m_tMeasures[i];
       foundIndex = i;
+      break;
     }
   }
 
   if (foundMeas!=NULL)
   {
+    m_tMeasures.erase(m_tMeasures.begin() + foundIndex);
     m_tMeasures.insert(m_tMeasures.begin() + foundIndex,  1, pMeasure);
     delete(foundMeas);
   }
@@ -2495,6 +2503,33 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
   }
 
   return true;
+}
+
+//===========================================================================
+// Specific behaviors
+//===========================================================================
+void CBiotop::spreadWaterPuddlesByRain(int coverRate)
+{
+  CGenome* pGenome1 = new CGenome(CLASS_NONE, "");
+
+  pGenome1->loadFromXmlFile("..\\DataScriptMammal\\water_puddle.xml");
+
+  Point_t coord = { 10,10 };
+  entityIdType waterId;
+
+  int nbPuddles = m_Dimension.x * m_Dimension.y * coverRate / 100000;
+  for (int i = 0; i < nbPuddles; i++)
+  {
+    CGenome* pGenome = new CGenome(*pGenome1);
+    coord.x = getRandInt(m_Dimension.x) + 2;
+    coord.y = getRandInt(m_Dimension.y) + 2;
+    waterId = createAndAddEntity("water_puddle", coord, 1, pGenome);
+  }
+
+  delete pGenome1;
+
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - Rain : %d puddles\n", coverRate);
 }
 
 //===========================================================================

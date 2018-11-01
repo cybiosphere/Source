@@ -331,6 +331,13 @@ public:
   bool loadFromXmlFile(string fileName, string pathName);
   bool loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities);
 
+
+//---------------------------------------------------------------------------
+// Specific behaviors
+//---------------------------------------------------------------------------
+public:
+  void spreadWaterPuddlesByRain(int coverRate);
+
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------

@@ -76,7 +76,7 @@ CMeasurePopulation::CMeasurePopulation(CBiotop* pBiotop, int period, int id, Mea
     m_Label = "Population mineral"; 
     break;
   case  MEASURE_POPULATION_SPECIFIC:
-    m_Label = "Population specific"; 
+    m_Label = "Population : " + m_SpecieName;
     break;
   default:
     m_Label = "error";

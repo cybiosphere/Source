@@ -605,6 +605,7 @@ void CMeasureEditorDlg::OnSelchangeComboSpecie()
 void CMeasureEditorDlg::OnSelchangeComboSubtype() 
 {
   RebuildNewMeasure();
+  RefreshEditSection();
 }
 
 void CMeasureEditorDlg::OnChangeEditPeriod() 
