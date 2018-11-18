@@ -161,7 +161,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
       initialWeight = curWeight;
       for (range=1; range<m_GeoMapSize; range++)
       {
-        for(int i=0; i<(2*range-1); i++)
+        for(int i=0; i<(2*range); i++)
         {
           currentMapCoord.x = centerMapCoord.x - range + i + 1;
           currentMapCoord.y = centerMapCoord.y - range;
