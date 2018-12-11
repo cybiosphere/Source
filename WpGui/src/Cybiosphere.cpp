@@ -221,7 +221,7 @@ BOOL CCybiosphereApp::InitInstance()
   }
   else
   {
-    m_pBiotop = new CBiotop(500,500,3);
+    m_pBiotop = new CBiotop(1000,1000,3);
     SetDefaultBiotop();
   }
 

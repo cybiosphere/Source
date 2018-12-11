@@ -681,11 +681,11 @@ void CBiotop::setDefaultEntitiesForTest(void)
   //CGenome* pGenome7 = new CGenome(CLASS_NONE,"");
   CGenome* pGenome8 = new CGenome(CLASS_NONE,"");
 
-  pGenome6->loadFromXmlFile("..\\dataXml\\rock.xml");
-  pGenome8->loadFromXmlFile("..\\dataXml\\wooden_fence.xml");
+  pGenome6->loadFromXmlFile("..\\DataScriptMammal\\rock.xml");
+  pGenome8->loadFromXmlFile("..\\DataScriptMammal\\wooden_fence.xml");
 
-  pGenome1->loadFromXmlFile("..\\dataXml\\grassM.xml");
-  pGenome2->loadFromXmlFile("..\\dataXml\\grassF.xml");
+  pGenome1->loadFromXmlFile("..\\DataScriptMammal\\grassDry.xml");
+  pGenome2->loadFromXmlFile("..\\DataScriptMammal\\grassDry2.xml");
 
   Point_t coord = {10,10};
   string name;
@@ -704,7 +704,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
     CGenome* pGenome = new CGenome(*pGenome8);
     coord.x = 0;
     coord.y = i;
-    fenceId = createAndAddEntity("Fence",coord,2,pGenome);
+    fenceId = createAndAddEntity("wooden_fence",coord,2,pGenome);
     if (fenceId!=-1)
     {
       getEntityById(fenceId)->setDirection(2);
@@ -715,7 +715,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
     CGenome* pGenome = new CGenome(*pGenome8);
     coord.x = m_Dimension.x-3;
     coord.y = i;
-    fenceId = createAndAddEntity("Fence",coord,2,pGenome);
+    fenceId = createAndAddEntity("wooden_fence",coord,2,pGenome);
     if (fenceId!=-1)
     {
       getEntityById(fenceId)->setDirection(2);
@@ -726,16 +726,16 @@ void CBiotop::setDefaultEntitiesForTest(void)
     CGenome* pGenome = new CGenome(*pGenome8);
     coord.x = i;
     coord.y = m_Dimension.y-2;
-    fenceId = createAndAddEntity("Fence",coord,2,pGenome);
+    fenceId = createAndAddEntity("wooden_fence",coord,2,pGenome);
   }
   for ( i=0; i<m_Dimension.x-2; i++)
   {
     CGenome* pGenome = new CGenome(*pGenome8);
     coord.x = i;
     coord.y = 0;
-    fenceId = createAndAddEntity("Fence",coord,2,pGenome);
+    fenceId = createAndAddEntity("wooden_fence",coord,2,pGenome);
   }
-  for (i=1; i<m_Dimension.y/4; i++)
+  for (i=1; i<m_Dimension.y/5; i++)
   {
     CGenome* pGenome = new CGenome(*pGenome6);
     coord.x = getRandInt(m_Dimension.x) + 1;
@@ -748,16 +748,16 @@ void CBiotop::setDefaultEntitiesForTest(void)
     CGenome* pGenome = new CGenome(*pGenome1);
     coord.x = getRandInt(m_Dimension.x) + 2;
     coord.y = getRandInt(m_Dimension.y) + 2;
-    grassId = createAndAddEntity("grassM",coord,1,pGenome);
+    grassId = createAndAddEntity("grassDry",coord,1,pGenome);
   }
-  for (i=0; i<2*m_Dimension.x; i++)
+  for (i=0; i<m_Dimension.x; i++)
   {
     CGenome* pGenome = new CGenome(*pGenome2);
 	  //name.Format("grass%d",20+i);
 
     coord.x = getRandInt(m_Dimension.x) + 1;
   	coord.y = getRandInt(m_Dimension.y) + 1;
-    grassId = createAndAddEntity("grassF",coord,1,pGenome);
+    grassId = createAndAddEntity("grassDry2",coord,1,pGenome);
   }
 
   addMeasurePopulation(14400,7,MEASURE_POPULATION_VEGETAL,1000);
@@ -2179,7 +2179,7 @@ BiotopEvent_t CBiotop::getBiotopEvent(unsigned int index)
 bool CBiotop::saveInXmlFile(string fileName, string pathName)
 {
   bool resu = false;
-  TiXmlDocument *pXmlDoc = new TiXmlDocument(fileName);
+  TiXmlDocument *pXmlDoc = new TiXmlDocument(pathName + fileName);
 
   if (pXmlDoc==NULL) 
     return false;

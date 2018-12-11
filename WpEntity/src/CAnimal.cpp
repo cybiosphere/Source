@@ -2708,7 +2708,7 @@ void CAnimal::nextSecond()
       changePleasureRate(0.1);
 
     changeSufferingRate(-0.1);
-    changeTirednessRate(-0.1);
+    changeTirednessRate(-0.2);
   }
   else
   {
@@ -3254,7 +3254,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     else if (getPleasureRate()<50)
       changePleasureRate(0.1);
     changeSufferingRate(-0.1);
-    changeTirednessRate(-0.1);
+    changeTirednessRate(-0.2);
   }
   else
   {
@@ -3306,7 +3306,7 @@ choiceIndType CAnimal::predictNextAction()
 bool CAnimal::ExecuteTurnRightAction(unsigned int nDegree)
 {
   setNoise(10);
-  changeTirednessRate(0.12);
+  changeTirednessRate(0.2);
   turnRight(nDegree);
   lookForward();
   return (true);
@@ -3326,7 +3326,7 @@ bool CAnimal::ExecuteTurnRightAction(unsigned int nDegree)
 bool CAnimal::ExecuteTurnLeftAction(unsigned int nDegree)
 {
   setNoise(10);
-  changeTirednessRate(0.12);
+  changeTirednessRate(0.2);
   turnLeft(nDegree);
   lookForward();
   return (true);
@@ -3793,7 +3793,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
         ((CAnimal*)pAttackedEntity)->changeCurrentSpeed(-diffScore);
 
          // Reenforce prey recognition
-        getBrain()->MemorizeIdentificationExperience(successSatisfactionFactor, getLearningRate(), pAttackedEntity, IDENTIFICATION_PREY);
+        getBrain()->MemorizeIdentificationExperience(successSatisfactionFactor/2, getLearningRate(), pAttackedEntity, IDENTIFICATION_PREY);
         // Reenforce predator recognition
         ((CAnimal*)pAttackedEntity)->getBrain()->MemorizeIdentificationExperience(5, getLearningRate(), this, IDENTIFICATION_PREDATOR);
       }
