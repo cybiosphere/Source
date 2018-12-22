@@ -293,6 +293,11 @@ void CMainFrame::OnAppRunLearningScenario()
     // Load file
     bool resu = theApp.GetScenarioPlayer()->ReadScenarioFile(fileName.GetBuffer(0), pathName.GetBuffer(0));
     theApp.SetOpenedBiotopFile("", "");
+    // Start reading scenario twice to update biotop and refresh display
+    theApp.GetScenarioPlayer()->NextCmdNextSecond();
+    theApp.GetScenarioPlayer()->NextCmdNextSecond(); 
+    theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+    theApp.GetBiotopViewPtr()->ForceIdleDisplayMode();
   }
 }
 

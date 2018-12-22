@@ -49,7 +49,7 @@ distribution.
 //===========================================================================
 // Definitions            
 //===========================================================================
-#define NB_GRID_PER_GEOMAP_SQUARE 20
+#define NB_GRID_PER_GEOMAP_SQUARE 25
 
 typedef enum
 {

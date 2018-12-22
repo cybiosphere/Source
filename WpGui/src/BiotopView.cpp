@@ -729,7 +729,7 @@ void CBiotopView::OnAppEditCheckIdentify()
   CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord);
   if ((pEntity != NULL) && (pEntity->getClass() >= CLASS_ANIMAL_FIRST))
   {
-    CFileDialog fileDlg(true, "scp", "", 0, "Check Files (*.chk)|*.chk; *.chk|All Files (*.*)|*.*||");
+    CFileDialog fileDlg(true, "chk", "", 0, "Check Files (*.chk)|*.chk; *.chk|All Files (*.*)|*.*||");
     fileDlg.m_ofn.lpstrTitle = "Select a check file in training directory";
     long nResp = fileDlg.DoModal();
     if (nResp == IDOK)

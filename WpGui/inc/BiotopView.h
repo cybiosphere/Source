@@ -86,6 +86,8 @@ public:
   bool SetBiotop(CBiotop* pBiotop);
   bool SetSelectedEntity(CBasicEntity* pEntity);
   void ForceRefreshDisplay(bool clearAll = true);
+  void ForceIdleDisplayMode() { m_IdleDisplayMode = true; };
+
   CBiotopDisplay* GetpBiotopDisplay();
 // Implementation
 public:
