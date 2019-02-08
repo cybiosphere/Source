@@ -600,9 +600,6 @@ int CBiotop::deleteEntity(entityIdType idEntity)
       }
       CYBIOCORE_LOG_TIME(m_BioTime);
       CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
-      Point_t coord = {-1,-1};
-      pEntity->jumpToGridCoord(coord);
-      pEntity->detachFromBiotop();
       delete (m_tEntity[i]); 
       m_tEntity.erase(m_tEntity.begin()+i);
       return (i);
@@ -656,11 +653,11 @@ void CBiotop::deleteAllParameters()
 
 void CBiotop::displayEntities(void)
 {
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {
-    printf("x=%2d, y=%2d ",m_tEntity[i]->getGridCoord().x, m_tEntity[i]->getGridCoord().y);
-    printf("%-12s",m_tEntity[i]->getLabel().c_str());
-    printf("ID=%3d Direction=%3d \n",m_tEntity[i]->getId(),m_tEntity[i]->getDirection());
+    printf("x=%2d, y=%2d ", pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+    printf("%-12s", pEntity->getLabel().c_str());
+    printf("ID=%3d Direction=%3d \n", pEntity->getId(), pEntity->getDirection());
   }  
 }
 
@@ -786,10 +783,10 @@ int CBiotop::getNbOfVegetals()
   int tempCount = 0;
   ClassType_e curClass;
 
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {
-    curClass = m_tEntity[i]->getClass();
-    if ( (curClass >= CLASS_VEGETAL_FIRST) && (curClass <= CLASS_VEGETAL_LAST) && (m_tEntity[i]->getId()>0) )
+    curClass = pEntity->getClass();
+    if ( (curClass >= CLASS_VEGETAL_FIRST) && (curClass <= CLASS_VEGETAL_LAST) && (pEntity->getId()>0) )
       tempCount++;
   } 
 
@@ -801,25 +798,25 @@ int CBiotop::getNbOfMinerals()
   int tempCount = 0;
   ClassType_e curClass;
 
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {
-    curClass = m_tEntity[i]->getClass();
-    if ( (curClass >= CLASS_MINERAL_FIRST) && (curClass <= CLASS_MINERAL_LAST) && (m_tEntity[i]->getId()>0) )
+    curClass = pEntity->getClass();
+    if ( (curClass >= CLASS_MINERAL_FIRST) && (curClass <= CLASS_MINERAL_LAST) && (pEntity->getId()>0) )
       tempCount++;
   } 
 
   return (tempCount);
 }  
 
-int CBiotop::getNbOfSpecieEntities(string SpecieName) 
+int CBiotop::getNbOfSpecieEntities(string& SpecieName) 
 {
   int tempCount = 0;
   CGenome* pCurGenome;
 
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {
-    pCurGenome = m_tEntity[i]->getGenome();
-    if ( (pCurGenome!=NULL) && (pCurGenome->getSpecieName()== SpecieName) && (m_tEntity[i]->isAlive()) )
+    pCurGenome = pEntity->getGenome();
+    if ( (pCurGenome!=NULL) && (pCurGenome->getSpecieName()== SpecieName) && (pEntity->isAlive()) )
       tempCount++;
   } 
 
@@ -844,11 +841,11 @@ CBasicEntity* CBiotop::getEntityById(entityIdType idEntity)
     return (m_pGrassGlobalEntity);
   }
   
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {   
-    if ((m_tEntity[i])->getId() == idEntity)
+    if ((pEntity)->getId() == idEntity)
     {
-        return (m_tEntity[i]);
+        return (pEntity);
     }
   }
   // If not found
@@ -867,13 +864,13 @@ CBasicEntity* CBiotop::getEntityByIndex(int index)
   return (pFoundEntity);
 }
 
-CBasicEntity* CBiotop::getEntityByName(string entityName)
+CBasicEntity* CBiotop::getEntityByName(string& entityName)
 {
-  for (int i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pEntity : m_tEntity)
   {   
-    if (m_tEntity[i]->getLabel() == entityName)
+    if (pEntity->getLabel() == entityName)
     {
-        return (m_tEntity[i]);
+        return (pEntity);
     }
   }
   return (NULL);
@@ -1967,14 +1964,12 @@ int CBiotop::getGridDistance(Point_t gridCoord1, Point_t gridCoord2)
 
 void CBiotop::updateGridAllEntities(void)
 {
-  CBasicEntity* pCurEntity = NULL;
   Point_t tmpCoord;
   int i,tmpLayer;
 
   // Clear previous positions
-  for (i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pCurEntity : m_tEntity)
   {  
-    pCurEntity = m_tEntity[i];
     if ( (pCurEntity) && (pCurEntity->checkIfhasMoved()) )
     {
       tmpCoord = pCurEntity->getPrevGridCoord();
@@ -1986,9 +1981,8 @@ void CBiotop::updateGridAllEntities(void)
     }
   }
   // Set new positions
-  for (i=0; i<getNbOfEntities(); i++)   
+  for (CBasicEntity* pCurEntity : m_tEntity)
   {  
-    pCurEntity = m_tEntity[i];
     if ( (pCurEntity) && (pCurEntity->checkIfhasMovedAndClear()) )
     {
       tmpCoord = pCurEntity->getGridCoord();
@@ -2642,7 +2636,7 @@ CGenericParam* CBiotop::getParameter(int id)
   }
 }
 
-CGenericParam* CBiotop::getParameterByName(string paramName)
+CGenericParam* CBiotop::getParameterByName(string& paramName)
 {
   for (unsigned int id=0; id<m_tParam.size(); id++)
   {

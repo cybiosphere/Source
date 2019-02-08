@@ -200,20 +200,20 @@ void CBiotopDisplayMFC::RedrawScene()
       curLayer = m_pBiotop->getLayerType(bioCoord,1); 
       if (curLayer == LAYER_OVER_WATER)
       {
-        coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00DDCCBB);
       }
       else if (curLayer == LAYER_OVER_WET_GROUND)
       {
-        coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00FFEEDD);
       }
       else if (curLayer == LAYER_GLOBAL_GRASS)
       {
-        coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00EEFFEE);
       }
 
@@ -221,8 +221,8 @@ void CBiotopDisplayMFC::RedrawScene()
       custColor = m_pBiotop->getCustomColor(bioCoord);
       if (custColor != 0x00FFFFFF)
       {
-        coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX+1, coordY+1, m_nBitmapPixSizeX-2, m_nBitmapPixSizeY-2, custColor);
       }
 
@@ -230,8 +230,8 @@ void CBiotopDisplayMFC::RedrawScene()
       CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(bioCoord);
       if ( (pEntity!=NULL) && (pEntity->getId()>=ENTITY_ID_FIRST_USER_ENTITY) )
       {
-        coordX = m_nBitmapPixSizeX * i -  m_pView->GetScrollPos(SB_HORZ);
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pos = (int)(m_nBitmapPixSizeX * pEntity->getDirection());
 
         // Display bitmap when zoom is max or squares with smaller zoom
@@ -306,24 +306,24 @@ void CBiotopDisplayMFC::RefreshNextSecond()
   for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
     CBasicEntity* pEntity = m_pBiotop->getEntityByIndex(i);
-    if (pEntity == NULL)
-      break;
+    if ((pEntity == NULL) || (!pEntity->checkIfhasChanged()))
+      continue;
 
     Point_t prevCoord = pEntity->getGuiGridCoord();
     if (pEntity->checkIfhasChangedAndClear())
     {
       if ( (prevCoord.x != pEntity->getGridCoord().x) || (prevCoord.y != pEntity->getGridCoord().y) )
       {
-        coordX = m_nBitmapPixSizeX * prevCoord.x -  m_pView->GetScrollPos(SB_HORZ);
-        coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 1) -  m_pView->GetScrollPos(SB_VERT);
+        coordX = m_nBitmapPixSizeX * prevCoord.x - visibleCoordX;
+        coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 1) - visibleCoordY;
         refreshRect.left   = coordX;
         refreshRect.top    = coordY;
         refreshRect.right  = coordX + m_nBitmapPixSizeX;
         refreshRect.bottom = coordY + m_nBitmapPixSizeY;  
         m_pView->InvalidateRect(refreshRect,true);
       }
-      coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x -  m_pView->GetScrollPos(SB_HORZ);
-      coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 1) -  m_pView->GetScrollPos(SB_VERT);
+      coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x - visibleCoordX;
+      coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 1) - visibleCoordY;
       refreshRect.left   = coordX;
       refreshRect.top    = coordY;
       refreshRect.right  = coordX + m_nBitmapPixSizeX;

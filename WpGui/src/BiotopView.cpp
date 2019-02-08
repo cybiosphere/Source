@@ -222,8 +222,11 @@ void CBiotopView::OnSize(UINT nType, int cx, int cy)
 {
   m_pBioDisplay2D->ResizeScene( cx, cy);
   m_pBioDisplay3D->ResizeScene( cx, cy);
+  if (m_pBioDisplay == m_pBioDisplay3D)
+  {
+    m_pBioDisplay3D->RefreshScene();
+  }
   m_pBioDisplay->DisplayView();
- // CScrollView::OnSize(nType, cx, cy);
 }
 
 void CBiotopView::OnTimer(UINT nIDEvent) 

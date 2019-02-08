@@ -240,7 +240,7 @@ public:
   int getNbOfAnimals(void); 
   int getNbOfVegetals(void); 
   int getNbOfMinerals(void);
-  int getNbOfSpecieEntities(string SpecieName);
+  int getNbOfSpecieEntities(string& SpecieName);
 
 public:
   static CBasicEntity* createEntity(string name, CGenome* pGenome);
@@ -253,7 +253,7 @@ public:
 public:
   CBasicEntity* getEntityById(entityIdType idEntity);
   CBasicEntity* getEntityByIndex(int index);
-  CBasicEntity* getEntityByName(string entityName);
+  CBasicEntity* getEntityByName(string& entityName);
   int           getEntityTableIndex(CBasicEntity* pEntity);
   CBasicEntity* findEntity(Point_t searchCoord, int Layer);
   int findEntities(FoundEntity_t*& pFoundIds, 
@@ -356,7 +356,7 @@ public:
   CGenericParam* getParamRadioactivity(); 
   CGenericParam* getParamTemperature(); 
   CGenericParam* getParameter(int id);
-  CGenericParam* getParameterByName(string label);
+  CGenericParam* getParameterByName(string& label);
   double getOdorTrace(Point_t coord, OdorType_e odor);
   bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
   COLORREF getCustomColor(Point_t coord);

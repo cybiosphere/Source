@@ -175,7 +175,7 @@ void CBiotopDisplayGL::DisplayView()
 	// Calculate the total size of this view
 	CSize sizeTotal;
 	sizeTotal.cx = 20;
-    sizeTotal.cy = 10;
+  sizeTotal.cy = 10;
 	m_pView->SetScrollSizes(MM_TEXT, sizeTotal);
   }
 }
@@ -273,24 +273,22 @@ void CBiotopDisplayGL::KillWindow(void)										// Properly Kill The Window
 
 void CBiotopDisplayGL::ResizeScene(int cx, int cy) 
 {
-	m_cxClient = cx;
-	m_cyClient = cy;
+  m_cxClient = cx;
+  m_cyClient = cy;
 
-    m_Map.SetViewResolution(m_cxClient, m_cyClient);
+  m_Map.SetViewResolution(m_cxClient, m_cyClient);
 
-	if (cy==0)										// Prevent A Divide By Zero By
-	{
-		cy=1;										// Making Height Equal One
-	}
-	glViewport(0,0,cx,cy);						// Reset The Current Viewport
-	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
-	glLoadIdentity();									// Reset The Projection Matrix	
-	// Calculate The Aspect Ratio Of The Window
-	glOrtho(0.0f,cx,0.0f,cy,0.001,1000.0);	
-	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
-	glLoadIdentity();									// Reset The Modelview Matrix
-
-    RenderScene(true);
+  if (cy==0)										// Prevent A Divide By Zero By
+  {
+	  cy=1;										// Making Height Equal One
+  }
+  glViewport(0,0,cx,cy);						// Reset The Current Viewport
+  glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+  glLoadIdentity();									// Reset The Projection Matrix	
+  // Calculate The Aspect Ratio Of The Window
+  glOrtho(0.0f,cx,0.0f,cy,0.001,1000.0);	
+  glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
+  glLoadIdentity();									// Reset The Modelview Matrix
 }
 
 
