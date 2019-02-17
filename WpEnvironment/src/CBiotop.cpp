@@ -2260,7 +2260,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
         {
           for (j=0;j<m_Dimension.y;j++)
           {
-            strData += FormatString("%02x",(BYTE)m_tBioGrid[i][j][k].layerType); 
+            strData += FormatString("%02u",(BYTE)m_tBioGrid[i][j][k].layerType); 
           }
         }
         pElement = (TiXmlElement*)pNodeChild;
@@ -2414,15 +2414,18 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
           layerIndex = 0;
         if ( pElement->QueryStringAttribute(XML_ATTR_RAW_DATA,  &dataStr) != TIXML_NO_ATTRIBUTE)
         {
-          int dataGrid;
-          int strOffset = 0;
+          char curTypeStr[3];
+          curTypeStr[2] = 0;
+          const char* bufferStr = dataStr.c_str();
           for (i=0;i<m_Dimension.x;i++)
           {
             for (j=0;j<m_Dimension.y;j++)
             {
-              sscanf (dataStr.c_str() + strOffset,"%02X",&dataGrid);
-              m_tBioGrid[i][j][layerIndex].layerType = (LayerType_e)dataGrid;
-              strOffset += 2;
+              curTypeStr[0] = *bufferStr;
+              bufferStr++;
+              curTypeStr[1] = *bufferStr;
+              bufferStr++;
+              m_tBioGrid[i][j][layerIndex].layerType = (LayerType_e)atoi(curTypeStr);
             }
           }
         }

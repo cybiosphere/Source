@@ -71,7 +71,6 @@ CStatisticView::CStatisticView()
 	//{{AFX_DATA_INIT(CStatisticView)
 	m_radioDuration = -1;
 	//}}AFX_DATA_INIT
-	// TODO: add construction code here
 
   m_pBiotop = NULL;
   m_TimeScaleSecPerPix = 1;
@@ -205,7 +204,6 @@ void CStatisticView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	
-	// TODO: Add your message handler code here
   CBrush brush(0x00FFFFFF);
   CRect frameRect = m_GraphRect;
   COLORREF black = 0x00000000;
@@ -235,15 +233,12 @@ void CStatisticView::OnPaint()
   dc.MoveTo(m_GraphRect.left+6, m_GraphRect.bottom);
   dc.LineTo(m_GraphRect.left+14, m_GraphRect.bottom);
 
-
 	// Do not call CFormView::OnPaint() for painting messages
 }
 
 void CStatisticView::OnSize(UINT nType, int cx, int cy) 
 {
 	CFormView::OnSize(nType, cx, cy);
-
-	// TODO: Add your message handler code here
   if (cx>420)
   {
 	  m_GraphRect.SetRect(420, 30, cx-12, cy-30);
@@ -284,10 +279,6 @@ void CStatisticView::RebuildMeasChkBox()
       }
       startY += 22;
     }
-  }
-  else
-  {
-
   }
 }
 
@@ -348,26 +339,25 @@ void CStatisticView::NextSecond()
     frameRect.bottom += 18;
     InvalidateRect(frameRect,false);
   }
-  
 }
 
 void CStatisticView::ResetMinMaxTime()
 {
-  if (m_pBiotop==NULL)
+  if (m_pBiotop == NULL)
     return;
 
   m_RefreshCounter = 0;
   m_IsScrollMode = false;
   m_TimeMax = convertBioTimeToCount(m_pBiotop->getBiotopTime());
 
-  if ( m_TimeMax> (m_TimeScaleSecPerPix*(timeCountType)m_GraphRect.Width()) )
+  if (m_TimeMax > (m_TimeScaleSecPerPix*(timeCountType)m_GraphRect.Width()))
   {
-    m_TimeMin = m_TimeMax - m_TimeScaleSecPerPix*(timeCountType)m_GraphRect.Width();
+    m_TimeMin = m_TimeMax - m_TimeScaleSecPerPix * (timeCountType)m_GraphRect.Width();
   }
   else
   {
     m_TimeMin = 1;
-    m_TimeMax = m_TimeScaleSecPerPix*(timeCountType)m_GraphRect.Width();
+    m_TimeMax = m_TimeScaleSecPerPix * (timeCountType)m_GraphRect.Width();
   }
   RedrawWindow();
 }
@@ -390,9 +380,10 @@ void CStatisticView::DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF col
   double curData;
   double maxData = pMeasure->GetRangeMax();
   double minData = pMeasure->GetRangeMin();
+  double tempValue;
 
   timeCountType curTimeCount;
-  timeCountType timeWidth = m_TimeMax - m_TimeMin;
+  double timeWidth = m_TimeMax - m_TimeMin;
   if (timeWidth==0)
     return;
 
@@ -405,7 +396,8 @@ void CStatisticView::DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF col
     curData = pData[indexData].value;
     if ( (curTimeCount >= m_TimeMin) && (curTimeCount <= m_TimeMax) )
     {
-      m_pTmpPointTable[indexPoint].x = (curTimeCount-m_TimeMin)*(timeCountType)m_GraphRect.Width()/timeWidth + (timeCountType)m_GraphRect.left;
+      tempValue = (double)(curTimeCount - m_TimeMin) * (double)m_GraphRect.Width() / timeWidth + (double)m_GraphRect.left;
+      m_pTmpPointTable[indexPoint].x = (timeCountType)tempValue;
       m_pTmpPointTable[indexPoint].y = (maxData-curData)*m_GraphRect.Height()/(maxData-minData) + m_GraphRect.top;
       indexPoint++;
     }
@@ -421,10 +413,13 @@ void CStatisticView::DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF col
     pDC->SetTextColor(color);    
     
     CString valStr;
-    valStr.Format(LPCTSTR("%5.1f"),maxData);
-    pDC->TextOut(m_GraphRect.left+10+30*index, m_GraphRect.top-12, valStr); 
-    valStr.Format(LPCTSTR("%5.1f"),minData);
-    pDC->TextOut(m_GraphRect.left+10+30*index, m_GraphRect.bottom+1, valStr); 
+    curData = pMeasure->GetCurrentValue();
+    valStr.Format(LPCTSTR("max %5.1f"),maxData);
+    pDC->TextOut(m_GraphRect.left + 10 + 60 * index, m_GraphRect.top - 12, valStr); 
+    valStr.Format(LPCTSTR("cur %5.1f"), curData);
+    pDC->TextOut(m_GraphRect.left + 10 + 60 * index, m_GraphRect.top + 4, valStr);
+    valStr.Format(LPCTSTR("min %5.1f"),minData);
+    pDC->TextOut(m_GraphRect.left + 10 + 60 * index, m_GraphRect.bottom + 1, valStr); 
 
     // Check if end is reached
     if ( m_pTmpPointTable[indexPoint-1].x > (m_GraphRect.right-20) )
@@ -432,8 +427,8 @@ void CStatisticView::DrawMeasure(CPaintDC *pDC, CMeasure* pMeasure, COLORREF col
       m_IsScrollMode = true;
     }
   }
-
 }
+
 void CStatisticView::OnEditMeasure() 
 {
 	CMeasureEditorDlg measureDlg(m_pBiotop);
