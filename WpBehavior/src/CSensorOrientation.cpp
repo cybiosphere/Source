@@ -113,16 +113,16 @@ int CSensorOrientation::UpdateAndGetStimulationTable(sensorValType*& pStimulatio
       {
         m_pStimulationValues[2] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
       }
-    }
-  }
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
+      for (i = 0; i<m_SubCaptorNumber; i++)
+      {
+        // Use weight
+        m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
+        // Don't go over Max!
+        if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
+          m_pStimulationValues[i] = MAX_SENSOR_VAL;
+      }
+    }
   }
 
   pStimulationVal = m_pStimulationValues;

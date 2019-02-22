@@ -84,7 +84,7 @@ private:
 //---------------------------------------------------------------------------
 private:
   CBrain*       m_pBrain;
-  char***       m_pMemoryMap;
+  short***       m_pMemoryMap;
   DWORD*        m_tPurposeUniqueId;
 
 
@@ -106,6 +106,7 @@ public:
 
   bool MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight);
   GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection);
+  void ClearPurposeSuccessOnFullMap(DWORD purposeUid);
   void NextDay();
 
   bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut = false);

@@ -1890,7 +1890,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
       pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_BABY-PHEROMONE_FIRST_TYPE);
       if (pPurpose != NULL)
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 80);
+        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 1000);
       }
     }
     // Check if mother
@@ -1900,7 +1900,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
       pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_MATERNAL-PHEROMONE_FIRST_TYPE);
       if (pPurpose != NULL)
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 80);
+        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 800);
       }
     }
   }

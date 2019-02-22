@@ -342,12 +342,16 @@ bool CMapConfigView::BuildPurposeMap(int index)
       successWeight = pGeoMap->GetSuccessWeight(index, geoMapPos);
       if (successWeight>0)
       {
-        r=200-successWeight*2;g=240;b=200-successWeight*2;
+        r=200 - successWeight * 2 / 10; 
+        g=240;
+        b=200 - successWeight * 2 / 10;
         tBioSquare[curCoord.x][curCoord.y].customColor = (b<<0x10) + (g<<0x08) + r; 
       }
       else if (successWeight<0)
       {
-        r=240;g=200+successWeight*2;b=200+successWeight*2;
+        r=240;
+        g=200 + successWeight * 2;
+        b=200 + successWeight * 2;
         tBioSquare[curCoord.x][curCoord.y].customColor = (b<<0x10) + (g<<0x08) + r; 
       }
     }

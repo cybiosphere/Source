@@ -82,15 +82,15 @@ CGeoMap::CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, int gridMapSize, in
     m_tPurposeUniqueId[idx] = 0;
 
   // Build 3D dynamic table
-  m_pMemoryMap   = new char**[m_GeoMapSize];
+  m_pMemoryMap   = new short**[m_GeoMapSize];
   ASSERT( m_pMemoryMap != NULL );
   for (int i=0;i<m_GeoMapSize;i++)
   {
-    m_pMemoryMap[i]   = new char*[m_GeoMapSize];
+    m_pMemoryMap[i]   = new short*[m_GeoMapSize];
     ASSERT( m_pMemoryMap[i] != NULL );
     for (int j=0;j<m_GeoMapSize;j++)
     {
-      m_pMemoryMap[i][j] = new char[nbPurposeRec];
+      m_pMemoryMap[i][j] = new short[nbPurposeRec];
       ASSERT( m_pMemoryMap[i][j] != NULL );
       for (int k=0; k<nbPurposeRec; k++)
         m_pMemoryMap[i][j][k] = 0;
@@ -130,6 +130,20 @@ bool CGeoMap::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int w
   return true;
 }
 
+void CGeoMap::ClearPurposeSuccessOnFullMap(DWORD purposeUid)
+{
+  int UidIdx = GetPurposeUidTabIndex(purposeUid);
+  if ((UidIdx >= 0) && (UidIdx < m_NbPurposeRec))
+  {
+    for (int i = 0; i < m_GeoMapSize; i++)
+    {
+      for (int j = 0; j < m_GeoMapSize; j++)
+      {
+        m_pMemoryMap[i][j][UidIdx] = 0;
+      }
+    }
+  }
+}
 
 GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection )
 {
@@ -264,7 +278,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
       {
         // Give a negative weight to target position to switch to another place
         MemorizePurposeSuccessGeoPos(m_curPurposeUidIdx, m_curTargetMapPos, -1);
-        m_curTargetTimout   = range * 240; // Give 4 additional minutes to reach target position
+        m_curTargetTimout = range * 240; // Give 4 minutes per range to reach target position
       }
     }
     else
@@ -385,17 +399,20 @@ int CGeoMap::GetSuccessWeight(int purposeIndex, Point_t geoMapPos)
 bool CGeoMap::MemorizePurposeSuccessGeoPos(int purposeIndex, Point_t geoMapPos, int weight)
 {
   bool resu = false;
+  short newWeight;
 
-  if ((geoMapPos.x>=0) && (geoMapPos.y>=0) && (geoMapPos.x<m_GeoMapSize) && (geoMapPos.y<m_GeoMapSize) && (purposeIndex>=0) )
+  if ((geoMapPos.x>=0) && (geoMapPos.y>=0) && (geoMapPos.x<m_GeoMapSize) && (geoMapPos.y<m_GeoMapSize) 
+    && (purposeIndex>=0) && (purposeIndex < m_NbPurposeRec))
   {
     // Allow negative values to avoid staying static in a bad place
-    m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] += weight;
+    newWeight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] + weight;
+    // Force range [-100..1000]
+   if (newWeight > 1000)
+     newWeight = 1000;
+   else if (newWeight < -100)
+     newWeight = -100;
 
-   if (m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] > 100)
-      m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] = 100;
-    else if (m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] < -100)
-      m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] = -100;
-  
+   m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] = newWeight;
     resu = true;
   }
   
