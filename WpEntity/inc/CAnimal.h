@@ -240,6 +240,7 @@ public:
   void   setCuriosityToNominalRatio(double ratio);
   void   setLearningToNominalRatio(double ratio);
   void   setGrowthSpeedToNominalRatio(double ratio);
+  void   setAttackFactorToNominalRatio(double ratio);
   double getAttackFactor();
   bool   isSleeping();
   double getFatWeight();

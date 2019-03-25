@@ -563,7 +563,7 @@ bool CAnimal::completeParamsWithDefault()
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CBasicEntity life stage
+// RETURN VALUE: bool : false if gene not for physical welfare
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
@@ -1590,7 +1590,7 @@ bool CAnimal::completeBrainInstinctWithDefault(void)
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CBasicEntity life stage
+// RETURN VALUE: bool : false if gene not a feeling
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
@@ -1668,7 +1668,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CBasicEntity life stage
+// RETURN VALUE: bool : false if gene not supported
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
@@ -3793,13 +3793,15 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
         ((CAnimal*)pAttackedEntity)->changeCurrentSpeed(-diffScore);
 
          // Reenforce prey recognition
-        getBrain()->MemorizeIdentificationExperience(successSatisfactionFactor/2, getLearningRate(), pAttackedEntity, IDENTIFICATION_PREY);
+        getBrain()->MemorizeIdentificationExperience(successSatisfactionFactor/5, getLearningRate(), pAttackedEntity, IDENTIFICATION_PREY);
         // Reenforce predator recognition
         ((CAnimal*)pAttackedEntity)->getBrain()->MemorizeIdentificationExperience(5, getLearningRate(), this, IDENTIFICATION_PREDATOR);
       }
     }
     else
     {
+      // Reduce prey recognition
+      getBrain()->MemorizeIdentificationExperience(-2, getLearningRate(), pAttackedEntity, IDENTIFICATION_PREY);
       // Attack failure hurts
       if (changeHealthRate((attackScore-defenseScore)/4, pAttackedEntity) == false)  
       {
@@ -4031,6 +4033,12 @@ void CAnimal::setGrowthSpeedToNominalRatio(double ratio)
 {
   double newGrowth = getParameter(m_id_GrowthSpeed)->getValNominal() * ratio / 100.0;
   getParameter(m_id_GrowthSpeed)->setVal(newGrowth);
+}
+
+void CAnimal::setAttackFactorToNominalRatio(double ratio)
+{
+  double newAttack = getParameter(m_id_AttackFactor)->getValNominal() * ratio / 100.0;
+  getParameter(m_id_AttackFactor)->setVal(newAttack);
 }
 
 double CAnimal::getAttackFactor()

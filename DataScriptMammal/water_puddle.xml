@@ -3,7 +3,7 @@
     <PARAMETER Name="Toxicity rate" Value="0" />
     <PARAMETER Name="Protection factor" Value="4.999" />
     <PARAMETER Name="Camouflage factor" Value="0.999" />
-    <PARAMETER Name="Weight" Value="4.992" />
+    <PARAMETER Name="Weight" Value="10" />
     <PARAMETER Name="NoiseRate" Value="0" />
     <CARACTER Name="ColorRGB" Value="15339264" />
     <CARACTER Name="Odor" Value="0" />

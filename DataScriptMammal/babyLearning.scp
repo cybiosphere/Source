@@ -8,8 +8,8 @@ RUN_BIOTOP 300
 
 # Introduce mother and check baby's behavior
 MOVE_ENTITY newEntity 100 100 0
-ADD_ENTITY mother.xml 120 100
-MOVE_ENTITY mother 120 100 0
+ADD_ENTITY mother.xml 115 100
+MOVE_ENTITY mother 115 100 0
 
 SET_FORBIDEN_ACTION newEntity "Eat-1"
 RUN_BIOTOP 100
@@ -45,7 +45,7 @@ CHECK_PARAM_UNDER newEntity "Hunger rate" 20
 # Force mother to move and check baby's behavior
 MOVE_ENTITY newEntity 100 100 0
 MOVE_ENTITY mother 110 100 0
-ADD_ENTITY prey0.xml 130 100
+ADD_ENTITY prey0.xml 121 100
 ADD_ENTITY rock.xml 108 100
 
 CHANGE_PARAM mother "Hunger rate" 50

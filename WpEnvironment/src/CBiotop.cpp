@@ -77,7 +77,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_tParam.push_back(m_pFertilityRate);
   m_pSunlightRate = new CCyclicParam(0,100,24,"Sunlight",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
-  m_pRadioactivity = new CGenericParam(0,50,50,100,"Radioactivity",PARAM_ENVIRONMENT);
+  m_pRadioactivity = new CGenericParam(0,1,1,100,"Radioactivity",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pRadioactivity);
   m_pTemperature = new CCyclicParam(20,26,864,"Avarage Temperature",PARAM_ENVIRONMENT); // TBD use global min/max temperature
   m_tParam.push_back(m_pTemperature);
@@ -2333,6 +2333,7 @@ bool CBiotop::loadFromXmlFile(string fileName, string pathName)
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - Load: file %s path %s\n", fileName.c_str(), pathName.c_str());
   loadFromXmlFile(&xmlDoc, pathName);
+  CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - File load complete\n");
   CYBIOCORE_LOG_FLUSH;
   return true;

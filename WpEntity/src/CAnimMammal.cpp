@@ -713,6 +713,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setCuriosityToNominalRatio(49);
       setLearningToNominalRatio(60);
       setGrowthSpeedToNominalRatio(200);
+      setAttackFactorToNominalRatio(20);
       setPheromone(PHEROMONE_BABY);
       forceHasChanged();
       break;
@@ -723,6 +724,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setCuriosityToNominalRatio(51);
       setLearningToNominalRatio(80);
       setGrowthSpeedToNominalRatio(100);
+      setAttackFactorToNominalRatio(80);
       setPheromone(PHEROMONE_NONE);
       m_pBrain->ResetReactionsFailureSuccessFactor();
       forceHasChanged();
@@ -734,6 +736,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setCuriosityToNominalRatio(50);
       setLearningToNominalRatio(60);
       setGrowthSpeedToNominalRatio(0);
+      setAttackFactorToNominalRatio(100);
       if (getSex() == SEX_MALE)
         setPheromone(PHEROMONE_SEXUAL_MALE);
       forceHasChanged();
@@ -745,6 +748,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setCuriosityToNominalRatio(50);
       setLearningToNominalRatio(40);
       setGrowthSpeedToNominalRatio(0);
+      setAttackFactorToNominalRatio(100);
       setPheromone(PHEROMONE_NONE);
       forceHasChanged();
       break;
@@ -757,6 +761,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       double newProtection = getProtection() / 5.0;
       setProtection(newProtection);
       setPheromone(PHEROMONE_NONE);
+      removeAttribute(PHY_ATTRIBUTE_UDDER);
       setOdor(ODOR_REPULSIVE);
       forceHasChanged();
       break;

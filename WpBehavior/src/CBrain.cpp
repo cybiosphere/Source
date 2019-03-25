@@ -36,6 +36,7 @@ distribution.
 
 #include "CBrain.h"
 #include "CFeelingWelfare.h"
+#include "CBiotop.h"
 #include "CGeoMap.h"
 #include <fstream>
 
@@ -159,7 +160,7 @@ void CBrain::NextSecond()
   if (m_pCurrentPurpose!=NULL)
   {
     if (m_pGeoMap == NULL)
-      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 500, 6);
+      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 800, 6);
 
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
@@ -481,7 +482,7 @@ bool CBrain::PollAllSensors (void)
   {
     if (m_FocusedEntityInfo.pEntity->isToBeRemoved())
     {
-      CYBIOCORE_LOG("BRAIN - WARNING PollAllSensors : FocusedEntity is NULL\n");
+      //CYBIOCORE_LOG("BRAIN - WARNING PollAllSensors : FocusedEntity is NULL\n");
       m_FocusedEntityInfo.pEntity = NULL;
     }
     else
@@ -1813,9 +1814,9 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
 
   neuroneValType coef = currentFeedback*learningRate/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/10000; 
 
-  // Fred To remove 
-  CYBIOCORE_LOG("BRAIN - MemorizeIdentificationExperience : name %s currentFeedback=%f learningRate=%f identity=%s entity=%s coef=%f\n", 
-             this->GetEntity()->getLabel().c_str(), currentFeedback, learningRate, IdentificationTypeNameList[identity], pEntity->getLabel().c_str(), coef);
+  CYBIOCORE_LOG_TIME(GetEntity()->getBiotop()->getBiotopTime());
+  CYBIOCORE_LOG("BRAIN  - MemorizeIdentificationExperience : name %s currentFeedback=%.1f learningRate=%.1f identity=%s entity=%s coef=%1.4f\n", 
+             GetEntity()->getLabel().c_str(), currentFeedback, learningRate, IdentificationTypeNameList[identity], pEntity->getLabel().c_str(), coef);
 
   return m_mIdentifyNeuronTable.MemorizeExperience(coef, &m_vCurrentIdentifyInput, &m_vCurrentIdentificationChoice);
 }
@@ -1878,7 +1879,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     delete m_pGeoMap;
 
   // Create new geo map centered on baby
-  m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 600, 6);
+  m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 800, 6);
 
   // Memorize home position
   if (m_pGeoMap!=NULL)

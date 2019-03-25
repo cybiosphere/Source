@@ -65,7 +65,7 @@ distribution.
 //===========================================================================
 class CBasicEntity;
 
-#define MAXIMUM_NB_ENTITIES   100000
+#define MAXIMUM_NB_ENTITIES   1000000
 #define MAX_FOUND_ENTITIES    1000
 
 // Sectors arround entity X:
