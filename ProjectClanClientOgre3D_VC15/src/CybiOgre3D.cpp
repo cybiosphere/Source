@@ -26,8 +26,8 @@ LGPL like the rest of the OGRE engine.
 #include "windows.h"
 #endif
 
-#define OFFSET_COORD_X 150
-#define OFFSET_COORD_Y 150
+int OFFSET_COORD_X = 2000;
+int OFFSET_COORD_Y = 2000;
 
 Real mAnimChop = 7.96666f;
 Real mAnimChopBlend = 0.3f;
@@ -542,16 +542,16 @@ void CybiOgre3DApp::createScene(void)
   Animation::setDefaultRotationInterpolationMode(Animation::RIM_LINEAR);
 
   // Set ambient light
-  //mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-
-  // Set ambient light
-  mSceneMgr->setAmbientLight(ColourValue(0.3, 0.3, 0.3));
+  mSceneMgr->setAmbientLight(ColourValue(0.5, 0.4, 0.3));
 
   // Create a skydome
   mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 
   // Put in a bit of fog for the hell of it
   mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0002);
+
+  OFFSET_COORD_X = 5 * m_pBiotop->getDimension()->x;
+  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension()->y;
 
   CWater* waterGlobalEntity = new CWater();
   CGrass* grassGlobalEntity = new CGrass();
@@ -603,15 +603,14 @@ void CybiOgre3DApp::createScene(void)
   // Give it a little ambience with lights
   Light* l;
   l = mSceneMgr->createLight("YellowLight");
-  l->setType(Light::LT_SPOTLIGHT);
-  l->setPosition(-1800,2500,-1800);
+  l->setType(Light::LT_DIRECTIONAL);
+  l->setPosition(-1800, 2500, -1800);
 #ifndef _DEBUG
   Vector3 dir(-l->getPosition());
-  dir = -l->getPosition();
   dir.normalise();
   l->setDirection(dir);
 #endif
-  l->setDiffuseColour(1.0, 0.9, 0.8);
+  l->setDiffuseColour(0.5, 0.4, 0.3);
 
   // Position the camera
   mCamera->setPosition(100,20,0);
@@ -626,7 +625,7 @@ void CybiOgre3DApp::createScene(void)
   plane.d = 100;
   MeshManager::getSingleton().createPlane("Myplane",
     ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-    4000,4000,20,20,true,1,60,60,Vector3::UNIT_Z);
+    8000,8000,40,40,true,1,60,60,Vector3::UNIT_Z);
   Entity* pPlaneEnt = mSceneMgr->createEntity( "plane", "Myplane" );
   pPlaneEnt->setMaterialName("Cybios/Ground");
   pPlaneEnt->setCastShadows(false);

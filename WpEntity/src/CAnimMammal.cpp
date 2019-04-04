@@ -750,6 +750,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setGrowthSpeedToNominalRatio(0);
       setAttackFactorToNominalRatio(100);
       setPheromone(PHEROMONE_NONE);
+      removeAttribute(PHY_ATTRIBUTE_UDDER);
       forceHasChanged();
       break;
     }

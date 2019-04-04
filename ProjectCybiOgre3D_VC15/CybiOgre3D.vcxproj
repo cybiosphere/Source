@@ -103,7 +103,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>OgreMain.lib;..\ExportDll_VC15\lib\CybioCore3.lib;OIS.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\..\ExecOgre\$(ProjectName).exe</OutputFile>
+      <OutputFile>bin\$(Configuration)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>C:\ogre-sdk-master-vc14-x64\lib;C:\ogre-sdk-master-vc14-x64\ois\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -113,8 +113,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Copying exe to samples bin directory ...</Message>
-      <Command>
-      </Command>
+      <Command>copy  bin\$(Configuration)\$(ProjectName).exe ..\ExecOgre\$(ProjectName).exe</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

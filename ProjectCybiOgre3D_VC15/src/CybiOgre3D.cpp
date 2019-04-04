@@ -26,8 +26,8 @@ LGPL like the rest of the OGRE engine.
 #include "windows.h"
 #endif
 
-#define OFFSET_COORD_X 150
-#define OFFSET_COORD_Y 150
+int OFFSET_COORD_X = 2000;
+int OFFSET_COORD_Y = 2000;
 
 CybiOgre3DFrameListener::CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam)
 : ExampleFrameListener(win, cam), mSceneMgr(sceneMgr)
@@ -405,14 +405,6 @@ int getStringSectionFromFileOgre(
 
 CybiOgre3DApp::CybiOgre3DApp()
 {
-  /*m_pBiotop = new CBiotop(60,40,3);
-  m_pBiotop->initGridDefaultLayerType();
-  m_pBiotop->initGridDefaultAltitude();
-  m_pBiotop->initGridEntity();
-  m_pBiotop->setDefaultEntitiesForTest();*/
-
-  /*m_pBiotop = new CBiotop(0,0,0);
-  m_pBiotop->loadFromXmlFile("biotop.bio", ".\\Data\\");*/
   string resuStr = "";
   string fileIni = ".\\Cybiosphere.ini";
   BOOL resu = getStringSectionFromFileOgre("CYBIOSPHERE", "Biotop", "", resuStr, 512, fileIni);
@@ -436,7 +428,9 @@ CybiOgre3DApp::CybiOgre3DApp()
     m_pBiotop->setDefaultEntitiesForTest();
   }
 
-  CBasicEntity* pPlayer = m_pBiotop->getEntityByName("player");
+  CBasicEntity* pPlayer = m_pBiotop->getEntityByName(std::string{ "player" });
+  OFFSET_COORD_X = 5 * m_pBiotop->getDimension()->x;
+  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension()->y;
 
   if ((pPlayer != NULL) && (pPlayer->getClass() >= CLASS_ANIMAL_FIRST))
     SetEntityPlayer(pPlayer);
@@ -499,10 +493,7 @@ void CybiOgre3DApp::createScene(void)
   Animation::setDefaultRotationInterpolationMode(Animation::RIM_LINEAR);
 
   // Set ambient light
-  //mSceneMgr->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-
-  // Set ambient light
-  mSceneMgr->setAmbientLight(ColourValue(0.3, 0.3, 0.3));
+  mSceneMgr->setAmbientLight(ColourValue(0.5, 0.4, 0.3));
 
   // Create a skydome
   mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
@@ -566,15 +557,14 @@ void CybiOgre3DApp::createScene(void)
   // Give it a little ambience with lights
   Light* l;
   l = mSceneMgr->createLight("YellowLight");
-  l->setType(Light::LT_SPOTLIGHT);
-  l->setPosition(-1800,2500,-1800);
+  l->setType(Light::LT_DIRECTIONAL);
+  l->setPosition(-1800, 2500, -1800);
 #ifndef _DEBUG
   Vector3 dir(-l->getPosition());
-  dir = -l->getPosition();
   dir.normalise();
   l->setDirection(dir);
 #endif
-  l->setDiffuseColour(1.0, 0.9, 0.8);
+  l->setDiffuseColour(0.5, 0.4, 0.3);
 
         /*mSunLight = mSceneMgr->createLight("SunLight");
         mSunLight->setType(Light::LT_SPOTLIGHT);
@@ -604,7 +594,7 @@ void CybiOgre3DApp::createScene(void)
   plane.d = 100;
   MeshManager::getSingleton().createPlane("Myplane",
     ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-    4000,4000,20,20,true,1,60,60,Vector3::UNIT_Z);
+    8000,8000,40,40,true,1,60,60,Vector3::UNIT_Z);
   Entity* pPlaneEnt = mSceneMgr->createEntity( "plane", "Myplane" );
   //pPlaneEnt->setMaterialName("Examples/Rockwall");
   pPlaneEnt->setMaterialName("Cybios/Ground");

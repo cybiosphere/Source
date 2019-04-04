@@ -1005,6 +1005,9 @@
     <ClCompile Include="..\WpGui\src\LogServerDoc.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\WPGUI\INC\ENTITYEDITORDLG.CPP">
+      <Filter>Project2D\Src2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
