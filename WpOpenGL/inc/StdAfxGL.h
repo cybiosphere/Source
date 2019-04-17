@@ -34,7 +34,7 @@ distribution.
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <StdAfx.h>
+#include "stdafx.h"
 
 // Include OpenGL header files
 #include <gl\gl.h>			// opengl32.lib 
@@ -48,8 +48,7 @@ distribution.
 #pragma comment(lib, "GLU32.LIB")
 
 // Generate auto linkage for Direct Sound libraries
-#pragma comment(lib, "DSOUND.LIB")
-
-#pragma comment(lib, "WINMM.LIB")
+//#pragma comment(lib, "DSOUND.LIB")
+//#pragma comment(lib, "WINMM.LIB")
 
 #endif // !defined(AFX_STDAFXGL_H_INCLUDED_)

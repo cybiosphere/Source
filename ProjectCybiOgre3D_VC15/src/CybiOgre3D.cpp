@@ -493,7 +493,7 @@ void CybiOgre3DApp::createScene(void)
   Animation::setDefaultRotationInterpolationMode(Animation::RIM_LINEAR);
 
   // Set ambient light
-  mSceneMgr->setAmbientLight(ColourValue(0.5, 0.4, 0.3));
+  mSceneMgr->setAmbientLight(ColourValue(0.3, 0.3, 0.3));
 
   // Create a skydome
   mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
@@ -564,7 +564,7 @@ void CybiOgre3DApp::createScene(void)
   dir.normalise();
   l->setDirection(dir);
 #endif
-  l->setDiffuseColour(0.5, 0.4, 0.3);
+  l->setDiffuseColour(1.0, 0.9, 0.8);
 
         /*mSunLight = mSceneMgr->createLight("SunLight");
         mSunLight->setType(Light::LT_SPOTLIGHT);

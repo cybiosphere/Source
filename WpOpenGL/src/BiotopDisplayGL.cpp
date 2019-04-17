@@ -426,7 +426,7 @@ void CBiotopDisplayGL::OnMouseMove(CPoint point)
 void CBiotopDisplayGL::calculateFramesPerSec() 
 {
 	// Get current time in seconds! Sytem time is in milliseconds since win98 started
-	m_fTime = static_cast<float>(timeGetTime())*0.001f;
+  m_fTime = static_cast<float>(timeGetTime())*0.001f;
 	m_fEndFrameTime = m_fTime;
 	
 	//Calculate frames/sec	

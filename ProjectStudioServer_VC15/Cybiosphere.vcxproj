@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -63,9 +63,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>./inc;../WpOpenGL/inc;../ExportDll/inc;../ProjectDll/inc;.;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpGenetic/inc;../WpMeasure/inc;../WpGui/inc;../WpTinyXml/inc;../WpClanNetwork/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;TIXML_USE_STL;DLL_CYBIOCORE_CLIENT;USE_CLAN_SERVER;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;TIXML_USE_STL;DLL_CYBIOCORE_CLIENT;USE_CLAN_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\../Temp\</AssemblerListingLocation>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\../Temp\Cybiosphere.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\../Temp\</ObjectFileName>
@@ -90,7 +90,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\../Exec\Cybiosphere.exe</OutputFile>
-      <AdditionalDependencies>..\ExportDll_VC15\lib\CybioCore3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcw.lib;libcpmt.lib;Libcmt.lib;..\ExportDll_VC15\lib\CybioCore3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>Nafxcw.lib;libcpmt.lib;Libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -392,7 +395,6 @@
     <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp" />
-    <ClCompile Include="..\WPGUI\INC\ENTITYEDITORDLG.CPP" />
     <ClCompile Include="..\WpGui\src\ActionButton.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlDoc.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlView.cpp" />
