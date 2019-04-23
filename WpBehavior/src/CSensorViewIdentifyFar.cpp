@@ -289,7 +289,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
     distanceWeight = 0;
     curWeight = 0;
 
-    if (pCurEntity != pBrainFocused->pEntity)
+    if (pCurEntity != pBrainFocused->pPreviousEntity)
     {
       // view chance depends on vigilance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - 2*pCurEntity->getCamouflage();
@@ -417,7 +417,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
     for (i=0; i<nbIds; i++)
     {
       // Give 10% bonus to previousely selected entity
-      if (m_pEntityViewIdentifyFarTab[i].pEntity == pBrainFocused->pEntity)
+      if (m_pEntityViewIdentifyFarTab[i].pEntity == pBrainFocused->pPreviousEntity)
         m_pEntityViewIdentifyFarTab[i].computedWeight += m_pEntityViewIdentifyFarTab[i].computedWeight/10;
 
       if (m_pEntityViewIdentifyFarTab[i].computedWeight>maxComputedWeight)
@@ -434,7 +434,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
     // 3 Update global brain focused entity if weight over previous
     if (maxComputedWeight > pBrainFocused->computedWeight)
     {
-      pBrainFocused->pEntity         = m_pEntityViewIdentifyFarTab[maxWeightViewTabIndex].pEntity;
+      pBrainFocused->pNewEntity      = m_pEntityViewIdentifyFarTab[maxWeightViewTabIndex].pEntity;
       if (pAnimal->getHeadDirection() == direction)
         pBrainFocused->computedWeight  = maxComputedWeight + 2; // Add 2 to give advantage to front entity
       else

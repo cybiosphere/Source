@@ -72,7 +72,8 @@ class CSensorSmell;
 
 typedef struct 
 {
-  CBasicEntity*        pEntity;
+  CBasicEntity*        pPreviousEntity;
+  CBasicEntity*        pNewEntity;
   double               computedWeight;
   DWORD                captorUid;
   int                  subcaptorIndex;

@@ -159,6 +159,9 @@ copy                                                     ..\Exec\CybioCore3D.dll
 copy  ..\Exec\CybioCore3.dll   ..\ExecOgre\
 </Command>
     </PostBuildEvent>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="res\CybioCore.rc2" />

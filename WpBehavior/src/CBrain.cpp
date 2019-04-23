@@ -117,7 +117,8 @@ CBrain::CBrain()
 
 void CBrain::clearBrainFocusedEntityInfo(void)
 {
-  m_FocusedEntityInfo.pEntity = NULL;
+  m_FocusedEntityInfo.pPreviousEntity = NULL;
+  m_FocusedEntityInfo.pNewEntity = NULL;
   m_FocusedEntityInfo.computedWeight = 0;
   m_FocusedEntityInfo.captorUid = UID_UNSET;
   m_FocusedEntityInfo.subcaptorIndex = -1;
@@ -478,21 +479,22 @@ bool CBrain::PollAllSensors (void)
     }
   }
 
-  if (m_FocusedEntityInfo.pEntity != NULL)
+  if (m_FocusedEntityInfo.pNewEntity != NULL)
   {
-    if (m_FocusedEntityInfo.pEntity->isToBeRemoved())
+    if (m_FocusedEntityInfo.pNewEntity->isToBeRemoved())
     {
       //CYBIOCORE_LOG("BRAIN - WARNING PollAllSensors : FocusedEntity is NULL\n");
-      m_FocusedEntityInfo.pEntity = NULL;
+      m_FocusedEntityInfo.pNewEntity = NULL;
     }
     else
     {
       // Update Identification on focused entity for GUI 
-      ComputeAndGetIdentification(m_FocusedEntityInfo.pEntity);
+      ComputeAndGetIdentification(m_FocusedEntityInfo.pNewEntity);
     }
   }
 
   // reset m_FocusedEntityInfo
+  m_FocusedEntityInfo.pPreviousEntity = m_FocusedEntityInfo.pNewEntity;
   m_FocusedEntityInfo.computedWeight = 0;
   m_FocusedEntityInfo.captorUid = UID_UNSET;
   m_FocusedEntityInfo.subcaptorIndex = -1;

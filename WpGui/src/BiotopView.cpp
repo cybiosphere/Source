@@ -337,12 +337,12 @@ void CBiotopView::OnTimer(UINT nIDEvent)
       CBasicEntity* pEntity = theApp.GetpSelectedEntity();
       if ((pEntity) && (pEntity->getBrain() != NULL))
       {
-        if (m_pFocusedEntity != pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity)  
+        if (m_pFocusedEntity != pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity)
         {
           if (m_pFocusedEntity != NULL)        
             m_pFocusedEntity->forceHasChanged();
 
-          m_pFocusedEntity = pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity;
+          m_pFocusedEntity = pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity;
           if (m_pFocusedEntity != NULL)        
           {
             m_pFocusedEntity->forceHasChanged();

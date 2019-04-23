@@ -284,7 +284,7 @@ bool CSensorViewFar::Scan45degSector(int stimulationTabOffset,
     pCurEntity = pFoundIds[i].pEntity;
     distanceWeight = 0;
 
-    if (pCurEntity != pBrainFocused->pEntity)
+    if (pCurEntity != pBrainFocused->pPreviousEntity)
     {
       // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = 100.0 - 2*pCurEntity->getCamouflage(); 
@@ -424,7 +424,7 @@ bool CSensorViewFar::Scan45degSector(int stimulationTabOffset,
     // 3 Update global brain focused entity if weight over previous
     if (maxComputedWeight > pBrainFocused->computedWeight)
     {
-      pBrainFocused->pEntity         = m_pEntityViewFarTab[maxWeightViewTabIndex].pEntity;
+      pBrainFocused->pNewEntity      = m_pEntityViewFarTab[maxWeightViewTabIndex].pEntity;
       pBrainFocused->computedWeight  = maxComputedWeight;
       pBrainFocused->captorUid       = GetUniqueId();
       pBrainFocused->subcaptorIndex  = offset;

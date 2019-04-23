@@ -1654,10 +1654,10 @@ void CBiotop::nextSecond(void)
       pEntity = m_tEntity[i];
       if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
       {
-        if ((pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity != NULL) && (pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity->isToBeRemoved()))
+        if ((pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity != NULL) && (pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity->isToBeRemoved()))
         {
           CYBIOCORE_LOG_TIME(m_BioTime);
-          CYBIOCORE_LOG("BIOTOP - nextSecond WARNING: %s has focus on removed entity %s\n", pEntity->getLabel().c_str(), pEntity->getBrain()->getpBrainFocusedEntityInfo()->pEntity->getLabel().c_str());
+          CYBIOCORE_LOG("BIOTOP - nextSecond WARNING: %s has focus on removed entity %s\n", pEntity->getLabel().c_str(), pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity->getLabel().c_str());
           pEntity->getBrain()->clearBrainFocusedEntityInfo();
         }
       }
