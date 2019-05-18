@@ -455,7 +455,7 @@ bool CBrain::PollAllSensors (void)
     }
   }
 
-  // Give an additional bonus to focused entity (180%)
+  // Give an additional bonus to focused entity (120%)
   if (m_FocusedEntityInfo.computedWeight > 0)
   {
     cpt = GetBrainMatrixRowIndex (m_FocusedEntityInfo.captorUid, 1, m_FocusedEntityInfo.subcaptorIndex, 0);
@@ -464,7 +464,7 @@ bool CBrain::PollAllSensors (void)
     {
       for (i=0; i<m_FocusedEntityInfo.subcaptorsSize;i++)
       {
-        curSensorVal = m_vCurrentDecisionInput(cpt,0) * 1.8;
+        curSensorVal = m_vCurrentDecisionInput(cpt,0) * 1.2;
         if (curSensorVal>MAX_SENSOR_VAL)
         {
           curSensorVal = MAX_SENSOR_VAL;  
