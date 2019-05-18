@@ -1196,11 +1196,13 @@ bool CBrain::MemorizeExperience (feedbackValType currentFeedback, double learnin
 
   if (currentFeedback > MAX_FEEDBACK_VAL)
   {
+    CYBIOCORE_LOG_TIME(GetEntity()->getBiotop()->getBiotopTime());
     CYBIOCORE_LOG("BRAIN - warning MemorizeExperience :currentFeedback too big: %f\n", currentFeedback);
     currentFeedback = MAX_FEEDBACK_VAL;
   }
   else if (currentFeedback < -MAX_FEEDBACK_VAL)
   {
+    CYBIOCORE_LOG_TIME(GetEntity()->getBiotop()->getBiotopTime());
     CYBIOCORE_LOG("BRAIN - warning MemorizeExperience :currentFeedback too big negative: %f\n", currentFeedback);
     currentFeedback = -MAX_FEEDBACK_VAL;
   }

@@ -2671,7 +2671,6 @@ void CAnimal::nextSecond()
       else
       {
         doNothing();
-        m_BusySecondCounter = 1;
       }
     }
 
@@ -2702,11 +2701,7 @@ void CAnimal::nextSecond()
     }
 
     // Decraese slowly Pleasure, suffer, Tiredness
-    if (getPleasureRate()>50)
-      changePleasureRate(-0.1);
-    else if (getPleasureRate()<50)
-      changePleasureRate(0.1);
-
+    convergePleasureRateToNeutral(0.1);
     changeSufferingRate(-0.1);
     changeTirednessRate(-0.2);
   }
@@ -3024,6 +3019,44 @@ void CAnimal::changePleasureRate(double variation)
 }
 
 //---------------------------------------------------------------------------
+// METHOD:       CAnimal::convergePleasureRateToNeutral
+//  
+// DESCRIPTION:  Modify animal pleasure
+// 
+// ARGUMENTS:    double variation : rate variation (must be > 0) 
+//   
+// RETURN VALUE: None
+//  
+// REMARKS:      None
+//---------------------------------------------------------------------------
+void CAnimal::convergePleasureRateToNeutral(double variation)
+{
+  CGenericParam* pPleasureParam = getParameter(m_id_Pleasure);
+  if (pPleasureParam->getVal() > 50.0)
+  {
+    if (pPleasureParam->getVal() > (50.0 + variation))
+    {
+      pPleasureParam->changeVal(-variation);
+    }
+    else
+    {
+      pPleasureParam->forceVal(50.0);
+    }
+  }
+  else if (pPleasureParam->getVal() < 50.0)
+  {
+    if (pPleasureParam->getVal() < (50.0 - variation))
+    {
+      pPleasureParam->changeVal(variation);
+    }
+    else
+    {
+      pPleasureParam->forceVal(50.0);
+    }
+  }
+}
+
+//---------------------------------------------------------------------------
 // METHOD:       CAnimal::changeTirednessRate
 //  
 // DESCRIPTION:  Modify animal Tiredness
@@ -3057,28 +3090,18 @@ void CAnimal::changeTirednessRate(double variation)
 // 
 // ARGUMENTS:    double variation : mass change
 //   
-// RETURN VALUE: bool: result
+// RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-bool CAnimal::changeFatWeight(double variation)
+void CAnimal::changeFatWeight(double variation)
 {
   // Change total weight in autorized range
   double realVariation = changeWeight(variation);
 
   // Change fat rate
   CGenericParam* pParam = getParameter(m_id_FatWeight);
-  double initVal;
-  double resuVariation;
-
-  initVal = pParam->getVal();
   pParam->changeVal(realVariation);
-  resuVariation = pParam->getVal() - initVal;
-
-  if (resuVariation!=0)
-    return (true);
-  else
-    return (false);
 }
 
 //---------------------------------------------------------------------------
@@ -3249,10 +3272,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     }
 
     // Decraese slowly suffer, center slowly pleasure
-    if (getPleasureRate()>50)
-      changePleasureRate(-0.1);
-    else if (getPleasureRate()<50)
-      changePleasureRate(0.1);
+    convergePleasureRateToNeutral(0.1);
     changeSufferingRate(-0.1);
     changeTirednessRate(-0.2);
   }

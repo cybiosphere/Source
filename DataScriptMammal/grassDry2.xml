@@ -1,0 +1,46 @@
+<ENTITY Label="grassDry" Generation="0" Status="1" Layer="1" Direction="0" HourCounter="0" Immortal="0">
+    <LIFE_STAGES CurrentIndex="-1" />
+    <PARAMETER Name="Toxicity rate" Value="0" />
+    <PARAMETER Name="Protection factor" Value="4.99878" />
+    <PARAMETER Name="Camouflage factor" Value="0.999451" />
+    <PARAMETER Name="Growth speed rate" Value="99.9451" />
+    <PARAMETER Name="Reproduction rate" Value="9.99908" />
+    <PARAMETER Name="Reproduction Range" Value="1.99997" />
+    <PARAMETER Name="Weight" Value="2.3916" />
+    <PARAMETER Name="Age" Value="4" />
+    <PARAMETER Name="Decomposition" Value="0" />
+    <PARAMETER Name="NoiseRate" Value="0" />
+    <PARAMETER Name="Health rate" Value="50" />
+    <PARAMETER Name="Pollen Range" Value="2" />
+    <CARACTER Name="ColorRGB" Value="10936569" />
+    <CARACTER Name="Odor" Value="2" />
+    <CARACTER Name="Pheromone" Value="0" />
+    <CARACTER Name="Form" Value="5" />
+    <CARACTER Name="Texture" Value="0" />
+    <CARACTER Name="Attribute" Value="-2147483648" />
+    <GESTATION TotalChildNumber="0" />
+    <GENOME ClassName="Spermatophyta" ClassId="7" Specie="grassDry" Dimorphism="0">
+        <PAIR Type="1">
+            <GENE DataM="01000100060001F9E0A600" DataP="01000100060001F9E0A600" />
+            <GENE DataM="0100050003010163" DataP="0100050003010163" />
+            <GENE DataM="0100020003010141" DataP="0100020003010141" />
+            <GENE DataM="01000A0003010101" DataP="01000A0003010101" />
+            <GENE DataM="010004000301012B" DataP="010004000301012B" />
+            <GENE DataM="010006000601017E000000" DataP="010006000601017E000000" />
+            <GENE DataM="0100090003010101" DataP="0100090003010101" />
+            <GENE DataM="0100070003010101" DataP="0100070003010101" />
+            <GENE DataM="0100080003010101" DataP="0100080003010101" />
+            <GENE DataM="01000B0003010101" DataP="01000B0003010101" />
+            <GENE DataM="02000F0008020A000000000000" DataP="02000F0008020A000000000000" />
+            <GENE DataM="0200100008020A0000CC0C0000" DataP="0200100008020A0000CC0C0000" />
+            <GENE DataM="0200110008020A00008F020000" DataP="0200110008020A00008F020000" />
+            <GENE DataM="0200160008020A00008F020000" DataP="0200160008020A00008F020000" />
+            <GENE DataM="0200140008020A000099190000" DataP="0200140008020A000099190000" />
+            <GENE DataM="0200170008020A000033330000" DataP="0200170008020A000033330000" />
+            <GENE DataM="0200000008020A000000000000" DataP="0200000008020A000000000000" />
+            <GENE DataM="02000E0008020A41004100D703" DataP="02000E0008020A41004100D703" />
+            <GENE DataM="0200120008020A000000008F02" DataP="0200120008020A000000008F02" />
+            <GENE DataM="0200130008020A00000000D703" DataP="0200130008020A00000000D703" />
+        </PAIR>
+    </GENOME>
+</ENTITY>

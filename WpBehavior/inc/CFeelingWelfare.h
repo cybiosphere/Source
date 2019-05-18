@@ -110,7 +110,7 @@ public:
   double GetCurFeelingWelfare();
 
 
-};// end CPhysicalWelfare
+};// end CFeelingWelfare
 
 #endif // !defined(CFEELINGWELFARE_INCLUDED_)
 

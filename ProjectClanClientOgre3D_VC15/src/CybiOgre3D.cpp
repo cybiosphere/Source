@@ -181,10 +181,13 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
       }
       case BIOTOP_EVENT_ENTITY_MODIFIED:
       {
-        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
+        //pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
         int meshIndex = getMeshEntityIndex(bioEvent.entityId);
-        updateMeshEntityPtr(meshIndex, pEntity);
-        updateMeshEntityNewSecond(meshIndex);
+        if (meshIndex >= 0) 
+        {
+          //updateMeshEntityPtr(meshIndex, pEntity);
+          updateMeshEntityNewSecond(meshIndex);
+        }
         break;
       }
       case BIOTOP_EVENT_ENTITY_ADDED:
@@ -276,7 +279,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     {
       labelAction = "Run";
     }
-    else if ( (squareLen>4) && (labelAction != "Attack") )
+    else if ( (squareLen>5) && (labelAction != "Attack") )
     {
       labelAction = "Walk";
     }
@@ -625,7 +628,7 @@ void CybiOgre3DApp::createScene(void)
   plane.d = 100;
   MeshManager::getSingleton().createPlane("Myplane",
     ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-    8000,8000,40,40,true,1,60,60,Vector3::UNIT_Z);
+    10000,10000,60,60,true,1,60,60,Vector3::UNIT_Z);
   Entity* pPlaneEnt = mSceneMgr->createEntity( "plane", "Myplane" );
   pPlaneEnt->setMaterialName("Cybios/Ground");
   pPlaneEnt->setCastShadows(false);

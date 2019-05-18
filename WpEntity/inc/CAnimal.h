@@ -183,8 +183,9 @@ protected:
   bool changeHealthRate(double variation, CBasicEntity* pAggresor=NULL, bool suffering = true);
   void changeSufferingRate(double variation);
   void changePleasureRate(double variation);
+  void convergePleasureRateToNeutral(double variation);
   void changeTirednessRate(double variation);
-  bool changeFatWeight(double variation);
+  void changeFatWeight(double variation);
   void changeFearRate(double variation);
 public:
   void changeCurrentSpeed(double variation);

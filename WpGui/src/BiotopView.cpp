@@ -255,6 +255,11 @@ void CBiotopView::OnTimer(UINT nIDEvent)
       if (!theApp.GetScenarioPlayer()->IsScenarioFileOpened())
       {
         m_pBiotop->nextSecond();
+        // In idle mode, call twice pBiotop->nextSecond to boost performance 
+        if (m_IdleDisplayMode)
+        {
+          m_pBiotop->nextSecond();
+        }
       }
       else
       {
@@ -485,7 +490,7 @@ void CBiotopView::SetSpeedRate (double speedRate)
   if (speedRate>0)
   {
     m_pBioDisplay->SetNbRefreshPerStep((1000/speedRate-9)/200+1);
-    SetTimer(SECOND_TIMER_ID,1000.0/speedRate-9.0,NULL);  
+    SetTimer(SECOND_TIMER_ID, 1000.0 / speedRate - 9.0, NULL);
   }
   else
   {

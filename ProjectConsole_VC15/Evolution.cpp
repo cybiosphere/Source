@@ -34,16 +34,18 @@ distribution.
 #include <stdio.h> 
 #include <stdarg.h>
 #include <fstream>
+#include <chrono>
+#include <ctime>
 #include "CScenarioPlayer.h"
 #include "CybioXmlDef.h"
+
+CBiotop* pBiotop;
 
 int main(int argc, char* argv[])
 {
 
   //char react;
   printf("Hello World!\n");
-
-  CBiotop* pBiotop;
   char resuBuffer[512];
   string resuStr;
   string fileIni = "Cybiosphere.ini";
@@ -192,39 +194,34 @@ int main(int argc, char* argv[])
       pBiotop->nextSecond();
       break;
     case 5:
-      for (i=0;i<3600;i++)
       {
-        pBiotop->nextSecond();
+        auto start = std::chrono::system_clock::now();
+        for (int cpt = 0; cpt < 3600; cpt++)
+        {
+          pBiotop->nextSecond();
+        }
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end - start;
+        printf("Process duration: %.1f sec\n", elapsed_seconds.count());
       }
       break;
     case 6:
-      for (i=0;i<3600*24;i++)
       {
-        pBiotop->nextSecond();
+        auto start = std::chrono::system_clock::now();
+        for (i = 0; i < 3600 * 24; i++)
+        {
+          pBiotop->nextSecond();
+        }
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end - start;
+        printf("Process duration: %.1f sec\n", elapsed_seconds.count());
       }
       break;
     case 7:
       for (i=0;i<31;i++)
       {
 		    printf("Start day %d\n", i);
-        CBasicEntity* pEntity = pBiotop->getEntityById(1);
-        if (pEntity!=NULL)
-        {
-          printf(pEntity->getLabel().c_str());
-		      printf("\n");
-          CGenome* pGenome = pEntity->getGenome();
-          if (pGenome!=NULL)
-            printf(pGenome->getSpecieName().c_str());
-          printf("\n");
-		      for (int i=0;i<pEntity->getNumParameter();i++)
-		      {
-			      printf(pEntity->getParameter(i)->getLabel().c_str());
-			      printf(" %6.2f\n",pEntity->getParameter(i)->getVal());
-            printf("%d \n", i);
-		      }
-          pBiotop->displayEntities();
-        }
-        // TBD...
+        pBiotop->displayEntities();
         printf ("\n");
 		    for (j=0;j<3600*24;j++)
 		    {

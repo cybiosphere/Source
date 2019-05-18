@@ -1649,7 +1649,7 @@ void CBiotop::nextSecond(void)
   if (m_BioTime.seconds>=3600)
   {
     // Loop on Animals to clean dependancies
-    for (i=0; i<getNbOfAnimals(); i++)
+    /*for (i=0; i<getNbOfAnimals(); i++)
     {
       pEntity = m_tEntity[i];
       if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
@@ -1661,15 +1661,27 @@ void CBiotop::nextSecond(void)
           pEntity->getBrain()->clearBrainFocusedEntityInfo();
         }
       }
-    }
+    }*/
+
+    // Next hour for biotop
+    nextHour();
 
     // loop from top to bottom to clear entities each hour
     for (i=getNbOfEntities()-1; i>=0; i--)   
     {
       pEntity = m_tEntity[i];
-      if ((pEntity != NULL) && (pEntity->isToBeRemoved()))
+      if (pEntity != NULL) 
       {
-        deleteEntity(pEntity->getId());
+        if (pEntity->isToBeRemoved())
+        {
+          deleteEntity(pEntity->getId());
+        }
+        else
+        {
+          pEntity->nextHour();
+          if (pEntity->checkIfhasChanged())
+            addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
+        }
       }
     } 
   }
@@ -1695,41 +1707,6 @@ void CBiotop::nextSecond(void)
       m_tMeasures[i]->StopMeasurement();
     }
   }
-
-  if (m_BioTime.seconds>=3600)
-  {
-	// Next hour for biotop
-    nextHour();
-    // Loop on all entities for hour check-ups and actions
-    for (i=0; i<getNbOfEntities(); i++)   
-    {
-      pEntity = m_tEntity[i];
-      if ( (pEntity != NULL) && (!pEntity->isToBeRemoved()) )
-      {
-        pEntity->nextHour();
-        if (pEntity->checkIfhasChanged())
-          addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
-      }
-    } 
-
-    m_BioTime.seconds=0;
-    m_BioTime.hours++;
-    // Cyclic parameters updates
-    m_pSunlightRate->NextStep();
-    //m_pFertilityRate->NextStep();
-    m_pTemperature->NextStep();
-
-    if (m_BioTime.hours>=24) 
-    {
-      m_BioTime.hours=0;
-      m_BioTime.days++;
-      if (m_BioTime.days>=365) 
-      {
-        m_BioTime.days=0;
-        m_BioTime.years++;
-      }
-    }
-  }
 }
 
 void CBiotop::nextHour(void)
@@ -1752,6 +1729,25 @@ void CBiotop::nextHour(void)
   if (testChance(10.0, getFertility({ 1,1 }) / 24.0))
   {
     spreadWaterPuddlesByRain(getRandInt(100));
+  }
+
+  // Update time
+  m_BioTime.seconds = 0;
+  m_BioTime.hours++;
+  // Cyclic parameters updates
+  m_pSunlightRate->NextStep();
+  //m_pFertilityRate->NextStep();
+  m_pTemperature->NextStep();
+
+  if (m_BioTime.hours >= 24)
+  {
+    m_BioTime.hours = 0;
+    m_BioTime.days++;
+    if (m_BioTime.days >= 365)
+    {
+      m_BioTime.days = 0;
+      m_BioTime.years++;
+    }
   }
 }
 
