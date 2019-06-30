@@ -101,6 +101,8 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
 
   m_tFoundIds = new FoundEntity_t[MAX_FOUND_ENTITIES];
 
+  resetCpuMarker();
+
   CYBIOCORE_LOG_INIT;
 }
    
@@ -1643,26 +1645,11 @@ void CBiotop::nextSecond(void)
   CBasicEntity* pEntity = NULL;
   int i;
   bool isValid;
-
   m_BioTime.seconds++;
+  logCpuMarkerStart(BIOTOP_CPUMARKER_TOTAL);
 
   if (m_BioTime.seconds>=3600)
   {
-    // Loop on Animals to clean dependancies
-    /*for (i=0; i<getNbOfAnimals(); i++)
-    {
-      pEntity = m_tEntity[i];
-      if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
-      {
-        if ((pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity != NULL) && (pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity->isToBeRemoved()))
-        {
-          CYBIOCORE_LOG_TIME(m_BioTime);
-          CYBIOCORE_LOG("BIOTOP - nextSecond WARNING: %s has focus on removed entity %s\n", pEntity->getLabel().c_str(), pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity->getLabel().c_str());
-          pEntity->getBrain()->clearBrainFocusedEntityInfo();
-        }
-      }
-    }*/
-
     // Next hour for biotop
     nextHour();
 
@@ -1683,10 +1670,11 @@ void CBiotop::nextSecond(void)
             addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
         }
       }
-    } 
+    }
   }
 
-  // Loop on all animals for basic action  
+  // Loop on all animals for basic action
+  logCpuMarkerStart(BIOTOP_CPUMARKER_ANIMALS);
   for (i=0; i<getNbOfAnimals(); i++)    
   {
     pEntity = m_tEntity[i];
@@ -1697,6 +1685,7 @@ void CBiotop::nextSecond(void)
         addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
     }
   }
+  logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
 
   // Trigger measurement
   for (i=0; i<m_tMeasures.size(); i++) 
@@ -1707,6 +1696,7 @@ void CBiotop::nextSecond(void)
       m_tMeasures[i]->StopMeasurement();
     }
   }
+  logCpuMarkerEnd(BIOTOP_CPUMARKER_TOTAL);
 }
 
 void CBiotop::nextHour(void)
@@ -1741,6 +1731,15 @@ void CBiotop::nextHour(void)
 
   if (m_BioTime.hours >= 24)
   {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - nextDay CPU total=%f animals=%f custom1=%f custom2=%f for %d animals\n",
+      m_CpuMonitoring[BIOTOP_CPUMARKER_TOTAL].cpuTimeCumulated,
+      m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated,
+      m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM1].cpuTimeCumulated,
+      m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM2].cpuTimeCumulated,
+      getNbOfAnimals());
+    resetCpuMarker();
+
     m_BioTime.hours = 0;
     m_BioTime.days++;
     if (m_BioTime.days >= 365)
@@ -2524,6 +2523,30 @@ void CBiotop::spreadWaterPuddlesByRain(int coverRate)
 
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - Rain : %d puddles\n", coverRate);
+}
+
+//===========================================================================
+// CPU Marker
+//===========================================================================
+
+void CBiotop::resetCpuMarker()
+{
+  for (int i = 0; i < BIOTOP_CPUMARKER_LAST; i++)
+  {
+    m_CpuMonitoring[i].cpuTimeCumulated = 0;
+  }
+}
+
+void CBiotop::logCpuMarkerStart(BiotopCpuMarkerType_e markerId)
+{
+  m_CpuMonitoring[markerId].startTime = std::chrono::system_clock::now();
+}
+
+void CBiotop::logCpuMarkerEnd(BiotopCpuMarkerType_e markerId)
+{
+  m_CpuMonitoring[markerId].endTime = std::chrono::system_clock::now();
+  std::chrono::duration<double> diffTime = m_CpuMonitoring[markerId].endTime - m_CpuMonitoring[markerId].startTime;
+  m_CpuMonitoring[markerId].cpuTimeCumulated += diffTime.count();
 }
 
 //===========================================================================

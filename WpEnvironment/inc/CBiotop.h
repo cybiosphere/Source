@@ -44,8 +44,7 @@ distribution.
 //===========================================================================
 // Includes 
 //===========================================================================
-//#include <afxwin.h>
-//#include <afxtempl.h>
+#include <chrono>
 #include "Definitions.h" 
 #include "CBasicEntity.h" 
 #include "CWater.h"
@@ -151,6 +150,21 @@ typedef struct
   CBasicEntity*     pEntity;
 } BiotopEvent_t;
 
+typedef enum
+{
+  BIOTOP_CPUMARKER_TOTAL = 0,
+  BIOTOP_CPUMARKER_ANIMALS,
+  BIOTOP_CPUMARKER_CUSTOM1,
+  BIOTOP_CPUMARKER_CUSTOM2,
+  BIOTOP_CPUMARKER_LAST
+} BiotopCpuMarkerType_e;
+
+typedef struct
+{
+  chrono::time_point<std::chrono::system_clock> startTime;
+  chrono::time_point<std::chrono::system_clock> endTime;
+  double cpuTimeCumulated;
+} BiotopCpuMonitoring_t;
 
 //===========================================================================
 //                                    CLASS            
@@ -191,6 +205,8 @@ private:
   int m_WindStrenght; // 0,1 or 2
 
   string m_DefaultFilePath;
+
+  BiotopCpuMonitoring_t m_CpuMonitoring[BIOTOP_CPUMARKER_LAST];
 
 //---------------------------------------------------------------------------
 // associations
@@ -337,6 +353,14 @@ public:
 //---------------------------------------------------------------------------
 public:
   void spreadWaterPuddlesByRain(int coverRate);
+
+//---------------------------------------------------------------------------
+// CPU Marker
+//---------------------------------------------------------------------------
+public:
+  void resetCpuMarker();
+  void logCpuMarkerStart(BiotopCpuMarkerType_e markerId);
+  void logCpuMarkerEnd(BiotopCpuMarkerType_e markerId);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

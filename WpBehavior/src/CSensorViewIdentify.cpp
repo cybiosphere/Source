@@ -163,7 +163,8 @@ CSensorViewIdentify::~CSensorViewIdentify()
 //---------------------------------------------------------------------------
 int CSensorViewIdentify::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
 {
-    int i;
+  int i;
+  CAnimal* pAnimal = m_pBrain->getAnimal();
 
   // Reinit m_pStimulationValues
   for (i=0; i<m_SubCaptorNumber; i++)
@@ -171,8 +172,6 @@ int CSensorViewIdentify::UpdateAndGetStimulationTable(sensorValType*& pStimulati
     m_pStimulationValues[i] = 0;
   }
 
-  CAnimal* pAnimal = m_pBrain->getAnimal();
- 
   if (pAnimal->isSleeping())
   {
     // No stimulation when sleeping...
@@ -238,6 +237,7 @@ int CSensorViewIdentify::UpdateAndGetStimulationTable(sensorValType*& pStimulati
     Scan45degSector(offset, m_nFocusObjectsSect8,direction);
   
   pStimulationVal = m_pStimulationValues;
+
   return m_SubCaptorNumber;
 }
 
@@ -273,13 +273,17 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
   double maxComputedWeight;
   int maxWeightViewTabIndex;
   CMatrix* pFoundIdentitiesMatrix;
+  int relativeSpeed;
   int relativeAngle;
-  double distanceWeight;
   double curWeight;
   double viewChance;
 
   // Find entities according to angle, distance and layer:
   int nbIds = pBiotop->findEntities(pFoundIds, pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
+  if (nbIds > MAX_FOUND_ENTITIES)
+  {
+    nbIds = MAX_FOUND_ENTITIES;
+  }
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
@@ -287,7 +291,6 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
   for (i=0; i<nbIds; i++)
   {
     pCurEntity = pFoundIds[i].pEntity;
-    distanceWeight = 0;
     curWeight = 0;
 
     if ((pCurEntity != pBrainFocused->pPreviousEntity) && (m_nRange>1)) // keep seeing focused and just in front entities
@@ -310,6 +313,8 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
 
       offset = 0;
       pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity);
+      relativeSpeed = pAnimal->getRelativeSpeed(pCurEntity);
+      relativeAngle = (pAnimal->getDirection() + 8 - pCurEntity->getDirection()) % 8 - 4;
 
       for (identityIdx=0; identityIdx<IDENTIFICATION_STATIC_NUMBER_TYPE; identityIdx++)
       {
@@ -320,6 +325,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
           m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight; 
         offset++;
       }
+
       for (identityIdx=IDENTIFICATION_STATIC_NUMBER_TYPE; identityIdx<IDENTIFICATION_NUMBER_TYPE; identityIdx++)
       {
         curWeight = (*pFoundIdentitiesMatrix)(identityIdx,0);
@@ -332,7 +338,6 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           offset++;
           // 2 Relative speed escape
-          int relativeSpeed = pAnimal->getRelativeSpeed(pCurEntity);
           if (relativeSpeed > 0)
             m_pEntityViewIdentifyTab[i].weightTab[offset] = relativeSpeed;
           else
@@ -345,7 +350,6 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
             m_pEntityViewIdentifyTab[i].weightTab[offset] = 0;
           offset++;
           // 4 direction left
-          relativeAngle = (pAnimal->getDirection() + 8 - pCurEntity->getDirection())%8 - 4;
           if (relativeAngle>0) 
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           else
