@@ -200,7 +200,7 @@ void CGeneticView::OnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	// TODO: Add your control notification handler code here
 	
   HTREEITEM pSelectedItem = m_GenomeTree.GetSelectedItem( );
-  DWORD itemPtr = m_GenomeTree.GetItemData(pSelectedItem);
+  DWORD_PTR itemPtr = m_GenomeTree.GetItemData(pSelectedItem);
 
   switch(m_GenomeTree.GetSelectionTreeLevel())
   {

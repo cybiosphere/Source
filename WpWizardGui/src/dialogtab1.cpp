@@ -195,7 +195,7 @@ void CDialogTab1::InitView(void)
   for (FormType_e i=FORM_UNKNOWN; i<FORM_NUMBER_TYPE; i=(FormType_e)(i+1))
   {
     index = m_ComboForm.AddString(CBasicEntity::getFormStrName(i).c_str());
-    m_ComboForm.SetItemData(index,(DWORD)i);
+    m_ComboForm.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboForm.SetCurSel(0);
   
@@ -205,7 +205,7 @@ void CDialogTab1::InitView(void)
   for (OdorType_e j=ODOR_NONE; j<ODOR_NUMBER_TYPE; j=(OdorType_e)(j+1))
   {
     index = m_ComboOdor.AddString(CBasicEntity::getOdorStrName(j).c_str());
-    m_ComboOdor.SetItemData(index,(DWORD)j);
+    m_ComboOdor.SetItemData(index,(DWORD_PTR)j);
   }
   m_ComboOdor.SetCurSel(0);
   
@@ -215,7 +215,7 @@ void CDialogTab1::InitView(void)
   for (TasteType_e k=TASTE_NONE; k<TASTE_NUMBER_TYPE; k=(TasteType_e)(k+1))
   {
     index = m_ComboTaste.AddString(CBasicEntity::getTasteStrName(k).c_str());
-    m_ComboTaste.SetItemData(index,(DWORD)k);
+    m_ComboTaste.SetItemData(index,(DWORD_PTR)k);
   }
   m_ComboTaste.SetCurSel(0);
   
@@ -225,7 +225,7 @@ void CDialogTab1::InitView(void)
   for (TextureType_e l=TEXTURE_NONE; l<TEXTURE_NUMBER_TYPE; l=(TextureType_e)(l+1))
   {
     index = m_ComboTexture.AddString(CBasicEntity::getTextureStrName(l).c_str());
-    m_ComboTexture.SetItemData(index,(DWORD)l);
+    m_ComboTexture.SetItemData(index,(DWORD_PTR)l);
   }
   m_ComboTexture.SetCurSel(0);
   
@@ -235,7 +235,7 @@ void CDialogTab1::InitView(void)
   for (PhyAttributeType_e m=PHY_ATTRIBUTE_NONE; m<PHY_ATTRIBUTE_NUMBER_TYPE; m=(PhyAttributeType_e)(m+1))
   {
     index = m_ComboAttribut.AddString(CBasicEntity::getPhyAttributeStrName(m).c_str());
-    m_ComboAttribut.SetItemData(index,(DWORD)m);
+    m_ComboAttribut.SetItemData(index,(DWORD_PTR)m);
   }
   m_ComboAttribut.SetCurSel(0);
   
@@ -245,7 +245,7 @@ void CDialogTab1::InitView(void)
   for (HabitatType_e n=HABITAT_FIRST_TYPE; n<HABITAT_NUMBER_TYPE; n=(HabitatType_e)(n+1))
   {
     index = m_ComboHabitat.AddString(CBasicEntity::getHabitatStrName(n).c_str());
-    m_ComboHabitat.SetItemData(index,(DWORD)n);
+    m_ComboHabitat.SetItemData(index,(DWORD_PTR)n);
   }
   m_ComboHabitat.SetCurSel(0);
   
@@ -255,7 +255,7 @@ void CDialogTab1::InitView(void)
   for (ReproType_e o=REPRODUCT_NONE; o<REPRODUCT_NUMBER_TYPE; o=(ReproType_e)(o+1))
   {
     index = m_ComboReproduct.AddString(CBasicEntity::getReproStrName(o).c_str());
-    m_ComboReproduct.SetItemData(index,(DWORD)o);
+    m_ComboReproduct.SetItemData(index,(DWORD_PTR)o);
   }
   m_ComboReproduct.SetCurSel(0);
   
@@ -265,7 +265,7 @@ void CDialogTab1::InitView(void)
   for (MoveType_e p=MOVE_NONE; p<MOVE_NUMBER_TYPE; p=(MoveType_e)(p+1))
   {
     index = m_ComboMvt.AddString(CBasicEntity::getMoveStrName(p).c_str());
-    m_ComboMvt.SetItemData(index,(DWORD)p);
+    m_ComboMvt.SetItemData(index,(DWORD_PTR)p);
   }
   m_ComboMvt.SetCurSel(0);
   
@@ -275,7 +275,7 @@ void CDialogTab1::InitView(void)
   for (ConsumeType_e q=CONSUM_NONE; q<CONSUM_NUMBER_TYPE; q=(ConsumeType_e)(q+1))
   {
     index = m_ComboConsum.AddString(CBasicEntity::getConsumeStrName(q).c_str());
-    m_ComboConsum.SetItemData(index,(DWORD)q);
+    m_ComboConsum.SetItemData(index,(DWORD_PTR)q);
   }
   m_ComboConsum.SetCurSel(0);
   
@@ -319,7 +319,7 @@ void CDialogTab1::OnRadioMineral()
   for (ClassType_e i=CLASS_MINERAL_FIRST;i<=CLASS_MINERAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboClass.SetCurSel(0);
   m_ComboClass.EnableWindow(true);
@@ -353,7 +353,7 @@ void CDialogTab1::OnRadioVegetal()
   for (ClassType_e i=CLASS_VEGETAL_FIRST;i<=CLASS_VEGETAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
 
   m_ComboClass.SelectString(0, CGenome::getClassStrName(CLASS_SPERMATOPHYTA).c_str());
@@ -386,7 +386,7 @@ void CDialogTab1::OnRadioAnimal()
   for (ClassType_e i=CLASS_ANIMAL_FIRST;i<=CLASS_ANIMAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboClass.SelectString(0, CGenome::getClassStrName(CLASS_MAMMAL).c_str());
   m_ComboClass.EnableWindow(true);

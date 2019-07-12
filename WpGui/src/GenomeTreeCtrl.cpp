@@ -74,19 +74,20 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
   int nPair,nGene;
   CChromosome* pChromo = NULL;
   hGenomeNode = InsertItem(LPCTSTR(m_pGenome->getSpecieName().c_str()), 0, 1, TVI_ROOT);
-  SetItemData(hGenomeNode,(DWORD)m_pGenome);
+  DWORD_PTR addr = (DWORD_PTR)m_pGenome;
+  SetItemData(hGenomeNode, addr);
 
   for (nPair=0; nPair<m_pGenome->getNumPair(); nPair++)
   {
     tmpLabel.Format(LPCTSTR("Pair %d"), m_pGenome->getPair(nPair)->getIdNumber());
     hPairNode = InsertItem(tmpLabel, 2, 3, hGenomeNode);
-    SetItemData(hPairNode,(DWORD)m_pGenome->getPair(nPair));
+    SetItemData(hPairNode,(DWORD_PTR)m_pGenome->getPair(nPair));
 
     hChromoNode = InsertItem(LPCTSTR("mother"), 4, 5, hPairNode);
     if (showChromos)
       EnsureVisible(hChromoNode);
     pChromo = m_pGenome->getPair(nPair)->getMaterChromosome();
-    SetItemData(hChromoNode,(DWORD)pChromo);
+    SetItemData(hChromoNode,(DWORD_PTR)pChromo);
     for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
     {
       tmpLabel = CGene::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
@@ -95,12 +96,12 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       if (showGenes)
         EnsureVisible(hGeneNode);
-      SetItemData(hGeneNode,(DWORD)pChromo->getGene(nGene));
+      SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
     }
 
     hChromoNode = InsertItem(LPCTSTR("father"), 4, 5, hPairNode);
     pChromo = m_pGenome->getPair(nPair)->getPaterChromosome();
-    SetItemData(hChromoNode,(DWORD)pChromo);
+    SetItemData(hChromoNode,(DWORD_PTR)pChromo);
     for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
     {
       tmpLabel = CGene::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
@@ -109,7 +110,7 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       if (showGenes)
         EnsureVisible(hGeneNode);
-      SetItemData(hGeneNode,(DWORD)pChromo->getGene(nGene));
+      SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
     }
   }
 }
@@ -156,7 +157,7 @@ bool CGenomeTreeCtrl::SelectAnyItemFromItsPointer(void* pItem)
 
   for (UINT i=0; i<GetCount( ); i++)
   {
-    if ( (curItem!=NULL) && (GetItemData(curItem)==(DWORD)pItem) )
+    if ( (curItem!=NULL) && (GetItemData(curItem)==(DWORD_PTR)pItem) )
     { 
       SelectItem(curItem);
       return (true);
@@ -175,7 +176,7 @@ bool CGenomeTreeCtrl::UpdateAnyGeneFromItsPointer(CGene* pItem)
 
   for (UINT i=0; i<GetCount( ); i++)
   {
-    if ( (curItem!=NULL) && (GetItemData(curItem)==(DWORD)pItem) )
+    if ( (curItem!=NULL) && (GetItemData(curItem)==(DWORD_PTR)pItem) )
     { 
       tmpLabel = CGene::getGeneTypeStrName(pItem->getGeneType()).c_str();
       tmpLabel +=  " ";
@@ -195,7 +196,7 @@ GenomeTreeLevelType_e CGenomeTreeCtrl::GetSelectionTreeLevel()
 {
   HTREEITEM pSelectedItem = GetSelectedItem( );
   HTREEITEM pTmpItem = pSelectedItem;
-  DWORD itemPtr = GetItemData(pSelectedItem);
+  DWORD_PTR itemPtr = GetItemData(pSelectedItem);
 
   int level = -1;
   while (pTmpItem != NULL)

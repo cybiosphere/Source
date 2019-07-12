@@ -106,7 +106,7 @@ void CEntityCreatorDlg::OnRadioMineral()
   for (ClassType_e i=CLASS_MINERAL_FIRST;i<=CLASS_MINERAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboClass.SetCurSel(0);
   m_ComboClass.EnableWindow(true);
@@ -119,7 +119,7 @@ void CEntityCreatorDlg::OnRadioVegetal()
   for (ClassType_e i=CLASS_VEGETAL_FIRST;i<=CLASS_VEGETAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboClass.SetCurSel(0);
   m_ComboClass.EnableWindow(true);
@@ -132,7 +132,7 @@ void CEntityCreatorDlg::OnRadioAnimal()
   for (ClassType_e i=CLASS_ANIMAL_FIRST;i<=CLASS_ANIMAL_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
-    m_ComboClass.SetItemData(index,(DWORD)i);
+    m_ComboClass.SetItemData(index,(DWORD_PTR)i);
   }
   m_ComboClass.SetCurSel(0);
   m_ComboClass.EnableWindow(true);

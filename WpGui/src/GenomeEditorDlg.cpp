@@ -217,7 +217,7 @@ void CGenomeEditorDlg::OnSelchangedTreeGenome(NMHDR* pNMHDR, LRESULT* pResult)
 	// TODO: Add your control notification handler code here
 
   HTREEITEM pSelectedItem = m_GenomeTreeEdit.GetSelectedItem( );
-  DWORD itemPtr = m_GenomeTreeEdit.GetItemData(pSelectedItem);
+  DWORD_PTR itemPtr = m_GenomeTreeEdit.GetItemData(pSelectedItem);
 
   m_bIsWeightChanging = false;	
 
@@ -326,11 +326,11 @@ void CGenomeEditorDlg::DisplayPair(CPairOfChromosome* pPair)
 	m_Combo1.ResetContent();
 
   index = m_Combo1.AddString(LPCTSTR("neutral"));
-  m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_NEUTRAL);
+  m_Combo1.SetItemData(index,(DWORD_PTR)CHROMOSOME_NEUTRAL);
   index = m_Combo1.AddString(LPCTSTR("sexual male"));
-  m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_SEX_MALE);
+  m_Combo1.SetItemData(index,(DWORD_PTR)CHROMOSOME_SEX_MALE);
   index = m_Combo1.AddString(LPCTSTR("sexual female"));
-  m_Combo1.SetItemData(index,(DWORD)CHROMOSOME_SEX_FEMALE);
+  m_Combo1.SetItemData(index,(DWORD_PTR)CHROMOSOME_SEX_FEMALE);
 
   m_Combo1.SetCurSel(m_pCurrentPair->getSex());
 
@@ -474,7 +474,7 @@ bool CGenomeEditorDlg::EditGenePair()
   for (GeneType_e i=GENE_GENERIC; i<GENE_NUMBER_TYPE; i=(GeneType_e)(i+1))
   {
     index = m_Combo1.AddString(LPCTSTR(CGene::getGeneTypeStrName(i).c_str()));
-    m_Combo1.SetItemData(index,(DWORD)i);
+    m_Combo1.SetItemData(index,(DWORD_PTR)i);
     if (m_pCurrentEditGeneM->getGeneType() == i)
       indexInitSel = index;
   }
@@ -485,7 +485,7 @@ bool CGenomeEditorDlg::EditGenePair()
   for (GeneMuteType_e j=GENE_MUTE_RANDOM_BIT; j<GENE_MUTE_NUMBER_TYPE; j=(GeneMuteType_e)(j+1))
   {
     index = m_ComboMuteType.AddString(LPCTSTR(CGene::getGeneMuteTypeStrName(j).c_str()));
-    m_ComboMuteType.SetItemData(index,(DWORD)j);
+    m_ComboMuteType.SetItemData(index,(DWORD_PTR)j);
     if (m_pCurrentEditGeneM->getMuteType() == j)
       indexInitSel = index;
   }
@@ -521,7 +521,7 @@ void CGenomeEditorDlg::UpdateCombo1(bool rebuildGene)
       if ( CGene::getExpectedGeneType(i) == geneType )
       {
         index = m_Combo2.AddString(LPCTSTR(CGene::getGeneSubTypeStrName(i).c_str()));
-        m_Combo2.SetItemData(index,(DWORD)i);
+        m_Combo2.SetItemData(index,(DWORD_PTR)i);
         if (m_pCurrentEditGeneM->getGeneSubType() == i)
           indexInitSel = index;
       }
@@ -667,7 +667,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (int i=0; i<pBrain->GetNumberSensor(); i++)
           {
             int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
-            m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
+            m_ComboLeft.SetItemData(index,(DWORD_PTR)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSens)
               indexInitSel = i;
@@ -737,7 +737,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (int i=0; i<pBrain->GetNumberSensor(); i++)
           {
             int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
-            m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
+            m_ComboLeft.SetItemData(index,(DWORD_PTR)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSens)
               indexInitSel = i;
@@ -766,7 +766,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (int i=0; i<pBrain->GetNumberPurpose(); i++)
           {
             int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetPurposeByIndex(i)->GetLabel().c_str()));
-            m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetPurposeByIndex(i));
+            m_ComboLeft.SetItemData(index,(DWORD_PTR)pBrain->GetPurposeByIndex(i));
 
             if (pBrain->GetPurposeByIndex(i) == pPurpose)
               indexInitSel = i;
@@ -781,7 +781,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (i=0; i<pBrain->GetNumberSensor(); i++)
           {
             int index = m_ComboRight.AddString(LPCTSTR(pBrain->GetSensorByIndex(i)->GetLabel().c_str()));
-            m_ComboRight.SetItemData(index,(DWORD)pBrain->GetSensorByIndex(i));
+            m_ComboRight.SetItemData(index,(DWORD_PTR)pBrain->GetSensorByIndex(i));
 
             if (pBrain->GetSensorByIndex(i) == pSensor)
               indexInitSel = i;
@@ -811,7 +811,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (int i=0; i<pBrain->GetNumberPurpose(); i++)
           {
             int index = m_ComboLeft.AddString(LPCTSTR(pBrain->GetPurposeByIndex(i)->GetLabel().c_str()));
-            m_ComboLeft.SetItemData(index,(DWORD)pBrain->GetPurposeByIndex(i));
+            m_ComboLeft.SetItemData(index,(DWORD_PTR)pBrain->GetPurposeByIndex(i));
 
             if (pBrain->GetPurposeByIndex(i) == pPurpose)
               indexInitSel = i;
@@ -826,7 +826,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
           for (i=0; i<pBrain->GetNumberReaction(); i++)
           {
             int index = m_ComboRight.AddString(LPCTSTR(pBrain->GetReactionByIndex(i)->GetLabel().c_str()));
-            m_ComboRight.SetItemData(index,(DWORD)pBrain->GetReactionByIndex(i));
+            m_ComboRight.SetItemData(index,(DWORD_PTR)pBrain->GetReactionByIndex(i));
 
             if (pBrain->GetReactionByIndex(i) == pReaction)
               indexInitSel = i;

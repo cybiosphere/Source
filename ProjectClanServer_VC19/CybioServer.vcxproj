@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{15DFE5E8-513C-4681-8C8F-19F9AFEC0B38}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\..\Exec\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <TypeLibraryName>.\Release/Evolution.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;../WpClanNetwork/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;UNICODE;_UNICODE;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/Evolution.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\Exec/CybioServer.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ProgramDatabaseFile>.\Release/Evolution.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/Evolution.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TypeLibraryName>.\Release/Evolution.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;../WpClanNetwork/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;UNICODE;_UNICODE;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/Evolution.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\Exec/CybioServer.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ProgramDatabaseFile>.\Release/Evolution.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release/Evolution.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <TypeLibraryName>.\..\Exec/Evolution.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;../WpClanNetwork/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;UNICODE;_UNICODE;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/Evolution.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\..\Exec/CybioServerD.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\..\Exec/Evolution.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Debug/Evolution.map</MapFileName>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\Exec/Evolution.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TypeLibraryName>.\..\Exec/Evolution.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;../WpClanNetwork/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;UNICODE;_UNICODE;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/Evolution.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\..\Exec/CybioServerD.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\..\Exec/Evolution.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Debug/Evolution.map</MapFileName>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\Exec/Evolution.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\WpBehavior\inc\CBrain.h" />
+    <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />
+    <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h" />
+    <ClInclude Include="..\WpBehavior\inc\CPurpose.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReaction.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionCopulate.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionDrink.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionEat.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionNothing.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepBackward.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionStepForward.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnLeft.h" />
+    <ClInclude Include="..\WpBehavior\inc\CReactionTurnRight.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensor.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorHunger.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorPleasure.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorSmell.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorSuffering.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorTactile.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorThirst.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorView.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\API\Core\Zip\zlib_compression.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\clan_server.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\clan_server_user.h" />
+    <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
+    <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />
+    <ClInclude Include="..\WpEntity\inc\CBasicEntity.h" />
+    <ClInclude Include="..\WpEntity\inc\CLifeStage.h" />
+    <ClInclude Include="..\WpEntity\inc\CMineral.h" />
+    <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h" />
+    <ClInclude Include="..\WpEntity\inc\CVegetable.h" />
+    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h" />
+    <ClInclude Include="..\WpEntity\inc\CWater.h" />
+    <ClInclude Include="..\WpEnvironment\inc\CBiotop.h" />
+    <ClInclude Include="..\WpCommon\inc\CGenericParam.h" />
+    <ClInclude Include="..\WpCommon\inc\Definitions.h" />
+    <ClInclude Include="..\WpCommon\inc\Matrix.h" />
+    <ClInclude Include="..\WpGenetic\inc\CChromosome.h" />
+    <ClInclude Include="..\WpGenetic\inc\CGene.h" />
+    <ClInclude Include="..\WpGenetic\inc\CGenome.h" />
+    <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\WpClanNetwork\src\clan_server.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\clan_server_main.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\clan_server_user.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\client.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\connection.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\connection_impl.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\console.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\console_logger.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\console_window.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\console_window_generic.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\databuffer.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\datetime.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\detect_cpu_ext.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\endianess.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\event.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\event_value.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\exception.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\iodevice.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\iodevice_provider_memory.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\logger.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\memory_device.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\network_condition_variable.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\network_data.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\server.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\setupnetwork_win32.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\setup_core.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\socket_error.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\socket_name.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\string_format.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\string_help.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\system.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\system_win32.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\tcp_connection.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\tcp_listen.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\thread_local_storage_impl.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\tls_instance.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinystr.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxml.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlerror.cpp" />
+    <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

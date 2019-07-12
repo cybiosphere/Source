@@ -65,7 +65,7 @@ BEGIN_MESSAGE_MAP(CBiotopView, CView)
 	//{{AFX_MSG_MAP(CBiotopView)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
-	ON_WM_TIMER()
+  ON_WM_TIMER()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_CREATE()
 	ON_WM_HSCROLL()
@@ -229,7 +229,7 @@ void CBiotopView::OnSize(UINT nType, int cx, int cy)
   m_pBioDisplay->DisplayView();
 }
 
-void CBiotopView::OnTimer(UINT nIDEvent) 
+void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 {
   if (nIDEvent==SECOND_TIMER_ID)
   {

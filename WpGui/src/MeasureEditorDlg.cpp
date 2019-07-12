@@ -143,7 +143,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   for (MeasureType_e id=MEASURE_TYPE_GENERIC; id<MEASURE_NUMBER_TYPE; id=(MeasureType_e)(id+1))
   {
     index = m_ComboType.AddString(LPCTSTR(CMeasure::getMeasureTypeStrName(id).c_str()));
-    m_ComboType.SetItemData(index,(DWORD)id);
+    m_ComboType.SetItemData(index,(DWORD_PTR)id);
   }
   m_ComboType.SetCurSel(0);
 
@@ -153,7 +153,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
     index = m_ComboEntity.AddString(LPCTSTR(m_pBiotop->getEntityByIndex(i)->getLabel().c_str()));
-    m_ComboType.SetItemData(index,(DWORD)m_pBiotop->getEntityByIndex(i)->getId());
+    m_ComboType.SetItemData(index,(DWORD_PTR)m_pBiotop->getEntityByIndex(i)->getId());
   }
 
   m_ComboSpecie.ResetContent();
@@ -172,7 +172,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   for (EventType_e idEv=EVENT_TYPE_NONE; idEv<EVENT_NUMBER_TYPE; idEv=(EventType_e)(idEv+1))
   {
     index = m_ComboEvent.AddString(LPCTSTR(CMeasure::getEventTypeStrName(idEv).c_str()));
-    m_ComboEvent.SetItemData(index,(DWORD)idEv);
+    m_ComboEvent.SetItemData(index,(DWORD_PTR)idEv);
   }
   m_ComboEvent.SetCurSel(0);
 
