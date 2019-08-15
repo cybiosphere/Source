@@ -45,7 +45,7 @@ CFileSelectButton::CFileSelectButton(CView* pView, CString labelHeader, CString 
   m_ButtonText = labelButton;
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(85, "Arial");
+  m_pFont->CreatePointFont(78, "Arial");
 
   m_pName1Static = NULL;
   m_pName1Edit   = NULL;
@@ -126,7 +126,7 @@ bool CFileSelectButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UIN
 
   // Create button
   rectText.left += 250;
-  rectText.right = rectText.left + 40;
+  rectText.right = rectText.left + 50;
   resu = Create(m_ButtonText, WS_VISIBLE|WS_TABSTOP|WS_CHILD, rectText, pParentWnd, nID);
   SetFont(m_pFont);
 

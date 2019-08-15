@@ -46,7 +46,7 @@ CParameterCrtl::CParameterCrtl()
 	 m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(72, LPCTSTR("Arial"));
+   m_pFont->CreatePointFont(63, LPCTSTR("Arial"));
 }
 
 CParameterCrtl::~CParameterCrtl()
@@ -87,7 +87,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   // Add Title
   m_pTextStatic = new CStatic();
   CRect rectText = rect;
-  rectText.top -= 11;
+  rectText.top -= 13;
   rectText.bottom = rect.top;
   m_pTextStatic->Create(LPCTSTR(m_pParam->getLabel().c_str()),SS_CENTER,rectText,pParentWnd);
 	m_pTextStatic->SetFont(m_pFont);

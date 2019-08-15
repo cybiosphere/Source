@@ -46,7 +46,7 @@ CParameterSlider::CParameterSlider(bool allowRangeEditMin, bool allowRangeEditMa
    m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(70, LPCTSTR("Arial"));
+   m_pFont->CreatePointFont(64, LPCTSTR("Arial"));
    m_bIsChanging = false;
    m_bAllowRangeEditMin = allowRangeEditMin;
    m_bAllowRangeEditMax = allowRangeEditMax;
@@ -95,7 +95,7 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   // Add Title
   m_pTextStatic = new CStatic();
   CRect rectText = rect;
-  rectText.top -= 12;
+  rectText.top -= 14;
   rectText.bottom = rect.top;
   m_pTextStatic->Create(LPCTSTR(m_pParam->getLabel().c_str()),SS_CENTER,rectText,pParentWnd);
   m_pTextStatic->SetFont(m_pFont);

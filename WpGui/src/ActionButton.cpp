@@ -46,7 +46,7 @@ CActionButton::CActionButton(CReaction* pReact, int reactIndex, CBrainView* pBra
   m_ReactionIndex = reactIndex;
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(85, LPCTSTR("Arial"));
+  m_pFont->CreatePointFont(80, LPCTSTR("Arial"));
 }
 
 CActionButton::~CActionButton()

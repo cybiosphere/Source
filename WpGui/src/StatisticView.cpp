@@ -89,7 +89,7 @@ CStatisticView::CStatisticView()
   m_pTmpPointTable = new POINT[MAX_MEASUREMENT_DATA_SIZE];
 
   m_pFont = new CFont; 
-  m_pFont->CreatePointFont(80, LPCTSTR("Arial"));
+  m_pFont->CreatePointFont(72, LPCTSTR("Arial"));
 
 }
 
