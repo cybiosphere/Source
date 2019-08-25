@@ -46,7 +46,10 @@ CParameterCrtl::CParameterCrtl()
 	 m_pTextStatic = NULL;
    m_pParam = NULL;
    m_pFont = new CFont; 
-   m_pFont->CreatePointFont(63, LPCTSTR("Arial"));
+   if (GetDpiForWindow(this->m_hWnd) < 100)
+     m_pFont->CreatePointFont(64, LPCTSTR("Arial"));
+   else
+     m_pFont->CreatePointFont(63, LPCTSTR("Arial"));
 }
 
 CParameterCrtl::~CParameterCrtl()

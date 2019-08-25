@@ -2,12 +2,13 @@
 // Microsoft Visual C++ generated include file.
 // Used by Cybiosphere.rc
 //
-#define IDD_LOGSERVER_FORMVIEW          9
 #define IDD_ABOUTBOX                    100
 #define IDD_ENTITY_FORMVIEW             101
 #define IDD_BIOCTRL_FORMVIEW            102
 #define IDD_BRAIN_FORMVIEW              103
 #define IDD_GENETIC_FORMVIEW            104
+#define IDD_STATISTIC_FORMVIEW          105
+#define IDD_LOGSERVER_FORMVIEW          106
 #define IDR_MAINFRAME                   128
 #define IDR_BIOTOP_TYPE                 129
 #define IDB_VEGET                       131
@@ -22,7 +23,6 @@
 #define IDI_ICON_SAVE                   155
 #define IDI_ICON_OPEN                   156
 #define IDD_DLG_BRAIN_EDITOR            157
-#define IDD_STATISTIC_FORMVIEW          158
 #define IDB_SEX_ICONS                   159
 #define IDB_FORM_ICONS                  160
 #define IDI_ICON_LESS                   163
@@ -229,7 +229,7 @@
 #define ID_APP_EDIT_TRAIN_AND_GRADE     32807
 #define ID_APP_EDIT_IDENTIFY            32808
 #define ID_APP_EDIT_CHECK_IDENTIFY      32809
-#define ID_APP_DISPLAY_LOGSERVER        32809
+#define ID_APP_DISPLAY_LOGSERVER        32810
 
 // Next default values for new objects
 // 

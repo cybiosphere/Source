@@ -241,7 +241,8 @@ void CStatisticView::OnSize(UINT nType, int cx, int cy)
 	CFormView::OnSize(nType, cx, cy);
   if (cx>420)
   {
-	  m_GraphRect.SetRect(420, 30, cx-12, cy-30);
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+	  m_GraphRect.SetRect(MulDiv(338, iDpi, 96), MulDiv(24, iDpi, 96), cx - MulDiv(8, iDpi, 96), cy - MulDiv(24, iDpi, 96));
     ResetMinMaxTime();
   }
 }
@@ -263,21 +264,24 @@ void CStatisticView::RebuildMeasChkBox()
 
   if (m_pBiotop!=NULL)
   {
-    int startX = 12;
-    int startY = 24;
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    int startX = MulDiv(10, iDpi, 96);
+    int startY = MulDiv(20, iDpi, 96);
+    int sizeX = MulDiv(260, iDpi, 96);// 325;
+    int sizeY = MulDiv(15, iDpi, 96);// 18;
     for (i=0;i<MAX_NB_DISPLAY_MEASURES;i++)
     {
       CMeasure* pMeas = m_pBiotop->getMeasureById(i);
       if (pMeas!=NULL)
       {
         m_pMeasDisplayList[i].pChkBox = new CColorButton();
-        CRect rect(startX, startY, startX+325, startY+18);
+        CRect rect(startX, startY, startX + sizeX, startY + sizeY);
         m_pMeasDisplayList[i].pChkBox->Create(LPCTSTR(pMeas->GetLabel().c_str()),BS_AUTOCHECKBOX|WS_VISIBLE|WS_TABSTOP,rect,this,2100+i );
         m_pMeasDisplayList[i].pMeasure = pMeas;
-        m_pMeasDisplayList[i].color    = RGB(startY*4,(325-startY*3),startY*2);
-        m_pMeasDisplayList[i].coord.SetRect(startX-1,startY-1,startX+ 325,startY+20);
+        m_pMeasDisplayList[i].color = RGB(startY * 4, (sizeX - startY * 3), startY * 2);
+        m_pMeasDisplayList[i].coord.SetRect(startX - 1, startY - 1, startX + sizeX, startY + sizeY + 2);
       }
-      startY += 22;
+      startY += sizeY + 4;
     }
   }
 }

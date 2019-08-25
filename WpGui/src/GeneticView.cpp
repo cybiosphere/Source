@@ -343,7 +343,7 @@ void CGeneticView::DisplayGene(CGene* pGene)
   m_strLabel1 = "Gene name";
   m_strLabel2 = "mutation";
   m_strLabel3 = "dominance";
-  m_strLabel4 = "Raw data";
+  m_strLabel4 = "infos";
 
   m_strData1 = pGene->getLabel().c_str();
   m_strData1 += FormatString(" (size=%d)", pGene->getDataLen()).c_str();
@@ -377,7 +377,8 @@ void CGeneticView::OnSize(UINT nType, int cx, int cy)
 	
 	if (m_GenomeTree.m_hWnd != NULL)
 	{
-		m_GenomeTree.MoveWindow(420, 10, cx-430, cy-20, true);
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    m_GenomeTree.MoveWindow(MulDiv(338, iDpi, 96), MulDiv(8, iDpi, 96), cx - MulDiv(344, iDpi, 96), cy - MulDiv(16, iDpi, 96), true);
 		UpdateWindow ();
 	}
 	

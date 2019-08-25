@@ -285,14 +285,18 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
           m_pParamCtrl[i] = NULL;
         }
       }
-      // Set new params   
-      int startY = 112 - GetScrollPos(SB_VERT);
+      // Set new params
+      int iDpi = GetDpiForWindow(this->m_hWnd);
+
+      int startY = MulDiv(100, iDpi, 96) - GetScrollPos(SB_VERT);
+      int endY = startY + MulDiv(7, iDpi, 96);
       for (i=0;(i<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<m_pEntity->getNumParameter());i++)
       {
         m_pParamCtrl[i] = new CParameterCrtl();
-        CRect rect(25, startY, 230, startY+11);
+        CRect rect(MulDiv(16, iDpi, 96), startY, MulDiv(190, iDpi, 96), endY);
         m_pParamCtrl[i]->CreateNewParam(m_pEntity->getParameter(i),rect,this,1003);
-        startY += 39;
+        startY += MulDiv(34, iDpi, 96);
+        endY += MulDiv(34, iDpi, 96);
       }
 
       // Update Brain view
@@ -353,9 +357,10 @@ void CEntityView::OnPaint()
   CDC* pDc = &dc;
 
   CPoint coord;
+  int iDpi = GetDpiForWindow(this->m_hWnd);
 
-  coord.x = 100;
-  coord.y = 50 - GetScrollPos(SB_VERT);
+  coord.x = MulDiv(90, iDpi, 96);
+  coord.y = MulDiv(40, iDpi, 96) - GetScrollPos(SB_VERT);
   // Color
   m_pIconSex->Draw(pDc,0,coord,ILD_NORMAL); // Draw empty frame
   if (m_pEntity != NULL)
@@ -396,8 +401,8 @@ void CEntityView::OnPaint()
   }
 
   // Sex
-  coord.x = 100;
-  coord.y = 70 - GetScrollPos(SB_VERT);
+  coord.x = MulDiv(90, iDpi, 96);
+  coord.y += 20;
   if (m_pEntity != NULL)
     m_pIconSex->Draw(pDc,m_pEntity->getSex(),coord,ILD_NORMAL);
   else

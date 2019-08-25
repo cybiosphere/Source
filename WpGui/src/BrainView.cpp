@@ -204,15 +204,24 @@ bool CBrainView::SetBrain(CBrain* pBrain)
 
   if (m_pBrain!=NULL)
   {
-    int startX = 15;
-    int startY = 70;
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    int offsetX = MulDiv(12, iDpi, 96);
+    int startX = offsetX;
+    int startY = MulDiv(56, iDpi, 96);
+    int buttonWidth;
+    if (iDpi == 120)
+      buttonWidth = MulDiv(158, iDpi, 96);
+    else
+      buttonWidth = MulDiv(148, iDpi, 96);
+    int buttonHeight = MulDiv(14, iDpi, 96);
+
     for (i=0;(i<MAX_NUMBER_BUTTONS_ACTION)&&(i<m_pBrain->GetNumberReaction());i++)
     {
       m_pActionButtonTable[i] = new CActionButton(m_pBrain->GetReactionByIndex(i),i,this);
-      startX = 15 + (i&0x01) * 192;
-      CRect rect(startX, startY, startX+186, startY+18);
+      startX = offsetX + (i&0x01) * (buttonWidth + 3);
+      CRect rect(startX, startY, startX + buttonWidth, startY + buttonHeight);
       m_pActionButtonTable[i]->CreateNewButton(rect,this,2000+i);
-      startY += (i&0x01) * 20;
+      startY += (i&0x01) * (buttonHeight + 3);
     }
 
     m_BrainGrid.SetBrain(m_pBrain);
@@ -245,9 +254,10 @@ void CBrainView::OnSize(UINT nType, int cx, int cy)
 	
 	if (m_BrainGrid.m_hWnd != NULL)
 	{
-		m_BrainGrid.MoveWindow(420, 10, cx-430, cy-20, true);
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+		m_BrainGrid.MoveWindow(MulDiv(338, iDpi, 96), MulDiv(8, iDpi, 96), cx - MulDiv(344, iDpi, 96), cy - MulDiv(16, iDpi, 96), true);
 		UpdateWindow ();
-        m_BrainGrid.Refresh();
+    m_BrainGrid.Refresh();
 	}
 }
 

@@ -194,23 +194,26 @@ bool CBioCtrlView::SetBiotop(CBiotop* pBiotop)
 {
   m_pBiotop = pBiotop;
 
+  int iDpi = GetDpiForWindow(this->m_hWnd);
+  CRect rect(MulDiv(16, iDpi, 96), MulDiv(118, iDpi, 96), MulDiv(190, iDpi, 96), MulDiv(125, iDpi, 96));
+  int dpiScaledOffset = MulDiv(32, iDpi, 96);
+
   m_pParamCtrl[0] = new CParameterCrtl();
-  CRect rect(25, 118, 225, 127);
   m_pParamCtrl[0]->CreateNewParam(m_pBiotop->getParamFertility(),rect,this,1004);
 
   m_pParamCtrl[1] = new CParameterCrtl();
-  rect.top += 37;
-  rect.bottom += 37;
+  rect.top += dpiScaledOffset;
+  rect.bottom += dpiScaledOffset;
   m_pParamCtrl[1]->CreateNewParam(m_pBiotop->getParamSunlight(),rect,this,1004);
 
   m_pParamCtrl[2] = new CParameterCrtl();
-  rect.top += 37;
-  rect.bottom += 37;
+  rect.top += dpiScaledOffset;
+  rect.bottom += dpiScaledOffset;
   m_pParamCtrl[2]->CreateNewParam(m_pBiotop->getParamRadioactivity(),rect,this,1004);
 
   m_pParamCtrl[3] = new CParameterCrtl();
-  rect.top += 37;
-  rect.bottom += 37;
+  rect.top += dpiScaledOffset;
+  rect.bottom += dpiScaledOffset;
   m_pParamCtrl[3]->CreateNewParam(m_pBiotop->getParamTemperature(),rect,this,1004);
 
   return (true);

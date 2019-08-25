@@ -61,9 +61,10 @@ bool CNeuronMatrixCtrl::SetNeuronMatrix(CNeuronMatrix* pNeuronMatrix)
     SetEditable(true);
     SetFixedRowCount(2);
     SetFixedColumnCount(2);
-    SetColumnWidth(0, 180);
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    SetColumnWidth(0, MulDiv(144, iDpi, 96));
     for (i=1; i<GetColumnCount(); i++)
-      SetColumnWidth(i, 50);
+      SetColumnWidth(i, MulDiv(50, iDpi, 96));
   }
   else
   {

@@ -255,18 +255,24 @@ void CEntityEditorDlg::DisplayParamSliders()
   if (m_pEntity!=NULL)
   {
     // Set new params
-    int startX = 40;
-    int startY = 50;
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    int startX = MulDiv(28, iDpi, 96);
+    int initY = MulDiv(40, iDpi, 96);
+    int startY = initY;
+    int sizeX = MulDiv(144, iDpi, 96);
+    int sizeY = MulDiv(8, iDpi, 96);
+    int offsetX = MulDiv(154, iDpi, 96);
+    int offsetY = MulDiv(32, iDpi, 96);
     for (i=0;(i<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<m_pEntity->getNumParameter());i++)
     {
       m_pParamSlider[i] = new CParameterSlider();
-      CRect rect(startX,startY,startX+180,startY+10);
+      CRect rect(startX, startY, startX + sizeX, startY + sizeY);
       m_pParamSlider[i]->CreateNewParam(m_pEntity->getParameter(i),rect,this,1003);
-      startY +=40;
+      startY += offsetY;
       if (i==MAX_NUMBER_PARAMETER_DISPLAY/2)
       {
-        startX +=200;
-        startY = 50;
+        startX += offsetX;
+        startY = initY;
       }
     }
   }
