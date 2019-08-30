@@ -183,9 +183,9 @@ bool CMapConfigView::BuildOdorMap(OdorType_e odorType)
   double odorLevel[NUMBER_ODORS];
   Point_t coord;
   // Trace odor map
-  for (i=0;i<m_pBiotop->getDimension()->x;i++)
+  for (i=0;i<m_pBiotop->getDimension().x;i++)
   {
-    for (j=0; j<m_pBiotop->getDimension()->y; j++)
+    for (j=0; j<m_pBiotop->getDimension().y; j++)
     { 
       coord.x = i;
       coord.y = j;
@@ -324,7 +324,7 @@ bool CMapConfigView::BuildPurposeMap(int index)
   CGeoMap* pGeoMap = m_pSelectedEntity->getBrain()->GetGeographicMap();
 
   Point_t curCoord;
-  Point_t* pDim = theApp.GetBiotop()->getDimension();
+  Point_t dim = theApp.GetBiotop()->getDimension();
   //Point_t startCoord = theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetGridCoordFromScreenPos(CPoint(1,1));
   //int rangeDisplay = 2*(theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetCurrentGridCenterPos().x - startCoord.x);
   Point_t geoMapPos;
@@ -332,9 +332,9 @@ bool CMapConfigView::BuildPurposeMap(int index)
   DWORD r,g,b;
 
   // Trace map
-  for (i=0; i<pDim->x;i++)
+  for (i=0; i<dim.x;i++)
   {
-    for (j=0; j<pDim->y; j++)
+    for (j=0; j<dim.y; j++)
     { 
       curCoord.x = i;
       curCoord.y = j;
@@ -367,9 +367,9 @@ bool CMapConfigView::ClearMap()
   BiotopSquare_t** tBioSquare;
   tBioSquare = m_pBiotop->getpBioSquare();
 
-  for (i=0;i<m_pBiotop->getDimension()->x;i++)
+  for (i=0;i<m_pBiotop->getDimension().x;i++)
   {
-    for (j=0; j<m_pBiotop->getDimension()->y; j++)
+    for (j=0; j<m_pBiotop->getDimension().y; j++)
     {   
       tBioSquare[i][j].customColor = 0x00FFFFFF;  
     }

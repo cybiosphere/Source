@@ -161,7 +161,7 @@ void CBrain::NextSecond()
   if (m_pCurrentPurpose!=NULL)
   {
     if (m_pGeoMap == NULL)
-      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 800, 6);
+      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
 
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
@@ -1883,7 +1883,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     delete m_pGeoMap;
 
   // Create new geo map centered on baby
-  m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), 800, 6);
+  m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
 
   // Memorize home position
   if (m_pGeoMap!=NULL)

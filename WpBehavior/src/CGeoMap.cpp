@@ -58,13 +58,23 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGeoMap::CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, int gridMapSize, int nbPurposeRec)
+CGeoMap::CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, int gridMapSize, int nbPurposeRec)
 {
   m_pBrain = pBrain;
+  int expectedMapSize = (gridMapSize - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  int biotopMapSizeX = (gridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  int biotopMapSizeY = (gridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  int biotopMapSizeMin = min(biotopMapSizeX, biotopMapSizeY);
 
-  m_GeoMapSize = (gridMapSize-1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  m_GeoMapSize = min(expectedMapSize, biotopMapSizeMin);
   m_GeoCoordStart.x = gridCoordCenterPos.x / NB_GRID_PER_GEOMAP_SQUARE - m_GeoMapSize/2;
   m_GeoCoordStart.y = gridCoordCenterPos.y / NB_GRID_PER_GEOMAP_SQUARE - m_GeoMapSize/2;
+
+  // shift to fit in biotop
+  if ((m_GeoCoordStart.x + m_GeoMapSize) > biotopMapSizeX)
+    m_GeoCoordStart.x = biotopMapSizeX - m_GeoMapSize;
+  if ((m_GeoCoordStart.y + m_GeoMapSize) > biotopMapSizeY)
+    m_GeoCoordStart.y = biotopMapSizeY - m_GeoMapSize;
   if (m_GeoCoordStart.x <0)
     m_GeoCoordStart.x = 0;
   if (m_GeoCoordStart.y <0)

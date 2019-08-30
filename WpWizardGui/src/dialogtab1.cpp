@@ -423,14 +423,13 @@ void CDialogTab1::OnButtonColor()
 void CDialogTab1::OnPaint() 
 {
   CPaintDC dc(this); // device context for painting
-  //CRect rect(13,95,73,115);
-  CRect rect(14, 120, 98, 142);
+  int iDpi = GetDpiForWindow(this->m_hWnd);
+  CRect rect(MulDiv(12, iDpi, 96), MulDiv(96, iDpi, 96), MulDiv(76, iDpi, 96), MulDiv(114, iDpi, 96));// 14, 120, 98, 142);
   dc.FillSolidRect(rect,m_color);
   
   CBrush brush(0x00FFFFFF);
   CBrush brushgrey(0x00888888);
-  //CRect frameRect(13,380,733,520);
-  CRect frameRect(14, 465, 980, 630);
+  CRect frameRect(MulDiv(12, iDpi, 96), MulDiv(380, iDpi, 96), MulDiv(734, iDpi, 96), MulDiv(520, iDpi, 96));// 14, 465, 980, 630);
   COLORREF black = 0x00000000;
   
   dc.FillRect(frameRect,&brush);
@@ -448,8 +447,8 @@ void CDialogTab1::OnPaint()
     
     UpdateData(true);
     
-    int stepX = 720/m_LifeExpectency;
-    double stepY = 150.0/m_Weight;
+    int stepX = MulDiv(576, iDpi, 96) /m_LifeExpectency;
+    double stepY = MulDiv(120, iDpi, 96)/m_Weight;
     
     if (m_growthSpeedParamId > -1)
     {

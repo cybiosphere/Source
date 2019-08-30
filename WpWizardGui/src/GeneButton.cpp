@@ -104,6 +104,7 @@ bool CGeneButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nID)
   resu = Create(m_Label, BS_AUTOCHECKBOX|BS_LEFTTEXT|WS_VISIBLE|WS_TABSTOP|WS_CHILD, rect, pParentWnd, nID);
   SetFont(m_pFont);
 
+  int iDpi = GetDpiForWindow(this->m_hWnd);
   CRect rectText = rect;
 
   if (m_bDefaultChecked)
@@ -111,48 +112,49 @@ bool CGeneButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UINT nID)
     SetCheck(1);
   }
 
+  int sizeX = MulDiv(40, iDpi, 96);
+  int offsetX = MulDiv(50, iDpi, 96);
+
   if (m_ParamName1 != "")
   {
-    // Add Title
+    // Add Title 
     m_pName1Static = new CStatic();
-    rectText.left += 180;
-    rectText.right = rectText.left + 58;
+    rectText.left += MulDiv(144, iDpi, 96);
+    rectText.right = rectText.left + sizeX;
     m_pName1Static->Create(m_ParamName1, SS_RIGHT, rectText, pParentWnd);
     m_pName1Static->SetFont(m_pFont);
     m_pName1Static->ShowWindow(SW_SHOW);
 
     // Add Value
     m_pParam1Edit = new CEdit();
-    rectText.left += 64;// 50;
-    rectText.right = rectText.left + 58;// 40;
+    rectText.left += offsetX;
+    rectText.right = rectText.left + sizeX;
     m_pParam1Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER, rectText, pParentWnd, nID+151);
     m_pParam1Edit->SetFont(m_pFont);
     tmpStr.Format("%d",m_ParamDefVal1);
     m_pParam1Edit->SetWindowText(tmpStr);
     m_pParam1Edit->ShowWindow(SW_SHOW);
-
   }
 
   if (m_ParamName2 != "")
   {
     // Add Title
     m_pName2Static = new CStatic();
-    rectText.left += 62;// 50;
-    rectText.right = rectText.left + 58;// 46;
+    rectText.left += offsetX;
+    rectText.right = rectText.left + sizeX;
     m_pName2Static->Create(m_ParamName2, SS_RIGHT, rectText, pParentWnd);
     m_pName2Static->SetFont(m_pFont);
     m_pName2Static->ShowWindow(SW_SHOW);
 
     // Add Value
     m_pParam2Edit = new CEdit();
-    rectText.left += 62;// 50;
-    rectText.right = rectText.left + 58;// 40;
+    rectText.left += offsetX;
+    rectText.right = rectText.left + sizeX;
     m_pParam2Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER, rectText, pParentWnd, nID+152);
     m_pParam2Edit->SetFont(m_pFont);
     tmpStr.Format("%d",m_ParamDefVal2);
     m_pParam2Edit->SetWindowText(tmpStr);
     m_pParam2Edit->ShowWindow(SW_SHOW);
-
   }
 
   return (resu);

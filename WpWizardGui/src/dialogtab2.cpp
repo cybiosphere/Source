@@ -110,20 +110,26 @@ BOOL CDialogTab2::OnInitDialog()
     m_pSensorButtonTable[16] = new CGeneButton(GENE_SENS_HORMONE,(CView*)this, true, 300);
     m_pSensorButtonTable[17] = new CGeneButton(GENE_SENS_ORIENTATION,(CView*)this, true, 300);
 
-    int startX = 25;
-    int startY = 48;
-    CRect rect(startX, startY, startX + 160, startY + 20);
+    int iDpi = GetDpiForWindow(this->m_hWnd);
+    int offsetX = MulDiv(20, iDpi, 96);
+    int offsetY = MulDiv(30, iDpi, 96);
+    int startX = offsetX;
+    int startY = MulDiv(38, iDpi, 96);
+    int sizeX = MulDiv(128, iDpi, 96);
+    int sizeY = MulDiv(18, iDpi, 96);
+    int columnOffsetX = MulDiv(364, iDpi, 96);
+    CRect rect(startX, startY, startX + sizeX, startY + sizeY);
     m_pSensorButtonTable[0]->CreateNewButton(rect,this,2000);
-    startY += 38;
+    startY += offsetY;
 
     for (int i=0;i<MAX_NUMBER_BUTTONS_SENSOR-1;i++)
     {
       if (m_pSensorButtonTable[i+1] != NULL)
       {
-        startX = 25 + (i & 0x01) * 455;
-        CRect rect(startX, startY, startX + 160, startY + 20);
+        startX = offsetX + (i & 0x01) * columnOffsetX;
+        CRect rect(startX, startY, startX + sizeX, startY + sizeY);
         m_pSensorButtonTable[i+1]->CreateNewButton(rect,this,2000+i);
-        startY += (i&0x01) * 38;
+        startY += (i&0x01) * offsetY;
       }
     }
     

@@ -143,69 +143,75 @@ BOOL CDialogTab3::OnInitDialog()
 	m_ComboSocial.SetCurSel(1);
 	m_ComboLifeMode.SetCurSel(0);
 
-    // Action list
-    m_pActionButtonTable[0]  = new CGeneButton(GENE_REACT_TURNLEFT,(CView*)this,true,0);
-    m_pActionButtonTable[1]  = new CGeneButton(GENE_REACT_TURNRIGHT,(CView*)this,true,0);
-    m_pActionButtonTable[2]  = new CGeneButton(GENE_REACT_TURNHEADLEFT,(CView*)this,true,0);
-    m_pActionButtonTable[3]  = new CGeneButton(GENE_REACT_TURNHEADRIGHT,(CView*)this,true,0);
-    m_pActionButtonTable[4]  = new CGeneButton(GENE_REACT_NOTHING,(CView*)this,true,0); //Def param used as successRate
-    m_pActionButtonTable[5]  = new CGeneButton(GENE_REACT_DRINK,(CView*)this,true,0,"success",10,"failure",80);
-    m_pActionButtonTable[6]  = new CGeneButton(GENE_REACT_EAT,(CView*)this,true,0,"success",10,"failure",60);
-    m_pActionButtonTable[7]  = new CGeneButton(GENE_REACT_ATTACK,(CView*)this,false,0,"success",40,"failure",50);
-    m_pActionButtonTable[8]  = new CGeneButton(GENE_REACT_RUMINATE,(CView*)this,false,0);
-    m_pActionButtonTable[9]  = new CGeneButton(GENE_REACT_COPULATE,(CView*)this,true,0,"success",60,"failure",50);
-    m_pActionButtonTable[10] = new CGeneButton(GENE_REACT_HIDE,(CView*)this,false,0);
-    m_pActionButtonTable[11] = new CGeneButton(GENE_REACT_STEPBACKWARD,(CView*)this,false,0);
-    m_pActionButtonTable[12] = new CGeneButton(GENE_REACT_SLEEP,(CView*)this,true,0);
+  // Action list
+  m_pActionButtonTable[0]  = new CGeneButton(GENE_REACT_TURNLEFT,(CView*)this,true,0);
+  m_pActionButtonTable[1]  = new CGeneButton(GENE_REACT_TURNRIGHT,(CView*)this,true,0);
+  m_pActionButtonTable[2]  = new CGeneButton(GENE_REACT_TURNHEADLEFT,(CView*)this,true,0);
+  m_pActionButtonTable[3]  = new CGeneButton(GENE_REACT_TURNHEADRIGHT,(CView*)this,true,0);
+  m_pActionButtonTable[4]  = new CGeneButton(GENE_REACT_NOTHING,(CView*)this,true,0); //Def param used as successRate
+  m_pActionButtonTable[5]  = new CGeneButton(GENE_REACT_DRINK,(CView*)this,true,0,"success",10,"failure",80);
+  m_pActionButtonTable[6]  = new CGeneButton(GENE_REACT_EAT,(CView*)this,true,0,"success",10,"failure",60);
+  m_pActionButtonTable[7]  = new CGeneButton(GENE_REACT_ATTACK,(CView*)this,false,0,"success",40,"failure",50);
+  m_pActionButtonTable[8]  = new CGeneButton(GENE_REACT_RUMINATE,(CView*)this,false,0);
+  m_pActionButtonTable[9]  = new CGeneButton(GENE_REACT_COPULATE,(CView*)this,true,0,"success",60,"failure",50);
+  m_pActionButtonTable[10] = new CGeneButton(GENE_REACT_HIDE,(CView*)this,false,0);
+  m_pActionButtonTable[11] = new CGeneButton(GENE_REACT_STEPBACKWARD,(CView*)this,false,0);
+  m_pActionButtonTable[12] = new CGeneButton(GENE_REACT_SLEEP,(CView*)this,true,0);
 
-    int i;
-	int startX = 25;
-	int startY = 38;
-    for (i=0;i<MAX_NUMBER_BUTTONS_ACTION;i++)
+  int i;
+  int iDpi = GetDpiForWindow(this->m_hWnd);
+  int offsetX = MulDiv(20, iDpi, 96);
+  int offsetY = MulDiv(28, iDpi, 96);
+  int startX = offsetX;
+  int startY = MulDiv(38, iDpi, 96);
+  int sizeX = MulDiv(128, iDpi, 96);
+  int sizeY = MulDiv(18, iDpi, 96);
+
+  for (i=0;i<MAX_NUMBER_BUTTONS_ACTION;i++)
+  {
+    if (m_pActionButtonTable[i] != NULL)
     {
-      if (m_pActionButtonTable[i] != NULL)
-      {
-        startX = 25 + (i&0x01) * 480;
-        CRect rect(startX, startY, startX+160, startY+20);
-        m_pActionButtonTable[i]->CreateNewButton(rect,this,2000+i);
-        startY += (i&0x01) * 38;
-      }
+      startX = offsetX + (i&0x01) * MulDiv(380, iDpi, 96);
+      CRect rect(startX, startY, startX + sizeX, startY + sizeY);
+      m_pActionButtonTable[i]->CreateNewButton(rect,this,2000+i);
+      startY += (i&0x01) * offsetY;
     }
+  }
 
-    // Prey list
-    startX = 25;
-    startY = 480;
-    for (i=0;i<MAX_NUMBER_BUTTONS_PREY;i++)
+  // Prey list
+  startX = offsetX;
+  startY = MulDiv(384, iDpi, 96);
+  offsetY = MulDiv(40, iDpi, 96);
+  for (i=0;i<MAX_NUMBER_BUTTONS_PREY;i++)
+  {
+    CString label;
+    label.Format("%d",i+1);
+    m_pPreyButtonTable[i]  = new CFileSelectButton((CView*)this, label, "Select");
+
+    if (m_pPreyButtonTable[i] != NULL)
     {
-      CString label;
-      label.Format("%d",i+1);
-      m_pPreyButtonTable[i]  = new CFileSelectButton((CView*)this, label, "Select");
-
-      if (m_pPreyButtonTable[i] != NULL)
-      {
-        CRect rect(startX, startY, startX+200, startY+25);
-        m_pPreyButtonTable[i]->CreateNewButton(rect,this,2000+i);
-        startY += 50;
-      }
+      CRect rect(startX, startY, startX+200, startY+25);
+      m_pPreyButtonTable[i]->CreateNewButton(rect,this,2000+i);
+      startY += offsetY;
     }
+  }
 
-    // Predator list
-    startX = 530;
-    startY = 480;
-    for (i=0;i<MAX_NUMBER_BUTTONS_PREDATOR;i++)
+  // Predator list
+  startX = MulDiv(384, iDpi, 96);
+  startY = MulDiv(384, iDpi, 96);
+  for (i=0;i<MAX_NUMBER_BUTTONS_PREDATOR;i++)
+  {
+    CString label;
+    label.Format("%d",i+1);
+    m_pPredatorButtonTable[i]  = new CFileSelectButton((CView*)this, label, "Select");
+
+    if (m_pPredatorButtonTable[i] != NULL)
     {
-      CString label;
-      label.Format("%d",i+1);
-      m_pPredatorButtonTable[i]  = new CFileSelectButton((CView*)this, label, "Select");
-
-      if (m_pPredatorButtonTable[i] != NULL)
-      {
-        CRect rect(startX, startY, startX+200, startY+25);
-        m_pPredatorButtonTable[i]->CreateNewButton(rect,this,2100+i);
-        startY += 50;
-      }
+      CRect rect(startX, startY, startX+200, startY+25);
+      m_pPredatorButtonTable[i]->CreateNewButton(rect,this,2100+i);
+      startY += offsetY;
     }
-
+  }
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

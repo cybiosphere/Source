@@ -98,8 +98,8 @@ bool CBiotopDisplayMFC::Initialize(CScrollView* pView)
 
     m_bAppIsActive = TRUE;
 
-    m_nBitmapNumberX = m_pBiotop->getDimension()->x;
-    m_nBitmapNumberY = m_pBiotop->getDimension()->y;
+    m_nBitmapNumberX = m_pBiotop->getDimension().x;
+    m_nBitmapNumberY = m_pBiotop->getDimension().y;
 
     DisplayView();
     m_pView->ResizeParentToFit(TRUE);
@@ -112,8 +112,8 @@ void CBiotopDisplayMFC::DisplayView()
   {
     // Calculate the total size of this view
     CSize sizeTotal;
-    sizeTotal.cx = m_nBitmapNumberX * m_nBitmapPixSizeX;
-    sizeTotal.cy = m_nBitmapNumberY * m_nBitmapPixSizeY;
+    sizeTotal.cx = (m_nBitmapNumberX + 1) * m_nBitmapPixSizeX;
+    sizeTotal.cy = (m_nBitmapNumberY + 1) * m_nBitmapPixSizeY;
     m_pView->SetScrollSizes(MM_TEXT, sizeTotal);
   }
 }
@@ -142,7 +142,7 @@ Point_t CBiotopDisplayMFC::GetGridCoordFromScreenPos(CPoint screenPos)
 {
   Point_t coordEntity;
   coordEntity.x = (screenPos.x + m_pView->GetScrollPos(SB_HORZ)) / m_nBitmapPixSizeX;
-  coordEntity.y = (m_pView->GetTotalSize().cy - screenPos.y - m_pView->GetScrollPos(SB_VERT)) / m_nBitmapPixSizeY;
+  coordEntity.y = (m_pView->GetTotalSize().cy - screenPos.y - m_pView->GetScrollPos(SB_VERT)) / m_nBitmapPixSizeY - 1;
 
   CRect refreshRect;
   refreshRect.left   = 0;
@@ -162,14 +162,13 @@ void CBiotopDisplayMFC::RedrawScene()
 	if (!m_bAppIsActive)
 		return;
 
-  if ((m_nBitmapNumberX != m_pBiotop->getDimension()->x) || (m_nBitmapNumberY != m_pBiotop->getDimension()->y))
+  if ((m_nBitmapNumberX != m_pBiotop->getDimension().x) || (m_nBitmapNumberY != m_pBiotop->getDimension().y))
   {
       // Update m_nBitmapNumberX if biotop has changed
-    m_nBitmapNumberX = m_pBiotop->getDimension()->x;
-    m_nBitmapNumberY = m_pBiotop->getDimension()->y;
+    m_nBitmapNumberX = m_pBiotop->getDimension().x;
+    m_nBitmapNumberY = m_pBiotop->getDimension().y;
     DisplayView();
   }
-
 
   int visibleCoordX = m_pView->GetScrollPos(SB_HORZ);
   int visibleCoordY = m_pView->GetScrollPos(SB_VERT);
@@ -189,31 +188,27 @@ void CBiotopDisplayMFC::RedrawScene()
   LayerType_e curLayer;
   COLORREF custColor;
   
-  for (i=0;i<m_pBiotop->getDimension()->x;i++)
+  for (i=0;i<m_pBiotop->getDimension().x;i++)
   {
-    for (j=0; j<m_pBiotop->getDimension()->y; j++)
+    for (j=0; j<m_pBiotop->getDimension().y; j++)
     { 
       bioCoord.x = i;
       bioCoord.y = j;
+      coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+      coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 2) - visibleCoordY;
 
       // Draw water
       curLayer = m_pBiotop->getLayerType(bioCoord,1); 
       if (curLayer == LAYER_OVER_WATER)
       {
-        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00DDCCBB);
       }
       else if (curLayer == LAYER_OVER_WET_GROUND)
       {
-        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00FFEEDD);
       }
       else if (curLayer == LAYER_GLOBAL_GRASS)
       {
-        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00EEFFEE);
       }
 
@@ -221,8 +216,6 @@ void CBiotopDisplayMFC::RedrawScene()
       custColor = m_pBiotop->getCustomColor(bioCoord);
       if (custColor != 0x00FFFFFF)
       {
-        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pDc->FillSolidRect(coordX+1, coordY+1, m_nBitmapPixSizeX-2, m_nBitmapPixSizeY-2, custColor);
       }
 
@@ -230,8 +223,6 @@ void CBiotopDisplayMFC::RedrawScene()
       CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(bioCoord);
       if ( (pEntity!=NULL) && (pEntity->getId()>=ENTITY_ID_FIRST_USER_ENTITY) )
       {
-        coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-        coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 1) - visibleCoordY;
         pos = (int)(m_nBitmapPixSizeX * pEntity->getDirection());
 
         // Display bitmap when zoom is max or squares with smaller zoom

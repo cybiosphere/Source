@@ -2553,9 +2553,9 @@ void CBiotop::logCpuMarkerEnd(BiotopCpuMarkerType_e markerId)
 // Get / Set for attributes
 //===========================================================================
 
-Point_t* CBiotop::getDimension() 
+Point_t CBiotop::getDimension() 
 {
-  return (&m_Dimension);
+  return (m_Dimension);
 }
 
 double CBiotop::getFertility(Point_t coord) 

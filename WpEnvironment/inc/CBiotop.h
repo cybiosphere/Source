@@ -366,7 +366,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  Point_t* getDimension(void);   
+  Point_t getDimension(void);   
   int getDayDuration(void);
   double getFertility(Point_t coord);
   void   setFertilityRate(int fertility);

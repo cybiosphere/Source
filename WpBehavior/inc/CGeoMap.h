@@ -96,7 +96,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, int gridMapSize, int nbPurposeRec);
+	CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, int gridMapSize, int nbPurposeRec);
   ~CGeoMap();
 
 //---------------------------------------------------------------------------

@@ -468,8 +468,8 @@ bool CBiotopDisplayGL::BuildMapFromBiotop()
   if ( m_pBiotop == NULL )
     return (false);  
 
-  m_BiotopSizeX = m_pBiotop->getDimension()->x;
-  m_BiotopSizeY = m_pBiotop->getDimension()->y;
+  m_BiotopSizeX = m_pBiotop->getDimension().x;
+  m_BiotopSizeY = m_pBiotop->getDimension().y;
 
   if ( 2*(m_BiotopSizeY/2) == m_BiotopSizeY )
     m_BiotopSizeY++; //DOIT ETRE IMPAIR !
