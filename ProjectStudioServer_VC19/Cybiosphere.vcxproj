@@ -434,6 +434,7 @@
     <ClInclude Include="..\WpGui\inc\BrainGridCtrl.h" />
     <ClInclude Include="..\WpGui\inc\BrainView.h" />
     <ClInclude Include="..\WpGui\inc\CellRange.h" />
+    <ClInclude Include="..\WpGui\inc\CheckBoxWithParams.h" />
     <ClInclude Include="..\WpGui\inc\ChildFrm.h" />
     <ClInclude Include="..\WpGui\inc\ColorButton.h" />
     <ClInclude Include="..\WpGui\inc\Cybiosphere.h" />
@@ -442,6 +443,7 @@
     <ClInclude Include="..\WpGui\inc\EntityEditorDlg.h" />
     <ClInclude Include="..\WpGui\inc\EntityFindDlg.h" />
     <ClInclude Include="..\WpGui\inc\EntityView.h" />
+    <ClInclude Include="..\WpGui\inc\FileSelectButton.h" />
     <ClInclude Include="..\WpGui\inc\GeneticDoc.h" />
     <ClInclude Include="..\WpGui\inc\GeneticView.h" />
     <ClInclude Include="..\WpGui\inc\GenomeEditorDlg.h" />
@@ -535,6 +537,7 @@
     <ClCompile Include="..\WpGui\src\BrainEditorDlg.cpp" />
     <ClCompile Include="..\WpGui\src\BrainGridCtrl.cpp" />
     <ClCompile Include="..\WpGui\src\brainview.cpp" />
+    <ClCompile Include="..\WpGui\src\CheckBoxWithParams.cpp" />
     <ClCompile Include="..\WpGui\src\ChildFrm.cpp" />
     <ClCompile Include="..\WpGui\src\ColorButton.cpp" />
     <ClCompile Include="..\WpGui\src\Cybiosphere.cpp" />
@@ -544,6 +547,7 @@
     <ClCompile Include="..\WpGui\src\EntityEditorDlg.cpp" />
     <ClCompile Include="..\WpGui\src\EntityFindDlg.cpp" />
     <ClCompile Include="..\WpGui\src\EntityView.cpp" />
+    <ClCompile Include="..\WpGui\src\FileSelectButton.cpp" />
     <ClCompile Include="..\WpGui\src\GeneticDoc.cpp" />
     <ClCompile Include="..\WpGui\src\GeneticView.cpp" />
     <ClCompile Include="..\WpGui\src\GenomeEditorDlg.cpp" />

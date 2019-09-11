@@ -361,9 +361,6 @@
     <ClInclude Include="..\WpWizardGui\inc\DialogTab4.h">
       <Filter>WpWizardGui\IncWizardGui</Filter>
     </ClInclude>
-    <ClInclude Include="..\WpWizardGui\inc\FileSelectButton.h">
-      <Filter>WpWizardGui\IncWizardGui</Filter>
-    </ClInclude>
     <ClInclude Include="..\WpWizardGui\inc\GeneButton.h">
       <Filter>WpWizardGui\IncWizardGui</Filter>
     </ClInclude>
@@ -442,6 +439,9 @@
     <ClInclude Include="..\WpTinyXml\inc\tinyxml.h">
       <Filter>WpTinyXml\IncTinyXml</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\FileSelectButton.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpWizardGui\src\ChildFrm.cpp">
@@ -457,9 +457,6 @@
       <Filter>WpWizardGui\SrcWizardGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpWizardGui\src\DialogTab4.cpp">
-      <Filter>WpWizardGui\SrcWizardGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpWizardGui\src\FileSelectButton.cpp">
       <Filter>WpWizardGui\SrcWizardGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpWizardGui\src\GeneButton.cpp">
@@ -509,6 +506,9 @@
     </ClCompile>
     <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp">
       <Filter>WpTinyXml\SrcTinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\FileSelectButton.cpp">
+      <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

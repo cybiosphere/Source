@@ -182,6 +182,9 @@ BOOL CDialogTab3::OnInitDialog()
   startX = offsetX;
   startY = MulDiv(384, iDpi, 96);
   offsetY = MulDiv(40, iDpi, 96);
+  sizeX = MulDiv(160, iDpi, 96);
+  sizeY = MulDiv(20, iDpi, 96);
+
   for (i=0;i<MAX_NUMBER_BUTTONS_PREY;i++)
   {
     CString label;
@@ -190,7 +193,7 @@ BOOL CDialogTab3::OnInitDialog()
 
     if (m_pPreyButtonTable[i] != NULL)
     {
-      CRect rect(startX, startY, startX+200, startY+25);
+      CRect rect(startX, startY, startX + sizeX, startY + sizeY);
       m_pPreyButtonTable[i]->CreateNewButton(rect,this,2000+i);
       startY += offsetY;
     }
@@ -207,7 +210,7 @@ BOOL CDialogTab3::OnInitDialog()
 
     if (m_pPredatorButtonTable[i] != NULL)
     {
-      CRect rect(startX, startY, startX+200, startY+25);
+      CRect rect(startX, startY, startX + sizeX, startY + sizeY);
       m_pPredatorButtonTable[i]->CreateNewButton(rect,this,2100+i);
       startY += offsetY;
     }

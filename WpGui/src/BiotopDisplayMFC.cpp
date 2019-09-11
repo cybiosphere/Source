@@ -306,7 +306,7 @@ void CBiotopDisplayMFC::RefreshNextSecond()
       if ( (prevCoord.x != pEntity->getGridCoord().x) || (prevCoord.y != pEntity->getGridCoord().y) )
       {
         coordX = m_nBitmapPixSizeX * prevCoord.x - visibleCoordX;
-        coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 1) - visibleCoordY;
+        coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 2) - visibleCoordY;
         refreshRect.left   = coordX;
         refreshRect.top    = coordY;
         refreshRect.right  = coordX + m_nBitmapPixSizeX;
@@ -314,7 +314,7 @@ void CBiotopDisplayMFC::RefreshNextSecond()
         m_pView->InvalidateRect(refreshRect,true);
       }
       coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x - visibleCoordX;
-      coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 1) - visibleCoordY;
+      coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 2) - visibleCoordY;
       refreshRect.left   = coordX;
       refreshRect.top    = coordY;
       refreshRect.right  = coordX + m_nBitmapPixSizeX;

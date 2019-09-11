@@ -733,6 +733,12 @@
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h">
       <Filter>WpEnvironment\IncEnvironment</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\FileSelectButton.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\CheckBoxWithParams.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1003,6 +1009,12 @@
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpGui\src\EntityEditorDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\FileSelectButton.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\CheckBoxWithParams.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>

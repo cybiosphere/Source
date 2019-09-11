@@ -64,8 +64,9 @@ distribution.
 //===========================================================================
 class CBasicEntity;
 
-#define MAXIMUM_NB_ENTITIES   1000000
-#define MAX_FOUND_ENTITIES    1000
+#define MAXIMUM_NB_ENTITIES 1000000
+#define MAX_FOUND_ENTITIES 1000
+#define MAX_NUMBER_RANDOM_ENTITIES 3
 
 // Sectors arround entity X:
 //  44443332222
@@ -166,6 +167,15 @@ typedef struct
   double cpuTimeCumulated;
 } BiotopCpuMonitoring_t;
 
+typedef struct
+{
+  string entityPathName;
+  string entityFileName; // including .xml extension)
+  int intensity; // scale 0..100
+  int avaragePeriodicity; // avarage number of days between 2 occurences
+  bool IsProportionalToFertility; // If true, both intensity and avaragePeriodicity are modulated by fertility rate
+} BiotopRandomEntitiyGeneration_t;
+
 //===========================================================================
 //                                    CLASS            
 //=========================================================================== 
@@ -218,6 +228,7 @@ private:
   std::vector<CMeasure*> m_tMeasures;
   std::vector<CGenericParam*> m_tParam;
   std::vector<BiotopEvent_t> m_tEvents;
+  std::vector<BiotopRandomEntitiyGeneration_t> m_tRandomEntitiesGeneration{};
 
 //===========================================================================
 // Methods 
@@ -353,6 +364,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   void spreadWaterPuddlesByRain(int coverRate);
+  void spreadEntitiesRandomly(string fileName, string pathName, int coverRate);
 
 //---------------------------------------------------------------------------
 // CPU Marker
@@ -367,7 +379,6 @@ public:
 //---------------------------------------------------------------------------
 public:
   Point_t getDimension(void);   
-  int getDayDuration(void);
   double getFertility(Point_t coord);
   void   setFertilityRate(int fertility);
   double getRadioactivityRate(); 
@@ -390,7 +401,8 @@ public:
   int  getWindDirection();
   void setWindDirection(int direction);
   int  getWindStrenght(); 
-  void setWindStrenght(int strenght); 
+  void setWindStrenght(int strenght);
+  BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index); 
 
 }; // end CBiotop
 

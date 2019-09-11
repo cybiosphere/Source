@@ -345,6 +345,7 @@
     <ClInclude Include="..\WpGenetic\inc\CGene.h" />
     <ClInclude Include="..\WpGenetic\inc\CGenome.h" />
     <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h" />
+    <ClInclude Include="..\WpGui\inc\FileSelectButton.h" />
     <ClInclude Include="..\WpGui\inc\GenomeTreeCtrl.h" />
     <ClInclude Include="..\WpGui\inc\ParameterSlider.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasure.h" />
@@ -363,7 +364,6 @@
     <ClInclude Include="..\WpWizardGui\inc\DialogTab2.h" />
     <ClInclude Include="..\WpWizardGui\inc\DialogTab3.h" />
     <ClInclude Include="..\WpWizardGui\inc\DialogTab4.h" />
-    <ClInclude Include="..\WpWizardGui\inc\FileSelectButton.h" />
     <ClInclude Include="..\WpWizardGui\inc\GeneButton.h" />
     <ClInclude Include="..\WpWizardGui\inc\MainFrm.h" />
     <ClInclude Include="..\WpWizardGui\inc\ProjectWizard.h" />
@@ -377,6 +377,7 @@
     <ClInclude Include="..\WpWizardProc\inc\CWizardSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\WpGui\src\FileSelectButton.cpp" />
     <ClCompile Include="..\WpGui\src\GenomeTreeCtrl.cpp" />
     <ClCompile Include="..\WpGui\src\ParameterSlider.cpp" />
     <ClCompile Include="..\WpTinyXml\src\tinystr.cpp" />
@@ -388,7 +389,6 @@
     <ClCompile Include="..\WpWizardGui\src\DialogTab2.cpp" />
     <ClCompile Include="..\WpWizardGui\src\DialogTab3.cpp" />
     <ClCompile Include="..\WpWizardGui\src\DialogTab4.cpp" />
-    <ClCompile Include="..\WpWizardGui\src\FileSelectButton.cpp" />
     <ClCompile Include="..\WpWizardGui\src\GeneButton.cpp" />
     <ClCompile Include="..\WpWizardGui\src\MainFrm.cpp" />
     <ClCompile Include="..\WpWizardGui\src\ProjectWizard.cpp" />

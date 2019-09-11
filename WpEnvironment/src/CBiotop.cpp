@@ -94,14 +94,19 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   // Set object caract
   m_pGrassGlobalEntity->setEntityFromGenome(0);
   m_pGrassGlobalEntity->setId(ENTITY_ID_GRASS);
-
   m_IdLastEntity = ENTITY_ID_FIRST_USER_ENTITY; // Grass is last id at startup
-
   m_tMeasures.resize(0);
-
   m_tFoundIds = new FoundEntity_t[MAX_FOUND_ENTITIES];
 
   resetCpuMarker();
+
+  m_tRandomEntitiesGeneration.resize(MAX_NUMBER_RANDOM_ENTITIES);
+  // Set rain as default random entity
+  m_tRandomEntitiesGeneration[0].entityPathName = "..\\DataScriptMammal\\";
+  m_tRandomEntitiesGeneration[0].entityFileName = "water_puddle.xml";
+  m_tRandomEntitiesGeneration[0].IsProportionalToFertility = true;
+  m_tRandomEntitiesGeneration[0].avaragePeriodicity = 5;
+  m_tRandomEntitiesGeneration[0].intensity = 50;
 
   CYBIOCORE_LOG_INIT;
 }
@@ -1716,9 +1721,34 @@ void CBiotop::nextHour(void)
   }
 
   // Rain management
-  if (testChance(10.0, getFertility({ 1,1 }) / 24.0))
+  /*if (testChance(10.0, getFertility({ 1,1 }) / 24.0))
   {
     spreadWaterPuddlesByRain(getRandInt(100));
+  }*/
+
+  // Random entities generation
+  for (int ind = 0; ind < MAX_NUMBER_RANDOM_ENTITIES; ind++)
+  {
+    BiotopRandomEntitiyGeneration_t& randomEntity = m_tRandomEntitiesGeneration[ind];
+    if (randomEntity.entityFileName != "")
+    {
+      int coverRate = randomEntity.intensity + getRandInt(10);
+      double fertilityFactor = 100;
+      double periodicityFactor = 100;
+      if (randomEntity.IsProportionalToFertility)
+      {
+        fertilityFactor = getFertility({1, 1});
+        coverRate = coverRate * fertilityFactor / 100;
+      }
+      if (randomEntity.avaragePeriodicity > 0)
+      {
+        periodicityFactor = 100.0 / ((double)(randomEntity.avaragePeriodicity) * 24.0);
+      }
+      if (testChance(periodicityFactor, fertilityFactor))
+      {
+        spreadEntitiesRandomly(randomEntity.entityFileName, randomEntity.entityPathName, coverRate);
+      }
+    }
   }
 
   // Update time
@@ -2507,7 +2537,7 @@ void CBiotop::spreadWaterPuddlesByRain(int coverRate)
 
   pGenome1->loadFromXmlFile("..\\DataScriptMammal\\water_puddle.xml");
 
-  Point_t coord = { 10,10 };
+  Point_t coord = { 10, 10 };
   entityIdType waterId;
 
   int nbPuddles = m_Dimension.x * m_Dimension.y * coverRate / 100000;
@@ -2522,7 +2552,25 @@ void CBiotop::spreadWaterPuddlesByRain(int coverRate)
   delete pGenome1;
 
   CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - Rain : %d puddles\n", coverRate);
+  CYBIOCORE_LOG("BIOTOP - Rain : %d puddles\n", nbPuddles);
+}
+
+void CBiotop::spreadEntitiesRandomly(string fileName, string pathName, int coverRate)
+{
+  Point_t coord = {getRandInt(m_Dimension.x) + 2, getRandInt(m_Dimension.y) + 2};
+  entityIdType firstId = createAndAddEntity(fileName, pathName, coord);
+  CBasicEntity* pEntity = getEntityById(firstId);
+
+  int nbEntities = m_Dimension.x * m_Dimension.y * coverRate / 100000;
+  for (int i = 1; i < nbEntities; i++)
+  {
+    coord.x = getRandInt(m_Dimension.x) + 2;
+    coord.y = getRandInt(m_Dimension.y) + 2;
+    createAndAddCloneEntity(firstId, coord, pEntity->getLayer());
+  }
+
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pEntity->getLabel().c_str());
 }
 
 //===========================================================================
@@ -2772,4 +2820,9 @@ int CBiotop::getWindStrenght()
 void CBiotop::setWindStrenght(int strenght)
 {
   m_WindStrenght = strenght;
+}
+
+BiotopRandomEntitiyGeneration_t& CBiotop::getRandomEntitiyGeneration(int index)
+{
+  return (m_tRandomEntitiesGeneration[index]);
 }

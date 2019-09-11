@@ -54,6 +54,8 @@ public:
   CString GetFileName();
   CString GetPathName();
 
+  void initWithDefaultFile(CString pathName, CString fileName);
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CFileSelectButton)

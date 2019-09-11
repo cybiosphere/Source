@@ -50,6 +50,12 @@ CBiotopEditorDlg::CBiotopEditorDlg(CBiotop* pBiotop,CWnd* pParent /*=NULL*/)
   {
     m_pParamSlider[i] = NULL;
   }
+
+  for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
+  {
+    m_pRandomGeneratorButtonTable[i] = NULL;
+    m_pRandomGeneratorParamsTable[i] = NULL;
+  }
 }
 
 CBiotopEditorDlg::~CBiotopEditorDlg()
@@ -60,6 +66,20 @@ CBiotopEditorDlg::~CBiotopEditorDlg()
     {
       delete m_pParamSlider[i];
       m_pParamSlider[i] = NULL;
+    }
+  }
+
+  for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
+  {
+    if (m_pRandomGeneratorButtonTable[i] != NULL)
+    {
+      delete m_pRandomGeneratorButtonTable[i];
+      m_pRandomGeneratorButtonTable[i] = NULL;
+    }
+    if (m_pRandomGeneratorParamsTable[i] != NULL)
+    {
+      delete m_pRandomGeneratorParamsTable[i];
+      m_pRandomGeneratorParamsTable[i] = NULL;
     }
   }
 }
@@ -90,6 +110,38 @@ BOOL CBiotopEditorDlg::OnInitDialog()
   HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN); 
 
   DisplayParamSliders();
+
+  // Custom entity list
+  int iDpi = GetDpiForWindow(this->m_hWnd);
+  int startX = MulDiv(20, iDpi, 96);
+  int startParamX = MulDiv(300, iDpi, 96);
+  int startY = MulDiv(360, iDpi, 96);
+  int offsetY = MulDiv(40, iDpi, 96);
+  int sizeX = MulDiv(220, iDpi, 96);
+  int sizeParamX = MulDiv(60, iDpi, 96);
+  int sizeY = MulDiv(20, iDpi, 96);
+
+  for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
+  {
+    CString label;
+    label.Format("%d", i + 1);
+    m_pRandomGeneratorButtonTable[i] = new CFileSelectButton((CView*)this, label, "Select");
+    
+    if (m_pRandomGeneratorButtonTable[i] != NULL)
+    {
+      CRect rect(startX, startY, startX + sizeX, startY + sizeY);
+      m_pRandomGeneratorButtonTable[i]->CreateNewButton(rect, this, 2000 + i);
+
+      BiotopRandomEntitiyGeneration_t& entityGeneration = m_pBiotop->getRandomEntitiyGeneration(i);
+      m_pRandomGeneratorParamsTable[i] = new CCheckBoxWithParams((CView*)this, entityGeneration.IsProportionalToFertility, 
+                                                        "period", entityGeneration.avaragePeriodicity, "intensity", entityGeneration.intensity);
+      CRect rectParams(startParamX, startY, startParamX + sizeParamX, startY + sizeY);
+      m_pRandomGeneratorParamsTable[i]->CreateNewButton(rectParams, this, 2010 + i);
+      m_pRandomGeneratorParamsTable[i]->SetWindowTextA("fertility");
+      startY += offsetY;
+      m_pRandomGeneratorButtonTable[i]->initWithDefaultFile(entityGeneration.entityPathName.c_str(), entityGeneration.entityFileName.c_str());
+    }
+  }
 
   return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -132,3 +184,22 @@ void CBiotopEditorDlg::DisplayParamSliders()
   }
 }
 
+void CBiotopEditorDlg::OnOK()
+{
+  for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
+  {
+    if (m_pRandomGeneratorButtonTable[i]->GetFileName() != "")
+    {
+      BiotopRandomEntitiyGeneration_t& entityGeneration = m_pBiotop->getRandomEntitiyGeneration(i);
+      entityGeneration.entityFileName = m_pRandomGeneratorButtonTable[i]->GetFileName();
+      entityGeneration.entityPathName = m_pRandomGeneratorButtonTable[i]->GetPathName();
+      entityGeneration.IsProportionalToFertility = m_pRandomGeneratorParamsTable[i]->GetCheck();
+      CString param1Str, param2Str;
+      m_pRandomGeneratorParamsTable[i]->m_pParam1Edit->GetWindowText(param1Str);
+      m_pRandomGeneratorParamsTable[i]->m_pParam2Edit->GetWindowText(param2Str);
+      entityGeneration.avaragePeriodicity = atoi(param1Str);
+      entityGeneration.intensity = atoi(param2Str);
+    }
+  }
+  CDialog::OnOK();
+}

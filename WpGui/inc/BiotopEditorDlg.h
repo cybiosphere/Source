@@ -32,9 +32,14 @@ distribution.
 //
 #include "CBiotop.h"
 #include "ParameterSlider.h"
+#include "ParameterSlider.h"
+#include "FileSelectButton.h"
+#include "CheckBoxWithParams.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CBiotopEditorDlg dialog
+
+#define MAX_NUMBER_RANDOM_ENTITY_GENERATOR  3
 
 class CBiotopEditorDlg : public CDialog
 {
@@ -62,11 +67,14 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CBiotopEditorDlg)
 	virtual BOOL OnInitDialog();
+  virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
   CBiotop* m_pBiotop;
   CParameterSlider* m_pParamSlider[MAX_NUMBER_BIOCTRL_DISPLAY];
+  CFileSelectButton* m_pRandomGeneratorButtonTable[MAX_NUMBER_RANDOM_ENTITY_GENERATOR]; 
+  CCheckBoxWithParams* m_pRandomGeneratorParamsTable[MAX_NUMBER_RANDOM_ENTITY_GENERATOR];
 
   void DisplayParamSliders();
 };

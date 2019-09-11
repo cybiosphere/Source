@@ -107,27 +107,27 @@ bool CFileSelectButton::CreateNewButton( const RECT &rect, CWnd *pParentWnd, UIN
   bool resu = false;
 
   CRect rectText = rect;
-  
+  int iDpi = GetDpiForWindow(m_pView->m_hWnd);
 
   // Add Title
   m_pName1Static = new CStatic();
-  rectText.right = rectText.left + 20;
+  rectText.right = rectText.left + MulDiv(18, iDpi, 96); //20;
   m_pName1Static->Create(m_Label, SS_RIGHT, rectText, pParentWnd);
   m_pName1Static->SetFont(m_pFont);
   m_pName1Static->ShowWindow(SW_SHOW);
 
   // Add Selection
   m_pName1Edit = new CEdit();
-  rectText.left += 30;
-  rectText.right = rectText.left + 240;
-  m_pName1Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER|WS_DISABLED, rectText, pParentWnd, nID+151);
+  rectText.left += MulDiv(26, iDpi, 96); //30;
+  rectText.right = rectText.left + MulDiv(180, iDpi, 96); //240;
+  m_pName1Edit->Create(SS_LEFT|WS_VISIBLE|WS_TABSTOP|WS_CHILD|WS_BORDER|WS_DISABLED, rectText, pParentWnd, nID + 151);
   m_pName1Edit->SetFont(m_pFont);
   m_pName1Edit->ShowWindow(SW_SHOW);
 
   // Create button
-  rectText.left += 250;
-  rectText.right = rectText.left + 50;
-  resu = Create(m_ButtonText, WS_VISIBLE|WS_TABSTOP|WS_CHILD, rectText, pParentWnd, nID);
+  rectText.left += MulDiv(190, iDpi, 96); //250;
+  rectText.right = rectText.left + MulDiv(40, iDpi, 96);//50
+  resu = Create(m_ButtonText, WS_VISIBLE|WS_TABSTOP|WS_CHILD, rectText, pParentWnd, nID + 160);
   SetFont(m_pFont);
 
   return (resu);
@@ -143,3 +143,9 @@ CString CFileSelectButton::GetPathName()
   return m_PathName;
 }
 
+void CFileSelectButton::initWithDefaultFile(CString pathName, CString fileName)
+{
+  m_FileName = fileName;
+  m_PathName = pathName;
+  m_pName1Edit->SetWindowText(fileName);
+}
