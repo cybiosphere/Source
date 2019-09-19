@@ -108,6 +108,8 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_tRandomEntitiesGeneration[0].avaragePeriodicity = 5;
   m_tRandomEntitiesGeneration[0].intensity = 50;
 
+  m_bColorizeSearch = false;
+
   CYBIOCORE_LOG_INIT;
 }
    
@@ -902,6 +904,10 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, int layer)
   if ( isCoordValid(searchCoord,layer) )
   {
     pFoundEntity = m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity;
+    if (m_bColorizeSearch)
+    {
+      m_tBioSquare[searchCoord.x][searchCoord.y].customColor -= 0x00001010; //blue
+    }
   }
   
   return (pFoundEntity);
@@ -1246,7 +1252,7 @@ int CBiotop::findEntities(FoundEntity_t*& pFoundIds,
   return (nbFoundIds);
 }
 
-//  find all entities betwen 2 range, on any layer
+//  find all entities betwen 2 range, on any layer except layer0 (under ground)
 int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
                              Point_t startCoord, UCHAR sectorBmp, 
                              int rangeMin, int rangeMax)
@@ -1270,7 +1276,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1306,7 +1312,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         entityDist = max(i-startCoord.x,j-startCoord.y);
         if (entityDist>=rangeMin)
         {
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1342,7 +1348,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1376,7 +1382,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         entityDist = max(startCoord.x-i,j-startCoord.y);
         if (entityDist>=rangeMin)
         {
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1412,7 +1418,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1446,7 +1452,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         entityDist = max(startCoord.x-i,startCoord.y-j);
         if (entityDist>=rangeMin)
         {
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1482,7 +1488,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -1516,7 +1522,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
         entityDist = max(i-startCoord.x,startCoord.y-j);
         if (entityDist>=rangeMin)
         {
-          for (int layer = 0; layer < m_nbLayer; layer++)
+          for (int layer = 1; layer < m_nbLayer; layer++)
           {
             if (nbFoundIds>=MAX_FOUND_ENTITIES)
               break;
@@ -2825,4 +2831,9 @@ void CBiotop::setWindStrenght(int strenght)
 BiotopRandomEntitiyGeneration_t& CBiotop::getRandomEntitiyGeneration(int index)
 {
   return (m_tRandomEntitiesGeneration[index]);
+}
+
+void CBiotop::SetColorizeSearchMode(bool bColorizeSearch)
+{
+  m_bColorizeSearch = bColorizeSearch;
 }

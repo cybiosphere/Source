@@ -190,7 +190,7 @@ void Client::on_event_game_loadmap(const NetGameEvent &e)
   xmlDoc.Parse(xmlBuffer.get_data());
 
   m_pBiotop->loadFromXmlFile(&xmlDoc, "");
-  log_event("events", "Loading biotop: %1, Size %2,%3,%4", m_pBiotop->getLabel(), m_pBiotop->getDimension()->x, m_pBiotop->getDimension()->y, m_pBiotop->getNbLayer());
+  log_event("events", "Loading biotop: %1, Size %2,%3,%4", m_pBiotop->getLabel(), m_pBiotop->getDimension().x, m_pBiotop->getDimension().y, m_pBiotop->getNbLayer());
 }
 
 // "Game-Start" event was received

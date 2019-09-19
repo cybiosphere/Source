@@ -217,6 +217,7 @@ private:
   string m_DefaultFilePath;
 
   BiotopCpuMonitoring_t m_CpuMonitoring[BIOTOP_CPUMARKER_LAST];
+  bool m_bColorizeSearch; 
 
 //---------------------------------------------------------------------------
 // associations
@@ -403,6 +404,7 @@ public:
   int  getWindStrenght(); 
   void setWindStrenght(int strenght);
   BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index); 
+  void SetColorizeSearchMode(bool bColorizeSearch);
 
 }; // end CBiotop
 

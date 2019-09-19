@@ -44,6 +44,7 @@ typedef enum
   MAP_TYPE_ODOR,
   MAP_TYPE_TEMPERATURE,
   MAP_TYPE_PURPOSE,
+  MAP_TYPE_SENSORS,
   MAP_NUMBER_TYPE 
 } MapConfigType_e;
 
@@ -61,6 +62,7 @@ public:
 	BOOL	m_bIsOdorMap;
 	BOOL	m_bIsTemperatureMap;
 	BOOL	m_bIsPurposeMap;
+  BOOL	m_bIsSensorMap;
 	CString	m_purposeTxt1;
 	CString	m_purposeTxt2;
 	CString	m_purposeTxt3;
@@ -68,6 +70,10 @@ public:
 	CString	m_purposeTxt5;
 	CString	m_purposeTxt6;
 	CString	m_purposeTxt7;
+  CString	m_sensorTxt1;
+  CString	m_sensorTxt2;
+  CString	m_sensorTxt3;
+  CString	m_sensorTxt4;
 	//}}AFX_DATA
 
 // Attributes
@@ -86,6 +92,7 @@ public:
     bool BuildOdorMap(OdorType_e odorType);
     bool BuildTemperatureMap();
     bool BuildPurposeMap(int index);
+    bool BuildSensorsMap(int index);
     bool ClearMap();
     bool UpdateSelectedEntity(CBasicEntity* pEntity);
 
@@ -116,6 +123,7 @@ protected:
 	afx_msg void OnCheck1();
 	afx_msg void OnCheck2();
 	afx_msg void OnCheck3();
+  afx_msg void OnCheck4();
 	afx_msg void OnRadioPurpose1();
 	afx_msg void OnRadioPurpose2();
 	afx_msg void OnRadioPurpose3();
@@ -123,6 +131,10 @@ protected:
 	afx_msg void OnRadioPurpose5();
 	afx_msg void OnRadioPurpose6();
 	afx_msg void OnRadioPurpose7();
+  afx_msg void OnRadioSensor1();
+  afx_msg void OnRadioSensor2();
+  afx_msg void OnRadioSensor3();
+  afx_msg void OnRadioSensor4();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

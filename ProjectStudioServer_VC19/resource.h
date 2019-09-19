@@ -73,6 +73,7 @@
 #define IDC_BUTTON_CARROT               1005
 #define IDC_CHECK2                      1006
 #define IDC_CHECK3                      1007
+#define IDC_CHECK4                      1008
 #define IDC_BUTTON_EXEC                 1012
 #define IDC_FEEDBACK                    1013
 #define IDC_CUR_ACTION                  1014
@@ -198,6 +199,15 @@
 #define IDC_PHYS_WELFARE                1114
 #define IDC_PURPOSE_TXT7                1115
 #define IDC_FEELING_WELFARE             1115
+#define IDC_SENSOR_TXT1                 1116
+#define IDC_SENSOR_TXT2                 1117
+#define IDC_SENSOR_TXT3                 1118
+#define IDC_SENSOR_TXT4                 1119
+#define IDC_RADIO_SENSOR1               1120
+#define IDC_RADIO_SENSOR2               1121
+#define IDC_RADIO_SENSOR3               1122
+#define IDC_RADIO_PURPOSE11             1123
+#define IDC_RADIO_SENSOR4               1123
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -236,9 +246,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        208
+#define _APS_NEXT_RESOURCE_VALUE        209
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1115
+#define _APS_NEXT_CONTROL_VALUE         1118
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

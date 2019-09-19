@@ -429,8 +429,8 @@ CybiOgre3DApp::CybiOgre3DApp()
   }
 
   CBasicEntity* pPlayer = m_pBiotop->getEntityByName(std::string{ "player" });
-  OFFSET_COORD_X = 5 * m_pBiotop->getDimension()->x;
-  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension()->y;
+  OFFSET_COORD_X = 5 * m_pBiotop->getDimension().x;
+  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension().y;
 
   if ((pPlayer != NULL) && (pPlayer->getClass() >= CLASS_ANIMAL_FIRST))
     SetEntityPlayer(pPlayer);
@@ -512,9 +512,9 @@ void CybiOgre3DApp::createScene(void)
   Point_t coord;
   int x,y;
   waterGlobalEntity->setLabel("water");
-  for (x=0; x<m_pBiotop->getDimension()->x; x++)
+  for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
-    for (y=0; y<m_pBiotop->getDimension()->y; y++)
+    for (y=0; y<m_pBiotop->getDimension().y; y++)
     {
       coord.x = x;
       coord.y = y;
@@ -536,9 +536,9 @@ void CybiOgre3DApp::createScene(void)
   }
 
   waterGlobalEntity->setLabel("water_deap");
-  for (x=0; x<m_pBiotop->getDimension()->x; x++)
+  for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
-    for (y=0; y<m_pBiotop->getDimension()->y; y++)
+    for (y=0; y<m_pBiotop->getDimension().y; y++)
     {
       coord.x = x;
       coord.y = y;

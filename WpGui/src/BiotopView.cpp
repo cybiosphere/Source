@@ -491,6 +491,11 @@ void CBiotopView::SetSpeedRate (double speedRate)
   {
     m_pBioDisplay->SetNbRefreshPerStep((1000/speedRate-9)/200+1);
     SetTimer(SECOND_TIMER_ID, 1000.0 / speedRate - 9.0, NULL);
+    if (speedRate > 70)
+    {
+      m_IdleDisplayMode = true;
+      m_pBioDisplay->RefreshSceneIdleNoCPU();
+    }
   }
   else
   {

@@ -53,7 +53,7 @@ CNeuronMatrix::CNeuronMatrix()
 
 CNeuronMatrix::~CNeuronMatrix()
 {
-  m_mNeuronTable.SetSize(0,0);
+  //m_mNeuronTable.SetSize(0,0);
 }
 
 

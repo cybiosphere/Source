@@ -63,6 +63,10 @@ CMapConfigView::CMapConfigView()
 	m_purposeTxt5 = _T("");
 	m_purposeTxt6 = _T("");
 	m_purposeTxt7 = _T("");
+  m_sensorTxt1 = _T("");
+  m_sensorTxt2 = _T("");
+  m_sensorTxt3 = _T("");
+  m_sensorTxt4 = _T("");
 	//}}AFX_DATA_INIT
 }
 
@@ -77,6 +81,7 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK1, m_bIsOdorMap);
 	DDX_Check(pDX, IDC_CHECK2, m_bIsTemperatureMap);
   DDX_Check(pDX, IDC_CHECK3, m_bIsPurposeMap);
+  DDX_Check(pDX, IDC_CHECK4, m_bIsSensorMap);
 	DDX_Text(pDX, IDC_PURPOSE_TXT1, m_purposeTxt1);
 	DDX_Text(pDX, IDC_PURPOSE_TXT2, m_purposeTxt2);
 	DDX_Text(pDX, IDC_PURPOSE_TXT3, m_purposeTxt3);
@@ -84,6 +89,10 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_PURPOSE_TXT5, m_purposeTxt5);
 	DDX_Text(pDX, IDC_PURPOSE_TXT6, m_purposeTxt6);
 	DDX_Text(pDX, IDC_PURPOSE_TXT7, m_purposeTxt7);
+  DDX_Text(pDX, IDC_SENSOR_TXT1, m_sensorTxt1);
+  DDX_Text(pDX, IDC_SENSOR_TXT2, m_sensorTxt2);
+  DDX_Text(pDX, IDC_SENSOR_TXT3, m_sensorTxt3);
+  DDX_Text(pDX, IDC_SENSOR_TXT4, m_sensorTxt4);
 	//}}AFX_DATA_MAP
 }
 
@@ -100,6 +109,7 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
 	ON_BN_CLICKED(IDC_CHECK1, OnCheck1)
 	ON_BN_CLICKED(IDC_CHECK2, OnCheck2)
 	ON_BN_CLICKED(IDC_CHECK3, OnCheck3)
+  ON_BN_CLICKED(IDC_CHECK4, OnCheck4)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE1, OnRadioPurpose1)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE2, OnRadioPurpose2)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE3, OnRadioPurpose3)
@@ -107,6 +117,10 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE5, OnRadioPurpose5)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE6, OnRadioPurpose6)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE7, OnRadioPurpose7)
+  ON_BN_CLICKED(IDC_RADIO_SENSOR1, OnRadioSensor1)
+  ON_BN_CLICKED(IDC_RADIO_SENSOR2, OnRadioSensor2)
+  ON_BN_CLICKED(IDC_RADIO_SENSOR3, OnRadioSensor3)
+  ON_BN_CLICKED(IDC_RADIO_SENSOR4, OnRadioSensor4)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -144,7 +158,7 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
   if (m_pBiotop==NULL)
     return (false);
 
-  bool resu;
+  bool resu = false;
 
   switch(m_CurMapType)
   {
@@ -153,6 +167,8 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
         resu = BuildOdorMap((OdorType_e)m_CurMapSubType);
       else
         ClearMap();
+      if (forceRefresh)
+        theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       break;
     case MAP_TYPE_TEMPERATURE:
       resu = BuildTemperatureMap();
@@ -165,6 +181,11 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
         resu = BuildPurposeMap(m_CurMapSubType);
         theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       }
+      break;
+    case MAP_TYPE_SENSORS:
+      resu = BuildSensorsMap(m_CurMapSubType);
+      if (forceRefresh)
+        theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       break;
     default:
       resu = false;
@@ -253,6 +274,10 @@ bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
   m_purposeTxt5 = "";
   m_purposeTxt6 = "";
   m_purposeTxt7 = "";
+  m_sensorTxt1 = "";
+  m_sensorTxt2 = "";
+  m_sensorTxt3 = "";
+  m_sensorTxt4 = "";
 
   if ((pEntity==NULL)||(pEntity->getBrain()==NULL)|| (pEntity->getBrain()->GetGeographicMap()==NULL))
   { 
@@ -298,10 +323,15 @@ bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
     if (pPurpose!=NULL)
       m_purposeTxt7 = pPurpose->GetLabel().c_str(); 
 
+    m_sensorTxt1 = "View";
+    m_sensorTxt2 = "Ear";
+    m_sensorTxt3 = "Smell";
+    m_sensorTxt4 = "Pheromons";
+
     m_pSelectedEntity = pEntity;
     UpdateData(FALSE);
 
-    if (m_bIsPurposeMap)
+    if((m_bIsPurposeMap) || (m_bIsSensorMap))
       BuildMap(true);
   }
 
@@ -360,6 +390,30 @@ bool CMapConfigView::BuildPurposeMap(int index)
   return (true);
 }
 
+bool  CMapConfigView::BuildSensorsMap(int index)
+{
+  ClearMap();
+  if ((m_pSelectedEntity == NULL) || (m_pSelectedEntity->getBrain() == NULL))
+  {
+    return true;
+  }
+  m_pBiotop->SetColorizeSearchMode(true);
+  sensorValType* pSensorVal = NULL;
+  CSensor* pSensor = NULL;
+  for (int ind = 0; ind < m_pSelectedEntity->getBrain()->GetNumberSensor(); ind++)
+  {
+    pSensor = m_pSelectedEntity->getBrain()->GetSensorByIndex(ind);
+    if ((index == 0) && (pSensor->GetLabel().find("View") != std::string::npos))
+      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+    else if ((index == 1) && (pSensor->GetLabel().find("Ear") != std::string::npos))
+      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+    else if ((index == 2) && (pSensor->GetLabel().find("Smell") != std::string::npos))
+      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+    else if ((index == 3) && (pSensor->GetLabel().find("Pheromone") != std::string::npos))
+      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+  }
+  m_pBiotop->SetColorizeSearchMode(false);
+}
 
 bool CMapConfigView::ClearMap()
 {
@@ -436,7 +490,8 @@ void CMapConfigView::OnCheck1()
     ClearMap();
   }
   m_bIsTemperatureMap = FALSE;
-  m_bIsPurposeMap = FALSE; 
+  m_bIsPurposeMap = FALSE;
+  m_bIsSensorMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -454,7 +509,8 @@ void CMapConfigView::OnCheck2()
     ClearMap();
   }
   m_bIsOdorMap = FALSE;
-  m_bIsPurposeMap = FALSE; 
+  m_bIsPurposeMap = FALSE;
+  m_bIsSensorMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -474,7 +530,28 @@ void CMapConfigView::OnCheck3()
   }
   m_bIsOdorMap = FALSE;
   m_bIsTemperatureMap = FALSE;
+  m_bIsSensorMap = FALSE;
   UpdateData(FALSE);	
+}
+
+void CMapConfigView::OnCheck4()
+{
+  UpdateData(TRUE);
+  OnRadioSensor1();
+  if (m_bIsSensorMap)
+  {
+    m_CurMapType = MAP_TYPE_SENSORS;
+    BuildMap();
+  }
+  else
+  {
+    m_CurMapType = MAP_TYPE_NONE;
+    ClearMap();
+  }
+  m_bIsOdorMap = FALSE;
+  m_bIsTemperatureMap = FALSE;
+  m_bIsPurposeMap = FALSE;
+  UpdateData(FALSE);
 }
 
 void CMapConfigView::OnRadioPurpose1() 
@@ -516,5 +593,29 @@ void CMapConfigView::OnRadioPurpose6()
 void CMapConfigView::OnRadioPurpose7() 
 {
   m_CurMapSubType = 6;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioSensor1()
+{
+  m_CurMapSubType = 0;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioSensor2()
+{
+  m_CurMapSubType = 1;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioSensor3()
+{
+  m_CurMapSubType = 2;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioSensor4()
+{
+  m_CurMapSubType = 3;
   BuildMap();
 }

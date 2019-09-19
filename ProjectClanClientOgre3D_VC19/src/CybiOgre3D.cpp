@@ -553,17 +553,17 @@ void CybiOgre3DApp::createScene(void)
   // Put in a bit of fog for the hell of it
   mSceneMgr->setFog(FOG_EXP, ColourValue::White, 0.0002);
 
-  OFFSET_COORD_X = 5 * m_pBiotop->getDimension()->x;
-  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension()->y;
+  OFFSET_COORD_X = 5 * m_pBiotop->getDimension().x;
+  OFFSET_COORD_Y = 5 * m_pBiotop->getDimension().y;
 
   CWater* waterGlobalEntity = new CWater();
   CGrass* grassGlobalEntity = new CGrass();
   Point_t coord;
   int x,y;
   waterGlobalEntity->setLabel("water");
-  for (x=0; x<m_pBiotop->getDimension()->x; x++)
+  for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
-    for (y=0; y<m_pBiotop->getDimension()->y; y++)
+    for (y=0; y<m_pBiotop->getDimension().y; y++)
     {
       coord.x = x;
       coord.y = y;
@@ -585,9 +585,9 @@ void CybiOgre3DApp::createScene(void)
   }
 
   waterGlobalEntity->setLabel("water_deap");
-  for (x=0; x<m_pBiotop->getDimension()->x; x++)
+  for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
-    for (y=0; y<m_pBiotop->getDimension()->y; y++)
+    for (y=0; y<m_pBiotop->getDimension().y; y++)
     {
       coord.x = x;
       coord.y = y;
