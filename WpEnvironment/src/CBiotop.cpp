@@ -2106,6 +2106,16 @@ int CBiotop::getNbOfMeasures(void)
   return (m_tMeasures.size());
 }
 
+int CBiotop::getUnusedMeasureId(int maxMeasureId)
+{
+  for (int i = 0; i < maxMeasureId; i++)
+  {
+    if (getMeasureById(i) == NULL)
+      return i;
+  }
+  return -1;
+}
+
 void CBiotop::replaceMeasure(int id, CMeasure* pMeasure)
 {
   if (pMeasure==NULL)

@@ -240,6 +240,7 @@
 #define ID_APP_EDIT_IDENTIFY            32808
 #define ID_APP_EDIT_CHECK_IDENTIFY      32809
 #define ID_APP_DISPLAY_LOGSERVER        32810
+#define ID_APP_MONITOR_SPECIE           32811
 
 // Next default values for new objects
 // 

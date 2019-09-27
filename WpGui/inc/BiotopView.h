@@ -126,6 +126,7 @@ protected:
 	afx_msg void OnEditPaste();
 	afx_msg void OnAppMonitorShort();
 	afx_msg void OnAppMonitorLong();
+  afx_msg void OnAppMonitorSpecie();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

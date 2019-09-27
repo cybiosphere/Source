@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CBiotopView, CView)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
 	ON_COMMAND(ID_APP_MONITOR_SHORT, OnAppMonitorShort)
 	ON_COMMAND(ID_APP_MONITOR_LONG, OnAppMonitorLong)
+  ON_COMMAND(ID_APP_MONITOR_SPECIE, OnAppMonitorSpecie)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -545,6 +546,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
     p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED); 
     p_popup->EnableMenuItem(ID_APP_EDIT_IDENTIFY, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
+    p_popup->EnableMenuItem(ID_APP_MONITOR_SPECIE, MF_GRAYED);
   }
   else 
   {
@@ -924,15 +926,15 @@ void CBiotopView::OnAppMonitorLong()
     m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Protection factor"), 3600, 1);
     m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Weight"), 3600, 2);
 
-    if (pEntity->getClass()>=CLASS_ANIMAL_FIRST)
-    {
-      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Fat weight"), 3600, 3);
-      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Hunger rate"), 3600, 4); 
-      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Thirst rate"), 3600, 5);
-    }
-    if (pEntity->getClass()>=CLASS_VEGETAL_FIRST)
+    if (pEntity->getClass() >= CLASS_VEGETAL_FIRST)
     {
       m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 3600, 3);
+    }
+    if (pEntity->getClass()>=CLASS_ANIMAL_FIRST)
+    {
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Fat weight"), 3600, 4);
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Hunger rate"), 3600, 5); 
+      m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Thirst rate"), 3600, 6);
     }
     if (pEntity->getClass()==CLASS_MAMMAL)
     {
@@ -956,5 +958,23 @@ void CBiotopView::OnAppMonitorLong()
 	m_MenuSelCoord.x = 1;
 	m_MenuSelCoord.y = 1;
 
+  theApp.GetStatisticViewPtr()->RebuildMeasChkBox();
+}
+
+void CBiotopView::OnAppMonitorSpecie()
+{
+  CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord);
+  // Do not take into account global water and grass
+  if ((pEntity != NULL) && (pEntity->getId() < ENTITY_ID_FIRST_USER_ENTITY))
+    pEntity = NULL;
+  if ((pEntity != NULL) && (pEntity->getGenome() != NULL))
+  {
+    std::string specieName = pEntity->getGenome()->getSpecieName();
+    m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 
+                                    10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+  }
+
+  m_MenuSelCoord.x = 1;
+  m_MenuSelCoord.y = 1;
   theApp.GetStatisticViewPtr()->RebuildMeasChkBox();
 }

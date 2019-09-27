@@ -335,7 +335,8 @@ public:
    bool      addMeasurePopulation(int period, int id, MeasurePopulationType_e type, int maxVal, string SpecieName = "");
    CMeasure* getMeasureById(int id);
    CMeasure* getMeasureByIndex(int index);
-   int       getNbOfMeasures(void); 
+   int       getNbOfMeasures(void);
+   int       getUnusedMeasureId(int maxMeasureId);
    void      replaceMeasure(int id, CMeasure* pMeasure);
    bool      checkMeasureEvents();
    void      saveAllMeasuresInFile(string fileNameWithPath);

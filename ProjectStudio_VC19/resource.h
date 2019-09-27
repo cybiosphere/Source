@@ -2,12 +2,13 @@
 // Microsoft Visual C++ generated include file.
 // Used by Cybiosphere.rc
 //
-#define IDD_LOGSERVER_FORMVIEW          9
 #define IDD_ABOUTBOX                    100
 #define IDD_ENTITY_FORMVIEW             101
 #define IDD_BIOCTRL_FORMVIEW            102
 #define IDD_BRAIN_FORMVIEW              103
 #define IDD_GENETIC_FORMVIEW            104
+#define IDD_STATISTIC_FORMVIEW          105
+#define IDD_LOGSERVER_FORMVIEW          106
 #define IDR_MAINFRAME                   128
 #define IDR_BIOTOP_TYPE                 129
 #define IDB_VEGET                       131
@@ -22,7 +23,6 @@
 #define IDI_ICON_SAVE                   155
 #define IDI_ICON_OPEN                   156
 #define IDD_DLG_BRAIN_EDITOR            157
-#define IDD_STATISTIC_FORMVIEW          158
 #define IDB_SEX_ICONS                   159
 #define IDB_FORM_ICONS                  160
 #define IDI_ICON_LESS                   163
@@ -73,6 +73,7 @@
 #define IDC_BUTTON_CARROT               1005
 #define IDC_CHECK2                      1006
 #define IDC_CHECK3                      1007
+#define IDC_CHECK4                      1008
 #define IDC_BUTTON_EXEC                 1012
 #define IDC_FEEDBACK                    1013
 #define IDC_CUR_ACTION                  1014
@@ -198,6 +199,15 @@
 #define IDC_PHYS_WELFARE                1114
 #define IDC_PURPOSE_TXT7                1115
 #define IDC_FEELING_WELFARE             1115
+#define IDC_SENSOR_TXT1                 1116
+#define IDC_SENSOR_TXT2                 1117
+#define IDC_SENSOR_TXT3                 1118
+#define IDC_SENSOR_TXT4                 1119
+#define IDC_RADIO_SENSOR1               1120
+#define IDC_RADIO_SENSOR2               1121
+#define IDC_RADIO_SENSOR3               1122
+#define IDC_RADIO_PURPOSE11             1123
+#define IDC_RADIO_SENSOR4               1123
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -229,16 +239,17 @@
 #define ID_APP_EDIT_TRAIN_AND_GRADE     32807
 #define ID_APP_EDIT_IDENTIFY            32808
 #define ID_APP_EDIT_CHECK_IDENTIFY      32809
-#define ID_APP_DISPLAY_LOGSERVER        32809
+#define ID_APP_DISPLAY_LOGSERVER        32810
+#define ID_APP_MONITOR_SPECIE           32811
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        208
+#define _APS_NEXT_RESOURCE_VALUE        209
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1115
+#define _APS_NEXT_CONTROL_VALUE         1118
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
