@@ -200,7 +200,7 @@ BOOL CDialogTab3::OnInitDialog()
   }
 
   // Predator list
-  startX = MulDiv(384, iDpi, 96);
+  startX = MulDiv(420, iDpi, 96);
   startY = MulDiv(384, iDpi, 96);
   for (i=0;i<MAX_NUMBER_BUTTONS_PREDATOR;i++)
   {
