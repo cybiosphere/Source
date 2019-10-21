@@ -54,13 +54,12 @@ void Server::ProcessEvents(bool isNewSec)
 	// Update clients with biotop evolution
 	  if (nb_users_connected > 0)
 	  {
-      //CBasicEntity* pCurEntity = NULL;
-
       // Send event next second start update
       NetGameEvent bioNextSecEventStart("Biotop-Next second start");
       CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
       bioNextSecEventStart.add_argument(biotopTime);
-      bioNextSecEventStart.add_argument(m_biotopSpeed);
+      int speedx10 = cybio_round(m_biotopSpeed * 10.0);
+      bioNextSecEventStart.add_argument(speedx10);
       network_server.send_event(bioNextSecEventStart);
 
       // Update all entities
@@ -152,7 +151,6 @@ void Server::exec()
           pCurEntity = m_pBiotop->getEntityByIndex(i);
           if (pCurEntity->checkIfhasChangedAndClear()) 
             send_event_update_entity_position(pCurEntity);
-          // FRED TBC: Check if new entity arrived and advise clients
         }
         // Send event next second end
         NetGameEvent bioNextSecEventEnd("Biotop-Next second end");
@@ -388,6 +386,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
     reactionIndex = pEntity->getBrain()->GetCurrentReactionIndex();
 
   NetGameEvent bioUpdateEntityPosEvent("Biotop-Update entity position");
+  bioUpdateEntityPosEvent.add_argument(pEntity->getBiotop()->getBiotopTime().seconds);
   bioUpdateEntityPosEvent.add_argument(pEntity->getId());
   bioUpdateEntityPosEvent.add_argument(pEntity->getLabel());
   bioUpdateEntityPosEvent.add_argument(pEntity->getStepCoord().x);

@@ -533,7 +533,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
-  int prevIndex = deleteEntity(oldId);
+  int prevIndex = deleteEntity(oldId, false);
 
   // Create new entity
   CBasicEntity* pNewEntity = createEntity(oldLabel,pNewEntityGenome);
@@ -553,6 +553,10 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   {
     m_IndexLastAnimal++;
   }
+
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - Entity genome updated : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
+
   // Enter 1st day and change LifeStage
   pNewEntity->nextDay();
 
@@ -573,7 +577,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
-  int prevIndex = deleteEntity(oldId);
+  int prevIndex = deleteEntity(oldId, false);
 
   // Set coord
   pNewEntity->jumpToGridCoord(oldCoord, oldLayer); 
@@ -589,13 +593,16 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
     m_IndexLastAnimal++;
   }
 
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - Entity full update : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
+
   addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, pNewEntity);
 
   return true;
 }
 
 
-int CBiotop::deleteEntity(entityIdType idEntity) 
+int CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
 { 
   CBasicEntity* pEntity = NULL;
   for (int i=0; i<getNbOfEntities(); i++)     
@@ -607,8 +614,11 @@ int CBiotop::deleteEntity(entityIdType idEntity)
       {
         m_IndexLastAnimal--;
       }
-      CYBIOCORE_LOG_TIME(m_BioTime);
-      CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
+      if (displayLog)
+      {
+        CYBIOCORE_LOG_TIME(m_BioTime);
+        CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
+      }
       delete (m_tEntity[i]); 
       m_tEntity.erase(m_tEntity.begin()+i);
       return (i);

@@ -259,7 +259,7 @@ public:
   void displayEntities(void);
   void setDefaultEntitiesForTest(void);
 
-  int  deleteEntity(entityIdType idEntity);
+  int  deleteEntity(entityIdType idEntity, bool displayLog = true);
   void deleteAllEntities(void);
   void deleteAllMeasures(void);
   void deleteAllParameters(void);

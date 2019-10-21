@@ -108,7 +108,7 @@ namespace clan
 		format.set_arg(3, cur_time.get_day());
 		format.set_arg(4, cur_time.get_hour(), 2);
 		format.set_arg(5, cur_time.get_minutes(), 2);
-		format.set_arg(6, cur_time.get_seconds(), 2);
+		format.set_arg(6, cur_time.get_seconds()*1000 + cur_time.get_nanoseconds()/1000000, 4);
 		format.set_arg(7, cur_time.get_year());
 		format.set_arg(8, type);
 		format.set_arg(9, text);

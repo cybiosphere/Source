@@ -95,7 +95,6 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
       pNewMesh->pAnimState = NULL;
     }
 
-    //m_tMesh.insert(m_tMesh.begin() + insertIndex, 1, pNewMesh);
     m_tMesh.push_back(pNewMesh);
   }
 
@@ -151,19 +150,18 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
     m_tMesh[i]->pAnimState->addTime(inc);
   }
 
-  m_secCnt += evt.timeSinceLastFrame *m_pClient->get_biotop_speed();
-
+  m_secCnt += evt.timeSinceLastFrame * m_pClient->get_biotop_speed();
   m_pClient->process_new_events();
  
-  if(m_pClient->check_if_event_next_second_end_and_clean()) //  (m_secCnt >= 1) 
+  if ((m_secCnt >= 1) && (m_pClient->check_if_event_next_second_end_and_clean()))
   {
+    m_pClient->updateBiotopWithLastBufferEvent();
     forcePlayerAction();
     m_pBiotop->nextSecond();
     m_secCnt = 0;
 
     BiotopEvent_t bioEvent;
     CBasicEntity* pEntity;
-    MeshEntity_t* pMesh;
     for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
     {
       bioEvent = m_pBiotop->getBiotopEvent(i); 
@@ -172,20 +170,17 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
       case BIOTOP_EVENT_ENTITY_MOVED:
       case BIOTOP_EVENT_ENTITY_CHANGED:
       {
-        /* TODO: Replace from Client::on_event_biotop_updateentityposition
-        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
-        int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+        // Replace from Client::on_event_biotop_updateentityposition
+        /*int meshIndex = getMeshEntityIndex(bioEvent.entityId);
         setMeshEntityPreviousPosition(meshIndex);
         updateMeshEntityNewSecond(meshIndex);*/
         break;
       }
       case BIOTOP_EVENT_ENTITY_MODIFIED:
       {
-        //pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
         int meshIndex = getMeshEntityIndex(bioEvent.entityId);
         if (meshIndex >= 0) 
         {
-          //updateMeshEntityPtr(meshIndex, pEntity);
           updateMeshEntityNewSecond(meshIndex);
         }
         break;
@@ -299,7 +294,6 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     m_tMesh[meshIndex]->strCurACtion = labelAction;
   }
 }
-
 
 void CybiOgre3DFrameListener::updateMeshEntityPosition(int meshIndex, Real rate)
 {
@@ -531,7 +525,6 @@ bool CybiOgre3DApp::configure(void)
     return false;
   }
 }
-
 
 // Just override the mandatory create scene method
 void CybiOgre3DApp::createScene(void)
