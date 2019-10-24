@@ -29,7 +29,7 @@ public:
 
 	// start only
 	void startServer();
-	void ProcessEvents(bool isNewSec);
+	void ProcessEvents(bool isNewSec, float biotopSpeed);
 
 	// Start and loop on ProcessEvents
 	void exec();

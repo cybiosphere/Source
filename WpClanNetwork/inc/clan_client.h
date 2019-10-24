@@ -5,11 +5,9 @@
 #include <API/network.h>
 #include "CBiotop.h"
 #include "clan_server.h"
-//#include "CybiOgre3D.h"
 
 using namespace clan;
 
-#define ENTITY_EVENT_BUFFER_SIZE 6
 
 typedef struct 
 {
@@ -18,19 +16,6 @@ typedef struct
   int        nb_blocks_received;
   DataBuffer buffer[SENT_BUFFER_MAX_NB_BLOCKS];
 } LongBufferEvent_t;
-
-typedef struct
-{
-  entityIdType entityId;
-  std::string  entityLabel;
-  Point_t position;
-  int layer;
-  int direction;
-  int speed;
-  float weight;
-  int reactIndex;
-  int status;
-} UpdateEntityEvent_t;
 
 class CybiOgre3DApp;
 
@@ -49,7 +34,6 @@ public:
   CBiotop* get_pBiotop();
   bool  is_biotop_config_complete();
   float get_biotop_speed();
-  void updateBiotopWithLastBufferEvent();
 
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
@@ -71,8 +55,6 @@ private:
   void on_event_biotop_removeentity(const NetGameEvent &e);
 
   void updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer);
-  void updateBiotopWithBufferEvent(int index);
-  void updateBiotopWithAllPreviousBufferEvent(int index);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);
@@ -97,9 +79,6 @@ private:
   bool m_bEventNextSecondEnd;
   int m_lastEventTimeStamp;
   float m_biotopSpeed; // Controled by server. 1.0 is real time speed. Biotp update every 1sec
-
-  //UpdateEntityEvent_t m_UpdateEntityEventTab[ENTITY_EVENT_BUFFER_SIZE];
-  std::vector<UpdateEntityEvent_t> m_UpdateEntityEventTab[ENTITY_EVENT_BUFFER_SIZE];
 
   CybiOgre3DApp* m_pCybiOgre3DApp;
 };

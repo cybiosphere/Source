@@ -45,10 +45,10 @@ void Server::startServer()
   log_event("System  ", "SERVER started");
 }
 
-void Server::ProcessEvents(bool isNewSec)
+void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
 {
   network_server.process_events();
-
+  m_biotopSpeed = biotopSpeed;
   if (isNewSec)
   {
 	// Update clients with biotop evolution
@@ -58,8 +58,7 @@ void Server::ProcessEvents(bool isNewSec)
       NetGameEvent bioNextSecEventStart("Biotop-Next second start");
       CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
       bioNextSecEventStart.add_argument(biotopTime);
-      int speedx10 = cybio_round(m_biotopSpeed * 10.0);
-      bioNextSecEventStart.add_argument(speedx10);
+      bioNextSecEventStart.add_argument(m_biotopSpeed);
       network_server.send_event(bioNextSecEventStart);
 
       // Update all entities
@@ -357,6 +356,11 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   	log_event("Events  ", "Update entity data: NULL entity");
     return;
   }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Update removed entity: %1", pEntity->getLabel());
+    return;
+  }
 
 	log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
 
@@ -378,6 +382,11 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
   if (pEntity == NULL)
   {
   	log_event("Events  ", "Update entity position: NULL");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Update entity position: removed");
     return;
   }
 

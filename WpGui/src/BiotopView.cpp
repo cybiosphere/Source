@@ -111,6 +111,7 @@ CBiotopView::CBiotopView()
   m_IdleDisplayMode = false;
   m_zoomFactor = 100;
   m_pFocusedEntity = NULL;
+  m_SpeedRate = 1.0;
 }
 
 CBiotopView::~CBiotopView()
@@ -481,13 +482,13 @@ void CBiotopView::SetZoomRate (int zoomRate)
 void CBiotopView::StartTimers()
 {
   SetTimer(REFRESH_TIMER_ID,10,NULL);
-  SetSpeedRate(0);
+  SetSpeedRate(1.0);
 }
 
 void CBiotopView::SetSpeedRate (double speedRate)
 {
+  m_SpeedRate = speedRate;
   KillTimer(SECOND_TIMER_ID);
-  
   if (speedRate>0)
   {
     m_pBioDisplay->SetNbRefreshPerStep((1000/speedRate-9)/200+1);
@@ -507,6 +508,10 @@ void CBiotopView::SetSpeedRate (double speedRate)
   QueryPerformanceCounter(&m_SysTicksPrevSecEnd);
 }
 
+double CBiotopView::GetSpeedRate()
+{
+  return (m_SpeedRate);
+}
 
 void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point) 
 {

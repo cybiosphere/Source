@@ -506,7 +506,7 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
   GetMapConfigViewPtr()->NextSecond();
 
 #ifdef USE_CLAN_SERVER
-  m_pServer->ProcessEvents(true);
+  m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();
@@ -519,7 +519,7 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
   GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
 
 #ifdef USE_CLAN_SERVER
-  m_pServer->ProcessEvents(true);
+  m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();

@@ -155,7 +155,6 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
  
   if ((m_secCnt >= 1) && (m_pClient->check_if_event_next_second_end_and_clean()))
   {
-    m_pClient->updateBiotopWithLastBufferEvent();
     forcePlayerAction();
     m_pBiotop->nextSecond();
     m_secCnt = 0;
@@ -665,12 +664,15 @@ void CybiOgre3DApp::setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity)
 
 void CybiOgre3DApp::updateMeshEntityNewSecond(CBasicEntity* pBasicEntity)
 {
+  if ((pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()))
+    return;
+
   int meshIndex = getMeshEntityIndex(pBasicEntity);
   if (meshIndex>=0)
   {
    ((CybiOgre3DFrameListener*)mFrameListener)->updateMeshEntityNewSecond(meshIndex);
   }
-  return ;
+  return;
 }
 
 

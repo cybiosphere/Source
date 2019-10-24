@@ -205,8 +205,7 @@ void Client::on_event_game_startgame(const NetGameEvent &e)
 void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e) 
 {
   CustomType biotopTime = e.get_argument(0);
-  int speedx10 = e.get_argument(1);
-  m_biotopSpeed = (double)speedx10 / 10.0;
+  m_biotopSpeed = e.get_argument(1);
   m_bEventNextSecondStart = true;
   m_bEventNextSecondEnd = false;
 	log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
@@ -219,9 +218,6 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   m_bEventNextSecondEnd = true;
   m_lastEventTimeStamp = biotopTime.get_x();
 	log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
-#ifndef _CONSOLE
-  updateBiotopWithLastBufferEvent();
-#endif // _CONSOLE
 }
 
 bool  Client::check_if_event_next_second_start_and_clean()
@@ -245,8 +241,6 @@ void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
   int nbBlocks      = e.get_argument(1);
   int blocksIndex   = e.get_argument(2);
   DataBuffer xmlZipBufferBlock = e.get_argument(3);
-
-  updateBiotopWithAllPreviousBufferEvent(m_lastEventTimeStamp);
 
   if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
   {
@@ -313,36 +307,62 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   int index       = e.get_argument(0);
   int entityId    = e.get_argument(1);
   std::string  entityLabel = e.get_argument(2);
-  Point_t pos;
-  pos.x          = e.get_argument(3);
-  pos.y          = e.get_argument(4);
+  Point_t position;
+  position.x      = e.get_argument(3);
+  position.y     = e.get_argument(4);
   int layer      = e.get_argument(5);
-  int dir        = e.get_argument(6);
+  int direction  = e.get_argument(6);
   int speed      = e.get_argument(7);
   float weight   = e.get_argument(8);
   int reactIndex = e.get_argument(9);
   int status     = e.get_argument(10);
 
-  index = index % ENTITY_EVENT_BUFFER_SIZE;
-  UpdateEntityEvent_t entityEvent;
-  entityEvent.entityId = entityId;
-  entityEvent.entityLabel = entityLabel;
-  entityEvent.position = pos;
-  entityEvent.layer = layer;
-  entityEvent.direction = dir;
-  entityEvent.speed = speed;
-  entityEvent.weight = weight;
-  entityEvent.reactIndex = reactIndex;
-  entityEvent.status = status;
+  // Check if entity exists
+  CBasicEntity* pEntity = m_pBiotop->getEntityById(entityId);
 
-  m_UpdateEntityEventTab[index].push_back(entityEvent);
+  // If entity does not exist, create one with default parameters
+  if (pEntity == NULL)
+  {
+    pEntity = new CBasicEntity();
+    pEntity->setLabel(entityLabel);
+    log_event("events", "Biotop add entity position: entityID %1 label %2 ", entityId, pEntity->getLabel());
+    if (!m_pBiotop->addRemoteCtrlEntity(entityId, pEntity, position, layer))
+    {
+      delete pEntity;
+      return;
+    }
+  }
+  else // If entity exists, check name and update position
+  {
+    if (pEntity->getLabel() != entityLabel)
+      log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
+    pEntity->forceWeight(weight);
+    pEntity->setStatus((StatusType_e)status);
+    if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+    {
+      CAnimal* pAnimal = (CAnimal*)pEntity;
+      pAnimal->forceCurrentSpeed(speed);
+      pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
 
-#ifdef _CONSOLE
-  updateBiotopWithBufferEvent(index);
+      log_event("events", "Biotop update entity position: %1 prevOld x=%2 y=%3 old x=%4 y=%5 new x=%6 y=%7", pEntity->getLabel(),
+        pEntity->getPrevStepCoord().x, pEntity->getPrevStepCoord().y,
+        pEntity->getStepCoord().x, pEntity->getStepCoord().y,
+        position.x, position.y);
+    }
+  }
+
+  pEntity->jumpToStepCoord(position, layer);
+  pEntity->setStepDirection(direction);
+
+#ifndef _CONSOLE
+  // Prepare new movement and animation in case of Ogre3D Application
+  if (m_pCybiOgre3DApp != NULL)
+  {
+    m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
+    m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
+  }
 #endif // _CONSOLE
-
 }
-
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)
 {
@@ -404,80 +424,6 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
       log_event("events", "Biotop add entity position: entityID %1 label %2 state %3", pClonedNewEntity->getId(), pClonedNewEntity->getLabel(), pClonedNewEntity->getStatus());
     }
   }
-}
-
-void Client::updateBiotopWithLastBufferEvent()
-{
-  updateBiotopWithBufferEvent(m_lastEventTimeStamp);
-}
-
-void Client::updateBiotopWithAllPreviousBufferEvent(int index)
-{
-  for (int i = 0; i < ENTITY_EVENT_BUFFER_SIZE; i++)
-  {
-    updateBiotopWithBufferEvent(index + i + 1);
-  }
-}
-
-void Client::updateBiotopWithBufferEvent(int index)
-{
-  index = index % ENTITY_EVENT_BUFFER_SIZE;
-
-  for (UpdateEntityEvent_t& curEvent : m_UpdateEntityEventTab[index])
-  {
-    if (curEvent.entityId == -1)
-    {
-      return;
-    }
-
-    // Check if entity exists
-    CBasicEntity* pEntity = m_pBiotop->getEntityById(curEvent.entityId);
-
-    // If entity does not exist, create one with default parameters
-    if (pEntity == NULL)
-    {
-      pEntity = new CBasicEntity();
-      pEntity->setLabel(curEvent.entityLabel);
-      log_event("events", "Biotop add entity position: entityID %1 label %2 ", curEvent.entityId, pEntity->getLabel());
-      if (!m_pBiotop->addRemoteCtrlEntity(curEvent.entityId, pEntity, curEvent.position, curEvent.layer))
-      {
-        delete pEntity;
-        return;
-      }
-    }
-    else // If entity exists, check name and update position
-    {
-      if (pEntity->getLabel() != curEvent.entityLabel)
-        log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", curEvent.entityId, pEntity->getLabel(), curEvent.entityLabel);
-      pEntity->forceWeight(curEvent.weight);
-      pEntity->setStatus((StatusType_e)curEvent.status);
-      if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
-      {
-        CAnimal* pAnimal = (CAnimal*)pEntity;
-        pAnimal->forceCurrentSpeed(curEvent.speed);
-        pAnimal->getBrain()->SetCurrentReactionIndex(curEvent.reactIndex);
-
-        log_event("events", "Biotop update entity position: %1 prevOld x=%2 y=%3 old x=%4 y=%5 new x=%6 y=%7", pEntity->getLabel(),
-          pEntity->getPrevStepCoord().x, pEntity->getPrevStepCoord().y,
-          pEntity->getStepCoord().x, pEntity->getStepCoord().y,
-          curEvent.position.x, curEvent.position.y);
-      }
-    }
-
-    pEntity->jumpToStepCoord(curEvent.position, curEvent.layer);
-    pEntity->setStepDirection(curEvent.direction);
-
-#ifndef _CONSOLE
-    // Prepare new movement and animation in case of Ogre3D Application
-    if (m_pCybiOgre3DApp != NULL)
-    {
-      m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
-      m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
-    }
-#endif // _CONSOLE
-  }
-
-  m_UpdateEntityEventTab[index].clear();
 }
 
 void Client::displayBiotopEntities()

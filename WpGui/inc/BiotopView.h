@@ -48,6 +48,7 @@ public:
 	CBiotopDoc* GetDocument();
   void SetZoomRate (int zoomRate);
   void SetSpeedRate (double speedRate);
+  double GetSpeedRate();
   void StartTimers();
   void SwitchToDisplay2d();
   void SwitchToDisplay3d();
@@ -63,6 +64,7 @@ protected:
   CBiotop* m_pBiotop;
   Point_t m_MenuSelCoord;
   double m_zoomFactor;
+  double m_SpeedRate;
 
   LARGE_INTEGER m_SysTicksPrevSecEnd;
   bool m_IdleDisplayMode;
