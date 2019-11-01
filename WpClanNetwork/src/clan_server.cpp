@@ -374,7 +374,7 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
   DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-  send_generic_event_long_string("Biotop-Update entity data", xmlZipBuffer, user);
+  send_generic_event_long_string("Biotop-Update entity data", xmlZipBuffer, pEntity->getId(), user);
 }
 
 void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)
@@ -425,10 +425,9 @@ void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
     user->send_event(bioRemoveEntityEvent);
 }
 
-void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data, ServerUser *user)
+void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data, int transactionId, ServerUser *user)
 {
   int nbBlocks = data.get_size()/SENT_BUFFER_MAX_SIZE + 1;
-  int transactionId = data.get_size(); // temporary
 
   if (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS)
   {

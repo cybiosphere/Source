@@ -237,7 +237,7 @@ bool  Client::check_if_event_next_second_end_and_clean()
 void Client::on_event_biotop_updatefullentity(const NetGameEvent &e) 
 {
   int i;
-  int transactionId = e.get_argument(0);
+  int transactionId = e.get_argument(0); // contains entityId
   int nbBlocks      = e.get_argument(1);
   int blocksIndex   = e.get_argument(2);
   DataBuffer xmlZipBufferBlock = e.get_argument(3);
@@ -248,7 +248,7 @@ void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
   }
   else if (nbBlocks == 1)
   {
-    updateBiotopWithEntityZipBuffer(xmlZipBufferBlock);
+    updateBiotopWithEntityZipBuffer(xmlZipBufferBlock, transactionId);
   }
   else
   {
@@ -285,7 +285,7 @@ void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
           curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
         }
         // Update entity
-        updateBiotopWithEntityZipBuffer(fullXmlZipBuffer);
+        updateBiotopWithEntityZipBuffer(fullXmlZipBuffer, transactionId);
         // clean m_tEntityBufferEvent
         m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
       }
@@ -381,7 +381,7 @@ void Client::on_event_biotop_removeentity(const NetGameEvent &e)
   }
 }
 
-void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
+void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer, entityIdType entityId)
 {
   DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
   TiXmlDocument xmlDoc;
@@ -390,14 +390,35 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
   CBasicEntity* pNewEntity = m_pBiotop->createEntity(&xmlDoc, ".\\temp\\");
 	log_event("events", "Biotop update full entity: %1 state %2", pNewEntity->getLabel(), pNewEntity->getStatus());
 
-  // Update all entities with same name
   CBasicEntity* pCurEntity;
   bool bFound = false;
   int curStepDirection;
-  for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
+
+  if (pNewEntity->getClass() < CLASS_ANIMAL_FIRST)
   {
-    pCurEntity = m_pBiotop->getEntityByIndex(i);
-    if (pCurEntity->getLabel() == pNewEntity->getLabel())
+    // Update all entities with same name
+    for (int i = 0; i < m_pBiotop->getNbOfEntities(); i++)
+    {
+      pCurEntity = m_pBiotop->getEntityByIndex(i);
+      if (pCurEntity->getLabel() == pNewEntity->getLabel())
+      {
+        curStepDirection = pCurEntity->getStepDirection();
+        CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
+        pClonedNewEntity->setRemoteControlled(true);
+        pClonedNewEntity->setStepDirection(curStepDirection);
+        if (!m_pBiotop->replaceEntityByAnother(pCurEntity->getId(), pClonedNewEntity))
+        {
+          delete pClonedNewEntity;
+        }
+        bFound = true;
+      }
+    }
+  }
+  else
+  {
+    // Update entity with same Id
+    pCurEntity = m_pBiotop->getEntityById(entityId);
+    if (pCurEntity != NULL)
     {
       curStepDirection = pCurEntity->getStepDirection();
       CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
@@ -424,6 +445,8 @@ void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer)
       log_event("events", "Biotop add entity position: entityID %1 label %2 state %3", pClonedNewEntity->getId(), pClonedNewEntity->getLabel(), pClonedNewEntity->getStatus());
     }
   }
+
+  delete (pNewEntity);
 }
 
 void Client::displayBiotopEntities()

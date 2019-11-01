@@ -54,7 +54,7 @@ private:
 	void on_event_biotop_updateentityposition(const NetGameEvent &e);
   void on_event_biotop_removeentity(const NetGameEvent &e);
 
-  void updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer);
+  void updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer, entityIdType entityId);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);
