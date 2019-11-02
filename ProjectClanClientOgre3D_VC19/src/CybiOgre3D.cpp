@@ -83,6 +83,7 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
     pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
     pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
     pNewMesh->pMeshNode->setScale(scale,scale,scale);
+    pNewMesh->strCurACtion = "";
 
     if (pBasicEntity->getBrain() != NULL)
     {
@@ -206,6 +207,14 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   return true;
 }
 
+void CybiOgre3DFrameListener::updateAllMeshEntityNewSecond()
+{
+  for (int i = 0; i < m_tMesh.size(); i++)
+  {
+    updateMeshEntityNewSecond(i);
+  }
+}
+
 void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 {
   CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
@@ -260,7 +269,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     double squareLen = m_tMesh[meshIndex]->translateVect3.squaredLength();
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
-    if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") || (labelAction == "Walk") )
+    if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") )
     {
       labelAction = "Walk";
     }
@@ -660,6 +669,11 @@ void CybiOgre3DApp::setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity)
    ((CybiOgre3DFrameListener*)mFrameListener)->setMeshEntityPreviousPosition(meshIndex);
   }
   return ;
+}
+
+void CybiOgre3DApp::updateAllMeshEntityNewSecond()
+{
+  ((CybiOgre3DFrameListener*)mFrameListener)->updateAllMeshEntityNewSecond();
 }
 
 void CybiOgre3DApp::updateMeshEntityNewSecond(CBasicEntity* pBasicEntity)

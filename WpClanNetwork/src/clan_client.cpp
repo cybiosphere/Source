@@ -218,6 +218,14 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   m_bEventNextSecondEnd = true;
   m_lastEventTimeStamp = biotopTime.get_x();
 	log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+
+#ifndef _CONSOLE
+  // Prepare new movement and animation in case of Ogre3D Application
+  if (m_pCybiOgre3DApp != NULL)
+  {
+    m_pCybiOgre3DApp->updateAllMeshEntityNewSecond();
+  }
+#endif // _CONSOLE
 }
 
 bool  Client::check_if_event_next_second_start_and_clean()
@@ -344,8 +352,8 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
       pAnimal->forceCurrentSpeed(speed);
       pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
 
-      log_event("events", "Biotop update entity position: %1 prevOld x=%2 y=%3 old x=%4 y=%5 new x=%6 y=%7", pEntity->getLabel(),
-        pEntity->getPrevStepCoord().x, pEntity->getPrevStepCoord().y,
+      log_event("events", "Biotop update entity position: %1 action:%2 coord old x=%3 y=%4 new x=%5 y=%6", pEntity->getLabel(),
+        pAnimal->getBrain()->GetReactionByIndex(reactIndex)->GetLabel(),
         pEntity->getStepCoord().x, pEntity->getStepCoord().y,
         position.x, position.y);
     }
@@ -359,7 +367,7 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   if (m_pCybiOgre3DApp != NULL)
   {
     m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
-    m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
+    //m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
   }
 #endif // _CONSOLE
 }

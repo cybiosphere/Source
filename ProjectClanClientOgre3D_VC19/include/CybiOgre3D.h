@@ -105,6 +105,7 @@ public:
   CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam);
   bool frameStarted(const FrameEvent& evt);
   //bool createMeshEntity (CBasicEntity* pBasicEntity);
+  void updateAllMeshEntityNewSecond();
   void updateMeshEntityNewSecond(int meshIndex);
   void updateMeshEntityPosition(int meshIndex, Real rate);
   void setMeshEntityPreviousPosition(int meshIndex);
@@ -133,6 +134,7 @@ public:
 
   void setMeshEntityPreviousPosition(CBasicEntity* pBasicEntity);
   void updateMeshEntityNewSecond(CBasicEntity* pBasicEntity);
+  void updateAllMeshEntityNewSecond();
 
 protected:
 
