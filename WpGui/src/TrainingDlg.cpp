@@ -81,7 +81,7 @@ void CTrainingDlg::OnOK()
     if (player.GetTotalScore()>0)
     {
       tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += LPCTSTR("\tScen1:") + tmpStr + LPCTSTR("\t ");
+      scoreDisplay += LPCTSTR("Scen1:") + tmpStr + LPCTSTR(" \t");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }
@@ -101,7 +101,7 @@ void CTrainingDlg::OnOK()
     if (player.GetTotalScore()>0)
     {
       tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += LPCTSTR("\tScen2: ") + tmpStr + LPCTSTR("\t ");
+      scoreDisplay += LPCTSTR("Scen2:") + tmpStr + LPCTSTR(" \t");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }
@@ -121,7 +121,7 @@ void CTrainingDlg::OnOK()
     if (player.GetTotalScore()>0)
     {
       tmpStr.Format(LPCTSTR("%d"), player.GetSuccessScore() * 100 / player.GetTotalScore());
-      scoreDisplay += LPCTSTR("\tScen3: ") + tmpStr + LPCTSTR("\n ");
+      scoreDisplay += LPCTSTR("Scen3:") + tmpStr + LPCTSTR("\n");
       scoreTotal   += player.GetTotalScore();
       scoreSuccess += player.GetSuccessScore();
     }

@@ -179,7 +179,7 @@ BOOL CDialogTab3::OnInitDialog()
   }
 
   // Prey list
-  startX = offsetX;
+  startX = MulDiv(40, iDpi, 96);
   startY = MulDiv(384, iDpi, 96);
   offsetY = MulDiv(40, iDpi, 96);
   sizeX = MulDiv(160, iDpi, 96);

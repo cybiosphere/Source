@@ -344,7 +344,6 @@ void CCybiosphereApp::CreateEntityView()
   m_pEntityDoc = (CEntityDoc*)pDocTempl->OpenDocumentFile(NULL);
   pos = m_pEntityDoc->GetFirstViewPosition();
   m_pEntityView = (CEntityView*)(m_pEntityDoc->GetNextView(pos));
- // m_pEntityView->GetParentFrame(
 }
 
 CEntityView* CCybiosphereApp::GetEntityViewPtr()

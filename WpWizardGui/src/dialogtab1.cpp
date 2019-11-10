@@ -613,10 +613,11 @@ void CDialogTab1::DisplayParamSliders()
   
   if (pEntity!=NULL)
   {
-    // Set new params
-	int startX = 290; //230;
-	int startY = 140; //110;
+    int iDpi = GetDpiForWindow(this->m_hWnd);
 
+    // Set new params
+	  int startX = MulDiv(290, iDpi, 96);
+    int startY = MulDiv(140, iDpi, 96);
     int count = 0;
     CString label;
     
@@ -628,14 +629,14 @@ void CDialogTab1::DisplayParamSliders()
       {
         if (count == MAX_NUMBER_PARAMETER_DISPLAY/3)
         {
-		  startX += 220; //175;
-		  startY = 140; //110;
+          startX += MulDiv(220, iDpi, 96);
+          startY = MulDiv(140, iDpi, 96);
           count = 0;
         }
         m_pParamSlider[count] = new CParameterSlider();
         CRect rect(startX,startY,startX+160,startY+8);
         m_pParamSlider[count]->CreateNewParam(pEntity->getParameter(i),rect,this,1003);
-        startY += 36; //32;
+        startY += MulDiv(36, iDpi, 96);
         count ++;
       }
       
@@ -651,9 +652,10 @@ void CDialogTab1::DisplayParamSliders()
         m_growthSpeedParamId = i;
       }
     }
-	startX += 220; // 175;
-	startY = 140; // 110;
-    
+
+    startX += MulDiv(220, iDpi, 96);
+    startY = MulDiv(140, iDpi, 96);
+
     // Display PARAM_REPRODUCTION
     for (i=0;(count<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<pEntity->getNumParameter());i++)
     {
@@ -662,7 +664,7 @@ void CDialogTab1::DisplayParamSliders()
         m_pParamSlider[count] = new CParameterSlider();
         CRect rect(startX,startY,startX+160,startY+8);
         m_pParamSlider[count]->CreateNewParam(pEntity->getParameter(i),rect,this,1003);
-        startY += 36; //32;
+        startY += MulDiv(36, iDpi, 96);
         count ++;
       }
     }

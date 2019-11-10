@@ -165,6 +165,7 @@ RUN_BIOTOP 180
 CHECK_PARAM_UNDER newEntity "Suffering rate" 20
 
 CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Stomach filling" 0
 RUN_BIOTOP 180
 CHECK_PARAM_UNDER newEntity "Suffering rate" 20
 
@@ -187,6 +188,7 @@ SET_FORBIDEN_ACTION newEntity "Sleep"
 RUN_BIOTOP 1
 
 CHANGE_PARAM newEntity "Suffering rate" 0
+CHANGE_PARAM newEntity "Stomach filling" 0
 RUN_BIOTOP 500
 CHECK_PARAM_UNDER newEntity "Suffering rate" 20
 
