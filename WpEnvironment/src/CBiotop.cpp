@@ -2587,16 +2587,23 @@ void CBiotop::spreadEntitiesRandomly(string fileName, string pathName, int cover
   entityIdType firstId = createAndAddEntity(fileName, pathName, coord);
   CBasicEntity* pEntity = getEntityById(firstId);
 
-  int nbEntities = m_Dimension.x * m_Dimension.y * coverRate / 100000;
-  for (int i = 1; i < nbEntities; i++)
+  if (pEntity != NULL)
   {
-    coord.x = getRandInt(m_Dimension.x) + 2;
-    coord.y = getRandInt(m_Dimension.y) + 2;
-    createAndAddCloneEntity(firstId, coord, pEntity->getLayer());
+    int nbEntities = m_Dimension.x * m_Dimension.y * coverRate / 100000;
+    for (int i = 1; i < nbEntities; i++)
+    {
+      coord.x = getRandInt(m_Dimension.x) + 2;
+      coord.y = getRandInt(m_Dimension.y) + 2;
+      createAndAddCloneEntity(firstId, coord, pEntity->getLayer());
+    }
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pEntity->getLabel().c_str());
   }
-
-  CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pEntity->getLabel().c_str());
+  else
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities : %ss\n", fileName);
+  }
 }
 
 //===========================================================================

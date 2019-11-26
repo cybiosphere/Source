@@ -247,7 +247,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
         m_pBioDisplay->RefreshSceneIdleNoCPU();
         m_pBioDisplay->RedrawSceneIdleNoCPU();
       }
-      if ((m_IdleDisplayMode)&&(idleTime>80000))
+      if ((m_IdleDisplayMode)&&(idleTime>80000)&&(m_SpeedRate<80))
       {
         m_IdleDisplayMode = false;
         m_pBioDisplay->RefreshSceneIdleNoCPU();
