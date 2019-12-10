@@ -273,8 +273,9 @@ bool CAnimal::setParamFromGene (CGene* pGen)
   }
   // We are sure Gene is a parameter
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -575,8 +576,9 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
   }
   // We are sure Gene is a parameter
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
@@ -673,8 +675,9 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   }
   // We are sure Gene is a sensor
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config sensor
@@ -1087,8 +1090,9 @@ int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
 
   // We are sure Gene is a sensor
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config sensor
@@ -1226,8 +1230,9 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   }
   // We are sure Gene is a reaction
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config reaction
@@ -1432,8 +1437,9 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
 
   // We are sure Gene is a brain size gene
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -1495,10 +1501,10 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
 
   // We are sure Gene is a Brain line
   bool resu = false;
-  WORD* pData;
-  // Process pData and len
-  int len = pGen->getData((BYTE**)&pData);
-  len = len*sizeof(BYTE)/sizeof(WORD) - 1;
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
+  len -= 1; // Remove index
   // Process Line Id
   GeneSubType_e subType = pGen->getGeneSubType();
   int lineId = cybio_round((double)pData[0] * getGeneScaleData1(subType));
@@ -1534,8 +1540,9 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
-  BYTE* pData;
-  int len = pGen->getData(&pData);
+  auto rawData = pGen->getData();
+  BYTE* pData = rawData.data();
+  int len = rawData.size();
   DWORD scaledVal;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -1602,8 +1609,9 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   }
   // We are sure Gene is a Feeling
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {
     // not enought data to config param
@@ -1681,8 +1689,9 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
 
   // We are sure Gene is a purpose
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
 
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -1824,8 +1833,9 @@ string CAnimal::buildParameterString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -1918,8 +1928,9 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
     return (welfareStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
@@ -1990,8 +2001,9 @@ string CAnimal::buildSensorString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
@@ -2166,8 +2178,9 @@ string CAnimal::buildReactionString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
@@ -2298,8 +2311,9 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
   }
 
   // We are sure Gene is a brain size gene
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -2356,8 +2370,9 @@ string CAnimal::buildBrainInstinctString(CGene* pGen)
   }
 
   // We are sure Gene is a brain size gene
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -2408,8 +2423,9 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
     return (caractStr);
   }
   // We are sure Gene is a caracteristic
-  BYTE* pData;
-  int len = pGen->getData(&pData);
+  auto rawData = pGen->getData();
+  BYTE* pData = rawData.data();
+  int len = rawData.size();
   if (len<1)
   {
     return (caractStr);
@@ -2465,8 +2481,9 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
     return (welfareStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {
     // not enought data to config param
@@ -2528,8 +2545,9 @@ string CAnimal::buildPurposeString(CGene* pGen)
     return (purposeStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
 
   GeneSubType_e subType = pGen->getGeneSubType();
 

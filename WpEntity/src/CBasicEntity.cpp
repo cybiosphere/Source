@@ -583,8 +583,9 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
-  BYTE* pData;
-  int len = pGen->getData(&pData);
+  auto rawData = pGen->getData();
+  BYTE* pData = rawData.data();
+  int len = rawData.size();
   DWORD scaledVal;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -730,8 +731,9 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   }
   // We are sure Gene is a parameter
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -1256,8 +1258,9 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     return (caractStr);
   }
   // We are sure Gene is a caracteristic
-  BYTE* pData;
-  int len = pGen->getData(&pData);
+  auto rawData = pGen->getData();
+  BYTE* pData = rawData.data();
+  int len = rawData.size();
   if (len<1)
   {
     return (caractStr);
@@ -1407,8 +1410,9 @@ string CBasicEntity::buildParameterString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param

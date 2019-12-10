@@ -140,8 +140,9 @@ bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
   }
   // We are sure Gene is a parameter
   bool resu = false;
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -241,8 +242,9 @@ string CVegetSpermatophyta::buildParameterString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  WORD* pData;
-  int len = pGen->getData((BYTE**)&pData);
+  auto rawData = pGen->getData();
+  WORD* pData = (WORD*)rawData.data();
+  int len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param

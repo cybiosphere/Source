@@ -589,10 +589,12 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     long initSlideM[4] = {0,0,0,0};
     long initSlideP[4] = {0,0,0,0};
 
-    BYTE* pDataM;
-    int dataLenM = m_pCurrentEditGeneM->getData(&pDataM);
-    BYTE* pDataP;
-    int dataLenP = m_pCurrentEditGeneP->getData(&pDataP);
+    auto rawDataM = m_pCurrentEditGeneM->getData();
+    BYTE* pDataM = rawDataM.data();
+    int dataLenM = rawDataM.size();
+    auto rawDataP = m_pCurrentEditGeneP->getData();
+    BYTE* pDataP = rawDataP.data();
+    int dataLenP = rawDataP.size();
 
     switch (geneType)
     {
@@ -1008,8 +1010,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
             weightTab[i] = 100; // Def value
           m_pCurrentEditGeneM->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
           CSensor* pSens = m_pOldEntity->getTemporarySensorFromGene(m_pCurrentEditGeneM);
-          BYTE* pDataM;
-          int dataLenM = m_pCurrentEditGeneM->getData(&pDataM);
+          auto rawDataM = m_pCurrentEditGeneM->getData();
+          BYTE* pDataM = rawDataM.data();
+          int dataLenM = rawDataM.size();
           m_WeightListCtrl_M.SetSensor(pSens,((WORD*)pDataM + 4));
           delete [] weightTab; //Table is duplicated in Gene data
         }
@@ -1052,8 +1055,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
           for (i=0; i<sensiSize; i++)
             sensiTab[i] = 100; // Def value
           m_pCurrentEditGeneM->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
-          BYTE* pDataM;
-          int dataLenM = m_pCurrentEditGeneM->getData(&pDataM);
+          auto rawDataM = m_pCurrentEditGeneM->getData();
+          BYTE* pDataM = rawDataM.data();
+          int dataLenM = rawDataM.size();
           m_WeightListCtrl_M.SetSensor(pSens,((WORD*)pDataM + 2));
           delete [] sensiTab; //Table is duplicated in Gene data
         }
@@ -1102,8 +1106,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
             for (i=0; i<bonusTabSize; i++)
               bonusTab[i] = 10; // Def value = 1.0
             m_pCurrentEditGeneM->setAsPurposeSensorBonus(m_MuteRate,pPurpose->GetUniqueId(),pSensor->GetUniqueId(),bonusTabSize,bonusTab);
-            BYTE* pDataM;
-            int dataLenM = m_pCurrentEditGeneM->getData(&pDataM);
+            auto rawDataM = m_pCurrentEditGeneM->getData();
+            BYTE* pDataM = rawDataM.data();
+            int dataLenM = rawDataM.size();
             m_WeightListCtrl_M.SetSensor(pSensor,((WORD*)pDataM + 4), false);
             delete [] bonusTab; //Table is duplicated in Gene data
           }
@@ -1215,8 +1220,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
             weightTab[i] = 100; // Def value
           m_pCurrentEditGeneP->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
           CSensor* pSens = m_pOldEntity->getTemporarySensorFromGene(m_pCurrentEditGeneP);
-          BYTE* pDataP;
-          int dataLenP = m_pCurrentEditGeneP->getData(&pDataP);
+          auto rawDataP = m_pCurrentEditGeneP->getData();
+          BYTE* pDataP = rawDataP.data();
+          int dataLenP = rawDataP.size();
           m_WeightListCtrl_P.SetSensor(pSens,((WORD*)pDataP + 4));
           delete [] weightTab; //Table is duplicated in Gene data
         }
@@ -1259,8 +1265,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
           for (i=0; i<sensiSize; i++)
             sensiTab[i] = 100; // Def value
           m_pCurrentEditGeneP->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
-          BYTE* pDataP;
-          int dataLenP = m_pCurrentEditGeneP->getData(&pDataP);
+          auto rawDataP = m_pCurrentEditGeneP->getData();
+          BYTE* pDataP = rawDataP.data();
+          int dataLenP = rawDataP.size();
           m_WeightListCtrl_P.SetSensor(pSens,((WORD*)pDataP + 2));
           delete [] sensiTab; //Table is duplicated in Gene data
         }
@@ -1309,8 +1316,9 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
             for (i=0; i<bonusTabSize; i++)
               bonusTab[i] = 10; // Def value = 1.0
             m_pCurrentEditGeneP->setAsPurposeSensorBonus(m_MuteRate,pPurpose->GetUniqueId(),pSensor->GetUniqueId(),bonusTabSize,bonusTab);
-            BYTE* pDataP;
-            int dataLenP = m_pCurrentEditGeneP->getData(&pDataP);
+            auto rawDataP = m_pCurrentEditGeneP->getData();
+            BYTE* pDataP = rawDataP.data();
+            int dataLenP = rawDataP.size();
             m_WeightListCtrl_P.SetSensor(pSensor,((WORD*)pDataP + 4), false);
             delete [] bonusTab; //Table is duplicated in Gene data
           }

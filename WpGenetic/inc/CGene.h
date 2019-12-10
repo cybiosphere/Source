@@ -47,6 +47,7 @@ distribution.
 //#include <afxwin.h>
 //#include <afxtempl.h>
 #include "Definitions.h"
+#include <vector>
 
 //===========================================================================
 // Definitions            
@@ -220,8 +221,7 @@ private:
   GeneSubType_e  m_GeneSubType;
   BYTE           m_MuteRate;
   GeneMuteType_e m_MuteType;
-  int            m_DataLength; 
-  BYTE*          m_pRawData;
+  std::vector<BYTE> m_RawData;
 
 //===========================================================================
 // Methods 
@@ -232,7 +232,6 @@ private:
 //---------------------------------------------------------------------------
 public:
   CGene();
-  CGene(GeneType_e type, GeneSubType_e subType, int dataLen, BYTE* pData, GeneMuteType_e muteType, int muteRate = 0);
   CGene(CGene& model);
   virtual ~CGene();
 
@@ -277,12 +276,19 @@ public:
   string getLabel();
   string getTypeLabel();
 
+ //---------------------------------------------------------------------------
+ // Internal processing 
+ //---------------------------------------------------------------------------
+private:
+  inline WORD encodeLongOnWord(long longValue, long rangeMax) { return (WORD)((longValue * 0xFFFF) / rangeMax);}
+  inline WORD encodeLongOnWordSigned(long longValue, long rangeMax) { return (WORD)(((longValue + rangeMax) * 0xFFFF) / (2 * rangeMax));}
+
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
 
-  int getData(BYTE** pData);
+  std::vector<BYTE>& getData();
   int getDataLen();
   GeneType_e     getGeneType();
   GeneSubType_e  getGeneSubType();
