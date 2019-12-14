@@ -347,7 +347,7 @@ bool CGenome::checkSpecieCompatibility(CGenome* pOther)
   {
     resu = false;
   }
-  else if (abs((double)getSpecieSignature() - (double)pOther->getSpecieSignature())<2)
+  else if (fabs((double)getSpecieSignature() - (double)pOther->getSpecieSignature())<2)
   {
     resu = true;
   }

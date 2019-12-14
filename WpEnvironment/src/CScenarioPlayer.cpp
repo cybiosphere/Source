@@ -427,13 +427,15 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
   if (indexName>0)
   {
     int sizeNameNoExt = firstParam.size() - indexName - 5;
-    CBasicEntity *pEnt = pBiotop->getEntityByName(firstParam.substr(indexName+1, sizeNameNoExt));
+    string entityName = firstParam.substr(indexName + 1, sizeNameNoExt);
+    CBasicEntity *pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = firstParam;
   }
   else // No path
   {
     int sizeNameNoExt = firstParam.size() - 4;
-    pEnt = pBiotop->getEntityByName(firstParam.substr(0, sizeNameNoExt));
+    string entityName = firstParam.substr(0, sizeNameNoExt);
+    pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = path + firstParam;
   }
 
@@ -465,13 +467,15 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
   if (indexName>0)
   {
     int sizeNameNoExt = firstParam.size() - indexName - 5;
-    pEnt = pBiotop->getEntityByName(firstParam.substr(indexName+1, sizeNameNoExt));
+    string entityName = firstParam.substr(indexName + 1, sizeNameNoExt);
+    pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = firstParam;
   }
   else // No path
   {
     int sizeNameNoExt = firstParam.size() - 4;
-    pEnt = pBiotop->getEntityByName(firstParam.substr(0, sizeNameNoExt));
+    string entityName = firstParam.substr(0, sizeNameNoExt);
+    pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = path + firstParam;
   }
 

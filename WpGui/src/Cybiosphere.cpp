@@ -203,6 +203,7 @@ BOOL CCybiosphereApp::InitInstance()
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 
+#ifndef USE_CLAN_CLIENT
   string resuStr = "";
   char bufferStr[512];
   CString fileIni = m_AppliPath + "\\Cybiosphere.ini";
@@ -224,6 +225,27 @@ BOOL CCybiosphereApp::InitInstance()
     m_pBiotop = new CBiotop(1000,1000,3);
     SetDefaultBiotop();
   }
+#else
+  // Get Server info in ini file
+  string ServerAddrStr;
+  string ServerPortStr;
+  char resuBuffer[512];
+  string fileIni = "Cybiosphere.ini";
+  int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
+  ServerAddrStr = resuBuffer;
+  resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
+  ServerPortStr = resuBuffer;
+  m_pClient = new Client(ServerAddrStr, ServerPortStr);
+  // Connect to server and wait for biotop init from server
+  m_pClient->connect_to_server();
+  while (!(m_pClient->is_biotop_config_complete()))
+  {
+    System::sleep(10);
+    m_pClient->process_new_events();
+  }
+  m_pBiotop = m_pClient->get_pBiotop();
+
+#endif
 
   m_pScenarioPlayer = new CScenarioPlayer(m_pBiotop);
 
@@ -495,6 +517,20 @@ CBasicEntity* CCybiosphereApp::GetpSelectedEntity()
 {
   return (m_pSelectedEntity);
 }
+
+
+void CCybiosphereApp::NextSecondStart()
+{
+#ifdef USE_CLAN_CLIENT
+  m_pClient->process_new_events();
+  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
+  if (m_pClient->get_biotop_speed() != GetBiotopViewPtr()->GetSpeedRate())
+  {
+    GetBioCtrlViewPtr()->ForceForceSpeedRate(m_pClient->get_biotop_speed());
+  }
+#endif
+}
+
 
 void CCybiosphereApp::NextSecondRefreshAllViews()
 {

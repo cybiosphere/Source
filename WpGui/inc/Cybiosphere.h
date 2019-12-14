@@ -61,6 +61,11 @@ distribution.
 #include "API/Core/Text/logger.h"
 #endif
 
+#ifdef USE_CLAN_CLIENT
+#include "clan_client.h"
+#include "API/Core/Text/logger.h"
+#endif
+
 /////////////////////////////////////////////////////////////////////////////
 // CCybiosphereApp:
 // See Cybiosphere.cpp for the implementation of this class
@@ -92,6 +97,7 @@ public:
   CString GetAppliPath();
   CBasicEntity* GetpSelectedEntity();
 
+  void NextSecondStart();
   void NextSecondRefreshAllViews();
   void NextSecondRefreshAllViewsLowCPU();
   void CheckSelectedEntity();
@@ -147,6 +153,9 @@ private:
   CMapConfigView* m_pMapConfigView;
 #ifdef USE_CLAN_SERVER
   Server*         m_pServer;
+#endif
+#ifdef USE_CLAN_CLIENT
+  Client* m_pClient;
 #endif
   BOOL m_bModeManual;
   BOOL m_bModeStopOnEvent;

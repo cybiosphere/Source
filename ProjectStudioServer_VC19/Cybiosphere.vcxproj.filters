@@ -1017,6 +1017,9 @@
     <ClCompile Include="..\WpGui\src\CheckBoxWithParams.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\clan_client.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

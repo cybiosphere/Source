@@ -3,7 +3,7 @@
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
-#ifndef _CONSOLE
+#ifdef USE_OGRE3D
 #include "CybiOgre3D.h"
 #endif
 #include "CScenarioPlayer.h"
@@ -219,13 +219,13 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   m_lastEventTimeStamp = biotopTime.get_x();
 	log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 
-#ifndef _CONSOLE
+#ifdef USE_OGRE3D
   // Prepare new movement and animation in case of Ogre3D Application
   if (m_pCybiOgre3DApp != NULL)
   {
     m_pCybiOgre3DApp->updateAllMeshEntityNewSecond();
   }
-#endif // _CONSOLE
+#endif // USE_OGRE3D
 }
 
 bool  Client::check_if_event_next_second_start_and_clean()
@@ -362,14 +362,14 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   pEntity->jumpToStepCoord(position, layer);
   pEntity->setStepDirection(direction);
 
-#ifndef _CONSOLE
+#ifdef USE_OGRE3D
   // Prepare new movement and animation in case of Ogre3D Application
   if (m_pCybiOgre3DApp != NULL)
   {
     m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
     //m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
   }
-#endif // _CONSOLE
+#endif // USE_OGRE3D
 }
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)

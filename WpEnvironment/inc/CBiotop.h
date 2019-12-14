@@ -162,8 +162,8 @@ typedef enum
 
 typedef struct
 {
-  chrono::time_point<std::chrono::system_clock> startTime;
-  chrono::time_point<std::chrono::system_clock> endTime;
+  std::chrono::time_point<std::chrono::system_clock> startTime;
+  std::chrono::time_point<std::chrono::system_clock> endTime;
   double cpuTimeCumulated;
 } BiotopCpuMonitoring_t;
 

@@ -705,8 +705,6 @@ string CGene::buildStringDataFromGene()
 {
   string rawData = "";
   string tempStr = "";
-  CGene* pGene = NULL;
-  int curLen = 0;
 
   tempStr = FormatString("%02X%04X%04X%02X%02X",
                   m_GeneType,m_GeneSubType,

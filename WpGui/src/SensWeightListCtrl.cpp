@@ -28,7 +28,7 @@ distribution.
 #include "stdafx.h"
 #include "cybiosphere.h"
 #include "SensWeightListCtrl.h"
-#include "definitions.h"
+#include "Definitions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

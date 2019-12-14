@@ -263,12 +263,34 @@ bool CBioCtrlView::ForceChangeSpeed(int rate)
   }
   if (newPos>100)
   {
-    newPos = 0;
+    newPos = 100;
     resu = false;
   }
   m_SliderSpeed.SetPos(newPos);
   RedrawWindow();
   theApp.GetBiotopViewPtr()->SetSpeedRate(m_SliderSpeed.GetPos());
+  return (resu);
+}
+
+bool CBioCtrlView::ForceForceSpeedRate(int rate)
+{
+  int newPos = rate;
+  bool resu = true;
+
+  // Check bounds
+  if (newPos < 0)
+  {
+    newPos = 0;
+    resu = false;
+  }
+  if (newPos > 100)
+  {
+    newPos = 100;
+    resu = false;
+  }
+  m_SliderSpeed.SetPos(newPos);
+  RedrawWindow();
+  theApp.GetBiotopViewPtr()->SetSpeedRate(rate);
   return (resu);
 }
 

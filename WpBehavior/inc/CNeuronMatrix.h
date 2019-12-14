@@ -37,7 +37,7 @@ distribution.
 // Includes 
 //===========================================================================
 #include "Definitions.h"
-#include "matrix.h"
+#include "Matrix.h"
 #include "CybioXmlDef.h"
 
 //===========================================================================

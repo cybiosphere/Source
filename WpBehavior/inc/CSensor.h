@@ -45,7 +45,7 @@ distribution.
 // Includes 
 //===========================================================================
 //#include <afxwin.h>
-#include "matrix.h"
+#include "Matrix.h"
 #include "CReaction.h"
 //#include "CBasicEntity.h"
 

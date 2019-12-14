@@ -37,7 +37,7 @@ distribution.
 #include "CAnimal.h"
 #include "CBiotop.h" 
 #include "CBrainAnimal.h"
-#include "definitions.h"
+#include "Definitions.h"
 #include "CPhysicalWelfare.h"
 
 //===========================================================================

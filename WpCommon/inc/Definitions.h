@@ -42,12 +42,15 @@ distribution.
 #pragma warning( disable: 4251 )
 #endif // _MSC_VER > 1000
 
+#include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
 #include <cassert>
 #include <fstream>
+#include "Matrix.h"
 
 using namespace std ;
 
@@ -64,10 +67,6 @@ typedef unsigned int entitySignatureType;
 
 #define CYBIO_PI 3.1415926535
 
-/* Maximum among two C expressions */
-#define  max(a,b)  (((a) > (b)) ? (a) : (b))
-/* Minimum among two C expressions */
-#define  min(a,b)  (((a) < (b)) ? (a) : (b))
 
 // WIN32 Dll interface definitions
 #ifdef DLL_CYBIOCORE_DLL

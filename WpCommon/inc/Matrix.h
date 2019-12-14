@@ -87,7 +87,7 @@
 //#include <iostream.h>
 #include <string.h>
 
-#include "definitions.h"
+#include "Definitions.h"
 
 #ifndef __MINMAX_DEFINED
 #  define max(a,b)    (((a) > (b)) ? (a) : (b))

@@ -64,12 +64,12 @@ namespace clan
 
   bool ConsoleLogger::get_console_input(std::string &input_cmd) //FRI
   {
+    bool newCommandReady = false;
 #ifdef WIN32
     INPUT_RECORD irInBuf[128];  // a record of input events
     DWORD cNumEvent = 0; // how many events took place
     DWORD cNumRead = 0; // how many events took place
     input_cmd = "";
-    bool newCommandReady = false;
 
     // Check event
     GetNumberOfConsoleInputEvents(GetStdHandle(STD_INPUT_HANDLE), &cNumEvent);

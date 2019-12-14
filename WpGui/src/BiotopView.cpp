@@ -240,7 +240,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
       LARGE_INTEGER curSysTicks;
       QueryPerformanceCounter(&curSysTicks);
       DWORD idleTime = curSysTicks.LowPart - m_SysTicksPrevSecEnd.LowPart;
-      //TRACE1("idle time: %d ticks\n",idleTime);
+      theApp.NextSecondStart();
       if ((!m_IdleDisplayMode)&&(idleTime<8000))
       {
         m_IdleDisplayMode = true;

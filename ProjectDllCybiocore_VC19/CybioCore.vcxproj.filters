@@ -96,9 +96,7 @@
     <None Include="res\CybioCore.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="src\CybioCore3.def">
-      <Filter>ProjectDll\SrcDll</Filter>
-    </None>
+    <None Include="src\CybioCore.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H">
@@ -345,6 +343,9 @@
       <Filter>WpTinyXml\IncTinyXml</Filter>
     </ClInclude>
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
+    <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
