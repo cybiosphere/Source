@@ -129,7 +129,6 @@ int DLL_CYBIOCORE_API getStringSectionFromFile(
   unsigned long int begin, end;
   long int fLength; 
   ifstream f1;
-  bool resu = false;
 
   f1.open( fileNameWithPath.c_str());
   begin = f1.tellg();
@@ -206,7 +205,6 @@ bool DLL_CYBIOCORE_API writeStringSectionToFile(
   unsigned long int begin, end;
   long int fLength; 
   ifstream f1;
-  bool resu = false;
 
   f1.open( fileNameWithPath.c_str());
   begin = f1.tellg();

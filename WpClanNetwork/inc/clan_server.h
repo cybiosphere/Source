@@ -62,7 +62,6 @@ private:
 	int  nb_users_connected;
   CBiotop* m_pBiotop;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
-  clock_t m_LastRunTick;
 
 public:
   // Functions for CMD line

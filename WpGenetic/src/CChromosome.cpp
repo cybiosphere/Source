@@ -148,10 +148,7 @@ void CChromosome::deleteAllGenes()
 string CChromosome::buildStringDataFromGenes()
 {
   string rawData = "";
-  string tempStr = "";
   CGene* pGene = NULL;
-  int curLen = 0;
-  BYTE* pData = NULL;
 
   for (int i=0;i<m_tGene.size();i++)
   {

@@ -2,7 +2,7 @@
 #include "clan_server_user.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
-#include <time.h>
+#include <chrono>
 #include "CScenarioPlayer.h"
 
 #define SERVER_CMD_NUMBER 4
@@ -32,7 +32,6 @@ Server::Server(CBiotop* pBiotop)
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
   m_biotopSpeed = 1.0;
-  m_LastRunTick = clock();
 }
 
 Server::~Server()
@@ -106,7 +105,9 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
 void Server::exec()
 {
   int timeCount = 0;
-  clock_t curTick;
+  std::chrono::time_point<std::chrono::system_clock> curTick;
+  std::chrono::time_point<std::chrono::system_clock> lastRunTick = std::chrono::system_clock::now();
+
 	network_server.start("4556");
 
 	log_event("System  ", "SERVER started");
@@ -119,9 +120,10 @@ void Server::exec()
     // Run biotop every sec
     //
     timeCount += round(10.0 * m_biotopSpeed);
-    curTick = clock();
+    curTick = std::chrono::system_clock::now();
+    std::chrono::milliseconds elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(curTick - lastRunTick);
 
-    if (((curTick - m_LastRunTick) * m_biotopSpeed * 1000 / CLOCKS_PER_SEC) >= 1000) // temporaire
+    if ((elapsedTime.count() * m_biotopSpeed) >= 1000)
     {
       CBasicEntity* pCurEntity = NULL;
       if (nb_users_connected > 0)
@@ -139,7 +141,7 @@ void Server::exec()
       m_pBiotop->nextSecond();
       // Reset timer
       timeCount = 0;
-      m_LastRunTick = clock();
+      lastRunTick = std::chrono::system_clock::now();
 
       // Update clients with biotop evolution
       if (nb_users_connected > 0)

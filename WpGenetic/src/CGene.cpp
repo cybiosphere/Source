@@ -840,7 +840,7 @@ bool CGene::tryMutation()
         int dataByteId = getRandInt(m_RawData.size()-1)/2;
         int addVal = (getRandInt(2) - 1) * 66; // 66 in order to increment of 1 per 1000
         WORD* pWordData = (WORD*)m_RawData.data();
-        if ( ( (addVal<0)&&(pWordData[dataByteId]>65) ) || ( (addVal>0)&&(pWordData[dataByteId]<0xFFFF) ) )
+        if ( ( (addVal<0)&&(pWordData[dataByteId]>-addVal) ) || ( (addVal>0)&&(pWordData[dataByteId]<(0xFFFF-addVal)) ) )
         {
           pWordData[dataByteId] += addVal;
           resu = true;

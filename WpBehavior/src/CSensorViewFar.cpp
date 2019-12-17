@@ -266,7 +266,6 @@ bool CSensorViewFar::Scan45degSector(int stimulationTabOffset,
   CBiotop* pBiotop = pAnimal->getBiotop();
   UCHAR visionSectorBmp = 0x01 << direction;
   int offset = 0;
-  int count = 0;
   int i,j;
   double maxComputedWeight;
   int maxWeightViewTabIndex;

@@ -564,7 +564,6 @@ bool CBrain::saveInXmlFile(string fileNameWithPath)
 bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
 {
   TiXmlNode* pNodeEntity = NULL;
-  TiXmlNode* pNodeBrain = NULL;
   TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeChild = NULL;
   TiXmlElement* pElement = NULL;
@@ -812,7 +811,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     int nbColumnsInFile, nbRowsInFile;
 
     string readStr;
-    int indexStart = 0, indexEnd = 0, indexStartLine = 0, indexEndLine = 0, lenght = 0;
+    int indexStart = 0, indexEnd = 0, indexStartLine = 0, indexEndLine = 0;
     indexEndLine = loadedBrain.find("\n",indexStartLine);
 
     // skip 1st column that should be empty

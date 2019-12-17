@@ -283,8 +283,8 @@ string CGenome::getClassStrName(ClassType_e classType)
     case CLASS_NONE:
       classeName = "Unknown";
       break;
-    case CLASS_ROCK:
-      classeName = "Rock";
+    case CLASS_SOLID:
+      classeName = "Solid";
       break;
     case CLASS_WATER:
       classeName = "Water";

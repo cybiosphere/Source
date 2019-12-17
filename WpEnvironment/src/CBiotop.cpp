@@ -324,13 +324,8 @@ CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc, string pathNameForBa
 
 CBasicEntity* CBiotop::createCloneEntity(CBasicEntity* pModelEntity)
 {
- CBasicEntity* pNewEntity = NULL;
-
-  int layer;
-  string name;
-
-  layer = pModelEntity->getLayer();
-  name  = pModelEntity->getLabel();
+  CBasicEntity* pNewEntity = NULL;
+  string name = pModelEntity->getLabel();
 
   if (pModelEntity->getGenome() == NULL)
   {

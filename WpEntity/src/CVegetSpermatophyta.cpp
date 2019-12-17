@@ -251,7 +251,6 @@ string CVegetSpermatophyta::buildParameterString(CGene* pGen)
     return (paramStr);
   }
 
-  CGenericParam* pParam = NULL;
   double scaledVal1,scaledVal2,scaledVal3;
   GeneSubType_e subType = pGen->getGeneSubType();
 

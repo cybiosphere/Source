@@ -95,9 +95,7 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
     m_pStimulationValues[i] = 0;
   }
 
-  FoundEntity_t* pFoundIds = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
-  CBasicEntity* pCurEntity = NULL;
 
   // Process level
   Point_t relPos = {1,0};
@@ -110,41 +108,6 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
     // Use weight
     m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
   }
-
-  /*if (!pAnimal->getBiotop()->isCoordValid(frontPos,1))
-  {
-    // Invalid coord
-    pStimulationVal = m_pStimulationValues;
-    return m_SubCaptorNumber;
-  }
-
-  int nbIds = pAnimal->getBiotop()->findEntities(pFoundIds , frontPos, m_nRange);
-  for (int ind=0;ind<nbIds;ind++)
-  {
-    pCurEntity = pFoundIds[ind].pEntity;
-    if (pCurEntity!=NULL)
-    {
-      for (int odor=0; odor<NUMBER_ODORS; odor++)
-      {
-        if (pCurEntity->getOdor() == (ODOR_FIRST_TYPE+odor) )
-        {
-          m_pStimulationValues[odor] += MAX_SENSOR_VAL / ((double)pFoundIds[ind].distance + 2); // 1/R
-        }
-      }
-    }
-  }
-
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Add odor trace
-    m_pStimulationValues[i] += pAnimal->getBiotop()->getOdorTrace(frontPos, (OdorType_e)(ODOR_FIRST_TYPE+i));
-
-    // Use first threshold
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-  }*/
 
   pStimulationVal = m_pStimulationValues;
   return m_SubCaptorNumber;

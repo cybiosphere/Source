@@ -310,6 +310,9 @@ CBasicEntity::CBasicEntity()
   m_PrevGridCoord.y = -1;
   m_PrevStepCoord.x = -1;
   m_PrevStepCoord.y = -1;
+  m_PrevStepDirection = -1;
+  m_GuiGridCoord.x = -1;
+  m_GuiGridCoord.y = -1;
   m_bIsImmortal = false;
   m_bIsDrinkable = false;
 
@@ -329,7 +332,6 @@ CBasicEntity::CBasicEntity()
 
   m_pPhyAttribute = new CGenericCaract("Attribute");
 
-
   // Parameter id pre-init
   m_id_Weight     = -1; 
   m_id_Toxicity   = -1;
@@ -339,7 +341,9 @@ CBasicEntity::CBasicEntity()
 
   m_EntitySignature = 0;
   m_Control = CONTROL_LOCAL_AUTO;
-
+  m_Generation = 0;
+  m_TotalChildNumber = 0;
+  m_Status = STATUS_STATIC;
 }
 
 //---------------------------------------------------------------------------
@@ -1419,7 +1423,6 @@ string CBasicEntity::buildParameterString(CGene* pGen)
     return (paramStr);
   }
 
-  CGenericParam* pParam = NULL;
   double scaledVal1,scaledVal2,scaledVal3;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -2637,7 +2640,7 @@ bool CBasicEntity::saveInXmlFile(string fileName, string newLabel)
 
   if (fileName == ".xml")
   {
-    int titi = 10;
+    CYBIOCORE_LOG("ENTITY - Warning: Trying to save entity %s in empty file name .xml\n", getLabel().c_str());
   }
 
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileName);

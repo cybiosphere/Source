@@ -64,7 +64,7 @@ typedef enum
 
   // Mineral classs
   CLASS_MINERAL_FIRST,        
-  CLASS_ROCK = CLASS_MINERAL_FIRST,       // Any block
+  CLASS_SOLID = CLASS_MINERAL_FIRST,       // Any block
   CLASS_WATER,                            // Water entity
   CLASS_MINERAL_LAST  = CLASS_WATER,
 

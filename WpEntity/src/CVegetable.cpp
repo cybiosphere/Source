@@ -503,7 +503,6 @@ string CVegetable::buildParameterString(CGene* pGen)
     return (paramStr);
   }
 
-  CGenericParam* pParam = NULL;
   double scaledVal1,scaledVal2,scaledVal3;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -585,7 +584,6 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
     return (welfareStr);
   }
   // We are sure Gene is a parameter
-  bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   int len = rawData.size();
@@ -640,7 +638,6 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   default:
     {
       // Unknown
-      resu = false;
       break;
     }
   }
