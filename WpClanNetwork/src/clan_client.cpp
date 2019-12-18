@@ -1,5 +1,6 @@
 
 #include "clan_client.h"
+#include "event_definitions.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
@@ -28,15 +29,15 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
 	cc.connect(network_client.sig_disconnected(), clan::bind_member(this, &Client::on_disconnected));
 
 	// Set up event dispatchers to route incoming events to functions
-	login_events.func_event("Login-Success") = clan::bind_member(this, &Client::on_event_login_success);
-	login_events.func_event("Login-Fail") = clan::bind_member(this, &Client::on_event_login_fail);
-	game_events.func_event("Game-LoadMap") = clan::bind_member(this, &Client::on_event_game_loadmap);
-	game_events.func_event("Game-Start") = clan::bind_member(this, &Client::on_event_game_startgame);
-  game_events.func_event("Biotop-Next second start") = clan::bind_member(this, &Client::on_event_biotop_nextsecond_start);
-  game_events.func_event("Biotop-Next second end") = clan::bind_member(this, &Client::on_event_biotop_nextsecond_end);
-  game_events.func_event("Biotop-Update entity data") = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
-  game_events.func_event("Biotop-Update entity position") = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
-  game_events.func_event("Biotop-Remove entity") = clan::bind_member(this, &Client::on_event_biotop_removeentity);
+	login_events.func_event(labelEventLoginOk) = clan::bind_member(this, &Client::on_event_login_success);
+	login_events.func_event(labelEventLoginKo) = clan::bind_member(this, &Client::on_event_login_fail);
+	game_events.func_event(labelEventLoadMap) = clan::bind_member(this, &Client::on_event_game_loadmap);
+	game_events.func_event(labelEventStart) = clan::bind_member(this, &Client::on_event_game_startgame);
+  game_events.func_event(labelEventNextSecStart) = clan::bind_member(this, &Client::on_event_biotop_nextsecond_start);
+  game_events.func_event(labelEventNextSecEnd) = clan::bind_member(this, &Client::on_event_biotop_nextsecond_end);
+  game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
+  game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
+  game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
 
 	quit = false;
 	logged_in = false;
@@ -129,7 +130,7 @@ void Client::on_connected()
 	log_event("network", "Connected to server");
 
 	// Properly login
-	network_client.send_event(NetGameEvent("Login", "my user name"));
+	network_client.send_event(NetGameEvent(labelEventLogin, "my user name"));
 }
 
 // Disconnected from server

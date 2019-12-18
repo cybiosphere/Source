@@ -1,5 +1,6 @@
 #include "clan_server.h"
 #include "clan_server_user.h"
+#include "event_definitions.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include <chrono>
@@ -26,8 +27,8 @@ Server::Server(CBiotop* pBiotop)
 	cc.connect(network_server.sig_event_received(), clan::bind_member(this, &Server::on_event_received));
 
 	// Set up event dispatchers to route incoming events to functions
-	login_events.func_event("Login") = clan::bind_member(this, &Server::on_event_login);
-	game_events.func_event("Game-RequestStart") = clan::bind_member(this, &Server::on_event_game_requeststart);
+	login_events.func_event(labelEventLogin) = clan::bind_member(this, &Server::on_event_login);
+	game_events.func_event(labelEventRequestStart) = clan::bind_member(this, &Server::on_event_game_requeststart);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -54,7 +55,7 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
 	  if (nb_users_connected > 0)
 	  {
       // Send event next second start update
-      NetGameEvent bioNextSecEventStart("Biotop-Next second start");
+      NetGameEvent bioNextSecEventStart(labelEventNextSecStart);
       CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
       bioNextSecEventStart.add_argument(biotopTime);
       bioNextSecEventStart.add_argument(m_biotopSpeed);
@@ -88,8 +89,8 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
       m_pBiotop->resetBiotopEvents();
 
 		  // Send event next second end
-		  log_event("System  ", "New second event");
-		  NetGameEvent bioNextSecEventEnd("Biotop-Next second end");
+		  log_event("System  ", "New second event end");
+		  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
 		  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
 		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
 		  network_server.send_event(bioNextSecEventEnd);
@@ -125,18 +126,6 @@ void Server::exec()
 
     if ((elapsedTime.count() * m_biotopSpeed) >= 1000)
     {
-      CBasicEntity* pCurEntity = NULL;
-      if (nb_users_connected > 0)
-      {
-        // Send event next second start update
-        NetGameEvent bioNextSecEventStart("Biotop-Next second start");
-        CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
-        bioNextSecEventStart.add_argument(biotopTime);
-        bioNextSecEventStart.add_argument(m_biotopSpeed);
-        network_server.send_event(bioNextSecEventStart);
-      }
-
-      //System::sleep(20); // temporary . wait to ensure bioNextSecEventStart alone 
       // Next second in biotop
       m_pBiotop->nextSecond();
       // Reset timer
@@ -144,21 +133,7 @@ void Server::exec()
       lastRunTick = std::chrono::system_clock::now();
 
       // Update clients with biotop evolution
-      if (nb_users_connected > 0)
-      {
-        // Update all entities
-        for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
-        {
-          pCurEntity = m_pBiotop->getEntityByIndex(i);
-          if (pCurEntity->checkIfhasChangedAndClear()) 
-            send_event_update_entity_position(pCurEntity);
-        }
-        // Send event next second end
-        NetGameEvent bioNextSecEventEnd("Biotop-Next second end");
-        CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
-        bioNextSecEventEnd.add_argument(biotopTimeEnd);
-        network_server.send_event(bioNextSecEventEnd);
-      }
+      ProcessEvents(true, m_biotopSpeed);
     }
     else
     {
@@ -271,7 +246,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 
 	if(user_name.length() == 0)
 	{
-		user->send_event(NetGameEvent("Login-Fail",  "Missing user name"));
+		user->send_event(NetGameEvent(labelEventLoginKo,  "Missing user name"));
 	}
 	else
 	{
@@ -279,7 +254,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 		user->user_name = user_name;
 		user->id = next_user_id++;
 
-		user->send_event(NetGameEvent("Login-Success"));
+		user->send_event(NetGameEvent(labelEventLoginOk));
 	}
 }
 
@@ -312,7 +287,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
   else
   {
     // Send empty map without entities
-	  NetGameEvent loadMapEvent("Game-LoadMap");
+	  NetGameEvent loadMapEvent(labelEventLoadMap);
     loadMapEvent.add_argument(xmlZipBuffer);
 	  user->send_event(loadMapEvent);
 
@@ -337,7 +312,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       }
     }
 
-	  user->send_event(NetGameEvent("Game-Start"));
+	  user->send_event(NetGameEvent(labelEventStart));
   }
 
   // Update again all animal to set action and status
@@ -376,7 +351,7 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
   DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-  send_generic_event_long_string("Biotop-Update entity data", xmlZipBuffer, pEntity->getId(), user);
+  send_generic_event_long_string(labelEventUpdateEntityData, xmlZipBuffer, pEntity->getId(), user);
 }
 
 void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)
@@ -396,7 +371,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
   if (pEntity->getBrain() != NULL)
     reactionIndex = pEntity->getBrain()->GetCurrentReactionIndex();
 
-  NetGameEvent bioUpdateEntityPosEvent("Biotop-Update entity position");
+  NetGameEvent bioUpdateEntityPosEvent(labelEventUpdateEntityPos);
   bioUpdateEntityPosEvent.add_argument(pEntity->getBiotop()->getBiotopTime().seconds);
   bioUpdateEntityPosEvent.add_argument(pEntity->getId());
   bioUpdateEntityPosEvent.add_argument(pEntity->getLabel());
@@ -418,7 +393,7 @@ void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
 {
   log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
 
-  NetGameEvent bioRemoveEntityEvent("Biotop-Remove entity");
+  NetGameEvent bioRemoveEntityEvent(labelEventRemoveEntity);
   bioRemoveEntityEvent.add_argument(entityId);
   bioRemoveEntityEvent.add_argument(pEntity->getLabel());
   if (user == NULL) // If user not define, broadcast info to all
