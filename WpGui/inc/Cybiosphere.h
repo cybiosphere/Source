@@ -110,6 +110,8 @@ public:
   CString GetOpenedBiotopFileName();
   CString GetOpenedBiotopPath();
 
+  void removeEntityFromBiotop(CBasicEntity* pEntity);
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCybiosphereApp)

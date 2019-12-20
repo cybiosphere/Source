@@ -1,6 +1,6 @@
-#include <string>
-
 #pragma once
+
+#include <string>
 
 namespace clan
 {

@@ -29,6 +29,9 @@ Server::Server(CBiotop* pBiotop)
 	// Set up event dispatchers to route incoming events to functions
 	login_events.func_event(labelEventLogin) = clan::bind_member(this, &Server::on_event_login);
 	game_events.func_event(labelEventRequestStart) = clan::bind_member(this, &Server::on_event_game_requeststart);
+  game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Server::on_event_biotop_updatefullentity);
+  game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Server::on_event_biotop_updateentityposition);
+  game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Server::on_event_biotop_removeentity);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -326,6 +329,22 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
   m_biotopSpeed = biotopSpeed;
 }
 
+void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop, false);
+}
+
+void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user)
+{
+  event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, false);
+}
+
+void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user)
+{
+  event_manager::handleEventRemoveEntity(e, m_pBiotop);
+}
+
+
 void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user)
 {
   if (pEntity == NULL)
@@ -341,17 +360,21 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
 
 	log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
 
-  TiXmlDocument xmlDoc;
-  pEntity->saveInXmlFile(&xmlDoc);
-  TiXmlPrinter xmlPrinter;
-  xmlDoc.Accept(&xmlPrinter);
-  std::string xmlString = xmlPrinter.Str();
- 
-    // Compress xml string
-  DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
-  DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
-
-  send_generic_event_long_string(labelEventUpdateEntityData, xmlZipBuffer, pEntity->getId(), user);
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsUpdateEntityData(pEntity, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      if (user == NULL) // If user not define, broadcast info to all
+        network_server.send_event(eventToSend);
+      else
+        user->send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+  }
 }
 
 void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)
@@ -366,23 +389,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
     log_event("Events  ", "Update entity position: removed");
     return;
   }
-
-  int reactionIndex = 0;
-  if (pEntity->getBrain() != NULL)
-    reactionIndex = pEntity->getBrain()->GetCurrentReactionIndex();
-
-  NetGameEvent bioUpdateEntityPosEvent(labelEventUpdateEntityPos);
-  bioUpdateEntityPosEvent.add_argument(pEntity->getBiotop()->getBiotopTime().seconds);
-  bioUpdateEntityPosEvent.add_argument(pEntity->getId());
-  bioUpdateEntityPosEvent.add_argument(pEntity->getLabel());
-  bioUpdateEntityPosEvent.add_argument(pEntity->getStepCoord().x);
-  bioUpdateEntityPosEvent.add_argument(pEntity->getStepCoord().y);
-  bioUpdateEntityPosEvent.add_argument(pEntity->getLayer());
-  bioUpdateEntityPosEvent.add_argument(pEntity->getStepDirection());
-  bioUpdateEntityPosEvent.add_argument(pEntity->getCurrentSpeed());
-  bioUpdateEntityPosEvent.add_argument(float(pEntity->getWeight()));
-  bioUpdateEntityPosEvent.add_argument(reactionIndex);
-  bioUpdateEntityPosEvent.add_argument(pEntity->getStatus());
+  NetGameEvent bioUpdateEntityPosEvent { event_manager::buildEventUpdateEntityPos(pEntity) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioUpdateEntityPosEvent);
   else
@@ -392,50 +399,11 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
 void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
 {
   log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
-
-  NetGameEvent bioRemoveEntityEvent(labelEventRemoveEntity);
-  bioRemoveEntityEvent.add_argument(entityId);
-  bioRemoveEntityEvent.add_argument(pEntity->getLabel());
+  NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioRemoveEntityEvent);
   else
     user->send_event(bioRemoveEntityEvent);
-}
-
-void Server::send_generic_event_long_string(const std::string event_label, DataBuffer data, int transactionId, ServerUser *user)
-{
-  int nbBlocks = data.get_size()/SENT_BUFFER_MAX_SIZE + 1;
-
-  if (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS)
-  {
-    log_event("-ERROR- ", "Generic event: Event too big to be sent");
-    return;
-  }
-
-  for (int i=0; i<(nbBlocks-1); i++)
-  {
-    NetGameEvent genericEvent(event_label);
-    DataBuffer dataBlock(data, i*SENT_BUFFER_MAX_SIZE, SENT_BUFFER_MAX_SIZE);
-    genericEvent.add_argument(transactionId);
-    genericEvent.add_argument(nbBlocks);
-    genericEvent.add_argument(i);
-    genericEvent.add_argument(dataBlock);
-    if (user == NULL) // If user not define, broadcast info to all
-      network_server.send_event(genericEvent);
-    else
-      user->send_event(genericEvent);
-  }
-
-  NetGameEvent genericEvent(event_label);
-  DataBuffer dataBlock(data, (nbBlocks-1)*SENT_BUFFER_MAX_SIZE, (data.get_size()%SENT_BUFFER_MAX_SIZE));
-  genericEvent.add_argument(transactionId);
-  genericEvent.add_argument(nbBlocks);
-  genericEvent.add_argument(nbBlocks-1);
-  genericEvent.add_argument(dataBlock);
-  if (user == NULL) // If user not define, broadcast info to all
-    network_server.send_event(genericEvent);
-  else
-    user->send_event(genericEvent);
 }
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)

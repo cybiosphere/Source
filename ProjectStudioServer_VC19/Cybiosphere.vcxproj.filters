@@ -739,6 +739,12 @@
     <ClInclude Include="..\WpGui\inc\CheckBoxWithParams.h">
       <Filter>WpGui\IncGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\event_definitions.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\event_manager.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1018,6 +1024,9 @@
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\clan_client.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,13 +13,11 @@
 #include "API/core.h"
 #include "API/network.h"
 #include "CBiotop.h"
+#include "event_manager.h"
 
 using namespace clan;
 
 class ServerUser;
-
-#define SENT_BUFFER_MAX_SIZE        31000
-#define SENT_BUFFER_MAX_NB_BLOCKS   10
 
 class Server
 {
@@ -42,12 +40,13 @@ private:
 
 	void on_event_login(const NetGameEvent &e, ServerUser *user);
 	void on_event_game_requeststart(const NetGameEvent &e, ServerUser *user);
+	void on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user);
 
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);
-
-  void send_generic_event_long_string(const std::string event_label, DataBuffer data, int transactionId, ServerUser *user = NULL);
 
   bool process_cmd_line(const std::string input_cmd_string);
 
@@ -62,6 +61,7 @@ private:
 	int  nb_users_connected;
   CBiotop* m_pBiotop;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
+	event_manager m_EventManager;
 
 public:
   // Functions for CMD line

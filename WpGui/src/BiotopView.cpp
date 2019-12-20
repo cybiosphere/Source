@@ -650,10 +650,7 @@ void CBiotopView::OnAppAddGroup()
 void CBiotopView::OnAppRemoveEntity() 
 {
   CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord); 
-  if ( (pEntity!=NULL) && (pEntity->getId()>0) )
-  {
-    pEntity->autoRemove();
-  }
+  theApp.removeEntityFromBiotop(pEntity);
   // force redraw all
   ForceRefreshDisplay();
   theApp.NextSecondRefreshAllViews();

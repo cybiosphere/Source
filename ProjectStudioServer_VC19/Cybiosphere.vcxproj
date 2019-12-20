@@ -515,6 +515,8 @@
     <ClInclude Include="..\WpClanNetwork\inc\connection_impl.h" />
     <ClInclude Include="..\WpClanNetwork\inc\console_window_generic.h" />
     <ClInclude Include="..\WpClanNetwork\inc\custom_type.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\event_manager.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\event_definitions.h" />
     <ClInclude Include="..\WpClanNetwork\inc\iodevice_impl.h" />
     <ClInclude Include="..\WpClanNetwork\inc\iodevice_provider_memory.h" />
     <ClInclude Include="..\WpClanNetwork\inc\miniz.h" />
@@ -631,6 +633,7 @@
     <ClCompile Include="..\WpClanNetwork\src\detect_cpu_ext.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\endianess.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\event.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\event_value.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\exception.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\iodevice.cpp" />

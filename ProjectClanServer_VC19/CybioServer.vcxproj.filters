@@ -272,5 +272,8 @@
     <ClCompile Include="..\WpClanNetwork\src\endianess.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

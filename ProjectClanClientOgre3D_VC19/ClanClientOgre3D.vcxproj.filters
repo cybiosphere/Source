@@ -144,6 +144,9 @@
     <ClCompile Include="..\WpTinyXml\src\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CybiOgre3D.h">

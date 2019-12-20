@@ -1,6 +1,7 @@
 
 #include "clan_client.h"
 #include "event_definitions.h"
+#include "event_manager.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
@@ -245,123 +246,12 @@ bool  Client::check_if_event_next_second_end_and_clean()
 
 void Client::on_event_biotop_updatefullentity(const NetGameEvent &e) 
 {
-  int i;
-  int transactionId = e.get_argument(0); // contains entityId
-  int nbBlocks      = e.get_argument(1);
-  int blocksIndex   = e.get_argument(2);
-  DataBuffer xmlZipBufferBlock = e.get_argument(3);
-
-  if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
-  {
-    log_event("events", "Biotop update full entity: ERROR bad nbBlocks: %1", nbBlocks);
-  }
-  else if (nbBlocks == 1)
-  {
-    updateBiotopWithEntityZipBuffer(xmlZipBufferBlock, transactionId);
-  }
-  else
-  {
-    int storeIndex = -1;
-    // Find current transaction if exists
-    for (i=0; i<(int)m_tEntityBufferEvent.size(); i++)
-    {
-      if (m_tEntityBufferEvent[i].transactionId == transactionId)
-      {
-        storeIndex = i;
-        break;
-      }
-    }
-    // if context exist, fill context 
-    if (storeIndex>-1)
-    {
-      m_tEntityBufferEvent[storeIndex].nb_blocks_received++;
-      m_tEntityBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
-      if (m_tEntityBufferEvent[storeIndex].nb_blocks_received == m_tEntityBufferEvent[storeIndex].nb_blocks)
-      {
-        DataBuffer fullXmlZipBuffer;
-        int fullXmlZipBufferSize = 0;
-        int curBufIndex = 0;
-        // Process buffer size
-        for (i=0; i<m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-        {
-          fullXmlZipBufferSize += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-        }
-        fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-        // Copy blocks in single buffer
-        for (i=0; i<m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-        {
-          memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tEntityBufferEvent[storeIndex].buffer[i][0]), m_tEntityBufferEvent[storeIndex].buffer[i].get_size());
-          curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-        }
-        // Update entity
-        updateBiotopWithEntityZipBuffer(fullXmlZipBuffer, transactionId);
-        // clean m_tEntityBufferEvent
-        m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
-      }
-    }
-    else // (storeIndex==-1) new context creation needed
-    {
-      LongBufferEvent_t newBufferEvent;
-      newBufferEvent.transactionId = transactionId;
-      newBufferEvent.nb_blocks = nbBlocks;
-      newBufferEvent.nb_blocks_received = 1;
-      newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
-      m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
-    }
-  }
+  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop, true);
 }
 
 void Client::on_event_biotop_updateentityposition(const NetGameEvent &e) 
 {
-  int index       = e.get_argument(0);
-  int entityId    = e.get_argument(1);
-  std::string  entityLabel = e.get_argument(2);
-  Point_t position;
-  position.x      = e.get_argument(3);
-  position.y     = e.get_argument(4);
-  int layer      = e.get_argument(5);
-  int direction  = e.get_argument(6);
-  int speed      = e.get_argument(7);
-  float weight   = e.get_argument(8);
-  int reactIndex = e.get_argument(9);
-  int status     = e.get_argument(10);
-
-  // Check if entity exists
-  CBasicEntity* pEntity = m_pBiotop->getEntityById(entityId);
-
-  // If entity does not exist, create one with default parameters
-  if (pEntity == NULL)
-  {
-    pEntity = new CBasicEntity();
-    pEntity->setLabel(entityLabel);
-    log_event("events", "Biotop add entity position: entityID %1 label %2 ", entityId, pEntity->getLabel());
-    if (!m_pBiotop->addRemoteCtrlEntity(entityId, pEntity, position, layer))
-    {
-      delete pEntity;
-      return;
-    }
-  }
-  else // If entity exists, check name and update position
-  {
-    if (pEntity->getLabel() != entityLabel)
-      log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
-    pEntity->forceWeight(weight);
-    pEntity->setStatus((StatusType_e)status);
-    if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
-    {
-      CAnimal* pAnimal = (CAnimal*)pEntity;
-      pAnimal->forceCurrentSpeed(speed);
-      pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
-
-      log_event("events", "Biotop update entity position: %1 action:%2 coord old x=%3 y=%4 new x=%5 y=%6", pEntity->getLabel(),
-        pAnimal->getBrain()->GetReactionByIndex(reactIndex)->GetLabel(),
-        pEntity->getStepCoord().x, pEntity->getStepCoord().y,
-        position.x, position.y);
-    }
-  }
-
-  pEntity->jumpToStepCoord(position, layer);
-  pEntity->setStepDirection(direction);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
 
 #ifdef USE_OGRE3D
   // Prepare new movement and animation in case of Ogre3D Application
@@ -375,88 +265,9 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)
 {
-  int entityId = e.get_argument(0);
-  std::string  entityLabel = e.get_argument(1);
-  CBasicEntity* pEntity = m_pBiotop->getEntityById(entityId);
-
-  if ((pEntity!=NULL) && (entityLabel == pEntity->getLabel()))
-  {
-    log_event("events", "Biotop remove entity: entityID %1 label %2", entityId, pEntity->getLabel());
-    pEntity->autoRemove();
-  }
-  else
-  {
-    log_event("events", "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
-  }
+  event_manager::handleEventRemoveEntity(e, m_pBiotop);
 }
 
-void Client::updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer, entityIdType entityId)
-{
-  DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
-  TiXmlDocument xmlDoc;
-  xmlDoc.Parse(xmlBuffer.get_data());
-
-  CBasicEntity* pNewEntity = m_pBiotop->createEntity(&xmlDoc, ".\\temp\\");
-	log_event("events", "Biotop update full entity: %1 state %2", pNewEntity->getLabel(), pNewEntity->getStatus());
-
-  CBasicEntity* pCurEntity;
-  bool bFound = false;
-  int curStepDirection;
-
-  if (pNewEntity->getClass() < CLASS_ANIMAL_FIRST)
-  {
-    // Update all entities with same name
-    for (int i = 0; i < m_pBiotop->getNbOfEntities(); i++)
-    {
-      pCurEntity = m_pBiotop->getEntityByIndex(i);
-      if (pCurEntity->getLabel() == pNewEntity->getLabel())
-      {
-        curStepDirection = pCurEntity->getStepDirection();
-        CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
-        pClonedNewEntity->setRemoteControlled(true);
-        pClonedNewEntity->setStepDirection(curStepDirection);
-        if (!m_pBiotop->replaceEntityByAnother(pCurEntity->getId(), pClonedNewEntity))
-        {
-          delete pClonedNewEntity;
-        }
-        bFound = true;
-      }
-    }
-  }
-  else
-  {
-    // Update entity with same Id
-    pCurEntity = m_pBiotop->getEntityById(entityId);
-    if (pCurEntity != NULL)
-    {
-      curStepDirection = pCurEntity->getStepDirection();
-      CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
-      pClonedNewEntity->setRemoteControlled(true);
-      pClonedNewEntity->setStepDirection(curStepDirection);
-      if (!m_pBiotop->replaceEntityByAnother(pCurEntity->getId(), pClonedNewEntity))
-      {
-        delete pClonedNewEntity;
-      }
-      bFound = true;
-    }
-  }
-
-  // if not found, add it as new entity
-  if (bFound == false)
-  {
-    CBasicEntity* pClonedNewEntity = m_pBiotop->createCloneEntity(pNewEntity);
-    if (!m_pBiotop->addRemoteCtrlEntity(pClonedNewEntity->getId(), pClonedNewEntity, pClonedNewEntity->getStepCoord(), pClonedNewEntity->getLayer()))
-    {
-      delete pClonedNewEntity;
-    }
-    else
-    {
-      log_event("events", "Biotop add entity position: entityID %1 label %2 state %3", pClonedNewEntity->getId(), pClonedNewEntity->getLabel(), pClonedNewEntity->getStatus());
-    }
-  }
-
-  delete (pNewEntity);
-}
 
 void Client::displayBiotopEntities()
 {
@@ -493,4 +304,57 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
     log_event("INFO", "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
   }
   return true;
+}
+
+
+void Client::send_event_update_entity_data(CBasicEntity* pEntity)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Update entity data: NULL entity");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Update removed entity: %1", pEntity->getLabel());
+    return;
+  }
+
+  log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
+
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsUpdateEntityData(pEntity, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+  }
+}
+
+void Client::send_event_update_entity_position(CBasicEntity* pEntity)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Update entity position: NULL");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Update entity position: removed");
+    return;
+  }
+  NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity) };
+  network_client.send_event(bioUpdateEntityPosEvent);
+}
+
+void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId)
+{
+  log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
+  NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
+  network_client.send_event(bioRemoveEntityEvent);
 }

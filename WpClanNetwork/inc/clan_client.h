@@ -5,17 +5,9 @@
 #include <API/network.h>
 #include "CBiotop.h"
 #include "clan_server.h"
+#include "event_manager.h"
 
 using namespace clan;
-
-
-typedef struct 
-{
-  int        transactionId;
-  int        nb_blocks;
-  int        nb_blocks_received;
-  DataBuffer buffer[SENT_BUFFER_MAX_NB_BLOCKS];
-} LongBufferEvent_t;
 
 class CybiOgre3DApp;
 
@@ -38,6 +30,10 @@ public:
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
 
+  void send_event_update_entity_data(CBasicEntity* pEntity);
+  void send_event_update_entity_position(CBasicEntity* pEntity);
+  void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId);
+
 private:
 	void on_connected();
 	void on_disconnected();
@@ -53,8 +49,6 @@ private:
 	void on_event_biotop_updatefullentity(const NetGameEvent &e);
 	void on_event_biotop_updateentityposition(const NetGameEvent &e);
   void on_event_biotop_removeentity(const NetGameEvent &e);
-
-  void updateBiotopWithEntityZipBuffer(DataBuffer xmlZipBuffer, entityIdType entityId);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);
@@ -74,7 +68,7 @@ private:
 
   CBiotop* m_pBiotop;
   bool     m_bBiotopConfigComplete;
-  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
+  event_manager m_EventManager;
   bool m_bEventNextSecondStart;
   bool m_bEventNextSecondEnd;
   int m_lastEventTimeStamp;
