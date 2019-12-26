@@ -297,16 +297,33 @@ CBasicEntity* CBiotop::createEntity(string name, CGenome* pGenome)
   return (pNewEntity);
 }
 
+CBasicEntity* CBiotop::createEntity(string fileName, string pathName)
+{
+  string fileNameWithPath = pathName + fileName;
+  TiXmlDocument* pXmlDoc = new TiXmlDocument(fileNameWithPath);
+  if (!pXmlDoc->LoadFile())
+  {
+    CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
+    CYBIOCORE_LOG_FLUSH;
+    delete pXmlDoc;
+    return NULL;
+  }
+  CBasicEntity* pNewEntity = CBiotop::createEntity(pXmlDoc, pathName);
+  delete pXmlDoc;
+  return (pNewEntity);
+}
 
 CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc, string pathNameForBabies)
 {
   string name;
   CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
-
+  int startLayer;
+  CBasicEntity::getDefaultLayerFromXmlFile(pXmlDoc, startLayer);
   CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
   CBasicEntity::getEntityNameFromXmlFile(pXmlDoc, name);
 
   CBasicEntity* pNewEntity = createEntity(name, pTempGenome);
+  pNewEntity->jumpToGridCoord({ -1, -1 }, startLayer);
 
   if(pNewEntity != NULL)
   {

@@ -40,10 +40,14 @@ private:
 
 	void on_event_login(const NetGameEvent &e, ServerUser *user);
 	void on_event_game_requeststart(const NetGameEvent &e, ServerUser *user);
+	void on_event_biotop_addentity(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_addcloneentity(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user);
 
+	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
+	void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user = NULL);
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);

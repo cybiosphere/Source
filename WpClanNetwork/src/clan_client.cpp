@@ -36,6 +36,8 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
 	game_events.func_event(labelEventStart) = clan::bind_member(this, &Client::on_event_game_startgame);
   game_events.func_event(labelEventNextSecStart) = clan::bind_member(this, &Client::on_event_biotop_nextsecond_start);
   game_events.func_event(labelEventNextSecEnd) = clan::bind_member(this, &Client::on_event_biotop_nextsecond_end);
+  game_events.func_event(labelEventAddEntity) = clan::bind_member(this, &Client::on_event_biotop_addentity);
+  game_events.func_event(labelEventAddCloneEntity) = clan::bind_member(this, &Client::on_event_biotop_addcloneentity);
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
@@ -244,6 +246,16 @@ bool  Client::check_if_event_next_second_end_and_clean()
   return resu;
 }
 
+void Client::on_event_biotop_addentity(const NetGameEvent& e)
+{
+  m_EventManager.handleEventAddEntity(e, m_pBiotop, true);
+}
+
+void Client::on_event_biotop_addcloneentity(const NetGameEvent& e)
+{
+  m_EventManager.handleEventAddCloneEntity(e, m_pBiotop, true);
+}
+
 void Client::on_event_biotop_updatefullentity(const NetGameEvent &e) 
 {
   m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop, true);
@@ -306,6 +318,51 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
   return true;
 }
 
+void Client::send_event_add_entity(CBasicEntity* pEntity)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Add entity: NULL entity");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Add removed entity: %1", pEntity->getLabel());
+    return;
+  }
+
+  log_event("Events  ", "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsAddEntity(pEntity, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+  }
+}
+
+void Client::send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Add clone entity: NULL entity");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Add clone removed entity: %1", pEntity->getLabel());
+    return;
+  }
+
+  log_event("Events  ", "Add clone entity: %1", pEntity->getLabel());
+  NetGameEvent addCloneEntityEvent{ event_manager::buildEventAddCloneEntity(pEntity, modelEntityId) };
+  network_client.send_event(addCloneEntityEvent);
+}
 
 void Client::send_event_update_entity_data(CBasicEntity* pEntity)
 {

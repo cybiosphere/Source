@@ -17,6 +17,8 @@ namespace clan
   const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
 
   // Both directions
+  const std::string labelEventAddEntity{ "Biotop-Add entity" };
+  const std::string labelEventAddCloneEntity{ "Biotop-Add clone" };
   const std::string labelEventUpdateEntityData { "Biotop-Update entity data" };
   const std::string labelEventUpdateEntityPos  { "Biotop-Update entity position" };
   const std::string labelEventRemoveEntity     { "Biotop-Remove entity" };

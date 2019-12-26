@@ -29,6 +29,8 @@ Server::Server(CBiotop* pBiotop)
 	// Set up event dispatchers to route incoming events to functions
 	login_events.func_event(labelEventLogin) = clan::bind_member(this, &Server::on_event_login);
 	game_events.func_event(labelEventRequestStart) = clan::bind_member(this, &Server::on_event_game_requeststart);
+  game_events.func_event(labelEventAddEntity) = clan::bind_member(this, &Server::on_event_biotop_addentity);
+  game_events.func_event(labelEventAddCloneEntity) = clan::bind_member(this, &Server::on_event_biotop_addcloneentity);
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Server::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Server::on_event_biotop_updateentityposition);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Server::on_event_biotop_removeentity);
@@ -79,8 +81,7 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
           send_event_update_entity_data(bioEvent.pEntity);
           break;
         case BIOTOP_EVENT_ENTITY_ADDED:
-          send_event_update_entity_position(bioEvent.pEntity);
-          send_event_update_entity_data(bioEvent.pEntity);
+          send_event_add_entity(bioEvent.pEntity);
           break;
         case BIOTOP_EVENT_ENTITY_REMOVED:
           send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
@@ -294,39 +295,41 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     loadMapEvent.add_argument(xmlZipBuffer);
 	  user->send_event(loadMapEvent);
 
-    // Provide all entities position
-    for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
-    {
-      // Send only to new user
-      send_event_update_entity_position(m_pBiotop->getEntityByIndex(i), user);
-    }
-
     // Update entitiy data. Send info only 1 time if several entities has same name
     CBasicEntity* pCurEntity = NULL;
     std::string prevEntityLabel = "";
+    int prevEntityId = -1;
     for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
     {
       pCurEntity = m_pBiotop->getEntityByIndex(i);
       if (pCurEntity->getLabel() != prevEntityLabel)
       {
         // Send only to new user
-        send_event_update_entity_data(pCurEntity, user);
+        send_event_add_entity(pCurEntity, user);
         prevEntityLabel = pCurEntity->getLabel();
+        prevEntityId = pCurEntity->getId();
+      }
+      else
+      {
+        send_event_add_clone_entity(pCurEntity, prevEntityId, user);
       }
     }
 
 	  user->send_event(NetGameEvent(labelEventStart));
   }
 
-  // Update again all animal to set action and status
-  for (i=0; i<m_pBiotop->getNbOfAnimals(); i++)
-  {
-    // Send only to new user
-    send_event_update_entity_position(m_pBiotop->getEntityByIndex(i), user);
-  }
-
   // Restore biotop time
   m_biotopSpeed = biotopSpeed;
+}
+
+void Server::on_event_biotop_addentity(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventAddEntity(e, m_pBiotop, false);
+}
+
+void Server::on_event_biotop_addcloneentity(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventAddCloneEntity(e, m_pBiotop, false);
 }
 
 void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user)
@@ -344,6 +347,57 @@ void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* use
   event_manager::handleEventRemoveEntity(e, m_pBiotop);
 }
 
+void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Add entity: NULL entity");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Add removed entity: %1", pEntity->getLabel());
+    return;
+  }
+
+  log_event("Events  ", "Add entity: %1", pEntity->getLabel());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsAddEntity(pEntity, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      if (user == NULL) // If user not define, broadcast info to all
+        network_server.send_event(eventToSend);
+      else
+        user->send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_add_entity: Event not sent");
+  }
+}
+
+void Server::send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user)
+{
+  if (pEntity == NULL)
+  {
+    log_event("Events  ", "Add clone entity: NULL entity");
+    return;
+  }
+  if (pEntity->isToBeRemoved())
+  {
+    log_event("Events  ", "Add clone removed entity: %1", pEntity->getLabel());
+    return;
+  }
+
+  log_event("Events  ", "Add clone entity: %1", pEntity->getLabel());
+  NetGameEvent addCloneEntityEvent{ event_manager::buildEventAddCloneEntity(pEntity, modelEntityId) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(addCloneEntityEvent);
+  else
+    user->send_event(addCloneEntityEvent);
+}
 
 void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user)
 {
@@ -359,7 +413,6 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   }
 
 	log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
-
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsUpdateEntityData(pEntity, eventVector))
   {

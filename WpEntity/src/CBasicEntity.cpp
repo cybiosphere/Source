@@ -2485,11 +2485,7 @@ bool CBasicEntity::turnToCenterDir()
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnRight(unsigned int nDegree)
 {
-  m_PrevStepDirection = m_StepDirection;
-  m_StepDirection += 360 - nDegree;
-  m_StepDirection = m_StepDirection%360;
-  m_Direction = ((m_StepDirection+22)/45)%8;
-  m_bHasChanged = true;
+  setStepDirection(m_StepDirection + 360 - nDegree);
   return (true);
 }
 
@@ -2506,11 +2502,7 @@ bool CBasicEntity::turnRight(unsigned int nDegree)
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnLeft(unsigned int nDegree)
 {
-  m_PrevStepDirection = m_StepDirection;
-  m_StepDirection += nDegree;
-  m_StepDirection = m_StepDirection%360;
-  m_Direction = ((m_StepDirection+22)/45)%8;
-  m_bHasChanged = true;
+  setStepDirection(m_StepDirection + nDegree);
   return (true);
 }
 
@@ -3322,9 +3314,9 @@ int CBasicEntity::getStepDirection()
 
 void  CBasicEntity::setStepDirection(int stepDirection)
 {
-  m_Direction = (stepDirection/45)%8; // avoid invalid direction
   m_PrevStepDirection = m_StepDirection;
-  m_StepDirection = stepDirection;
+  m_StepDirection = stepDirection % 360;
+  m_Direction = ((m_StepDirection + 22) / 45) % 8;
   m_bHasChanged = true;
 }
 

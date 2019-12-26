@@ -617,3 +617,17 @@ void CCybiosphereApp::removeEntityFromBiotop(CBasicEntity* pEntity)
   }
 #endif
 }
+
+void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord)
+{
+#ifdef USE_CLAN_CLIENT
+  CBasicEntity* pEntity = CBiotop::createEntity(fileName, pathName);
+  if (pEntity != NULL)
+  {
+    pEntity->jumpToGridCoord(coord);
+    m_pClient->send_event_add_entity(pEntity);
+  }
+#else
+  m_pBiotop->createAndAddEntity(fileName, pathName, coord);
+#endif
+}

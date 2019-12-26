@@ -632,7 +632,7 @@ void CBiotopView::OnAppAddGroup()
         pathName = "";	 
       }
 
-      m_pBiotop->createAndAddEntity(fileName.GetBuffer(0), pathName.GetBuffer(0), m_MenuSelCoord);
+      theApp.addEntityFromFileInBiotop(fileName.GetBuffer(0), pathName.GetBuffer(0), m_MenuSelCoord);
 
       randoffsetx = getRandInt(3) - 1;
       randoffsety = getRandInt(3) - 1;

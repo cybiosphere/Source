@@ -111,6 +111,7 @@ public:
   CString GetOpenedBiotopPath();
 
   void removeEntityFromBiotop(CBasicEntity* pEntity);
+  void addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord);
 
 // Overrides
 	// ClassWizard generated virtual function overrides

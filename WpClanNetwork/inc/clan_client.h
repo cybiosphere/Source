@@ -30,6 +30,8 @@ public:
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
 
+  void send_event_add_entity(CBasicEntity* pEntity);
+  void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId);
   void send_event_update_entity_data(CBasicEntity* pEntity);
   void send_event_update_entity_position(CBasicEntity* pEntity);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId);
@@ -46,6 +48,8 @@ private:
 	void on_event_game_startgame(const NetGameEvent &e);
 	void on_event_biotop_nextsecond_start(const NetGameEvent &e);
   void on_event_biotop_nextsecond_end(const NetGameEvent &e);
+  void on_event_biotop_addentity(const NetGameEvent& e);
+  void on_event_biotop_addcloneentity(const NetGameEvent& e);
 	void on_event_biotop_updatefullentity(const NetGameEvent &e);
 	void on_event_biotop_updateentityposition(const NetGameEvent &e);
   void on_event_biotop_removeentity(const NetGameEvent &e);
