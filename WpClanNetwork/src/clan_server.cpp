@@ -39,6 +39,7 @@ Server::Server(CBiotop* pBiotop)
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
   m_biotopSpeed = 1.0;
+  m_bManualMode = false;
 }
 
 Server::~Server()
@@ -96,6 +97,7 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
 		  // Send event next second end
 		  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
 		  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+      //TODO: missing years
 		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
 		  network_server.send_event(bioNextSecEventEnd);
 	  }
@@ -130,8 +132,11 @@ void Server::exec()
 
     if ((elapsedTime.count() * m_biotopSpeed) >= 1000)
     {
-      // Next second in biotop
-      m_pBiotop->nextSecond();
+      if (!m_bManualMode)
+      {
+        // Next second in biotop
+        m_pBiotop->nextSecond();
+      }
       // Reset timer
       timeCount = 0;
       lastRunTick = std::chrono::system_clock::now();
@@ -157,6 +162,16 @@ void Server::exec()
 float Server::get_biotop_speed()
 {
   return m_biotopSpeed;
+}
+
+bool Server::get_manual_mode()
+{
+  return m_bManualMode;
+}
+
+void Server::set_manual_mode(bool newManualMode)
+{
+  m_bManualMode = newManualMode;
 }
 
 bool Server::process_cmd_line(const std::string input_cmd_string)
@@ -354,7 +369,7 @@ void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* use
 
 void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user)
 {
-  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed);
+  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
 }
 
 void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)

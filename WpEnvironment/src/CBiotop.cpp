@@ -61,15 +61,9 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_Dimension.y  = dimY;
   m_nbLayer      = dimZ;
   m_IndexLastAnimal = 0;
-
-  m_BioTime.seconds  = 0;
-  m_BioTime.hours    = 12;
-  m_BioTime.days     = 0;
-  m_BioTime.years    = 0;
-
+  setBiotopTime(0, 12, 0, 0);
   m_WindDirection = 1;
   m_WindStrenght  = 1; // 0,1 or 2
-  
   m_DefaultFilePath = "";
 
   m_tParam.resize(0);
@@ -1748,12 +1742,6 @@ void CBiotop::nextHour(void)
     }
   }
 
-  // Rain management
-  /*if (testChance(10.0, getFertility({ 1,1 }) / 24.0))
-  {
-    spreadWaterPuddlesByRain(getRandInt(100));
-  }*/
-
   // Random entities generation
   for (int ind = 0; ind < MAX_NUMBER_RANDOM_ENTITIES; ind++)
   {
@@ -1812,6 +1800,14 @@ void CBiotop::nextHour(void)
 BiotopTime_t CBiotop::getBiotopTime(void)
 {
   return (m_BioTime);
+}
+
+void CBiotop::setBiotopTime(int seconds, int hours, int days, int years)
+{
+  m_BioTime.seconds = seconds;
+  m_BioTime.hours = hours;
+  m_BioTime.days = days;
+  m_BioTime.years = years;
 }
 
 //===========================================================================

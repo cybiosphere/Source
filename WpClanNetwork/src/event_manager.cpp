@@ -324,17 +324,20 @@ namespace clan
     }
   }
 
-  NetGameEvent event_manager::buildEventChangeBiotopSpeed(const float newBiotopSpeed)
+  NetGameEvent event_manager::buildEventChangeBiotopSpeed(const float newBiotopSpeed, const bool isManualMode)
   {
     NetGameEvent newEvent(labelEventChangeBiotopSpeed);
     newEvent.add_argument(newBiotopSpeed);
+    newEvent.add_argument((int)isManualMode);
     return (std::move(newEvent));
   }
 
-  bool event_manager::handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed)
+  bool event_manager::handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed, bool& isManualMode)
   {
     newBiotopSpeed = e.get_argument(0);
-    log_event("events", "Biotop speed change: %1", newBiotopSpeed);
+    int manualMode = e.get_argument(1);
+    isManualMode = manualMode;
+    log_event("events", "Biotop speed change: %1 isManual%2", newBiotopSpeed, isManualMode);
     return true;
   }
 

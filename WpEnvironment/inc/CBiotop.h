@@ -309,6 +309,7 @@ public:
   void nextSecond(void);
   void nextHour(void);
   BiotopTime_t getBiotopTime(void);
+  void setBiotopTime(int seconds, int hours, int days, int years);
 
 //---------------------------------------------------------------------------
 // Grid management

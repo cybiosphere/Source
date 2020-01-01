@@ -32,6 +32,8 @@ public:
 	// Start and loop on ProcessEvents
 	void exec();
 	float get_biotop_speed();
+	bool get_manual_mode();
+	void set_manual_mode(bool newManualMode);
 
 private:
 	void on_client_connected(NetGameConnection *connection);
@@ -68,6 +70,7 @@ private:
   CBiotop* m_pBiotop;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
 	event_manager m_EventManager;
+	bool m_bManualMode;
 
 public:
   // Functions for CMD line

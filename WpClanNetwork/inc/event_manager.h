@@ -34,8 +34,8 @@ namespace clan
 	  static NetGameEvent buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId);
     static bool handleEventRemoveEntity(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent buildEventChangeBiotopSpeed(const float newBiotopSpeed);
-    static bool handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed);
+    static NetGameEvent buildEventChangeBiotopSpeed(const float newBiotopSpeed, const bool isManualMode);
+    static bool handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed, bool& isManualMode);
 
   private:
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;

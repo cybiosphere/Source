@@ -397,8 +397,15 @@ BOOL CCybiosphereApp::IsModeManual()
 
 void CCybiosphereApp::SetModeManual(BOOL isManual)
 {
-  m_bModeManual = isManual;
-  m_pBioCtrlView->ForceModeManual(m_bModeManual);
+  if (m_bModeManual != isManual)
+  {
+    m_bModeManual = isManual;
+    m_pBioCtrlView->ForceModeManual(m_bModeManual);
+    modifyBiotopSpeed(GetBiotopViewPtr()->GetSpeedRate());
+#ifdef USE_CLAN_SERVER
+    m_pServer->set_manual_mode(isManual);
+#endif
+  }
 }
 
 BOOL CCybiosphereApp::IsModeStopOnEvent()
@@ -535,22 +542,11 @@ void CCybiosphereApp::NextSecondStart()
 
 void CCybiosphereApp::NextSecondRefreshAllViews()
 {
-  CheckSelectedEntity();
+  NextSecondRefreshAllViewsLowCPU();
+  // additional Gui refresh
   GetEntityViewPtr()->RefreshParameters();
-  GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
   GetStatisticViewPtr()->NextSecond();
   GetMapConfigViewPtr()->NextSecond();
-
-#ifdef USE_CLAN_SERVER
-  m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
-  if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
-  {
-    GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
-  }
-  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
-#else
-  m_pBiotop->resetBiotopEvents();
-#endif
 }
 
 void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
@@ -560,6 +556,7 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
+  SetModeManual(m_pServer->get_manual_mode());
   if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
   {
     GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
@@ -641,10 +638,10 @@ void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName
 #endif
 }
 
-void CCybiosphereApp::modifyBiotopSpeed(float newBiotopSpeed)
+void CCybiosphereApp::modifyBiotopSpeed(const float newBiotopSpeed)
 {
 #ifdef USE_CLAN_CLIENT
-  m_pClient->send_event_change_biotop_speed(newBiotopSpeed);
+  m_pClient->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual);
 #else
   GetBiotopViewPtr()->SetSpeedRate(newBiotopSpeed);
 #endif

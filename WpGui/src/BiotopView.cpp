@@ -235,12 +235,12 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 {
   if (nIDEvent==SECOND_TIMER_ID)
   {
+    theApp.NextSecondStart();
     if (!theApp.IsModeManual())
     {
       LARGE_INTEGER curSysTicks;
       QueryPerformanceCounter(&curSysTicks);
       DWORD idleTime = curSysTicks.LowPart - m_SysTicksPrevSecEnd.LowPart;
-      theApp.NextSecondStart();
       if ((!m_IdleDisplayMode)&&(idleTime<8000))
       {
         m_IdleDisplayMode = true;
@@ -330,12 +330,17 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 
       QueryPerformanceCounter(&m_SysTicksPrevSecEnd);
     }
-    else if (m_IdleDisplayMode)
+    else 
     {
-      m_pFocusedEntity = NULL;
-      m_IdleDisplayMode = false;
-      m_pBioDisplay->RefreshSceneIdleNoCPU();
-      m_pBioDisplay->RedrawScene();
+      m_pBioDisplay->RefreshNextSecond();
+      theApp.NextSecondRefreshAllViewsLowCPU();
+      if (m_IdleDisplayMode)
+      {
+        m_pFocusedEntity = NULL;
+        m_IdleDisplayMode = false;
+        m_pBioDisplay->RefreshSceneIdleNoCPU();
+        m_pBioDisplay->RedrawScene();
+      }
     }
 
     if (!m_IdleDisplayMode)

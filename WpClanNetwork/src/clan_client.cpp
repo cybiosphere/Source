@@ -222,6 +222,7 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   m_bEventNextSecondEnd = true;
   m_lastEventTimeStamp = biotopTime.get_x();
 	log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+  m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
 
 #ifdef USE_OGRE3D
   // Prepare new movement and animation in case of Ogre3D Application
@@ -416,10 +417,10 @@ void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
   network_client.send_event(bioRemoveEntityEvent);
 }
 
-void Client::send_event_change_biotop_speed(const float newBiotopSpeed)
+void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode)
 {
-  log_event("Events  ", "Change biotop speed: %1", newBiotopSpeed);
+  log_event("Events  ", "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
   m_biotopSpeed = newBiotopSpeed;
-  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed) };
+  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
   network_client.send_event(bioChangeSpeedEvent);
 }

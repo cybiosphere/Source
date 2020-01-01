@@ -112,7 +112,7 @@ public:
 
   void removeEntityFromBiotop(CBasicEntity* pEntity);
   void addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord);
-  void modifyBiotopSpeed(float newBiotopSpeed);
+  void modifyBiotopSpeed(const float newBiotopSpeed);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
