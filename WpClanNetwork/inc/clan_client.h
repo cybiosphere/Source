@@ -35,6 +35,7 @@ public:
   void send_event_update_entity_data(CBasicEntity* pEntity);
   void send_event_update_entity_position(CBasicEntity* pEntity);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId);
+  void send_event_change_biotop_speed(const float newBiotopSpeed);
 
 private:
 	void on_connected();

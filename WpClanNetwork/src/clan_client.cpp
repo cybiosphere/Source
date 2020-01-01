@@ -415,3 +415,11 @@ void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   network_client.send_event(bioRemoveEntityEvent);
 }
+
+void Client::send_event_change_biotop_speed(const float newBiotopSpeed)
+{
+  log_event("Events  ", "Change biotop speed: %1", newBiotopSpeed);
+  m_biotopSpeed = newBiotopSpeed;
+  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed) };
+  network_client.send_event(bioChangeSpeedEvent);
+}

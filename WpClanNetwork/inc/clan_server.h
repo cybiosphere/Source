@@ -31,6 +31,7 @@ public:
 
 	// Start and loop on ProcessEvents
 	void exec();
+	float get_biotop_speed();
 
 private:
 	void on_client_connected(NetGameConnection *connection);
@@ -45,6 +46,7 @@ private:
 	void on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user);
 
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
 	void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user = NULL);

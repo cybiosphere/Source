@@ -84,7 +84,7 @@ public:
   void UpdateTimerDisplay(BiotopTime_t* pNewTime);
   void ForceModeManual(BOOL newMode);
   bool ForceChangeSpeed(int rate);
-	bool ForceForceSpeedRate(int rate);
+	bool ForceSetSpeed(float rate);
   bool RestoreUserSpeed();
   void SetStrScenarioScore(CString text);
 

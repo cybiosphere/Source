@@ -523,11 +523,12 @@ void CCybiosphereApp::NextSecondStart()
 {
 #ifdef USE_CLAN_CLIENT
   m_pClient->process_new_events();
-  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
-  if (m_pClient->get_biotop_speed() != GetBiotopViewPtr()->GetSpeedRate())
+  if (fabs(m_pClient->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
   {
-    GetBioCtrlViewPtr()->ForceForceSpeedRate(m_pClient->get_biotop_speed());
+    GetBioCtrlViewPtr()->ForceSetSpeed(m_pClient->get_biotop_speed());
+    GetBiotopViewPtr()->SetSpeedRate(m_pClient->get_biotop_speed());
   }
+  GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #endif
 }
 
@@ -542,6 +543,10 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
+  if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
+  {
+    GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
+  }
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();
@@ -555,6 +560,10 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 
 #ifdef USE_CLAN_SERVER
   m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
+  if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
+  {
+    GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
+  }
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #else
   m_pBiotop->resetBiotopEvents();
@@ -629,5 +638,14 @@ void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName
   }
 #else
   m_pBiotop->createAndAddEntity(fileName, pathName, coord);
+#endif
+}
+
+void CCybiosphereApp::modifyBiotopSpeed(float newBiotopSpeed)
+{
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_change_biotop_speed(newBiotopSpeed);
+#else
+  GetBiotopViewPtr()->SetSpeedRate(newBiotopSpeed);
 #endif
 }

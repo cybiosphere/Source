@@ -324,6 +324,20 @@ namespace clan
     }
   }
 
+  NetGameEvent event_manager::buildEventChangeBiotopSpeed(const float newBiotopSpeed)
+  {
+    NetGameEvent newEvent(labelEventChangeBiotopSpeed);
+    newEvent.add_argument(newBiotopSpeed);
+    return (std::move(newEvent));
+  }
+
+  bool event_manager::handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed)
+  {
+    newBiotopSpeed = e.get_argument(0);
+    log_event("events", "Biotop speed change: %1", newBiotopSpeed);
+    return true;
+  }
+
   bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)

@@ -34,6 +34,7 @@ Server::Server(CBiotop* pBiotop)
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Server::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Server::on_event_biotop_updateentityposition);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Server::on_event_biotop_removeentity);
+  game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Server::on_event_biotop_changespeed);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -52,8 +53,8 @@ void Server::startServer()
 
 void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
 {
-  network_server.process_events();
   m_biotopSpeed = biotopSpeed;
+  network_server.process_events();
   if (isNewSec)
   {
 	// Update clients with biotop evolution
@@ -93,7 +94,6 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
       m_pBiotop->resetBiotopEvents();
 
 		  // Send event next second end
-		  log_event("System  ", "New second event end");
 		  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
 		  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
 		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
@@ -152,6 +152,11 @@ void Server::exec()
 	}
 
 	network_server.stop();
+}
+
+float Server::get_biotop_speed()
+{
+  return m_biotopSpeed;
 }
 
 bool Server::process_cmd_line(const std::string input_cmd_string)
@@ -345,6 +350,11 @@ void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerU
 void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user)
 {
   event_manager::handleEventRemoveEntity(e, m_pBiotop);
+}
+
+void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user)
+{
+  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed);
 }
 
 void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)

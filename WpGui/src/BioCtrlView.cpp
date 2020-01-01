@@ -127,7 +127,7 @@ void CBioCtrlView::OnInitialUpdate()
   m_SliderSpeed.SetRange(0,100);
   m_SliderSpeed.SetPos(1);
   m_SliderSpeed.SetPageSize(5);
-  theApp.GetBiotopViewPtr()->SetSpeedRate(1.2);
+  theApp.modifyBiotopSpeed(1.2);
   m_UserSpeed = 1;
 
   if (theApp.GetBiotop()->getWindStrenght()==0)
@@ -238,7 +238,7 @@ void CBioCtrlView::ForceModeManual(BOOL newMode)
 void CBioCtrlView::OnReleasedcaptureSliderSpeed(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	// TODO: Add your control notification handler code here
-	theApp.GetBiotopViewPtr()->SetSpeedRate(m_SliderSpeed.GetPos());
+	theApp.modifyBiotopSpeed(m_SliderSpeed.GetPos());
   m_UserSpeed = m_SliderSpeed.GetPos();
 	*pResult = 0;
 }
@@ -268,13 +268,13 @@ bool CBioCtrlView::ForceChangeSpeed(int rate)
   }
   m_SliderSpeed.SetPos(newPos);
   RedrawWindow();
-  theApp.GetBiotopViewPtr()->SetSpeedRate(m_SliderSpeed.GetPos());
+  theApp.modifyBiotopSpeed(m_SliderSpeed.GetPos());
   return (resu);
 }
 
-bool CBioCtrlView::ForceForceSpeedRate(int rate)
+bool CBioCtrlView::ForceSetSpeed(float rate)
 {
-  int newPos = rate;
+  int newPos = cybio_round(rate);
   bool resu = true;
 
   // Check bounds
@@ -289,8 +289,9 @@ bool CBioCtrlView::ForceForceSpeedRate(int rate)
     resu = false;
   }
   m_SliderSpeed.SetPos(newPos);
+  m_UserSpeed = m_SliderSpeed.GetPos();
   RedrawWindow();
-  theApp.GetBiotopViewPtr()->SetSpeedRate(rate);
+  theApp.modifyBiotopSpeed(rate);
   return (resu);
 }
 
@@ -330,7 +331,7 @@ void CBioCtrlView::OnEdit()
 
 void CBioCtrlView::OnDefaultSpeed()
 {
-  theApp.GetBiotopViewPtr()->SetSpeedRate(1.2);
+  theApp.modifyBiotopSpeed(1.2);
   m_SliderSpeed.SetPos(1);
   m_UserSpeed = m_SliderSpeed.GetPos();
   RedrawWindow();
