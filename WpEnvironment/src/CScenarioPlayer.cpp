@@ -205,7 +205,6 @@ bool CScenarioPlayer::NextCmdNextSecond()
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("SCENAR - cmd: %s\n", curLine.c_str());
-    CYBIOCORE_LOG_FLUSH;
   }
 
   return resu;

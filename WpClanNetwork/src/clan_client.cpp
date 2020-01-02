@@ -212,7 +212,7 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   m_biotopSpeed = e.get_argument(1);
   m_bEventNextSecondStart = true;
   m_bEventNextSecondEnd = false;
-	log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+	//log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
 // "Biotop-Next second" event was received
@@ -221,7 +221,7 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   CustomType biotopTime = e.get_argument(0);
   m_bEventNextSecondEnd = true;
   m_lastEventTimeStamp = biotopTime.get_x();
-	log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+	//log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
   m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
 
 #ifdef USE_OGRE3D

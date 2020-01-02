@@ -50,7 +50,6 @@ distribution.
 #include <vector>
 #include <cassert>
 #include <fstream>
-#include "Matrix.h"
 
 using namespace std ;
 
@@ -66,7 +65,6 @@ typedef unsigned short      WORD;
 typedef unsigned int entitySignatureType;
 
 #define CYBIO_PI 3.1415926535
-
 
 // WIN32 Dll interface definitions
 #ifdef DLL_CYBIOCORE_DLL
@@ -106,11 +104,11 @@ typedef struct
 
 typedef DWORD   COLORREF;
 typedef unsigned char UCHAR;
-
 typedef unsigned long  timeCountType; 
 
+template<typename A, typename B> inline A cybio_min(A a, B b) { return a < b ? a : b; }
+template<typename A, typename B> inline A cybio_max(A a, B b) { return a > b ? a : b; }
 int  DLL_CYBIOCORE_API cybio_round(double val);
-
 int  DLL_CYBIOCORE_API getRandInt (int max); // Return random number in [0..max]
 bool DLL_CYBIOCORE_API testChance (double luckRate);
 bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2);
@@ -159,11 +157,9 @@ bool DLL_CYBIOCORE_API copy_file(char *src_filename, char  *new_filename);
   extern ofstream gLogFile;
   #define CYBIOCORE_LOG_INIT   gLogFile.open("CybioCore.log"); 
   #define CYBIOCORE_LOG_CLOSE  gLogFile.close();  
-  #define CYBIOCORE_LOG        gLogFile << FormatString
+  #define CYBIOCORE_LOG(...) gLogFile << FormatString(__VA_ARGS__); gLogFile.flush();
   #define CYBIOCORE_LOG_TIME(bioTime) \
-  gLogFile << FormatString("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, bioTime.seconds%60, bioTime.seconds/60); \
-  gLogFile.flush();
-  #define CYBIOCORE_LOG_FLUSH gLogFile.flush();
+  gLogFile << FormatString("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, bioTime.seconds%60, bioTime.seconds/60);
 #else
 #ifdef _DEBUG
   #define CYBIOCORE_LOG_INIT
@@ -171,13 +167,11 @@ bool DLL_CYBIOCORE_API copy_file(char *src_filename, char  *new_filename);
   #define CYBIOCORE_LOG printf
   #define CYBIOCORE_LOG_TIME(bioTime) \
   printf ("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, bioTime.seconds%60, bioTime.seconds/60);
-  #define CYBIOCORE_LOG_FLUSH
 #else
   #define CYBIOCORE_LOG_INIT
   #define CYBIOCORE_LOG_CLOSE
   #define CYBIOCORE_LOG
   #define CYBIOCORE_LOG_TIME(ignore)
-  #define CYBIOCORE_LOG_FLUSH
 #endif   /* DEBUG */
 #endif  /* CYBIOCORE_LOG_IN_FILE */
 #endif /* CYBIOCORE_LOG */

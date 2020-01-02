@@ -199,7 +199,7 @@ bool CMeasure::saveInFile(string fileNameWithPath)
   int i;
   string tmpStr;
   string savedMeasure = GetLabel() + "\n";
-  int nbPoints = min((timeCountType)MAX_MEASUREMENT_DATA_SIZE, m_TotalMeasNbFromStart);
+  int nbPoints = cybio_min((timeCountType)MAX_MEASUREMENT_DATA_SIZE, m_TotalMeasNbFromStart);
 
   for (i = 0; i < nbPoints; i++)
   {

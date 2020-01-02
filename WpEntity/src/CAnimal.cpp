@@ -2709,11 +2709,15 @@ void CAnimal::nextSecond()
     {
       CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
       if (checkVitalNeedsOk())
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare (coordx %d coordy %d)\n", 
-                     getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+      {
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare (coordx %d coordy %d)\n",
+          getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+      }
       else
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs (coordx %d coordy %d)\n", 
-                     getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+      {
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs (coordx %d coordy %d)\n",
+          getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+      }
     }
 
     // Decraese slowly Pleasure, suffer, Tiredness
@@ -3280,11 +3284,15 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     {
       CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
       if (checkVitalNeedsOk())
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+      {
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare\n",
+          getSpecieName().c_str(), getLabel().c_str());
+      }
       else
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+      {
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs\n",
+          getSpecieName().c_str(), getLabel().c_str());
+      }
     }
 
     // Decraese slowly suffer, center slowly pleasure

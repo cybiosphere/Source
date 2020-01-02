@@ -331,8 +331,6 @@ void CCybiosphereApp::OnAppAbout()
 
 void CCybiosphereApp::OnAppViewLog()
 {
-  CYBIOCORE_LOG_FLUSH;
-
   CString execString = LPCTSTR("notepad ") + GetAppliPath() + LPCTSTR("CybioCore.log");
   WinExec((char*)(execString.GetBuffer(0)),SW_SHOW);
 }

@@ -89,11 +89,6 @@
 
 #include "Definitions.h"
 
-#ifndef __MINMAX_DEFINED
-#  define max(a,b)    (((a) > (b)) ? (a) : (b))
-#  define min(a,b)    (((a) < (b)) ? (a) : (b))
-#endif
-
 #define MAT_TEMPLATE  template <class T>
 #define matrixT  matrix<T>
 #define _NO_THROW
@@ -264,8 +259,8 @@ matrixT::realloc (size_t row, size_t col)
    }
 
    base_mat *m1 = new base_mat( row, col, NULL);
-   size_t colSize = min(_m->Col,col) * sizeof(T);
-   size_t minRow = min(_m->Row,row);
+   size_t colSize = cybio_min(_m->Col,col) * sizeof(T);
+   size_t minRow = cybio_min(_m->Row,row);
 
    for (size_t i=0; i < minRow; i++)
       memcpy( m1->Val[i], _m->Val[i], colSize);

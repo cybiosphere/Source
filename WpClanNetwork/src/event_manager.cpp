@@ -99,8 +99,8 @@ namespace clan
   NetGameEvent event_manager::buildEventAddCloneEntity(CBasicEntity* pEntity, entityIdType modelEntityId)
   {
     NetGameEvent newEvent(labelEventAddCloneEntity);
-    newEvent.add_argument(modelEntityId);
-    newEvent.add_argument(pEntity->getId());
+    newEvent.add_argument((int)modelEntityId);
+    newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     newEvent.add_argument(pEntity->getStepCoord().x);
     newEvent.add_argument(pEntity->getStepCoord().y);
@@ -243,7 +243,7 @@ namespace clan
     if (pEntity->getBrain() != NULL)
       reactionIndex = pEntity->getBrain()->GetCurrentReactionIndex();
     newEvent.add_argument(pEntity->getBiotop()->getBiotopTime().seconds);
-    newEvent.add_argument(pEntity->getId());
+    newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     newEvent.add_argument(pEntity->getStepCoord().x);
     newEvent.add_argument(pEntity->getStepCoord().y);
@@ -288,10 +288,9 @@ namespace clan
         CAnimal* pAnimal = (CAnimal*)pEntity;
         pAnimal->forceCurrentSpeed(speed);
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
-
-        log_event("events", "Biotop update entity position: %1 action:%2 new coord x=%3 y=%4 direction=%5", pEntity->getLabel(),
-          pAnimal->getBrain()->GetReactionByIndex(reactIndex)->GetLabel(),
-          pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getStepDirection());
+        //log_event("events", "Biotop update entity position: %1 action:%2 new coord x=%3 y=%4 direction=%5", pEntity->getLabel(),
+        //          pAnimal->getBrain()->GetReactionByIndex(reactIndex)->GetLabel(),
+        //          pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getStepDirection());
       }
     }
     return pEntity;
@@ -300,7 +299,7 @@ namespace clan
 	NetGameEvent event_manager::buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId)
 	{
     NetGameEvent newEvent(labelEventRemoveEntity);
-    newEvent.add_argument(entityId);
+    newEvent.add_argument((int)entityId);
     newEvent.add_argument(pEntity->getLabel());
     return (std::move(newEvent));
 	} 

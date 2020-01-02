@@ -194,7 +194,6 @@ bool CIdentifyChecker::NextCheck()
   if (!pXmlDoc->LoadFile())
   {
     CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
-    CYBIOCORE_LOG_FLUSH;
     delete pXmlDoc;
     return true;
   }
@@ -204,7 +203,6 @@ bool CIdentifyChecker::NextCheck()
   if (pTargetEntity == NULL)
   {
     CYBIOCORE_LOG("CHECK - Error: cmd: %s \n", curLine.c_str());
-    CYBIOCORE_LOG_FLUSH;
     return true;
   }
 
@@ -240,8 +238,7 @@ bool CIdentifyChecker::NextCheck()
     else if (curVal > lowThreshold)
       checkIdentify(3, m_pEntity->getBrain()->getIdentificationLabel(i).c_str(), vectorIdentify);
   }
-  
-  CYBIOCORE_LOG_FLUSH;
+
   return true;
 }
 

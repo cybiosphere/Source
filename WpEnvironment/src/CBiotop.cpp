@@ -105,6 +105,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_bColorizeSearch = false;
 
   CYBIOCORE_LOG_INIT;
+  CYBIOCORE_LOG("BIOTOP - Biotop created\n");
 }
    
 CBiotop::~CBiotop() 
@@ -298,7 +299,6 @@ CBasicEntity* CBiotop::createEntity(string fileName, string pathName)
   if (!pXmlDoc->LoadFile())
   {
     CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
-    CYBIOCORE_LOG_FLUSH;
     delete pXmlDoc;
     return NULL;
   }
@@ -439,12 +439,10 @@ entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Error loading entity file: %s\n", fileNameWithPath.c_str());
-    CYBIOCORE_LOG_FLUSH;
     delete pXmlDoc;
     return -1;
   }
   newEntityId = createAndAddEntity(pXmlDoc, pathName, coord);
-  CYBIOCORE_LOG_FLUSH;
   delete pXmlDoc;
   return newEntityId;
 }
@@ -1083,7 +1081,7 @@ int CBiotop::findEntities(FoundEntity_t*& pFoundIds,
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
           m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = max(i-startCoord.x,j-startCoord.y);
+          m_tFoundIds[nbFoundIds].distance = cybio_max(i-startCoord.x,j-startCoord.y);
           nbFoundIds++;
         }
       }
@@ -1139,7 +1137,7 @@ int CBiotop::findEntities(FoundEntity_t*& pFoundIds,
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
           m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = max(startCoord.x-i,j-startCoord.y);
+          m_tFoundIds[nbFoundIds].distance = cybio_max(startCoord.x-i,j-startCoord.y);
           nbFoundIds++;
         }
       }
@@ -1195,7 +1193,7 @@ int CBiotop::findEntities(FoundEntity_t*& pFoundIds,
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
           m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = max(startCoord.x-i,startCoord.y-j);
+          m_tFoundIds[nbFoundIds].distance = cybio_max(startCoord.x-i,startCoord.y-j);
           nbFoundIds++;
         }
       }
@@ -1251,7 +1249,7 @@ int CBiotop::findEntities(FoundEntity_t*& pFoundIds,
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
           m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = max(i-startCoord.x,startCoord.y-j);
+          m_tFoundIds[nbFoundIds].distance = cybio_max(i-startCoord.x,startCoord.y-j);
           nbFoundIds++;
         }
       }
@@ -1325,7 +1323,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
       {
         curCoord.x = i;
         curCoord.y = j;
-        entityDist = max(i-startCoord.x,j-startCoord.y);
+        entityDist = cybio_max(i-startCoord.x,j-startCoord.y);
         if (entityDist>=rangeMin)
         {
           for (int layer = 1; layer < m_nbLayer; layer++)
@@ -1395,7 +1393,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
       {
         curCoord.x = i;
         curCoord.y = j;
-        entityDist = max(startCoord.x-i,j-startCoord.y);
+        entityDist = cybio_max(startCoord.x-i,j-startCoord.y);
         if (entityDist>=rangeMin)
         {
           for (int layer = 1; layer < m_nbLayer; layer++)
@@ -1465,7 +1463,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
       {
         curCoord.x = i;
         curCoord.y = j;
-        entityDist = max(startCoord.x-i,startCoord.y-j);
+        entityDist = cybio_max(startCoord.x-i,startCoord.y-j);
         if (entityDist>=rangeMin)
         {
           for (int layer = 1; layer < m_nbLayer; layer++)
@@ -1535,7 +1533,7 @@ int CBiotop::findFarEntities(FoundEntity_t*& pFoundIds,
       {
         curCoord.x = i;
         curCoord.y = j;
-        entityDist = max(i-startCoord.x,startCoord.y-j);
+        entityDist = cybio_max(i-startCoord.x,startCoord.y-j);
         if (entityDist>=rangeMin)
         {
           for (int layer = 1; layer < m_nbLayer; layer++)
@@ -2008,7 +2006,7 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
 
 int CBiotop::getGridDistance(Point_t gridCoord1, Point_t gridCoord2)
 {
-  return max(abs(gridCoord1.x - gridCoord2.x), abs(gridCoord1.y - gridCoord2.y));
+  return cybio_max(abs(gridCoord1.x - gridCoord2.x), abs(gridCoord1.y - gridCoord2.y));
 }
 
 void CBiotop::updateGridAllEntities(void)
@@ -2385,7 +2383,6 @@ bool CBiotop::loadFromXmlFile(string fileName, string pathName)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Error loading biotop file: %s\n", fileName.c_str());
-    CYBIOCORE_LOG_FLUSH;
     return false;
   }
 
@@ -2394,7 +2391,6 @@ bool CBiotop::loadFromXmlFile(string fileName, string pathName)
   loadFromXmlFile(&xmlDoc, pathName);
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - File load complete\n");
-  CYBIOCORE_LOG_FLUSH;
   return true;
 }
 
@@ -2610,7 +2606,7 @@ void CBiotop::spreadEntitiesRandomly(string fileName, string pathName, int cover
   else
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities : %ss\n", fileName);
+    CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities : %ss\n", fileName.c_str());
   }
 }
 

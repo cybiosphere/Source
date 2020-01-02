@@ -2242,7 +2242,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
   newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
   newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE; 
 
-  int nbGridMove = max( abs(newGridCoord.x - m_GridCoord.x), abs(newGridCoord.y - m_GridCoord.y) );
+  int nbGridMove = cybio_max( abs(newGridCoord.x - m_GridCoord.x), abs(newGridCoord.y - m_GridCoord.y) );
 
   Point_t nextGridCoord = m_GridCoord;
   bool resu = true;
