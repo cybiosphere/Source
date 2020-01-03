@@ -401,8 +401,7 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
 bool CVegetSpermatophyta::autoClone()
 {
   string childLabel;
-  childLabel = FormatString("j%d", m_TotalChildNumber);
-  childLabel = m_Label + childLabel;
+  childLabel = m_Label;
   CVegetSpermatophyta* pChildEntity = new CVegetSpermatophyta(childLabel,*this);
   m_TotalChildNumber++;
   // Caracter from genetic after mutation:

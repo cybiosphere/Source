@@ -314,7 +314,7 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
   for (int i = 0; i<pBiotop->getNbOfEntities(); i++)
   {
     pEntity = pBiotop->getEntityByIndex(i);
-    log_event("INFO", "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
+    log_event("INFO", "%1 pos %2 %3 dir%4 ID=%5", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection(), pEntity->getId());
   }
   return true;
 }

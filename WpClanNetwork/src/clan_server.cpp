@@ -235,8 +235,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
 // An event was received from a client
 void Server::on_event_received(NetGameConnection *connection, const NetGameEvent &e)
 {
-	log_event("Events  ", "Client sent event: %1", e.to_string());
-
+	//log_event("Events  ", "Client sent event: %1", e.to_string());
 	ServerUser *user = ServerUser::get_user(connection);
 	if(user)
 	{
@@ -416,7 +415,7 @@ void Server::send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType mod
     return;
   }
 
-  log_event("Events  ", "Add clone entity: %1", pEntity->getLabel());
+  //log_event("Events  ", "Add clone entity: %1", pEntity->getLabel());
   NetGameEvent addCloneEntityEvent{ event_manager::buildEventAddCloneEntity(pEntity, modelEntityId) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(addCloneEntityEvent);

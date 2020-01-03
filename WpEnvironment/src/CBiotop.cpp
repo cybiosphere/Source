@@ -96,7 +96,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
 
   m_tRandomEntitiesGeneration.resize(MAX_NUMBER_RANDOM_ENTITIES);
   // Set rain as default random entity
-  m_tRandomEntitiesGeneration[0].entityPathName = "..\\DataScriptMammal\\";
+  m_tRandomEntitiesGeneration[0].entityPathName = "../DataScriptMammal/";
   m_tRandomEntitiesGeneration[0].entityFileName = "water_puddle.xml";
   m_tRandomEntitiesGeneration[0].IsProportionalToFertility = true;
   m_tRandomEntitiesGeneration[0].avaragePeriodicity = 5;
@@ -134,10 +134,10 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, int newLay
     layer = pEntity->getLayer();
 
   if (getNbOfEntities()>MAXIMUM_NB_ENTITIES)
-     return (-1); 
+     return (ENTITY_ID_INVALID);
    
   if ( !isCoordValidAndFree(coord,layer) )
-     return (-1); 
+     return (ENTITY_ID_INVALID);
 
   // Set new id
   m_IdLastEntity++;
@@ -195,13 +195,14 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
     return false; 
 
   pEntity->setId(idEntity);
+
   // Go to position
   pEntity->jumpToStepCoord(stepCoord, layer);
   // Attach it to biotop
   pEntity->attachToBiotop(this);
 
   pEntity->setRemoteControlled(true);
-
+  
   if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
   {
     // Add it to list at the begining
@@ -407,12 +408,12 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, int layer, 
 {
   // Check coords
   if ( !isCoordValidAndFree(coord,layer) )
-     return (-1); 
+     return (ENTITY_ID_INVALID);
 
   // Create entity
   CBasicEntity* pNewEntity = createEntity(name,pGenome);
   if (pNewEntity==NULL)
-    return (-1);
+    return (ENTITY_ID_INVALID);
 
   if (pGenome->getClass() > CLASS_MINERAL_LAST)
   {
@@ -422,7 +423,7 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, int layer, 
 
   // Put it in the biotop (with check coord);
   entityIdType resuId = addEntity(pNewEntity, coord, layer);
-  if (resuId == -1)
+  if (resuId == ENTITY_ID_INVALID)
     delete pNewEntity;
 
   return (resuId);
@@ -440,7 +441,7 @@ entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Error loading entity file: %s\n", fileNameWithPath.c_str());
     delete pXmlDoc;
-    return -1;
+    return ENTITY_ID_INVALID;
   }
   newEntityId = createAndAddEntity(pXmlDoc, pathName, coord);
   delete pXmlDoc;
@@ -457,7 +458,7 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName
 
   // Check coords
   if ( !isCoordValidAndFree(coord,startLayer) )
-     return (-1); 
+     return (ENTITY_ID_INVALID);
 
   CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
   CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
@@ -480,7 +481,7 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName
   else
   {
     delete pTempGenome;
-    return -1;
+    return ENTITY_ID_INVALID;
   }
 
   return newEntityId;
@@ -503,7 +504,7 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
 
   // Check coords
   if ( !isCoordValidAndFree(cloneCoord,layer) )
-     return (-1); 
+     return (ENTITY_ID_INVALID);
 
   pNewEntity = createCloneEntity(pModelEntity);
 
@@ -511,12 +512,12 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Error copy clone Entity : %s\n", pModelEntity->getLabel().c_str());
-    return (-1);
+    return (ENTITY_ID_INVALID);
   }
 
   // Put it in the biotop (with check coord);
   entityIdType resuId = addEntity(pNewEntity, cloneCoord, layer);
-  if (resuId == -1)
+  if (resuId == ENTITY_ID_INVALID)
     delete pNewEntity;
 
   return (resuId);
@@ -701,11 +702,11 @@ void CBiotop::setDefaultEntitiesForTest(void)
   //CGenome* pGenome7 = new CGenome(CLASS_NONE,"");
   CGenome* pGenome8 = new CGenome(CLASS_NONE,"");
 
-  pGenome6->loadFromXmlFile("..\\DataScriptMammal\\rock.xml");
-  pGenome8->loadFromXmlFile("..\\DataScriptMammal\\wooden_fence.xml");
+  pGenome6->loadFromXmlFile("../DataScriptMammal/rock.xml");
+  pGenome8->loadFromXmlFile("../DataScriptMammal/wooden_fence.xml");
 
-  pGenome1->loadFromXmlFile("..\\DataScriptMammal\\grassDry.xml");
-  pGenome2->loadFromXmlFile("..\\DataScriptMammal\\grassDry2.xml");
+  pGenome1->loadFromXmlFile("../DataScriptMammal/grassDry.xml");
+  pGenome2->loadFromXmlFile("../DataScriptMammal/grassDry2.xml");
 
   Point_t coord = {10,10};
   string name;
@@ -736,7 +737,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
     coord.x = m_Dimension.x-3;
     coord.y = i;
     fenceId = createAndAddEntity("wooden_fence",coord,2,pGenome);
-    if (fenceId!=-1)
+    if (fenceId != ENTITY_ID_INVALID)
     {
       getEntityById(fenceId)->setDirection(2);
     }
@@ -2534,7 +2535,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
           else
           { 
             resuId = createAndAddEntity(entityFileName, pathNameForEntities, gridCoord);
-            if (resuId != -1)
+            if (resuId != ENTITY_ID_INVALID)
             {
               pEntity = getEntityById(resuId);
             }
@@ -2565,7 +2566,7 @@ void CBiotop::spreadWaterPuddlesByRain(int coverRate)
 {
   CGenome* pGenome1 = new CGenome(CLASS_NONE, "");
 
-  pGenome1->loadFromXmlFile("..\\DataScriptMammal\\water_puddle.xml");
+  pGenome1->loadFromXmlFile("../DataScriptMammal/water_puddle.xml");
 
   Point_t coord = { 10, 10 };
   entityIdType waterId;

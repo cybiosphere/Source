@@ -3640,10 +3640,6 @@ void CBasicEntity::forceWeight(double newWeight)
 {
   CGenericParam* pParam = getParameter(m_id_Weight);
   pParam->forceVal(newWeight);
-  if (pParam->isMinReached())
-  {
-    autoRemove();
-  }
 }
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 

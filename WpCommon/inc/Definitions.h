@@ -50,13 +50,19 @@ distribution.
 #include <vector>
 #include <cassert>
 #include <fstream>
+#include <stdint.h>
 
 using namespace std ;
 
+#ifdef WIN32
 typedef unsigned long       DWORD;
-typedef int                 BOOL;
 typedef unsigned char       BYTE;
 typedef unsigned short      WORD;
+#else
+typedef uint32_t DWORD;   // DWORD = unsigned 32 bit value
+typedef uint16_t WORD;    // WORD = unsigned 16 bit value
+typedef uint8_t BYTE;     // BYTE = unsigned 8 bit value
+#endif
 
 #ifndef ASSERT
 #define ASSERT assert
