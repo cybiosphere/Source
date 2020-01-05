@@ -288,7 +288,7 @@ void CBrainView::ExecuteActionAndGetAutoFeedback(int actionIndex)
     return;
   }
 
-  feedbackValType curFeedback = theApp.GetBiotop()->forceEntityAction(m_pBrain->GetEntity()->getId(), actionIndex);
+  feedbackValType curFeedback = theApp.forceEntityAction(m_pBrain->GetEntity()->getId(), actionIndex);
 
   double prevFeel = m_pBrain->GetPreviousFeelingWelfare();
   double curFeel  = m_pBrain->GetCurrentFeelingWelfare();

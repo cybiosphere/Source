@@ -644,3 +644,11 @@ void CCybiosphereApp::modifyBiotopSpeed(const float newBiotopSpeed)
   GetBiotopViewPtr()->SetSpeedRate(newBiotopSpeed);
 #endif
 }
+
+feedbackValType CCybiosphereApp::forceEntityAction(const entityIdType entityId, const int actionIndex)
+{
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_force_entity_action(entityId, actionIndex);
+#endif
+  return GetBiotop()->forceEntityAction(entityId, actionIndex);
+}

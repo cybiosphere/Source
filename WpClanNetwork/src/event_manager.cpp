@@ -340,6 +340,22 @@ namespace clan
     return true;
   }
 
+  NetGameEvent event_manager::buildEventForceEntityAction(const entityIdType entityId, const int actionIndex)
+  {
+    NetGameEvent newEvent(labelEventForceEntityAction);
+    newEvent.add_argument((int)entityId);
+    newEvent.add_argument(actionIndex);
+    return (std::move(newEvent));
+  }
+
+  bool event_manager::handleEventForceEntityAction(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int entityId = e.get_argument(0);
+    int actionIndex = e.get_argument(1);
+    log_event("events", "ForceEntityAction: entity%1 actionIndex%2", entityId, actionIndex);
+    return pBiotop->forceEntityAction(entityId, actionIndex);
+  }
+
   bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)

@@ -49,6 +49,7 @@ private:
 	void on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user);
 
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
 	void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user = NULL);

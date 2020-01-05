@@ -424,3 +424,10 @@ void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bo
   NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
   network_client.send_event(bioChangeSpeedEvent);
 }
+
+void Client::send_event_force_entity_action(const entityIdType entityId, const int actionIndex)
+{
+  log_event("Events  ", "Force entity action: Id %1 reaction: %2", entityId, actionIndex);
+  NetGameEvent bioForceActionEvent{ event_manager::buildEventForceEntityAction(entityId, actionIndex) };
+  network_client.send_event(bioForceActionEvent);
+}

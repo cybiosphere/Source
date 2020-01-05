@@ -37,6 +37,9 @@ namespace clan
     static NetGameEvent buildEventChangeBiotopSpeed(const float newBiotopSpeed, const bool isManualMode);
     static bool handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed, bool& isManualMode);
 
+    static NetGameEvent buildEventForceEntityAction(const entityIdType entityId, const int actionIndex);
+    static bool handleEventForceEntityAction(const NetGameEvent& e, CBiotop* pBiotop);
+
   private:
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
 
