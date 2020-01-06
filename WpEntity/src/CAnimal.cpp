@@ -579,7 +579,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   int len = rawData.size();
-  if (len<sizeof(WORD))
+  if (len<4*sizeof(WORD))
   {
     // not enought data to config param
     return (false);
@@ -1503,8 +1503,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
-  len -= 1; // Remove index
+  int len = rawData.size() * sizeof(BYTE) / sizeof(WORD) - 1;
   // Process Line Id
   GeneSubType_e subType = pGen->getGeneSubType();
   int lineId = cybio_round((double)pData[0] * getGeneScaleData1(subType));

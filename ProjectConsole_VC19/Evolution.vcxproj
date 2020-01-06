@@ -113,7 +113,7 @@
       <Culture>0x040c</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Exec/Evolution2.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/Evolution.pdb</ProgramDatabaseFile>
@@ -194,7 +194,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\Exec/Evolution2D.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -238,7 +238,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\Exec/Evolution2D.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
   {
     string resuDataPath;
     pBiotop = new CBiotop(0,0,0);
-    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
     if (resuDataPath != "")
       pBiotop->loadFromXmlFile(resuStr, resuDataPath);

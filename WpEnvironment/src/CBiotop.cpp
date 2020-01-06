@@ -2013,7 +2013,7 @@ int CBiotop::getGridDistance(Point_t gridCoord1, Point_t gridCoord2)
 void CBiotop::updateGridAllEntities(void)
 {
   Point_t tmpCoord;
-  int i,tmpLayer;
+  int tmpLayer;
 
   // Clear previous positions
   for (CBasicEntity* pCurEntity : m_tEntity)

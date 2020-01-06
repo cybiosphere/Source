@@ -74,11 +74,11 @@
     <OutDir>.\../Exec\</OutDir>
     <IntDir>.\../Temp\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>CybioCore3D</TargetName>
+    <TargetName>CybioCoreD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>CybioCore3D</TargetName>
+    <TargetName>CybioCoreD</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\../Exec\</OutDir>
@@ -122,17 +122,17 @@
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\..\Exec\CybioCore3D.dll</OutputFile>
+      <OutputFile>.\..\Exec\CybioCoreD.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>.\src\CybioCore3D.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\src\CybioCoreD.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\../Exec/CybioCore3D.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\../Exec/CybioCoreD.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>.\../Temp/CybioCore2D.map</MapFileName>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
-      <ImportLibrary>.\../Exec/CybioCore3D.lib</ImportLibrary>
+      <ImportLibrary>.\../Exec/CybioCoreD.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Bscmake>
@@ -140,8 +140,8 @@
       <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy                                                     ..\Exec\CybioCore3D.lib                                                   ..\ExportDll_VC19\lib\
-copy                                                     ..\Exec\CybioCore3D.dll                                                   ..\ExecOgre\</Command>
+      <Command>copy                                                     ..\Exec\CybioCoreD.lib                                                   ..\ExportDll_VC19\lib\
+copy                                                     ..\Exec\CybioCoreD.dll                                                   ..\ExecOgre\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -178,26 +178,26 @@ copy                                                     ..\Exec\CybioCore3D.dll
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\..\Exec\CybioCore3D.dll</OutputFile>
+      <OutputFile>.\..\Exec\CybioCoreD.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>.\src\CybioCore3D.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\src\CybioCoreD.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\../Exec/CybioCore3D.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\../Exec/CybioCoreD.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\../Temp/CybioCore2D.map</MapFileName>
+      <MapFileName>.\../Temp/CybioCoreD.map</MapFileName>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>.\../Exec/CybioCore3D.lib</ImportLibrary>
+      <ImportLibrary>.\../Exec/CybioCoreD.lib</ImportLibrary>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\../Exec/CybioCore.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy                                                     ..\Exec\CybioCore3D.lib                                                   ..\ExportDll_VC19\lib\
-copy                                                     ..\Exec\CybioCore3D.dll                                                   ..\ExecOgre\</Command>
+      <Command>copy                                                     ..\Exec\CybioCoreD.lib                                                   ..\ExportDll_VC19\lib\
+copy                                                     ..\Exec\CybioCoreD.dll                                                   ..\ExecOgre\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

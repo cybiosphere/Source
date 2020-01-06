@@ -405,10 +405,9 @@ namespace clan
     xmlDoc.Parse(xmlBuffer.get_data());
 
     CBasicEntity* pNewEntity = pBiotop->createEntity(&xmlDoc, ".\\temp\\");
-    log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 ID %5", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, entityId);
+    log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 ID %5", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, (int)entityId);
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
-    bool bFound = false;
 
     if (setAsRemoteControl)
     {

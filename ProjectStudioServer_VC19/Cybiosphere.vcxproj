@@ -352,7 +352,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>../Exec/CybiosphereD.exe</OutputFile>
       <AdditionalOptions> /FIXED:NO</AdditionalOptions>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -396,7 +396,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>../Exec/CybiosphereD.exe</OutputFile>
       <AdditionalOptions> /FIXED:NO</AdditionalOptions>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

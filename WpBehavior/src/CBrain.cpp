@@ -883,7 +883,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     for (i=0; i<GetNumberReaction(); i++)
     {
       columnMaping[i] = -1;
-      for(int j=0; j<nbColumnsInFile; j++)
+      for(j=0; j<nbColumnsInFile; j++)
       {
         if (GetColumnLabel(i).find(vectColumnLabel[j], 0) == 0)
         {
