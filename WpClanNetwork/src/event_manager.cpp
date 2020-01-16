@@ -239,28 +239,43 @@ namespace clan
   NetGameEvent event_manager::buildEventUpdateEntityPos(CBasicEntity* pEntity)
   {
     NetGameEvent newEvent(labelEventUpdateEntityPos);
-    int reactionIndex = 0;
-    if (pEntity->getBrain() != NULL)
-      reactionIndex = pEntity->getBrain()->GetCurrentReactionIndex();
-    newEvent.add_argument(pEntity->getBiotop()->getBiotopTime().seconds);
     newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
+    newEvent.add_argument(pEntity->getStatus());
     newEvent.add_argument(pEntity->getStepCoord().x);
     newEvent.add_argument(pEntity->getStepCoord().y);
     newEvent.add_argument(pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument(pEntity->getCurrentSpeed());
     newEvent.add_argument(float(pEntity->getWeight()));
-    newEvent.add_argument(reactionIndex);
-    newEvent.add_argument(pEntity->getStatus());
+    newEvent.add_argument(float(pEntity->getNoise()));
+    if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+    {
+      CAnimal* pAnimal = (CAnimal*)pEntity;
+      newEvent.add_argument(float(pAnimal->getFatWeight()));
+      newEvent.add_argument(pAnimal->getAge());
+      newEvent.add_argument(float(pAnimal->getHealthRate()));
+      newEvent.add_argument(float(pAnimal->getHungerRate()));
+      newEvent.add_argument(float(pAnimal->getThirstRate()));
+      newEvent.add_argument(float(pAnimal->getStomachFillingRate()));
+      newEvent.add_argument(float(pAnimal->getLibidoRate()));
+      newEvent.add_argument(float(pAnimal->getSufferingRate()));
+      newEvent.add_argument(float(pAnimal->getPleasureRate()));
+      newEvent.add_argument(float(pAnimal->getTirednessRate()));
+      newEvent.add_argument(float(pAnimal->getFearRate()));
+      newEvent.add_argument(float(pAnimal->getVigilance()));
+      newEvent.add_argument(pAnimal->getBrain()->GetCurrentReactionIndex());
+      newEvent.add_argument(pAnimal->getBrain()->GetCurrentPurposeIndex());
+    }
+    // TODO: update also Mammal parameters
     return (std::move(newEvent));
   }
 
   CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
   {
-    int index = e.get_argument(0);
-    int entityId = e.get_argument(1);
-    std::string  entityLabel = e.get_argument(2);
+    int entityId = e.get_argument(0);
+    std::string  entityLabel = e.get_argument(1);
+    int status = e.get_argument(2);
     Point_t position;
     position.x = e.get_argument(3);
     position.y = e.get_argument(4);
@@ -268,30 +283,63 @@ namespace clan
     int direction = e.get_argument(6);
     int speed = e.get_argument(7);
     float weight = e.get_argument(8);
-    int reactIndex = e.get_argument(9);
-    int status = e.get_argument(10);
+    float noise = e.get_argument(9);
 
     // Check if entity exists
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-
     // If entity does not exist, create one with default parameters
     if (pEntity != NULL)
     {
       if (pEntity->getLabel() != entityLabel)
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
-      pEntity->forceWeight(weight);
       pEntity->setStatus((StatusType_e)status);
       pEntity->jumpToStepCoord(position, layer);
       pEntity->setStepDirection(direction);
+      pEntity->forceWeight(weight);
+      pEntity->setNoise(noise);
+
       if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
       {
         CAnimal* pAnimal = (CAnimal*)pEntity;
         pAnimal->forceCurrentSpeed(speed);
+
+        float fatWeight= e.get_argument(10);
+        int age = e.get_argument(11);
+        float healthRate = e.get_argument(12);
+        float hungerRate = e.get_argument(13);
+        float thirstRate = e.get_argument(14);
+        float stomachFillingRate = e.get_argument(15);
+        float libidoRate = e.get_argument(16);
+        float sufferingRate = e.get_argument(17);
+        float pleasureRate = e.get_argument(18);
+        float tirednessRate = e.get_argument(19);
+        float fearRate = e.get_argument(20);
+        float vigilance = e.get_argument(21);
+        int reactIndex = e.get_argument(22);
+        int purposeIndex = e.get_argument(23);
+
+        pAnimal->setFatWeight(fatWeight);
+        if (age > pAnimal->getAge())
+        {
+          pAnimal->quickAgeing(age - pAnimal->getAge());
+        }
+        pAnimal->setHealthRate(healthRate);
+        pAnimal->setHungerRate(hungerRate);
+        pAnimal->setThirstRate(thirstRate);
+        pAnimal->setStomachFillingRate(stomachFillingRate);
+        pAnimal->setLibidoRate(libidoRate);
+        pAnimal->setSufferingRate(sufferingRate);
+        pAnimal->setPleasureRate(pleasureRate);
+        pAnimal->setTirednessRate(tirednessRate);
+        pAnimal->setFearRate(fearRate);
+        pAnimal->setVigilance(vigilance);
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
+        pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
         //log_event("events", "Biotop update entity position: %1 action:%2 new coord x=%3 y=%4 direction=%5", pEntity->getLabel(),
-        //          pAnimal->getBrain()->GetReactionByIndex(reactIndex)->GetLabel(),
+        //          pAnimal->getBrain()->GetPurposeByIndex(purposeIndex)->GetLabel(),
         //          pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getStepDirection());
       }
+      // TODO: update also Mammal parameters
     }
     return pEntity;
   }

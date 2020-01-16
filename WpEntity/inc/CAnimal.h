@@ -231,6 +231,7 @@ public:
   double getRotenTimeExpectation();
   double getHungerRate();
   double getThirstRate();
+  double getHealthRate();
   double getStomachFillingRate();
   double getLibidoRate();
   double getSufferingRate();
@@ -251,6 +252,17 @@ public:
   double getFearRate();
   double getVigilance();
   void   setVigilance(double rate);
+  void setHungerRate(double rate);
+  void setThirstRate(double rate);
+  void setLibidoRate(double rate);
+  void setHealthRate(double rate);
+  void setSufferingRate(double rate);
+  void setPleasureRate(double rate);
+  void setTirednessRate(double rate);
+  void setFatWeight(double fatWeight);
+  void setFearRate(double rate);
+  void setStomachFillingRate(double rate);
+
 }; // end ClAnimal
 
 #endif // !defined(CANIMAL_INCLUDED_)

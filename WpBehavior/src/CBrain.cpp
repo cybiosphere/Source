@@ -402,6 +402,16 @@ CPurpose* CBrain::GetCurrentPurpose (void)
   return (m_pCurrentPurpose);
 }
 
+int CBrain::GetCurrentPurposeIndex(void)
+{
+  for (unsigned int i = 0; i < m_tPurposes.size(); i++)
+  {
+    if (m_tPurposes[i] == m_pCurrentPurpose)
+      return i;
+  }
+  return (-1);
+}
+
 CPurpose*  CBrain::GetPurposeByTriggerSensor(DWORD sensorUniqueId, int sensorSubCaptorIndex)
 {
   return GetPurposeByUniqueId(CPurpose::ComputeUniqueId(sensorUniqueId, sensorSubCaptorIndex));
@@ -410,6 +420,29 @@ CPurpose*  CBrain::GetPurposeByTriggerSensor(DWORD sensorUniqueId, int sensorSub
 CGeoMap* CBrain::GetGeographicMap(void)
 {
   return m_pGeoMap;
+}
+
+void CBrain::ForceCurrentPurpose(int purposeIndex)
+{
+  if (purposeIndex > -1)
+  {
+    if (m_pCurrentPurpose != m_tPurposes[purposeIndex])
+    {
+      // Stop previous purpose
+      if (m_pCurrentPurpose != NULL)
+      {
+        m_pCurrentPurpose->StopPeriod();
+      }
+      m_pCurrentPurpose = m_tPurposes[purposeIndex];
+      // Start new purpose
+      m_pCurrentPurpose->StartPeriod();
+    }
+  }
+  else if (m_pCurrentPurpose != NULL)
+  {
+    m_pCurrentPurpose->StopPeriod();
+    m_pCurrentPurpose = NULL;
+  }
 }
 
 bool CBrain::PollAllSensors (void)

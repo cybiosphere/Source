@@ -250,8 +250,10 @@ public:
   CPurpose*  GetPurposeByIndex(int index);
   CPurpose*  GetPurposeByUniqueId(DWORD uniqueId);
   CPurpose*  GetCurrentPurpose(void);
+  int        GetCurrentPurposeIndex(void);
   CPurpose*  GetPurposeByTriggerSensor(DWORD sensorUniqueId, int sensorSubCaptorIndex);
   CGeoMap*   GetGeographicMap(void);
+  void       ForceCurrentPurpose(int purposeIndex);
 
   bool PollAllSensors (void);
   bool AddFeelingWelfareSensitivity(CSensor* pSens, int tableSensiSize, double* pTableSensi);

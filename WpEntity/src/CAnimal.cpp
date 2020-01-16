@@ -4020,6 +4020,11 @@ double CAnimal::getThirstRate()
   return (getParameter(m_id_Thirst)->getVal());
 }
 
+double CAnimal::getHealthRate()
+{
+  return (getParameter(m_id_Health)->getVal());
+}
+
 double CAnimal::getStomachFillingRate()
 {
   return (getParameter(m_id_StomachFilling)->getVal());
@@ -4122,4 +4127,54 @@ double CAnimal::getVigilance()
 void CAnimal::setVigilance(double rate)
 {
   getParameter(m_id_Vigilance)->setVal(rate);
+}
+
+void CAnimal::setHungerRate(double rate)
+{
+  getParameter(m_id_Hunger)->setVal(rate);
+}
+
+void CAnimal::setThirstRate(double rate)
+{
+  getParameter(m_id_Thirst)->setVal(rate);
+}
+
+void CAnimal::setLibidoRate(double rate)
+{
+  getParameter(m_id_Libido)->setVal(rate);
+}
+
+void CAnimal::setHealthRate(double rate)
+{
+  getParameter(m_id_Health)->setVal(rate);
+}
+
+void CAnimal::setSufferingRate(double rate)
+{
+  getParameter(m_id_Suffering)->setVal(rate);
+}
+
+void CAnimal::setPleasureRate(double rate)
+{
+  getParameter(m_id_Pleasure)->setVal(rate);
+}
+
+void CAnimal::setTirednessRate(double rate)
+{
+  getParameter(m_id_Tiredness)->setVal(rate);
+}
+
+void CAnimal::setFatWeight(double fatWeight)
+{
+  getParameter(m_id_FatWeight)->setVal(fatWeight);
+}
+
+void CAnimal::setFearRate(double rate)
+{
+  getParameter(m_id_Fear)->setVal(rate);
+}
+
+void CAnimal::setStomachFillingRate(double rate)
+{
+  getParameter(m_id_StomachFilling)->setVal(rate);
 }
