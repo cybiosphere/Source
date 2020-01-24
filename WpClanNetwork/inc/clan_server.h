@@ -56,6 +56,7 @@ private:
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);
+	void send_event_create_measure(CMeasure* pMeasure, ServerUser* user = NULL);
 
   bool process_cmd_line(const std::string input_cmd_string);
 

@@ -69,9 +69,7 @@ class DLL_CYBIOCORE_API CMeasureEntityParam : public CMeasureParam
 //---------------------------------------------------------------------------
 // internal proprieties:
 //---------------------------------------------------------------------------
-protected:
-  CBasicEntity*  m_pEntity;
-  int            m_paramIndex;
+
 
 //===========================================================================
 // Methods 

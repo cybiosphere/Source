@@ -78,6 +78,8 @@ CMeasure::CMeasure(int period, int id, double rangeMin, double rangeMax, Measure
   m_StartBioTime.years   = 0;
   m_TotalMeasNbFromStart = 0;
   m_IndexCurData = 0;
+  m_paramIndex = -1;
+  m_pEntity = NULL;
 
   m_EventType = EVENT_TYPE_NONE;
   m_EventThreshold = 0;
@@ -192,33 +194,76 @@ bool CMeasure::CheckEvent(void)
 }
 
 //===========================================================================
-// Save in File
+// Raw data conversion
 //===========================================================================
-bool CMeasure::saveInFile(string fileNameWithPath)
+string CMeasure::buildStringDataFromMeasure()
 {
   int i;
   string tmpStr;
-  string savedMeasure = GetLabel() + "\n";
+  string strMeasure = GetLabel() + "\n";
   int nbPoints = cybio_min((timeCountType)MAX_MEASUREMENT_DATA_SIZE, m_TotalMeasNbFromStart);
 
   for (i = 0; i < nbPoints; i++)
   {
     tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
-    savedMeasure += tmpStr;
+    strMeasure += tmpStr;
   }
-  savedMeasure += "\n";
+  strMeasure += "\n";
   for (i = 0; i < nbPoints; i++)
   {
-    tmpStr = FormatString("%f;", m_tCurValTable[i].value);
-    savedMeasure += tmpStr;
+    tmpStr = FormatString("%.2f;", m_tCurValTable[i].value);
+    strMeasure += tmpStr;
   }
-  savedMeasure += "\n\n";
+  strMeasure += "\n\n";
 
+  return strMeasure;
+}
+
+std::vector<std::string> CMeasure::split(const std::string& s, char delimiter)
+{
+  std::vector<std::string> tokens;
+  std::string token;
+  std::istringstream tokenStream(s);
+  while (std::getline(tokenStream, token, delimiter))
+  {
+    tokens.push_back(token);
+  }
+  return tokens;
+}
+
+bool CMeasure::buildMeasureDataFromString(string dataString)
+{
+  size_t endFirstLine = dataString.find("\n");
+  size_t endSencondLine = dataString.find("\n", endFirstLine + 1);
+  size_t endThirdLine = dataString.find("\n", endSencondLine + 1);
+  string label = dataString.substr(0, endFirstLine);
+  string timeStampDataStr = dataString.substr(endFirstLine + 1, endSencondLine - endFirstLine - 1);
+  string userDataStr = dataString.substr(endSencondLine + 1, endThirdLine - endSencondLine - 1);
+
+  auto vectorTimeStampDataStr = split(timeStampDataStr, ';');
+  auto vectorUserDataStr = split(userDataStr, ';');
+  int nbPoints = cybio_min(vectorTimeStampDataStr.size(), vectorUserDataStr.size());
+
+  for (int i = 0; i < nbPoints; i++)
+  {
+    m_tCurValTable[i].timeCount = stoi(vectorTimeStampDataStr[i]);
+    m_tCurValTable[i].value = stof(vectorUserDataStr[i]);
+    m_IndexCurData++;
+  }
+
+  return true;
+}
+
+//===========================================================================
+// Save in File
+//===========================================================================
+bool CMeasure::saveInFile(string fileNameWithPath)
+{
+  string savedMeasure = buildStringDataFromMeasure();
   ofstream f1;
   f1.open(fileNameWithPath.c_str(), std::ofstream::out | std::ofstream::app);
   f1.write(savedMeasure.c_str(), savedMeasure.length());
   f1.close();
-
   return (true);
 }
 
@@ -319,4 +364,14 @@ string CMeasure::getEventTypeStrName(EventType_e type)
   string typeName;
   typeName = EventTypeNameList[type];
   return(typeName);
+}
+
+int CMeasure::GetParameterIndex()
+{
+  return(m_paramIndex);
+}
+
+CBasicEntity* CMeasure::GetEntity()
+{
+  return(m_pEntity);
 }

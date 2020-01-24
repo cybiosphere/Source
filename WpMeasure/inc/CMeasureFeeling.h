@@ -74,7 +74,6 @@ class DLL_CYBIOCORE_API CMeasureFeeling : public CMeasure
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-  CBasicEntity* m_pEntity;
   CBrain* m_pBrain;
   MeasureFeelingType_e m_SubType;
 

@@ -330,6 +330,7 @@ private:
 // Measure management
 //---------------------------------------------------------------------------
 public:
+   bool      addMeasure(CMeasure *pMeasure);
    bool      addMeasureBiotopParam(BiotopParameterType_e type, int period, int id);
    bool      addMeasureEntityParam(CBasicEntity* pEntity, int paramId, int period, int id);
    bool      addMeasureFeeling(CBasicEntity* pEntity, int period, int id, MeasureFeelingType_e type);

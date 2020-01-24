@@ -55,6 +55,7 @@ private:
 	void on_event_biotop_updatefullentity(const NetGameEvent &e);
 	void on_event_biotop_updateentityposition(const NetGameEvent &e);
   void on_event_biotop_removeentity(const NetGameEvent &e);
+  void on_event_biotop_createmeasure(const NetGameEvent& e);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);

@@ -71,7 +71,6 @@ class DLL_CYBIOCORE_API CMeasureBiotopParam : public CMeasureParam
 //---------------------------------------------------------------------------
 protected:
   CBiotop*       m_pBiotop;
-  int            m_paramIndex;
 
 //===========================================================================
 // Methods 

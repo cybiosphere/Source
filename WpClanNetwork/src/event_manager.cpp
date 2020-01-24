@@ -2,7 +2,7 @@
 #include "event_manager.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "API/Core/Text/console_logger.h"
-
+#include "CMeasureFactory.h"
 
 namespace clan
 {
@@ -404,6 +404,96 @@ namespace clan
     return pBiotop->forceEntityAction(entityId, actionIndex);
   }
 
+  bool event_manager::buildEventsCreateMeasure(CMeasure* pMeasure, std::vector<NetGameEvent>& eventVector)
+  {
+    std::string dataString = pMeasure->buildStringDataFromMeasure();
+
+    // Compress data string
+    DataBuffer dataBuffer(dataString.c_str(), dataString.length());
+    DataBuffer dataZipBuffer = ZLibCompression::compress(dataBuffer, false);
+
+    int measureTypeSubType = pMeasure->GetType() + (pMeasure->GetSubTypeId() << 8);
+    int entityId = -1;
+    if (pMeasure->GetEntity() != NULL)
+    {
+      entityId = pMeasure->GetEntity()->getId();
+    }
+    return (build_events_long_string(labelEventCreateMeasure, dataZipBuffer, pMeasure->GetId(),
+      pMeasure->GetPeriod(), measureTypeSubType, pMeasure->GetParameterIndex(), entityId, eventVector));
+  }
+
+  void event_manager::handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int i;
+    int transactionId = e.get_argument(0); // contains measureId
+    int nbBlocks = e.get_argument(1);
+    int blocksIndex = e.get_argument(2);
+    int custom1 = e.get_argument(3);
+    int custom2 = e.get_argument(4);
+    int custom3 = e.get_argument(5);
+    int custom4 = e.get_argument(6);
+    DataBuffer dataZipBufferBlock = e.get_argument(7);
+
+    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    {
+      log_event("events", "Biotop create measure: ERROR bad nbBlocks: %1", nbBlocks);
+    }
+    else if (nbBlocks == 1)
+    {
+      createMeasureWithZipBuffer(dataZipBufferBlock, pBiotop, transactionId, custom1, custom2, custom3, custom4);
+    }
+    else
+    {
+      int storeIndex = -1;
+      // Find current transaction if exists
+      for (i = 0; i < (int)m_tMeasureBufferEvent.size(); i++)
+      {
+        if (m_tMeasureBufferEvent[i].transactionId == transactionId)
+        {
+          storeIndex = i;
+          break;
+        }
+      }
+      // if context exist, fill context 
+      if (storeIndex > -1)
+      {
+        m_tMeasureBufferEvent[storeIndex].nb_blocks_received++;
+        m_tMeasureBufferEvent[storeIndex].buffer[blocksIndex] = dataZipBufferBlock;
+        if (m_tMeasureBufferEvent[storeIndex].nb_blocks_received == m_tMeasureBufferEvent[storeIndex].nb_blocks)
+        {
+          DataBuffer fullXmlZipBuffer;
+          int fullXmlZipBufferSize = 0;
+          int curBufIndex = 0;
+          // Process buffer size
+          for (i = 0; i < m_tMeasureBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            fullXmlZipBufferSize += m_tMeasureBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
+          // Copy blocks in single buffer
+          for (i = 0; i < m_tMeasureBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tMeasureBufferEvent[storeIndex].buffer[i][0]), m_tMeasureBufferEvent[storeIndex].buffer[i].get_size());
+            curBufIndex += m_tMeasureBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          // Create measure
+          createMeasureWithZipBuffer(dataZipBufferBlock, pBiotop, transactionId, custom1, custom2, custom3, custom4);
+          // clean m_tMeasureBufferEvent
+          m_tMeasureBufferEvent.erase(m_tMeasureBufferEvent.begin() + storeIndex);
+        }
+      }
+      else // (storeIndex==-1) new context creation needed
+      {
+        LongBufferEvent_t newBufferEvent;
+        newBufferEvent.transactionId = transactionId;
+        newBufferEvent.nb_blocks = nbBlocks;
+        newBufferEvent.nb_blocks_received = 1;
+        newBufferEvent.buffer[blocksIndex] = dataZipBufferBlock;
+        m_tMeasureBufferEvent.insert(m_tMeasureBufferEvent.end(), newBufferEvent);
+      }
+    }
+  }
+
   bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)
@@ -506,5 +596,18 @@ namespace clan
     }
     return (bFound);
   }
-  
+
+  bool event_manager::createMeasureWithZipBuffer(const DataBuffer& dataZipBuffer, CBiotop* pBiotop, const int measureId,
+                                                 const int period, const int typeSubType, const int paramId, const int entityId)
+  {
+    DataBuffer dataBuffer = ZLibCompression::decompress(dataZipBuffer, false);
+    CMeasure* pNewMeasure = CMeasureFactory::createMeasure(measureId, period, typeSubType, pBiotop, paramId, entityId);
+    if (pNewMeasure != NULL)
+    {
+      log_event("events", "Biotop create measure: Id%1 period=%2", measureId, period);
+      pNewMeasure->buildMeasureDataFromString(dataBuffer.get_data());
+      pBiotop->addMeasure(pNewMeasure);
+    }
+    return true;
+  }
 }

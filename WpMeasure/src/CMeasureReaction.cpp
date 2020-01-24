@@ -53,7 +53,7 @@ const char* MeasureReactionTypeNameList[MEASURE_ACTION_NB_TYPE] =
 CMeasureReaction::CMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type)
 :CMeasure(period, id, 0, 100.0, MEASURE_TYPE_REACTION)
 {
-  m_ReactionIndex = reactionInd;
+  m_paramIndex = reactionInd;
 
   if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) && (pEntity->getBrain()->GetReactionByIndex(reactionInd) != NULL))
   {
@@ -139,5 +139,5 @@ int CMeasureReaction::GetSubTypeId()
 
 int CMeasureReaction::GetReactionIndex()
 {
-  return(m_ReactionIndex);
+  return(m_paramIndex);
 }

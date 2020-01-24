@@ -41,6 +41,7 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
+  game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Client::on_event_biotop_createmeasure);
 
 	quit = false;
 	logged_in = false;
@@ -281,6 +282,10 @@ void Client::on_event_biotop_removeentity(const NetGameEvent &e)
   event_manager::handleEventRemoveEntity(e, m_pBiotop);
 }
 
+void Client::on_event_biotop_createmeasure(const NetGameEvent& e)
+{
+  m_EventManager.handleEventCreateMeasure(e, m_pBiotop);
+}
 
 void Client::displayBiotopEntities()
 {

@@ -17,6 +17,7 @@ namespace clan
   const std::string labelEventStart            { "Game-Start" };
   const std::string labelEventNextSecStart     { "Biotop-Next second start" };
   const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
+  const std::string labelEventCreateMeasure    { "Biotop-Create measure" };
 
   // Both directions
   const std::string labelEventAddEntity        { "Biotop-Add entity" };

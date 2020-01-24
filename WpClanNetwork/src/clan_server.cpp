@@ -335,6 +335,11 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       }
     }
 
+    for (i = 0; i < m_pBiotop->getNbOfMeasures(); i++)
+    {
+      send_event_create_measure(m_pBiotop->getMeasureByIndex(i), user);
+    }
+
 	  user->send_event(NetGameEvent(labelEventStart));
   }
 
@@ -487,6 +492,32 @@ void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
     network_server.send_event(bioRemoveEntityEvent);
   else
     user->send_event(bioRemoveEntityEvent);
+}
+
+void Server::send_event_create_measure(CMeasure* pMeasure, ServerUser* user)
+{
+  if (pMeasure == NULL)
+  {
+    log_event("Events  ", "Create measure: NULL measure");
+    return;
+  }
+
+  log_event("Events  ", "Create measure: %1", pMeasure->GetLabel());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsCreateMeasure(pMeasure, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      if (user == NULL) // If user not define, broadcast info to all
+        network_server.send_event(eventToSend);
+      else
+        user->send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_create_measure: Event not sent");
+  }
 }
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)

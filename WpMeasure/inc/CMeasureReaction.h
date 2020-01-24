@@ -74,10 +74,8 @@ class DLL_CYBIOCORE_API CMeasureReaction : public CMeasure
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-  CBasicEntity* m_pEntity;
   CReaction* m_pReaction;
   MeasureReactionType_e m_SubType;
-  int m_ReactionIndex;
 
 //===========================================================================
 // Methods 

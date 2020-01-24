@@ -40,8 +40,12 @@ namespace clan
     static NetGameEvent buildEventForceEntityAction(const entityIdType entityId, const int actionIndex);
     static bool handleEventForceEntityAction(const NetGameEvent& e, CBiotop* pBiotop);
 
+    static bool buildEventsCreateMeasure(CMeasure* pMeasure, std::vector<NetGameEvent>& eventVector);
+    void handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop);
+
   private:
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
+    std::vector<LongBufferEvent_t> m_tMeasureBufferEvent;
 
 	  static bool build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                          const int custom1, const int custom2, const int custom3, const int custom4,
@@ -50,5 +54,7 @@ namespace clan
                                 const int stepCoordX, const int stepCoordY, const int layer, const int stepDirection,
                                 CBiotop* pBiotop, bool setAsRemoteControl);
     bool updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop, bool setAsRemoteControl);
+    bool createMeasureWithZipBuffer(const DataBuffer& dataZipBuffer, CBiotop* pBiotop, const int measureId,
+                                    const int period, const int typeSubType, const int paramId, const int entityId);
   };
 }

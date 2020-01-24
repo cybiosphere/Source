@@ -47,6 +47,7 @@ distribution.
 //#include <afxwin.h>
 
 #include "Definitions.h"
+#include "CBasicEntity.h"
 
 //===========================================================================
 // Definitions            
@@ -105,6 +106,8 @@ protected:
   timeCountType  m_TotalMeasNbFromStart;
   MeasureData_t  m_tCurValTable[MAX_MEASUREMENT_DATA_SIZE];
   int            m_IndexCurData;
+  int            m_paramIndex;
+  CBasicEntity*  m_pEntity;
 
   EventType_e   m_EventType;
   double        m_EventThreshold;
@@ -149,8 +152,18 @@ public:
   bool CheckEvent(void);
 
 //---------------------------------------------------------------------------
+// Raw data conversion
+//---------------------------------------------------------------------------
+public:
+  string buildStringDataFromMeasure();
+  bool buildMeasureDataFromString(string dataString);
+private:
+  std::vector<std::string> split(const std::string& s, char delimiter);
+
+//---------------------------------------------------------------------------
 // Save in File
 //---------------------------------------------------------------------------
+public:
   bool saveInFile(string fileNameWithPath);
 
 //---------------------------------------------------------------------------
@@ -172,6 +185,8 @@ public:
   EventType_e GetEventType();
   double GetEventThreshold();
   static string getEventTypeStrName(EventType_e type);
+  int GetParameterIndex();
+  CBasicEntity* GetEntity();
 };
 
 #endif // !defined(CMEASURE_INCLUDED_)
