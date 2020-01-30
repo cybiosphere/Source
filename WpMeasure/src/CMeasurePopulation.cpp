@@ -125,6 +125,21 @@ double CMeasurePopulation::GetCurrentValue()
   return (val);
 }
 
+//===========================================================================
+// Raw data conversion
+//===========================================================================
+bool CMeasurePopulation::buildMeasureDataFromString(string dataString)
+{
+  bool resu = CMeasure::buildMeasureDataFromString(dataString);
+  string label = dataString.substr(0, dataString.find("\n"));
+  if ((label.find("Population : ") != string::npos) && (m_SubType == MEASURE_POPULATION_SPECIFIC))
+  {
+    // Update specie name
+    m_SpecieName = label.substr(13);
+    m_Label = "Population : " + m_SpecieName;
+  }
+  return resu;
+}
 
 //===========================================================================
 // Get / Set for attributes
