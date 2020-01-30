@@ -652,3 +652,19 @@ feedbackValType CCybiosphereApp::forceEntityAction(const entityIdType entityId, 
 #endif
   return GetBiotop()->forceEntityAction(entityId, actionIndex);
 }
+
+void CCybiosphereApp::updateAllBiotopMeasures()
+{
+  CMeasure* getMeasureByIndex(int index);
+  for (int idx = 0; idx < m_pBiotop->getNbOfMeasures(); idx++)
+  {
+    CMeasure* pMeasure = m_pBiotop->getMeasureByIndex(idx);
+#ifdef USE_CLAN_CLIENT
+    m_pClient->send_event_create_measure(pMeasure);
+#endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+    m_pServer->send_event_create_measure(pMeasure);
+#endif // USE_CLAN_SERVER
+  }
+  GetStatisticViewPtr()->RebuildMeasChkBox();
+}

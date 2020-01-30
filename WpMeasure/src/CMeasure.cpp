@@ -243,14 +243,12 @@ bool CMeasure::buildMeasureDataFromString(string dataString)
   auto vectorTimeStampDataStr = split(timeStampDataStr, ';');
   auto vectorUserDataStr = split(userDataStr, ';');
   int nbPoints = cybio_min(vectorTimeStampDataStr.size(), vectorUserDataStr.size());
-
   for (int i = 0; i < nbPoints; i++)
   {
     m_tCurValTable[i].timeCount = stoi(vectorTimeStampDataStr[i]);
     m_tCurValTable[i].value = stof(vectorUserDataStr[i]);
     m_IndexCurData++;
   }
-
   return true;
 }
 

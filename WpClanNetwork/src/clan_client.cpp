@@ -319,7 +319,7 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
   for (int i = 0; i<pBiotop->getNbOfEntities(); i++)
   {
     pEntity = pBiotop->getEntityByIndex(i);
-    log_event("INFO", "%1 pos %2 %3 dir%4 ID=%5", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection(), pEntity->getId());
+    log_event("INFO", "%1 pos %2 %3 dir%4 ID=%5", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection(), (int)(pEntity->getId()));
   }
   return true;
 }
@@ -432,7 +432,30 @@ void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bo
 
 void Client::send_event_force_entity_action(const entityIdType entityId, const int actionIndex)
 {
-  log_event("Events  ", "Force entity action: Id %1 reaction: %2", entityId, actionIndex);
+  log_event("Events  ", "Force entity action: Id %1 reaction: %2", (int)entityId, actionIndex);
   NetGameEvent bioForceActionEvent{ event_manager::buildEventForceEntityAction(entityId, actionIndex) };
   network_client.send_event(bioForceActionEvent);
+}
+
+void Client::send_event_create_measure(CMeasure* pMeasure)
+{
+  if (pMeasure == NULL)
+  {
+    log_event("Events  ", "Create measure: NULL measure");
+    return;
+  }
+
+  log_event("Events  ", "Create measure: %1", pMeasure->GetLabel());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsCreateMeasure(pMeasure, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_create_measure: Event not sent");
+  }
 }

@@ -114,6 +114,7 @@ public:
   void addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord);
   void modifyBiotopSpeed(const float newBiotopSpeed);
   feedbackValType forceEntityAction(const entityIdType entityId, const int actionIndex);
+  void updateAllBiotopMeasures();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

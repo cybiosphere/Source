@@ -36,6 +36,7 @@ Server::Server(CBiotop* pBiotop)
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Server::on_event_biotop_removeentity);
   game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Server::on_event_biotop_changespeed);
   game_events.func_event(labelEventForceEntityAction) = clan::bind_member(this, &Server::on_event_biotop_forceentityaction);
+  game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Server::on_event_biotop_createmeasure);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -380,6 +381,11 @@ void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user
 void Server::on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user)
 {
   event_manager::handleEventForceEntityAction(e, m_pBiotop);
+}
+
+void Server::on_event_biotop_createmeasure(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventCreateMeasure(e, m_pBiotop);
 }
 
 void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)

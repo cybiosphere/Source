@@ -616,7 +616,7 @@ void CMeasureEditorDlg::OnChangeEditPeriod()
 
 void CMeasureEditorDlg::OnButtonAccept() 
 {
-	m_pBiotop->replaceMeasure(m_MeasureList.GetCurSel(), m_pNewMeasure);
+  m_pBiotop->replaceMeasure(m_MeasureList.GetCurSel(), m_pNewMeasure);
   // Reset New Measure to avoid deletion
   m_pNewMeasure = NULL;
   InitMeasureList();

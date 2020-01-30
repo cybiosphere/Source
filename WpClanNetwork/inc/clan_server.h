@@ -50,7 +50,9 @@ private:
 	void on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_createmeasure(const NetGameEvent& e, ServerUser* user);
 
+public:
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
 	void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user = NULL);
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
@@ -58,6 +60,7 @@ private:
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);
 	void send_event_create_measure(CMeasure* pMeasure, ServerUser* user = NULL);
 
+private:
   bool process_cmd_line(const std::string input_cmd_string);
 
 private:

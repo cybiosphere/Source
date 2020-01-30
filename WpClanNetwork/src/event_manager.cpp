@@ -604,9 +604,9 @@ namespace clan
     CMeasure* pNewMeasure = CMeasureFactory::createMeasure(measureId, period, typeSubType, pBiotop, paramId, entityId);
     if (pNewMeasure != NULL)
     {
-      log_event("events", "Biotop create measure: Id%1 period=%2", measureId, period);
       pNewMeasure->buildMeasureDataFromString(dataBuffer.get_data());
-      pBiotop->addMeasure(pNewMeasure);
+      log_event("events", "Biotop create measure: Id%1 period=%2 label=%3", measureId, period, pNewMeasure->GetLabel());
+      pBiotop->replaceMeasure(measureId, pNewMeasure);
     }
     return true;
   }

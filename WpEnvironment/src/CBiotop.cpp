@@ -2047,13 +2047,6 @@ void CBiotop::updateGridAllEntities(void)
 // Measure management
 //===========================================================================
 
-bool CBiotop::addMeasure(CMeasure* pMeasure)
-{
-  m_tMeasures.push_back(pMeasure);
-  pMeasure->StartMeasurement(m_BioTime);
-  return (true);
-}
-
 bool CBiotop::addMeasureBiotopParam(BiotopParameterType_e type, int period, int id)
 {
   CMeasureParam* pNewMeas = new CMeasureBiotopParam(this, type, period, id);

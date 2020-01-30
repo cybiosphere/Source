@@ -156,7 +156,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   string buildStringDataFromMeasure();
-  bool buildMeasureDataFromString(string dataString);
+  virtual bool buildMeasureDataFromString(string dataString);
 private:
   std::vector<std::string> split(const std::string& s, char delimiter);
 

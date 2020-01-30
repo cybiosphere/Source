@@ -328,6 +328,13 @@ void CStatisticView::OnRadio5()
 
 void CStatisticView::NextSecond()
 {
+  // Check if new mesaures were configured
+  int nbMeasures = m_pBiotop->getNbOfMeasures();
+  if ((nbMeasures > 0) && ((m_pMeasDisplayList[nbMeasures - 1].pMeasure == NULL) || (m_pMeasDisplayList[0].pMeasure != m_pBiotop->getMeasureById(0))))
+  {
+    RebuildMeasChkBox();
+  }
+
   m_RefreshCounter += 1;
   if (m_RefreshCounter==m_TimeScaleSecPerPix)
   {
@@ -437,5 +444,5 @@ void CStatisticView::OnEditMeasure()
 {
 	CMeasureEditorDlg measureDlg(m_pBiotop);
   measureDlg.DoModal();
-	RebuildMeasChkBox();
+	theApp.updateAllBiotopMeasures();
 }
