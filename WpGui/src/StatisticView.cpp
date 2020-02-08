@@ -444,5 +444,5 @@ void CStatisticView::OnEditMeasure()
 {
 	CMeasureEditorDlg measureDlg(m_pBiotop);
   measureDlg.DoModal();
-	theApp.updateAllBiotopMeasures();
+	theApp.updateAllBiotopNewMeasures();
 }

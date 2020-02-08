@@ -365,8 +365,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
       }
     }
   }
-
-  if (nIDEvent==REFRESH_TIMER_ID)
+  else if (nIDEvent==REFRESH_TIMER_ID)
   {
     if (!m_IdleDisplayMode)
       m_pBioDisplay->RefreshScene();
@@ -496,8 +495,8 @@ void CBiotopView::SetSpeedRate (double speedRate)
   KillTimer(SECOND_TIMER_ID);
   if (speedRate>0)
   {
-    m_pBioDisplay->SetNbRefreshPerStep((1000/speedRate-9)/200+1);
-    SetTimer(SECOND_TIMER_ID, 1000.0 / speedRate - 9.0, NULL);
+    m_pBioDisplay->SetNbRefreshPerStep((1000.0 / speedRate)/200+1);
+    SetTimer(SECOND_TIMER_ID, 1000.0 / speedRate, NULL);
     if (speedRate > 70)
     {
       m_IdleDisplayMode = true;
@@ -916,7 +915,7 @@ void CBiotopView::OnAppMonitorShort()
 	m_MenuSelCoord.x = 1;
 	m_MenuSelCoord.y = 1;
 
-  theApp.updateAllBiotopMeasures();
+  theApp.updateAllBiotopNewMeasures();
 }
 
 void CBiotopView::OnAppMonitorLong() 
@@ -965,7 +964,7 @@ void CBiotopView::OnAppMonitorLong()
 	m_MenuSelCoord.x = 1;
 	m_MenuSelCoord.y = 1;
 
-  theApp.updateAllBiotopMeasures();
+  theApp.updateAllBiotopNewMeasures();
 }
 
 void CBiotopView::OnAppMonitorSpecie()
@@ -983,5 +982,5 @@ void CBiotopView::OnAppMonitorSpecie()
 
   m_MenuSelCoord.x = 1;
   m_MenuSelCoord.y = 1;
-  theApp.updateAllBiotopMeasures();
+  theApp.updateAllBiotopNewMeasures();
 }

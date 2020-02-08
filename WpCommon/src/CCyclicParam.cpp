@@ -65,3 +65,13 @@ void CCyclicParam::NextStep(void)
   }
   setVal( (getMax()-getMin()) * (cos(m_CurPhase)+1) / 2 + getMin() );
 }
+
+double CCyclicParam::getCurrentPhase()
+{
+  return m_CurPhase;
+}
+
+void CCyclicParam::setCurrentPhase(double phase)
+{
+  m_CurPhase = phase;
+}

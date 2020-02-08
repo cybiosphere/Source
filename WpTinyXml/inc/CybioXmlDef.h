@@ -58,6 +58,7 @@
 #define XML_ATTR_DAY_COUNT    "DayCount"
 #define XML_ATTR_NAME         "Name"
 #define XML_ATTR_VALUE        "Value"
+#define XML_ATTR_PHASE        "Phase"
 #define XML_ATTR_TOTAL_CHILDS "TotalChildNumber"
 #define XML_ATTR_FILE_NAME    "FileName"
 #define XML_ATTR_RAW_DATA     "Data"

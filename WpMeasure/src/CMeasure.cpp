@@ -77,7 +77,7 @@ CMeasure::CMeasure(int period, int id, double rangeMin, double rangeMax, Measure
   m_StartBioTime.days    = 0;
   m_StartBioTime.years   = 0;
   m_TotalMeasNbFromStart = 0;
-  m_IndexCurData = 0;
+  m_IndexCurData = -1;
   m_paramIndex = -1;
   m_pEntity = NULL;
 
@@ -103,12 +103,15 @@ void CMeasure::StartMeasurement(BiotopTime_t startTime)
 {
   m_bIsRecording  = true;
   m_CounterPeriod = -1;
-  m_StartBioTime.seconds = startTime.seconds;
-  m_StartBioTime.hours   = startTime.hours;
-  m_StartBioTime.days    = startTime.days;
-  m_StartBioTime.years   = startTime.years;
-  m_IndexCurData = -1;
-  m_TotalMeasNbFromStart = 0;
+  // For new measures, set initial time
+  if (m_TotalMeasNbFromStart == 0)
+  {
+    m_StartBioTime.seconds = startTime.seconds;
+    m_StartBioTime.hours = startTime.hours;
+    m_StartBioTime.days = startTime.days;
+    m_StartBioTime.years = startTime.years;
+    m_IndexCurData = -1;
+  }
 }
 
 void CMeasure::StopMeasurement()
@@ -201,15 +204,31 @@ string CMeasure::buildStringDataFromMeasure()
   int i;
   string tmpStr;
   string strMeasure = GetLabel() + "\n";
-  int nbPoints = cybio_min((timeCountType)MAX_MEASUREMENT_DATA_SIZE, m_TotalMeasNbFromStart);
 
-  for (i = 0; i < nbPoints; i++)
+  if (m_TotalMeasNbFromStart > MAX_MEASUREMENT_DATA_SIZE) // Reorder ring buffer when buffer is full
+  {
+    for (i = m_IndexCurData + 1; i < MAX_MEASUREMENT_DATA_SIZE; i++)
+    {
+      tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
+      strMeasure += tmpStr;
+    }
+  }
+  for (i = 0; i <= m_IndexCurData; i++)
   {
     tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
     strMeasure += tmpStr;
   }
   strMeasure += "\n";
-  for (i = 0; i < nbPoints; i++)
+
+  if (m_TotalMeasNbFromStart > MAX_MEASUREMENT_DATA_SIZE) // Reorder ring buffer when buffer is full
+  {
+    for (i = m_IndexCurData + 1; i < MAX_MEASUREMENT_DATA_SIZE; i++)
+    {
+      tmpStr = FormatString("%.2f;", m_tCurValTable[i].value);
+      strMeasure += tmpStr;
+    }
+  }
+  for (i = 0; i <= m_IndexCurData; i++)
   {
     tmpStr = FormatString("%.2f;", m_tCurValTable[i].value);
     strMeasure += tmpStr;
@@ -249,6 +268,8 @@ bool CMeasure::buildMeasureDataFromString(string dataString)
     m_tCurValTable[i].value = stof(vectorUserDataStr[i]);
     m_IndexCurData++;
   }
+  m_TotalMeasNbFromStart = nbPoints;
+  AutoUpdateRange();
   return true;
 }
 
@@ -296,6 +317,11 @@ MeasureData_t* CMeasure::GetPMeasureData()
 int CMeasure::GetIndexCurData()
 {
   return (m_IndexCurData);
+}
+
+int CMeasure::GetTotalMeasureNumberFromStart()
+{
+  return (m_TotalMeasNbFromStart);
 }
 
 double CMeasure::GetRangeMin()

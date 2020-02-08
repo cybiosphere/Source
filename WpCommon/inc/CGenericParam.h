@@ -115,6 +115,8 @@ public:
   bool isMinReached(void);
   GenericParamType_e getType();
   GeneSubType_e getCodingGeneSubtype();
+  virtual double getCurrentPhase() { return 0; };
+  virtual void setCurrentPhase(double phase) { };
 };
 
 #endif // !defined(CGENERICPARAM_INCLUDED_)

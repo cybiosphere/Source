@@ -82,7 +82,8 @@ public:
 //---------------------------------------------------------------------------
 public:
   void NextStep(void);  
-
+  double getCurrentPhase();
+  void setCurrentPhase(double phase);
 };
 
 #endif // !defined(CCYCLICPARAM_INCLUDED_)

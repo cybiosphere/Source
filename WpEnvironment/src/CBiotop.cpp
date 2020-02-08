@@ -2287,6 +2287,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
       pElement = (TiXmlElement*)pNodeChild;
       pElement->SetAttribute(XML_ATTR_NAME, getParameter(i)->getLabel());
       pElement->SetDoubleAttribute(XML_ATTR_VALUE, getParameter(i)->getVal());
+      pElement->SetDoubleAttribute(XML_ATTR_PHASE, getParameter(i)->getCurrentPhase());
     }
   }
 
@@ -2435,6 +2436,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     // Parameters management
     string paramName;
     double paramVal;
+    double paramPhase;
     CGenericParam* pParam;
     pNode = pNodeBiotop->FirstChild(XML_NODE_PARAMETER);
     while (pNode != NULL)
@@ -2449,7 +2451,13 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
         {
           pParam = getParameterByName(paramName);
           if (pParam != NULL)
+          {
             pParam->setVal(paramVal);
+            if (pElement->QueryDoubleAttribute(XML_ATTR_PHASE, &paramPhase) != TIXML_NO_ATTRIBUTE)
+            {
+              pParam->setCurrentPhase(paramPhase);
+            }
+          }
         }
       }
       pNode = pNode->NextSibling();

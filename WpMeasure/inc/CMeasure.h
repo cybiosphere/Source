@@ -176,6 +176,7 @@ public:
   virtual int GetSubTypeId();
   MeasureData_t* GetPMeasureData();
   int GetIndexCurData();
+  int GetTotalMeasureNumberFromStart();
   double GetRangeMin();
   double GetRangeMax();
   bool AutoUpdateRange();
