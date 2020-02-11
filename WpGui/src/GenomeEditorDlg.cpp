@@ -204,8 +204,8 @@ void CGenomeEditorDlg::OnOK()
 
     pNewEntity->quickAgeing(m_InitAge);
 
-    theApp.RefreshAllWithNewEntity(NULL); // Clear all
-    theApp.RefreshAllWithNewEntity(pNewEntity);
+    theApp.setSelectedEntity(NULL); // Clear all
+    theApp.updateSelectedEntity(pNewEntity);
   } 
 
 	CDialog::OnOK();

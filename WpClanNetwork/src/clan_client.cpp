@@ -459,3 +459,10 @@ void Client::send_event_create_measure(CMeasure* pMeasure)
     log_event("-ERROR- ", "send_event_create_measure: Event not sent");
   }
 }
+
+void Client::send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId)
+{
+  log_event("Events  ", "Request entity refresh: Id %1 label: %2", (int)entityId, pEntity->getLabel());
+  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity, entityId) };
+  network_client.send_event(bioReqActionRefresh);
+}

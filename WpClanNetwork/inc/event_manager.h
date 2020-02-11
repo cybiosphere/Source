@@ -43,6 +43,9 @@ namespace clan
     static bool buildEventsCreateMeasure(CMeasure* pMeasure, std::vector<NetGameEvent>& eventVector);
     void handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop);
 
+    static NetGameEvent buildEventReqEntityRefresh(CBasicEntity* pEntity, entityIdType entityId);
+    static CBasicEntity* handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop);
+
   private:
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
     std::vector<LongBufferEvent_t> m_tMeasureBufferEvent;

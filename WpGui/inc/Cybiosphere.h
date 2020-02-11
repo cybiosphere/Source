@@ -77,7 +77,8 @@ public:
   CCybiosphereApp();
   ~CCybiosphereApp();
 
-  bool RefreshAllWithNewEntity(CBasicEntity* pEntity);
+  bool setSelectedEntity(CBasicEntity* pEntity);
+  bool updateSelectedEntity(CBasicEntity* pEntity);
 
   CBiotopView*    GetBiotopViewPtr(void);
   CEntityView*    GetEntityViewPtr(void);
@@ -139,6 +140,7 @@ private:
 	void CreateStatisticView(CBiotop* pBiotop);
 	void CreateMapConfigView(CBiotop* pBiotop);
   void CreateLogServerView();
+  bool RefreshAllWithNewEntity(CBasicEntity* pEntity);
 
   CBiotop*        m_pBiotop;
   CBiotopDoc*     m_pBiotopDoc;
@@ -162,6 +164,7 @@ private:
 #endif
 #ifdef USE_CLAN_CLIENT
   Client* m_pClient;
+  void WaitForEventRefreshEntity(entityIdType entityId);
 #endif
   BOOL m_bModeManual;
   BOOL m_bModeStopOnEvent;

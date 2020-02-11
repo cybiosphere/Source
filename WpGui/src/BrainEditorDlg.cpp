@@ -231,6 +231,12 @@ void CBrainEditorDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
+void CBrainEditorDlg::OnOK()
+{
+  theApp.updateSelectedEntity(m_pBrain->GetEntity());
+  CDialog::OnOK();
+}
+
 void CBrainEditorDlg::OnButtonExport() 
 {
   CString fileName;

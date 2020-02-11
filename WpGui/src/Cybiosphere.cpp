@@ -503,9 +503,61 @@ CLogServerView* CCybiosphereApp::GetLogServerViewPtr()
   return (m_pLogServerView);
 }
 
-bool CCybiosphereApp::RefreshAllWithNewEntity(CBasicEntity* pEntity)
+#ifdef USE_CLAN_CLIENT
+void CCybiosphereApp::WaitForEventRefreshEntity(entityIdType entityId)
+{
+  for (int retry = 0; retry < 1000; retry++)
+  {
+    Sleep(10);
+    m_pClient->process_new_events();
+    BiotopEvent_t bioEvent;
+    for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+    {
+      if (m_pBiotop->getBiotopEvent(i).eventType == BIOTOP_EVENT_ENTITY_MODIFIED)
+        return;  
+    }
+  }
+}
+#endif
+
+bool CCybiosphereApp::setSelectedEntity(CBasicEntity* pEntity)
 {
   m_pSelectedEntity = pEntity;
+#ifdef USE_CLAN_CLIENT
+  if (pEntity != NULL)
+  {
+    m_pBiotop->resetBiotopEvents();
+    entityIdType entityId = pEntity->getId();
+    m_pClient->send_event_request_entity_refresh(pEntity, entityId);
+    // Wait for entity update from server (TODO: confirm reception)
+    WaitForEventRefreshEntity(entityId);
+    m_pSelectedEntity = m_pBiotop->getEntityById(entityId);
+  }
+#endif
+  RefreshAllWithNewEntity(m_pSelectedEntity);
+  return (true);
+}
+
+bool CCybiosphereApp::updateSelectedEntity(CBasicEntity* pEntity)
+{
+  m_pSelectedEntity = pEntity;
+#ifdef USE_CLAN_CLIENT
+  if (pEntity != NULL)
+  {
+    m_pBiotop->resetBiotopEvents();
+    entityIdType entityId = pEntity->getId();
+    m_pClient->send_event_update_entity_data(pEntity);
+    // Wait for entity update from server (TODO: confirm reception)
+    WaitForEventRefreshEntity(entityId);
+    m_pSelectedEntity = m_pBiotop->getEntityById(entityId);
+  }
+#endif
+  RefreshAllWithNewEntity(m_pSelectedEntity);
+  return (true);
+}
+
+bool CCybiosphereApp::RefreshAllWithNewEntity(CBasicEntity* pEntity)
+{
   GetBiotopViewPtr()->SetSelectedEntity(pEntity);
   GetEntityViewPtr()->SelectAndDisplayEntity(pEntity);
   GetGeneticViewPtr()->SetEntity(pEntity);

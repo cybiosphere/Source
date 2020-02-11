@@ -38,6 +38,7 @@ public:
   void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode);
   void send_event_force_entity_action(const entityIdType entityId, const int actionIndex);
   void send_event_create_measure(CMeasure* pMeasure);
+  void send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId);
 
 private:
 	void on_connected();

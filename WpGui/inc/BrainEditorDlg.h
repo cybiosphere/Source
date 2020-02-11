@@ -77,6 +77,7 @@ protected:
 	afx_msg void OnButtonMore();
 	afx_msg void OnButtonLess();
 	virtual void OnCancel();
+	virtual void OnOK();
 	afx_msg void OnButtonExport();
 	afx_msg void OnButtonImport();
 	//}}AFX_MSG

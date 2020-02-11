@@ -51,6 +51,7 @@ private:
 	void on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_createmeasure(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user);
 
 public:
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);

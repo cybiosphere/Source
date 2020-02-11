@@ -174,7 +174,7 @@ void CMainFrame::OnAppNewBiotop()
     return; 
 
   // Unselect entity
-  theApp.RefreshAllWithNewEntity(NULL);
+  theApp.setSelectedEntity(NULL);
 
   theApp.SetDefaultBiotop();
   theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->RefreshBiotop();
@@ -195,7 +195,7 @@ void CMainFrame::OnAppOpenBiotop()
 	if (nResp == IDOK)
 	{
     // Unselect entity
-    theApp.RefreshAllWithNewEntity(NULL);
+    theApp.setSelectedEntity(NULL);
     // Load file
     fileName = fileDlg.GetFileName();	
     pathName = fileDlg.GetPathName();	 
@@ -289,7 +289,7 @@ void CMainFrame::OnAppRunLearningScenario()
       pathName = pathName.Left(endPath+1); 
 
     // Unselect entity
-    theApp.RefreshAllWithNewEntity(NULL);
+    theApp.setSelectedEntity(NULL);
     // Load file
     bool resu = theApp.GetScenarioPlayer()->ReadScenarioFile(fileName.GetBuffer(0), pathName.GetBuffer(0));
     theApp.SetOpenedBiotopFile("", "");
@@ -572,7 +572,7 @@ void CMainFrame::OnAppFindEntity()
     {
       CBasicEntity* pSelEnt = theApp.GetBiotop()->getEntityByIndex(index);
       if (dlg.IsForceSelection())
-        theApp.RefreshAllWithNewEntity(pSelEnt);
+        theApp.setSelectedEntity(pSelEnt);
       theApp.GetBiotopViewPtr()->ScrollToGridCoord(pSelEnt->getGridCoord());
     }
   }

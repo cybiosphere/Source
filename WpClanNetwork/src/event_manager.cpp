@@ -494,6 +494,22 @@ namespace clan
     }
   }
 
+  NetGameEvent event_manager::buildEventReqEntityRefresh(CBasicEntity* pEntity, entityIdType entityId)
+  {
+    NetGameEvent newEvent(labelEventReqEntityRefresh);
+    newEvent.add_argument((int)entityId);
+    newEvent.add_argument(pEntity->getLabel());
+    return (std::move(newEvent));
+  }
+
+  CBasicEntity* event_manager::handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int entityId = e.get_argument(0);
+    string label = e.get_argument(1);
+    log_event("events", "Reqest entity refresh: entity%1 label%2", entityId, label);
+    return (pBiotop->getEntityById(entityId));
+  }
+
   bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)

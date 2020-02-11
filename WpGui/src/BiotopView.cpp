@@ -423,7 +423,7 @@ void CBiotopView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
   Point_t bioCoord = m_pBioDisplay->GetGridCoordFromScreenPos(point);
   CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(bioCoord);
-  theApp.RefreshAllWithNewEntity(pEntity);
+  theApp.setSelectedEntity(pEntity);
 	
   // Selection is used in menu
   m_MenuSelCoord = bioCoord;
