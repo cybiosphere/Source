@@ -459,8 +459,11 @@ void CEntityView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void CEntityView::OnCheckImmortal() 
 {
   UpdateData(true);
-  if (m_pEntity!=NULL)
+  if (m_pEntity != NULL)
+  {
     m_pEntity->setImmortal(m_checkImmortal);
+    theApp.refreshSelectedEntity(m_pEntity);
+  }
 }
 
 void CEntityView::OnEdit() 
@@ -473,5 +476,5 @@ void CEntityView::OnEdit()
     m_Label = m_pEntity->getLabel().c_str();
     UpdateData(false);
   }
-  theApp.NextSecondRefreshAllViews();
+  theApp.refreshSelectedEntity(m_pEntity);
 }

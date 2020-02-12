@@ -77,8 +77,9 @@ public:
   CCybiosphereApp();
   ~CCybiosphereApp();
 
-  bool setSelectedEntity(CBasicEntity* pEntity);
-  bool updateSelectedEntity(CBasicEntity* pEntity);
+  bool setSelectedEntity(CBasicEntity* pEntity);  // Change selected entity
+  bool updateSelectedEntity(CBasicEntity* pEntity); // Update full selected entity 
+  bool refreshSelectedEntity(CBasicEntity* pEntity); // Refresh selected entity parameters
 
   CBiotopView*    GetBiotopViewPtr(void);
   CEntityView*    GetEntityViewPtr(void);

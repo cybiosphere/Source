@@ -265,9 +265,12 @@ void CBrainView::OnButtonEdit()
 {
   if (m_pBrain!=NULL)
   {
+    bool isAppFrozen = theApp.IsModeManual();
+    if (!isAppFrozen) theApp.SetModeManual(true);
     CBrainEditorDlg dlg(m_pBrain);
     dlg.DoModal();
     m_BrainGrid.RefreshBrainData();
+    if (!isAppFrozen) theApp.SetModeManual(false);
   }
 }
 
@@ -275,9 +278,12 @@ void CBrainView::OnButtonEditIdentify()
 {
   if (m_pBrain!=NULL)
   {
+    bool isAppFrozen = theApp.IsModeManual();
+    if (!isAppFrozen) theApp.SetModeManual(true);
     CBrainEditorDlg dlg(m_pBrain, true);
     dlg.DoModal();
     m_BrainGrid.RefreshBrainData();
+    if (!isAppFrozen) theApp.SetModeManual(false);
   }
 }
 

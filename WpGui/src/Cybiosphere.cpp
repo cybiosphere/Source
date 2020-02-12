@@ -556,6 +556,19 @@ bool CCybiosphereApp::updateSelectedEntity(CBasicEntity* pEntity)
   return (true);
 }
 
+bool CCybiosphereApp::refreshSelectedEntity(CBasicEntity* pEntity)
+{
+  m_pSelectedEntity = pEntity;
+#ifdef USE_CLAN_CLIENT
+  if (pEntity != NULL)
+  {
+    m_pClient->send_event_update_entity_position(pEntity);
+  }
+#endif
+  RefreshAllWithNewEntity(m_pSelectedEntity);
+  return (true);
+}
+
 bool CCybiosphereApp::RefreshAllWithNewEntity(CBasicEntity* pEntity)
 {
   GetBiotopViewPtr()->SetSelectedEntity(pEntity);

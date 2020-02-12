@@ -246,28 +246,19 @@ namespace clan
     newEvent.add_argument(pEntity->getStepCoord().y);
     newEvent.add_argument(pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
-    newEvent.add_argument(pEntity->getCurrentSpeed());
-    newEvent.add_argument(float(pEntity->getWeight()));
-    newEvent.add_argument(float(pEntity->getNoise()));
+    newEvent.add_argument((int)pEntity->isImmortal());
+    // Add parameters
+    for (int i = 0; i < pEntity->getNumParameter(); i++)
+    {
+      newEvent.add_argument((float)pEntity->getParameter(i)->getVal());
+    }
+    // Add other usefull info
     if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
     {
       CAnimal* pAnimal = (CAnimal*)pEntity;
-      newEvent.add_argument(float(pAnimal->getFatWeight()));
-      newEvent.add_argument(pAnimal->getAge());
-      newEvent.add_argument(float(pAnimal->getHealthRate()));
-      newEvent.add_argument(float(pAnimal->getHungerRate()));
-      newEvent.add_argument(float(pAnimal->getThirstRate()));
-      newEvent.add_argument(float(pAnimal->getStomachFillingRate()));
-      newEvent.add_argument(float(pAnimal->getLibidoRate()));
-      newEvent.add_argument(float(pAnimal->getSufferingRate()));
-      newEvent.add_argument(float(pAnimal->getPleasureRate()));
-      newEvent.add_argument(float(pAnimal->getTirednessRate()));
-      newEvent.add_argument(float(pAnimal->getFearRate()));
-      newEvent.add_argument(float(pAnimal->getVigilance()));
       newEvent.add_argument(pAnimal->getBrain()->GetCurrentReactionIndex());
       newEvent.add_argument(pAnimal->getBrain()->GetCurrentPurposeIndex());
     }
-    // TODO: update also Mammal parameters
     return (std::move(newEvent));
   }
 
@@ -281,65 +272,38 @@ namespace clan
     position.y = e.get_argument(4);
     int layer = e.get_argument(5);
     int direction = e.get_argument(6);
-    int speed = e.get_argument(7);
-    float weight = e.get_argument(8);
-    float noise = e.get_argument(9);
+    int isImmortal = e.get_argument(7);
 
     // Check if entity exists
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
     // If entity does not exist, create one with default parameters
     if (pEntity != NULL)
     {
+      float paramValue = 0;
+      int index = 8;
       if (pEntity->getLabel() != entityLabel)
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
       pEntity->setStatus((StatusType_e)status);
       pEntity->jumpToStepCoord(position, layer);
       pEntity->setStepDirection(direction);
-      pEntity->forceWeight(weight);
-      pEntity->setNoise(noise);
-
+      pEntity->setImmortal(isImmortal);
+      // Update parameters
+      for (int i = 0; i < pEntity->getNumParameter(); i++)
+      {
+        paramValue = e.get_argument(index);
+        pEntity->getParameter(i)->forceVal(paramValue);
+        index++;
+      }
+      // Additional infos
       if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
       {
         CAnimal* pAnimal = (CAnimal*)pEntity;
-        pAnimal->forceCurrentSpeed(speed);
-
-        float fatWeight= e.get_argument(10);
-        int age = e.get_argument(11);
-        float healthRate = e.get_argument(12);
-        float hungerRate = e.get_argument(13);
-        float thirstRate = e.get_argument(14);
-        float stomachFillingRate = e.get_argument(15);
-        float libidoRate = e.get_argument(16);
-        float sufferingRate = e.get_argument(17);
-        float pleasureRate = e.get_argument(18);
-        float tirednessRate = e.get_argument(19);
-        float fearRate = e.get_argument(20);
-        float vigilance = e.get_argument(21);
-        int reactIndex = e.get_argument(22);
-        int purposeIndex = e.get_argument(23);
-
-        pAnimal->setFatWeight(fatWeight);
-        if (age > pAnimal->getAge())
-        {
-          pAnimal->quickAgeing(age - pAnimal->getAge());
-        }
-        pAnimal->setHealthRate(healthRate);
-        pAnimal->setHungerRate(hungerRate);
-        pAnimal->setThirstRate(thirstRate);
-        pAnimal->setStomachFillingRate(stomachFillingRate);
-        pAnimal->setLibidoRate(libidoRate);
-        pAnimal->setSufferingRate(sufferingRate);
-        pAnimal->setPleasureRate(pleasureRate);
-        pAnimal->setTirednessRate(tirednessRate);
-        pAnimal->setFearRate(fearRate);
-        pAnimal->setVigilance(vigilance);
+        int reactIndex = e.get_argument(index);
+        index++;
+        int purposeIndex = e.get_argument(index);
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
-        //log_event("events", "Biotop update entity position: %1 action:%2 new coord x=%3 y=%4 direction=%5", pEntity->getLabel(),
-        //          pAnimal->getBrain()->GetPurposeByIndex(purposeIndex)->GetLabel(),
-        //          pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getStepDirection());
       }
-      // TODO: update also Mammal parameters
     }
     return pEntity;
   }

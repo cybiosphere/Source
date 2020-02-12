@@ -366,8 +366,12 @@ void CGeneticView::OnButtonEdit()
 {
   if ( (m_pEntity != NULL) && (m_pEntity->getGenome() != NULL) )
   {
+    // Freeze app
+    bool isAppFrozen = theApp.IsModeManual();
+    if (!isAppFrozen) theApp.SetModeManual(true);
 	  CGenomeEditorDlg dlgEdit(m_pEntity);
 	  dlgEdit.DoModal();
+    if (!isAppFrozen) theApp.SetModeManual(false);
   }
 }
 
