@@ -43,11 +43,11 @@ CEntityFindDlg::CEntityFindDlg(CBiotop* pBiotop, CWnd* pParent /*=NULL*/)
 	: CDialog(CEntityFindDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CEntityFindDlg)
-	m_bSelect = FALSE;
+	m_bSelect = TRUE;
 	//}}AFX_DATA_INIT
 
   m_pBiotop = pBiotop;
-  m_CurSelInd = -1;
+	m_CurSelId = -1;
 }
 
 
@@ -80,21 +80,26 @@ BOOL CEntityFindDlg::OnInitDialog()
   m_EntityList.InsertColumn(0, LPCTSTR("Name"), LVCFMT_LEFT, 200);
   m_EntityList.InsertColumn(1, LPCTSTR("Id"),   LVCFMT_LEFT, 54);
   // Limit search to 10000 entities
+	int index = 0;
   for (int i=0; i<min(m_pBiotop->getNbOfEntities(), 10000); i++)
   {
     pCurEnt = m_pBiotop->getEntityByIndex(i);
-    m_EntityList.InsertItem(i, LPCTSTR(pCurEnt->getLabel().c_str()));
-    tempStr.Format(LPCTSTR("%d"),pCurEnt->getId());
-    m_EntityList.SetItemText(i, 1, tempStr);
+		if (!(pCurEnt->isToBeRemoved()))
+		{
+			m_EntityList.InsertItem(index, LPCTSTR(pCurEnt->getLabel().c_str()));
+			tempStr.Format(LPCTSTR("%d"), pCurEnt->getId());
+			m_EntityList.SetItemText(index, 1, tempStr);
+			index++;
+		}
   }
   
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-int CEntityFindDlg::GetSelectionIndex(void)
+int CEntityFindDlg::GetSelectionId(void)
 {
-  return m_CurSelInd;
+  return m_CurSelId;
 }
 
 bool CEntityFindDlg::IsForceSelection(void)
@@ -105,14 +110,13 @@ bool CEntityFindDlg::IsForceSelection(void)
 void CEntityFindDlg::OnClickListEntity(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	POSITION pos = m_EntityList.GetFirstSelectedItemPosition();
-	m_CurSelInd = m_EntityList.GetNextSelectedItem(pos);	
+	CString idString = m_EntityList.GetItemText(m_EntityList.GetNextSelectedItem(pos), 1);
+	m_CurSelId = atoi((char*)idString.GetBuffer(0));
 	*pResult = 0;
 }
 
 void CEntityFindDlg::OnDblclkListEntity(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	POSITION pos = m_EntityList.GetFirstSelectedItemPosition();
-	m_CurSelInd = m_EntityList.GetNextSelectedItem(pos);	
-	*pResult = 0;
+	OnClickListEntity(pNMHDR, pResult);
   OnOK();
 }

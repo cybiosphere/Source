@@ -582,21 +582,10 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
-  int prevIndex = deleteEntity(oldId, false);
+  pOldEntity->autoRemove();
 
-  // Set coord
-  pNewEntity->jumpToGridCoord(oldCoord, oldLayer); 
-
-  // Set old id
+  addEntity(pNewEntity, oldCoord, oldLayer);
   pNewEntity->setId(oldId);
-  // Attach it to biotop
-  pNewEntity->attachToBiotop(this);
-  // Add it to list
-  m_tEntity.insert(m_tEntity.begin() + prevIndex, 1, pNewEntity);
-  if (pNewEntity->getClass() >= CLASS_ANIMAL_FIRST)
-  {
-    m_IndexLastAnimal++;
-  }
 
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - Entity full update : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());

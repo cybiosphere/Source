@@ -49,7 +49,7 @@ public:
 	BOOL	m_bSelect;
 	//}}AFX_DATA
 
-  int GetSelectionIndex(void);
+  int GetSelectionId(void);
   bool IsForceSelection(void);
 
 // Overrides
@@ -63,7 +63,7 @@ public:
 protected:
 
   CBiotop* m_pBiotop;
-  int m_CurSelInd;
+	entityIdType m_CurSelId;
 
 	// Generated message map functions
 	//{{AFX_MSG(CEntityFindDlg)

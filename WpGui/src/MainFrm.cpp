@@ -567,13 +567,13 @@ void CMainFrame::OnAppFindEntity()
 	long nResp = dlg.DoModal(); 
 	if (nResp == IDOK)
 	{
-    int index = dlg.GetSelectionIndex();
-    if (index>=0)
+    entityIdType entityId = dlg.GetSelectionId();
+    if (entityId != ENTITY_ID_INVALID)
     {
-      CBasicEntity* pSelEnt = theApp.GetBiotop()->getEntityByIndex(index);
+      CBasicEntity* pSelEnt = theApp.GetBiotop()->getEntityById(entityId);
       if (dlg.IsForceSelection())
         theApp.setSelectedEntity(pSelEnt);
-      theApp.GetBiotopViewPtr()->ScrollToGridCoord(pSelEnt->getGridCoord());
+      theApp.GetBiotopViewPtr()->ScrollToGridCoord(theApp.GetBiotop()->getEntityById(entityId)->getGridCoord());
     }
   }
 }
