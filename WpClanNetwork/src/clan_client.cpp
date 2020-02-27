@@ -42,6 +42,7 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Client::on_event_biotop_createmeasure);
+  game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Client::on_event_biotop_addEntitySpawner);
 
 	quit = false;
 	logged_in = false;
@@ -287,6 +288,11 @@ void Client::on_event_biotop_createmeasure(const NetGameEvent& e)
   m_EventManager.handleEventCreateMeasure(e, m_pBiotop);
 }
 
+void Client::on_event_biotop_addEntitySpawner(const NetGameEvent& e)
+{
+  m_EventManager.handleEventAddEntitySpawner(e, m_pBiotop);
+}
+
 void Client::displayBiotopEntities()
 {
   CBasicEntity* pEntity;
@@ -465,4 +471,27 @@ void Client::send_event_request_entity_refresh(CBasicEntity* pEntity, const enti
   log_event("Events  ", "Request entity refresh: Id %1 label: %2", (int)entityId, pEntity->getLabel());
   NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity, entityId) };
   network_client.send_event(bioReqActionRefresh);
+}
+
+void Client::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator)
+{
+  if (generator.pModelEntity == NULL)
+  {
+    log_event("Events  ", "Add entity spwaner: NULL entity");
+    return;
+  }
+
+  log_event("Events  ", "Add entity spwaner: %1", generator.pModelEntity->getLabel());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsAddEntitySpawner(index, generator, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
+  }
 }

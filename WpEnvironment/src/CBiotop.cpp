@@ -95,12 +95,12 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   resetCpuMarker();
 
   m_tRandomEntitiesGeneration.resize(MAX_NUMBER_RANDOM_ENTITIES);
+  for (int i = 0; i < m_tRandomEntitiesGeneration.size(); i++)
+  {
+    m_tRandomEntitiesGeneration[0].pModelEntity = NULL;
+  }
   // Set rain as default random entity
-  m_tRandomEntitiesGeneration[0].entityPathName = "../DataScriptMammal/";
-  m_tRandomEntitiesGeneration[0].entityFileName = "water_puddle.xml";
-  m_tRandomEntitiesGeneration[0].IsProportionalToFertility = true;
-  m_tRandomEntitiesGeneration[0].avaragePeriodicity = 5;
-  m_tRandomEntitiesGeneration[0].intensity = 50;
+  addEntitySpawner(0, "water_puddle.xml", "../DataScriptMammal/", 50, 5, true);
 
   m_bColorizeSearch = false;
 
@@ -127,15 +127,15 @@ CBiotop::~CBiotop()
 
 entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, int newLayer) 
 {
+  if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
+    return (ENTITY_ID_INVALID);
+
   int layer;
   if (newLayer>-2)
     layer = newLayer;
   else
     layer = pEntity->getLayer();
-
-  if (getNbOfEntities()>MAXIMUM_NB_ENTITIES)
-     return (ENTITY_ID_INVALID);
-   
+  
   if ( !isCoordValidAndFree(coord,layer) )
      return (ENTITY_ID_INVALID);
 
@@ -1734,7 +1734,7 @@ void CBiotop::nextHour(void)
   for (int ind = 0; ind < MAX_NUMBER_RANDOM_ENTITIES; ind++)
   {
     BiotopRandomEntitiyGeneration_t& randomEntity = m_tRandomEntitiesGeneration[ind];
-    if (randomEntity.entityFileName != "")
+    if (randomEntity.pModelEntity != NULL)
     {
       int coverRate = randomEntity.intensity + getRandInt(10);
       double fertilityFactor = 100;
@@ -1750,7 +1750,7 @@ void CBiotop::nextHour(void)
       }
       if (testChance(periodicityFactor, fertilityFactor))
       {
-        spreadEntitiesRandomly(randomEntity.entityFileName, randomEntity.entityPathName, coverRate);
+        spawnEntitiesRandomly(randomEntity.pModelEntity, coverRate);
       }
     }
   }
@@ -2560,52 +2560,62 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
 //===========================================================================
 // Specific behaviors
 //===========================================================================
-void CBiotop::spreadWaterPuddlesByRain(int coverRate)
+bool CBiotop::addEntitySpawner(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility)
 {
-  CGenome* pGenome1 = new CGenome(CLASS_NONE, "");
-
-  pGenome1->loadFromXmlFile("../DataScriptMammal/water_puddle.xml");
-
-  Point_t coord = { 10, 10 };
-  entityIdType waterId;
-
-  int nbPuddles = m_Dimension.x * m_Dimension.y * coverRate / 100000;
-  for (int i = 0; i < nbPuddles; i++)
+  CBasicEntity* pEntity = createEntity(entityFileName, pathName);
+  addEntitySpawner(index, pEntity, intensityRate, avaragePeriod, isProportionalToFertility);
+  if (index < m_tRandomEntitiesGeneration.size())
   {
-    CGenome* pGenome = new CGenome(*pGenome1);
-    coord.x = getRandInt(m_Dimension.x) + 2;
-    coord.y = getRandInt(m_Dimension.y) + 2;
-    waterId = createAndAddEntity("water_puddle", coord, 1, pGenome);
+    m_tRandomEntitiesGeneration[index].entityFileName = entityFileName;
+    m_tRandomEntitiesGeneration[index].entityPathName = pathName;
+    return true;
   }
-
-  delete pGenome1;
-
-  CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - Rain : %d puddles\n", nbPuddles);
+  return false;
 }
 
-void CBiotop::spreadEntitiesRandomly(string fileName, string pathName, int coverRate)
+bool CBiotop::addEntitySpawner(int index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility)
 {
-  Point_t coord = {getRandInt(m_Dimension.x) + 2, getRandInt(m_Dimension.y) + 2};
-  entityIdType firstId = createAndAddEntity(fileName, pathName, coord);
-  CBasicEntity* pEntity = getEntityById(firstId);
+  if (index < m_tRandomEntitiesGeneration.size())
+  {
+    if (m_tRandomEntitiesGeneration[index].pModelEntity != NULL)
+    {
+      //clean previous entity
+      delete m_tRandomEntitiesGeneration[index].pModelEntity;
+    }
+    m_tRandomEntitiesGeneration[index].entityFileName = "";
+    m_tRandomEntitiesGeneration[index].entityPathName = "";
+    m_tRandomEntitiesGeneration[index].pModelEntity = pModelEntity;
+    m_tRandomEntitiesGeneration[index].intensity = intensityRate;
+    m_tRandomEntitiesGeneration[index].avaragePeriodicity = avaragePeriod;
+    m_tRandomEntitiesGeneration[index].IsProportionalToFertility = isProportionalToFertility;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 
-  if (pEntity != NULL)
+void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
+{
+  Point_t coord;
+  if (pModelEntity != NULL)
   {
     int nbEntities = m_Dimension.x * m_Dimension.y * coverRate / 100000;
-    for (int i = 1; i < nbEntities; i++)
+    for (int i = 0; i < nbEntities; i++)
     {
       coord.x = getRandInt(m_Dimension.x) + 2;
       coord.y = getRandInt(m_Dimension.y) + 2;
-      createAndAddCloneEntity(firstId, coord, pEntity->getLayer());
+      CBasicEntity* pNewEntity = createCloneEntity(pModelEntity);
+      this->addEntity(pNewEntity, coord, pModelEntity->getLayer());
     }
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pEntity->getLabel().c_str());
+    CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pModelEntity->getLabel().c_str());
   }
   else
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities : %ss\n", fileName.c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities\n");
   }
 }
 
@@ -2861,6 +2871,11 @@ void CBiotop::setWindStrenght(int strenght)
 BiotopRandomEntitiyGeneration_t& CBiotop::getRandomEntitiyGeneration(int index)
 {
   return (m_tRandomEntitiesGeneration[index]);
+}
+
+int CBiotop::getNumberOfRandomEntitiyGeneration()
+{
+  return m_tRandomEntitiesGeneration.size();
 }
 
 void CBiotop::SetColorizeSearchMode(bool bColorizeSearch)

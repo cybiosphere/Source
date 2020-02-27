@@ -117,6 +117,7 @@ public:
   void modifyBiotopSpeed(const float newBiotopSpeed);
   feedbackValType forceEntityAction(const entityIdType entityId, const int actionIndex);
   void updateAllBiotopNewMeasures();
+  void addEntitySpawnerInBiotop(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
 
 // Overrides
 	// ClassWizard generated virtual function overrides

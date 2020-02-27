@@ -38,6 +38,7 @@ Server::Server(CBiotop* pBiotop)
   game_events.func_event(labelEventForceEntityAction) = clan::bind_member(this, &Server::on_event_biotop_forceentityaction);
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Server::on_event_biotop_createmeasure);
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Server::on_event_biotop_requestentityrefresh);
+  game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -342,6 +343,11 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       send_event_create_measure(m_pBiotop->getMeasureByIndex(i), user);
     }
 
+    for (i = 0; i < m_pBiotop->getNumberOfRandomEntitiyGeneration(); i++)
+    {
+      send_event_add_entity_spawner(i, m_pBiotop->getRandomEntitiyGeneration(i), user);
+    }
+
 	  user->send_event(NetGameEvent(labelEventStart));
   }
 
@@ -387,6 +393,11 @@ void Server::on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser
 void Server::on_event_biotop_createmeasure(const NetGameEvent& e, ServerUser* user)
 {
   m_EventManager.handleEventCreateMeasure(e, m_pBiotop);
+}
+
+void Server::on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventAddEntitySpawner(e, m_pBiotop);
 }
 
 void Server::on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user)
@@ -530,6 +541,32 @@ void Server::send_event_create_measure(CMeasure* pMeasure, ServerUser* user)
   else
   {
     log_event("-ERROR- ", "send_event_create_measure: Event not sent");
+  }
+}
+
+void Server::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator, ServerUser* user)
+{
+  if (generator.pModelEntity == NULL)
+  {
+    log_event("Events  ", "Add entity spwaner: NULL entity");
+    return;
+  }
+
+  log_event("Events  ", "Add entity spwaner: %1", generator.pModelEntity->getLabel());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsAddEntitySpawner(index, generator, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      if (user == NULL) // If user not define, broadcast info to all
+        network_server.send_event(eventToSend);
+      else
+        user->send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
   }
 }
 

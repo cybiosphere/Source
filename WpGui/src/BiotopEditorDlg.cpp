@@ -139,7 +139,15 @@ BOOL CBiotopEditorDlg::OnInitDialog()
       m_pRandomGeneratorParamsTable[i]->CreateNewButton(rectParams, this, 2010 + i);
       m_pRandomGeneratorParamsTable[i]->SetWindowTextA("fertility");
       startY += offsetY;
-      m_pRandomGeneratorButtonTable[i]->initWithDefaultFile(entityGeneration.entityPathName.c_str(), entityGeneration.entityFileName.c_str());
+      if (entityGeneration.entityPathName != "")
+      {
+        m_pRandomGeneratorButtonTable[i]->initWithDefaultFile(entityGeneration.entityPathName.c_str(), entityGeneration.entityFileName.c_str());
+      }
+      else if (entityGeneration.pModelEntity != NULL)
+      {
+        // File name is not given as entity was provided by message. Give entity label for information
+        m_pRandomGeneratorButtonTable[i]->initWithDefaultFile("", entityGeneration.pModelEntity->getLabel().c_str());
+      }
     }
   }
 
@@ -188,17 +196,17 @@ void CBiotopEditorDlg::OnOK()
 {
   for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
   {
-    if (m_pRandomGeneratorButtonTable[i]->GetFileName() != "")
+    if (m_pRandomGeneratorButtonTable[i]->GetPathName() != "")
     {
-      BiotopRandomEntitiyGeneration_t& entityGeneration = m_pBiotop->getRandomEntitiyGeneration(i);
-      entityGeneration.entityFileName = m_pRandomGeneratorButtonTable[i]->GetFileName();
-      entityGeneration.entityPathName = m_pRandomGeneratorButtonTable[i]->GetPathName();
-      entityGeneration.IsProportionalToFertility = m_pRandomGeneratorParamsTable[i]->GetCheck();
+      string entityFileName = m_pRandomGeneratorButtonTable[i]->GetFileName();
+      string entityPathName = m_pRandomGeneratorButtonTable[i]->GetPathName();
+      bool isProportionalToFertility = m_pRandomGeneratorParamsTable[i]->GetCheck();
       CString param1Str, param2Str;
       m_pRandomGeneratorParamsTable[i]->m_pParam1Edit->GetWindowText(param1Str);
       m_pRandomGeneratorParamsTable[i]->m_pParam2Edit->GetWindowText(param2Str);
-      entityGeneration.avaragePeriodicity = atoi(param1Str);
-      entityGeneration.intensity = atoi(param2Str);
+      int avaragePeriodicity = atoi(param1Str);
+      int intensity = atoi(param2Str);
+      theApp.addEntitySpawnerInBiotop(i, entityFileName, entityPathName, intensity, avaragePeriodicity, isProportionalToFertility);
     }
   }
   CDialog::OnOK();

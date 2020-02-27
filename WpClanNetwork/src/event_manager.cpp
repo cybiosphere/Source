@@ -170,10 +170,6 @@ namespace clan
      int transactionId = e.get_argument(0); // contains entityId
      int nbBlocks = e.get_argument(1);
      int blocksIndex = e.get_argument(2);
-     int custom1 = e.get_argument(3);
-     int custom2 = e.get_argument(4);
-     int custom3 = e.get_argument(5);
-     int custom4 = e.get_argument(6);
      DataBuffer xmlZipBufferBlock = e.get_argument(7);
 
      if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
@@ -474,6 +470,94 @@ namespace clan
     return (pBiotop->getEntityById(entityId));
   }
 
+  bool event_manager::buildEventsAddEntitySpawner(int index, BiotopRandomEntitiyGeneration_t& generator, std::vector<NetGameEvent>& eventVector)
+  {
+    TiXmlDocument xmlDoc;
+    generator.pModelEntity->saveInXmlFile(&xmlDoc);
+    TiXmlPrinter xmlPrinter;
+    xmlDoc.Accept(&xmlPrinter);
+    std::string xmlString = xmlPrinter.Str();
+
+    // Compress xml string
+    DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
+    DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
+
+    return (build_events_long_string(labelEventAddEntitySpawner, xmlZipBuffer, index,
+      generator.intensity, generator.avaragePeriodicity, generator.IsProportionalToFertility, 0,
+      eventVector));
+  }
+
+  void event_manager::handleEventAddEntitySpawner(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int i;
+    int transactionId = e.get_argument(0); // contains spawn index
+    int nbBlocks = e.get_argument(1);
+    int blocksIndex = e.get_argument(2);
+    int intensity = e.get_argument(3);
+    int period = e.get_argument(4);
+    int isProportional = e.get_argument(5);
+    DataBuffer xmlZipBufferBlock = e.get_argument(7);
+
+    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    {
+      log_event("events", "Biotop Add Entity Spawner: ERROR bad nbBlocks: %1", nbBlocks);
+    }
+    else if (nbBlocks == 1)
+    {
+      createSpawnerZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
+    }
+    else
+    {
+      int storeIndex = -1;
+      // Find current transaction if exists
+      for (i = 0; i < (int)m_tEntityBufferEvent.size(); i++)
+      {
+        if (m_tEntityBufferEvent[i].transactionId == transactionId)
+        {
+          storeIndex = i;
+          break;
+        }
+      }
+      // if context exist, fill context 
+      if (storeIndex > -1)
+      {
+        m_tEntityBufferEvent[storeIndex].nb_blocks_received++;
+        m_tEntityBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
+        if (m_tEntityBufferEvent[storeIndex].nb_blocks_received == m_tEntityBufferEvent[storeIndex].nb_blocks)
+        {
+          DataBuffer fullXmlZipBuffer;
+          int fullXmlZipBufferSize = 0;
+          int curBufIndex = 0;
+          // Process buffer size
+          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            fullXmlZipBufferSize += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
+          // Copy blocks in single buffer
+          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tEntityBufferEvent[storeIndex].buffer[i][0]), m_tEntityBufferEvent[storeIndex].buffer[i].get_size());
+            curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          // Create spawner
+          createSpawnerZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
+          // clean m_tEntityBufferEvent
+          m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
+        }
+      }
+      else // (storeIndex==-1) new context creation needed
+      {
+        LongBufferEvent_t newBufferEvent;
+        newBufferEvent.transactionId = transactionId;
+        newBufferEvent.nb_blocks = nbBlocks;
+        newBufferEvent.nb_blocks_received = 1;
+        newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
+        m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
+      }
+    }
+  }
+
   bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)
@@ -590,4 +674,24 @@ namespace clan
     }
     return true;
   }
+
+  bool event_manager::createSpawnerZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,
+                                             const int intensity, const int period, const bool isProportional)
+  {
+    DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
+    TiXmlDocument xmlDoc;
+    xmlDoc.Parse(xmlBuffer.get_data());
+    CBasicEntity* pNewEntity = pBiotop->createEntity(&xmlDoc, ".\\temp\\");
+    if (pNewEntity!=NULL)
+    {
+      log_event("events", "Add entity spawn: Id%1 period=%2 label=%3", spawnerId, period, pNewEntity->getLabel());
+      return (pBiotop->addEntitySpawner(spawnerId, pNewEntity, intensity, period, isProportional));
+    }
+    else
+    {
+      log_event("events", "Add entity spawn error: Id%1 period=%2", spawnerId, period);
+      return false;
+    }
+  }
+
 }

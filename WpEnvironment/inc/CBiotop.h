@@ -170,7 +170,8 @@ typedef struct
 typedef struct
 {
   string entityPathName;
-  string entityFileName; // including .xml extension)
+  string entityFileName; // including .xml extension
+  CBasicEntity* pModelEntity;
   int intensity; // scale 0..100
   int avaragePeriodicity; // avarage number of days between 2 occurences
   bool IsProportionalToFertility; // If true, both intensity and avaragePeriodicity are modulated by fertility rate
@@ -367,8 +368,9 @@ public:
 // Specific behaviors
 //---------------------------------------------------------------------------
 public:
-  void spreadWaterPuddlesByRain(int coverRate);
-  void spreadEntitiesRandomly(string fileName, string pathName, int coverRate);
+  bool addEntitySpawner(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+  bool addEntitySpawner(int index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+  void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
 
 //---------------------------------------------------------------------------
 // CPU Marker
@@ -406,7 +408,8 @@ public:
   void setWindDirection(int direction);
   int  getWindStrenght(); 
   void setWindStrenght(int strenght);
-  BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index); 
+  BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index);
+  int getNumberOfRandomEntitiyGeneration();
   void SetColorizeSearchMode(bool bColorizeSearch);
 
 }; // end CBiotop

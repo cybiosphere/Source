@@ -736,3 +736,16 @@ void CCybiosphereApp::updateAllBiotopNewMeasures()
   }
   GetStatisticViewPtr()->RebuildMeasChkBox();
 }
+
+void CCybiosphereApp::addEntitySpawnerInBiotop(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility)
+{
+  m_pBiotop->addEntitySpawner(index, entityFileName, pathName, intensityRate, avaragePeriod, isProportionalToFertility);
+  BiotopRandomEntitiyGeneration_t& generator = m_pBiotop->getRandomEntitiyGeneration(index);
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_add_entity_spawner(index, generator);
+#endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_add_entity_spawner(index, generator);
+#endif // USE_CLAN_SERVER
+}
+

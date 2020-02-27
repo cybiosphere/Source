@@ -52,6 +52,7 @@ private:
 	void on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_createmeasure(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser* user);
 
 public:
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
@@ -60,6 +61,7 @@ public:
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);
 	void send_event_create_measure(CMeasure* pMeasure, ServerUser* user = NULL);
+	void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator, ServerUser* user = NULL);
 
 private:
   bool process_cmd_line(const std::string input_cmd_string);
