@@ -358,22 +358,21 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
   }
 }
 
-void Client::send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId)
+void Client::send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions)
 {
-  if (pEntity == NULL)
+  //log_event("Events  ", "Add clone entities");
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::event_manager::buildEventsAddCloneEntities(modelEntityId, vectPositions, eventVector))
   {
-    log_event("Events  ", "Add clone entity: NULL entity");
-    return;
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
   }
-  if (pEntity->isToBeRemoved())
+  else
   {
-    log_event("Events  ", "Add clone removed entity: %1", pEntity->getLabel());
-    return;
+    log_event("-ERROR- ", "send_events_add_clone_entities: Event not sent");
   }
-
-  log_event("Events  ", "Add clone entity: %1", pEntity->getLabel());
-  NetGameEvent addCloneEntityEvent{ event_manager::buildEventAddCloneEntity(pEntity, modelEntityId) };
-  network_client.send_event(addCloneEntityEvent);
 }
 
 void Client::send_event_update_entity_data(CBasicEntity* pEntity)

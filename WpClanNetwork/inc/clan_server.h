@@ -56,7 +56,7 @@ private:
 
 public:
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);
-	void send_event_add_clone_entity(CBasicEntity* pEntity, entityIdType modelEntityId, ServerUser* user = NULL);
+	void send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, ServerUser* user = NULL);
   void send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user = NULL);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user = NULL);

@@ -96,57 +96,78 @@ namespace clan
     }
   }
 
-  NetGameEvent event_manager::buildEventAddCloneEntity(CBasicEntity* pEntity, entityIdType modelEntityId)
+  bool event_manager::buildEventsAddCloneEntities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, std::vector<NetGameEvent>& eventVector)
   {
-    NetGameEvent newEvent(labelEventAddCloneEntity);
-    newEvent.add_argument((int)modelEntityId);
-    newEvent.add_argument((int)pEntity->getId());
-    newEvent.add_argument(pEntity->getLabel());
-    newEvent.add_argument(pEntity->getStepCoord().x);
-    newEvent.add_argument(pEntity->getStepCoord().y);
-    newEvent.add_argument(pEntity->getLayer());
-    newEvent.add_argument(pEntity->getStepDirection());
-    return (std::move(newEvent));
-  }
-
-  bool event_manager::handleEventAddCloneEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
-  {
-    bool resu = false;
-    int modelEntityId = e.get_argument(0);
-    int entityId = e.get_argument(1);
-    std::string  entityLabel = e.get_argument(2);
-    Point_t stepCoord;
-    stepCoord.x = e.get_argument(3);
-    stepCoord.y = e.get_argument(4);
-    int layer = e.get_argument(5);
-    int direction = e.get_argument(6);
-
-    CBasicEntity* pModelEntity = pBiotop->getEntityById(modelEntityId);
-    if (pModelEntity == NULL)
+    static constexpr int maxNumEntitiesPerEvent = 500;
+    int nbEvents = vectPositions.size() / maxNumEntitiesPerEvent + 1;
+    int nbRemainingEntityPos = vectPositions.size();
+    int index = 0;
+    for (int indexEvent = 0; indexEvent < nbEvents; indexEvent++)
     {
-      return false;
-    }
-    CBasicEntity* pClonedNewEntity = pBiotop->createCloneEntity(pModelEntity);
-    pClonedNewEntity->setStepDirection(direction);
-    if (setAsRemoteControl)
-    {
-      if (!pBiotop->addRemoteCtrlEntity(entityId, pClonedNewEntity, stepCoord, layer))
+      NetGameEvent newEvent(labelEventAddCloneEntity);
+      int nbEntityPosInEvent = cybio_min(maxNumEntitiesPerEvent, nbRemainingEntityPos);
+      newEvent.add_argument(nbEntityPosInEvent);
+      newEvent.add_argument((int)modelEntityId);
+      for (int i = 0; i < nbEntityPosInEvent;  i++)
       {
-        delete pClonedNewEntity;
-        return false;
+        BiotopEntityPosition_t entityPos{ vectPositions[index] };
+        newEvent.add_argument((int)entityPos.entityId);
+        newEvent.add_argument(entityPos.layer);
+        newEvent.add_argument(entityPos.stepCoordX);
+        newEvent.add_argument(entityPos.stepCoordY);
+        newEvent.add_argument(entityPos.stepDirection);
+        nbRemainingEntityPos--;
+        index++;
       }
-    }
-    else
-    {
-      if (!pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer))
-      {
-        delete pClonedNewEntity;
-        return false;
-      }
+      eventVector.push_back(std::move(newEvent));
     }
     return true;
   }
   
+  bool event_manager::handleEventAddCloneEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
+  {
+    bool resu = false;
+    Point_t stepCoord;
+    int nbEntityPosInEvent = e.get_argument(0);
+    int modelEntityId = e.get_argument(1);
+    int index = 2;
+    CBasicEntity* pModelEntity = pBiotop->getEntityById(modelEntityId);
+    log_event("events", "handleEventAddCloneEntity nbEntityPosInEvent: %1 modelId=%2", nbEntityPosInEvent, modelEntityId);
+    if (pModelEntity == NULL)
+    {
+      return false;
+    }
+
+    for (int i = 0; i < nbEntityPosInEvent; i++)
+    {
+      int entityId = e.get_argument(index);
+      int layer = e.get_argument(index + 1);
+      stepCoord.x = e.get_argument(index + 2);
+      stepCoord.y = e.get_argument(index + 3);
+      int direction = e.get_argument(index + 4);
+      index += 5;
+
+      CBasicEntity* pClonedNewEntity = pBiotop->createCloneEntity(pModelEntity);
+      pClonedNewEntity->setStepDirection(direction);
+      if (setAsRemoteControl)
+      {
+        if (!pBiotop->addRemoteCtrlEntity(entityId, pClonedNewEntity, stepCoord, layer))
+        {
+          delete pClonedNewEntity;
+          return false;
+        }
+      }
+      else
+      {
+        if (!pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer))
+        {
+          delete pClonedNewEntity;
+          return false;
+        }
+      }
+    }
+  }
+
    bool event_manager::buildEventsUpdateEntityData(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector)
   {
     TiXmlDocument xmlDoc;
