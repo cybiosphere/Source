@@ -108,6 +108,7 @@ public:
   void nextHour();
   void nextDay(bool forceGrowth = false);
   int  getAge();
+  int  getDecompositionTime();
 
 protected:
   bool changeHealthRate(double variation);

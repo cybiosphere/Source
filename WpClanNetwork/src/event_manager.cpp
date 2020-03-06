@@ -110,12 +110,11 @@ namespace clan
       newEvent.add_argument((int)modelEntityId);
       for (int i = 0; i < nbEntityPosInEvent;  i++)
       {
-        BiotopEntityPosition_t entityPos{ vectPositions[index] };
-        newEvent.add_argument((int)entityPos.entityId);
-        newEvent.add_argument(entityPos.layer);
-        newEvent.add_argument(entityPos.stepCoordX);
-        newEvent.add_argument(entityPos.stepCoordY);
-        newEvent.add_argument(entityPos.stepDirection);
+        newEvent.add_argument((int)(vectPositions[index].entityId));
+        newEvent.add_argument(vectPositions[index].layer);
+        newEvent.add_argument(vectPositions[index].stepCoordX);
+        newEvent.add_argument(vectPositions[index].stepCoordY);
+        newEvent.add_argument(vectPositions[index].stepDirection);
         nbRemainingEntityPos--;
         index++;
       }
@@ -487,7 +486,7 @@ namespace clan
   {
     int entityId = e.get_argument(0);
     string label = e.get_argument(1);
-    log_event("events", "Reqest entity refresh: entity%1 label%2", entityId, label);
+    log_event("events", "Reqest entity refresh: entity Id=%1 label %2", entityId, label);
     return (pBiotop->getEntityById(entityId));
   }
 
@@ -562,7 +561,7 @@ namespace clan
             curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
           }
           // Create spawner
-          createSpawnerZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
+          createSpawnerZipBuffer(fullXmlZipBuffer, pBiotop, transactionId, intensity, period, isProportional);
           // clean m_tEntityBufferEvent
           m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
         }

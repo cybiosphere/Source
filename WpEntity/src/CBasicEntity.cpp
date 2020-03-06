@@ -2041,6 +2041,11 @@ int CBasicEntity::getAge()
   return (0);
 }
 
+int CBasicEntity::getDecompositionTime()
+{
+  return (0);
+}
+
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::checkVitalNeedsOk
 //  
@@ -2564,23 +2569,23 @@ void CBasicEntity::autoKill()
 //---------------------------------------------------------------------------
 bool CBasicEntity::checkHabitat(void)
 {
-  bool resu = false;
-
-  LayerType_e curLayer = m_pBiotop->getLayerType(m_GridCoord,m_Layer);
-
-  if ( (m_Habitat == HABITAT_EARTH) && (curLayer != LAYER_OVER_GROUND) && (curLayer != LAYER_OVER_WET_GROUND) )
+  bool resu = true;
+  if (m_pBiotop != NULL)
   {
-    resu = false;
+    LayerType_e curLayer = m_pBiotop->getLayerType(m_GridCoord, m_Layer);
+    if ((m_Habitat == HABITAT_EARTH) && (curLayer != LAYER_OVER_GROUND) && (curLayer != LAYER_OVER_WET_GROUND))
+    {
+      resu = false;
+    }
+    else if ((m_Habitat == HABITAT_WATER) && (curLayer != LAYER_UNDER_WATER))
+    {
+      resu = false;
+    }
+    else
+    {
+      resu = true;
+    }
   }
-  else if ( (m_Habitat == HABITAT_WATER) && (curLayer != LAYER_UNDER_WATER) )
-  {
-    resu = false;
-  }
-  else
-  {
-    resu = true;
-  }
-
   return (resu);
 }
 
@@ -3084,7 +3089,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
           pBabyGenome = new CGenome(CLASS_NONE,"");
           getGenomeFromXmlFile(fileNameWithPathStr,*pBabyGenome);
           getEntityNameFromXmlFile(fileNameWithPathStr,babName);    
-          pEntity = m_pBiotop->createEntity(babName,pBabyGenome);
+          pEntity = CBiotop::createEntity(babName,pBabyGenome);
           if (pEntity)
           {
             pEntity->loadBrainFromXmlFile(fileNameWithPathStr);

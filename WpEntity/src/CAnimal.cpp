@@ -2783,27 +2783,30 @@ void CAnimal::nextHour()
 //---------------------------------------------------------------------------
 void CAnimal::nextDay(bool forceGrowth)
 {
-  // get older 
-  if (isAlive() && isLocalAutoControlled())
+  if (isLocalAutoControlled())
   {
-    if (m_pBrain != NULL)
-      m_pBrain->NextDay();
-    getParameter(m_id_Age)->changeVal(1);
-    balanceWeightAndMetabolism(forceGrowth);
-    if (getParameter(m_id_Age)->isMaxReached())
+    // get older 
+    if (isAlive())
     {
-      autoKill();
+      if (m_pBrain != NULL)
+        m_pBrain->NextDay();
+      getParameter(m_id_Age)->changeVal(1);
+      balanceWeightAndMetabolism(forceGrowth);
+      if (getParameter(m_id_Age)->isMaxReached())
+      {
+        autoKill();
+      }
+    }
+    else
+    {
+      getParameter(m_id_Decomposition)->changeVal(1);
+      changeFatWeight(0.2);
+      if (getParameter(m_id_Decomposition)->isMaxReached())
+      {
+        autoRemove();
+      }
     }
   }
-  else 
-  {
-    getParameter(m_id_Decomposition)->changeVal(1);
-    if (getParameter(m_id_Decomposition)->isMaxReached())
-    {
-      autoRemove();
-    }
-  }
-
   CBasicEntity::nextDay(forceGrowth);
 }
 
@@ -2821,6 +2824,11 @@ void CAnimal::nextDay(bool forceGrowth)
 int CAnimal::getAge()
 {
   return ((int)getParameter(m_id_Age)->getVal());
+}
+
+int CAnimal::getDecompositionTime()
+{
+  return ((int)getParameter(m_id_Decomposition)->getVal());
 }
 
 //---------------------------------------------------------------------------

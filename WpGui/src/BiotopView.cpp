@@ -256,11 +256,11 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 
       if (!theApp.GetScenarioPlayer()->IsScenarioFileOpened())
       {
-        m_pBiotop->nextSecond();
-        // In idle mode, call twice pBiotop->nextSecond to boost performance 
+        theApp.proceedBiotopNextSecond();
+        // In idle mode, call twice nextSecond to boost performance 
         if (m_IdleDisplayMode)
         {
-          m_pBiotop->nextSecond();
+          theApp.proceedBiotopNextSecond();
         }
       }
       else
@@ -290,7 +290,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
           CString scoreText;
           scoreText.Format("Score:%d / %d OK", theApp.GetScenarioPlayer()->m_successScore, theApp.GetScenarioPlayer()->m_totalScore);  
           theApp.GetBioCtrlViewPtr()->SetStrScenarioScore(scoreText);
-          m_pBiotop->nextSecond();
+          theApp.proceedBiotopNextSecond();
         }
       }
 

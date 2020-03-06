@@ -749,3 +749,9 @@ void CCybiosphereApp::addEntitySpawnerInBiotop(int index, string entityFileName,
 #endif // USE_CLAN_SERVER
 }
 
+void CCybiosphereApp::proceedBiotopNextSecond()
+{
+#ifndef USE_CLAN_CLIENT
+  m_pBiotop->nextSecond();
+#endif // USE_CLAN_CLIENT
+}

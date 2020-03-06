@@ -475,6 +475,7 @@ public:
   virtual void nextHour();    // Called by biotop every 3600 time units  
   virtual void nextDay(bool forceGrowth = false);     // Called every 24h at birth hour  
   virtual int  getAge();
+  virtual int  getDecompositionTime();
   virtual bool checkVitalNeedsOk(); // Called by biotop every time unit
 
   void quickAgeing(int nbDays);   // Get older quickely

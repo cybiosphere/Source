@@ -711,6 +711,7 @@ void CVegetable::nextDay(bool forceGrowth)
   else 
   {
     getParameter(m_id_Decomposition)->changeVal(1);
+    changeWeight(-0.2);
     if (getParameter(m_id_Decomposition)->isMaxReached())
     {
       autoRemove();
@@ -734,6 +735,11 @@ void CVegetable::nextDay(bool forceGrowth)
 int CVegetable::getAge()
 {
   return ((int)getParameter(m_id_Age)->getVal());
+}
+
+int CVegetable::getDecompositionTime()
+{
+  return ((int)getParameter(m_id_Decomposition)->getVal());
 }
 
 //---------------------------------------------------------------------------

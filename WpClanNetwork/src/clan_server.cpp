@@ -70,6 +70,9 @@ void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
       CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
       bioNextSecEventStart.add_argument(biotopTime);
       bioNextSecEventStart.add_argument(m_biotopSpeed);
+      bioNextSecEventStart.add_argument((float)m_pBiotop->getSunlight());
+      bioNextSecEventStart.add_argument((float)m_pBiotop->getParamFertility()->getVal());
+      bioNextSecEventStart.add_argument((float)m_pBiotop->getParamTemperature()->getVal());
       network_server.send_event(bioNextSecEventStart);
 
       // Update all entities

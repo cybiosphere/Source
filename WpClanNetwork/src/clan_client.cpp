@@ -202,7 +202,7 @@ void Client::on_event_game_loadmap(const NetGameEvent &e)
 // "Game-Start" event was received
 void Client::on_event_game_startgame(const NetGameEvent &e) 
 {
-  displayBiotopEntities();
+  //displayBiotopEntities();
   m_bBiotopConfigComplete = true;
 	log_event("events", "Starting game!");
 }
@@ -212,8 +212,14 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
 {
   CustomType biotopTime = e.get_argument(0);
   m_biotopSpeed = e.get_argument(1);
+  float sunlight = e.get_argument(2);
+  float fertility = e.get_argument(3);
+  float temperature = e.get_argument(4);
   m_bEventNextSecondStart = true;
   m_bEventNextSecondEnd = false;
+  m_pBiotop->getParamSunlight()->forceVal(sunlight);
+  m_pBiotop->getParamFertility()->forceVal(fertility);
+  m_pBiotop->getParamTemperature()->forceVal(temperature);
 	//log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
@@ -225,6 +231,7 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
   m_lastEventTimeStamp = biotopTime.get_x();
 	//log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
   m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
+  m_pBiotop->triggerMeasuresNextSecond();
 
 #ifdef USE_OGRE3D
   // Prepare new movement and animation in case of Ogre3D Application

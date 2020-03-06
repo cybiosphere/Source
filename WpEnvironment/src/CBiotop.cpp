@@ -391,6 +391,14 @@ CBasicEntity* CBiotop::createCloneEntity(CBasicEntity* pModelEntity)
 
     // quick aging
     pNewEntity->quickAgeing(pModelEntity->getAge());
+
+    // If dead quick aging in dead mode
+    if (pModelEntity->getStatus() == STATUS_DEAD)
+    {
+      pNewEntity->autoKill();
+      pNewEntity->quickAgeing(pModelEntity->getDecompositionTime());
+    }
+
   }
 
   // Copie parameters
@@ -1659,7 +1667,6 @@ void CBiotop::nextSecond(void)
 {
   CBasicEntity* pEntity = NULL;
   int i;
-  bool isValid;
   m_BioTime.seconds++;
   logCpuMarkerStart(BIOTOP_CPUMARKER_TOTAL);
 
@@ -1703,7 +1710,15 @@ void CBiotop::nextSecond(void)
   logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
 
   // Trigger measurement
-  for (i=0; i<m_tMeasures.size(); i++) 
+  triggerMeasuresNextSecond();
+
+  logCpuMarkerEnd(BIOTOP_CPUMARKER_TOTAL);
+}
+
+void CBiotop::triggerMeasuresNextSecond(void)
+{
+  bool isValid;
+  for (int i = 0; i < m_tMeasures.size(); i++)
   {
     isValid = m_tMeasures[i]->NextSecond();
     if (!isValid)
@@ -1711,7 +1726,6 @@ void CBiotop::nextSecond(void)
       m_tMeasures[i]->StopMeasurement();
     }
   }
-  logCpuMarkerEnd(BIOTOP_CPUMARKER_TOTAL);
 }
 
 void CBiotop::nextHour(void)

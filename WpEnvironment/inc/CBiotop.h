@@ -177,6 +177,16 @@ typedef struct
   bool IsProportionalToFertility; // If true, both intensity and avaragePeriodicity are modulated by fertility rate
 } BiotopRandomEntitiyGeneration_t;
 
+typedef struct
+{
+  entityIdType entityId;
+  int layer;
+  int stepCoordX;
+  int stepCoordY;
+  int stepDirection;
+
+} BiotopEntityPosition_t;
+
 //===========================================================================
 //                                    CLASS            
 //=========================================================================== 
@@ -308,9 +318,11 @@ public:
 //---------------------------------------------------------------------------
 public:
   void nextSecond(void);
+  void triggerMeasuresNextSecond(void);
   void nextHour(void);
   BiotopTime_t getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
+
 
 //---------------------------------------------------------------------------
 // Grid management

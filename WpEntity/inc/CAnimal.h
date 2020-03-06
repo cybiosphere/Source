@@ -169,6 +169,7 @@ public:
   void nextHour();
   void nextDay(bool forceGrowth = false);
   int  getAge();
+  int  getDecompositionTime();
   bool checkVitalNeedsOk();
 
 protected:
