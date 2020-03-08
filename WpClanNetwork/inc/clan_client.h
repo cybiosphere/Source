@@ -24,7 +24,8 @@ public:
   bool check_if_event_next_second_start_and_clean();
   bool check_if_event_next_second_end_and_clean();
   CBiotop* get_pBiotop();
-  bool  is_biotop_config_complete();
+  bool is_biotop_config_complete();
+  bool is_logged_in();
   float get_biotop_speed();
 
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);

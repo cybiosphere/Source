@@ -67,6 +67,17 @@ void Client::exec()
   //std::string portId     = "4556";
 
 	connect_to_server();
+  for (int i = 0; i < 1000; i++)
+  {
+    System::sleep(10);
+    network_client.process_events();
+  }
+  if (logged_in != true)
+  {
+    log_event("Server connection:", "FAILED");
+    System::sleep(1000);
+    return;
+  }
 
 	while (!quit)
 	{

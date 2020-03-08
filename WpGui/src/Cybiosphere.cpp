@@ -236,8 +236,20 @@ BOOL CCybiosphereApp::InitInstance()
   resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
   ServerPortStr = resuBuffer;
   m_pClient = new Client(ServerAddrStr, ServerPortStr);
+
   // Connect to server and wait for biotop init from server
   m_pClient->connect_to_server();
+  for (int i = 0; i < 200; i++)
+  {
+    System::sleep(10);
+    m_pClient->process_new_events();
+  }
+  if (m_pClient->is_logged_in() != true)
+  {
+    AfxMessageBox("Loggin FAILED. Cannot reach server");
+    return false;
+  }
+
   while (!(m_pClient->is_biotop_config_complete()))
   {
     System::sleep(10);
