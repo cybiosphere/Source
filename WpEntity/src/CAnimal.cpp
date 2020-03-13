@@ -1747,13 +1747,12 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       }
 
       int  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
-      int* pBonusTable = new int[bonusTableSize];
+      std::vector<int> bonusTable(bonusTableSize);
       for (int index=0; index<bonusTableSize; index++)
       {
-        pBonusTable[index] = cybio_round((double)pData[4+index] * 20000.0/65536.0);
+        bonusTable[index] = cybio_round((double)pData[4+index] * 20000.0/65536.0);
       }
-      resu = pPurpose->AddSensorBonus(pSensor,bonusTableSize,pBonusTable);
-      delete [] pBonusTable;
+      resu = pPurpose->AddSensorBonus(pSensor, bonusTable);
       break;
     }
   case GENE_PURPOSE_REACTION:

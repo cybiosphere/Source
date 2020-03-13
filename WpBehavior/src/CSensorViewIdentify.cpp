@@ -386,7 +386,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
         if (m_pEntityViewIdentifyTab[i].weightTab[j]  > MAX_SENSOR_VAL)
           m_pEntityViewIdentifyTab[i].weightTab[j] = MAX_SENSOR_VAL;
 
-        m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].weightTab[j] * m_pBonusRate[stimulationTabOffset+j];
+        m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].weightTab[j] * m_BonusRate[stimulationTabOffset+j];
       }
 
       // Fill followed entity

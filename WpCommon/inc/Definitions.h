@@ -48,6 +48,7 @@ distribution.
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <array>
 #include <cassert>
 #include <fstream>
 #include <stdint.h>

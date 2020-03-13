@@ -362,7 +362,7 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
         if (m_pEntityViewTab[i].weightTab[j]  > MAX_SENSOR_VAL)
           m_pEntityViewTab[i].weightTab[j] = MAX_SENSOR_VAL;
 
-        m_pEntityViewTab[i].computedWeight += m_pEntityViewTab[i].weightTab[j] * m_pBonusRate[stimulationTabOffset+j];
+        m_pEntityViewTab[i].computedWeight += m_pEntityViewTab[i].weightTab[j] * m_BonusRate[stimulationTabOffset+j];
       }
     }
     else

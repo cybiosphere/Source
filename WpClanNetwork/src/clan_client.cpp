@@ -135,6 +135,11 @@ bool Client::is_biotop_config_complete()
   return m_bBiotopConfigComplete;
 }
 
+bool Client::is_logged_in()
+{
+  return logged_in;
+}
+
 float Client::get_biotop_speed()
 {
   return m_biotopSpeed;

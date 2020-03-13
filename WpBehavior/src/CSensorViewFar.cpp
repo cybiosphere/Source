@@ -374,7 +374,7 @@ bool CSensorViewFar::Scan45degSector(int stimulationTabOffset,
         if (m_pEntityViewFarTab[i].weightTab[j]  > MAX_SENSOR_VAL)
           m_pEntityViewFarTab[i].weightTab[j] = MAX_SENSOR_VAL;
 
-        m_pEntityViewFarTab[i].computedWeight += m_pEntityViewFarTab[i].weightTab[j] * m_pBonusRate[stimulationTabOffset+j];
+        m_pEntityViewFarTab[i].computedWeight += m_pEntityViewFarTab[i].weightTab[j] * m_BonusRate[stimulationTabOffset+j];
       }
 
       // Adjust weight to ViewIdentify if needed

@@ -602,6 +602,7 @@
     <ClInclude Include="..\WpMeasure\inc\CMeasure.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureBiotopParam.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureEntityParam.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureFeeling.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureParam.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasurePopulation.h" />

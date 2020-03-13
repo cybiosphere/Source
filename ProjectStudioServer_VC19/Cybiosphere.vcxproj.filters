@@ -745,6 +745,9 @@
     <ClInclude Include="..\WpClanNetwork\inc\event_manager.h">
       <Filter>WpClanNetwork\IncClan</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">

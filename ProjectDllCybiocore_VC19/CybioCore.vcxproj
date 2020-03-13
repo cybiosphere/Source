@@ -328,6 +328,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H" />
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrain.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />

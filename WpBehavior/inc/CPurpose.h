@@ -72,9 +72,8 @@ typedef struct
 
 typedef struct 
 {
-  CSensor*    pSensor;
-  int         bonusTableSize;
-  int*        pBonusTable;  // from 0 to 100 :malus, over 100 bonus
+  CSensor*         pSensor;
+  std::vector<int> bonusTable;  // from 0 to 100 :malus, over 100 bonus
 } SensorBonus_t;
 
 #define SENSOR_TABLE_SIZE 10
@@ -110,11 +109,10 @@ private:
   int                   m_Priority;            // Used to select active purpose (from 0:low to 5:max)
   bool                  m_bMemorizeSuccess;    // Used to specify that success geographic position can be memorized
 
-  int                   m_nbSensorBonus;
-  SensorBonus_t*        m_tSensorBonus;
-  int                   m_nbReactionBonus;
-  ReactionBonus_t*      m_tReactionBonus;
-
+  int m_nbSensorBonus;
+  std::array<SensorBonus_t, SENSOR_TABLE_SIZE> m_tSensorBonus;
+  int m_nbReactionBonus;
+  std::array<ReactionBonus_t, REACTION_TABLE_SIZE> m_tReactionBonus;
 
 //===========================================================================
 // methods 
@@ -143,7 +141,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  bool AddSensorBonus (CSensor* pSensor, int bonusTableSize, int* pBonusTable);
+  bool AddSensorBonus (CSensor* pSensor, std::vector<int>& bonusTable);
   bool AddReactionBonus (CReaction* pReaction,int bonusRate);
   sensorValType GetSensorLevel();
   bool IsStartThresholdReached();

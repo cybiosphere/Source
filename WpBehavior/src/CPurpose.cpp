@@ -75,16 +75,13 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, int subCapt
   m_bMemorizeSuccess = false;
 
   m_nbSensorBonus = 0;
-  m_tSensorBonus  = new SensorBonus_t[SENSOR_TABLE_SIZE];
   for (i=0; i<SENSOR_TABLE_SIZE; i++)
   {
-    m_tSensorBonus[i].pSensor        = NULL;
-    m_tSensorBonus[i].bonusTableSize = 0;
-    m_tSensorBonus[i].pBonusTable    = NULL;
+    m_tSensorBonus[i].pSensor = NULL;
+    m_tSensorBonus[i].bonusTable.clear();
   }
 
   m_nbReactionBonus = 0;
-  m_tReactionBonus  = new ReactionBonus_t[REACTION_TABLE_SIZE];
   for (i=0; i<REACTION_TABLE_SIZE; i++)
   {
     m_tReactionBonus[i].pReaction = NULL;
@@ -132,14 +129,6 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, int subCapt
 
 CPurpose::~CPurpose()
 {
-  for (int i=0; i<SENSOR_TABLE_SIZE; i++)
-  {
-    if (m_tSensorBonus[i].pBonusTable != NULL)
-      delete [] m_tSensorBonus[i].pBonusTable;
-  }
-
-  delete [] m_tSensorBonus;
-  delete [] m_tReactionBonus;
 }
 
 //===========================================================================
@@ -219,7 +208,7 @@ void CPurpose::StartPeriod(void)
     curSens = m_tSensorBonus[i].pSensor; 
     if (curSens!=NULL)
     {
-      curSens->SetBonusRate(m_tSensorBonus[i].bonusTableSize, m_tSensorBonus[i].pBonusTable);
+      curSens->SetBonusRate(m_tSensorBonus[i].bonusTable.size(), m_tSensorBonus[i].bonusTable);
     }
   }
 
@@ -276,22 +265,15 @@ void CPurpose::StopPeriod(void)
 // Get / Set for attributes
 //===========================================================================
 
-bool CPurpose::AddSensorBonus (CSensor* pSensor, int bonusTableSize, int* pBonusTable)
+bool CPurpose::AddSensorBonus (CSensor* pSensor, std::vector<int>& bonusTable)
 {
-  if ((m_nbSensorBonus>SENSOR_TABLE_SIZE-1)||(pBonusTable==NULL))
+  if ((m_nbSensorBonus>SENSOR_TABLE_SIZE-1)||(bonusTable.empty()))
   {
     return (false);
   }
   
-  m_tSensorBonus[m_nbSensorBonus].pSensor        = pSensor;
-  m_tSensorBonus[m_nbSensorBonus].bonusTableSize = bonusTableSize;
-  m_tSensorBonus[m_nbSensorBonus].pBonusTable    = new int[bonusTableSize];
-
-  for (int i=0; i<bonusTableSize; i++)
-  {
-    m_tSensorBonus[m_nbSensorBonus].pBonusTable[i] = pBonusTable[i];
-  }
-
+  m_tSensorBonus[m_nbSensorBonus].pSensor    = pSensor;
+  m_tSensorBonus[m_nbSensorBonus].bonusTable = std::move(bonusTable);
   m_nbSensorBonus++;
   return (true);
 }

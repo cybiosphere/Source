@@ -346,6 +346,9 @@
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
