@@ -84,30 +84,16 @@ CSensorCompass::~CSensorCompass()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorCompass::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorCompass::UpdateAndGetStimulationTable()
 {
-  int i;
-
-  // Reinit m_pStimulationValues
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  // Reinit m_tStimulationValues
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
-  m_pStimulationValues[pAnimal->getDirection()] = MAX_SENSOR_VAL;
+  m_tStimulationValues[pAnimal->getDirection()] = MAX_SENSOR_VAL;
+  applySubCaptorWeightRate();
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-  }
-  
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //===========================================================================

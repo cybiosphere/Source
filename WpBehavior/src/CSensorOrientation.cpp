@@ -83,13 +83,9 @@ CSensorOrientation::~CSensorOrientation()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorOrientation::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTable()
 { 
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CPurpose* pPurpose = m_pBrain->GetCurrentPurpose();
   CGeoMap*  pMap = m_pBrain->GetGeographicMap();
@@ -103,30 +99,22 @@ int CSensorOrientation::UpdateAndGetStimulationTable(sensorValType*& pStimulatio
     {
       if (targetDirection == curDirection)
       {
-        m_pStimulationValues[0] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[0] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
       }
       else if (((360 + (targetDirection-curDirection)*45) % 360) < 180)
       {
-        m_pStimulationValues[1] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[1] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
       }
       else
       {
-        m_pStimulationValues[2] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[2] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
       }
 
-      for (i = 0; i<m_SubCaptorNumber; i++)
-      {
-        // Use weight
-        m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-        // Don't go over Max!
-        if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-          m_pStimulationValues[i] = MAX_SENSOR_VAL;
-      }
+      applySubCaptorWeightRate();
     }
   }
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

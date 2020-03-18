@@ -90,13 +90,9 @@ CSensorComposite::~CSensorComposite()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorComposite::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorComposite::UpdateAndGetStimulationTable()
 {
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   if (m_pBaseSens == NULL)
     m_pBaseSens = m_pBrain->GetSensorByUniqueId(m_BaseSensUId);
@@ -107,24 +103,19 @@ int CSensorComposite::UpdateAndGetStimulationTable(sensorValType*& pStimulationV
   if ((m_pBaseSens == NULL) || (m_pParam == NULL))
   {
     // No sensor or param found => no stimulation
-    pStimulationVal = m_pStimulationValues;
-    return m_SubCaptorNumber;
+    return m_tStimulationValues;
   }
-
 
   double factor = m_pParam->getVal();
-  sensorValType* pBaseStimulation;
-
-  m_pBaseSens->UpdateAndGetStimulationTable(pBaseStimulation);
-
-  for (i=0; i<m_SubCaptorNumber; i++)
+  const std::vector<sensorValType>& vectorBaseStimulation{ m_pBaseSens->UpdateAndGetStimulationTable() };
+  
+  for (int i = 0; i < m_SubCaptorNumber; i++)
   {
     // Compute stimulation
-    m_pStimulationValues[i] = pBaseStimulation[i] * factor * m_pSubCaptorWeightRate[i] / 100.0;
+    m_tStimulationValues[i] = vectorBaseStimulation[i] * factor * m_tSubCaptorWeightRate[i] / 100.0;
   }
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

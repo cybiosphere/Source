@@ -82,20 +82,17 @@ CSensorStomachOverload::~CSensorStomachOverload()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorStomachOverload::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorStomachOverload::UpdateAndGetStimulationTable()
 {
   sensorValType level = 0;
   if (m_pBrain->getAnimal()->getStomachFillingRate() > 90.0)
     level = (double)(m_pBrain->getAnimal()->getStomachFillingRate() - 90.0) * MAX_SENSOR_VAL / 10.0;
   else
     level = 0;
-  // Use weight
-  level = level * m_pSubCaptorWeightRate[0] / 100.0;
- 
-  m_pStimulationValues[0] = level;
+  m_tStimulationValues[0] = level;
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

@@ -131,7 +131,7 @@ public:
 // Virtual overload
 //---------------------------------------------------------------------------
 public:
-  int UpdateAndGetStimulationTable(sensorValType*& pStimulationVal);
+  const std::vector<sensorValType>& UpdateAndGetStimulationTable();
   string GetSubCaptorLabel(int index);
 
 //---------------------------------------------------------------------------

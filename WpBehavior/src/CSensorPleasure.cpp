@@ -78,17 +78,12 @@ CSensorPleasure::CSensorPleasure(CBrainAnimal* pBrain, double weightRate)
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorPleasure::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorPleasure::UpdateAndGetStimulationTable()
 {
-  sensorValType level = 0;
-  level = (double)(m_pBrain->getAnimal()->getPleasureRate()) * MAX_SENSOR_VAL / 100.0;
-  // Use weight
-  level = level * m_pSubCaptorWeightRate[0] / 100.0;
- 
-  m_pStimulationValues[0] = level;
+  m_tStimulationValues[0] = (double)(m_pBrain->getAnimal()->getPleasureRate()) * MAX_SENSOR_VAL / 100.0;
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

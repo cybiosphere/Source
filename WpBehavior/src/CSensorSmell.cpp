@@ -87,13 +87,9 @@ CSensorSmell::~CSensorSmell()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
 {
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
 
@@ -102,15 +98,11 @@ int CSensorSmell::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
   Point_t frontPos = pAnimal->getGridCoordRelative(relPos);
 
   // Get odor in biotop, excluding own odor
-  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, m_pStimulationValues, pAnimal->getId());
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-  }
+  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, &(m_tStimulationValues[0]), pAnimal->getId());
+  
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

@@ -82,34 +82,22 @@ CSensorSpeed::~CSensorSpeed()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorSpeed::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorSpeed::UpdateAndGetStimulationTable()
 { 
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   int curSpeed = m_pBrain->getAnimal()->getCurrentSpeed();
 
   if (curSpeed == 0)
-    m_pStimulationValues[0] = MAX_SENSOR_VAL;
+    m_tStimulationValues[0] = MAX_SENSOR_VAL;
   else if (abs(curSpeed) < NB_STEPS_PER_GRID_SQUARE)
-    m_pStimulationValues[1] = MAX_SENSOR_VAL * (5 + curSpeed/2) / 10;
+    m_tStimulationValues[1] = MAX_SENSOR_VAL * (5 + curSpeed/2) / 10;
   else
-    m_pStimulationValues[2] = MAX_SENSOR_VAL * (5 + curSpeed/NB_STEPS_PER_GRID_SQUARE) / 10;
+    m_tStimulationValues[2] = MAX_SENSOR_VAL * (5 + curSpeed/NB_STEPS_PER_GRID_SQUARE) / 10;
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-  }
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

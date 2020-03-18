@@ -161,22 +161,18 @@ CSensorViewIdentify::~CSensorViewIdentify()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorViewIdentify::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorViewIdentify::UpdateAndGetStimulationTable()
 {
   int i;
   CAnimal* pAnimal = m_pBrain->getAnimal();
 
-  // Reinit m_pStimulationValues
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  // Reinit m_tStimulationValues
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   if (pAnimal->isSleeping())
   {
     // No stimulation when sleeping...
-    pStimulationVal = m_pStimulationValues;
-    return m_SubCaptorNumber;
+    return m_tStimulationValues;
   }
 
   bool tScanDirections[8] = {false,false,false,false,false,false,false,false};
@@ -236,9 +232,7 @@ int CSensorViewIdentify::UpdateAndGetStimulationTable(sensorValType*& pStimulati
   if (tScanDirections[direction] && m_nFocusObjectsSect8)
     Scan45degSector(offset, m_nFocusObjectsSect8,direction);
   
-  pStimulationVal = m_pStimulationValues;
-
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //===========================================================================
@@ -381,12 +375,12 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
       for (j=0; j<VIEW_IDENTIFY_SIZE_PER_FOCUS; j++)
       {
         // Use weight
-        m_pEntityViewIdentifyTab[i].weightTab[j] = m_pEntityViewIdentifyTab[i].weightTab[j] * m_pSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
+        m_pEntityViewIdentifyTab[i].weightTab[j] = m_pEntityViewIdentifyTab[i].weightTab[j] * m_tSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
         // Don't go over Max!
         if (m_pEntityViewIdentifyTab[i].weightTab[j]  > MAX_SENSOR_VAL)
           m_pEntityViewIdentifyTab[i].weightTab[j] = MAX_SENSOR_VAL;
 
-        m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].weightTab[j] * m_BonusRate[stimulationTabOffset+j];
+        m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].weightTab[j] * m_tBonusRate[stimulationTabOffset+j];
       }
 
       // Fill followed entity
@@ -445,19 +439,19 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
       pBrainFocused->subcaptorsSize  = VIEW_IDENTIFY_SIZE_PER_FOCUS;
     }
 
-    // 4 Fill m_pStimulationValues
+    // 4 Fill m_tStimulationValues
     for (i=0; i<VIEW_IDENTIFY_SIZE_PER_FOCUS; i++)
     {
-      m_pStimulationValues[offset] = m_pEntityViewIdentifyTab[maxWeightViewTabIndex].weightTab[i];
-      if (m_pStimulationValues[offset] > MAX_SENSOR_VAL)
+      m_tStimulationValues[offset] = m_pEntityViewIdentifyTab[maxWeightViewTabIndex].weightTab[i];
+      if (m_tStimulationValues[offset] > MAX_SENSOR_VAL)
       {
-        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_pStimulationValues offset%d too big: %f\n", offset, m_pStimulationValues[offset]);
-        m_pStimulationValues[offset] = MAX_SENSOR_VAL;
+        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_tStimulationValues offset%d too big: %f\n", offset, m_tStimulationValues[offset]);
+        m_tStimulationValues[offset] = MAX_SENSOR_VAL;
       }
-      else if (m_pStimulationValues[offset] < -MAX_SENSOR_VAL)
+      else if (m_tStimulationValues[offset] < -MAX_SENSOR_VAL)
       {
-        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_pStimulationValues offset%d too big: %f\n", offset, m_pStimulationValues[offset]);
-        m_pStimulationValues[offset] = -MAX_SENSOR_VAL;
+        CYBIOCORE_LOG("SENSOR - warning Scan45degSector :m_tStimulationValues offset%d too big: %f\n", offset, m_tStimulationValues[offset]);
+        m_tStimulationValues[offset] = -MAX_SENSOR_VAL;
       }
       offset++;
     }
@@ -702,9 +696,8 @@ int CSensorViewIdentify::GetLayer()
 
 double CSensorViewIdentify::GetViewedEntityWeight(CBasicEntity* pEntity)
 {
-  sensorValType* pStimulationVal = NULL;
   m_pFollowedEntity = pEntity;
-  UpdateAndGetStimulationTable(pStimulationVal);
+  UpdateAndGetStimulationTable();
   m_pFollowedEntity = NULL; // Don't follow anymore
   return (m_followedEntityWeight.computedWeight);
 

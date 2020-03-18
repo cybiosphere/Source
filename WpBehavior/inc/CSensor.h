@@ -69,11 +69,11 @@ class DLL_CYBIOCORE_API CSensor
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-  int              m_SubCaptorNumber;
-  double*          m_pSubCaptorWeightRate;
-  sensorValType*   m_pStimulationValues;
-  string           m_Label;       // User defined name
-  std::vector<int> m_BonusRate;  // Table of Purpose factor: from 0 to 100 :malus, over 100 bonus 
+  int                        m_SubCaptorNumber;
+  string                     m_Label; // User defined name
+  std::vector<double>        m_tSubCaptorWeightRate;
+  std::vector<sensorValType> m_tStimulationValues;
+  std::vector<int>           m_tBonusRate; // Table of Purpose factor: from 0 to 100 :malus, over 100 bonus 
 
 private:
   DWORD           m_UniqueId;    // Global identifier
@@ -94,9 +94,15 @@ public:
 //---------------------------------------------------------------------------
 // Virtual
 //---------------------------------------------------------------------------
-  virtual int    UpdateAndGetStimulationTable(sensorValType*& pStimulationVal);
+  virtual const std::vector<sensorValType>& UpdateAndGetStimulationTable();
   virtual string GetSubCaptorLabel(int index) = 0;
   virtual bool   IsSexSpecific(int captorIndex);
+
+//---------------------------------------------------------------------------
+// Shared method
+//---------------------------------------------------------------------------
+protected:
+  void applySubCaptorWeightRate();
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
@@ -110,7 +116,7 @@ public:
   bool          SetBonusRate(int tableBonusSize, const std::vector<int>& pTableBonus);
   void          SetBonusRateToNeutral();
   sensorValType GetSubCaptorStimulationLevel(int captorIndex = 0);
-  int           GetStimulationTable(sensorValType*& pStimulationVal);
+  const std::vector<sensorValType>& GetStimulationTable();
 
 };
 

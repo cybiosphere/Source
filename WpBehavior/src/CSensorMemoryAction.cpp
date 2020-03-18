@@ -82,20 +82,16 @@ CSensorMemoryAction::~CSensorMemoryAction()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorMemoryAction::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorMemoryAction::UpdateAndGetStimulationTable()
 {
-  for (int i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   int reactInd = m_pBrain->GetCurrentReactionIndex();
-
-  if ( (reactInd>=0) && (reactInd<GetSubCaptorNumber()) )
-    m_pStimulationValues[reactInd] = m_pSubCaptorWeightRate[reactInd] * MAX_SENSOR_VAL / 100.0;
-
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  if ((reactInd >= 0) && (reactInd < GetSubCaptorNumber()))
+  {
+    m_tStimulationValues[reactInd] = m_tSubCaptorWeightRate[reactInd] * MAX_SENSOR_VAL / 100.0;
+  }
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

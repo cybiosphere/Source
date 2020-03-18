@@ -398,19 +398,18 @@ bool  CMapConfigView::BuildSensorsMap(int index)
     return true;
   }
   m_pBiotop->SetColorizeSearchMode(true);
-  sensorValType* pSensorVal = NULL;
   CSensor* pSensor = NULL;
   for (int ind = 0; ind < m_pSelectedEntity->getBrain()->GetNumberSensor(); ind++)
   {
     pSensor = m_pSelectedEntity->getBrain()->GetSensorByIndex(ind);
     if ((index == 0) && (pSensor->GetLabel().find("View") != std::string::npos))
-      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+      pSensor->UpdateAndGetStimulationTable();
     else if ((index == 1) && (pSensor->GetLabel().find("Ear") != std::string::npos))
-      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+      pSensor->UpdateAndGetStimulationTable();
     else if ((index == 2) && (pSensor->GetLabel().find("Smell") != std::string::npos))
-      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+      pSensor->UpdateAndGetStimulationTable();
     else if ((index == 3) && (pSensor->GetLabel().find("Pheromone") != std::string::npos))
-      pSensor->UpdateAndGetStimulationTable(pSensorVal);
+      pSensor->UpdateAndGetStimulationTable();
   }
   m_pBiotop->SetColorizeSearchMode(false);
 }

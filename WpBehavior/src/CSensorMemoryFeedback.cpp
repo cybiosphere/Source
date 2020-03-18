@@ -82,12 +82,9 @@ CSensorMemoryFeedback::~CSensorMemoryFeedback()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorMemoryFeedback::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorMemoryFeedback::UpdateAndGetStimulationTable()
 {
-  for (int i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   int reactInd = m_pBrain->GetCurrentReactionIndex();
 
@@ -99,11 +96,10 @@ int CSensorMemoryFeedback::UpdateAndGetStimulationTable(sensorValType*& pStimula
     {
       curFeedback = curFeedback - m_pBrain->GetReactionByIndex(reactInd)->GetConsecutiveFailures();
     }
-    m_pStimulationValues[reactInd] = curFeedback * MAX_SENSOR_VAL / MAX_FEEDBACK_VAL;
+    m_tStimulationValues[reactInd] = curFeedback * MAX_SENSOR_VAL / MAX_FEEDBACK_VAL;
   }
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

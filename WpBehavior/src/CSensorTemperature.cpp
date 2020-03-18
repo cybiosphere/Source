@@ -84,13 +84,9 @@ CSensorTemperature::~CSensorTemperature()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorTemperature::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorTemperature::UpdateAndGetStimulationTable()
 {
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CPhysicalWelfare* pPhyWelfare = pAnimal->getpPhysicalWelfare();
@@ -99,25 +95,17 @@ int CSensorTemperature::UpdateAndGetStimulationTable(sensorValType*& pStimulatio
   double deltaTemperature= fabs(biotopTemperature - perfectTemperature);
 
   if(biotopTemperature > pPhyWelfare->GetTemperatureMax())
-    m_pStimulationValues[TEMPERATURE_TOO_HOT]  = (biotopTemperature - pPhyWelfare->GetTemperatureMax()) * MAX_SENSOR_VAL/5;
+    m_tStimulationValues[TEMPERATURE_TOO_HOT]  = (biotopTemperature - pPhyWelfare->GetTemperatureMax()) * MAX_SENSOR_VAL/5;
 
   if(biotopTemperature < pPhyWelfare->GetTemperatureMin())
-    m_pStimulationValues[TEMPERATURE_TOO_COLD] = (pPhyWelfare->GetTemperatureMin() - biotopTemperature) * MAX_SENSOR_VAL/5;
+    m_tStimulationValues[TEMPERATURE_TOO_COLD] = (pPhyWelfare->GetTemperatureMin() - biotopTemperature) * MAX_SENSOR_VAL/5;
 
   if(deltaTemperature<5)
-    m_pStimulationValues[TEMPERATURE_PLEASANT] = (5-deltaTemperature) * MAX_SENSOR_VAL/5;
+    m_tStimulationValues[TEMPERATURE_PLEASANT] = (5-deltaTemperature) * MAX_SENSOR_VAL/5;
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-  }
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

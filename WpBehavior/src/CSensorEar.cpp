@@ -85,61 +85,49 @@ CSensorEar::~CSensorEar()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorEar::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorEar::UpdateAndGetStimulationTable()
 {
-  int i;
-  // Reinit m_pStimulationValues
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  // Reinit m_tStimulationValues
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
   
   // Fill Sector 1
   int direction = pAnimal->getDirection();
   int offset = 0;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+1) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+7) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+2) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+6) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+3) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+5) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
   direction = (pAnimal->getDirection()+4) % 8;
   offset++;
-  Scan45degSector(m_pStimulationValues + offset, direction);
+  Scan45degSector(&(m_tStimulationValues[offset]), direction);
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-  }
+  applySubCaptorWeightRate();
   
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //===========================================================================

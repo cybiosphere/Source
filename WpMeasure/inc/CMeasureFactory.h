@@ -97,7 +97,7 @@ public:
     case MEASURE_TYPE_POPULATION:
       if (pBiotop != NULL)
       {
-        pNewMeasure = new CMeasurePopulation(pBiotop, period, id, (MeasurePopulationType_e)subtype, 1000, "tobedefined");
+        pNewMeasure = new CMeasurePopulation(pBiotop, period, id, (MeasurePopulationType_e)subtype, 100, "tobedefined");
       }
       break;
     }

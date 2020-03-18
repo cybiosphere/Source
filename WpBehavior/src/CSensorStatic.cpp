@@ -82,11 +82,12 @@ CSensorStatic::~CSensorStatic()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorStatic::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorStatic::UpdateAndGetStimulationTable()
 {
-  m_pStimulationValues[0] = MAX_SENSOR_VAL * m_pSubCaptorWeightRate[0] / 100.0;
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  m_tStimulationValues[0] = MAX_SENSOR_VAL;
+  applySubCaptorWeightRate();
+
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

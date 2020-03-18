@@ -160,23 +160,19 @@ CSensorViewIdentifyFar::~CSensorViewIdentifyFar()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorViewIdentifyFar::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorViewIdentifyFar::UpdateAndGetStimulationTable()
 {
   int i;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   pAnimal->getBiotop()->logCpuMarkerStart(BIOTOP_CPUMARKER_CUSTOM1);
 
-  // Reinit m_pStimulationValues
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  // Reinit m_tStimulationValues
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
  
   if (pAnimal->isSleeping())
   {
     // No stimulation when sleeping...
-    pStimulationVal = m_pStimulationValues;
-    return m_SubCaptorNumber;
+    return m_tStimulationValues;
   }
 
   bool tScanDirections[8] = {false,false,false,false,false,false,false,false};
@@ -236,9 +232,8 @@ int CSensorViewIdentifyFar::UpdateAndGetStimulationTable(sensorValType*& pStimul
   if (tScanDirections[direction] && m_nFocusObjectsSect8)
     Scan45degSector(offset, m_nFocusObjectsSect8,direction);
   
-  pStimulationVal = m_pStimulationValues;
   pAnimal->getBiotop()->logCpuMarkerEnd(BIOTOP_CPUMARKER_CUSTOM1);
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //===========================================================================
@@ -389,12 +384,12 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
       for (j=0; j<VIEW_IDENTIFY_SIZE_PER_FOCUS; j++)
       {
         // Use weight
-        m_pEntityViewIdentifyFarTab[i].weightTab[j] = m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_pSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
+        m_pEntityViewIdentifyFarTab[i].weightTab[j] = m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_tSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
         // Don't go over Max!
         if (m_pEntityViewIdentifyFarTab[i].weightTab[j]  > MAX_SENSOR_VAL)
           m_pEntityViewIdentifyFarTab[i].weightTab[j] = MAX_SENSOR_VAL;
 
-        m_pEntityViewIdentifyFarTab[i].computedWeight += m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_BonusRate[stimulationTabOffset+j];
+        m_pEntityViewIdentifyFarTab[i].computedWeight += m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_tBonusRate[stimulationTabOffset+j];
       }
 
       // Fill followed entity
@@ -453,10 +448,10 @@ bool CSensorViewIdentifyFar::Scan45degSector(int stimulationTabOffset,
       pBrainFocused->subcaptorsSize  = VIEW_IDENTIFY_SIZE_PER_FOCUS;
     }
 
-    // 4 Fill m_pStimulationValues
+    // 4 Fill m_tStimulationValues
     for (i=0; i<VIEW_IDENTIFY_SIZE_PER_FOCUS; i++)
     {
-      m_pStimulationValues[offset] = m_pEntityViewIdentifyFarTab[maxWeightViewTabIndex].weightTab[i];
+      m_tStimulationValues[offset] = m_pEntityViewIdentifyFarTab[maxWeightViewTabIndex].weightTab[i];
       offset++;
     }
 
@@ -690,9 +685,8 @@ int CSensorViewIdentifyFar::GetSubCaptorSubIndexForDirRight(IdentificationType_e
 
 double CSensorViewIdentifyFar::GetViewedEntityWeight(CBasicEntity* pEntity)
 {
-  sensorValType* pStimulationVal = NULL;
   m_pFollowedEntity = pEntity;
-  UpdateAndGetStimulationTable(pStimulationVal);
+  UpdateAndGetStimulationTable();
   m_pFollowedEntity = NULL; // Don't follow anymore
   return (m_followedEntityWeight.computedWeight);
 }

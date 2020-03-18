@@ -447,17 +447,15 @@ void CBrain::ForceCurrentPurpose(int purposeIndex)
 
 bool CBrain::PollAllSensors (void)
 {
-  sensorValType* pSensorVal = NULL;
   sensorValType curSensorVal = 0;
-  unsigned int sensorSize = 0;
   int bonusRate;
   int cpt = 0;
   unsigned int i,j;
 
   for (i=0; i<m_tSensors.size();i++)
   {
-    sensorSize = m_tSensors[i]->UpdateAndGetStimulationTable(pSensorVal);   
-    for (j=0; j<sensorSize; j++)
+    const std::vector<sensorValType>& vectSensorVal{m_tSensors[i]->UpdateAndGetStimulationTable()};
+    for (j = 0; j < vectSensorVal.size(); j++)
     {
       bonusRate =  m_tSensors[i]->GetBonusRate(j);
 
@@ -468,7 +466,7 @@ bool CBrain::PollAllSensors (void)
       }
 
       // Fill new InputSensors and add purpose bonus
-      curSensorVal = pSensorVal[j];
+      curSensorVal = vectSensorVal[j];
       if (bonusRate!=100)
       {
         curSensorVal = curSensorVal * (double)bonusRate / 100.0;

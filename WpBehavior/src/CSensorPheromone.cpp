@@ -86,13 +86,9 @@ CSensorPheromone::~CSensorPheromone()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorPheromone::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable()
 {
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   FoundEntity_t* pFoundIds = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
@@ -111,23 +107,15 @@ int CSensorPheromone::UpdateAndGetStimulationTable(sensorValType*& pStimulationV
         if ( (pCurEntity->getPheromone() == (PHEROMONE_FIRST_TYPE+pheromone))
           && (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true) )
         {
-          m_pStimulationValues[pheromone] += MAX_SENSOR_VAL/(pFoundIds[ind].distance + 1)/(pFoundIds[ind].distance + 1); // 1/R2
+          m_tStimulationValues[pheromone] += MAX_SENSOR_VAL/(pFoundIds[ind].distance + 1)/(pFoundIds[ind].distance + 1); // 1/R2
         }
       }
     }
   }
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-  }
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

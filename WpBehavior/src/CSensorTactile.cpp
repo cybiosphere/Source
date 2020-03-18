@@ -86,13 +86,9 @@ CSensorTactile::~CSensorTactile()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorTactile::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorTactile::UpdateAndGetStimulationTable()
 {
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    m_pStimulationValues[i] = 0;
-  }
+  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
   Point_t relPos = {1,0};
@@ -105,21 +101,12 @@ int CSensorTactile::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal
     pTouchedEntity = pAnimal->getBiotop()->findEntity(relCoord,pAnimal->getLayer()+m_relBottomLayer+layer);
     if (pTouchedEntity != NULL)
     {
-      m_pStimulationValues[layer] = MAX_SENSOR_VAL; // bool 0 or MAX_SENSOR_VAL
+      m_tStimulationValues[layer] = MAX_SENSOR_VAL; // bool 0 or MAX_SENSOR_VAL
     } 
   }
-  
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-  }
+  applySubCaptorWeightRate();
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

@@ -111,16 +111,14 @@ double CFeelingFear::ComputeAndGetFeelingFear()
   m_CurFear -= 1;
   // Add new fear factors
   FearSensitivity_t* pSensitivity = NULL;
-  sensorValType* pStimulation = NULL;
-  int captorNb;
 
   for (unsigned int i=0; i < m_tSensitivity.size(); i++) 
   {
     pSensitivity = m_tSensitivity[i];
-    captorNb = pSensitivity->m_pSens->GetStimulationTable(pStimulation);
-    for (int j=0; j<captorNb; j++)
+    const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->GetStimulationTable() };
+    for (int j = 0; j < vectStimulation.size(); j++)
     {
-      m_CurFear += pSensitivity->m_pSensitivityTableMask[j] * pStimulation[j];
+      m_CurFear += pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
   }
 

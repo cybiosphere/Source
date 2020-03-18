@@ -82,17 +82,16 @@ CSensorFear::~CSensorFear()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorFear::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorFear::UpdateAndGetStimulationTable()
 {
   sensorValType level = 0;
   level = (double)(m_pBrain->getAnimal()->getFearRate()) * MAX_SENSOR_VAL / 100.0;
-  // Use weight
-  level = level * m_pSubCaptorWeightRate[0] / 100.0;
  
-  m_pStimulationValues[0] = level;
+  m_tStimulationValues[0] = level;
 
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  applySubCaptorWeightRate();
+
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

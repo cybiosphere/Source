@@ -85,26 +85,16 @@ CSensorTaste::~CSensorTaste()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-int CSensorTaste::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensorTaste::UpdateAndGetStimulationTable()
 {
   int* pTasteLeveltable = m_pBrain->getAnimal()->getpTasteLevelTable();
-  int i;
-  for (i=0; i<m_SubCaptorNumber; i++)
+  for (int i=0; i<m_SubCaptorNumber; i++)
   {
-    m_pStimulationValues[i] = pTasteLeveltable[i+TASTE_NONE];
+    m_tStimulationValues[i] = pTasteLeveltable[i+TASTE_NONE];
   }
+  applySubCaptorWeightRate();
 
-  for (i=0; i<m_SubCaptorNumber; i++)
-  {
-    // Use weight
-    m_pStimulationValues[i] = m_pStimulationValues[i] * m_pSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_pStimulationValues[i] > MAX_SENSOR_VAL)
-      m_pStimulationValues[i] = MAX_SENSOR_VAL;
-  }
-
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------

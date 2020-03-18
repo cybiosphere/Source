@@ -55,12 +55,12 @@ CSensor::CSensor(double weightRate, DWORD uniqueId)
 {
   m_Label = "Basic Sensor";
   m_SubCaptorNumber = 1;
-  m_pSubCaptorWeightRate = new double[1];
-  m_pSubCaptorWeightRate[0] = weightRate;
-  m_BonusRate.resize(1);
-  m_BonusRate[0] = 100;
-  m_pStimulationValues = new sensorValType[1];
-  m_pStimulationValues[0] = 0;
+  m_tSubCaptorWeightRate.resize(1);
+  m_tSubCaptorWeightRate[0] = weightRate;
+  m_tBonusRate.resize(1);
+  m_tBonusRate[0] = 100;
+  m_tStimulationValues.resize(1);
+  m_tStimulationValues[0] = 0;
   m_UniqueId = uniqueId;
 }
 
@@ -80,16 +80,16 @@ CSensor::CSensor(int subCaptorNumber, double* pSubCaptorWeightRate, DWORD unique
 {
   m_Label = "Basic Sensor";
   m_SubCaptorNumber = subCaptorNumber;
-  m_pSubCaptorWeightRate = new double[subCaptorNumber];
-  m_pStimulationValues = new sensorValType[subCaptorNumber];
-  m_BonusRate.resize(subCaptorNumber);
+  m_tSubCaptorWeightRate.resize(subCaptorNumber);
+  m_tStimulationValues.resize(subCaptorNumber);
+  m_tBonusRate.resize(subCaptorNumber);
   m_UniqueId  = uniqueId;
 
   for (int i=0; i<m_SubCaptorNumber; i++)
   {
-    m_pSubCaptorWeightRate[i] = pSubCaptorWeightRate[i];
-    m_pStimulationValues[i] = 0;
-    m_BonusRate[i] = 100;
+    m_tSubCaptorWeightRate[i] = pSubCaptorWeightRate[i];
+    m_tStimulationValues[i] = 0;
+    m_tBonusRate[i] = 100;
   }
 }
 
@@ -109,16 +109,16 @@ CSensor::CSensor(int subCaptorNumber, double SubCaptorsWeightRate, DWORD uniqueI
 {
   m_Label = "Basic Sensor";
   m_SubCaptorNumber = subCaptorNumber;
-  m_pSubCaptorWeightRate = new double[subCaptorNumber];
-  m_pStimulationValues = new sensorValType[subCaptorNumber];
-  m_BonusRate.resize(subCaptorNumber);
+  m_tSubCaptorWeightRate.resize(subCaptorNumber);
+  m_tStimulationValues.resize(subCaptorNumber);
+  m_tBonusRate.resize(subCaptorNumber);
   m_UniqueId  = uniqueId;
 
   for (int i=0; i<m_SubCaptorNumber; i++)
   {
-    m_pSubCaptorWeightRate[i] = SubCaptorsWeightRate;
-    m_pStimulationValues[i] = 0;
-    m_BonusRate[i] = 100;
+    m_tSubCaptorWeightRate[i] = SubCaptorsWeightRate;
+    m_tStimulationValues[i] = 0;
+    m_tBonusRate[i] = 100;
   }
 }
 
@@ -135,8 +135,6 @@ CSensor::CSensor(int subCaptorNumber, double SubCaptorsWeightRate, DWORD uniqueI
 //---------------------------------------------------------------------------
 CSensor::~CSensor()
 {
-  delete [] m_pSubCaptorWeightRate;
-  delete [] m_pStimulationValues;
 }
 
 //===========================================================================
@@ -148,21 +146,20 @@ CSensor::~CSensor()
 // DESCRIPTION:  Stimulate a table of sensor according to entity and environment 
 //               The Weight of each captor should be taken into account here
 //
-// ARGUMENTS:    sensorValType*& pStimulationVal : Pointer on result table
+// ARGUMENTS:    none
 //   
-// RETURN VALUE: int: Number of returned values in pStimulationVal
+// RETURN VALUE: m_tStimulationValues vector
 //  
 // REMARKS:      Should be overloaded
 //---------------------------------------------------------------------------
-int CSensor::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensor::UpdateAndGetStimulationTable()
 {
   // Default sensor: detect nothing
   for (int i=0; i<m_SubCaptorNumber; i++)
   {
-    m_pStimulationValues[i] = 0;
+    m_tStimulationValues[i] = 0;
   }
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------
@@ -179,7 +176,7 @@ int CSensor::UpdateAndGetStimulationTable(sensorValType*& pStimulationVal)
 sensorValType CSensor::GetSubCaptorStimulationLevel(int captorIndex)
 {
   if ((0<=captorIndex)&&(captorIndex<m_SubCaptorNumber))
-    return (m_pStimulationValues[captorIndex]*100/m_pSubCaptorWeightRate[captorIndex]);
+    return (m_tStimulationValues[captorIndex] * 100 / m_tSubCaptorWeightRate[captorIndex]);
   else
     return (0);
 }
@@ -195,10 +192,9 @@ sensorValType CSensor::GetSubCaptorStimulationLevel(int captorIndex)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-int CSensor::GetStimulationTable(sensorValType*& pStimulationVal)
+const std::vector<sensorValType>& CSensor::GetStimulationTable()
 {
-  pStimulationVal = m_pStimulationValues;
-  return m_SubCaptorNumber;
+  return m_tStimulationValues;
 }
 
 //---------------------------------------------------------------------------
@@ -217,6 +213,24 @@ bool CSensor::IsSexSpecific(int captorIndex)
 {
   return false;
 }
+
+//===========================================================================
+// Shared method
+//===========================================================================
+void CSensor::applySubCaptorWeightRate()
+{
+  for (int i = 0; i < m_SubCaptorNumber; i++)
+  {
+    // Use weight
+    m_tStimulationValues[i] = m_tStimulationValues[i] * m_tSubCaptorWeightRate[i] / 100.0;
+    // Don't go over Max!
+    if (m_tStimulationValues[i] > MAX_SENSOR_VAL)
+      m_tStimulationValues[i] = MAX_SENSOR_VAL;
+    if (m_tStimulationValues[i] < -MAX_SENSOR_VAL)
+      m_tStimulationValues[i] = -MAX_SENSOR_VAL;
+  }
+}
+
 
 //===========================================================================
 // Get / Set for attributes
@@ -238,7 +252,7 @@ DWORD CSensor::GetUniqueId()
 
 int CSensor::GetBonusRate(int subCaptorInd)
 {
-  return (m_BonusRate[subCaptorInd]);
+  return (m_tBonusRate[subCaptorInd]);
 }
 
 bool CSensor::SetBonusRate(int subCaptorInd, int bonus)
@@ -246,7 +260,7 @@ bool CSensor::SetBonusRate(int subCaptorInd, int bonus)
   if (GetSubCaptorNumber() >= subCaptorInd)
     return false;
 
-  m_BonusRate[subCaptorInd] = bonus;
+  m_tBonusRate[subCaptorInd] = bonus;
   return true;
 }
 
@@ -260,15 +274,15 @@ bool CSensor::SetBonusRate(int tableBonusSize, const std::vector<int>& pTableBon
     // Check if bonus is present on subcaptor
     if (pTableBonus[i] != 100)
     {
-      if (m_BonusRate[i] == 100)
+      if (m_tBonusRate[i] == 100)
       {
         // No previous bonus on this sub captor
-        m_BonusRate[i] = pTableBonus[i];
+        m_tBonusRate[i] = pTableBonus[i];
       }
       else
       {
         // Bonus already present on this sub captor. Give avarage value
-        m_BonusRate[i] = (m_BonusRate[i] + pTableBonus[i]) / 2;
+        m_tBonusRate[i] = (m_tBonusRate[i] + pTableBonus[i]) / 2;
       }
     }
   }
@@ -277,8 +291,8 @@ bool CSensor::SetBonusRate(int tableBonusSize, const std::vector<int>& pTableBon
 
 void CSensor::SetBonusRateToNeutral()
 {
-  for (int i=0; i< m_BonusRate.size(); i++)
+  for (int i=0; i< m_tBonusRate.size(); i++)
   {
-    m_BonusRate[i] = 100;
+    m_tBonusRate[i] = 100;
   }
 }

@@ -109,16 +109,14 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
 {
   m_CurSatisfaction = 0;
   Sensitivity_t* pSensitivity = NULL;
-  sensorValType* pStimulation = NULL;
-  int captorNb;
 
   for (unsigned int i=0; i < m_tSensitivity.size(); i++) 
   {
     pSensitivity = m_tSensitivity[i];
-    captorNb = pSensitivity->m_pSens->UpdateAndGetStimulationTable(pStimulation);
-    for (int j=0; j<captorNb; j++)
+    const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->UpdateAndGetStimulationTable() };
+    for (int j=0; j< vectStimulation.size(); j++)
     {
-      m_CurSatisfaction += pSensitivity->m_pSensitivityTableMask[j] * pStimulation[j];
+      m_CurSatisfaction += pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
   }
 
@@ -162,16 +160,14 @@ double CFeelingWelfare::GetSensorFeelingImpact(int index, std::string &infoStr)
 {
   double satisfaction = 0;
   Sensitivity_t* pSensitivity = NULL;
-  sensorValType* pStimulation = NULL;
-  int captorNb;
 
   if (index < m_tSensitivity.size())
   {
     pSensitivity = m_tSensitivity[index];
-    captorNb = pSensitivity->m_pSens->UpdateAndGetStimulationTable(pStimulation);
-    for (int j = 0; j < captorNb; j++)
+    const std::vector<sensorValType>& vectStimulation { pSensitivity->m_pSens->UpdateAndGetStimulationTable() };
+    for (int j = 0; j < vectStimulation.size(); j++)
     {
-      satisfaction = pSensitivity->m_pSensitivityTableMask[j] * pStimulation[j];
+      satisfaction = pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
     infoStr = pSensitivity->m_pSens->GetLabel();
   }
