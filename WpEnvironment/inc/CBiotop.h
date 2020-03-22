@@ -308,7 +308,7 @@ public:
                       int rangeMin, int rangeMax);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, int layer);
-  bool isCoordValid(Point_t coord, int layer);
+  inline bool isCoordValid(Point_t coord, int layer);
 
   feedbackValType forceEntityAction(entityIdType idEntity,choiceIndType myChoice);
   choiceIndType predictEntityAction(entityIdType idEntity);

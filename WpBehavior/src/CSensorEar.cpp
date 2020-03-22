@@ -156,7 +156,8 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   UCHAR visionSectorBmp = 0x01 << direction;
   double noiseRate = 0;
 
-  for (int i=0; i<pBiotop->getNbLayer(); i++)
+  // Scan all over ground layers
+  for (int i=1; i<pBiotop->getNbLayer(); i++)
   {
     // Find entities according to angle, distance and layer:
     int nbIds = pBiotop->findEntities(pFoundIds, pAnimal->getGridCoord(), visionSectorBmp, m_nRange, i, true);

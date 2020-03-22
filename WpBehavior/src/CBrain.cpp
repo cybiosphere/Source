@@ -452,12 +452,12 @@ bool CBrain::PollAllSensors (void)
   int cpt = 0;
   unsigned int i,j;
 
-  for (i=0; i<m_tSensors.size();i++)
+  for (auto pSensor : m_tSensors)
   {
-    const std::vector<sensorValType>& vectSensorVal{m_tSensors[i]->UpdateAndGetStimulationTable()};
+    const std::vector<sensorValType>& vectSensorVal{ pSensor->UpdateAndGetStimulationTable()};
     for (j = 0; j < vectSensorVal.size(); j++)
     {
-      bonusRate =  m_tSensors[i]->GetBonusRate(j);
+      bonusRate = pSensor->GetBonusRate(j);
 
       // Fill pass input (shift all InputSensors blocks down, and *m_historyWeight to give less weight to pass)
       for (int hist=m_nInputHistory-1; hist>0; hist--)
@@ -530,7 +530,6 @@ bool CBrain::PollAllSensors (void)
   m_FocusedEntityInfo.captorUid = UID_UNSET;
   m_FocusedEntityInfo.subcaptorIndex = -1;
   m_FocusedEntityInfo.subcaptorsSize = 0;
-
   return true;
 }
 
@@ -551,25 +550,25 @@ void CBrain::ResetReactionsFailureSuccessFactor()
 double CBrain::GetViewedEntityWeight(CBasicEntity* pEntity)
 {
   double foundWeight = 0;
-  for (unsigned int i=0; i<m_tSensors.size(); i++) 
+  for (auto pSensor : m_tSensors)
   {
-    if ( (m_tSensors[i]->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY )
+    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY )
     {
-      CSensorViewIdentify* pViewSens = (CSensorViewIdentify*)m_tSensors[i];
+      CSensorViewIdentify* pViewSens = (CSensorViewIdentify*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
       if (foundWeight>0)
         return foundWeight;
     }
-    if ( (m_tSensors[i]->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_FAR )
+    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_FAR )
     {
-      CSensorViewFar* pViewSens = (CSensorViewFar*)m_tSensors[i];
+      CSensorViewFar* pViewSens = (CSensorViewFar*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
       if (foundWeight>0)
         return foundWeight;
     }
-    if ( (m_tSensors[i]->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY_FAR )
+    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY_FAR )
     {
-      CSensorViewIdentifyFar* pViewSens = (CSensorViewIdentifyFar*)m_tSensors[i];
+      CSensorViewIdentifyFar* pViewSens = (CSensorViewIdentifyFar*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
       if (foundWeight>0)
         return foundWeight;
@@ -973,11 +972,11 @@ bool CBrain::InitializeNeuronTableNeutral()
 {
   // Initialize decision table
   m_nInputSensors = 0;
-  for (unsigned int nb = 0; nb < m_tSensors.size(); nb++)
+  for (auto pSensor : m_tSensors)
   {
-    if (m_tSensors[nb] != NULL)
+    if (pSensor != NULL)
     {
-      m_nInputSensors += m_tSensors[nb]->GetSubCaptorNumber();
+      m_nInputSensors += pSensor->GetSubCaptorNumber();
     }
     else
     {

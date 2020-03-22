@@ -640,6 +640,7 @@ void CBiotop::deleteAllEntities()
       delete (m_tEntity[i]); 
   }
   m_tEntity.clear();
+  m_IndexLastAnimal = 0;
 }          
 
 
@@ -1578,15 +1579,15 @@ bool CBiotop::isCoordValidAndFree(Point_t coord, int layer)
 
 bool CBiotop::isCoordValid(Point_t coord, int layer)
 {
-  if ( (coord.x < 0) || (coord.x >= m_Dimension.x)
-     ||(coord.y < 0) || (coord.y >= m_Dimension.y)
-     ||(layer < 0)   || (layer >= m_nbLayer))
+  if ( (coord.x > -1) && (coord.x < m_Dimension.x)
+    && (coord.y > -1) && (coord.y < m_Dimension.y)
+    && (layer > -1)  && (layer < m_nbLayer) )
   {
-    return (false);
+    return (true);
   }
   else 
   {
-    return (true);
+    return (false);
   }
 }
 
@@ -1632,12 +1633,12 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
   }*/
 
   // Trigger measurement
-  for (i=0; i<m_tMeasures.size(); i++) 
+  for (auto pMeasure : m_tMeasures)
   {
-    isValid = m_tMeasures[i]->NextSecond();
+    isValid = pMeasure->NextSecond();
     if (!isValid)
     {
-      m_tMeasures[i]->StopMeasurement();
+      pMeasure->StopMeasurement();
     }
   }
 
@@ -1718,12 +1719,12 @@ void CBiotop::nextSecond(void)
 void CBiotop::triggerMeasuresNextSecond(void)
 {
   bool isValid;
-  for (int i = 0; i < m_tMeasures.size(); i++)
+  for (auto pMeasure : m_tMeasures)
   {
-    isValid = m_tMeasures[i]->NextSecond();
+    isValid = pMeasure->NextSecond();
     if (!isValid)
     {
-      m_tMeasures[i]->StopMeasurement();
+      pMeasure->StopMeasurement();
     }
   }
 }
@@ -2108,10 +2109,10 @@ CMeasure* CBiotop::getMeasureById(int id)
 {
   CMeasure* foundMeas = NULL;
 
-  for (int i=0; i<m_tMeasures.size(); i++) 
+  for (auto pMeasure : m_tMeasures)
   {
-    if (m_tMeasures[i]->GetId() == id)
-      foundMeas = m_tMeasures[i];
+    if (pMeasure->GetId() == id)
+      foundMeas = pMeasure;
   }
 
   return (foundMeas);
@@ -2769,10 +2770,10 @@ CGenericParam* CBiotop::getParameter(int id)
 
 CGenericParam* CBiotop::getParameterByName(string& paramName)
 {
-  for (unsigned int id=0; id<m_tParam.size(); id++)
+  for (auto pParam : m_tParam)
   {
-    if (m_tParam[id]->getLabel() == paramName)
-      return (m_tParam[id]);
+    if (pParam->getLabel() == paramName)
+      return (pParam);
   }
 
   return (NULL);

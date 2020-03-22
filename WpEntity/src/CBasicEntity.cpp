@@ -1913,12 +1913,11 @@ CGenericParam* CBasicEntity::getParameter(unsigned int id)
 
 CGenericParam* CBasicEntity::getParameterByName(string paramName)
 {
-  for (unsigned int id=0; id<m_tParam.size(); id++)
+  for (auto pParam : m_tParam)
   {
-    if (m_tParam[id]->getLabel() == paramName)
-      return (m_tParam[id]);
+    if (pParam->getLabel() == paramName)
+      return (pParam);
   }
-
   return (NULL);
 }
 
@@ -3850,10 +3849,10 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
   if (m_pBiotop != NULL)
   {
     int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
-    Point_t relOffset = { getCurrentSpeed(), 0 };
-    Point_t relPos = getGridCoordFromStepCoord(relOffset);
-    Point_t relOffsetRef = { pReference->getCurrentSpeed(), 0 };
-    Point_t relPosRef = getGridCoordFromStepCoord(relOffsetRef); 
+    Point_t relOffset { getCurrentSpeed(), 0 };
+    Point_t relPos{ getGridCoordFromStepCoord(relOffset) };
+    Point_t relOffsetRef { pReference->getCurrentSpeed(), 0 };
+    Point_t relPosRef { getGridCoordFromStepCoord(relOffsetRef) };
     int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
     relativeSpeed = distInitial - distFuture;
   }

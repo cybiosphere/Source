@@ -110,11 +110,8 @@ double CFeelingFear::ComputeAndGetFeelingFear()
   // First decrease fear
   m_CurFear -= 1;
   // Add new fear factors
-  FearSensitivity_t* pSensitivity = NULL;
-
-  for (unsigned int i=0; i < m_tSensitivity.size(); i++) 
+  for (auto pSensitivity: m_tSensitivity)
   {
-    pSensitivity = m_tSensitivity[i];
     const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->GetStimulationTable() };
     for (int j = 0; j < vectStimulation.size(); j++)
     {
