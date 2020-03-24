@@ -58,8 +58,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorPheromone::CSensorPheromone(CBrainAnimal* pBrain, double pWeightRate[NUMBER_PHEROMONES], int range)
-:CSensor(NUMBER_PHEROMONES, pWeightRate, UID_BASE_SENS_PHEROMONE /*+ range*/)
+CSensorPheromone::CSensorPheromone(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int range)
+:CSensor(NUMBER_PHEROMONES, tWeightRate, UID_BASE_SENS_PHEROMONE /*+ range*/)
 {
   m_pBrain = pBrain;
   m_Label = "Pheromone";

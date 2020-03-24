@@ -3850,9 +3850,9 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
   {
     int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
     Point_t relOffset { getCurrentSpeed(), 0 };
-    Point_t relPos{ getGridCoordFromStepCoord(relOffset) };
+    Point_t relPos = getGridCoordFromStepCoord(relOffset);
     Point_t relOffsetRef { pReference->getCurrentSpeed(), 0 };
-    Point_t relPosRef { getGridCoordFromStepCoord(relOffsetRef) };
+    Point_t relPosRef = getGridCoordFromStepCoord(relOffsetRef);
     int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
     relativeSpeed = distInitial - distFuture;
   }

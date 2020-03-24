@@ -55,8 +55,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorOrientation::CSensorOrientation(CBrainAnimal* pBrain, double pWeightRate[NUMBER_ORIENTATION_SUB_CAPTORS])
-:CSensor(NUMBER_ORIENTATION_SUB_CAPTORS, pWeightRate, UID_BASE_SENS_ORIENTATION)
+CSensorOrientation::CSensorOrientation(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(NUMBER_ORIENTATION_SUB_CAPTORS, tWeightRate, UID_BASE_SENS_ORIENTATION)
 {
   m_pBrain = pBrain;
   m_Label = "Guide";

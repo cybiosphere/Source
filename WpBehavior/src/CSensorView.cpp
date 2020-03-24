@@ -70,13 +70,13 @@ static EntityViewWeight_t m_pEntityViewTab[MAX_FOUND_ENTITIES];
 // REMARKS:      None
 //---------------------------------------------------------------------------
 CSensorView::	CSensorView(CBrainAnimal* pBrain, 
-                          double* pWeightRate,
+                          std::vector<double>& tWeightRate,
                           int range,
                           int layer,
                           ViewAngleType_e angle,
                           int totalNbFocusObjects,
                           bool distanceEvaluation)
-:CSensor(totalNbFocusObjects * VIEW_SIZE_PER_FOCUS, pWeightRate, UID_BASE_SENS_VIEW + 10*layer + angle )
+:CSensor(totalNbFocusObjects * VIEW_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW + 10*layer + angle )
 {
   m_pBrain = pBrain;
   m_nRange = range;

@@ -57,8 +57,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorTactile::CSensorTactile(CBrainAnimal* pBrain, double pWeightRate[], int relBottomLayer, int relTopLayer)
-:CSensor(relTopLayer-relBottomLayer+1, pWeightRate, UID_BASE_SENS_TACTILE + 100*relBottomLayer + relTopLayer)
+CSensorTactile::CSensorTactile(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int relBottomLayer, int relTopLayer)
+:CSensor(relTopLayer-relBottomLayer+1, tWeightRate, UID_BASE_SENS_TACTILE + 100*relBottomLayer + relTopLayer)
 {
   m_pBrain = pBrain;
   m_Label = FormatString("Tactile");  

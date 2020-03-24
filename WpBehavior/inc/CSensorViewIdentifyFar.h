@@ -114,7 +114,7 @@ private:
 //---------------------------------------------------------------------------
 public:
 	CSensorViewIdentifyFar(CBrainAnimal* pBrain, 
-              double* pWeightRate,
+              std::vector<double>& tWeightRate,
               int rangeMin, 
               int rangeMax,
               ViewAngleType_e angle,

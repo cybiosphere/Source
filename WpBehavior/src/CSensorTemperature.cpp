@@ -56,8 +56,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorTemperature::CSensorTemperature(CBrainAnimal* pBrain, double pWeightRate[NUMBER_TEMPERATURE_SUB_CAPTORS])
-:CSensor(NUMBER_TEMPERATURE_SUB_CAPTORS,pWeightRate, UID_BASE_SENS_TEMPERATURE)
+CSensorTemperature::CSensorTemperature(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(NUMBER_TEMPERATURE_SUB_CAPTORS,tWeightRate, UID_BASE_SENS_TEMPERATURE)
 {
   m_pBrain = pBrain;
   m_Label  = "Temperature";

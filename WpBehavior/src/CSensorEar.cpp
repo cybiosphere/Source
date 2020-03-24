@@ -57,8 +57,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorEar::	CSensorEar(CBrainAnimal* pBrain, double* pWeightRate, int range)
-:CSensor(8, pWeightRate, UID_BASE_SENS_EAR /*+ 10*range*/)
+CSensorEar::	CSensorEar(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int range)
+:CSensor(8, tWeightRate, UID_BASE_SENS_EAR /*+ 10*range*/)
 {
   m_pBrain = pBrain;
   m_nRange = range;

@@ -87,7 +87,7 @@ private:
 //---------------------------------------------------------------------------
 public:
   CSensor(double weightRate, DWORD uniqueId);
-  CSensor(int subCaptorNumber, double* pSubCaptorWeightRate, DWORD uniqueId);
+  CSensor(int subCaptorNumber, std::vector<double>& tSubCaptorWeightRate, DWORD uniqueId);
   CSensor(int subCaptorNumber, double SubCaptorsWeightRate, DWORD uniqueId);
   virtual ~CSensor();
 

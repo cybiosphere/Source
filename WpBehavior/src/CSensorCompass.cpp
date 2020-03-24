@@ -57,8 +57,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorCompass::	CSensorCompass(CBrainAnimal* pBrain, double* pWeightRate)
-:CSensor(8, pWeightRate, UID_BASE_SENS_COMPASS)
+CSensorCompass::	CSensorCompass(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(8, tWeightRate, UID_BASE_SENS_COMPASS)
 {
   m_pBrain = pBrain;
   m_Label = "Compass";

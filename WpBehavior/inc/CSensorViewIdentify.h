@@ -115,7 +115,7 @@ private:
 //---------------------------------------------------------------------------
 public:
 	CSensorViewIdentify(CBrainAnimal* pBrain, 
-              double* pWeightRate,
+              std::vector<double>& tWeightRate,
               int range, 
               int layer,
               ViewAngleType_e angle,

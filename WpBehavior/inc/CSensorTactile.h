@@ -82,7 +82,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorTactile(CBrainAnimal* pBrain, double pWeightRate[], int relBottomLayer, int relTopLayer);
+	CSensorTactile(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int relBottomLayer, int relTopLayer);
 	virtual ~CSensorTactile();
 
 //---------------------------------------------------------------------------

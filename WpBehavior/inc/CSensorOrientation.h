@@ -76,7 +76,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorOrientation(CBrainAnimal* pBrain, double pWeightRate[NUMBER_ORIENTATION_SUB_CAPTORS]);
+	CSensorOrientation(CBrainAnimal* pBrain, std::vector<double>& tWeightRate);
 	virtual ~CSensorOrientation();
 
 //---------------------------------------------------------------------------

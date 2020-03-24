@@ -86,7 +86,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorPheromone(CBrainAnimal* pBrain, double pWeightRate[NUMBER_PHEROMONES], int range);
+	CSensorPheromone(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int range);
 	virtual ~CSensorPheromone();
 
 //---------------------------------------------------------------------------

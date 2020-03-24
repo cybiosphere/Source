@@ -72,13 +72,13 @@ static EntityViewIdentifyFarWeight_t m_pEntityViewIdentifyFarTab[MAX_FOUND_ENTIT
 // REMARKS:      None
 //---------------------------------------------------------------------------
 CSensorViewIdentifyFar::	CSensorViewIdentifyFar(CBrainAnimal* pBrain, 
-                          double* pWeightRate,
+                          std::vector<double>& tWeightRate,
                           int rangeMin,
                           int rangeMax,
                           ViewAngleType_e angle,
                           int totalNbFocusObjects,
                           bool distanceEvaluation)
-:CSensor(totalNbFocusObjects * VIEW_IDENTIFY_SIZE_PER_FOCUS, pWeightRate, UID_BASE_SENS_VIEW_IDENTIFY_FAR + angle )
+:CSensor(totalNbFocusObjects * VIEW_IDENTIFY_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW_IDENTIFY_FAR + angle )
 {
   m_pBrain = pBrain;
   m_nRangeMin = rangeMin;

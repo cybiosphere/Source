@@ -87,7 +87,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorComposite(CBrainAnimal* pBrain, double* pWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex);
+	CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex);
 	virtual ~CSensorComposite();
 
 //---------------------------------------------------------------------------

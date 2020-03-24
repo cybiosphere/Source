@@ -58,8 +58,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorHormone::CSensorHormone(CBrainAnimal* pBrain, double pWeightRate[NUMBER_HORMONES])
-:CSensor(NUMBER_HORMONES, pWeightRate, UID_BASE_SENS_HORMONE )
+CSensorHormone::CSensorHormone(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(NUMBER_HORMONES, tWeightRate, UID_BASE_SENS_HORMONE )
 {
   m_pBrain = pBrain;
   m_Label = "Hormone";

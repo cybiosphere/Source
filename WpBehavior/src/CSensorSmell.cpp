@@ -59,8 +59,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorSmell::CSensorSmell(CBrainAnimal* pBrain, double pWeightRate[NUMBER_ODORS], int range)
-:CSensor(NUMBER_ODORS, pWeightRate, UID_BASE_SENS_SMELL /*+ range*/)
+CSensorSmell::CSensorSmell(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int range)
+:CSensor(NUMBER_ODORS, tWeightRate, UID_BASE_SENS_SMELL /*+ range*/)
 {
   m_pBrain = pBrain;
   m_Label = "Smell";

@@ -76,7 +76,7 @@ CSensor::CSensor(double weightRate, DWORD uniqueId)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensor::CSensor(int subCaptorNumber, double* pSubCaptorWeightRate, DWORD uniqueId)
+CSensor::CSensor(int subCaptorNumber, std::vector<double>& tSubCaptorWeightRate, DWORD uniqueId)
 {
   m_Label = "Basic Sensor";
   m_SubCaptorNumber = subCaptorNumber;
@@ -87,7 +87,7 @@ CSensor::CSensor(int subCaptorNumber, double* pSubCaptorWeightRate, DWORD unique
 
   for (int i=0; i<m_SubCaptorNumber; i++)
   {
-    m_tSubCaptorWeightRate[i] = pSubCaptorWeightRate[i];
+    m_tSubCaptorWeightRate[i] = tSubCaptorWeightRate[i];
     m_tStimulationValues[i] = 0;
     m_tBonusRate[i] = 100;
   }

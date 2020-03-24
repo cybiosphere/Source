@@ -76,7 +76,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorSpeed(CBrainAnimal* pBrain, double pWeightRate[NUMBER_SPEED_SUB_CAPTORS]);
+	CSensorSpeed(CBrainAnimal* pBrain, std::vector<double>& tWeightRate);
 	virtual ~CSensorSpeed();
 
 //---------------------------------------------------------------------------

@@ -685,13 +685,13 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   }
 
   CSensor* pSensor = NULL;
-  double *pWeight;
+  std::vector<double> tWeight;
   int nbWeight = len/sizeof(WORD) - 4;
   // Set Weight table
-  pWeight = new double[nbWeight];
+  tWeight.resize(nbWeight);
   for (int i=0;i<nbWeight;i++)
   {
-    pWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
+    tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
   }
 
   double scaledVal1, scaledVal2, scaledVal3, scaledVal4;
@@ -707,7 +707,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal2-10.0)-cybio_round(scaledVal1-10.0)+1) )
       {
-        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1-10.0), cybio_round(scaledVal2-10.0));
+        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1-10.0), cybio_round(scaledVal2-10.0));
         resu = true;
       }
       else
@@ -721,7 +721,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorView((CBrainAnimal*)m_pBrain,pWeight,
+        pSensor = new CSensorView((CBrainAnimal*)m_pBrain, tWeight,
                                   cybio_round(scaledVal1), cybio_round(scaledVal2),
                                   (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
@@ -737,7 +737,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_ODORS )
       {
-        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -751,7 +751,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_PHEROMONES )
       {
-        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain,pWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -765,7 +765,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_HORMONES )
       {
-        pSensor = new CSensorHormone((CBrainAnimal*)m_pBrain,pWeight);
+        pSensor = new CSensorHormone((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -779,7 +779,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==8 )
       {
-        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, pWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
         resu = true;
       }
       else
@@ -793,7 +793,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorHunger((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorHunger((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -807,7 +807,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorThirst((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorThirst((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -821,7 +821,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorStomachOverload((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorStomachOverload((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -835,7 +835,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorPleasure((CBrainAnimal*)m_pBrain,pWeight[0]); 
+        pSensor = new CSensorPleasure((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -849,7 +849,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorSuffering((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorSuffering((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -863,7 +863,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorTiredness((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorTiredness((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -877,7 +877,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorLibido((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorLibido((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -891,7 +891,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==NUMBER_SPEED_SUB_CAPTORS)
       {
-        pSensor = new CSensorSpeed((CBrainAnimal*)m_pBrain,pWeight);
+        pSensor = new CSensorSpeed((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -905,7 +905,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorObscurity((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorObscurity((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -919,7 +919,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain,pWeight,
+        pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain, tWeight,
                                      cybio_round(scaledVal1), cybio_round(scaledVal2),
                                      (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
@@ -930,7 +930,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==8 )
       {
-        pSensor = new CSensorCompass((CBrainAnimal*)m_pBrain, pWeight);
+        pSensor = new CSensorCompass((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -944,7 +944,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_TASTES )
       {
-        pSensor = new CSensorTaste((CBrainAnimal*)m_pBrain,pWeight);
+        pSensor = new CSensorTaste((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -958,7 +958,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==1)
       {
-        pSensor = new CSensorFear((CBrainAnimal*)m_pBrain,pWeight[0]);
+        pSensor = new CSensorFear((CBrainAnimal*)m_pBrain, tWeight[0]);
         resu = true;
       }
       else
@@ -972,7 +972,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==NUMBER_TEMPERATURE_SUB_CAPTORS)
       {
-        pSensor = new CSensorTemperature((CBrainAnimal*)m_pBrain,pWeight);
+        pSensor = new CSensorTemperature((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -987,7 +987,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight>0)
       {
         DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
-        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, pWeight, nbWeight, sensUid, cybio_round(scaledVal3));
+        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, tWeight, nbWeight, sensUid, cybio_round(scaledVal3));
         resu = true;
       }
       else
@@ -1001,7 +1001,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight==NUMBER_ORIENTATION_SUB_CAPTORS)
       {
-        pSensor = new CSensorOrientation((CBrainAnimal*)m_pBrain,pWeight);
+        pSensor = new CSensorOrientation((CBrainAnimal*)m_pBrain, tWeight);
         resu = true;
       }
       else
@@ -1016,7 +1016,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain,pWeight,
+        pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain, tWeight,
                                           cybio_round(scaledVal1), cybio_round(scaledVal2),
                                           (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
@@ -1032,7 +1032,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain,pWeight,
+        pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain, tWeight,
                                              cybio_round(scaledVal1), cybio_round(scaledVal2),
                                              (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
         resu = true;
@@ -1051,9 +1051,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       break;
     }
   }
-
-  // Delete Weight table
-  delete [] pWeight;
 
   // If resu is false, sensor is not valid for animaly, but it may be used by inherited class !
   return (pSensor);

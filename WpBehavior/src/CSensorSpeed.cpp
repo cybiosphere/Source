@@ -54,8 +54,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorSpeed::CSensorSpeed(CBrainAnimal* pBrain, double pWeightRate[NUMBER_SPEED_SUB_CAPTORS])
-:CSensor(NUMBER_SPEED_SUB_CAPTORS,pWeightRate, UID_BASE_SENS_SPEED)
+CSensorSpeed::CSensorSpeed(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(NUMBER_SPEED_SUB_CAPTORS,tWeightRate, UID_BASE_SENS_SPEED)
 {
   m_pBrain = pBrain;
   m_Label = "Movt";

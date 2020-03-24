@@ -59,8 +59,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, double* pWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex)
-:CSensor(subCaptorNumber, pWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + (paramIndex * 256) )
+CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex)
+:CSensor(subCaptorNumber, tWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + (paramIndex * 256) )
 {
   m_pBrain      = pBrain;
   m_Label       = "Comp";

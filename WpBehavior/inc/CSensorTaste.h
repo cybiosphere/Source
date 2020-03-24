@@ -85,7 +85,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorTaste(CBrainAnimal* pBrain, double pWeightRate[NUMBER_TASTES]);
+	CSensorTaste(CBrainAnimal* pBrain, std::vector<double>& tWeightRate);
 	virtual ~CSensorTaste();
 
 //---------------------------------------------------------------------------

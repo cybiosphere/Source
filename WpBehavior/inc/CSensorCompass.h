@@ -79,7 +79,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorCompass(CBrainAnimal* pBrain, double* pWeightRate);
+	CSensorCompass(CBrainAnimal* pBrain, std::vector<double>& tWeightRate);
 	virtual ~CSensorCompass();
 
 //---------------------------------------------------------------------------

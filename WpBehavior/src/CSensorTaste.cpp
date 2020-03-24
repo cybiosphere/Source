@@ -58,8 +58,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorTaste::CSensorTaste(CBrainAnimal* pBrain, double pWeightRate[NUMBER_TASTES])
-:CSensor(NUMBER_TASTES, pWeightRate, UID_BASE_SENS_TASTE)
+CSensorTaste::CSensorTaste(CBrainAnimal* pBrain, std::vector<double>& tWeightRate)
+:CSensor(NUMBER_TASTES, tWeightRate, UID_BASE_SENS_TASTE)
 {
   m_pBrain = pBrain;
   m_Label = "Taste";

@@ -84,7 +84,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorTemperature(CBrainAnimal* pBrain, double pWeightRate[NUMBER_TEMPERATURE_SUB_CAPTORS]);
+	CSensorTemperature(CBrainAnimal* pBrain, std::vector<double>& tWeightRate);
 	virtual ~CSensorTemperature();
 
 //---------------------------------------------------------------------------

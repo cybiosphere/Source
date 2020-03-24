@@ -82,8 +82,8 @@ private:
 //---------------------------------------------------------------------------
 public:
 	CSensorEar(CBrainAnimal* pBrain, 
-              double* pWeightRate,
-              int range);
+             std::vector<double>& tWeightRate,
+             int range);
 	virtual ~CSensorEar();
 
 //---------------------------------------------------------------------------

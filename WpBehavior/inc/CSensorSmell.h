@@ -86,7 +86,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorSmell(CBrainAnimal* pBrain, double pWeightRate[NUMBER_ODORS], int range);
+	CSensorSmell(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int range);
 	virtual ~CSensorSmell();
 
 //---------------------------------------------------------------------------
