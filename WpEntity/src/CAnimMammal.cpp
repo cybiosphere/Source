@@ -56,15 +56,15 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CAnimMammal::CAnimMammal(string label, Point_t initCoord, int layer, CGenome* pGenome):
+CAnimMammal::CAnimMammal(string label, Point_t initCoord, size_t layer, CGenome* pGenome):
 CAnimal(label, initCoord, layer, pGenome)
 {  
   // Default values          
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = -1;
-  m_id_GestationNumberRange = -1;
+  m_id_GestationTime        = invalidIndex;
+  m_id_GestationNumberRange = invalidIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -85,8 +85,8 @@ CAnimal(label, model)
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = -1;
-  m_id_GestationNumberRange = -1;
+  m_id_GestationTime        = invalidIndex;
+  m_id_GestationNumberRange = invalidIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -107,8 +107,8 @@ CAnimal(label, mother, father)
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = -1;
-  m_id_GestationNumberRange = -1;
+  m_id_GestationTime        = invalidIndex;
+  m_id_GestationNumberRange = invalidIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -160,7 +160,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -180,7 +180,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_GESTA_TIME:
     {
-      if (m_id_GestationTime != -1) delete(getParameter(m_id_GestationTime)); // delete if already set
+      if (m_id_GestationTime != invalidIndex) delete(getParameter(m_id_GestationTime)); // delete if already set
       minVal = 0;
       defVal = 0;
       maxVal = cybio_round(scaledVal3);
@@ -191,7 +191,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_GESTA_NB:
     {
-      if (m_id_GestationNumberRange != -1) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
+      if (m_id_GestationNumberRange != invalidIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
       minVal = 0;
       defVal = cybio_round(scaledVal2);
       maxVal = cybio_round(scaledVal3);
@@ -232,12 +232,12 @@ bool CAnimMammal::completeParamsWithDefault()
   CAnimal::completeParamsWithDefault();
   
   // CAnimMammal specific
-  if (m_id_GestationTime == -1)
+  if (m_id_GestationTime == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,200,"Gestation time",PARAM_REPRODUCTION,GENE_PARAM_GESTA_TIME);
     m_id_GestationTime    = addParameter(pParam);
   }
-  if (m_id_GestationNumberRange == -1)
+  if (m_id_GestationNumberRange == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,3,10,"Gestation baby number",PARAM_REPRODUCTION,GENE_PARAM_GESTA_NB);
     pParam->forceVal(0);
@@ -270,7 +270,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
@@ -484,14 +484,13 @@ string CAnimMammal::buildParameterString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
     return (paramStr);
   }
   
-  CGenericParam* pParam = NULL;
   double scaledVal1,scaledVal2,scaledVal3;
   GeneSubType_e subType = pGen->getGeneSubType();
   
@@ -555,14 +554,13 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
     return (paramStr);
   }
   
-  CGenericParam* pParam = NULL;
   double scaledVal1;
   GeneSubType_e subType = pGen->getGeneSubType();
   
@@ -830,9 +828,8 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
   else // Specific baby behavior: drink milk
   {
     double pleasureRate = 0;
-    Point_t relPos = {1,0};
+    RelativePos_t relPos = {1,0};
     double eatenWeight = 0;
-    double initialWeight = 0;
     
     moveToGridEdgePos();
     Point_t newCoord = getGridCoordRelative(relPos);
@@ -895,7 +892,7 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
 bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double failureFrustrationFactor)
 {
   double pleasureRate = 0;
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
   Point_t newCoord = getGridCoordRelative(relPos);
   
   moveToGridEdgePos();
@@ -1013,8 +1010,7 @@ bool CAnimMammal::deliverAllBabies()
 
   if (m_pBiotop!=NULL)
   {
-    // loop from top to bottom 
-    for (int i=m_tGestationChilds.size()-1; i>=0; i--) 
+    for (size_t i = 0; i < m_tGestationChilds.size(); i++)
     {
       pGestationChild = m_tGestationChilds[i];
       if (pGestationChild != NULL)
@@ -1022,8 +1018,8 @@ bool CAnimMammal::deliverAllBabies()
         int xOfset = getRandInt(2) - 1;
         int yOfset = getRandInt(2) - 1;
         Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-        entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord); 
-        if (resuId == -1)
+        entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, false); 
+        if (resuId == ENTITY_ID_INVALID)
         {
           delete (pGestationChild);
         }

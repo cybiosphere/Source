@@ -372,7 +372,7 @@ int CWizardBrain::ApplyIdentifyBonusList()
 
 
 bool CWizardBrain::AddVisualObstacle ( int level,
-                                       int layer,
+                                       size_t layer,
                                        FormType_e form, 
                                        ColorCaracterType_e color, 
                                        TextureType_e texture, 
@@ -414,11 +414,11 @@ bool CWizardBrain::AddVisualObstacle ( int level,
         int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-        int subOffsetForm    = -1;
-        int subOffsetColor   = -1;
-        int subOffsetTexture = -1;
-        int subOffsetAttrib  = -1;
-        int subOffsetProxi   = -1;
+        size_t subOffsetForm    = invalidIndex;
+        size_t subOffsetColor   = invalidIndex;
+        size_t subOffsetTexture = invalidIndex;
+        size_t subOffsetAttrib  = invalidIndex;
+        size_t subOffsetProxi   = invalidIndex;
 
         if (form >= FORM_FIRST_TYPE)
           subOffsetForm    = pViewSens->GetSubCaptorSubIndexForForm(form);
@@ -432,7 +432,7 @@ bool CWizardBrain::AddVisualObstacle ( int level,
         subOffsetProxi = pViewSens->GetSubCaptorSubIndexForProximity();
 
         // If no parameter set, use proximity
-        if ( (subOffsetForm==-1) && (subOffsetColor==-1) && (subOffsetTexture==-1) && (subOffsetAttrib==-1) )
+        if ( (subOffsetForm == invalidIndex) && (subOffsetColor == invalidIndex) && (subOffsetTexture == invalidIndex) && (subOffsetAttrib = invalidIndex) )
         {
           subOffsetForm = subOffsetProxi;
         }
@@ -524,7 +524,7 @@ bool CWizardBrain::AddVisualObstacle ( int level,
 
 
 bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
-                                               int layer,
+                                               size_t layer,
                                                IdentificationType_e identity, 
                                                bool isMoving, bool isDirLeft, bool isDirRight,
                                                bool justInFront)
@@ -564,11 +564,11 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
         int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-        int subOffsetProxy    = -1;
-        int subOffsetEscape   = -1;
-        int subOffsetAppraoch = -1;
-        int subOffsetdirLeft  = -1;
-        int subOffsetdirRight = -1;
+        size_t subOffsetProxy    = invalidIndex;
+        size_t subOffsetEscape   = invalidIndex;
+        size_t subOffsetAppraoch = invalidIndex;
+        size_t subOffsetdirLeft  = invalidIndex;
+        size_t subOffsetdirRight = invalidIndex;
 
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
@@ -683,7 +683,7 @@ bool CWizardBrain::AddVisualIdentifyObstacle ( int level,
 
 
 bool CWizardBrain::AddVisualBonus ( int bonusRate,
-                                    int layer,
+                                    size_t layer,
                                     FormType_e form, 
                                     ColorCaracterType_e color, 
                                     TextureType_e texture, 
@@ -728,11 +728,11 @@ bool CWizardBrain::AddVisualBonus ( int bonusRate,
         int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-        int subOffsetForm    = -1;
-        int subOffsetColor   = -1;
-        int subOffsetTexture = -1;
-        int subOffsetAttrib  = -1;
-        int subOffsetIsMove  = -1;
+        size_t subOffsetForm    = invalidIndex;
+        size_t subOffsetColor   = invalidIndex;
+        size_t subOffsetTexture = invalidIndex;
+        size_t subOffsetAttrib  = invalidIndex;
+        size_t subOffsetIsMove  = invalidIndex;
 
         if (form >= FORM_FIRST_TYPE)
           subOffsetForm    = pViewSens->GetSubCaptorSubIndexForForm(form);
@@ -979,11 +979,11 @@ bool CWizardBrain::AddVisualBonus ( int bonusRate,
       int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
       int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
       int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-      int subOffsetForm    = -1;
-      int subOffsetColor   = -1;
-      int subOffsetTexture = -1;
-      int subOffsetAttrib  = -1;
-      int subOffsetIsMove  = -1;
+      size_t subOffsetForm    = invalidIndex;
+      size_t subOffsetColor   = invalidIndex;
+      size_t subOffsetTexture = invalidIndex;
+      size_t subOffsetAttrib  = invalidIndex;
+      size_t subOffsetIsMove  = invalidIndex;
 
       if (form >= FORM_FIRST_TYPE)
         subOffsetForm    = pViewSens->GetSubCaptorSubIndexForForm(form);
@@ -1109,7 +1109,7 @@ bool CWizardBrain::AddVisualBonus ( int bonusRate,
 }
 
 bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
-                                            int layer,
+                                            size_t layer,
                                             IdentificationType_e identity, 
                                             bool isMoving, bool isDirLeft, bool isDirRight,
                                             bool doRun,
@@ -1151,11 +1151,11 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
         int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
         int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
         int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-        int subOffsetProxy    = -1;
-        int subOffsetEscape   = -1;
-        int subOffsetAppraoch = -1;
-        int subOffsetdirLeft  = -1;
-        int subOffsetdirRight = -1;
+        size_t subOffsetProxy    = invalidIndex;
+        size_t subOffsetEscape   = invalidIndex;
+        size_t subOffsetAppraoch = invalidIndex;
+        size_t subOffsetdirLeft  = invalidIndex;
+        size_t subOffsetdirRight = invalidIndex;
 
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
@@ -1374,11 +1374,11 @@ bool CWizardBrain::AddVisualIdentifyBonus ( int bonusRate,
       int offsetEntityBL0  = pViewSens->GetSubCaptorIndexForDirection(5,0); 
       int offsetEntityBR0  = pViewSens->GetSubCaptorIndexForDirection(6,0); 
       int offsetEntityB0   = pViewSens->GetSubCaptorIndexForDirection(7,0); 
-      int subOffsetProxy    = -1;
-      int subOffsetEscape   = -1;
-      int subOffsetAppraoch = -1;
-      int subOffsetdirLeft  = -1;
-      int subOffsetdirRight = -1;
+      size_t subOffsetProxy    = invalidIndex;
+      size_t subOffsetEscape   = invalidIndex;
+      size_t subOffsetAppraoch = invalidIndex;
+      size_t subOffsetdirLeft  = invalidIndex;
+      size_t subOffsetdirRight = invalidIndex;
 
       subOffsetProxy = CSensorViewIdentifyFar::GetSubCaptorSubIndexForProximity(identity);
       if (isMoving)
@@ -1759,13 +1759,13 @@ bool CWizardBrain::AddVisualIdentificationBonus( int bonusRate, FormType_e form,
                                                  IdentificationType_e  identity)
 {
   // Prepare captor offsets
-  int subOffsetForm      = -1;
-  int subOffsetColor     = -1;
-  int subOffsetTexture   = -1;
-  int subOffsetAttrib    = -1;
-  int subOffsetIsMove    = -1;
-  int subOffsetIsBigger  = -1;
-  int subOffsetIsSmaller = -1;
+  size_t subOffsetForm      = invalidIndex;
+  size_t subOffsetColor     = invalidIndex;
+  size_t subOffsetTexture   = invalidIndex;
+  size_t subOffsetAttrib    = invalidIndex;
+  size_t subOffsetIsMove    = invalidIndex;
+  size_t subOffsetIsBigger  = invalidIndex;
+  size_t subOffsetIsSmaller = invalidIndex;
 
   if (form >= FORM_FIRST_TYPE)
     subOffsetForm    = CSensorView::GetSubCaptorSubIndexForForm(form);

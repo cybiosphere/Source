@@ -51,13 +51,13 @@ distribution.
 //===========================================================================
 #define NB_GRID_PER_GEOMAP_SQUARE 25
 
-typedef enum
+enum class GeoMapIntensityType_e
 {
   FOUND_INTENSITY_NULL = 0,
   FOUND_INTENSITY_LOW,
   FOUND_INTENSITY_MEDIUM,
   FOUND_INTENSITY_HIGH,    
-} GeoMapIntensityType_e;
+};
 
 class CBrainAnimal;
 
@@ -70,21 +70,21 @@ class DLL_CYBIOCORE_API CGeoMap
 // Attributes 
 //===========================================================================
 private:
-  Point_t       m_GeoCoordStart;
-  int           m_GeoMapSize;
-  int           m_NbPurposeRec;
+  RelativePos_t m_GeoCoordStart;
+  size_t        m_GeoMapSize;
+  size_t        m_NbPurposeRec;
 
   // attributes used to manage timeout on target direction in GeoMap
   Point_t       m_curTargetMapPos;
-  int           m_curPurposeUidIdx;
-  int           m_curTargetTimout;
+  size_t        m_curPurposeUidIdx;
+  size_t        m_curTargetTimout;
 
 //---------------------------------------------------------------------------
 // associations
 //---------------------------------------------------------------------------
 private:
   CBrain*       m_pBrain;
-  short***       m_pMemoryMap;
+  short***      m_pMemoryMap;
   DWORD*        m_tPurposeUniqueId;
 
 
@@ -96,7 +96,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, int gridMapSize, int nbPurposeRec);
+	CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec);
   ~CGeoMap();
 
 //---------------------------------------------------------------------------
@@ -110,15 +110,15 @@ public:
   void NextDay();
 
   bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut = false);
-  int GetSuccessWeight(int purposeIndex, Point_t geoMapPos);
-  DWORD GettPurposeUniqueId (int index);
+  int GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos);
+  DWORD GettPurposeUniqueId (size_t index);
 
 //---------------------------------------------------------------------------
 // private methods
 //---------------------------------------------------------------------------
 private:
-  int  GetPurposeUidTabIndex(DWORD purposeUid);
-  bool MemorizePurposeSuccessGeoPos(int purposeIndex, Point_t geoMapPos, int weight);
+  size_t GetPurposeUidTabIndex(DWORD purposeUid);
+  bool MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t geoMapPos, int weight);
 
 
 };

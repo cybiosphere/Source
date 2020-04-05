@@ -112,7 +112,7 @@ const std::vector<sensorValType>& CSensorCompass::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorCompass::GetSubCaptorLabel(int index)
+string CSensorCompass::GetSubCaptorLabel(size_t index)
 {
   return (CBasicEntity::getAbsolutePosStrName(index));
 }

@@ -72,11 +72,11 @@ static EntityViewIdentifyWeight_t m_pEntityViewIdentifyTab[MAX_FOUND_ENTITIES];
 CSensorViewIdentify::	CSensorViewIdentify(CBrainAnimal* pBrain, 
                           std::vector<double>& tWeightRate,
                           int range,
-                          int layer,
+                          size_t layer,
                           ViewAngleType_e angle,
                           int totalNbFocusObjects,
                           bool distanceEvaluation)
-:CSensor(totalNbFocusObjects * VIEW_IDENTIFY_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW_IDENTIFY + 10*layer + angle )
+:CSensor(totalNbFocusObjects * VIEW_IDENTIFY_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW_IDENTIFY + 10 * (DWORD)layer + angle )
 {
   m_pBrain = pBrain;
   m_nRange = range;
@@ -187,12 +187,12 @@ const std::vector<sensorValType>& CSensorViewIdentify::UpdateAndGetStimulationTa
   if (m_pFollowedEntity!=NULL)
   {
     m_followedEntityWeight.pEntity = NULL;
-    m_followedEntityWeight.index = -1;
+    m_followedEntityWeight.index = invalidIndex;
     m_followedEntityWeight.signature = 0;
     m_followedEntityWeight.computedWeight = 0;
   }
 
-  int offset = 0;
+  size_t offset = 0;
   int direction = pAnimal->getDirection(); 
   if (tScanDirections[direction] && m_nFocusObjectsSect1)
     Scan45degSector(offset, m_nFocusObjectsSect1,direction);
@@ -251,20 +251,19 @@ const std::vector<sensorValType>& CSensorViewIdentify::UpdateAndGetStimulationTa
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
-                                  int maxNumFocusObject,
-                                  int direction)
+bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
+                                          size_t maxNumFocusObject,
+                                          int direction)
 {
-  FoundEntity_t* pFoundIds = NULL;
   CBasicEntity* pCurEntity = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CBiotop* pBiotop = pAnimal->getBiotop();
   UCHAR visionSectorBmp = 0x01 << direction;
-  int offset = 0;
-  int i,j;
+  size_t offset = 0;
+  size_t i,j;
   int identityIdx;
   double maxComputedWeight;
-  int maxWeightViewTabIndex;
+  size_t maxWeightViewTabIndex;
   CMatrix* pFoundIdentitiesMatrix;
   int relativeSpeed;
   int relativeAngle;
@@ -272,18 +271,14 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
   double viewChance;
 
   // Find entities according to angle, distance and layer:
-  int nbIds = pBiotop->findEntities(pFoundIds, pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
-  if (nbIds > MAX_FOUND_ENTITIES)
-  {
-    nbIds = MAX_FOUND_ENTITIES;
-  }
+  const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
 
-  for (i=0; i<nbIds; i++)
+  for (i = 0; i < tFoundIds.size(); i++)
   {
-    pCurEntity = pFoundIds[i].pEntity;
+    pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
 
     if ((pCurEntity != pBrainFocused->pPreviousEntity) && (m_nRange>1)) // keep seeing focused and just in front entities
@@ -313,7 +308,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
       {
         curWeight = (*pFoundIdentitiesMatrix)(identityIdx,0);
         if ((curWeight!=0) && m_bDistanceEval) // iclude distance in weight
-          m_pEntityViewIdentifyTab[i].weightTab[offset] = (curWeight + curWeight/pFoundIds[i].distance);
+          m_pEntityViewIdentifyTab[i].weightTab[offset] = (curWeight + curWeight/ tFoundIds[i].distance);
         else
           m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight; 
         offset++;
@@ -326,7 +321,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
         {
           // 1 presence and distance
           if (m_bDistanceEval) // iclude distance in weight
-            m_pEntityViewIdentifyTab[i].weightTab[offset] = (curWeight + curWeight/pFoundIds[i].distance); 
+            m_pEntityViewIdentifyTab[i].weightTab[offset] = (curWeight + curWeight/ tFoundIds[i].distance);
           else
             m_pEntityViewIdentifyTab[i].weightTab[offset] = curWeight;
           offset++;
@@ -394,7 +389,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
     }
     else
     {
-      m_pEntityViewIdentifyTab[i].index = -1;
+      m_pEntityViewIdentifyTab[i].index = invalidIndex;
       m_pEntityViewIdentifyTab[i].computedWeight = 0;
       m_pEntityViewIdentifyTab[i].signature = 0;
       m_pEntityViewIdentifyTab[i].pEntity = NULL;
@@ -408,8 +403,8 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
   {
     // 1 Find max weight
     maxComputedWeight = 0;
-    maxWeightViewTabIndex = -1;
-    for (i=0; i<nbIds; i++)
+    maxWeightViewTabIndex = invalidIndex;
+    for (i = 0; i < tFoundIds.size(); i++)
     {
       // Give 10% bonus to previousely selected entity
       if (m_pEntityViewIdentifyTab[i].pEntity == pBrainFocused->pPreviousEntity)
@@ -457,7 +452,7 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
     }
 
     // 5 Remove identical entities
-    for (i=0; i<nbIds; i++)
+    for (i = 0; i < tFoundIds.size(); i++)
     {
       if (m_pEntityViewIdentifyTab[i].signature == m_pEntityViewIdentifyTab[maxWeightViewTabIndex].signature)
         m_pEntityViewIdentifyTab[i].computedWeight = 0;
@@ -478,19 +473,19 @@ bool CSensorViewIdentify::Scan45degSector(int stimulationTabOffset,
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorViewIdentify::GetSubCaptorLabel(int index)
+string CSensorViewIdentify::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {
-    int offset = index / VIEW_IDENTIFY_SIZE_PER_FOCUS;
-    int pos = index % VIEW_IDENTIFY_SIZE_PER_FOCUS;
+    size_t offset = index / VIEW_IDENTIFY_SIZE_PER_FOCUS;
+    size_t pos = index % VIEW_IDENTIFY_SIZE_PER_FOCUS;
 
     string directionStr; // according to offset
     directionStr = FormatString("N%d ", offset);
-    int index = 0;
-    int count=m_nFocusObjectsSect1;
+    size_t index = 0;
+    size_t count = m_nFocusObjectsSect1;
 
     do 
     {
@@ -553,8 +548,8 @@ string CSensorViewIdentify::GetSubCaptorLabel(int index)
       captorStr = CBrain::getIdentityStrName((IdentificationType_e)pos)  + " proxi";
     else
     {
-      int subindex  = IDENTIFICATION_STATIC_NUMBER_TYPE + (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) / VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
-      int suboffset = (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) % VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
+      size_t subindex  = IDENTIFICATION_STATIC_NUMBER_TYPE + (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) / VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
+      size_t suboffset = (pos-IDENTIFICATION_STATIC_NUMBER_TYPE) % VIEW_IDENTIFY_SIZE_PER_DYNAMIC;
       switch (suboffset)
       {
       case 0:
@@ -578,9 +573,9 @@ string CSensorViewIdentify::GetSubCaptorLabel(int index)
 }
 
 
-int CSensorViewIdentify::GetSubCaptorIndexForDirection(int relativeDirection, int entityIndex)
+size_t CSensorViewIdentify::GetSubCaptorIndexForDirection(int relativeDirection, size_t entityIndex)
 {
-  int index = -1;
+  size_t index = invalidIndex;
 
   switch (relativeDirection)
   {
@@ -632,53 +627,53 @@ int CSensorViewIdentify::GetSubCaptorIndexForDirection(int relativeDirection, in
 }
 
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForProximity(IdentificationType_e identity)
+size_t CSensorViewIdentify::GetSubCaptorSubIndexForProximity(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
-      return (int)identity;
+      return (size_t)identity;
     else
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC);
 }
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity)
+size_t CSensorViewIdentify::GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 1;
 }
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity)
+size_t CSensorViewIdentify::GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity)
 {
   if (identity >= IDENTIFICATION_NUMBER_TYPE)
-    return -1;
+    return invalidIndex;
   else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
-    return -1;
+    return invalidIndex;
   else
     return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity - IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 1;
 }
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity)
+size_t CSensorViewIdentify::GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 3;
 }
 
 
-int CSensorViewIdentify::GetSubCaptorSubIndexForDirRight(IdentificationType_e identity)
+size_t CSensorViewIdentify::GetSubCaptorSubIndexForDirRight(IdentificationType_e identity)
 {
     if (identity>=IDENTIFICATION_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else if (identity<IDENTIFICATION_STATIC_NUMBER_TYPE)
-      return -1;
+      return invalidIndex;
     else
       return (IDENTIFICATION_STATIC_NUMBER_TYPE + (identity-IDENTIFICATION_STATIC_NUMBER_TYPE) * VIEW_IDENTIFY_SIZE_PER_DYNAMIC) + 4;
 }
@@ -689,7 +684,7 @@ int CSensorViewIdentify::GetRange()
   return m_nRange;
 }
 
-int CSensorViewIdentify::GetLayer()
+size_t CSensorViewIdentify::GetLayer()
 {
   return m_Layer;
 }
@@ -715,9 +710,9 @@ double CSensorViewIdentify::GetViewedEntityWeight(CBasicEntity* pEntity)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CSensorViewIdentify::IsSexSpecific(int captorIndex)
+bool CSensorViewIdentify::IsSexSpecific(size_t captorIndex)
 {
-  int index = captorIndex % VIEW_IDENTIFY_SIZE_PER_FOCUS;
+  size_t index = captorIndex % VIEW_IDENTIFY_SIZE_PER_FOCUS;
   if ( (index == GetSubCaptorSubIndexForProximity(IDENTIFICATION_SEX_PARTNER))
     || (index == GetSubCaptorSubIndexForEscapeSpeed(IDENTIFICATION_SEX_PARTNER))
     || (index == GetSubCaptorSubIndexForApproachSpeed(IDENTIFICATION_SEX_PARTNER))

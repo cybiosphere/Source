@@ -105,10 +105,10 @@ public:
                                   int bonusRateX10 );
 
     // High level fonctions
-    bool AddPurposeVisualBonus( CString purposeName, int bonus, int layer, 
+    bool AddPurposeVisualBonus( CString purposeName, int bonus, size_t layer,
                                 FormType_e form, ColorCaracterType_e color, 
                                 TextureType_e texture, PhyAttributeType_e attribute, bool isMoving);
-    bool AddPurposeVisualIdentifyBonus( CString purposeName, int bonus, int layer, 
+    bool AddPurposeVisualIdentifyBonus( CString purposeName, int bonus, size_t layer,
                                         IdentificationType_e identity, 
                                         bool isMoving, bool isDirLeft, bool isDirRight);
     bool AddPurposeOdorBonus ( CString purposeName, int bonus, OdorType_e odor);

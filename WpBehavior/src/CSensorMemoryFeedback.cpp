@@ -86,9 +86,9 @@ const std::vector<sensorValType>& CSensorMemoryFeedback::UpdateAndGetStimulation
 {
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
-  int reactInd = m_pBrain->GetCurrentReactionIndex();
+  size_t reactInd = m_pBrain->GetCurrentReactionIndex();
 
-  if ( (reactInd>=0) && (reactInd<GetSubCaptorNumber()) )
+  if (reactInd<GetSubCaptorNumber())
   {
     double curFeedback = m_pBrain->GetCurrentFeedback();
     // give more weight to negative feedbacks according to consecutive failures
@@ -113,9 +113,9 @@ const std::vector<sensorValType>& CSensorMemoryFeedback::UpdateAndGetStimulation
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorMemoryFeedback::GetSubCaptorLabel(int index)
+string CSensorMemoryFeedback::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
+  if ( (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
     return ("bad index");
   else
   {

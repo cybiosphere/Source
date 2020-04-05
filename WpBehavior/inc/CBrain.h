@@ -40,7 +40,7 @@ distribution.
 #include "Definitions.h"
 #include "Matrix.h"
 
-typedef int choiceIndType;
+typedef size_t choiceIndType;
 
 #include "CNeuronMatrix.h"
 #include "CSensor.h"
@@ -76,8 +76,8 @@ typedef struct
   CBasicEntity*        pNewEntity;
   double               computedWeight;
   DWORD                captorUid;
-  int                  subcaptorIndex;
-  unsigned int         subcaptorsSize;
+  size_t         subcaptorIndex;
+  size_t         subcaptorsSize;
 } BrainFocusedEntityView_t;
 
 
@@ -157,11 +157,11 @@ private:
 private:
   // DIMENSSIONS
   // Total number of inputs from sensors. 1 sensor may control several inputs
-  int m_nInputSensors;
+  size_t m_nInputSensors;
   // Historical used to take decision 
-  int m_nInputHistory;
+  size_t m_nInputHistory;
   // Historical used to compute experience 
-  int m_nExperienceHistory;
+  size_t m_nExperienceHistory;
 
   // VMATRIX/VECTORS for decision neuronal table (compute final action choice)
   // Current Input containing current and historized sensations
@@ -191,7 +191,7 @@ private:
   // Neuronal matrix table for identification
   CNeuronMatrix m_mIdentifyNeuronTable;
   // Current Input
-  int m_nInputIdentification;
+  size_t  m_nInputIdentification;
   CMatrix m_vCurrentIdentifyInput;
   // Current choice vector
   CMatrix m_vCurrentIdentifyOutput; // raw vector result
@@ -236,27 +236,27 @@ protected:
   bool DeleteAllBrainMemorizedEntityIdentities(void);
 
 public:
-  int AttachSensor(CSensor*   pSensor);
-  int AttachReaction(CReaction* pReaction);
-  int AttachPurpose(CPurpose*  pPurpose);
-  int GetNumberSensor();
-  unsigned int GetNumberReaction();
-  int GetNumberPurpose();
+  size_t AttachSensor(CSensor*   pSensor);
+  size_t AttachReaction(CReaction* pReaction);
+  size_t AttachPurpose(CPurpose*  pPurpose);
+  size_t GetNumberSensor();
+  size_t GetNumberReaction();
+  size_t GetNumberPurpose();
 
-  CSensor*   GetSensorByIndex(int index);
+  CSensor*   GetSensorByIndex(size_t index);
   CSensor*   GetSensorByUniqueId(DWORD uniqueId);
-  CReaction* GetReactionByIndex(int index);
+  CReaction* GetReactionByIndex(size_t index);
   CReaction* GetReactionByUniqueId(DWORD uniqueId);
-  CPurpose*  GetPurposeByIndex(int index);
+  CPurpose*  GetPurposeByIndex(size_t index);
   CPurpose*  GetPurposeByUniqueId(DWORD uniqueId);
   CPurpose*  GetCurrentPurpose(void);
-  int        GetCurrentPurposeIndex(void);
-  CPurpose*  GetPurposeByTriggerSensor(DWORD sensorUniqueId, int sensorSubCaptorIndex);
+  size_t GetCurrentPurposeIndex(void);
+  CPurpose*  GetPurposeByTriggerSensor(DWORD sensorUniqueId, size_t sensorSubCaptorIndex);
   CGeoMap*   GetGeographicMap(void);
-  void       ForceCurrentPurpose(int purposeIndex);
+  void       ForceCurrentPurpose(size_t purposeIndex);
 
   bool PollAllSensors (void);
-  bool AddFeelingWelfareSensitivity(CSensor* pSens, int tableSensiSize, double* pTableSensi);
+  bool AddFeelingWelfareSensitivity(CSensor* pSens, size_t tableSensiSize, double* pTableSensi);
 
   BrainFocusedEntityView_t* getpBrainFocusedEntityInfo(void);
   void clearBrainFocusedEntityInfo(void);
@@ -282,11 +282,11 @@ public:
 //---------------------------------------------------------------------------
 public:
   CNeuronMatrix* GetDecisionNeuronTable();
-  bool SetNumberInputHistory (int nbHistory);
-  bool SetNumberExperienceHistory (int nbHistory);
-  int  GetCurrentReactionIndex(void);
-  bool SetCurrentReactionIndex(int index);
-  int  GetReactionIndexByLabel(string label);
+  bool SetNumberInputHistory (size_t nbHistory);
+  bool SetNumberExperienceHistory (size_t nbHistory);
+  size_t  GetCurrentReactionIndex(void);
+  bool SetCurrentReactionIndex(size_t index);
+  size_t  GetReactionIndexByLabel(string label);
   double GetPreviousFeelingWelfare();
   double GetCurrentFeelingWelfare();
   CFeelingWelfare* GetpFeelingWelfare();
@@ -302,20 +302,20 @@ public:
 
   CMatrix* GetChoiceVect();
   CMatrix* GetInputVect();
-  int GetChoiceVectSize();
-  neuroneValType GetChoiceVectData(int pos);
-  int GetInputVectSize();
-  neuroneValType GetInputVectData(int pos);
+  size_t GetChoiceVectSize();
+  neuroneValType GetChoiceVectData(size_t pos);
+  size_t GetInputVectSize();
+  neuroneValType GetInputVectData(size_t pos);
 
-  string GetColumnLabel(unsigned int index);
-  string GetRowLabel(unsigned int index);
+  string GetColumnLabel(size_t index);
+  string GetRowLabel(size_t index);
 
-  int GetBrainMatrixColumnIndex(DWORD reactionUidBase, int reactionUidRange, int foundIndex = 0);
-  int GetBrainMatrixRowIndex(DWORD sensorUidbase, int sensorUidRange, int subCaptorIndex, int timeHistory, int foundIndex = 0);
-  int GetIdentifyMatrixRowIndex(DWORD sensorUidbase, int subCaptorIndex);
-  bool IsDecisionRowSexSpecific(int rowIndex);
+  size_t GetBrainMatrixColumnIndex(DWORD reactionUidBase, size_t reactionUidRange, size_t foundIndex = 0);
+  size_t GetBrainMatrixRowIndex(DWORD sensorUidbase, size_t sensorUidRange, size_t subCaptorIndex, size_t timeHistory, size_t foundIndex = 0);
+  size_t GetIdentifyMatrixRowIndex(DWORD sensorUidbase, size_t subCaptorIndex);
+  bool IsDecisionRowSexSpecific(size_t rowIndex);
 
-  bool ChangeDecisionNeuronTableVal(int row, int col, double variation, bool normalize=true);
+  bool ChangeDecisionNeuronTableVal(size_t row, size_t col, double variation, bool normalize=true);
 
 
 //---------------------------------------------------------------------------
@@ -325,9 +325,9 @@ public:
   CNeuronMatrix* GetIdentifyNeuronTable();
 
   // Identification methodes
-  string getIdentificationLabel(int columnIndex);
-  string getIdentifyInputLabel(int rowIndex);
-  bool IsIdentifyRowSexSpecific(int rowIndex);
+  string getIdentificationLabel(size_t columnIndex);
+  string getIdentifyInputLabel(size_t rowIndex);
+  bool IsIdentifyRowSexSpecific(size_t rowIndex);
 
   CMatrix* GetIdentifyInputVect();
   CMatrix* GetIdentifyOutputVect();
@@ -336,7 +336,7 @@ public:
   
   bool CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignature, IdentificationType_e identity);
   bool MemorizeIdentificationExperience(feedbackValType currentFeedback,double learningRate, CBasicEntity* pEntity, IdentificationType_e identity);
-  bool ChangeIdentifyNeuronTableVal(int row, int col, double variation, bool normalize=true);
+  bool ChangeIdentifyNeuronTableVal(size_t row, size_t col, double variation, bool normalize=true);
   bool IsIdentificationUsed();
 
 protected:

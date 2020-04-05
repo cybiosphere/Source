@@ -98,7 +98,7 @@ double CMeasurePopulation::GetCurrentValue()
   if (m_pBiotop==NULL)
     return (0);
 
-  double val =0;
+  size_t val =0;
 
   switch(m_SubType)
   {
@@ -118,11 +118,11 @@ double CMeasurePopulation::GetCurrentValue()
     val = m_pBiotop->getNbOfSpecieEntities(m_SpecieName);
     break;
   default:
-    val =0;
+    val = 0;
     break;
   }
 
-  return (val);
+  return (double)val;
 }
 
 //===========================================================================
@@ -152,7 +152,7 @@ string CMeasurePopulation::GetMeasurePopulationTypeStrName(MeasurePopulationType
   return(typeName);
 }
 
-int CMeasurePopulation::GetSubTypeId()
+size_t CMeasurePopulation::GetSubTypeId()
 {
   return(m_SubType);
 }

@@ -94,7 +94,7 @@ const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
   CAnimal* pAnimal = m_pBrain->getAnimal();
 
   // Process level
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
   Point_t frontPos = pAnimal->getGridCoordRelative(relPos);
 
   // Get odor in biotop, excluding own odor
@@ -116,14 +116,14 @@ const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorSmell::GetSubCaptorLabel(int index)
+string CSensorSmell::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {
     OdorType_e odorId = ODOR_FIRST_TYPE;
-    for (int i=0; (i<index)&&(i<ODOR_NUMBER_TYPE); i++)
+    for (size_t i=0; (i<index)&&(i<ODOR_NUMBER_TYPE); i++)
       odorId = (OdorType_e)(odorId+1);
     return (CBasicEntity::getOdorStrName(odorId) );
   }

@@ -57,8 +57,8 @@ CWater::CWater()
   // Input values
   
   // Default values 
-  Point_t coord = {-1,-1};
-  jumpToGridCoord(coord, 1); // Def layer is 1
+  Point_t coord = {invalidCoord, invalidCoord};
+  jumpToGridCoord(coord, true, 1); // Def layer is 1
   m_pGenome       = NULL;
   m_pBrain        = NULL;
 
@@ -90,7 +90,7 @@ CWater::CWater(string label, Point_t initCoord, CGenome* pPseudoGenome)
   // Input values
   
   // Default values 
-  jumpToGridCoord(initCoord, 1); // Def layer is 1
+  jumpToGridCoord(initCoord, true, 1); // Def layer is 1
   m_pGenome       = pPseudoGenome;
   m_pBrain        = NULL;
 
@@ -117,7 +117,7 @@ CWater::CWater(string label, CWater& model)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), model.getLayer()); 
+  jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
   m_Generation		= model.m_Generation + 1;
   m_pGenome       = new CGenome(*model.m_pGenome);
 

@@ -263,7 +263,7 @@ bool CDialogTab3::LoadSensorsAndPredatorsEntities()
         m_pPreyEntities[i] = CBiotop::createEntity(name, pTempGenome);   
         if (m_pPreyEntities[i] != NULL)
         {
-          m_pPreyEntities[i]->jumpToGridCoord(coord, startLayer);
+          m_pPreyEntities[i]->jumpToGridCoord(coord, true, startLayer);
           m_pPreyEntities[i]->loadDataFromXmlFile(fileNameWithPath.GetBuffer(0), pathName.GetBuffer(0));
           m_pPreyEntities[i]->loadBrainFromXmlFile(fileNameWithPath.GetBuffer(0));
           count++;
@@ -297,7 +297,7 @@ bool CDialogTab3::LoadSensorsAndPredatorsEntities()
         m_pPredatorEntities[i] = CBiotop::createEntity(name, pTempGenome);   
         if (m_pPredatorEntities[i] != NULL)
         {
-          m_pPredatorEntities[i]->jumpToGridCoord(coord, startLayer);       
+          m_pPredatorEntities[i]->jumpToGridCoord(coord, true,  startLayer);       
           m_pPredatorEntities[i]->loadDataFromXmlFile(fileNameWithPath.GetBuffer(0), pathName.GetBuffer(0));
           m_pPredatorEntities[i]->loadBrainFromXmlFile(fileNameWithPath.GetBuffer(0));
         }

@@ -60,7 +60,7 @@ class DLL_CYBIOCORE_API CVegetSpermatophyta : public CVegetable
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  int m_id_PollenRange; 
+  size_t m_id_PollenRange;
 
 //===========================================================================
 // methods 
@@ -70,7 +70,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CVegetSpermatophyta(string label, Point_t initCoord, int layer, CGenome* pGenome);
+  CVegetSpermatophyta(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
   CVegetSpermatophyta(string label, CVegetSpermatophyta& model);
   CVegetSpermatophyta(string label, CVegetSpermatophyta& mother,CVegetSpermatophyta& father);
 

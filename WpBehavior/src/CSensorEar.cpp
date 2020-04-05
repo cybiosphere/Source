@@ -149,7 +149,6 @@ const std::vector<sensorValType>& CSensorEar::UpdateAndGetStimulationTable()
 bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
                                  int direction)
 {
-  FoundEntity_t* pFoundIds = NULL;
   CBasicEntity* pCurEntity = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CBiotop* pBiotop = pAnimal->getBiotop();
@@ -157,17 +156,17 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   double noiseRate = 0;
 
   // Scan all over ground layers
-  for (int i=1; i<pBiotop->getNbLayer(); i++)
+  for (size_t i=1; i<pBiotop->getNbLayer(); i++)
   {
     // Find entities according to angle, distance and layer:
-    int nbIds = pBiotop->findEntities(pFoundIds, pAnimal->getGridCoord(), visionSectorBmp, m_nRange, i, true);
+    const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, i, true);
   
-    for (int j=0;j<nbIds;j++)
+    for (size_t j = 0; j < tFoundIds.size(); j++)
     {
-      pCurEntity = pFoundIds[j].pEntity;
+      pCurEntity = tFoundIds[j].pEntity;
       if (pCurEntity!=NULL)
       {
-        noiseRate += pCurEntity->getNoise()/(pFoundIds[j].distance); 
+        noiseRate += pCurEntity->getNoise()/(tFoundIds[j].distance);
       } 
     }
   }
@@ -188,13 +187,13 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorEar::GetSubCaptorLabel(int index)
+string CSensorEar::GetSubCaptorLabel(size_t index)
 {
   return (CBasicEntity::getRelativePosStrName(index));
 }
 
 
-bool CSensorEar::IsSexSpecific(int captorIndex)
+bool CSensorEar::IsSexSpecific(size_t captorIndex)
 {
   return false;
 }

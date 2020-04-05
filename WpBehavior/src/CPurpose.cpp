@@ -57,7 +57,7 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, int subCaptorIndex, 
+CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subCaptorIndex,
                    int startRateThreshold, int stopRateThreshold, PurposeTriggerType_e type)
 {
   int i;
@@ -197,7 +197,7 @@ bool CPurpose::IncreaseCountAndCheckEnd(void)
 //---------------------------------------------------------------------------
 void CPurpose::StartPeriod(void)
 {
-  int i;
+  size_t i;
   // Reset counter
   m_SecondCounter = 0;
 
@@ -208,7 +208,7 @@ void CPurpose::StartPeriod(void)
     curSens = m_tSensorBonus[i].pSensor; 
     if (curSens!=NULL)
     {
-      curSens->SetBonusRate(m_tSensorBonus[i].bonusTable.size(), m_tSensorBonus[i].bonusTable);
+      curSens->SetBonusRate(m_tSensorBonus[i].bonusTable);
     }
   }
 
@@ -237,7 +237,7 @@ void CPurpose::StartPeriod(void)
 //---------------------------------------------------------------------------
 void CPurpose::StopPeriod(void)
 {
-  int i;
+  size_t i;
   // Reset bonus to neutral on each sensor
   CSensor* curSens = NULL;
   for (i=0; i<m_nbSensorBonus; i++)
@@ -321,9 +321,9 @@ DWORD CPurpose::GetUniqueId()
   return (m_UniqueId);
 }
 
-DWORD CPurpose::ComputeUniqueId(DWORD triggerSensUid, int triggerSubCaptorIndex)
+DWORD CPurpose::ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorIndex)
 {
-  return (triggerSensUid + triggerSubCaptorIndex);
+  return (triggerSensUid + (DWORD)triggerSubCaptorIndex);
 }
 
 int CPurpose::GetPriority()

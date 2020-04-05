@@ -135,7 +135,7 @@ string CMeasureFeeling::GetMeasureFeelingTypeStrName(MeasureFeelingType_e type)
   return(typeName);
 }
 
-int CMeasureFeeling::GetSubTypeId()
+size_t CMeasureFeeling::GetSubTypeId()
 {
   return(m_SubType);
 }

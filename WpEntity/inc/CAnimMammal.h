@@ -59,8 +59,8 @@ class DLL_CYBIOCORE_API CAnimMammal : public CAnimal
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  int m_id_GestationTime;
-  int m_id_GestationNumberRange;
+  size_t m_id_GestationTime;
+  size_t m_id_GestationNumberRange;
 
 
 //===========================================================================
@@ -71,7 +71,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CAnimMammal(string label, Point_t initCoord, int layer, CGenome* pGenome);
+  CAnimMammal(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
   CAnimMammal(string label, CAnimMammal& model);
   CAnimMammal(string label, CAnimMammal& mother,CAnimMammal& father);
 

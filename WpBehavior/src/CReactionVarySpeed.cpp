@@ -97,14 +97,15 @@ void CReactionVarySpeed::ExecuteAction(ReactionIntensityType_e intensity)
   double accelerationRate = 50 + (intensity-2) * 10;  // Use value from new parameter
   double targetSpeed = m_stepSpeed;
 
-  int stepVariation = (targetSpeed - (double)m_pBrain->getAnimal()->getCurrentSpeed()) * accelerationRate / 100.0;
+  int stepVariation = cybio_round((targetSpeed - (double)m_pBrain->getAnimal()->getCurrentSpeed()) * accelerationRate / 100.0);
 
   if (stepVariation != 0)
   {
     m_pBrain->getAnimal()->changeCurrentSpeed(stepVariation);
 
     // perform additional steps : start now to move
-    resu = m_pBrain->getAnimal()->ExecuteMoveForwardAction(m_SuccessSatisfactionFactor, m_FailureFrustrationFactor, stepVariation);
+    if (stepVariation > 0)
+      resu = m_pBrain->getAnimal()->ExecuteMoveForwardAction(m_SuccessSatisfactionFactor, m_FailureFrustrationFactor, stepVariation);
   }
 
   if (resu)   

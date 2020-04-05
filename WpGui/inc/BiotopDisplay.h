@@ -46,7 +46,7 @@ public:
 public:
   virtual bool Initialize(CScrollView* pView) {return(false);}; 
   virtual void ResizeScene(int cx, int cy)  {0;}; 
-  virtual Point_t GetGridCoordFromScreenPos(CPoint screenPos) {Point_t bioCoord={-1,-1};return(bioCoord);}; 
+  virtual Point_t GetGridCoordFromScreenPos(CPoint screenPos) {Point_t bioCoord{invalidCoord, invalidCoord}; return(bioCoord);};
   virtual void RefreshScene()   {0;};
   virtual void RefreshBiotop()  {0;};
   virtual void RefreshSceneIdleNoCPU()   {0;};

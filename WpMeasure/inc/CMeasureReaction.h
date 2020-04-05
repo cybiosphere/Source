@@ -85,7 +85,7 @@ protected:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type);
+	CMeasureReaction(CBasicEntity* pEntity, size_t reactionInd, int period, int id, MeasureReactionType_e type);
 	virtual ~CMeasureReaction();
 
 //---------------------------------------------------------------------------
@@ -100,8 +100,8 @@ public:
 //---------------------------------------------------------------------------
 public:
   static string GetMeasureReactionTypeStrName(MeasureReactionType_e type);
-  int GetSubTypeId();
-  int GetReactionIndex();
+  size_t GetSubTypeId();
+  size_t GetReactionIndex();
 };
 
 #endif // !defined(CMEASUREREACTION_INCLUDED_)

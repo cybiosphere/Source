@@ -80,7 +80,7 @@ protected:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CMeasureBiotopParam(CBiotop* pBiotop, int paramIndex, int period, int id);
+	CMeasureBiotopParam(CBiotop* pBiotop, size_t paramIndex, int period, int id);
 	virtual ~CMeasureBiotopParam();
 
 //---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  int GetSubTypeId();
+  size_t GetSubTypeId();
 
 };
 

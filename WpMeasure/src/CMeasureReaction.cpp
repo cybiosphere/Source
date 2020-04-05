@@ -50,7 +50,7 @@ const char* MeasureReactionTypeNameList[MEASURE_ACTION_NB_TYPE] =
 // Constructors / Destructors
 //===========================================================================
 
-CMeasureReaction::CMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type)
+CMeasureReaction::CMeasureReaction(CBasicEntity* pEntity, size_t reactionInd, int period, int id, MeasureReactionType_e type)
 :CMeasure(period, id, 0, 100.0, MEASURE_TYPE_REACTION)
 {
   m_paramIndex = reactionInd;
@@ -131,13 +131,13 @@ string CMeasureReaction::GetMeasureReactionTypeStrName(MeasureReactionType_e typ
   return(typeName);
 }
 
-int CMeasureReaction::GetSubTypeId()
+size_t CMeasureReaction::GetSubTypeId()
 {
   return(m_SubType);
 }
 
 
-int CMeasureReaction::GetReactionIndex()
+size_t CMeasureReaction::GetReactionIndex()
 {
   return(m_paramIndex);
 }

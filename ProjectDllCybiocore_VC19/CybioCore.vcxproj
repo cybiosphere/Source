@@ -327,6 +327,8 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H" />
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h" />
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h" />
     <ClInclude Include="Resource.h" />

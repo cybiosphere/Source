@@ -66,7 +66,7 @@ const char* BrainBehaviorTypeNameList[BRAIN_BEHAVIOR_NUMBER_TYPE] =
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CAnimal::CAnimal(string label, Point_t initCoord, int layer, CGenome* pGenome) 
+CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome)
 { 
   // Input values
   jumpToGridCoord(initCoord, layer);
@@ -83,33 +83,33 @@ CAnimal::CAnimal(string label, Point_t initCoord, int layer, CGenome* pGenome)
   m_HeadDirection = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_Hunger           = -1;
-  m_id_Thirst           = -1;
-  m_id_StomachFilling   = -1;
-  m_id_Libido           = -1;
-  m_id_Suffering        = -1;
-  m_id_Pleasure         = -1;
-  m_id_Tiredness        = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_FatWeight        = -1;
-  m_id_AttackFactor     = -1;
-  m_id_Curiosity        = -1;
-  m_id_Learning         = -1;
-  m_id_CurrentSpeed     = -1;
-  m_id_Fear             = -1;
-  m_id_Vigilance        = -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_Hunger           = invalidIndex;
+  m_id_Thirst           = invalidIndex;
+  m_id_StomachFilling   = invalidIndex;
+  m_id_Libido           = invalidIndex;
+  m_id_Suffering        = invalidIndex;
+  m_id_Pleasure         = invalidIndex;
+  m_id_Tiredness        = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_FatWeight        = invalidIndex;
+  m_id_AttackFactor     = invalidIndex;
+  m_id_Curiosity        = invalidIndex;
+  m_id_Learning         = invalidIndex;
+  m_id_CurrentSpeed     = invalidIndex;
+  m_id_Fear             = invalidIndex;
+  m_id_Vigilance        = invalidIndex;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
-  for (int i=0; i<TASTE_NUMBER_TYPE; i++)
+  for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
     m_tTasteLevel[i] = 0;
 
-  m_forbidenActionInd = -1;
+  m_forbidenActionInd = invalidIndex;
   m_forbidenActionCount = 0;
 }
 
@@ -128,7 +128,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), model.getLayer());
+  jumpToGridCoord(model.getGridCoord(), true,  model.getLayer());
   m_Generation		= model.m_Generation + 1;
   m_pGenome       = new CGenome(*model.m_pGenome);
   // reset
@@ -139,33 +139,33 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_HeadDirection = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_Hunger           = -1;
-  m_id_Thirst           = -1;
-  m_id_StomachFilling   = -1;
-  m_id_Libido           = -1;
-  m_id_Suffering        = -1;
-  m_id_Pleasure         = -1;
-  m_id_Tiredness        = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_FatWeight        = -1;
-  m_id_AttackFactor     = -1;
-  m_id_Curiosity        = -1;
-  m_id_Learning         = -1;
-  m_id_CurrentSpeed     = -1;
-  m_id_Fear             = -1;
-  m_id_Vigilance        = -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_Hunger           = invalidIndex;
+  m_id_Thirst           = invalidIndex;
+  m_id_StomachFilling   = invalidIndex;
+  m_id_Libido           = invalidIndex;
+  m_id_Suffering        = invalidIndex;
+  m_id_Pleasure         = invalidIndex;
+  m_id_Tiredness        = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_FatWeight        = invalidIndex;
+  m_id_AttackFactor     = invalidIndex;
+  m_id_Curiosity        = invalidIndex;
+  m_id_Learning         = invalidIndex;
+  m_id_CurrentSpeed     = invalidIndex;
+  m_id_Fear             = invalidIndex;
+  m_id_Vigilance        = invalidIndex;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
-  for (int i=0; i<TASTE_NUMBER_TYPE; i++)
+  for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
     m_tTasteLevel[i] = 0;
 
-  m_forbidenActionInd = -1;
+  m_forbidenActionInd = invalidIndex;
   m_forbidenActionCount = 0;
 }
 
@@ -184,7 +184,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(mother.getGridCoord(), mother.getLayer()); 
+  jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
   m_Generation		= mother.m_Generation + 1;
   m_pGenome       = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0); // Fred: default crossover rate 1%
   // reset
@@ -195,33 +195,33 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_HeadDirection = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_Hunger           = -1;
-  m_id_Thirst           = -1;
-  m_id_StomachFilling   = -1;
-  m_id_Libido           = -1;
-  m_id_Suffering        = -1;
-  m_id_Pleasure         = -1;
-  m_id_Tiredness        = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_FatWeight        = -1;
-  m_id_AttackFactor     = -1;
-  m_id_Curiosity        = -1;
-  m_id_Learning         = -1;
-  m_id_CurrentSpeed     = -1;
-  m_id_Fear             = -1;
-  m_id_Vigilance        = -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_Hunger           = invalidIndex;
+  m_id_Thirst           = invalidIndex;
+  m_id_StomachFilling   = invalidIndex;
+  m_id_Libido           = invalidIndex;
+  m_id_Suffering        = invalidIndex;
+  m_id_Pleasure         = invalidIndex;
+  m_id_Tiredness        = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_FatWeight        = invalidIndex;
+  m_id_AttackFactor     = invalidIndex;
+  m_id_Curiosity        = invalidIndex;
+  m_id_Learning         = invalidIndex;
+  m_id_CurrentSpeed     = invalidIndex;
+  m_id_Fear             = invalidIndex;
+  m_id_Vigilance        = invalidIndex;
 
   m_BusySecondCounter = 0;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
-  for (int i=0; i<TASTE_NUMBER_TYPE; i++)
+  for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
     m_tTasteLevel[i] = 0;
 
-  m_forbidenActionInd = -1;
+  m_forbidenActionInd = invalidIndex;
   m_forbidenActionCount = 0;
 }
 
@@ -275,7 +275,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -295,7 +295,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_AGE:
     {
-      if (m_id_Age != -1) delete(getParameter(m_id_Age)); // delete if already set
+      if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
       minVal  = 0.0;
       initVal = cybio_round(scaledVal2);
       maxVal  = cybio_round(scaledVal3);
@@ -306,7 +306,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_DECOMPOSITION:
     {
-      if (m_id_Decomposition != -1) delete(getParameter(m_id_Decomposition)); // delete if already set
+      if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
       minVal  = 0.0;
       initVal = 0.0;
       maxVal  = cybio_round(scaledVal3);
@@ -317,7 +317,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_REPRO_RATE:
     {
-      if (m_id_ReproductionRate != -1) delete(getParameter(m_id_ReproductionRate)); // delete if already set
+      if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -328,7 +328,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_HEALTH:
     {
-      if (m_id_Health != -1) delete(getParameter(m_id_Health)); // delete if already set
+      if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -339,7 +339,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
 /*  case GENE_PARAM_TEMPER_RANGE:
     {
-      if (m_id_TemperatureRange != -1) delete(getParameter(m_id_TemperatureRange)); // delete if already set
+      if (m_id_TemperatureRange != invalidIndex) delete(getParameter(m_id_TemperatureRange)); // delete if already set
       minVal  = scaledVal1 - 50.0;
       initVal = scaledVal2 - 50.0;
       maxVal  = scaledVal3 - 50.0;
@@ -350,7 +350,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }*/
   case GENE_PARAM_GROWTH_SPEED:
     {
-      if (m_id_GrowthSpeed != -1) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
+      if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 10000.0;
@@ -361,7 +361,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_FAT_WEIGHT:
     {
-      if (m_id_FatWeight != -1) delete(getParameter(m_id_FatWeight)); // delete if already set
+      if (m_id_FatWeight != invalidIndex) delete(getParameter(m_id_FatWeight)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2 + 0.1;
       maxVal  = scaledVal3 + 0.1;
@@ -372,7 +372,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_ATTACK_FACTOR:
     {
-      if (m_id_AttackFactor != -1) delete(getParameter(m_id_AttackFactor)); // delete if already set
+      if (m_id_AttackFactor != invalidIndex) delete(getParameter(m_id_AttackFactor)); // delete if already set
       minVal  = 0;
       initVal = scaledVal2;
       maxVal  = 100;
@@ -383,7 +383,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_SPEED:
     {
-      if (m_id_CurrentSpeed != -1) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
+      if (m_id_CurrentSpeed != invalidIndex) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
       minVal  = 0.0;
       initVal = 0,0;
       maxVal  = scaledVal3;
@@ -394,7 +394,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_CURIOSITY:
     {
-      if (m_id_Curiosity != -1) delete(getParameter(m_id_Curiosity)); // delete if already set
+      if (m_id_Curiosity != invalidIndex) delete(getParameter(m_id_Curiosity)); // delete if already set
       minVal  = 0;
       initVal = scaledVal2;
       maxVal  = 100;
@@ -405,7 +405,7 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     }    
   case GENE_PARAM_LEARNING:
     {
-      if (m_id_Learning != -1) delete(getParameter(m_id_Learning)); // delete if already set
+      if (m_id_Learning != invalidIndex) delete(getParameter(m_id_Learning)); // delete if already set
       minVal  = 0;
       initVal = scaledVal2;
       maxVal  = 100;
@@ -443,7 +443,7 @@ bool CAnimal::completeParamsWithDefault()
   // If not, use default value
 
   // CAnimal specific
-  if (m_id_Protection == -1)
+  if (m_id_Protection == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Protection factor",PARAM_PHYSIC,GENE_PARAM_PROTECTION);
     m_id_Protection       = addParameter(pParam);
@@ -453,101 +453,101 @@ bool CAnimal::completeParamsWithDefault()
   CBasicEntity::completeParamsWithDefault();
 
   // CAnimal specific
-  if (m_id_Age == -1)
+  if (m_id_Age == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Age",PARAM_DURATION,GENE_PARAM_AGE);
     m_id_Age              = addParameter(pParam);
   }
-  if (m_id_Decomposition == -1)
+  if (m_id_Decomposition == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,5,"Decomposition",PARAM_DURATION,GENE_PARAM_DECOMPOSITION);
     m_id_Decomposition    = addParameter(pParam);
   }
-  if (m_id_ReproductionRate == -1)
+  if (m_id_ReproductionRate == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Reproduction rate",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RATE);
     m_id_ReproductionRate = addParameter(pParam);
   } 
-  if (m_id_Health == -1)
+  if (m_id_Health == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,100,100,100,"Health rate",PARAM_FEELING,GENE_PARAM_HEALTH);
     m_id_Health = addParameter(pParam);
   } 
-  if (m_id_GrowthSpeed == -1)
+  if (m_id_GrowthSpeed == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,100,100,1000,"Growth speed rate",PARAM_PHYSIC,GENE_PARAM_GROWTH_SPEED);
     m_id_GrowthSpeed = addParameter(pParam);
   } 
-  if (m_id_Hunger == -1)
+  if (m_id_Hunger == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,20,0,100,"Hunger rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Hunger = addParameter(pParam);
   } 
-  if (m_id_Thirst == -1)
+  if (m_id_Thirst == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,20,0,100,"Thirst rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Thirst = addParameter(pParam);
   } 
-  if (m_id_StomachFilling == -1)
+  if (m_id_StomachFilling == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,20,0,100,"Stomach filling",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_StomachFilling = addParameter(pParam);
   } 
-  if (m_id_Libido == -1)
+  if (m_id_Libido == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Libido rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Libido = addParameter(pParam);
   } 
-  if (m_id_Suffering == -1)
+  if (m_id_Suffering == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Suffering rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Suffering = addParameter(pParam);
   }
-  if (m_id_Pleasure == -1)
+  if (m_id_Pleasure == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,50,50,100,"Pleasure rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Pleasure = addParameter(pParam);
   }
-  if (m_id_Tiredness == -1)
+  if (m_id_Tiredness == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Tiredness rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Tiredness = addParameter(pParam);
   }
-  if (m_id_CurrentSpeed == -1)
+  if (m_id_CurrentSpeed == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,10,200,"Speed",PARAM_PHYSIC,GENE_PARAM_SPEED);
     m_id_CurrentSpeed = addParameter(pParam);
   }
-  if (m_id_FatWeight == -1)
+  if (m_id_FatWeight == invalidIndex)
   {
     double fatWeight = getWeight()/10;
     double fatMax = getMaxWeight()*0.9; // fat is max 90 of total weight
     CGenericParam* pParam = new CGenericParam(0,fatWeight,fatWeight,fatMax,"Fat weight",PARAM_PHYSIC,GENE_PARAM_FAT_WEIGHT);
     m_id_FatWeight = addParameter(pParam);
   } 
-  if (m_id_AttackFactor == -1)
+  if (m_id_AttackFactor == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Attack factor",PARAM_PHYSIC,GENE_PARAM_ATTACK_FACTOR);
     m_id_AttackFactor = addParameter(pParam);
   } 
-  if (m_id_Curiosity == -1)
+  if (m_id_Curiosity == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Curiosity rate",PARAM_BEHAVIOR,GENE_PARAM_CURIOSITY);
     m_id_Curiosity = addParameter(pParam);
   }
-  if (m_id_Learning == -1)
+  if (m_id_Learning == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,100,100,100,"Learning rate",PARAM_BEHAVIOR,GENE_PARAM_LEARNING);
     m_id_Learning = addParameter(pParam);
   } 
 
-  if (m_id_Fear == -1)
+  if (m_id_Fear == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Fear rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
     m_id_Fear = addParameter(pParam);
   } 
 
-  if (m_id_Vigilance == -1)
+  if (m_id_Vigilance == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR, GENE_GENERIC_UNKNOWN);
     m_id_Vigilance = addParameter(pParam);
@@ -578,7 +578,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
@@ -677,7 +677,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config sensor
@@ -686,10 +686,10 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
 
   CSensor* pSensor = NULL;
   std::vector<double> tWeight;
-  int nbWeight = len/sizeof(WORD) - 4;
+  size_t nbWeight = len/sizeof(WORD) - 4;
   // Set Weight table
   tWeight.resize(nbWeight);
-  for (int i=0;i<nbWeight;i++)
+  for (size_t i = 0; i < nbWeight; i++)
   {
     tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
   }
@@ -1069,9 +1069,9 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
 //  
 // REMARKS:       
 //---------------------------------------------------------------------------
-int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
+size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
 {
-  int nbWeight = CBasicEntity::getExpectedBrainSensorWeightSize (pGen);
+  size_t nbWeight = CBasicEntity::getExpectedBrainSensorWeightSize (pGen);
 
   if ( nbWeight > 0)
   {
@@ -1089,7 +1089,7 @@ int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config sensor
@@ -1194,7 +1194,7 @@ int  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
     }
   }
   // Last verification
-  if (nbWeight<0)
+  if (nbWeight == invalidIndex)
     nbWeight = 0;
 
   // If resu is false, sensor is not valid for animaly, but it may be used by inherited class !
@@ -1229,7 +1229,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config reaction
@@ -1436,7 +1436,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -1500,7 +1500,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size() * sizeof(BYTE) / sizeof(WORD) - 1;
+  size_t len = rawData.size() * sizeof(BYTE) / sizeof(WORD) - 1;
   // Process Line Id
   GeneSubType_e subType = pGen->getGeneSubType();
   int lineId = cybio_round((double)pData[0] * getGeneScaleData1(subType));
@@ -1538,7 +1538,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   BYTE* pData = rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   DWORD scaledVal;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -1607,7 +1607,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {
     // not enought data to config param
@@ -1628,9 +1628,9 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   {
   case GENE_FEEL_WELFARE:
     {
-      int lenSensiTable = len / sizeof(WORD) - 2;
+      size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
-      for (int i=0; i<lenSensiTable; i++)
+      for (size_t i=0; i<lenSensiTable; i++)
         pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100;
 
       resu = m_pBrain->AddFeelingWelfareSensitivity(pSens,lenSensiTable,pSensiTable);
@@ -1641,9 +1641,9 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
     }
   case GENE_FEEL_FEAR:
     {
-      int lenSensiTable = len / sizeof(WORD) - 2;
+      size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
-      for (int i=0; i<lenSensiTable; i++)
+      for (size_t i=0; i<lenSensiTable; i++)
         pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100;
 
       resu = m_pFeelingFear->AddSensitivity(pSens,lenSensiTable,pSensiTable);
@@ -1687,7 +1687,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
 
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -1743,7 +1743,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
         return (false);
       }
 
-      int  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
+      size_t  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
       std::vector<int> bonusTable(bonusTableSize);
       for (int index=0; index<bonusTableSize; index++)
       {
@@ -1830,7 +1830,7 @@ string CAnimal::buildParameterString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -1924,7 +1924,7 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
@@ -1997,7 +1997,7 @@ string CAnimal::buildSensorString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
@@ -2173,7 +2173,7 @@ string CAnimal::buildReactionString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
@@ -2306,7 +2306,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
   // We are sure Gene is a brain size gene
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -2365,7 +2365,7 @@ string CAnimal::buildBrainInstinctString(CGene* pGen)
   // We are sure Gene is a brain size gene
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
@@ -2418,7 +2418,7 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
   // We are sure Gene is a caracteristic
   auto rawData = pGen->getData();
   BYTE* pData = rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<1)
   {
     return (caractStr);
@@ -2431,7 +2431,7 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
   {
   case GENE_BRAIN_BEHAVIOR:
     {
-      if ( (data1>-1) && (data1<BRAIN_BEHAVIOR_NUMBER_TYPE) )
+      if (data1 < BRAIN_BEHAVIOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += BrainBehaviorTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -2476,7 +2476,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {
     // not enought data to config param
@@ -2540,7 +2540,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
 
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -2645,14 +2645,14 @@ void CAnimal::nextSecond()
       ExecuteMoveBackwardAction(0,0,currentSpeed/4);
 
     // Taste
-    for (int i=0; i<TASTE_NUMBER_TYPE; i++)
+    for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
       m_tTasteLevel[i] = m_tTasteLevel[i]/2;
 
     bool resu;
     choiceIndType myChoice;
     ReactionIntensityType_e myIntensity;
     feedbackValType myFeedback;
-    int prevReactIndex = m_pBrain->GetCurrentReactionIndex();
+    size_t prevReactIndex = m_pBrain->GetCurrentReactionIndex();
 
     resu = m_pBrain->PollAllSensors();	
     if (resu && !isUserControlled())
@@ -2665,7 +2665,7 @@ void CAnimal::nextSecond()
       {
         m_pBrain->HistorizeInput();
         myChoice = (choiceIndType)m_pBrain->ComputeAndGetDecision(getCuriosityRate(), myIntensity);
-        if (myChoice>-1)
+        if (myChoice != invalidIndex)
         {
           m_pBrain->HistorizeDecision(myChoice);
           myFeedback = m_pBrain->ComputeFeedback(myChoice, myIntensity);
@@ -3249,7 +3249,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
       ExecuteMoveBackwardAction(0,0,currentSpeed/4);
 
     // Taste
-    for (int i=0; i<TASTE_NUMBER_TYPE; i++)
+    for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
       m_tTasteLevel[i] = m_tTasteLevel[i]/2;
 
     resu = m_pBrain->PollAllSensors();	
@@ -3261,7 +3261,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
       m_pBrain->NextSecond();   
 	    m_pBrain->HistorizeInput();
       autoChoice = (choiceIndType)m_pBrain->ComputeAndGetDecision(getCuriosityRate(), autoIntensity);
-      if (myChoice>-1)
+      if (myChoice != invalidIndex)
       {
         m_pBrain->HistorizeDecision(myChoice);
         myFeedback = m_pBrain->ComputeFeedback(myChoice, REACTION_INTENSITY_MEDIUM);  // FRED TBD: user define intensity
@@ -3324,7 +3324,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
 choiceIndType CAnimal::predictNextAction()
 {
   bool resu;
-  choiceIndType autoChoice = -1;
+  choiceIndType autoChoice = invalidIndex;
   ReactionIntensityType_e autoIntensity;
 
   if (isAlive())
@@ -3465,7 +3465,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
       stopCurrentSpeed();
 
       // Find hit entity
-      Point_t relPos = {1,0};
+      RelativePos_t relPos = {1,0};
       Point_t newCoord = getGridCoordRelative(relPos);
       CBasicEntity* pHitEntity = m_pBiotop->findEntity(newCoord,getLayer());
 
@@ -3600,7 +3600,7 @@ bool CAnimal::checkConsumeClass (ClassType_e eatenClass)
 bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, double failureFrustrationFactor)
 {
   double pleasureRate = 0;
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
   double eatenWeight = 0;
   double initialWeight = 0;
   ClassType_e eatenClass;
@@ -3720,7 +3720,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
 bool CAnimal::ExecuteDrinkAction(double successSatisfactionFactor, double failureFrustrationFactor)
 {
   double pleasureRate = 0;
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
 
   moveToGridEdgePos();
   Point_t newCoord = getGridCoordRelative(relPos);
@@ -3789,7 +3789,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
 
   // Jump before attack
   CBasicEntity::moveLinear(stepRange);
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
   double weightFactor;
   int attackScore,defenseScore, diffScore;
 
@@ -3969,21 +3969,21 @@ void CAnimal::turnHeadRight(void)
 //---------------------------------------------------------------------------
 void CAnimal::setForbidenActionInd(choiceIndType actionInd)
 {
-  if ((actionInd > -1) && (actionInd < m_pBrain->GetNumberReaction()))
+  if (actionInd < m_pBrain->GetNumberReaction())
   {
     m_forbidenActionInd = actionInd;
     m_forbidenActionCount = 0;
   }
   else
   {
-    m_forbidenActionInd = -1;
+    m_forbidenActionInd = invalidIndex;
     m_forbidenActionCount = 0;
   }
 }
 
 string CAnimal::getForbidenActionLabel()
 {
-  if (m_forbidenActionInd==-1)
+  if (m_forbidenActionInd == invalidIndex)
     return "None";
   else
     return m_pBrain->GetReactionByIndex(m_forbidenActionInd)->GetLabel();

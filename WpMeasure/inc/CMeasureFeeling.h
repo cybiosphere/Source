@@ -100,7 +100,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   static string GetMeasureFeelingTypeStrName(MeasureFeelingType_e type);
-  int GetSubTypeId();
+  size_t GetSubTypeId();
   CBasicEntity* GetpEntity();
 };
 

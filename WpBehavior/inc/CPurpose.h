@@ -100,7 +100,7 @@ private:
   int                   m_SecondCounter;
 
   CSensor*              m_pSensor;
-  int                   m_subCaptorIndex;
+  size_t                m_subCaptorIndex;
   int                   m_StartRateThreshold;  // purpose is launched when m_pSensor level reach this max rate
   int                   m_StopRateThreshold;   // purpose is stopped when m_pSensor level reach this max rate 
   PurposeTriggerType_e  m_TriggerType;
@@ -109,9 +109,9 @@ private:
   int                   m_Priority;            // Used to select active purpose (from 0:low to 5:max)
   bool                  m_bMemorizeSuccess;    // Used to specify that success geographic position can be memorized
 
-  int m_nbSensorBonus;
+  size_t m_nbSensorBonus;
   std::array<SensorBonus_t, SENSOR_TABLE_SIZE> m_tSensorBonus;
-  int m_nbReactionBonus;
+  size_t m_nbReactionBonus;
   std::array<ReactionBonus_t, REACTION_TABLE_SIZE> m_tReactionBonus;
 
 //===========================================================================
@@ -123,7 +123,7 @@ private:
 //---------------------------------------------------------------------------  
 public:
   CPurpose(string label, int minuteDuration, 
-           CSensor* pSens, int subCaptorIndex, 
+           CSensor* pSens, size_t subCaptorIndex, 
            int startRateThreshold, int stopRateThreshold, PurposeTriggerType_e type);
 
   virtual ~CPurpose();
@@ -148,7 +148,7 @@ public:
   string GetLabel(void);
   DWORD GetUniqueId();
   int GetPriority();
-  static DWORD ComputeUniqueId(DWORD triggerSensUid, int triggerSubCaptorIndex);
+  static DWORD ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorIndex);
   bool IsMemorizeSuccess();
 
 };// end CPurpose

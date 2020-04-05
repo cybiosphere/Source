@@ -239,7 +239,7 @@ bool CBrainView::SetBrain(CBrain* pBrain)
 
 void CBrainView::OnButtonExecAuto() 
 {
-  ExecuteActionAndGetAutoFeedback(-1);
+  ExecuteActionAndGetAutoFeedback(invalidIndex);
 }
 
 void CBrainView::OnChangeLearning() 
@@ -303,7 +303,7 @@ void CBrainView::ExecuteActionAndGetAutoFeedback(int actionIndex)
   m_FeelingCurrent.Format(LPCTSTR("%.1f"),curFeel);
   m_FeelingDif.Format(LPCTSTR("%.1f"),curFeel-prevFeel);
 
-  int curActionInd = m_pBrain->GetCurrentReactionIndex();
+  size_t curActionInd = m_pBrain->GetCurrentReactionIndex();
   m_LabelAction = m_pBrain->GetReactionByIndex(curActionInd)->GetLabel().c_str();
 
   bool resuMemorize = false;

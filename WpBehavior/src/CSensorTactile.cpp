@@ -91,12 +91,12 @@ const std::vector<sensorValType>& CSensorTactile::UpdateAndGetStimulationTable()
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
-  Point_t relPos = {1,0};
+  RelativePos_t relPos = {1,0};
   Point_t relCoord = pAnimal->getGridCoordRelative(relPos);
   CBasicEntity* pTouchedEntity;
 
   // Process level
-  for (int layer=0; layer<(m_relTopLayer-m_relBottomLayer+1); layer++)
+  for (size_t layer=0; layer<(m_relTopLayer-m_relBottomLayer+1); layer++)
   {
     pTouchedEntity = pAnimal->getBiotop()->findEntity(relCoord,pAnimal->getLayer()+m_relBottomLayer+layer);
     if (pTouchedEntity != NULL)
@@ -120,9 +120,9 @@ const std::vector<sensorValType>& CSensorTactile::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorTactile::GetSubCaptorLabel(int index)
+string CSensorTactile::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {

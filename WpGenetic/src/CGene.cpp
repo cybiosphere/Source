@@ -443,7 +443,7 @@ bool CGene::setAsReaction ( GeneSubType_e subType, int muteRate, long success, l
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainSize (GeneSubType_e subType, int muteRate, int brainSize)
+bool CGene::setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize)
 {
   m_RawData.clear();
 
@@ -454,7 +454,7 @@ bool CGene::setAsBrainSize (GeneSubType_e subType, int muteRate, int brainSize)
   m_RawData.resize(sizeof(WORD));
   WORD* pWordData = (WORD*)m_RawData.data();
   // Generic scale for brainSize is [1..100]
-  pWordData[0] = encodeLongOnWord(brainSize, 100);
+  pWordData[0] = encodeLongOnWord((long)brainSize, 100);
   return (true);
 }
 
@@ -469,7 +469,7 @@ bool CGene::setAsBrainSize (GeneSubType_e subType, int muteRate, int brainSize)
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainInstinctLine (int muteRate, int lineId, int nbColumn, WORD* pData)
+bool CGene::setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
 {
   m_RawData.clear();
 
@@ -480,9 +480,9 @@ bool CGene::setAsBrainInstinctLine (int muteRate, int lineId, int nbColumn, WORD
   m_RawData.resize((nbColumn + 1) * sizeof(WORD));
   WORD* pWordData = (WORD*)m_RawData.data();
   // Set 1st Word as lineId. Generic scale is [0..10000]
-  pWordData[0] = encodeLongOnWord(lineId, 10000);
+  pWordData[0] = encodeLongOnWord((long)lineId, 10000);
   // Set all other words as brain line data
-  for (int i=0;i<nbColumn;i++)
+  for (size_t i=0;i<nbColumn;i++)
   {
     pWordData[i+1] = pData[i];
   }
@@ -500,7 +500,7 @@ bool CGene::setAsBrainInstinctLine (int muteRate, int lineId, int nbColumn, WORD
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainIdentificationLine (int muteRate, int lineId, int nbColumn, WORD* pData)
+bool CGene::setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
 {
   m_RawData.clear();
 
@@ -511,9 +511,9 @@ bool CGene::setAsBrainIdentificationLine (int muteRate, int lineId, int nbColumn
   m_RawData.resize((nbColumn + 1) * sizeof(WORD));
   WORD* pWordData = (WORD*)m_RawData.data();
   // Set 1st Word as lineId. Generic scale is [0..10000]
-  pWordData[0] = encodeLongOnWord(lineId, 10000);
+  pWordData[0] = encodeLongOnWord((long)lineId, 10000);
   // Set all other words as brain line data
-  for (int i=0;i<nbColumn;i++)
+  for (size_t i=0;i<nbColumn;i++)
   {
     pWordData[i+1] = pData[i];
   }
@@ -711,7 +711,7 @@ string CGene::buildStringDataFromGene()
                   m_RawData.size()+2, // include mute type and mute rate
                   m_MuteType,m_MuteRate);
   rawData += tempStr;
-  for (int j=0; j<m_RawData.size(); j++)
+  for (size_t j=0; j<m_RawData.size(); j++)
   {
     tempStr = FormatString("%02X",m_RawData[j]);
     rawData += tempStr;
@@ -782,7 +782,7 @@ int CGene::getDominanceFactor(void)
   int resu=0;
   
   // Each BYTE has same weight
-  for (int i=0;i<m_RawData.size();i++)
+  for (size_t i=0;i<m_RawData.size();i++)
   {
     resu = resu + m_RawData[i];
   }
@@ -812,7 +812,7 @@ bool CGene::tryMutation()
       {
         // Do mutation randomly. 
         // Effect efficiency depends of the weight of the bit muted.
-        int dataByteId = getRandInt(m_RawData.size()-1);
+        size_t dataByteId = getRandInt(m_RawData.size()-1);
         int dataBitId = getRandInt(7);
         m_RawData[dataByteId] ^= (1<<dataBitId);
         resu = true;
@@ -821,7 +821,7 @@ bool CGene::tryMutation()
     case GENE_MUTE_INCREMENTAL_1:
       { 
         // Select 1 byte and increment or decrement it by 1.
-        int dataByteId = getRandInt(m_RawData.size()-1);
+        size_t dataByteId = getRandInt(m_RawData.size()-1);
         int addVal = getRandInt(2) - 1;
         if ( ((addVal<0)&&(m_RawData[dataByteId]>0)) || ((addVal>0)&&(m_RawData[dataByteId]<0xFF)) )
         {
@@ -837,7 +837,7 @@ bool CGene::tryMutation()
     case GENE_MUTE_INCREMENTAL_2:
       {
         // Select 1 word and increment or decrement it by 1.
-        int dataByteId = getRandInt(m_RawData.size()-1)/2;
+        size_t dataByteId = getRandInt(m_RawData.size()-1)/2;
         int addVal = (getRandInt(2) - 1) * 66; // 66 in order to increment of 1 per 1000
         WORD* pWordData = (WORD*)m_RawData.data();
         if ( ( (addVal<0)&&(pWordData[dataByteId]>-addVal) ) || ( (addVal>0)&&(pWordData[dataByteId]<(0xFFFF-addVal)) ) )
@@ -891,7 +891,7 @@ std::vector<BYTE>& CGene::getData()
   return (m_RawData);
 }
 
-int CGene::getDataLen()
+size_t CGene::getDataLen()
 {
   return (m_RawData.size());
 }

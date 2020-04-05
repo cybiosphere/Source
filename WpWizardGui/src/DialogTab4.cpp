@@ -390,7 +390,7 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
   CDialogTab1* pTabFemale = pView->GetTabCaractFemale();
   m_pEntity = CBiotop::createEntity(pTabFemale->m_EditBoxSpecieName.GetBuffer(0), m_pGenome);   
   Point_t coor = {0,0};
-  m_pEntity->jumpToGridCoord(coor,pTabFemale->m_Layer);
+  m_pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
   // Set instinct in brain but not yet in genome (TBC)
   if (pView->GetpEntity()->getClass() >= CLASS_ANIMAL_FIRST)
@@ -780,8 +780,11 @@ void CDialogTab4::AddGenesForSensors()
   if (pAnimal == NULL)
     return;
 
+  if ((numPrey == 0) && (numPred == 0))
+    return;
+
   Point_t coor = {0,0};
-  pAnimal->jumpToGridCoord(coor,pTabFemale->m_Layer);
+  pAnimal->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
   CWizardSensor wizard(pAnimal, numPrey, pPreyList, numPred, pPredList);
 
@@ -1096,7 +1099,7 @@ void CDialogTab4::AddGenesForPurposes()
   CGenome* pTmpGenome = new CGenome(*m_pGenome);
   CBasicEntity* pEntity = CBiotop::createEntity("toto", pTmpGenome);   
   Point_t coor = {0,0};
-  pEntity->jumpToGridCoord(coor,pTabFemale->m_Layer);
+  pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
   CWizardPurpose purpWiz((CAnimal*)pEntity);
 
@@ -1181,19 +1184,22 @@ void CDialogTab4::AddGenesForPurposes()
                                   pPreyList[i]->getTexture(), pPreyList[i]->getMainPhyAttribute(), false);
   }
 
-  bonusSensor = 30 + getRandInt(m_Variation)/2;
-  purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[0]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
-  if (pTabFemale->m_ComboConsum.GetCurSel() >= CONSUM_OMNI)
-    purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[0]->getLayer(), IDENTIFICATION_PREY, true, true, true);
-  // decrease interest for adult food when baby
-  purpWiz.AddPurposeVisualIdentifyBonus("mummy", 2, pPreyList[0]->getLayer(), IDENTIFICATION_FOOD, false, false, false); 
-  if (pPreyList[1]->getLayer() != pPreyList[0]->getLayer())
+  if (numPrey > 0)
   {
-    purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[1]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
+    bonusSensor = 30 + getRandInt(m_Variation) / 2;
+    purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[0]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
     if (pTabFemale->m_ComboConsum.GetCurSel() >= CONSUM_OMNI)
-      purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[1]->getLayer(), IDENTIFICATION_PREY, true, true, true);
+      purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[0]->getLayer(), IDENTIFICATION_PREY, true, true, true);
     // decrease interest for adult food when baby
-    purpWiz.AddPurposeVisualIdentifyBonus("mummy", 2, pPreyList[1]->getLayer(), IDENTIFICATION_FOOD, false, false, false); 
+    purpWiz.AddPurposeVisualIdentifyBonus("mummy", 2, pPreyList[0]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
+    if ((numPrey > 1) && (pPreyList[1]->getLayer() != pPreyList[0]->getLayer()))
+    {
+      purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[1]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
+      if (pTabFemale->m_ComboConsum.GetCurSel() >= CONSUM_OMNI)
+        purpWiz.AddPurposeVisualIdentifyBonus("feed", bonusSensor, pPreyList[1]->getLayer(), IDENTIFICATION_PREY, true, true, true);
+      // decrease interest for adult food when baby
+      purpWiz.AddPurposeVisualIdentifyBonus("mummy", 2, pPreyList[1]->getLayer(), IDENTIFICATION_FOOD, false, false, false);
+    }
   }
 
   bonusReaction = 1008 + getRandInt(m_Variation)/10;
@@ -1601,7 +1607,7 @@ void CDialogTab4::OnButtonSaveEntity()
       coord.y = 10;
       // Prepare temporary files to be used by script
       m_pEntity->setLabel("newEntity");
-      m_pEntity->jumpToGridCoord(coord, pTabFemale->m_Layer);
+      m_pEntity->jumpToGridCoord(coord, true, pTabFemale->m_Layer);
 
       tempFileName = learningFolderName + "\\newEntity.xml";
       remove(tempFileName.GetBuffer(0));
@@ -1617,7 +1623,7 @@ void CDialogTab4::OnButtonSaveEntity()
         ((CAnimMammal*)pMother)->deliverAllBabies();
       coord.x = 20;
       coord.y = 20;
-      pMother->jumpToGridCoord(coord, pTabFemale->m_Layer);
+      pMother->jumpToGridCoord(coord, true, pTabFemale->m_Layer);
 
       tempFileName = learningFolderName + "\\mother.xml";   
       remove(tempFileName.GetBuffer(0));

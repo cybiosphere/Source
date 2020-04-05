@@ -51,6 +51,7 @@ distribution.
 #include <array>
 #include <cassert>
 #include <fstream>
+#include <limits>
 #include <stdint.h>
 
 using namespace std ;
@@ -105,9 +106,18 @@ typedef struct
 
 typedef struct 
 {
+  size_t x;
+  size_t y;
+} Point_t;
+
+constexpr size_t invalidCoord{ std::string::npos };
+constexpr size_t invalidIndex{ std::string::npos };
+
+typedef struct
+{
   int x;
   int y;
-} Point_t;
+} RelativePos_t;
 
 typedef DWORD   COLORREF;
 typedef unsigned char UCHAR;
@@ -116,14 +126,17 @@ typedef unsigned long  timeCountType;
 template<typename A, typename B> inline A cybio_min(A a, B b) { return a < b ? a : b; }
 template<typename A, typename B> inline A cybio_max(A a, B b) { return a > b ? a : b; }
 int  DLL_CYBIOCORE_API cybio_round(double val);
-int  DLL_CYBIOCORE_API getRandInt (int max); // Return random number in [0..max]
+template <class type> type getRandInt(type max)
+{
+  return ((int)((max + 1.0) * rand() / (RAND_MAX + 1.0)));
+};
 bool DLL_CYBIOCORE_API testChance (double luckRate);
 bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2);
 
 timeCountType DLL_CYBIOCORE_API convertBioTimeToCount(BiotopTime_t bioTime);
 BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count);
 
-int  DLL_CYBIOCORE_API getStringSectionFromFile(
+size_t DLL_CYBIOCORE_API getStringSectionFromFile(
                         string lpAppName,
                         string lpKeyName,
                         string lpDefault,
@@ -132,7 +145,7 @@ int  DLL_CYBIOCORE_API getStringSectionFromFile(
                         string fileNameWithPath
                         );
 
-int  DLL_CYBIOCORE_API getStringSection(
+size_t DLL_CYBIOCORE_API getStringSection(
                         string lpAppName,
                         string lpKeyName,
                         string lpDefault,

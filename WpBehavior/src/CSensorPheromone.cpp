@@ -90,16 +90,15 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
 {
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
-  FoundEntity_t* pFoundIds = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CBasicEntity* pCurEntity = NULL;
 
   // Process level
-  Point_t relPos = {1,0};
-  int nbIds = pAnimal->getBiotop()->findEntities(pFoundIds ,pAnimal->getGridCoordRelative(relPos),m_nRange);
-  for (int ind=0;ind<nbIds;ind++)
+  RelativePos_t relPos = {1,0};
+  const std::vector<FoundEntity_t>& tFoundIds = pAnimal->getBiotop()->findEntities(pAnimal->getGridCoordRelative(relPos), m_nRange);
+  for (size_t ind = 0; ind < tFoundIds.size(); ind++)
   {
-    pCurEntity = pFoundIds[ind].pEntity;
+    pCurEntity = tFoundIds[ind].pEntity;
     if ( (pCurEntity!=NULL) && (pCurEntity!=pAnimal) ) // Do not take into account my own pheromon
     {
       for (int pheromone=0; pheromone<NUMBER_PHEROMONES; pheromone++)
@@ -107,7 +106,7 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
         if ( (pCurEntity->getPheromone() == (PHEROMONE_FIRST_TYPE+pheromone))
           && (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true) )
         {
-          m_tStimulationValues[pheromone] += MAX_SENSOR_VAL/(pFoundIds[ind].distance + 1)/(pFoundIds[ind].distance + 1); // 1/R2
+          m_tStimulationValues[pheromone] += MAX_SENSOR_VAL/(tFoundIds[ind].distance + 1)/(tFoundIds[ind].distance + 1); // 1/R2
         }
       }
     }
@@ -129,14 +128,14 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorPheromone::GetSubCaptorLabel(int index)
+string CSensorPheromone::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {
     PheromoneType_e pheromoneId = PHEROMONE_FIRST_TYPE;
-    for (int i=0; (i<index)&&(i<PHEROMONE_NUMBER_TYPE); i++)
+    for (size_t i=0; (i<index)&&(i<PHEROMONE_NUMBER_TYPE); i++)
       pheromoneId = (PheromoneType_e)(pheromoneId+1);
     return (CBasicEntity::getPheromoneStrName(pheromoneId) );
   }
@@ -154,7 +153,7 @@ string CSensorPheromone::GetSubCaptorLabel(int index)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CSensorPheromone::IsSexSpecific(int captorIndex)
+bool CSensorPheromone::IsSexSpecific(size_t captorIndex)
 {
   return true;
 }

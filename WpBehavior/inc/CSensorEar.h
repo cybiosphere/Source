@@ -91,8 +91,8 @@ public:
 //---------------------------------------------------------------------------
 public:
   const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  string GetSubCaptorLabel(int index);
-  bool IsSexSpecific(int captorIndex);
+  string GetSubCaptorLabel(size_t index);
+  bool IsSexSpecific(size_t captorIndex);
 
 //---------------------------------------------------------------------------
 // other functions

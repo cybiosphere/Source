@@ -342,12 +342,20 @@
     <ClInclude Include="..\WpTinyXml\inc\tinyxml.h">
       <Filter>WpTinyXml\IncTinyXml</Filter>
     </ClInclude>
-    <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
     <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h">
       <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -594,7 +602,9 @@
     <ClCompile Include="..\WpBehavior\src\CSensorViewIdentifyFar.cpp">
       <Filter>WpBehavior\SrcBehavior</Filter>
     </ClCompile>
-    <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp" />
+    <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp">
+      <Filter>WpEnvironment\SrcEnvironment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

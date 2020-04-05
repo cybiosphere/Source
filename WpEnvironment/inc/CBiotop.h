@@ -200,21 +200,21 @@ class DLL_CYBIOCORE_API CBiotop
 // internal proprieties:
 //---------------------------------------------------------------------------
 private:
-  string          m_Label;
-  Point_t         m_Dimension;
-  int             m_nbLayer;
-  entityIdType    m_IdLastEntity;
-  int             m_IndexLastAnimal;
-  BiotopTime_t    m_BioTime;
-  CCyclicParam*   m_pFertilityRate;     // 0 to 100 
-  CCyclicParam*   m_pSunlightRate;      // 0 to 100  
-  CGenericParam*  m_pRadioactivity;     // 0 to 100
-  CCyclicParam*   m_pTemperature;       // -50 to 50
+  string         m_Label;
+  Point_t        m_Dimension;
+  size_t         m_nbLayer;
+  entityIdType   m_IdLastEntity;
+  int            m_IndexLastAnimal;
+  BiotopTime_t   m_BioTime;
+  CCyclicParam*  m_pFertilityRate;     // 0 to 100 
+  CCyclicParam*  m_pSunlightRate;      // 0 to 100  
+  CGenericParam* m_pRadioactivity;     // 0 to 100
+  CCyclicParam*  m_pTemperature;       // -50 to 50
 
   BiotopCube_t***  m_tBioGrid;    // Contain the info for all volumes in biotop
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
 
-  FoundEntity_t*  m_tFoundIds;   // temporary structure to store found entities 
+  std::vector<FoundEntity_t> m_tFoundIds;   // structure to store temporarily found entities 
 
   //        3   2   1    
   //          \ | /          
@@ -257,12 +257,12 @@ public:
 // Entities management
 //---------------------------------------------------------------------------
 public:
-  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, int newLayer=-2); 
-  bool         addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, int newLayer=-2); 
-  entityIdType createAndAddEntity(string name, Point_t coord, int layer, CGenome* pGenome);
+  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer= invalidCoord);
+  entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);
   entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord);
-  entityIdType createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, int cloneLayer = -2, string cloneName = "");
+  entityIdType createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName = "");
 
   bool resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome);
   bool replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity);
@@ -270,16 +270,16 @@ public:
   void displayEntities(void);
   void setDefaultEntitiesForTest(void);
 
-  int  deleteEntity(entityIdType idEntity, bool displayLog = true);
+  size_t deleteEntity(entityIdType idEntity, bool displayLog = true);
   void deleteAllEntities(void);
   void deleteAllMeasures(void);
   void deleteAllParameters(void);
 
-  int getNbOfEntities(void);
-  int getNbOfAnimals(void); 
-  int getNbOfVegetals(void); 
-  int getNbOfMinerals(void);
-  int getNbOfSpecieEntities(string& SpecieName);
+  size_t getNbOfEntities(void);
+  size_t getNbOfAnimals(void);
+  size_t getNbOfVegetals(void);
+  size_t getNbOfMinerals(void);
+  size_t getNbOfSpecieEntities(string& SpecieName);
 
 public:
   static CBasicEntity* createEntity(string name, CGenome* pGenome);
@@ -292,23 +292,16 @@ public:
 //---------------------------------------------------------------------------
 public:
   CBasicEntity* getEntityById(entityIdType idEntity);
-  CBasicEntity* getEntityByIndex(int index);
+  CBasicEntity* getEntityByIndex(size_t index);
   CBasicEntity* getEntityByName(string& entityName);
-  int           getEntityTableIndex(CBasicEntity* pEntity);
-  CBasicEntity* findEntity(Point_t searchCoord, int Layer);
-  int findEntities(FoundEntity_t*& pFoundIds, 
-                   Point_t startCoord, int distance,
-                   bool includeWater = false);
-  int findEntities(FoundEntity_t*& pFoundIds, 
-                   Point_t startCoord, UCHAR sectorBmp, 
-                   int distance, int layer,
-                   bool includeWater = false);
-  int findFarEntities(FoundEntity_t*& pFoundIds,
-                      Point_t startCoord, UCHAR sectorBmp, 
-                      int rangeMin, int rangeMax);
+  size_t        getEntityTableIndex(CBasicEntity* pEntity);
+  CBasicEntity* findEntity(Point_t searchCoord, size_t Layer);
+  const std::vector<FoundEntity_t>& findEntities(Point_t startCoord, int distance, bool includeWater = false);
+  const std::vector<FoundEntity_t>& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
+  const std::vector<FoundEntity_t>& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
-  bool isCoordValidAndFree(Point_t coord, int layer);
-  inline bool isCoordValid(Point_t coord, int layer);
+  bool isCoordValidAndFree(Point_t coord, size_t layer);
+  inline bool isCoordValid(Point_t coord, size_t layer);
 
   feedbackValType forceEntityAction(entityIdType idEntity,choiceIndType myChoice);
   choiceIndType predictEntityAction(entityIdType idEntity);
@@ -335,7 +328,7 @@ public:
   int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
 
 private:
-  void buildGrid(int dimX, int dimY, int dimZ);
+  void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);
   void updateGridAllEntities(void);
 
@@ -349,8 +342,8 @@ public:
    bool      addMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type);
    bool      addMeasurePopulation(int period, int id, MeasurePopulationType_e type, int maxVal, string SpecieName = "");
    CMeasure* getMeasureById(int id);
-   CMeasure* getMeasureByIndex(int index);
-   int       getNbOfMeasures(void);
+   CMeasure* getMeasureByIndex(size_t index);
+   size_t    getNbOfMeasures(void);
    int       getUnusedMeasureId(int maxMeasureId);
    void      replaceMeasure(int id, CMeasure* pMeasure);
    bool      checkMeasureEvents();
@@ -361,8 +354,8 @@ public:
 //---------------------------------------------------------------------------
 public:
    bool          addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity);
-   int           getNbOfBiotopEvents(void);
-   BiotopEvent_t getBiotopEvent(unsigned int index);
+   size_t        getNbOfBiotopEvents(void);
+   BiotopEvent_t getBiotopEvent(size_t index);
    bool          resetBiotopEvents();
 
 //---------------------------------------------------------------------------
@@ -380,8 +373,8 @@ public:
 // Specific behaviors
 //---------------------------------------------------------------------------
 public:
-  bool addEntitySpawner(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
-  bool addEntitySpawner(int index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+  bool addEntitySpawner(size_t index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+  bool addEntitySpawner(size_t index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
   void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
 
 //---------------------------------------------------------------------------
@@ -400,15 +393,15 @@ public:
   double getFertility(Point_t coord);
   void   setFertilityRate(int fertility);
   double getRadioactivityRate(); 
-  double getTemperature(Point_t coord, int layer); 
+  double getTemperature(Point_t coord, size_t layer);
   double getSunlight(); 
-  LayerType_e getLayerType(Point_t coord, int layer);
-  int getNbLayer(void);
+  LayerType_e getLayerType(Point_t coord, size_t layer);
+  size_t getNbLayer(void);
   CGenericParam* getParamFertility();
   CGenericParam* getParamSunlight();
   CGenericParam* getParamRadioactivity(); 
   CGenericParam* getParamTemperature(); 
-  CGenericParam* getParameter(int id);
+  CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string& label);
   double getOdorTrace(Point_t coord, OdorType_e odor);
   bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
@@ -421,7 +414,7 @@ public:
   int  getWindStrenght(); 
   void setWindStrenght(int strenght);
   BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index);
-  int getNumberOfRandomEntitiyGeneration();
+  size_t getNumberOfRandomEntitiyGeneration();
   void SetColorizeSearchMode(bool bColorizeSearch);
 
 }; // end CBiotop

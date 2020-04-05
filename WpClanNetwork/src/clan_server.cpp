@@ -133,7 +133,7 @@ void Server::exec()
 
     // Run biotop every sec
     //
-    timeCount += round(10.0 * m_biotopSpeed);
+    timeCount += (int)round(10.0 * m_biotopSpeed);
     curTick = std::chrono::system_clock::now();
     std::chrono::milliseconds elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(curTick - lastRunTick);
 
@@ -201,7 +201,7 @@ bool Server::process_cmd_line(const std::string input_cmd_string)
       // Var1 is used to set speed
       if (var1>=0)
       {
-        m_biotopSpeed = var1;
+        m_biotopSpeed = (float)var1;
         log_event("User cmd", "Biotop speed set to %1", var1);
       }
     }

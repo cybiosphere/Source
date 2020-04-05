@@ -110,7 +110,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   static string GetMeasurePopulationTypeStrName(MeasurePopulationType_e type);
-  int GetSubTypeId();
+  size_t GetSubTypeId();
   string GetSpecieName();
 
 };

@@ -127,7 +127,7 @@ protected:
   void ResetAllSprites();
 
   int LoadData(void);
-  void calculateFramesPerSec();
+  //void calculateFramesPerSec();
 
   void ConvertCoordBiotopGridToMap (int cbx,int cby, int &cmx, int &cmy);
   void ConvertCoordMapToBiotopGrid (int cmx,int cmy, int &cbx, int &cby);

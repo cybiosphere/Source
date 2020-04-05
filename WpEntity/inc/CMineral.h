@@ -61,7 +61,7 @@ class DLL_CYBIOCORE_API CMineral : public CBasicEntity
 // Constructors / Destructors
 //---------------------------------------------------------------------------  
 public:
-  CMineral(string label, Point_t initCoord, int layer, CGenome* pPseudoGenome);
+  CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseudoGenome);
   CMineral(string label, CMineral& model);   
 };// end CMineral
 

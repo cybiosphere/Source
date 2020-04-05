@@ -56,14 +56,14 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetSpermatophyta::CVegetSpermatophyta(string label, Point_t initCoord, int layer, CGenome* pGenome):
+CVegetSpermatophyta::CVegetSpermatophyta(string label, Point_t initCoord, size_t layer, CGenome* pGenome):
 CVegetable(label, initCoord, layer, pGenome)
 {
   // Default values          
   m_Status      = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = -1; 
+  m_id_PollenRange      = invalidIndex;; 
 }
 
 //---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ CVegetable(label, model)
   m_Status      = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = -1; 
+  m_id_PollenRange      = invalidIndex;; 
 
 }
 
@@ -106,7 +106,7 @@ CVegetable(label, mother, father)
   m_Status      = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = -1; 
+  m_id_PollenRange      = invalidIndex;; 
 
 }
   
@@ -142,7 +142,7 @@ bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -162,7 +162,7 @@ bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_POLLEN_RANGE:
     {
-      if (m_id_PollenRange != -1) delete(getParameter(m_id_PollenRange)); // delete if already set
+      if (m_id_PollenRange != invalidIndex) delete(getParameter(m_id_PollenRange)); // delete if already set
       minVal  = 0;
       initVal = scaledVal2;
       maxVal  = 100;
@@ -203,7 +203,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
   CVegetable::completeParamsWithDefault();
 
   // CVegetable specific
-  if (m_id_PollenRange == -1)
+  if (m_id_PollenRange == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,2,2,100,"Pollen Range",PARAM_REPRODUCTION);
     m_id_PollenRange      = addParameter(pParam);
@@ -244,7 +244,7 @@ string CVegetSpermatophyta::buildParameterString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -315,18 +315,17 @@ void CVegetSpermatophyta::nextHour()
     {
       if ((getTypeOfReproduction() == REPRODUCT_SEXUAL) && (getSex() == SEX_FEMALE))
       {
-        FoundEntity_t* pFoundIds = NULL;
         CBasicEntity *pFoundEntity = NULL;
-        int nbIds = getBiotop()->findEntities(pFoundIds ,getGridCoord(),(int)getReproductionRange());
-        for (int i=0;i<nbIds;i++)
+        const std::vector<FoundEntity_t>& tFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
+        for (size_t i = 0; i < tFoundIds.size(); i++)
         {
-          pFoundEntity = pFoundIds[i].pEntity;
+          pFoundEntity = tFoundIds[i].pEntity;
           ASSERT (pFoundEntity!=NULL);
           if ( (m_pGenome->checkSpecieCompatibility(pFoundEntity->getGenome()) == true) 
              &&(pFoundEntity->getSex() == SEX_MALE) )
           {
             // TBD: Select 1 random compatible male among different parters
-            reproductWith((CVegetSpermatophyta*)pFoundIds[i].pEntity);
+            reproductWith((CVegetSpermatophyta*)tFoundIds[i].pEntity);
             break;
           }
         }
@@ -371,9 +370,9 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord);
+  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, false);
 
-  if (resuId == -1)
+  if (resuId == ENTITY_ID_INVALID)
   {
     delete pChildEntity;
   }
@@ -411,9 +410,9 @@ bool CVegetSpermatophyta::autoClone()
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord);
+  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, false);
 
-  if (resuId == -1)
+  if (resuId == ENTITY_ID_INVALID)
   {
     delete pChildEntity;
   }

@@ -52,7 +52,7 @@ class DLL_CYBIOCORE_API CPairOfChromosome
   // constructors
 
 public:
-  CPairOfChromosome(int number);
+  CPairOfChromosome(size_t number);
   CPairOfChromosome(CPairOfChromosome& model);
   CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosome& father, double crossoverRate);
   virtual ~CPairOfChromosome();
@@ -61,7 +61,7 @@ public:
   // attributes
 
 private:
-  int m_IdNumber;
+  size_t m_IdNumber;
   CChromosome* m_pPaterChromosome;
   CChromosome* m_pMaterChromosome;
 
@@ -72,8 +72,8 @@ public:
   CChromosome* getPaterChromosome ();
   CChromosome* getMaterChromosome ();
 
-  int getNumAllele ();
-  CGene* getDominantAllele (int index);
+  size_t getNumAllele ();
+  CGene* getDominantAllele (size_t index);
   bool tryMutation(int rate);
 
   bool setAsSexualMale(void);
@@ -83,7 +83,7 @@ public:
   bool getCrossedChromosomeStr(CPairOfChromosome& pPair, string& crossedStr);
 
   ChromosomeType_e getSex(void);
-  int getIdNumber(void);
+  size_t getIdNumber(void);
 
 private:
 

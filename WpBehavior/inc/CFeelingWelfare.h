@@ -99,13 +99,13 @@ public:
 //---------------------------------------------------------------------------
 public:
   double ComputeAndGetFeelingWelfare();
-  double GetSensorFeelingImpact(int index, std::string &infoStr);
+  double GetSensorFeelingImpact(size_t index, std::string &infoStr);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  bool AddSensitivity(CSensor* pSens, int tableMaskSize, double* pTableMask);
+  bool AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* pTableMask);
 
   double GetCurFeelingWelfare();
 

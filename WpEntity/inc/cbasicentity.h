@@ -282,8 +282,8 @@ private:
   //        /______/ 0   Under Ground/Water
   //         m_Layer
 
-  int m_Layer;          // Layer in the biotop
-  int m_PrevLayer;	    // Previous layer in the biotop  
+  size_t m_Layer;     // Layer in the biotop
+  size_t m_PrevLayer;	// Previous layer in the biotop  
 
   //                  
   // m_StepCoord.y m_GridCoord.y ^
@@ -345,18 +345,18 @@ protected:
   std::vector<CGenericParam*> m_tParam;
 
   // Parameters Id
-  int m_id_Weight;
-  int m_id_Toxicity;
-  int m_id_Protection;
-  int m_id_Camouflage;
-  int m_id_Noise;
+  size_t m_id_Weight;
+  size_t m_id_Toxicity;
+  size_t m_id_Protection;
+  size_t m_id_Camouflage;
+  size_t m_id_Noise;
 
 //---------------------------------------------------------------------------
 // Life Stages
 //---------------------------------------------------------------------------
 private:
   std::vector<CLifeStage*> m_tLifeStage;
-  int m_indCurrentLifeStage;
+  size_t m_indCurrentLifeStage;
 
 //---------------------------------------------------------------------------
 // Gestation childs
@@ -423,7 +423,7 @@ public:
   static double getGeneScaleData3 (GeneSubType_e subType);
   static double getGeneScaleData4 (GeneSubType_e subType);
 
-  virtual int  getExpectedBrainSensorWeightSize (CGene* pGen);
+  virtual size_t getExpectedBrainSensorWeightSize (CGene* pGen);
 
 protected:
   virtual string buildCaracterString(CGene* pGen);
@@ -459,10 +459,10 @@ public:
 protected:
   int addParameter(CGenericParam* pParam);
 public:
-  unsigned int getNumParameter();
-  CGenericParam* getParameter(unsigned int id);
+  size_t getNumParameter();
+  CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string paramName);
-  int getParamIdByName(string paramName);
+  size_t getParamIdByName(string paramName);
 
 private:
   void deleteAllParameters();
@@ -500,12 +500,12 @@ public:
 
   virtual void autoKill();
   virtual bool moveLinear(int nbSteps);
-  virtual bool turnRight(unsigned int nDegree);
-  virtual bool turnLeft(unsigned int nDegree);
+  virtual bool turnRight(size_t nDegree);
+  virtual bool turnLeft(size_t nDegree);
   virtual void doNothing();
 
-  bool jumpToGridCoord(Point_t newGridCoord, int newLayer=-2);
-  bool jumpToStepCoord(Point_t newStepCoord, int newLayer=-2);
+  bool jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord);
   bool moveToGridEdgePos();
   bool moveToGridCenterPos();
   bool turnToCenterDir();
@@ -548,11 +548,11 @@ public:
   Point_t         getPrevGridCoord();
   Point_t         getPrevStepCoord();
   Point_t         getGuiGridCoord();
-  Point_t         getGridCoordRelative(Point_t relativeCoord);
+  Point_t         getGridCoordRelative(const RelativePos_t& relativeCoord);
   Point_t         getStepCoord();
-  Point_t         getStepCoordRelative(Point_t relativeCoord);
-  int             getLayer();
-  int             getPrevLayer();
+  Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
+  size_t          getLayer();
+  size_t          getPrevLayer();
   int             getDirection();
   void            setDirection(int direction);
   int             getStepDirection();
@@ -606,8 +606,8 @@ public:
   ConsumeType_e   getConsumeClass();
   virtual ClassType_e getClass();
   CLifeStage*     getCurrentLifeStage();
-  CLifeStage*     getLifeStage(int index);
-  unsigned int    getNbLifeStages();
+  CLifeStage*     getLifeStage(size_t index);
+  size_t          getNbLifeStages();
   void            setImmortal(bool isImmortal);
   bool            isImmortal();
   StatusType_e    getStatus();
@@ -633,14 +633,15 @@ public:
   static string  getFormStrName(FormType_e type);
   static string  getTextureStrName(TextureType_e type);
   static string  getPhyAttributeStrName(PhyAttributeType_e type);
-  static string  getRelativePosStrName(int index);
-  static string  getAbsolutePosStrName(int index);
+  static string  getRelativePosStrName(size_t index);
+  static string  getAbsolutePosStrName(size_t index);
   static string  getTasteStrName(TasteType_e type);
   static string  getHabitatStrName(HabitatType_e type);
   static string  getConsumeStrName(ConsumeType_e type);
   static string  getMoveStrName(MoveType_e type);
   static string  getReproStrName(ReproType_e type);
   static Point_t getGridCoordFromStepCoord(Point_t stepCoord);
+  static size_t getGridPosFromStepPos(size_t stepCoord);
 
 };
 

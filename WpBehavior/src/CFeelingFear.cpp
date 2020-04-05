@@ -77,8 +77,7 @@ CFeelingFear::CFeelingFear(CBasicEntity* pEntity)
 //---------------------------------------------------------------------------
 CFeelingFear::~CFeelingFear()
 {
-  // loop from top to bottom 
-  for (int i=m_tSensitivity.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tSensitivity.size(); i++)
   {
     if (m_tSensitivity[i] != NULL)
     {
@@ -113,7 +112,7 @@ double CFeelingFear::ComputeAndGetFeelingFear()
   for (auto pSensitivity: m_tSensitivity)
   {
     const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->GetStimulationTable() };
-    for (int j = 0; j < vectStimulation.size(); j++)
+    for (size_t j = 0; j < vectStimulation.size(); j++)
     {
       m_CurFear += pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
@@ -132,7 +131,7 @@ double CFeelingFear::ComputeAndGetFeelingFear()
 // Get / Set for attributes
 //===========================================================================
 
-bool CFeelingFear::AddSensitivity(CSensor* pSens, int tableMaskSize, double* pTableMask)
+bool CFeelingFear::AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* pTableMask)
 {
   if (pSens->GetSubCaptorNumber() != tableMaskSize)
     return false;

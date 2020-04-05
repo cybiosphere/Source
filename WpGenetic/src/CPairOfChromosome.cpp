@@ -39,7 +39,7 @@ distribution.
 ///////////////////////////////////////
 // constructors
 
-CPairOfChromosome::CPairOfChromosome(int number)
+CPairOfChromosome::CPairOfChromosome(size_t number)
 {
   m_IdNumber = number;
   m_pPaterChromosome = new CChromosome(number);
@@ -116,10 +116,10 @@ CChromosome* CPairOfChromosome::getMaterChromosome ()
   return (m_pMaterChromosome);
 }
 
-int CPairOfChromosome::getNumAllele()
+size_t CPairOfChromosome::getNumAllele()
 {
-  int materNumGen = 0;
-  int paterNumGen = 0;
+  size_t materNumGen = 0;
+  size_t paterNumGen = 0;
 
   if (m_pMaterChromosome!=NULL)
      materNumGen = m_pMaterChromosome->getNumGene();
@@ -132,7 +132,7 @@ int CPairOfChromosome::getNumAllele()
     return (materNumGen);
 }
 
-CGene* CPairOfChromosome::getDominantAllele (int index)
+CGene* CPairOfChromosome::getDominantAllele(size_t index)
 {
   CGene* pResu = NULL;
   CGene* pMaterGene = NULL;
@@ -212,7 +212,7 @@ ChromosomeType_e CPairOfChromosome::getSex(void)
   return (m_pPaterChromosome->getChromosomeType());
 }
 
-int CPairOfChromosome::getIdNumber(void)
+size_t CPairOfChromosome::getIdNumber(void)
 {
     return m_IdNumber;
 }
@@ -225,7 +225,7 @@ bool CPairOfChromosome::getCrossedChromosomeStr(CPairOfChromosome& pPair, string
   motherStr = pPair.m_pMaterChromosome->buildStringDataFromGenes();
   fatherStr = pPair.m_pPaterChromosome->buildStringDataFromGenes();
 
-  int cutIndex = getRandInt(motherStr.length());
+  size_t cutIndex = getRandInt(motherStr.length());
 
   crossedStr = motherStr.substr(0,cutIndex) + fatherStr.substr(cutIndex);
 

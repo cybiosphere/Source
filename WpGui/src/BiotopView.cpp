@@ -390,8 +390,8 @@ void CBiotopView::OnLButtonUp(UINT nFlags, CPoint point)
 bool CBiotopView::SetSelectedEntity(CBasicEntity* pEntity)
 {
   // Reset focused entity
-  m_pBioDisplay3D->SetFocusedEntityId(-1);
-  m_pBioDisplay2D->SetFocusedEntityId(-1);
+  m_pBioDisplay3D->SetFocusedEntityId(ENTITY_ID_INVALID);
+  m_pBioDisplay2D->SetFocusedEntityId(ENTITY_ID_INVALID);
 
   if (m_pFocusedEntity != NULL)        
     m_pFocusedEntity->forceHasChanged();
@@ -405,8 +405,8 @@ bool CBiotopView::SetSelectedEntity(CBasicEntity* pEntity)
   }
   else
   {
-    m_pBioDisplay3D->SetSelectedEntityId (-1);
-    m_pBioDisplay2D->SetSelectedEntityId (-1);
+    m_pBioDisplay3D->SetSelectedEntityId (ENTITY_ID_INVALID);
+    m_pBioDisplay2D->SetSelectedEntityId (ENTITY_ID_INVALID);
     return (false);
   }
 }
@@ -583,7 +583,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
 void CBiotopView::OnAppAddNewEntity() 
 {
   CBasicEntity* pNewEntity = NULL;
-  entityIdType newEntityId = -1;
+  entityIdType newEntityId = ENTITY_ID_INVALID;
 
 	CEntityCreatorDlg dlgCreate(NULL,m_MenuSelCoord.x,m_MenuSelCoord.y);
 
@@ -611,7 +611,7 @@ void CBiotopView::OnAppAddGroup()
   CString fullPathName;
   CString strSection,strData;
   CBasicEntity newEntity;
-  entityIdType newEntityId = -1;
+  entityIdType newEntityId = ENTITY_ID_INVALID;
   int randoffsetx, randoffsety;
 
   CFileDialog fileDlg(true,"xml","",OFN_ALLOWMULTISELECT,"Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");

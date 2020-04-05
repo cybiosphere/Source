@@ -101,9 +101,9 @@ const std::vector<sensorValType>& CSensorLibido::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorLibido::GetSubCaptorLabel(int index)
+string CSensorLibido::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
     return ("level");
@@ -121,7 +121,7 @@ string CSensorLibido::GetSubCaptorLabel(int index)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CSensorLibido::IsSexSpecific(int captorIndex)
+bool CSensorLibido::IsSexSpecific(size_t captorIndex)
 {
   return true;
 }

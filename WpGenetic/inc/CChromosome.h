@@ -73,7 +73,7 @@ class DLL_CYBIOCORE_API CChromosome
 // internal data:
 //---------------------------------------------------------------------------
 private:
-  int m_IdNumber;
+  size_t m_IdNumber;
   string m_Label;
   ChromosomeType_e m_ChromosomeType;
   std::vector<CGene*> m_tGene;
@@ -86,7 +86,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CChromosome(int number);
+  CChromosome(size_t number);
   CChromosome(CChromosome& model);
   virtual ~CChromosome();
 
@@ -94,11 +94,10 @@ public:
 // Gene table mgt
 //---------------------------------------------------------------------------
 public:
-  int addGene();
-  bool removeGene(int index);
-  int getNumGene(void);
-  CGene* getGene(int index);
-private:
+  size_t addGene();
+  bool removeGene(size_t index);
+  size_t getNumGene(void);
+  CGene* getGene(size_t index);
   void deleteAllGenes(void);
 
 //---------------------------------------------------------------------------
@@ -118,7 +117,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:  
-  int getIdNumber(void);
+  size_t getIdNumber(void);
   string getLabel(void);
   void setChromosomeType(ChromosomeType_e newType);
   ChromosomeType_e getChromosomeType();

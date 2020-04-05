@@ -97,7 +97,7 @@ bool CNeuronMatrix::NormalizeNeuronMatrix()
 // Initialization
 //////////////////////////////////////////////////////////////////////
 
-bool CNeuronMatrix::InitializeNeuronMatrixNeutral(string xmlFileLabel, int sizeInput, int sizeOutput)
+bool CNeuronMatrix::InitializeNeuronMatrixNeutral(string xmlFileLabel, size_t sizeInput, size_t sizeOutput)
 {
   m_xmlFileLabel = xmlFileLabel;
   m_mNeuronTable.SetSize(sizeInput,sizeOutput);
@@ -169,13 +169,13 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
   int msbVal,lsbVal; // ! sscanf needs int as argument, do not use BYTE
   WORD tempVal;
   string rawDataRsp = "";
-  int strOffset = 0;
-  int dataLen = rawData.length();
+  size_t strOffset = 0;
+  size_t dataLen = rawData.length();
   for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
   {
     for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
     {
-      if (strOffset > (dataLen-4))
+      if ((strOffset + 4) > dataLen)
       {
         NormalizeNeuronMatrix();
         return (false);
@@ -195,9 +195,9 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
   return (true);
 }
 
-bool CNeuronMatrix::buildNeuronLineFromRawData (int lineId, int lenData, WORD* pRawData)
+bool CNeuronMatrix::buildNeuronLineFromRawData (size_t lineId, size_t lenData, WORD* pRawData)
 {
-  if ( (lenData != (int)m_mNeuronTable.ColNo()) || (lineId>=(int)m_mNeuronTable.RowNo()) || (lineId<0) )
+  if ( (lenData != m_mNeuronTable.ColNo()) || (lineId >= m_mNeuronTable.RowNo()) )
   {
     ASSERT("Bad raw data lenght for brain");
     return (false);
@@ -211,9 +211,9 @@ bool CNeuronMatrix::buildNeuronLineFromRawData (int lineId, int lenData, WORD* p
   return (true);
 }
 
-int CNeuronMatrix::buildRawDataFromNeuronLine (int lineId, WORD*& pRawData)
+int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
 {
-  if (lineId>=(int)m_mNeuronTable.RowNo())
+  if (lineId >= m_mNeuronTable.RowNo())
   {
     ASSERT("Bad raw data lenght for brain");
     return (false);
@@ -229,37 +229,37 @@ int CNeuronMatrix::buildRawDataFromNeuronLine (int lineId, WORD*& pRawData)
   return ( (int)m_mNeuronTable.ColNo() );
 }
 
-int CNeuronMatrix::GetNeuronTableRowCount()
+size_t CNeuronMatrix::GetNeuronTableRowCount()
 {
   return (m_mNeuronTable.RowNo());
 }
 
-int CNeuronMatrix::GetNeuronTableColumnCount()
+size_t CNeuronMatrix::GetNeuronTableColumnCount()
 {
   return (m_mNeuronTable.ColNo());
 }
 
-neuroneValType CNeuronMatrix::GetNeuronTableData(int row, int col)
+neuroneValType CNeuronMatrix::GetNeuronTableData(size_t row, size_t col)
 {
   return (m_mNeuronTable(row,col));
 }
 
-bool CNeuronMatrix::SetNeuronTableData(unsigned int row, unsigned int col, neuroneValType newVal)
+bool CNeuronMatrix::SetNeuronTableData(size_t row, size_t col, neuroneValType newVal)
 {
-  if ( (row<0) || (row>=m_mNeuronTable.RowNo()) || (col<0) || (col>=m_mNeuronTable.ColNo()) )
+  if ( (row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()) )
      return false;
 
   m_mNeuronTable(row,col) = newVal;
   return true;
 }
 
-bool CNeuronMatrix::ChangeNeuronTableVal(int row, int col, double variation, bool normalize)
+bool CNeuronMatrix::ChangeNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {
-  if ( (row<0) || (row>=(int)(m_mNeuronTable.RowNo())) || (col<0) || (col>=(int)(m_mNeuronTable.ColNo())))
+  if ( (row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()) )
     return (false);
 
   bool resu = true;
-  m_mNeuronTable(row,col) += variation;
+  m_mNeuronTable(row, col) += variation;
 
   if (normalize)
     resu = NormalizeNeuronMatrix();

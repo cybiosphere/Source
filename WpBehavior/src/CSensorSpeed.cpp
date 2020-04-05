@@ -111,7 +111,7 @@ const std::vector<sensorValType>& CSensorSpeed::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorSpeed::GetSubCaptorLabel(int index)
+string CSensorSpeed::GetSubCaptorLabel(size_t index)
 {
   string label;
 

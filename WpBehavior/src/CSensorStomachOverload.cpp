@@ -106,9 +106,9 @@ const std::vector<sensorValType>& CSensorStomachOverload::UpdateAndGetStimulatio
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorStomachOverload::GetSubCaptorLabel(int index)
+string CSensorStomachOverload::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
     return ("level");

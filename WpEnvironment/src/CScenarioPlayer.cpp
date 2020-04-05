@@ -152,7 +152,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
     return false;
 
   // If running biotop, don't parse new cmd
-  if (m_remainingTimeToRunBiotop>0)
+  if (m_remainingTimeToRunBiotop > 0)
   {
     m_remainingTimeToRunBiotop--;
     m_pBiotop->nextSecond();
@@ -161,7 +161,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
 
   string curLine;
   bool resu = true;
-  int startInd;
+  size_t startInd;
 
   getline(m_curScenarioFile, curLine);
 
@@ -170,7 +170,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
 
   // Check if line is comment
   startInd = curLine.find("#", 0);
-  if ( startInd > -1)
+  if (startInd != string::npos)
   {
     // NO action but command found
     return true;
@@ -181,9 +181,9 @@ bool CScenarioPlayer::NextCmdNextSecond()
 
   // Run biotop cmd
   startInd = curLine.find(ScenarioCmdNameList[0].commandName, 0);
-  if ( startInd > -1)
+  if (startInd != string::npos)
   {
-    int cmdSize = strlen(ScenarioCmdNameList[0].commandName);
+    size_t cmdSize = strlen(ScenarioCmdNameList[0].commandName);
     int duration = atoi(GetParamFromString(curLine.substr(startInd+cmdSize+1),0).c_str());
     m_remainingTimeToRunBiotop = duration;
     return true;
@@ -193,15 +193,15 @@ bool CScenarioPlayer::NextCmdNextSecond()
   for(int i=1; i<SCENARIO_CMD_NUMBER; i++)
   {
     startInd = curLine.find(ScenarioCmdNameList[i].commandName, 0);
-    if ( startInd > -1)
+    if (startInd != string::npos)
     {
-      int cmdSize = strlen(ScenarioCmdNameList[i].commandName);
+      size_t cmdSize = strlen(ScenarioCmdNameList[i].commandName);
       resu = ScenarioCmdNameList[i].commandFonction(m_pBiotop, m_ScenarioPath, curLine.substr(startInd+cmdSize+1), &m_successScore, &m_totalScore);
       break;
     }
   }
 
-  if (resu && ( startInd > -1))
+  if (resu && (startInd != string::npos))
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("SCENAR - cmd: %s\n", curLine.c_str());
@@ -213,7 +213,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
 bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string biotopFilesPath, int &customVar1, int &customVar2, CommandHandler_t* pCustomCmdList, int customCmdListSize)
 {
   bool resu = false;
-  int startInd = -1;
+  size_t startInd;
   CommandHandler_t* pCmdList = pCustomCmdList;
   int listSize = customCmdListSize;
 
@@ -227,9 +227,9 @@ bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string 
   for(int i=0; i<listSize; i++)
   {
     startInd = commandString.find(pCmdList[i].commandName, 0);
-    if ( startInd > -1)
+    if (startInd != string::npos)
     {
-      int cmdSize = strlen(pCmdList[i].commandName);
+      size_t cmdSize = strlen(pCmdList[i].commandName);
       string paramStr = "";
       if (cmdSize < commandString.size())
       {
@@ -242,15 +242,15 @@ bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string 
   return resu;
 }
 
-string CScenarioPlayer::GetParamFromString(string commandParam,int paramIndex)
+string CScenarioPlayer::GetParamFromString(string commandParam, size_t paramIndex)
 {
-  int indexStart=0;
+  size_t indexStart=0;
   bool bracketFound = false;
 
   if (commandParam.c_str()[0] == '\"')
     bracketFound = true;
 
-  for(int i=0;i<paramIndex;i++)
+  for(size_t i = 0; i < paramIndex; i++)
   {
     if (bracketFound)
     {
@@ -266,10 +266,10 @@ string CScenarioPlayer::GetParamFromString(string commandParam,int paramIndex)
       bracketFound = true;
   }
 
-  if (indexStart<0)
+  if (indexStart == std::string::npos)
     return ("");
 
-  int indexEnd;
+  size_t indexEnd;
   if (commandParam.c_str()[indexStart] == '\"')
   {
     indexStart++;
@@ -280,7 +280,7 @@ string CScenarioPlayer::GetParamFromString(string commandParam,int paramIndex)
     indexEnd = commandParam.find(" ",indexStart+1);
   } 
   
-  if (indexEnd<0)
+  if (indexEnd == std::string::npos)
     indexEnd = commandParam.size();
 
   return (commandParam.substr(indexStart, indexEnd-indexStart));
@@ -301,14 +301,14 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
   if (firstParam.find(".bio",0) < 0)
     return (false);
 
-  int indexName = firstParam.rfind("\\",firstParam.size());
+  size_t indexName = firstParam.rfind("\\",firstParam.size());
 
-  if (indexName<0)
+  if (indexName == std::string::npos)
     indexName = firstParam.rfind("/",firstParam.size());
 
-  if (indexName>0)
+  if (indexName != std::string::npos)
   {
-    int sizeName = firstParam.size() - indexName - 1;
+    size_t sizeName = firstParam.size() - indexName - 1;
     pBiotop->loadFromXmlFile(firstParam.substr(indexName+1, sizeName), firstParam.substr(0,indexName+1));
   }
   else //No path
@@ -321,7 +321,7 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
 
 bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  entityIdType entityId = -1;
+  entityIdType entityId = ENTITY_ID_INVALID;
   CBasicEntity* pEntity;
 
   string firstParam = GetParamFromString(commandParam, 0);
@@ -329,20 +329,18 @@ bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string command
   if (firstParam.find(".xml",0) < 0)
     return (false);
 
-  int indexName = firstParam.rfind("\\",firstParam.size());
+  size_t indexName = firstParam.rfind("\\",firstParam.size());
 
-  if (indexName<0)
+  if (indexName == std::string::npos)
     indexName = firstParam.rfind("/",firstParam.size());
-
-  int indexEndName = firstParam.find(".xml",0) + 3;
 
   Point_t coord;
   coord.x = atoi(GetParamFromString(commandParam,1).c_str());
   coord.y = atoi(GetParamFromString(commandParam,2).c_str());
 
-  if (indexName>0)
+  if (indexName != std::string::npos)
   {
-    int sizeName = firstParam.size() - indexName - 1;
+    size_t sizeName = firstParam.size() - indexName - 1;
     entityId = pBiotop->createAndAddEntity(firstParam.substr(indexName+1, sizeName), firstParam.substr(0,indexName+1), coord);
   }
   else //No path
@@ -416,23 +414,21 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
   if (firstParam.find(".xml",0) < 0)
     return (false);
 
-  int indexName = firstParam.rfind("\\",firstParam.size());
+  size_t indexName = firstParam.rfind("\\",firstParam.size());
 
-  if (indexName<0)
+  if (indexName == std::string::npos)
     indexName = firstParam.rfind("/",firstParam.size());
 
-  int indexEndName = firstParam.find(".xml",0) + 3;
-
-  if (indexName>0)
+  if (indexName != std::string::npos)
   {
-    int sizeNameNoExt = firstParam.size() - indexName - 5;
+    size_t sizeNameNoExt = firstParam.size() - indexName - 5;
     string entityName = firstParam.substr(indexName + 1, sizeNameNoExt);
     CBasicEntity *pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = firstParam;
   }
   else // No path
   {
-    int sizeNameNoExt = firstParam.size() - 4;
+    size_t sizeNameNoExt = firstParam.size() - 4;
     string entityName = firstParam.substr(0, sizeNameNoExt);
     pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = path + firstParam;
@@ -440,7 +436,7 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
 
   if (pEnt != NULL)
   {
-    int sizeName = firstParam.size() - indexName - 1;
+    size_t sizeName = firstParam.size() - indexName - 1;
     pEnt->saveInXmlFile(nameWithPath.c_str(), firstParam.substr(0,indexName+1));
   }
 
@@ -456,23 +452,21 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
   if (firstParam.find(".xml",0) < 0)
     return (false);
 
-  int indexName = firstParam.rfind("\\",firstParam.size());
+  size_t indexName = firstParam.rfind("\\",firstParam.size());
 
-  if (indexName<0)
+  if (indexName == std::string::npos)
     indexName = firstParam.rfind("/",firstParam.size());
 
-  int indexEndName = firstParam.find(".xml",0) + 3;
-
-  if (indexName>0)
+  if (indexName != std::string::npos)
   {
-    int sizeNameNoExt = firstParam.size() - indexName - 5;
+    size_t sizeNameNoExt = firstParam.size() - indexName - 5;
     string entityName = firstParam.substr(indexName + 1, sizeNameNoExt);
     pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = firstParam;
   }
   else // No path
   {
-    int sizeNameNoExt = firstParam.size() - 4;
+    size_t sizeNameNoExt = firstParam.size() - 4;
     string entityName = firstParam.substr(0, sizeNameNoExt);
     pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = path + firstParam;
@@ -480,7 +474,7 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
 
   if (pEnt != NULL)
   {
-    int sizeName = firstParam.size() - indexName - 1;
+    size_t sizeName = firstParam.size() - indexName - 1;
     pEnt->getBrain()->saveInXmlFile(nameWithPath.c_str());
   }
 
@@ -489,7 +483,6 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
 
 bool CScenarioPlayer::CmdQuickAgeing(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
   int paramValue = atoi(GetParamFromString(commandParam,1).c_str());
 
@@ -530,7 +523,7 @@ bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string comman
 
   if (pEntity != NULL)
   {
-    pEntity->jumpToGridCoord(coord);
+    pEntity->jumpToGridCoord(coord, false);
     resu = true;
     if ( (direction>=0) && (direction<=7) )
       pEntity->setDirection(direction);
@@ -660,7 +653,7 @@ bool CScenarioPlayer::CmdSetForbidenAction   (CBiotop* pBiotop, string path, str
 
   if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) )
   {
-    int actionInd = pEntity->getBrain()->GetReactionIndexByLabel(actionName);
+    size_t actionInd = pEntity->getBrain()->GetReactionIndexByLabel(actionName);
     ((CAnimal*)pEntity)->setForbidenActionInd(actionInd);
     resu = true;
   }

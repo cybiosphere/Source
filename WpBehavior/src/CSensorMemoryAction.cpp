@@ -86,8 +86,8 @@ const std::vector<sensorValType>& CSensorMemoryAction::UpdateAndGetStimulationTa
 {
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
-  int reactInd = m_pBrain->GetCurrentReactionIndex();
-  if ((reactInd >= 0) && (reactInd < GetSubCaptorNumber()))
+  size_t reactInd = m_pBrain->GetCurrentReactionIndex();
+  if (reactInd < GetSubCaptorNumber())
   {
     m_tStimulationValues[reactInd] = m_tSubCaptorWeightRate[reactInd] * MAX_SENSOR_VAL / 100.0;
   }
@@ -105,9 +105,9 @@ const std::vector<sensorValType>& CSensorMemoryAction::UpdateAndGetStimulationTa
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorMemoryAction::GetSubCaptorLabel(int index)
+string CSensorMemoryAction::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
+  if ( (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
     return ("bad index");
   else
   {

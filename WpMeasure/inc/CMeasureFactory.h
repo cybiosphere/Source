@@ -60,7 +60,7 @@ distribution.
 class CMeasureFactory
 {
 public:
-  static CMeasure* createMeasure(int id, int period, unsigned int typeSubtype, CBiotop* pBiotop, int paramId = -1, int entityId = -1)
+  static CMeasure* createMeasure(int id, int period, unsigned int typeSubtype, CBiotop* pBiotop, size_t paramId = invalidIndex, entityIdType entityId = ENTITY_ID_INVALID)
   {
     CMeasure* pNewMeasure = NULL;
     MeasureType_e  type = (MeasureType_e)(typeSubtype & 0xFF);

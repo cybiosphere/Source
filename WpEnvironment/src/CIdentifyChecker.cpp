@@ -159,7 +159,7 @@ bool CIdentifyChecker::NextCheck()
 
   string curLine;
   bool resu = true;
-  int startInd;
+  size_t startInd;
 
   getline(m_curCheckerFile, curLine);
 
@@ -168,7 +168,7 @@ bool CIdentifyChecker::NextCheck()
 
   // Check if line is comment
   startInd = curLine.find("#", 0);
-  if ( startInd > -1)
+  if (startInd != string::npos)
   {
     // NO action but command found
     return true;
@@ -179,7 +179,8 @@ bool CIdentifyChecker::NextCheck()
 
   // Parse Check line: FileName; identity1 val1; identity2 val2;....
   std::vector<std::pair<std::string, int>> vectorIdentify;
-  int indexStart = 0, indexEnd = 0, indexEndLine = 0, indexSpace = 0, readLevel = 0;
+  size_t indexStart = 0, indexEnd = 0, indexEndLine = 0, indexSpace = 0;
+  int readLevel = 0;
   indexEndLine = curLine.length();
   string readStr, readIdentity;
   indexEnd = curLine.find(";", indexStart);
@@ -228,7 +229,7 @@ bool CIdentifyChecker::NextCheck()
   CYBIOCORE_LOG("CHECK - entity=%s\n", pTargetEntity->getLabel().c_str());
 
   double curVal = 0;
-  for (int i = 0; i < pOutVector->RowNo(); i++)
+  for (size_t i = 0; i < pOutVector->RowNo(); i++)
   {
     curVal = (*pOutVector)(i, 0);
     if (curVal >= highThreshold)

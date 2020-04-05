@@ -119,7 +119,7 @@ const std::vector<sensorValType>& CSensorTemperature::UpdateAndGetStimulationTab
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorTemperature::GetSubCaptorLabel(int index)
+string CSensorTemperature::GetSubCaptorLabel(size_t index)
 {
   string label;
 

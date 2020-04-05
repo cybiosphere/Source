@@ -68,7 +68,7 @@ class CBrainAnimal;
 typedef struct 
 {
   CBasicEntity*        pEntity;
-  int                  index;
+  size_t               index;
   entitySignatureType  signature;
   double               computedWeight;
   double               weightTab[VIEW_SIZE_PER_FOCUS];
@@ -89,20 +89,20 @@ class DLL_CYBIOCORE_API CSensorView : public CSensor
 //---------------------------------------------------------------------------
 private:
   int             m_nRange;
-  int             m_Layer;
+  size_t          m_Layer;
   ViewAngleType_e m_Angle;
   bool            m_bDistanceEval;
   // Sect6 Sect4 Sect2
   // Sect8   0>  Sect1
   // Sect7 Sect5 Sect3
-  int             m_nFocusObjectsSect1; 
-  int             m_nFocusObjectsSect2; 
-  int             m_nFocusObjectsSect3; 
-  int             m_nFocusObjectsSect4; 
-  int             m_nFocusObjectsSect5; 
-  int             m_nFocusObjectsSect6;
-  int             m_nFocusObjectsSect7;
-  int             m_nFocusObjectsSect8;
+  size_t          m_nFocusObjectsSect1;
+  size_t          m_nFocusObjectsSect2;
+  size_t          m_nFocusObjectsSect3;
+  size_t          m_nFocusObjectsSect4;
+  size_t          m_nFocusObjectsSect5;
+  size_t          m_nFocusObjectsSect6;
+  size_t          m_nFocusObjectsSect7;
+  size_t          m_nFocusObjectsSect8;
 
 //---------------------------------------------------------------------------
 // associations
@@ -121,7 +121,7 @@ public:
 	CSensorView(CBrainAnimal* pBrain, 
               std::vector<double>& tWeightRate,
               int range, 
-              int layer,
+              size_t layer,
               ViewAngleType_e angle,
               int totalNbFocusObjects,
               bool distanceEvaluation = true);
@@ -132,7 +132,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  string GetSubCaptorLabel(int index);
+  string GetSubCaptorLabel(size_t index);
 
 //---------------------------------------------------------------------------
 // other functions
@@ -140,21 +140,21 @@ public:
 public:
 
   int GetRange();
-  int GetLayer();
-  int GetSubCaptorIndexForDirection(int relativeDirection, int entityIndex);
+  size_t GetLayer();
+  size_t GetSubCaptorIndexForDirection(int relativeDirection, size_t entityIndex);
 
-  static int GetSubCaptorSubIndexForSizeBig();
-  static int GetSubCaptorSubIndexForSizeSmall();
-  static int GetSubCaptorSubIndexForMoving();
-  static int GetSubCaptorSubIndexForProximity();
-  static int GetSubCaptorSubIndexForForm(FormType_e form);
-  static int GetSubCaptorSubIndexForColor(ColorCaracterType_e color);
-  static int GetSubCaptorSubIndexForTexture(TextureType_e texture);
-  static int GetSubCaptorSubIndexForPhyAttribute(PhyAttributeType_e attribute);
+  static size_t GetSubCaptorSubIndexForSizeBig();
+  static size_t GetSubCaptorSubIndexForSizeSmall();
+  static size_t GetSubCaptorSubIndexForMoving();
+  static size_t GetSubCaptorSubIndexForProximity();
+  static size_t GetSubCaptorSubIndexForForm(FormType_e form);
+  static size_t GetSubCaptorSubIndexForColor(ColorCaracterType_e color);
+  static size_t GetSubCaptorSubIndexForTexture(TextureType_e texture);
+  static size_t GetSubCaptorSubIndexForPhyAttribute(PhyAttributeType_e attribute);
 
 
 private:
-  bool Scan45degSector(int stimulationTabOffset, int maxNumFocusObject, int direction);
+  bool Scan45degSector(size_t stimulationTabOffset, size_t maxNumFocusObject, int direction);
 
 };
 

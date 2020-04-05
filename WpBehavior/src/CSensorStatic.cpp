@@ -101,9 +101,9 @@ const std::vector<sensorValType>& CSensorStatic::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorStatic::GetSubCaptorLabel(int index)
+string CSensorStatic::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
     return ("");

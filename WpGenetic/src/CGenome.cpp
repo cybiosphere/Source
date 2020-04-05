@@ -45,7 +45,7 @@ CGenome::CGenome(ClassType_e classType, string specieName)
 {
   m_class = classType;
   m_SpecieName = specieName;
-  m_SexualPairIndex = -1;
+  m_SexualPairIndex = invalidIndex;
   m_bSexualDimorphism = false;
   m_tPair.resize(0);
 }
@@ -57,7 +57,7 @@ CGenome::CGenome(CGenome& model)
   m_SexualPairIndex = model.m_SexualPairIndex;
   m_bSexualDimorphism = model.m_bSexualDimorphism;
   CPairOfChromosome* tempPair = NULL;
-  for (unsigned int i=0; i<model.m_tPair.size(); i++)
+  for (size_t i=0; i<model.m_tPair.size(); i++)
   {
     tempPair = new CPairOfChromosome(*model.m_tPair[i]);
     m_tPair.push_back(tempPair);
@@ -71,7 +71,7 @@ CGenome::CGenome(CGenome& mother, CGenome& father, double crossoverRate)
   m_SexualPairIndex = mother.m_SexualPairIndex;
   m_bSexualDimorphism = mother.m_bSexualDimorphism;
   CPairOfChromosome* tempPair = NULL;
-  for (unsigned int i=0; i<mother.m_tPair.size(); i++)
+  for (size_t i=0; i<mother.m_tPair.size(); i++)
   {
     tempPair = new CPairOfChromosome(*mother.m_tPair[i],*father.m_tPair[i],crossoverRate);
     m_tPair.push_back(tempPair);
@@ -87,9 +87,9 @@ CGenome::~CGenome()
 ///////////////////////////////////////
 // methods
 
-int CGenome::addPair()
+size_t CGenome::addPair()
 {
-  int pairId = m_tPair.size();
+  size_t pairId = m_tPair.size();
   CPairOfChromosome* pPair = new CPairOfChromosome(pairId);
   if (pPair != NULL)
   {
@@ -97,26 +97,26 @@ int CGenome::addPair()
     return (m_tPair.size()-1);
   }
   else
-    return (-1);
+    return (invalidIndex);
 }
 
-bool CGenome::removePair(int index)
+bool CGenome::removePair(size_t index)
 {
-  if ((index<0) || (index>(m_tPair.size()-1)))
+  if (index > (m_tPair.size() - 1) )
     return false;
 
   m_tPair.erase(m_tPair.begin()+index);
   return true;
 }
 
-int CGenome::getNumPair()
+size_t CGenome::getNumPair()
 {
   return (m_tPair.size());
 }
 
-CPairOfChromosome* CGenome::getPair(int id)
+CPairOfChromosome* CGenome::getPair(size_t id)
 {
-  if ( (id<0) || (id>m_tPair.size()) )
+  if (id > m_tPair.size())
   {
     return (NULL);
   }
@@ -128,7 +128,7 @@ CPairOfChromosome* CGenome::getPair(int id)
 
 CPairOfChromosome* CGenome::getPairSexual()
 {
-  if ( (m_SexualPairIndex<0) || (m_SexualPairIndex>m_tPair.size()) )
+  if (m_SexualPairIndex >= m_tPair.size())
   {
     return (NULL);
   }
@@ -152,8 +152,7 @@ CPairOfChromosome* CGenome::getPairBrain()
 
 void CGenome::deleteAllPairs() 
 {
-  // loop from top to bottom 
-  for (int i=m_tPair.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tPair.size(); i++)
   {
     if (m_tPair[i] != NULL)
       delete (m_tPair[i]);   
@@ -161,14 +160,14 @@ void CGenome::deleteAllPairs()
   m_tPair.clear();
 } 
 
-bool CGenome::setSexMale(int indexPairSex, bool sexualDimorph)
+bool CGenome::setSexMale(size_t indexPairSex, bool sexualDimorph)
 {
-  if ( (indexPairSex<0) || (indexPairSex>m_tPair.size()) )
+  if (indexPairSex>m_tPair.size())
   {
     return (false);
   }
 
-  if (m_SexualPairIndex!=-1)
+  if (m_SexualPairIndex != invalidIndex)
   {
     m_tPair[m_SexualPairIndex]->setAsNeutral();
   }
@@ -177,21 +176,21 @@ bool CGenome::setSexMale(int indexPairSex, bool sexualDimorph)
   if (resu)
     m_SexualPairIndex = indexPairSex;
   else
-    m_SexualPairIndex = -1;
+    m_SexualPairIndex = invalidIndex;
 
   m_bSexualDimorphism = sexualDimorph;
 
   return (resu);
 }
 
-bool CGenome::setSexFemale(int indexPairSex, bool sexualDimorph)
+bool CGenome::setSexFemale(size_t indexPairSex, bool sexualDimorph)
 {
-  if ( (indexPairSex<0) || (indexPairSex>m_tPair.size()) )
+  if (indexPairSex>m_tPair.size())
   {
     return (false);
   }
 
-  if (m_SexualPairIndex!=-1)
+  if (m_SexualPairIndex != invalidIndex)
   {
     m_tPair[m_SexualPairIndex]->setAsNeutral();
   }
@@ -200,29 +199,29 @@ bool CGenome::setSexFemale(int indexPairSex, bool sexualDimorph)
   if (resu)
     m_SexualPairIndex = indexPairSex;
   else
-    m_SexualPairIndex = -1;
+    m_SexualPairIndex = invalidIndex;
 
   m_bSexualDimorphism = sexualDimorph;
 
   return (resu);
 }
 
-bool CGenome::setSexNeutral(int indexPairSex)
+bool CGenome::setSexNeutral(size_t indexPairSex)
 {
-  if ( (indexPairSex<0) || (indexPairSex>m_tPair.size()) )
+  if (indexPairSex>m_tPair.size())
   {
     return (false);
   }
 
   bool resu = m_tPair[indexPairSex]->setAsNeutral();
-  m_SexualPairIndex = -1;
+  m_SexualPairIndex = invalidIndex;
 
   return (resu);
 }
 
 SexType_e CGenome::getSexType()
 {
-  if (m_SexualPairIndex==-1)
+  if (m_SexualPairIndex == invalidIndex)
   {
     return (SEX_NONE);
   }
@@ -245,7 +244,7 @@ SexType_e CGenome::getSexType()
 bool CGenome::tryMutation(int rate)
 {
   bool resu = false;
-  for (int i=0;i<m_tPair.size();i++)
+  for (size_t i=0; i<m_tPair.size(); i++)
   {
     if (m_tPair[i]->tryMutation(rate))
     {
@@ -332,9 +331,9 @@ specieSignatureType CGenome::getSpecieSignature()
   //return (1000000*m_class + 10000*m_tPair.size());
   
   specieSignatureType signature = 1000000*m_class;
-  for (unsigned int i=0; i<m_tPair.size(); i++)
+  for (size_t i=0; i<m_tPair.size(); i++)
   {
-    signature += (7*i+1)*m_tPair[i]->getMaterChromosome()->getNumGene();
+    signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome()->getNumGene() * (7 * i + 1));
   }
   return (signature);
 
@@ -411,7 +410,7 @@ bool CGenome::saveInXmlFile(TiXmlDocument *pXmlDoc)
     pElement->SetAttribute( XML_ATTR_DIMORPHISM, (int)m_bSexualDimorphism);
   }
 
-  int i,j;
+  size_t i,j;
   CChromosome* pCurChroM = NULL;
   CChromosome* pCurChroP = NULL;
   for (i=0; i<getNumPair(); i++)
@@ -487,15 +486,16 @@ bool CGenome::loadFromXmlFile(TiXmlDocument *pXmlDoc)
     // Clear previous genome
     deleteAllPairs();
     m_tPair.resize(0); 
-    m_SexualPairIndex = -1;
+    m_SexualPairIndex = invalidIndex;
     m_class = (ClassType_e)classType;
     m_SpecieName = specieName;
     m_bSexualDimorphism = (bool)dimorphism;
 
     string geneStrM;
     string geneStrP;
-    int indexPair;
-    int type, geneIndex;
+    size_t indexPair;
+    int type;
+    size_t geneIndex;
     CGene* pGene;
     CChromosome* pCurChro;
 
@@ -573,20 +573,20 @@ bool CGenome::setBrainInstinctInGenes(CBrain* pBrain)
 
   WORD* pData = NULL;
   int lineSize;
-  int indexGen;
+  size_t indexGen;
   CGene *pGen1M, *pGen1P;
-  unsigned int i;
+  size_t i;
   
   // clean previous Brain instinct genes (decision tables)
-  int numPairs = getNumPair();
-  for (int pairId=(numPairs-1); pairId>-1; pairId--)
+  int numPairs = (int)getNumPair();
+  for (int pairId = (numPairs - 1); pairId > -1; pairId--)
   {
     CPairOfChromosome* pCurPair = getPair(pairId);
     CChromosome* pCurChromoM = pCurPair->getMaterChromosome();
     CChromosome* pCurChromoP = pCurPair->getPaterChromosome();
 
-    int numGenes = pCurChromoM->getNumGene();
-    for (int geneId=(numGenes-1); geneId>-1; geneId--)
+    int numGenes = (int)pCurChromoM->getNumGene();
+    for (int geneId = (numGenes - 1); geneId > -1; geneId--)
     {
       if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_LINE)
       {
@@ -650,21 +650,21 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
     return false;
 
   WORD* pData = NULL;
-  int lineSize;
-  int indexGen;
+  size_t lineSize;
+  size_t indexGen;
   CGene *pGen1M, *pGen1P;
-  unsigned int i;
+  size_t i;
   
   // clean previous Brain instinct genes (both identification and decision tables)
-  int numPairs = getNumPair();
-  for (int pairId=(numPairs-1); pairId>-1; pairId--)
+  int numPairs = (int)getNumPair();
+  for (int pairId = (numPairs - 1); pairId > -1; pairId--)
   {
     CPairOfChromosome* pCurPair = getPair(pairId);
     CChromosome* pCurChromoM = pCurPair->getMaterChromosome();
     CChromosome* pCurChromoP = pCurPair->getPaterChromosome();
 
-    int numGenes = pCurChromoM->getNumGene();
-    for (int geneId=(numGenes-1); geneId>-1; geneId--)
+    int numGenes = (int)pCurChromoM->getNumGene();
+    for (int geneId = (numGenes - 1); geneId > -1; geneId--)
     {
       if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_IDENTIFY_LINE)
       {

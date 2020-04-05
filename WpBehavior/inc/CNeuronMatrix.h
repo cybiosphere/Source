@@ -80,21 +80,21 @@ public:
 public:
 
   bool NormalizeNeuronMatrix();
-  bool InitializeNeuronMatrixNeutral(string xmlFileLabel, int sizeInput, int sizeOutput);
+  bool InitializeNeuronMatrixNeutral(string xmlFileLabel, size_t sizeInput, size_t sizeOutput);
   bool ResetNeuronMatrixNeutral();
   bool ComputeVectorChoice(CMatrix* pVectorInput, CMatrix* pVectorChoice);
   bool MemorizeExperience(neuroneValType coefFeedback, CMatrix* pMatrixInputHistory, CMatrix* pVectorDecisionHistory);
 
   string buildStringDataFromNeuronTable();
   bool buildNeuronTableFromStringData(string rawData);
-  bool buildNeuronLineFromRawData (int lineId, int lenData, WORD* pRawData);
-  int  buildRawDataFromNeuronLine (int lineId, WORD*& pRawData);
+  bool buildNeuronLineFromRawData (size_t lineId, size_t lenData, WORD* pRawData);
+  int  buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData);
 
-  int GetNeuronTableRowCount();
-  int GetNeuronTableColumnCount();
-  neuroneValType GetNeuronTableData(int row, int col);
-  bool SetNeuronTableData(unsigned int row, unsigned int col, neuroneValType newVal);
-  bool ChangeNeuronTableVal(int row, int col, double variation, bool normalize=true);
+  size_t GetNeuronTableRowCount();
+  size_t GetNeuronTableColumnCount();
+  neuroneValType GetNeuronTableData(size_t row, size_t col);
+  bool SetNeuronTableData(size_t row, size_t col, neuroneValType newVal);
+  bool ChangeNeuronTableVal(size_t row, size_t col, double variation, bool normalize=true);
 
   bool saveInXmlFile(string fileNameWithPath);
   bool saveInXmlFile(TiXmlDocument *pXmlDoc);

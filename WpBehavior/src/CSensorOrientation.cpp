@@ -95,19 +95,19 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
     int targetDirection;
     int curDirection = m_pBrain->getAnimal()->getDirection();
     GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGridCoord(), targetDirection);
-    if (intensity>FOUND_INTENSITY_NULL)
+    if (intensity > GeoMapIntensityType_e::FOUND_INTENSITY_NULL)
     {
       if (targetDirection == curDirection)
       {
-        m_tStimulationValues[0] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[0] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }
       else if (((360 + (targetDirection-curDirection)*45) % 360) < 180)
       {
-        m_tStimulationValues[1] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[1] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }
       else
       {
-        m_tStimulationValues[2] = MAX_SENSOR_VAL*intensity/FOUND_INTENSITY_HIGH;
+        m_tStimulationValues[2] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }
 
       applySubCaptorWeightRate();
@@ -128,7 +128,7 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorOrientation::GetSubCaptorLabel(int index)
+string CSensorOrientation::GetSubCaptorLabel(size_t index)
 {
   string label;
 

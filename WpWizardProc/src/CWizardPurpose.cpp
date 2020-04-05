@@ -131,7 +131,7 @@ bool CWizardPurpose::AddPurposeReactionBonus( CString purposeName,
 }
 
 // bonus = 10 x mutiplicator factor
-bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int layer, 
+bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, size_t layer,
                                             FormType_e form, ColorCaracterType_e color, 
                                             TextureType_e texture, PhyAttributeType_e attribute, bool isMoving)
 {
@@ -160,12 +160,12 @@ bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int 
             pCurBonusTable[j] = 10; // by default: multiplicator 1.0 this could be changed by a shrink parameter
          }
 
-        int subOffsetForm    = -1;
-        int subOffsetColor   = -1;
-        int subOffsetTexture = -1;
-        int subOffsetAttrib  = -1;
-        int subOffsetIsMove  = -1;
-        int offset = 0;
+        size_t subOffsetForm    = invalidIndex;
+        size_t subOffsetColor   = invalidIndex;
+        size_t subOffsetTexture = invalidIndex;
+        size_t subOffsetAttrib  = invalidIndex;
+        size_t subOffsetIsMove  = invalidIndex;
+        size_t offset = 0;
         if (form >= FORM_FIRST_TYPE)
           subOffsetForm    = pViewSens->GetSubCaptorSubIndexForForm(form);
         if (color >= COLOR_CARACTER_FIRST_TYPE)
@@ -181,15 +181,15 @@ bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int 
 
         for (j=0; j<nbViewBlocks; j++)
         {
-          if (subOffsetForm>-1)
+          if (subOffsetForm != invalidIndex)
             pCurBonusTable[offset + subOffsetForm]    = bonus;
-          if (subOffsetColor>-1)
+          if (subOffsetColor != invalidIndex)
             pCurBonusTable[offset + subOffsetColor]   = bonus;
-          if (subOffsetTexture>-1)
+          if (subOffsetTexture != invalidIndex)
             pCurBonusTable[offset + subOffsetTexture] = bonus;
-          if (subOffsetAttrib>-1)
+          if (subOffsetAttrib != invalidIndex)
             pCurBonusTable[offset + subOffsetAttrib]  = bonus;
-          if (subOffsetIsMove>-1)
+          if (subOffsetIsMove != invalidIndex)
             pCurBonusTable[offset + subOffsetIsMove]  = bonus;
           offset += VIEW_SIZE_PER_FOCUS;
         }
@@ -207,12 +207,12 @@ bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int 
          pCurBonusTable[j] = 10; // by default: multiplicator 1.0 
       }
 
-      int subOffsetForm    = -1;
-      int subOffsetColor   = -1;
-      int subOffsetTexture = -1;
-      int subOffsetAttrib  = -1;
-      int subOffsetIsMove  = -1;
-      int offset = 0;
+      size_t subOffsetForm    = invalidIndex;
+      size_t subOffsetColor   = invalidIndex;
+      size_t subOffsetTexture = invalidIndex;
+      size_t subOffsetAttrib  = invalidIndex;
+      size_t subOffsetIsMove  = invalidIndex;
+      size_t offset = 0;
       if (form >= FORM_FIRST_TYPE)
         subOffsetForm    = pViewSens->GetSubCaptorSubIndexForForm(form);
       if (color >= COLOR_CARACTER_FIRST_TYPE)
@@ -228,15 +228,15 @@ bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int 
 
       for (j=0; j<nbViewBlocks; j++)
       {
-        if (subOffsetForm>-1)
+        if (subOffsetForm != invalidIndex)
           pCurBonusTable[offset + subOffsetForm]    = bonus;
-        if (subOffsetColor>-1)
+        if (subOffsetColor != invalidIndex)
           pCurBonusTable[offset + subOffsetColor]   = bonus;
-        if (subOffsetTexture>-1)
+        if (subOffsetTexture != invalidIndex)
           pCurBonusTable[offset + subOffsetTexture] = bonus;
-        if (subOffsetAttrib>-1)
+        if (subOffsetAttrib != invalidIndex)
           pCurBonusTable[offset + subOffsetAttrib]  = bonus;
-        if (subOffsetIsMove>-1)
+        if (subOffsetIsMove != invalidIndex)
           pCurBonusTable[offset + subOffsetIsMove]  = bonus;
         offset += VIEW_SIZE_PER_FOCUS;
       }
@@ -249,7 +249,7 @@ bool CWizardPurpose::AddPurposeVisualBonus( CString purposeName, int bonus, int 
 }
 
 // bonus = 10 x mutiplicator factor
-bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bonus, int layer, 
+bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bonus, size_t layer,
                                                     IdentificationType_e identity, 
                                                     bool isMoving, bool isDirLeft, bool isDirRight)
 {
@@ -278,12 +278,12 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
           pCurBonusTable[j] = 10; // by default: multiplicator 1.0 this could be changed by a shrink parameter
         }
 
-        int subOffsetProxy    = -1;
-        int subOffsetEscape   = -1;
-        int subOffsetAppraoch = -1;
-        int subOffsetdirLeft  = -1;
-        int subOffsetdirRight = -1;
-        int offset = 0;
+        size_t subOffsetProxy    = invalidIndex;
+        size_t subOffsetEscape   = invalidIndex;
+        size_t subOffsetAppraoch = invalidIndex;
+        size_t subOffsetdirLeft  = invalidIndex;
+        size_t subOffsetdirRight = invalidIndex;
+        size_t offset = 0;
 
         subOffsetProxy = CSensorViewIdentify::GetSubCaptorSubIndexForProximity(identity);
         if (isMoving)
@@ -304,15 +304,15 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
 
         for (j=0; j<nbViewBlocks; j++)
         {
-          if (subOffsetProxy>-1)
+          if (subOffsetProxy != invalidIndex)
             pCurBonusTable[offset + subOffsetProxy]    = bonus;
-          if (subOffsetEscape>-1)
+          if (subOffsetEscape != invalidIndex)
             pCurBonusTable[offset + subOffsetEscape]   = bonus;
-          if (subOffsetAppraoch>-1)
+          if (subOffsetAppraoch != invalidIndex)
             pCurBonusTable[offset + subOffsetAppraoch] = bonus;
-          if (subOffsetdirLeft>-1)
+          if (subOffsetdirLeft != invalidIndex)
             pCurBonusTable[offset + subOffsetdirLeft]  = bonus;
-          if (subOffsetdirRight>-1)
+          if (subOffsetdirRight != invalidIndex)
             pCurBonusTable[offset + subOffsetdirRight] = bonus;
           offset += VIEW_IDENTIFY_SIZE_PER_FOCUS;
         }
@@ -330,12 +330,12 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
          pCurBonusTable[j] = 10; // by default: multiplicator 1.0 
       }
 
-      int subOffsetProxy    = -1;
-      int subOffsetEscape   = -1;
-      int subOffsetAppraoch = -1;
-      int subOffsetdirLeft  = -1;
-      int subOffsetdirRight = -1;
-      int offset = 0;
+      size_t subOffsetProxy    = invalidIndex;
+      size_t subOffsetEscape   = invalidIndex;
+      size_t subOffsetAppraoch = invalidIndex;
+      size_t subOffsetdirLeft  = invalidIndex;
+      size_t subOffsetdirRight = invalidIndex;
+      size_t offset = 0;
 
       subOffsetProxy = CSensorViewIdentifyFar::GetSubCaptorSubIndexForProximity(identity);
       if (isMoving)
@@ -356,15 +356,15 @@ bool CWizardPurpose::AddPurposeVisualIdentifyBonus( CString purposeName, int bon
 
       for (j=0; j<nbViewBlocks; j++)
       {
-        if (subOffsetProxy>-1)
+        if (subOffsetProxy != invalidIndex)
           pCurBonusTable[offset + subOffsetProxy]    = bonus;
-        if (subOffsetEscape>-1)
+        if (subOffsetEscape != invalidIndex)
           pCurBonusTable[offset + subOffsetEscape]   = bonus;
-        if (subOffsetAppraoch>-1)
+        if (subOffsetAppraoch != invalidIndex)
           pCurBonusTable[offset + subOffsetAppraoch] = bonus;
-        if (subOffsetdirLeft>-1)
+        if (subOffsetdirLeft != invalidIndex)
           pCurBonusTable[offset + subOffsetdirLeft]  = bonus;
-        if (subOffsetdirRight>-1)
+        if (subOffsetdirRight != invalidIndex)
           pCurBonusTable[offset + subOffsetdirRight] = bonus;
         offset += VIEW_IDENTIFY_SIZE_PER_FOCUS;
       }

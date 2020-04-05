@@ -52,7 +52,7 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CMineral::CMineral(string label, Point_t initCoord, int layer, CGenome* pPseudoGenome)
+CMineral::CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseudoGenome)
 {
   // Input values 
   jumpToGridCoord(initCoord, layer);
@@ -82,7 +82,7 @@ CMineral::CMineral(string label, CMineral& model)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), model.getLayer()); 
+  jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
   m_Generation		= model.m_Generation + 1;
   m_pGenome       = new CGenome(*model.m_pGenome);
 

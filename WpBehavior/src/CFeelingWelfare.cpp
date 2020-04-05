@@ -77,8 +77,7 @@ CFeelingWelfare::CFeelingWelfare(CBasicEntity* pEntity)
 //---------------------------------------------------------------------------
 CFeelingWelfare::~CFeelingWelfare()
 {
-  // loop from top to bottom 
-  for (int i=m_tSensitivity.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tSensitivity.size(); i++)
   {
     if (m_tSensitivity[i] != NULL)
     {
@@ -112,7 +111,7 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
   for (auto pSensitivity : m_tSensitivity)
   {
     const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->UpdateAndGetStimulationTable() };
-    for (int j=0; j< vectStimulation.size(); j++)
+    for (size_t j=0; j< vectStimulation.size(); j++)
     {
       m_CurSatisfaction += pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
@@ -131,7 +130,7 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
 // Get / Set for attributes
 //===========================================================================
 
-bool CFeelingWelfare::AddSensitivity(CSensor* pSens, int tableMaskSize, double* pTableMask)
+bool CFeelingWelfare::AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* pTableMask)
 {
   if (pSens->GetSubCaptorNumber() != tableMaskSize)
     return false;
@@ -154,7 +153,7 @@ double CFeelingWelfare::GetCurFeelingWelfare()
   return (m_CurSatisfaction);
 }
 
-double CFeelingWelfare::GetSensorFeelingImpact(int index, std::string &infoStr)
+double CFeelingWelfare::GetSensorFeelingImpact(size_t index, std::string &infoStr)
 {
   double satisfaction = 0;
   Sensitivity_t* pSensitivity = NULL;
@@ -163,7 +162,7 @@ double CFeelingWelfare::GetSensorFeelingImpact(int index, std::string &infoStr)
   {
     pSensitivity = m_tSensitivity[index];
     const std::vector<sensorValType>& vectStimulation { pSensitivity->m_pSens->UpdateAndGetStimulationTable() };
-    for (int j = 0; j < vectStimulation.size(); j++)
+    for (size_t j = 0; j < vectStimulation.size(); j++)
     {
       satisfaction = pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }

@@ -53,7 +53,7 @@ CEntityCreatorDlg::CEntityCreatorDlg(CWnd* pParent, int coordX, int coordY, int 
   m_StartCoordY = coordY;
   m_StartLayer  = layer;
 
-  m_NewEntityId = -1;
+  m_NewEntityId = ENTITY_ID_INVALID;
 
   m_GenomeEditRequired = true;
   m_OpenedFileName = "";

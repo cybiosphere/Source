@@ -249,7 +249,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>../Exec/ProjectWizardD.exe</OutputFile>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

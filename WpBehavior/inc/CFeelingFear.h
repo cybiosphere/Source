@@ -105,7 +105,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  bool AddSensitivity(CSensor* pSens, int tableMaskSize, double* pTableMask);
+  bool AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* pTableMask);
 
   double GetCurFeelingFear();
 

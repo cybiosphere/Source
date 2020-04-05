@@ -57,8 +57,8 @@ CGrass::CGrass()
   // Input values
   
   // Default values 
-  Point_t coord = {-1, -1};
-  jumpToGridCoord(coord, -1);
+  Point_t coord = {invalidCoord, invalidCoord};
+  jumpToGridCoord(coord, true, invalidCoord);
   m_pGenome       = NULL;
   m_pBrain        = NULL;
 

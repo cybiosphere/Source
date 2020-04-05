@@ -79,7 +79,7 @@ class DLL_CYBIOCORE_API CMeasureEntityParam : public CMeasureParam
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CMeasureEntityParam(CBasicEntity* pEntity, int paramIndex, int period, int id);
+	CMeasureEntityParam(CBasicEntity* pEntity, size_t paramIndex, int period, int id);
 	virtual ~CMeasureEntityParam();
 
 //---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  int GetSubTypeId();
+  size_t GetSubTypeId();
   CBasicEntity* GetpEntity();
 
 };

@@ -81,7 +81,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  string GetSubCaptorLabel(int index);
+  string GetSubCaptorLabel(size_t index);
 };
 
 #endif // !defined(SENSORPLEASURE_INCLUDED_)

@@ -295,24 +295,24 @@ CBasicEntity::CBasicEntity()
   m_IsAttached  = false;
   m_bHasChanged = false;
   m_bHasMoved   = true;
-  m_indCurrentLifeStage = -1;
+  m_indCurrentLifeStage = invalidIndex;
   m_HourCounter = 0;
   m_Id = ENTITY_ID_INVALID;
   m_Direction   = 0;
   m_StepDirection   = 0;
-  m_Layer = -1;
-  m_PrevLayer = -1;
-  m_GridCoord.x = -1;
-  m_GridCoord.y = -1;
-  m_StepCoord.x = -1;
-  m_StepCoord.y = -1;
-  m_PrevGridCoord.x = -1;
-  m_PrevGridCoord.y = -1;
-  m_PrevStepCoord.x = -1;
-  m_PrevStepCoord.y = -1;
+  m_Layer = invalidCoord;
+  m_PrevLayer = invalidCoord;
+  m_GridCoord.x = invalidCoord;
+  m_GridCoord.y = invalidCoord;
+  m_StepCoord.x = invalidCoord;
+  m_StepCoord.y = invalidCoord;
+  m_PrevGridCoord.x = invalidCoord;
+  m_PrevGridCoord.y = invalidCoord;
+  m_PrevStepCoord.x = invalidCoord;
+  m_PrevStepCoord.y = invalidCoord;
   m_PrevStepDirection = -1;
-  m_GuiGridCoord.x = -1;
-  m_GuiGridCoord.y = -1;
+  m_GuiGridCoord.x = invalidCoord;
+  m_GuiGridCoord.y = invalidCoord;
   m_bIsImmortal = false;
   m_bIsDrinkable = false;
 
@@ -333,11 +333,11 @@ CBasicEntity::CBasicEntity()
   m_pPhyAttribute = new CGenericCaract("Attribute");
 
   // Parameter id pre-init
-  m_id_Weight     = -1; 
-  m_id_Toxicity   = -1;
-  m_id_Protection = -1;   
-  m_id_Camouflage = -1;
-  m_id_Noise      = -1;
+  m_id_Weight     = invalidIndex; 
+  m_id_Toxicity   = invalidIndex;
+  m_id_Protection = invalidIndex;   
+  m_id_Camouflage = invalidIndex;
+  m_id_Noise      = invalidIndex;
 
   m_EntitySignature = 0;
   m_Control = CONTROL_LOCAL_AUTO;
@@ -397,7 +397,7 @@ CBasicEntity::~CBasicEntity()
 bool CBasicEntity::setEntityFromGenome(double mutationRate)
 {
   bool resu = false;
-  int i,j;
+  size_t i,j;
   if (m_pGenome==NULL)
   {
     // Set mandatory caracters with default values
@@ -589,7 +589,7 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   BYTE* pData = rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   DWORD scaledVal;
   GeneSubType_e subType = pGen->getGeneSubType();
 
@@ -737,7 +737,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -757,7 +757,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_WEIGHT:
     {
-      if (m_id_Weight != -1) delete(getParameter(m_id_Weight)); // delete if already set
+      if (m_id_Weight != invalidIndex) delete(getParameter(m_id_Weight)); // delete if already set
       minVal  = scaledVal1;
       initVal = scaledVal2;
       maxVal  = scaledVal3;
@@ -768,7 +768,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_TOXICITY:
     {
-      if (m_id_Toxicity != -1) delete(getParameter(m_id_Toxicity)); // delete if already set
+      if (m_id_Toxicity != invalidIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -779,7 +779,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_PROTECTION:
     {
-      if (m_id_Protection != -1) delete(getParameter(m_id_Protection)); // delete if already set
+      if (m_id_Protection != invalidIndex) delete(getParameter(m_id_Protection)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -790,7 +790,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_CAMOUFLAGE:
     {
-      if (m_id_Camouflage != -1) delete(getParameter(m_id_Camouflage)); // delete if already set
+      if (m_id_Camouflage != invalidIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -827,27 +827,27 @@ bool CBasicEntity::completeParamsWithDefault(void)
 {
   // Check if all mandatory parameters were set by genome
   // If not, use default value
-  if (m_id_Weight == -1)
+  if (m_id_Weight == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(1,2,2,20,"Weight",PARAM_PHYSIC,GENE_PARAM_WEIGHT);
     m_id_Weight           = addParameter(pParam);
   }
-  if (m_id_Toxicity == -1)
+  if (m_id_Toxicity == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Toxicity rate",PARAM_PHYSIC,GENE_PARAM_TOXICITY);
     m_id_Toxicity         = addParameter(pParam);
   }
-  if (m_id_Protection == -1)
+  if (m_id_Protection == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,5,5,100,"Protection factor",PARAM_PHYSIC,GENE_PARAM_PROTECTION);
     m_id_Protection       = addParameter(pParam);
   }
-  if (m_id_Camouflage == -1)
+  if (m_id_Camouflage == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,1,1,100,"Camouflage factor",PARAM_PHYSIC,GENE_PARAM_CAMOUFLAGE);
     m_id_Camouflage       = addParameter(pParam);
   }
-  if (m_id_Noise == -1)
+  if (m_id_Noise == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"NoiseRate",PARAM_ENVIRONMENT,GENE_GENERIC_UNKNOWN);
     m_id_Noise       = addParameter(pParam);
@@ -979,7 +979,7 @@ CSensor* CBasicEntity::getTemporarySensorFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-int  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
+size_t  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
 {
   return (0);
 }
@@ -1264,7 +1264,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
   // We are sure Gene is a caracteristic
   auto rawData = pGen->getData();
   BYTE* pData = rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<1)
   {
     return (caractStr);
@@ -1295,7 +1295,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_ODOR:
     {
-      if ( (data1>-1) && (data1<ODOR_NUMBER_TYPE) )
+      if (data1<ODOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += OdorTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1304,7 +1304,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_PHEROMONE:
     {
-      if ( (data1>-1) && (data1<PHEROMONE_NUMBER_TYPE) )
+      if (data1<PHEROMONE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PheromoneTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1313,7 +1313,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_TASTE:
     {
-      if ( (data1>-1) && (data1<TASTE_NUMBER_TYPE) )
+      if (data1<TASTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TasteTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1322,7 +1322,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_FORM:
     {
-      if ( (data1>-1) && (data1<FORM_NUMBER_TYPE) )
+      if (data1<FORM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += FormTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1331,7 +1331,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_REPRO_TYPE:
     {
-      if ( (data1>-1) && (data1<REPRODUCT_NUMBER_TYPE) )
+      if (data1<REPRODUCT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ReproTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1340,7 +1340,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_HABITAT:
     {
-      if ( (data1>-1) && (data1<HABITAT_NUMBER_TYPE) )
+      if (data1<HABITAT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += HabitatTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1349,7 +1349,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_CONSUME_TYPE:
     {
-      if ( (data1>-1) && (data1<CONSUM_NUMBER_TYPE) )
+      if (data1<CONSUM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ConsumeTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1358,7 +1358,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_MOVE_TYPE:
     {
-      if ( (data1>-1) && (data1<MOVE_NUMBER_TYPE) )
+      if (data1<MOVE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += MoveTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1367,7 +1367,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_TEXTURE:
     {
-      if ( (data1>-1) && (data1<TEXTURE_NUMBER_TYPE) )
+      if (data1<TEXTURE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TextureTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1376,7 +1376,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_PHY_ATTRIBUTE:
     {
-      if ( (data1>-1) && (data1<PHY_ATTRIBUTE_NUMBER_TYPE) )
+      if (data1<PHY_ATTRIBUTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PhyAttributeTypeNameList[data1]; tempStr += " ";
         caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
@@ -1416,7 +1416,7 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -1762,8 +1762,8 @@ bool CBasicEntity::isAttachedToBiotop()
 void CBasicEntity::autoRemove()
 {
   m_Status = STATUS_TOBEREMOVED;
-  Point_t coord = {-1,-1};
-  jumpToGridCoord(coord, -1);
+  Point_t coord = { invalidCoord, invalidCoord };
+  jumpToGridCoord(coord, true, invalidCoord);
 
   if (m_pBiotop!=NULL)
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_REMOVED, this);
@@ -1869,7 +1869,7 @@ ColorCaracterType_e CBasicEntity::convertRgbColorInCaracter(COLORREF rbg)
 int CBasicEntity::addParameter(CGenericParam* pParam)
 {
   m_tParam.push_back(pParam);
-  return (m_tParam.size()-1);
+  return ((int)m_tParam.size()-1);
 }
 
 //---------------------------------------------------------------------------
@@ -1883,7 +1883,7 @@ int CBasicEntity::addParameter(CGenericParam* pParam)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-unsigned int CBasicEntity::getNumParameter()
+size_t CBasicEntity::getNumParameter()
 {
   return(m_tParam.size());
 }
@@ -1899,9 +1899,9 @@ unsigned int CBasicEntity::getNumParameter()
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGenericParam* CBasicEntity::getParameter(unsigned int id)
+CGenericParam* CBasicEntity::getParameter(size_t id)
 {
-  if ( (id<0) || (id>m_tParam.size()) )
+  if (id > m_tParam.size())
   {
     return (NULL);
   }
@@ -1921,15 +1921,15 @@ CGenericParam* CBasicEntity::getParameterByName(string paramName)
   return (NULL);
 }
 
-int CBasicEntity::getParamIdByName(string paramName)
+size_t CBasicEntity::getParamIdByName(string paramName)
 {
-  for (unsigned int id=0; id<m_tParam.size(); id++)
+  for (size_t id=0; id<m_tParam.size(); id++)
   {
     if (m_tParam[id]->getLabel() == paramName)
       return (id);
   }
 
-  return (-1);
+  return (invalidIndex);
 }
 
 
@@ -1946,8 +1946,7 @@ int CBasicEntity::getParamIdByName(string paramName)
 //---------------------------------------------------------------------------
 void CBasicEntity::deleteAllParameters() 
 {
-  // loop from top to bottom 
-  for (int i=m_tParam.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tParam.size(); i++)
   {
     if (m_tParam[i] != NULL)
       delete m_tParam[i]; 
@@ -2009,7 +2008,7 @@ void CBasicEntity::nextHour()
 //---------------------------------------------------------------------------
 void CBasicEntity::nextDay(bool forceGrowth)
 {
-  if (m_indCurrentLifeStage>-1)
+  if (m_indCurrentLifeStage < m_tLifeStage.size())
   {
     CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
     if (pLifeStage->increaseDayCountAndCheckEnd())
@@ -2099,7 +2098,7 @@ void CBasicEntity::quickAgeing(int nbDays)
 //---------------------------------------------------------------------------
 bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
 {
-  unsigned int index = 0;
+  size_t index = 0;
   bool resu = false;
 
   while ( (index<m_tLifeStage.size()) 
@@ -2132,8 +2131,7 @@ bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
 //---------------------------------------------------------------------------
 void CBasicEntity::deleteAllLifeStages() 
 {
-  // loop from top to bottom 
-  for (int i=m_tLifeStage.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tLifeStage.size(); i++)
   {
     if (m_tLifeStage[i] != NULL)
       delete (m_tLifeStage[i]); 
@@ -2155,7 +2153,7 @@ void CBasicEntity::deleteAllLifeStages()
 bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage) 
 {
   bool resu = false;
-  for (unsigned int i=0; i<m_tLifeStage.size(); i++)
+  for (size_t i=0; i<m_tLifeStage.size(); i++)
   {
     if (newStage == m_tLifeStage[i]->getStageType())
     {
@@ -2219,7 +2217,7 @@ feedbackValType CBasicEntity::forceNextAction(choiceIndType myChoice)
 //---------------------------------------------------------------------------
 choiceIndType CBasicEntity::predictNextAction()
 {
-  choiceIndType autoChoice = -1;
+  choiceIndType autoChoice = invalidIndex;
   return (autoChoice);
 }
 
@@ -2239,30 +2237,30 @@ bool CBasicEntity::moveLinear(int nbSteps)
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
 
-  Point_t relPos = {nbSteps,0};
+  RelativePos_t relPos = {nbSteps,0};
   Point_t newStepCoord = getStepCoordRelative(relPos);
-  Point_t newGridCoord;
+  size_t newGridCoordX, newGridCoordY;
 
-  newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
-  newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE; 
+  newGridCoordX = getGridPosFromStepPos(newStepCoord.x);
+  newGridCoordY = getGridPosFromStepPos(newStepCoord.y);
 
-  int nbGridMove = cybio_max( abs(newGridCoord.x - m_GridCoord.x), abs(newGridCoord.y - m_GridCoord.y) );
+  int nbGridMove = cybio_max( abs((int)newGridCoordX - (int)m_GridCoord.x), abs((int)newGridCoordY - (int)m_GridCoord.y) );
 
   Point_t nextGridCoord = m_GridCoord;
   bool resu = true;
   for (int i=0; i<nbGridMove; i++)
   {
-    if (newGridCoord.x > nextGridCoord.x)
+    if (newGridCoordX > nextGridCoord.x)
        nextGridCoord.x++;
-    else if (newGridCoord.x < nextGridCoord.x)
+    else if (newGridCoordX < nextGridCoord.x)
        nextGridCoord.x--; 
 
-    if (newGridCoord.y > nextGridCoord.y)
+    if (newGridCoordY > nextGridCoord.y)
        nextGridCoord.y++;
-    else if (newGridCoord.y < nextGridCoord.y)
+    else if (newGridCoordY < nextGridCoord.y)
        nextGridCoord.y--; 
 
-    resu = jumpToGridCoord(nextGridCoord);
+    resu = jumpToGridCoord(nextGridCoord, false);
 
     if (!resu)
       break;
@@ -2291,31 +2289,31 @@ bool CBasicEntity::moveLinear(int nbSteps)
 //  
 // REMARKS:      coord -1,-1 can be used to move entity out of the game
 //---------------------------------------------------------------------------
-bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
+bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer)
 {
   bool resu;
 
   if (m_pBiotop==NULL)
   {
-    m_PrevGridCoord.x = -1;
-    m_PrevGridCoord.y = -1;
-    m_PrevStepCoord.x = -1;
-    m_PrevStepCoord.y = -1;
+    m_PrevGridCoord.x = invalidCoord;
+    m_PrevGridCoord.y = invalidCoord;
+    m_PrevStepCoord.x = invalidCoord;
+    m_PrevStepCoord.y = invalidCoord;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
     m_bHasChanged = true;
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_PrevLayer = -1; 
-    if (newLayer>-2)
+    m_PrevLayer = invalidCoord;
+    if (chooseLayer)
     {    
       m_Layer = newLayer;
     }
     resu = true;
   }
   else if ( m_pBiotop->isCoordValidAndFree(newGridCoord,m_Layer)  // valid
-         || ( (newGridCoord.x == -1) && (newGridCoord.y == -1) )  // or out
-         || (m_Layer == -1) )
+         || ( (newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord) )  // or out
+         || (m_Layer == invalidCoord) )
   {
     // newCoord valid ... Move
     m_PrevGridCoord = m_GridCoord;
@@ -2326,7 +2324,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_PrevLayer = m_Layer; 
-    if (newLayer>-2)
+    if (chooseLayer)
     { 
       m_Layer = newLayer;
     }    
@@ -2353,7 +2351,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, int newLayer)
 //  
 // REMARKS:      coord -1,-1 can be used to move entity out of the game
 //---------------------------------------------------------------------------
-bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, int newLayer)
+bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer)
 {
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
@@ -2365,7 +2363,7 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, int newLayer)
   newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE;
   if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) )
   {
-    if (!jumpToGridCoord(newGridCoord, newLayer))
+    if (!jumpToGridCoord(newGridCoord, chooseLayer, newLayer))
       return (false);
   }
 
@@ -2487,9 +2485,9 @@ bool CBasicEntity::turnToCenterDir()
 //  
 // REMARKS:      Directly called by CReaction
 //---------------------------------------------------------------------------
-bool CBasicEntity::turnRight(unsigned int nDegree)
+bool CBasicEntity::turnRight(size_t nDegree)
 {
-  setStepDirection(m_StepDirection + 360 - nDegree);
+  setStepDirection(m_StepDirection + 360 - (int)nDegree);
   return (true);
 }
 
@@ -2504,9 +2502,9 @@ bool CBasicEntity::turnRight(unsigned int nDegree)
 //  
 // REMARKS:      Directly called by CReaction
 //---------------------------------------------------------------------------
-bool CBasicEntity::turnLeft(unsigned int nDegree)
+bool CBasicEntity::turnLeft(size_t nDegree)
 {
-  setStepDirection(m_StepDirection + nDegree);
+  setStepDirection(m_StepDirection + (int)nDegree);
   return (true);
 }
 
@@ -2605,8 +2603,7 @@ bool CBasicEntity::checkHabitat(void)
 //---------------------------------------------------------------------------
 void CBasicEntity::deleteAllGestationChilds() 
 {
-  // loop from top to bottom 
-  for (int i=m_tGestationChilds.size()-1; i>=0; i--) 
+  for (size_t i = 0; i < m_tGestationChilds.size(); i++)
   {
     if (m_tGestationChilds[i] != NULL)
       delete (m_tGestationChilds[i]); 
@@ -2679,7 +2676,7 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
     pElement->SetAttribute( XML_ATTR_LABEL,      tempLabel);
     pElement->SetAttribute( XML_ATTR_GENERATION, m_Generation);
     pElement->SetAttribute( XML_ATTR_STATUS,     m_Status);
-    pElement->SetAttribute( XML_ATTR_LAYER,      m_Layer);
+    pElement->SetAttribute( XML_ATTR_LAYER,      (int)m_Layer);
     pElement->SetAttribute( XML_ATTR_DIRECTION,  m_Direction);
     pElement->SetAttribute( XML_ATTR_HOUR_COUNT, m_HourCounter);
     pElement->SetAttribute( XML_ATTR_IMMORTAL,   (int)m_bIsImmortal);
@@ -2703,7 +2700,7 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
   {
     // Set attributes
     pElement = (TiXmlElement*)pNode;
-    pElement->SetAttribute( XML_ATTR_CURRENT_IND, m_indCurrentLifeStage);
+    pElement->SetAttribute( XML_ATTR_CURRENT_IND, (int)m_indCurrentLifeStage);
 
     for (i=0; i<getNbLifeStages(); i++)
     {
@@ -2980,13 +2977,16 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
       m_bIsImmortal = true;
 
     // Life stage management
-    int prevLifeStage = m_indCurrentLifeStage;
+    size_t prevLifeStage = m_indCurrentLifeStage;
+    int readIndLifeStage;
     pNode = pNodeEntity->FirstChild(XML_NODE_LIFE_STAGES);
     if ((pNode!=NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
     {
       pElement = (TiXmlElement*)pNode;
-      if ( pElement->QueryIntAttribute(XML_ATTR_CURRENT_IND,  &m_indCurrentLifeStage) == TIXML_NO_ATTRIBUTE)
+      if ( pElement->QueryIntAttribute(XML_ATTR_CURRENT_IND,  &readIndLifeStage) == TIXML_NO_ATTRIBUTE)
         m_indCurrentLifeStage = 0;
+      else
+        m_indCurrentLifeStage = readIndLifeStage;
 
       if ( (m_indCurrentLifeStage != prevLifeStage) && (getNbLifeStages()>0) && (m_indCurrentLifeStage<getNbLifeStages()) )
       {
@@ -2994,18 +2994,21 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
         enterInNewLifeStage(pLifeStage);
       }
 
-      int index, dayCount;
+      int indexRead, dayCount;
+      size_t index;
       pNode = pNode->FirstChild();
       while (pNode != NULL)
       {
         if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_LIFE_STAGE))
         {
           pElement = (TiXmlElement*)pNode;
-          if ( pElement->QueryIntAttribute(XML_ATTR_INDEX,  &index) == TIXML_NO_ATTRIBUTE)
-            index = -1;
+          if (pElement->QueryIntAttribute(XML_ATTR_INDEX, &indexRead) == TIXML_NO_ATTRIBUTE)
+            index = invalidIndex;
+          else
+            index = indexRead;
           if ( pElement->QueryIntAttribute(XML_ATTR_DAY_COUNT,  &dayCount) == TIXML_NO_ATTRIBUTE)
             dayCount = 0;
-          if ((index>-1) && (index<getNbLifeStages()))
+          if (index < getNbLifeStages())
             getLifeStage(index)->setCurDayCount(dayCount);
         }
         pNode = pNode->NextSibling();
@@ -3207,7 +3210,7 @@ Point_t CBasicEntity::getGuiGridCoord()
   return (m_GuiGridCoord);
 }
 
-Point_t CBasicEntity::getGridCoordRelative(Point_t relativeCoord)
+Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
 {
   Point_t position;
   //  Optimisation
@@ -3270,30 +3273,34 @@ Point_t CBasicEntity::getStepCoord()
   return (m_StepCoord);
 }
 
-Point_t CBasicEntity::getStepCoordRelative(Point_t relativeCoord)
+Point_t CBasicEntity::getStepCoordRelative(const RelativePos_t& relativeCoord)
 {
   Point_t position;
- 
+  int posX, posY;
   // Distant cell: use trigo
   double aRad = (double)m_StepDirection * CYBIO_PI / 180.0;
-  position.x= m_StepCoord.x + cybio_round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y);
-  position.y= m_StepCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
+  posX = (int)m_StepCoord.x + cybio_round(cos(aRad)*relativeCoord.x - sin(aRad)*relativeCoord.y);
+  posY = (int)m_StepCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
 
   // avoid <0 coord
-  if (position.x < 0)
+  if (posX < 0)
     position.x = 0;
-  if (position.y < 0)
+  else
+    position.x = posX;
+  if (posY < 0)
     position.y = 0;
+  else
+    position.y = posY;
 
   return (position);
 }
 
-int CBasicEntity::getLayer() 
+size_t CBasicEntity::getLayer() 
 {
   return (m_Layer);
 }
 
-int CBasicEntity::getPrevLayer() 
+size_t CBasicEntity::getPrevLayer()
 {
   return (m_PrevLayer);
 }
@@ -3648,21 +3655,21 @@ void CBasicEntity::forceWeight(double newWeight)
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 
 {
-  if ( (-1<m_indCurrentLifeStage) && (m_indCurrentLifeStage<m_tLifeStage.size()) )
+  if (m_indCurrentLifeStage<m_tLifeStage.size())
     return (m_tLifeStage[m_indCurrentLifeStage]);
   else
     return (NULL);
 }
 
-CLifeStage* CBasicEntity::getLifeStage(int index)
+CLifeStage* CBasicEntity::getLifeStage(size_t index)
 { 
-  if ( (index>-1) && (index < m_tLifeStage.size()) )
+  if (index < m_tLifeStage.size())
     return (m_tLifeStage[index]);
   else
     return (NULL);
 }
 
-unsigned int CBasicEntity::getNbLifeStages()
+size_t CBasicEntity::getNbLifeStages()
 {
   return (m_tLifeStage.size());
 }
@@ -3722,7 +3729,7 @@ string CBasicEntity::getReproStrName(ReproType_e type)
   return (ReproTypeNameList[type]);
 }
 
-string CBasicEntity::getRelativePosStrName(int index)
+string CBasicEntity::getRelativePosStrName(size_t index)
 {
   string directionStr;
 
@@ -3760,7 +3767,7 @@ string CBasicEntity::getRelativePosStrName(int index)
   return directionStr;
 }
 
-string CBasicEntity::getAbsolutePosStrName(int index)
+string CBasicEntity::getAbsolutePosStrName(size_t index)
 {
   string directionStr;
 
@@ -3849,10 +3856,8 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
   if (m_pBiotop != NULL)
   {
     int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
-    Point_t relOffset { getCurrentSpeed(), 0 };
-    Point_t relPos = getGridCoordFromStepCoord(relOffset);
-    Point_t relOffsetRef { pReference->getCurrentSpeed(), 0 };
-    Point_t relPosRef = getGridCoordFromStepCoord(relOffsetRef);
+    RelativePos_t relPos{ (int)getGridPosFromStepPos(getCurrentSpeed()), 0 };
+    RelativePos_t relPosRef{ (int)getGridPosFromStepPos(pReference->getCurrentSpeed()), 0 };
     int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
     relativeSpeed = distInitial - distFuture;
   }
@@ -3909,4 +3914,9 @@ Point_t CBasicEntity::getGridCoordFromStepCoord(Point_t stepCoord)
   gridCoord.x = stepCoord.x / NB_STEPS_PER_GRID_SQUARE; 
   gridCoord.y = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
   return gridCoord;
+}
+
+size_t CBasicEntity::getGridPosFromStepPos(size_t stepCoord)
+{
+  return (stepCoord / NB_STEPS_PER_GRID_SQUARE);
 }

@@ -101,9 +101,9 @@ const std::vector<sensorValType>& CSensorTiredness::UpdateAndGetStimulationTable
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorTiredness::GetSubCaptorLabel(int index)
+string CSensorTiredness::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
     return ("level");

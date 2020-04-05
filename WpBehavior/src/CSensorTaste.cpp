@@ -88,7 +88,7 @@ CSensorTaste::~CSensorTaste()
 const std::vector<sensorValType>& CSensorTaste::UpdateAndGetStimulationTable()
 {
   int* pTasteLeveltable = m_pBrain->getAnimal()->getpTasteLevelTable();
-  for (int i=0; i<m_SubCaptorNumber; i++)
+  for (size_t i=0; i<m_SubCaptorNumber; i++)
   {
     m_tStimulationValues[i] = pTasteLeveltable[i+TASTE_NONE];
   }
@@ -108,15 +108,15 @@ const std::vector<sensorValType>& CSensorTaste::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorTaste::GetSubCaptorLabel(int index)
+string CSensorTaste::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {
     TasteType_e tasteId = TASTE_NONE;
     tasteId = (TasteType_e)(tasteId+1);
-    for (int i=0; (i<index)&&(i<TASTE_NUMBER_TYPE); i++)
+    for (size_t i=0; (i<index)&&(i<TASTE_NUMBER_TYPE); i++)
       tasteId = (TasteType_e)(tasteId+1);
     return (CBasicEntity::getTasteStrName(tasteId) );
   }

@@ -141,16 +141,18 @@ namespace clan
     {
       int entityId = e.get_argument(index);
       int layer = e.get_argument(index + 1);
-      stepCoord.x = e.get_argument(index + 2);
-      stepCoord.y = e.get_argument(index + 3);
+      int stepCoordx = e.get_argument(index + 2);
+      int stepCoordy = e.get_argument(index + 3);
       int direction = e.get_argument(index + 4);
+      stepCoord.x = stepCoordx;
+      stepCoord.y = stepCoordy;
       index += 5;
 
       CBasicEntity* pClonedNewEntity = pBiotop->createCloneEntity(pModelEntity);
       pClonedNewEntity->setStepDirection(direction);
       if (setAsRemoteControl)
       {
-        if (!pBiotop->addRemoteCtrlEntity(entityId, pClonedNewEntity, stepCoord, layer))
+        if (!pBiotop->addRemoteCtrlEntity(entityId, pClonedNewEntity, stepCoord, true, layer))
         {
           delete pClonedNewEntity;
           return false;
@@ -158,7 +160,7 @@ namespace clan
       }
       else
       {
-        if (!pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer))
+        if (!pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer))
         {
           delete pClonedNewEntity;
           return false;
@@ -258,9 +260,9 @@ namespace clan
     newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     newEvent.add_argument(pEntity->getStatus());
-    newEvent.add_argument(pEntity->getStepCoord().x);
-    newEvent.add_argument(pEntity->getStepCoord().y);
-    newEvent.add_argument(pEntity->getLayer());
+    newEvent.add_argument((int)pEntity->getStepCoord().x);
+    newEvent.add_argument((int)pEntity->getStepCoord().y);
+    newEvent.add_argument((int)pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument((int)pEntity->isImmortal());
     // Add parameters
@@ -272,8 +274,8 @@ namespace clan
     if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
     {
       CAnimal* pAnimal = (CAnimal*)pEntity;
-      newEvent.add_argument(pAnimal->getBrain()->GetCurrentReactionIndex());
-      newEvent.add_argument(pAnimal->getBrain()->GetCurrentPurposeIndex());
+      newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentReactionIndex());
+      newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentPurposeIndex());
     }
     return (std::move(newEvent));
   }
@@ -284,11 +286,13 @@ namespace clan
     std::string  entityLabel = e.get_argument(1);
     int status = e.get_argument(2);
     Point_t position;
-    position.x = e.get_argument(3);
-    position.y = e.get_argument(4);
+    int positionx = e.get_argument(3);
+    int positiony = e.get_argument(4);
     int layer = e.get_argument(5);
     int direction = e.get_argument(6);
     int isImmortal = e.get_argument(7);
+    position.x = positionx;
+    position.y = positiony;
 
     // Check if entity exists
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
@@ -300,7 +304,7 @@ namespace clan
       if (pEntity->getLabel() != entityLabel)
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
       pEntity->setStatus((StatusType_e)status);
-      pEntity->jumpToStepCoord(position, layer);
+      pEntity->jumpToStepCoord(position, true, layer);
       pEntity->setStepDirection(direction);
       pEntity->setImmortal(isImmortal);
       // Update parameters
@@ -633,7 +637,7 @@ namespace clan
 
     if (setAsRemoteControl)
     {
-      if (!pBiotop->addRemoteCtrlEntity(entityId, pNewEntity, stepCoord, layer))
+      if (!pBiotop->addRemoteCtrlEntity(entityId, pNewEntity, stepCoord, true, layer))
       {
         delete pNewEntity;
         return false;
@@ -641,7 +645,7 @@ namespace clan
     }
     else
     {
-      if (!pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer))
+      if (!pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer))
       {
         delete pNewEntity;
         return false;

@@ -105,8 +105,8 @@ protected:
   BiotopTime_t   m_StartBioTime;
   timeCountType  m_TotalMeasNbFromStart;
   MeasureData_t  m_tCurValTable[MAX_MEASUREMENT_DATA_SIZE];
-  int            m_IndexCurData;
-  int            m_paramIndex;
+  size_t         m_IndexCurData;
+  size_t         m_paramIndex;
   CBasicEntity*  m_pEntity;
 
   EventType_e   m_EventType;
@@ -173,10 +173,10 @@ public:
   int GetId();
   string GetLabel();
   MeasureType_e GetType();
-  virtual int GetSubTypeId();
+  virtual size_t GetSubTypeId();
   MeasureData_t* GetPMeasureData();
-  int GetIndexCurData();
-  int GetTotalMeasureNumberFromStart();
+  size_t GetIndexCurData();
+  timeCountType GetTotalMeasureNumberFromStart();
   double GetRangeMin();
   double GetRangeMax();
   bool AutoUpdateRange();
@@ -186,7 +186,7 @@ public:
   EventType_e GetEventType();
   double GetEventThreshold();
   static string getEventTypeStrName(EventType_e type);
-  int GetParameterIndex();
+  size_t GetParameterIndex();
   CBasicEntity* GetEntity();
 };
 

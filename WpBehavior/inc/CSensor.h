@@ -69,7 +69,7 @@ class DLL_CYBIOCORE_API CSensor
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-  int                        m_SubCaptorNumber;
+  size_t                     m_SubCaptorNumber;
   string                     m_Label; // User defined name
   std::vector<double>        m_tSubCaptorWeightRate;
   std::vector<sensorValType> m_tStimulationValues;
@@ -87,16 +87,16 @@ private:
 //---------------------------------------------------------------------------
 public:
   CSensor(double weightRate, DWORD uniqueId);
-  CSensor(int subCaptorNumber, std::vector<double>& tSubCaptorWeightRate, DWORD uniqueId);
-  CSensor(int subCaptorNumber, double SubCaptorsWeightRate, DWORD uniqueId);
+  CSensor(size_t subCaptorNumber, std::vector<double>& tSubCaptorWeightRate, DWORD uniqueId);
+  CSensor(size_t subCaptorNumber, double SubCaptorsWeightRate, DWORD uniqueId);
   virtual ~CSensor();
 
 //---------------------------------------------------------------------------
 // Virtual
 //---------------------------------------------------------------------------
   virtual const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  virtual string GetSubCaptorLabel(int index) = 0;
-  virtual bool   IsSexSpecific(int captorIndex);
+  virtual string GetSubCaptorLabel(size_t index) = 0;
+  virtual bool   IsSexSpecific(size_t captorIndex);
 
 //---------------------------------------------------------------------------
 // Shared method
@@ -108,14 +108,14 @@ protected:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  int           GetSubCaptorNumber();
+  size_t        GetSubCaptorNumber();
   string        GetLabel();
   DWORD         GetUniqueId();
-  int           GetBonusRate(int subCaptorInd);
-  bool          SetBonusRate(int subCaptorInd, int bonus);
-  bool          SetBonusRate(int tableBonusSize, const std::vector<int>& pTableBonus);
+  int           GetBonusRate(size_t subCaptorInd);
+  bool          SetBonusRate(size_t subCaptorInd, int bonus);
+  bool          SetBonusRate(const std::vector<int>& tBonus);
   void          SetBonusRateToNeutral();
-  sensorValType GetSubCaptorStimulationLevel(int captorIndex = 0);
+  sensorValType GetSubCaptorStimulationLevel(size_t captorIndex = 0);
   const std::vector<sensorValType>& GetStimulationTable();
 
 };

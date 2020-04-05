@@ -40,7 +40,7 @@ distribution.
 // Constructors / Destructors
 //===========================================================================
 
-CMeasureEntityParam::CMeasureEntityParam(CBasicEntity* pEntity, int paramIndex, int period, int id)
+CMeasureEntityParam::CMeasureEntityParam(CBasicEntity* pEntity, size_t paramIndex, int period, int id)
 :CMeasureParam(pEntity->getParameter(paramIndex), period, id, MEASURE_TYPE_PARAMETER_ENTITY)
 {
   m_pEntity = pEntity;
@@ -77,7 +77,7 @@ bool CMeasureEntityParam::IsStillValid()
 // Get / Set for attributes
 //===========================================================================
 
-int CMeasureEntityParam::GetSubTypeId()
+size_t CMeasureEntityParam::GetSubTypeId()
 {
   return(m_paramIndex);
 }

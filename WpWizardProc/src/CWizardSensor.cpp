@@ -45,7 +45,7 @@ CWizardSensor::CWizardSensor(CAnimal* pAnimal, int nPreyNumber, CBasicEntity** t
 
   for (int i=0;i<MAX_NB_LAYER_VIEW;i++)
   {
-    m_tViewDesc[i].layer = -1;
+    m_tViewDesc[i].layer = invalidCoord;
     m_tViewDesc[i].nbWeight0 = 0;
     m_tViewDesc[i].pWeight0  = NULL;
     m_tViewDesc[i].nbWeight1 = 0;
@@ -64,8 +64,8 @@ bool CWizardSensor::InitViewDescLayer(CBasicEntity* pEntity, int range, ViewAngl
 {
   int nbWeight;
   int i;
-  int layer = pEntity->getLayer();
-  if ( ( m_tViewDesc[layer].layer == -1 ) && (pEntity != NULL) )
+  size_t layer = pEntity->getLayer();
+  if ( ( m_tViewDesc[layer].layer == invalidCoord) && (pEntity != NULL) )
   {
     m_tViewDesc[layer].layer  = pEntity->getLayer();
     m_tViewDesc[layer].range0 = 1;
@@ -103,13 +103,13 @@ bool CWizardSensor::InitViewDescLayer(CBasicEntity* pEntity, int range, ViewAngl
 
 bool CWizardSensor::AddBonusOnViewWeight(short* pWeight, int nbFocus, short bonusRate, CBasicEntity* pTarget, bool isMoving)
 {
-  int subOffsetForm    = -1;
-  int subOffsetColor   = -1;
-  int subOffsetTexture = -1;
-  int subOffsetAttrib  = -1;
-  int subOffsetIsMove  = -1;
-  int i,offset = 0;
-  int count = 0;
+  size_t subOffsetForm    = invalidIndex;
+  size_t subOffsetColor   = invalidIndex;
+  size_t subOffsetTexture = invalidIndex;
+  size_t subOffsetAttrib  = invalidIndex;
+  size_t subOffsetIsMove  = invalidIndex;
+  size_t i,offset = 0;
+  size_t count = 0;
 
   if (pTarget->getForm() >= FORM_FIRST_TYPE)
   {
@@ -138,13 +138,13 @@ bool CWizardSensor::AddBonusOnViewWeight(short* pWeight, int nbFocus, short bonu
 
   for (i=0; i<nbFocus; i++)
   {
-    if (subOffsetForm>-1)
+    if (subOffsetForm != invalidIndex)
       pWeight[offset + subOffsetForm]    += bonusRate / count;
-    if (subOffsetColor>-1)
+    if (subOffsetColor != invalidIndex)
       pWeight[offset + subOffsetColor]   += bonusRate / count;
-    if (subOffsetTexture>-1)
+    if (subOffsetTexture != invalidIndex)
       pWeight[offset + subOffsetTexture] += bonusRate / count;
-    if (subOffsetAttrib>-1)
+    if (subOffsetAttrib != invalidIndex)
       pWeight[offset + subOffsetAttrib]  += bonusRate / count;
     if (isMoving)
       pWeight[offset + subOffsetIsMove]  += bonusRate / count / 2;
@@ -157,11 +157,11 @@ bool CWizardSensor::AddBonusOnViewWeight(short* pWeight, int nbFocus, short bonu
 bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, short bonusRate, IdentificationType_e identity, 
                                                  bool isMoving, bool isDirLft, bool isDirRight)
 {
-  int subOffsetProxy    = -1;
-  int subOffsetEscape   = -1;
-  int subOffsetAppraoch = -1;
-  int subOffsetdirLeft  = -1;
-  int subOffsetdirRight = -1;
+  size_t subOffsetProxy    = invalidIndex;
+  size_t subOffsetEscape   = invalidIndex;
+  size_t subOffsetAppraoch = invalidIndex;
+  size_t subOffsetdirLeft  = invalidIndex;
+  size_t subOffsetdirRight = invalidIndex;
 
   int i,offset = 0;
   int count = 0;
@@ -189,15 +189,15 @@ bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, sh
 
   for (i=0; i<nbFocus; i++)
   {
-    if (subOffsetProxy>-1)
+    if (subOffsetProxy != invalidIndex)
       pWeight[offset + subOffsetProxy]    += bonusRate / count;
-    if (subOffsetEscape>-1)
+    if (subOffsetEscape != invalidIndex)
       pWeight[offset + subOffsetEscape]   += bonusRate / count;
-    if (subOffsetAppraoch>-1)
+    if (subOffsetAppraoch != invalidIndex)
       pWeight[offset + subOffsetAppraoch] += bonusRate / count;
-    if (subOffsetdirLeft>-1) 
+    if (subOffsetdirLeft != invalidIndex)
       pWeight[offset + subOffsetdirLeft]  += bonusRate / count / 2;
-    if (subOffsetdirRight>-1)
+    if (subOffsetdirRight != invalidIndex)
       pWeight[offset + subOffsetdirRight] += bonusRate / count / 2;
     offset += VIEW_IDENTIFY_SIZE_PER_FOCUS;
   }
@@ -209,7 +209,8 @@ bool CWizardSensor::AddBonusOnIdentifyViewWeight(short* pWeight, int nbFocus, sh
 
 bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int range, ViewAngleType_e angle, int nbFocus, int variation)
 {
-  int i,layer;
+  int i;
+  size_t layer;
   CWater water;
 
   // Find all view layers (entity layer + water layer + prey layer + predator layer
@@ -280,7 +281,7 @@ bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int r
 
   for(i=0;i<MAX_NB_LAYER_VIEW;i++)
   {
-    if (m_tViewDesc[i].layer != -1)
+    if (m_tViewDesc[i].layer != invalidCoord)
     {
       // view adjacent
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
@@ -352,7 +353,8 @@ bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int r
 
 bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRate, int range, ViewAngleType_e angle, int nbFocus, int variation)
 {
-   int i,layer;
+  int i;
+  size_t layer;
   CWater water;
 
   // Find all view layers (entity layer + water layer + prey layer + predator layer
@@ -397,7 +399,7 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
   for (i=0;i<m_nPreyNumber;i++)
   {
     layer = m_tPreyList[i]->getLayer();
-    if (layer>=0)
+    if (layer != invalidCoord)
     {
       AddBonusOnIdentifyViewWeight(m_tViewDesc[layer].pWeight0, m_tViewDesc[layer].nbFocus0, 100.0 + getRandInt(variation), IDENTIFICATION_FOOD);
       AddBonusOnIdentifyViewWeight(m_tViewDesc[layer].pWeight0, m_tViewDesc[layer].nbFocus0, 100.0 + getRandInt(variation), IDENTIFICATION_PREY, true);
@@ -409,7 +411,7 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
   for (i=0;i<m_nPredatorNumber;i++)
   {
     layer = m_tPredatorList[i]->getLayer();
-    if (layer>=0)
+    if (layer != invalidCoord)
     {
       AddBonusOnIdentifyViewWeight(m_tViewDesc[layer].pWeight0, m_tViewDesc[layer].nbFocus0, 200.0 + getRandInt(variation), IDENTIFICATION_PREDATOR, true);
       AddBonusOnIdentifyViewWeight(m_tViewDesc[layer].pWeight1, m_tViewDesc[layer].nbFocus1, 200.0 + getRandInt(variation), IDENTIFICATION_PREDATOR, true);
@@ -438,7 +440,7 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
 
   for(i=0;i<MAX_NB_LAYER_VIEW;i++)
   {
-    if (m_tViewDesc[i].layer != -1)
+    if (m_tViewDesc[i].layer != invalidCoord)
     {
       // view adjacent
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);

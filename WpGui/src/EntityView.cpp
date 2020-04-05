@@ -66,7 +66,7 @@ CEntityView::CEntityView()
 	: CFormView(CEntityView::IDD)
 {
 	//{{AFX_DATA_INIT(CEntityView)
-	m_nEntityId = -1;
+	m_nEntityId = ENTITY_ID_INVALID;
 	m_Label = _T("");
 	m_StageString = _T("");
 	m_checkImmortal = FALSE;
@@ -230,7 +230,7 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
   {
     m_pEntity = NULL;
     // Update data 
-    m_nEntityId = -1;
+    m_nEntityId = ENTITY_ID_INVALID;
     m_Label = "No selection";
     m_StageString = "";
 

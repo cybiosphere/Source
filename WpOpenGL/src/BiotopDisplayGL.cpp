@@ -423,7 +423,7 @@ void CBiotopDisplayGL::OnMouseMove(CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 // CBiotopDisplayGL calculateFramesPerSec
 
-void CBiotopDisplayGL::calculateFramesPerSec() 
+/*void CBiotopDisplayGL::calculateFramesPerSec() 
 {
 	// Get current time in seconds! Sytem time is in milliseconds since win98 started
   m_fTime = static_cast<float>(timeGetTime())*0.001f;
@@ -437,7 +437,7 @@ void CBiotopDisplayGL::calculateFramesPerSec()
 	} else {
 		m_iFrames++;
 	}
-}
+}*/
 
 void CBiotopDisplayGL::ConvertCoordBiotopGridToMap (int cbx, int cby, int &cmx, int &cmy)
 {

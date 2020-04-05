@@ -77,8 +77,8 @@ CMeasure::CMeasure(int period, int id, double rangeMin, double rangeMax, Measure
   m_StartBioTime.days    = 0;
   m_StartBioTime.years   = 0;
   m_TotalMeasNbFromStart = 0;
-  m_IndexCurData = -1;
-  m_paramIndex = -1;
+  m_IndexCurData = invalidIndex;
+  m_paramIndex = invalidIndex;
   m_pEntity = NULL;
 
   m_EventType = EVENT_TYPE_NONE;
@@ -102,7 +102,7 @@ CMeasure::~CMeasure()
 void CMeasure::StartMeasurement(BiotopTime_t startTime)
 {
   m_bIsRecording  = true;
-  m_CounterPeriod = -1;
+  m_CounterPeriod = 0;
   // For new measures, set initial time
   if (m_TotalMeasNbFromStart == 0)
   {
@@ -110,8 +110,9 @@ void CMeasure::StartMeasurement(BiotopTime_t startTime)
     m_StartBioTime.hours = startTime.hours;
     m_StartBioTime.days = startTime.days;
     m_StartBioTime.years = startTime.years;
-    m_IndexCurData = -1;
+    m_IndexCurData = invalidIndex;
   }
+  NextSecond();
 }
 
 void CMeasure::StopMeasurement()
@@ -126,11 +127,10 @@ bool CMeasure::NextSecond()
 {
   if (m_bIsRecording)
   {
-    m_CounterPeriod = (m_CounterPeriod+1)%m_Period;
-    if (m_CounterPeriod==0)
+    if (m_CounterPeriod == 0)
     {
       timeCountType prevTime;
-      if (m_IndexCurData>-1)
+      if (m_IndexCurData != invalidIndex)
         prevTime = m_tCurValTable[m_IndexCurData].timeCount;
       else
         prevTime =  convertBioTimeToCount(m_StartBioTime) - m_Period + 1;
@@ -140,6 +140,7 @@ bool CMeasure::NextSecond()
       m_tCurValTable[m_IndexCurData].timeCount = prevTime + m_Period;
       m_TotalMeasNbFromStart++;
     }
+    m_CounterPeriod = (m_CounterPeriod + 1) % m_Period;
   }
 
   return (IsStillValid());
@@ -201,7 +202,7 @@ bool CMeasure::CheckEvent(void)
 //===========================================================================
 string CMeasure::buildStringDataFromMeasure()
 {
-  int i;
+  size_t i;
   string tmpStr;
   string strMeasure = GetLabel() + "\n";
 
@@ -209,13 +210,13 @@ string CMeasure::buildStringDataFromMeasure()
   {
     for (i = m_IndexCurData + 1; i < MAX_MEASUREMENT_DATA_SIZE; i++)
     {
-      tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
+      tmpStr = FormatString("%u;", m_tCurValTable[i].timeCount);
       strMeasure += tmpStr;
     }
   }
   for (i = 0; i <= m_IndexCurData; i++)
   {
-    tmpStr = FormatString("%d;", m_tCurValTable[i].timeCount);
+    tmpStr = FormatString("%u;", m_tCurValTable[i].timeCount);
     strMeasure += tmpStr;
   }
   strMeasure += "\n";
@@ -261,14 +262,14 @@ bool CMeasure::buildMeasureDataFromString(string dataString)
 
   auto vectorTimeStampDataStr = split(timeStampDataStr, ';');
   auto vectorUserDataStr = split(userDataStr, ';');
-  int nbPoints = cybio_min(vectorTimeStampDataStr.size(), vectorUserDataStr.size());
-  for (int i = 0; i < nbPoints; i++)
+  size_t nbPoints = cybio_min(vectorTimeStampDataStr.size(), vectorUserDataStr.size());
+  for (size_t i = 0; i < nbPoints; i++)
   {
     m_tCurValTable[i].timeCount = stoi(vectorTimeStampDataStr[i]);
     m_tCurValTable[i].value = stof(vectorUserDataStr[i]);
     m_IndexCurData++;
   }
-  m_TotalMeasNbFromStart = nbPoints;
+  m_TotalMeasNbFromStart = (timeCountType)nbPoints;
   AutoUpdateRange();
   return true;
 }
@@ -304,7 +305,7 @@ MeasureType_e CMeasure::GetType()
   return (m_Type);
 }
 
-int CMeasure::GetSubTypeId()
+size_t CMeasure::GetSubTypeId()
 {
   return(0);
 }
@@ -314,12 +315,12 @@ MeasureData_t* CMeasure::GetPMeasureData()
   return (m_tCurValTable);
 }
 
-int CMeasure::GetIndexCurData()
+size_t CMeasure::GetIndexCurData()
 {
   return (m_IndexCurData);
 }
 
-int CMeasure::GetTotalMeasureNumberFromStart()
+timeCountType CMeasure::GetTotalMeasureNumberFromStart()
 {
   return (m_TotalMeasNbFromStart);
 }
@@ -390,7 +391,7 @@ string CMeasure::getEventTypeStrName(EventType_e type)
   return(typeName);
 }
 
-int CMeasure::GetParameterIndex()
+size_t CMeasure::GetParameterIndex()
 {
   return(m_paramIndex);
 }

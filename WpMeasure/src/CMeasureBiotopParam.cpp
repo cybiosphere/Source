@@ -40,7 +40,7 @@ distribution.
 // Constructors / Destructors
 //===========================================================================
 
-CMeasureBiotopParam::CMeasureBiotopParam(CBiotop* pBiotop, int paramIndex, int period, int id)
+CMeasureBiotopParam::CMeasureBiotopParam(CBiotop* pBiotop, size_t paramIndex, int period, int id)
 :CMeasureParam(pBiotop->getParameter(paramIndex), period, id, MEASURE_TYPE_PARAMETER_BIOTOP)
 {
   m_pBiotop = pBiotop;
@@ -70,7 +70,7 @@ CMeasureBiotopParam::~CMeasureBiotopParam()
 // Get / Set for attributes
 //===========================================================================
 
-int CMeasureBiotopParam::GetSubTypeId()
+size_t CMeasureBiotopParam::GetSubTypeId()
 {
   return(m_paramIndex);
 }

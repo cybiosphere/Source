@@ -72,11 +72,11 @@ static EntityViewWeight_t m_pEntityViewTab[MAX_FOUND_ENTITIES];
 CSensorView::	CSensorView(CBrainAnimal* pBrain, 
                           std::vector<double>& tWeightRate,
                           int range,
-                          int layer,
+                          size_t layer,
                           ViewAngleType_e angle,
                           int totalNbFocusObjects,
                           bool distanceEvaluation)
-:CSensor(totalNbFocusObjects * VIEW_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW + 10*layer + angle )
+:CSensor(totalNbFocusObjects * VIEW_SIZE_PER_FOCUS, tWeightRate, UID_BASE_SENS_VIEW + 10*(DWORD)layer + angle )
 {
   m_pBrain = pBrain;
   m_nRange = range;
@@ -182,7 +182,7 @@ const std::vector<sensorValType>& CSensorView::UpdateAndGetStimulationTable()
     tScanDirections[(viewDirection+8-i)%8] = true;
   }
 
-  int offset = 0;
+  size_t offset = 0;
   int direction = pAnimal->getDirection(); 
   if (tScanDirections[direction] && m_nFocusObjectsSect1)
     Scan45degSector(offset, m_nFocusObjectsSect1,direction);
@@ -241,31 +241,30 @@ const std::vector<sensorValType>& CSensorView::UpdateAndGetStimulationTable()
 //  
 // REMARKS:      Do not delete *pStimulationVal
 //---------------------------------------------------------------------------
-bool CSensorView::Scan45degSector(int stimulationTabOffset,
-                                  int maxNumFocusObject,
+bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
+                                  size_t maxNumFocusObject,
                                   int direction)
 {
-  FoundEntity_t* pFoundIds = NULL;
   CBasicEntity* pCurEntity = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CBiotop* pBiotop = pAnimal->getBiotop();
   UCHAR visionSectorBmp = 0x01 << direction;
-  int offset = 0;
-  int i,j;
+  size_t offset = 0;
+  size_t i,j;
   double maxComputedWeight;
-  int maxWeightViewTabIndex;
+  size_t maxWeightViewTabIndex;
   double viewChance;
   double distanceWeight;
 
   // Find entities according to angle, distance and layer:
-  int nbIds = pBiotop->findEntities(pFoundIds, pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
+  const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
 
-  for (i=0; i<nbIds; i++)
+  for (i = 0; i < tFoundIds.size(); i++)
   {
-    pCurEntity = pFoundIds[i].pEntity;
+    pCurEntity = tFoundIds[i].pEntity;
     distanceWeight = 0;
      
     if ((pCurEntity != pBrainFocused->pPreviousEntity) && (m_nRange>1))
@@ -303,7 +302,7 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
       offset++;
       // Distance
       if (m_bDistanceEval)
-        m_pEntityViewTab[i].weightTab[offset] = MAX_SENSOR_VAL/(pFoundIds[i].distance);
+        m_pEntityViewTab[i].weightTab[offset] = MAX_SENSOR_VAL/(tFoundIds[i].distance);
       distanceWeight = m_pEntityViewTab[i].weightTab[offset];
       offset++;
       // Movement
@@ -361,7 +360,7 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
     }
     else
     {
-      m_pEntityViewTab[i].index = -1;
+      m_pEntityViewTab[i].index = invalidIndex;
       m_pEntityViewTab[i].computedWeight = 0;
       m_pEntityViewTab[i].signature = 0;
       m_pEntityViewTab[i].pEntity = NULL;
@@ -375,8 +374,8 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
   {
     // 1 Find max weight
     maxComputedWeight = 0;
-    maxWeightViewTabIndex = -1;
-    for (i=0; i<nbIds; i++)
+    maxWeightViewTabIndex = invalidIndex;
+    for (i = 0; i < tFoundIds.size(); i++)
     {
       // Give 10% bonus to previousely selected entity
       if (m_pEntityViewTab[i].pEntity == pBrainFocused->pPreviousEntity)
@@ -414,7 +413,7 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
     }
 
     // 5 Remove identical entities
-    for (i=0; i<nbIds; i++)
+    for (i = 0; i < tFoundIds.size(); i++)
     {
       if (m_pEntityViewTab[i].signature == m_pEntityViewTab[maxWeightViewTabIndex].signature)
         m_pEntityViewTab[i].computedWeight = 0;
@@ -435,19 +434,19 @@ bool CSensorView::Scan45degSector(int stimulationTabOffset,
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorView::GetSubCaptorLabel(int index)
+string CSensorView::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
   {
-    int offset = index / VIEW_SIZE_PER_FOCUS;
-    int pos = index % VIEW_SIZE_PER_FOCUS;
+    size_t offset = index / VIEW_SIZE_PER_FOCUS;
+    size_t pos = index % VIEW_SIZE_PER_FOCUS;
 
     string directionStr; // according to offset
     directionStr = FormatString("N%d ", offset);
-    int index = 0;
-    int count=m_nFocusObjectsSect1;
+    size_t index = 0;
+    size_t count=m_nFocusObjectsSect1;
 
     do 
     {
@@ -528,9 +527,9 @@ string CSensorView::GetSubCaptorLabel(int index)
 }
 
 
-int CSensorView::GetSubCaptorIndexForDirection(int relativeDirection, int entityIndex)
+size_t CSensorView::GetSubCaptorIndexForDirection(int relativeDirection, size_t entityIndex)
 {
-  int index = -1;
+  size_t index = invalidIndex;
 
   switch (relativeDirection)
   {
@@ -581,42 +580,42 @@ int CSensorView::GetSubCaptorIndexForDirection(int relativeDirection, int entity
   return index;
 }
 
-int CSensorView::GetSubCaptorSubIndexForSizeBig()
+size_t CSensorView::GetSubCaptorSubIndexForSizeBig()
 {
   return 0;
 }
 
-int CSensorView::GetSubCaptorSubIndexForSizeSmall()
+size_t CSensorView::GetSubCaptorSubIndexForSizeSmall()
 {
   return 1;
 }
 
-int CSensorView::GetSubCaptorSubIndexForProximity()
+size_t CSensorView::GetSubCaptorSubIndexForProximity()
 {
   return 2;
 }
 
-int CSensorView::GetSubCaptorSubIndexForMoving()
+size_t CSensorView::GetSubCaptorSubIndexForMoving()
 {
   return 3;
 }
 
-int CSensorView::GetSubCaptorSubIndexForColor(ColorCaracterType_e color)
+size_t CSensorView::GetSubCaptorSubIndexForColor(ColorCaracterType_e color)
 {
   return (4 + color - COLOR_CARACTER_FIRST_TYPE);
 }
 
-int CSensorView::GetSubCaptorSubIndexForForm(FormType_e form)
+size_t CSensorView::GetSubCaptorSubIndexForForm(FormType_e form)
 {
   return (4 + VIEW_NUMBER_COLORS + form - FORM_FIRST_TYPE);
 }
 
-int CSensorView::GetSubCaptorSubIndexForTexture(TextureType_e texture)
+size_t CSensorView::GetSubCaptorSubIndexForTexture(TextureType_e texture)
 {
   return (4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + texture - TEXTURE_FIRST_TYPE);
 }
 
-int CSensorView::GetSubCaptorSubIndexForPhyAttribute(PhyAttributeType_e attribute)
+size_t CSensorView::GetSubCaptorSubIndexForPhyAttribute(PhyAttributeType_e attribute)
 {
   return (4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + VIEW_NUMBER_TEXTURES + attribute - PHY_ATTRIBUTE_FIRST_TYPE);
 }
@@ -626,7 +625,7 @@ int CSensorView::GetRange()
   return m_nRange;
 }
 
-int CSensorView::GetLayer()
+size_t CSensorView::GetLayer()
 {
   return m_Layer;
 }

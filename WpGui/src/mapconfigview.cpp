@@ -197,7 +197,7 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
 
 bool CMapConfigView::BuildOdorMap(OdorType_e odorType)
 {
-  int i,j,k;
+  int i,j;
   BiotopSquare_t** tBioSquare;
   tBioSquare = m_pBiotop->getpBioSquare();
 

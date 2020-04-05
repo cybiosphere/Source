@@ -248,9 +248,9 @@ public:
   bool setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
   bool setAsReaction (GeneSubType_e subType, int muteRate, long success, long failure, 
                       long data1 = 0, long data2 = 0);
-  bool setAsBrainSize (GeneSubType_e subType, int muteRate, int brainSize);
-  bool setAsBrainInstinctLine (int muteRate, int lineId, int nbColumn, WORD* pData);
-  bool setAsBrainIdentificationLine (int muteRate, int lineId, int nbColumn, WORD* pData);
+  bool setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize);
+  bool setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
+  bool setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
   bool setAsFeeling(GeneSubType_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi);
 
   bool setAsPurposeTrigger(GeneSubType_e subType, int muteRate, DWORD sensorUId, int duration, int subCaptorIndex, int startThreshold, int stopThreshold, int labelLen, char* pLabel); 
@@ -289,7 +289,7 @@ private:
 public:
 
   std::vector<BYTE>& getData();
-  int getDataLen();
+  size_t getDataLen();
   GeneType_e     getGeneType();
   GeneSubType_e  getGeneSubType();
   GeneMuteType_e getMuteType();

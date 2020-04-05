@@ -59,8 +59,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex)
-:CSensor(subCaptorNumber, tWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + (paramIndex * 256) )
+CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, size_t subCaptorNumber, DWORD baseSensUId, size_t paramIndex)
+:CSensor(subCaptorNumber, tWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + ((DWORD)paramIndex * 256) )
 {
   m_pBrain      = pBrain;
   m_Label       = "Comp";
@@ -109,7 +109,7 @@ const std::vector<sensorValType>& CSensorComposite::UpdateAndGetStimulationTable
   double factor = m_pParam->getVal();
   const std::vector<sensorValType>& vectorBaseStimulation{ m_pBaseSens->UpdateAndGetStimulationTable() };
   
-  for (int i = 0; i < m_SubCaptorNumber; i++)
+  for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
     // Compute stimulation
     m_tStimulationValues[i] = vectorBaseStimulation[i] * factor * m_tSubCaptorWeightRate[i] / 100.0;
@@ -129,7 +129,7 @@ const std::vector<sensorValType>& CSensorComposite::UpdateAndGetStimulationTable
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorComposite::GetSubCaptorLabel(int index)
+string CSensorComposite::GetSubCaptorLabel(size_t index)
 {
   if (m_pBaseSens == NULL)
     m_pBaseSens = m_pBrain->GetSensorByUniqueId(m_BaseSensUId);
@@ -142,7 +142,7 @@ string CSensorComposite::GetSubCaptorLabel(int index)
     return "error";
   }
 
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index > GetSubCaptorNumber())
     return ("bad index");
   else
   {

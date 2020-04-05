@@ -51,7 +51,7 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CChromosome::CChromosome(int number)
+CChromosome::CChromosome(size_t number)
 {
   m_IdNumber = number;
   m_Label = FormatString("%2d",m_IdNumber); // Default label is number, but X,Y... can be given later
@@ -76,7 +76,7 @@ CChromosome::CChromosome(CChromosome& model)
   m_Label          = model.m_Label;
   m_ChromosomeType = model.m_ChromosomeType;
   CGene* tempGen   = NULL;
-  for (int i=0; i<model.m_tGene.size(); i++)
+  for (size_t i=0; i<model.m_tGene.size(); i++)
   {
     tempGen = new CGene(*model.m_tGene[i]);
     m_tGene.push_back(tempGen);
@@ -93,7 +93,7 @@ CChromosome::~CChromosome()
 // Gene table mgt
 //===========================================================================
 
-int CChromosome::addGene()
+size_t CChromosome::addGene()
 {
   CGene* pGene = new CGene();
   if (pGene != NULL)
@@ -102,27 +102,26 @@ int CChromosome::addGene()
     return (m_tGene.size()-1);
   }
   else
-    return (-1);
+    return (invalidIndex);
 }
 
-bool CChromosome::removeGene(int index)
+bool CChromosome::removeGene(size_t index)
 {
-  if ((index<0) || (index>(m_tGene.size()-1)))
+  if (index>(m_tGene.size()-1))
     return false;
 
   m_tGene.erase(m_tGene.begin()+index);
   return true;
 }
 
-int CChromosome::getNumGene(void)
+size_t CChromosome::getNumGene(void)
 {
   return (m_tGene.size());
 }
 
-CGene* CChromosome::getGene(int id)
+CGene* CChromosome::getGene(size_t id)
 {
-  if ( (id<0) || (id>=m_tGene.size()) )
-  {
+  if (id>=m_tGene.size())  {
     return (NULL);
   }
   else
@@ -133,8 +132,7 @@ CGene* CChromosome::getGene(int id)
 
 void CChromosome::deleteAllGenes() 
 {
-  // loop from top to bottom 
-  for (int i=m_tGene.size()-1; i>=0 ;i--)
+  for (size_t i = 0; i < m_tGene.size(); i++)
   {
       delete m_tGene[i];
   }
@@ -150,7 +148,7 @@ string CChromosome::buildStringDataFromGenes()
   string rawData = "";
   CGene* pGene = NULL;
 
-  for (int i=0;i<m_tGene.size();i++)
+  for (size_t i=0;i<m_tGene.size();i++)
   {
     pGene = m_tGene[i];
     rawData = rawData + pGene->buildStringDataFromGene();
@@ -165,7 +163,7 @@ bool CChromosome::buildGenesFromStringData(string rawData)
   {
     return (false);
   }
-  int geneIndex;
+  size_t geneIndex;
   CGene* pGene = NULL;
   string tmpStr;
   int geneType;    // ! sscanf needs int as argument, do not use BYTE
@@ -173,14 +171,14 @@ bool CChromosome::buildGenesFromStringData(string rawData)
   int dataLength;  // ! sscanf needs int as argument, do not use BYTE
   int offset = 0;
 
-  int remainingLen = rawData.length();
+  size_t remainingLen = rawData.length();
   while (remainingLen>0)
   { 
     tmpStr = rawData.substr(offset,10);
     sscanf(tmpStr.c_str(),"%02X%04X%04X",&geneType,&geneSubType,&dataLength);  
     tmpStr = rawData.substr(offset, 2*dataLength + 10);
     geneIndex = addGene();
-    if (geneIndex != -1)
+    if (geneIndex != invalidIndex)
     {
       pGene = getGene(geneIndex);
       pGene->buildGeneFromStringData(tmpStr);
@@ -199,7 +197,7 @@ bool CChromosome::buildGenesFromStringData(string rawData)
 bool CChromosome::tryMutation(int rate)
 {
   bool resu = false;
-  for (int i=0;i<m_tGene.size();i++)
+  for (size_t i=0; i<m_tGene.size(); i++)
   {
     if (testChance(rate))
     {
@@ -217,7 +215,7 @@ bool CChromosome::tryMutation(int rate)
 // Get / Set for attributes
 //===========================================================================
 
-int CChromosome::getIdNumber(void)
+size_t CChromosome::getIdNumber(void)
 {
   return m_IdNumber;
 }

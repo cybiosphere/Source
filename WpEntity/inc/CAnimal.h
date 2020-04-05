@@ -89,25 +89,25 @@ private:
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  int m_id_Age;
-  int m_id_Decomposition;
-  int m_id_ReproductionRate;
-  int m_id_Health;
-  int m_id_Hunger;
-  int m_id_Thirst;
-  int m_id_StomachFilling;
-  int m_id_Libido;
-  int m_id_Suffering;
-  int m_id_Pleasure;
-  int m_id_Tiredness;
-  int m_id_GrowthSpeed;
-  int m_id_FatWeight;
-  int m_id_AttackFactor;
-  int m_id_Curiosity;
-  int m_id_Learning;
-  int m_id_CurrentSpeed;
-  int m_id_Fear;
-  int m_id_Vigilance;
+  size_t m_id_Age;
+  size_t m_id_Decomposition;
+  size_t m_id_ReproductionRate;
+  size_t m_id_Health;
+  size_t m_id_Hunger;
+  size_t m_id_Thirst;
+  size_t m_id_StomachFilling;
+  size_t m_id_Libido;
+  size_t m_id_Suffering;
+  size_t m_id_Pleasure;
+  size_t m_id_Tiredness;
+  size_t m_id_GrowthSpeed;
+  size_t m_id_FatWeight;
+  size_t m_id_AttackFactor;
+  size_t m_id_Curiosity;
+  size_t m_id_Learning;
+  size_t m_id_CurrentSpeed;
+  size_t m_id_Fear;
+  size_t m_id_Vigilance;
 
 //===========================================================================
 // methods 
@@ -117,7 +117,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public: 
-  CAnimal(string label, Point_t initCoord, int layer, CGenome* pGenome);   
+  CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
   CAnimal(string label, CAnimal& model);
   CAnimal(string label, CAnimal& mother,CAnimal& father);
   ~CAnimal();
@@ -148,7 +148,7 @@ public:
 // Genetic description
 //---------------------------------------------------------------------------
 public:
-  int  getExpectedBrainSensorWeightSize (CGene* pGen);
+  size_t getExpectedBrainSensorWeightSize (CGene* pGen);
 
 protected:
   string buildParameterString(CGene* pGen);

@@ -45,7 +45,7 @@ distribution.
 
 typedef struct 
 {
-  int                   layer;
+  size_t                layer;
   DWORD                 range0;     // View close
   ViewAngleType_e       angle0;
   int                   nbFocus0;

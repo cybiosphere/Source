@@ -68,11 +68,6 @@ int DLL_CYBIOCORE_API cybio_round(double val)
   }
 }
 
-int DLL_CYBIOCORE_API getRandInt (int max)
-{
-  return ((int)((max+1.0)*rand()/(RAND_MAX+1.0)));
-}
-
 bool DLL_CYBIOCORE_API testChance(double luckRate)
 {
   int randNb =   (int) ( 100.0 * rand() / RAND_MAX);          
@@ -116,7 +111,7 @@ BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count)
   return(bioTime);
 }
 
-int DLL_CYBIOCORE_API getStringSectionFromFile(
+size_t DLL_CYBIOCORE_API getStringSectionFromFile(
                         string lpAppName,
                         string lpKeyName,
                         string lpDefault,
@@ -126,8 +121,8 @@ int DLL_CYBIOCORE_API getStringSectionFromFile(
                         )
 {
   char* pbuf;
-  unsigned long int begin, end;
-  long int fLength; 
+  std::streamoff begin, end;
+  std::streamoff fLength;
   ifstream f1;
 
   f1.open( fileNameWithPath.c_str());
@@ -154,7 +149,7 @@ int DLL_CYBIOCORE_API getStringSectionFromFile(
   return ( getStringSection(lpAppName,lpKeyName,lpDefault,lpReturnedString,nSize,fileString) );
 }
 
-int DLL_CYBIOCORE_API getStringSection(
+size_t DLL_CYBIOCORE_API getStringSection(
                         string lpAppName,
                         string lpKeyName,
                         string lpDefault,
@@ -164,12 +159,12 @@ int DLL_CYBIOCORE_API getStringSection(
                         )
 {
   string foundStr;
-  int indexSection,indexStart, indexEnd, lenght;
+  size_t indexSection, indexStart, indexEnd, lenght;
   indexSection = lpSourceString.find(lpAppName,0);
   indexStart = lpSourceString.find(lpKeyName,indexSection);
   indexEnd = lpSourceString.find("\n",indexStart);
 
-  if ((indexStart<0) || (indexEnd<0))
+  if ((indexStart == string::npos) || (indexEnd == string::npos))
   {
     lenght = lpDefault.length();
     memcpy(lpReturnedString, lpDefault.c_str(), lenght+1);
@@ -180,7 +175,7 @@ int DLL_CYBIOCORE_API getStringSection(
   indexStart = foundStr.find("=",0);
   lenght = foundStr.length() - indexStart - 1;
   
-  if ( (lenght>0) && (lenght<nSize) )
+  if (lenght < nSize)
   {
     memcpy(lpReturnedString, (foundStr.substr(foundStr.length()-lenght, lenght)).c_str(), lenght+1);
   }
@@ -202,8 +197,8 @@ bool DLL_CYBIOCORE_API writeStringSectionToFile(
 {
   string fileString = "";
   char* pbuf;
-  unsigned long int begin, end;
-  long int fLength; 
+  std::streamoff begin, end;
+  std::streamoff fLength;
   ifstream f1;
 
   f1.open( fileNameWithPath.c_str());
@@ -243,10 +238,10 @@ bool DLL_CYBIOCORE_API writeStringSection(
                         string &lpFileString
                         )
 {
-  int indexSection,indexStart,indexEnd;
+  size_t indexSection,indexStart,indexEnd;
   indexSection = lpFileString.find(lpAppName,0);
 
-  if (indexSection<0)
+  if (indexSection == std::string::npos)
   {
     // new section
     lpFileString += "[" + lpAppName + "]\n" + lpKeyName + "=" + lpString + "\n";
@@ -254,11 +249,11 @@ bool DLL_CYBIOCORE_API writeStringSection(
   else
   {
     indexStart = lpFileString.find(lpKeyName,indexSection);
-    if (indexStart<0)
+    if (indexStart == std::string::npos)
     {
       //new field
       indexStart = lpFileString.find('[',indexSection) - 1; //Go just before next section
-      if (indexStart>0)
+      if (indexStart > 0)
       {
         lpFileString.insert(indexStart,lpKeyName + "=" + lpString + "\n");
       }
@@ -271,8 +266,8 @@ bool DLL_CYBIOCORE_API writeStringSection(
     {
       //overwrite field
       indexEnd = lpFileString.find('\n',indexStart) + 1;
-      lpFileString.erase(indexStart,indexEnd-indexStart);
-      lpFileString.insert(indexStart,lpKeyName + "=" + lpString + "\n");
+      lpFileString.erase(indexStart, indexEnd - indexStart);
+      lpFileString.insert(indexStart, lpKeyName + "=" + lpString + "\n");
     }
 
   }

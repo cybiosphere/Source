@@ -70,7 +70,7 @@ class DLL_CYBIOCORE_API CSensorComposite : public CSensor
 //---------------------------------------------------------------------------
 private:
   DWORD    m_BaseSensUId;
-  int      m_ParamIndex;
+  size_t   m_ParamIndex;
   CSensor* m_pBaseSens;
   CGenericParam* m_pParam;
 //---------------------------------------------------------------------------
@@ -87,7 +87,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, int subCaptorNumber, DWORD baseSensUId, int paramIndex);
+	CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, size_t subCaptorNumber, DWORD baseSensUId, size_t paramIndex);
 	virtual ~CSensorComposite();
 
 //---------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  string GetSubCaptorLabel(int index);
+  string GetSubCaptorLabel(size_t index);
 
 //---------------------------------------------------------------------------
 // other functions

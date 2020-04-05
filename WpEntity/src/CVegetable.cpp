@@ -56,10 +56,10 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetable::CVegetable(string label, Point_t initCoord, int layer, CGenome* pGenome) 
+CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* pGenome)
 { 
   // Input values
-  jumpToGridCoord(initCoord, layer);
+  jumpToGridCoord(initCoord, true, layer);
   m_pGenome         = pGenome;
   m_pBrain          = NULL;
   m_pPhysicWelfare  = new CPhysicalWelfare(this);
@@ -71,12 +71,12 @@ CVegetable::CVegetable(string label, Point_t initCoord, int layer, CGenome* pGen
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_ReproductionRange= -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_ReproductionRange= invalidIndex;
 
 }
 
@@ -95,7 +95,7 @@ CVegetable::CVegetable(string label, CVegetable& model)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), model.getLayer()); 
+  jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
   m_Generation		= model.m_Generation + 1;
   m_pGenome       = new CGenome(*model.m_pGenome);
 
@@ -106,12 +106,12 @@ CVegetable::CVegetable(string label, CVegetable& model)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_ReproductionRange= -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_ReproductionRange= invalidIndex;
 
 }
 
@@ -130,7 +130,7 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
 { 
   m_Label         = label;
   // inherited
-  jumpToGridCoord(mother.getGridCoord(), mother.getLayer()); 
+  jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
   m_Generation		= mother.m_Generation + 1;
   m_pGenome       = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0);
 
@@ -141,12 +141,12 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = -1; 
-  m_id_Decomposition    = -1; 
-  m_id_ReproductionRate = -1; 
-  m_id_Health           = -1;
-  m_id_GrowthSpeed      = -1;
-  m_id_ReproductionRange= -1;
+  m_id_Age              = invalidIndex; 
+  m_id_Decomposition    = invalidIndex; 
+  m_id_ReproductionRate = invalidIndex; 
+  m_id_Health           = invalidIndex;
+  m_id_GrowthSpeed      = invalidIndex;
+  m_id_ReproductionRange= invalidIndex;
 
 }  
 
@@ -183,7 +183,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -203,7 +203,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_AGE:
     {
-      if (m_id_Age != -1) delete(getParameter(m_id_Age)); // delete if already set
+      if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = scaledVal3;
@@ -214,7 +214,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_DECOMPOSITION:
     {
-      if (m_id_Decomposition != -1) delete(getParameter(m_id_Decomposition)); // delete if already set
+      if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
       minVal  = 0.0;
       initVal = 0.0;
       maxVal  = scaledVal3;
@@ -225,7 +225,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_REPRO_RATE:
     {
-      if (m_id_ReproductionRate != -1) delete(getParameter(m_id_ReproductionRate)); // delete if already set
+      if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
       minVal  = 0;
       initVal = scaledVal2;
       maxVal  = 100;
@@ -236,7 +236,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_HEALTH:
     {
-      if (m_id_Health != -1) delete(getParameter(m_id_Health)); // delete if already set
+      if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -247,7 +247,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
 /*  case GENE_PARAM_FERTILITY_NEED:
     {
-      if (m_id_FertilityNeed != -1) delete(getParameter(m_id_FertilityNeed)); // delete if already set
+      if (m_id_FertilityNeed != invalidIndex) delete(getParameter(m_id_FertilityNeed)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 100.0;
@@ -258,7 +258,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_TEMPER_RANGE:
     {
-      if (m_id_TemperatureRange != -1) delete(getParameter(m_id_TemperatureRange)); // delete if already set
+      if (m_id_TemperatureRange != invalidIndex) delete(getParameter(m_id_TemperatureRange)); // delete if already set
       minVal  = scaledVal1 - 50.0;
       initVal = scaledVal2 - 50.0;
       maxVal  = scaledVal3 - 50.0;
@@ -269,7 +269,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }*/
   case GENE_PARAM_GROWTH_SPEED:
     {
-      if (m_id_GrowthSpeed != -1) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
+      if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 1000.0;
@@ -280,7 +280,7 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     }
   case GENE_PARAM_REPRO_RANGE:
     {
-      if (m_id_ReproductionRange != -1) delete(getParameter(m_id_ReproductionRange)); // delete if already set
+      if (m_id_ReproductionRange != invalidIndex) delete(getParameter(m_id_ReproductionRange)); // delete if already set
       minVal  = 0.0;
       initVal = scaledVal2;
       maxVal  = 10.0;
@@ -321,32 +321,32 @@ bool CVegetable::completeParamsWithDefault()
   CBasicEntity::completeParamsWithDefault();
 
   // CVegetable specific
-  if (m_id_Age == -1)
+  if (m_id_Age == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,100,"Age",PARAM_DURATION,GENE_PARAM_AGE);
     m_id_Age              = addParameter(pParam);
   }
-  if (m_id_Decomposition == -1)
+  if (m_id_Decomposition == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,0,0,2,"Decomposition",PARAM_DURATION,GENE_PARAM_DECOMPOSITION);
     m_id_Decomposition    = addParameter(pParam);
   }
-  if (m_id_ReproductionRate == -1)
+  if (m_id_ReproductionRate == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,10,10,100,"Reproduction rate",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RATE);
     m_id_ReproductionRate = addParameter(pParam);
   } 
-  if (m_id_Health == -1)
+  if (m_id_Health == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,50,50,100,"Health rate",PARAM_FEELING,GENE_PARAM_HEALTH);
     m_id_Health = addParameter(pParam);
   } 
-  if (m_id_GrowthSpeed == -1)
+  if (m_id_GrowthSpeed == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,100,100,1000,"Growth speed rate",PARAM_PHYSIC,GENE_PARAM_GROWTH_SPEED);
     m_id_GrowthSpeed = addParameter(pParam);
   } 
-  if (m_id_ReproductionRange == -1)
+  if (m_id_ReproductionRange == invalidIndex)
   {
     CGenericParam* pParam = new CGenericParam(0,2,2,10,"Reproduction Range",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RANGE);
     m_id_ReproductionRange = addParameter(pParam);
@@ -377,7 +377,7 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param
@@ -496,7 +496,7 @@ string CVegetable::buildParameterString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
@@ -586,7 +586,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
-  int len = rawData.size();
+  size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
     // not enought data to config param

@@ -71,24 +71,24 @@ public:
     bool AddBrainBonusInList( DWORD sensorUId, int offset, int suboffset, DWORD reactionUniqueId, int reactionRange, int bonus);
     bool AddIdentifyBonusInList( DWORD sensorUId, int offset, IdentificationType_e  identity, int bonus);
 
-    bool AddVisualObstacle(  int level, int layer, 
+    bool AddVisualObstacle(  int level, size_t layer,
                              FormType_e form, ColorCaracterType_e color, 
                              TextureType_e texture, PhyAttributeType_e attribute, bool justInFront = false);
 
     bool AddVisualIdentifyObstacle ( int level,
-                                     int layer,
+                                     size_t layer,
                                      IdentificationType_e identity, 
                                      bool isMoving, bool isDirLft, bool isDirRight,
                                      bool justInFront);
 
-    bool AddVisualBonus ( int bonusRate, int layer, 
+    bool AddVisualBonus ( int bonusRate, size_t layer,
                           FormType_e form, ColorCaracterType_e color, 
                           TextureType_e texture, PhyAttributeType_e attribute, bool isMoving, bool doRun = false,
                           DWORD targetReacUid = UID_BASE_REACT_NOTHING, int targetReacRange = 1); // default: stop in front of target
 
 
     bool AddVisualIdentifyBonus ( int bonusRate,
-                                  int layer,
+                                  size_t layer,
                                   IdentificationType_e identity, 
                                   bool isMoving = false, bool isDirLeft = false, bool isDirRight = false,
                                   bool doRun = false,

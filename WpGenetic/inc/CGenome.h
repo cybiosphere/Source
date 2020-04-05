@@ -107,7 +107,7 @@ public:
 private:
   ClassType_e m_class;
   string m_SpecieName; 
-  int m_SexualPairIndex;
+  size_t m_SexualPairIndex;
   bool m_bSexualDimorphism;
   std::vector<CPairOfChromosome*> m_tPair;
 
@@ -115,17 +115,17 @@ private:
   // methods
 
 public:
-  int addPair();
-  bool removePair(int index);
-  int getNumPair();
+  size_t addPair();
+  bool removePair(size_t index);
+  size_t getNumPair();
   string getOwnClassStrName();
   static string getClassStrName(ClassType_e classType);
-  CPairOfChromosome* getPair(int index);
+  CPairOfChromosome* getPair(size_t index);
   CPairOfChromosome* getPairSexual();
   CPairOfChromosome* getPairBrain();
-  bool setSexMale  (int indexPairSex, bool sexualDimorph = false);
-  bool setSexFemale(int indexPairSex, bool sexualDimorph = false);
-  bool setSexNeutral(int indexPairSex);
+  bool setSexMale  (size_t indexPairSex, bool sexualDimorph = false);
+  bool setSexFemale(size_t indexPairSex, bool sexualDimorph = false);
+  bool setSexNeutral(size_t indexPairSex);
   SexType_e getSexType();
   bool tryMutation(int rate);
   ClassType_e getClass();

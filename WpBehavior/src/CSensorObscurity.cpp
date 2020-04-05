@@ -102,9 +102,9 @@ const std::vector<sensorValType>& CSensorObscurity::UpdateAndGetStimulationTable
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-string CSensorObscurity::GetSubCaptorLabel(int index)
+string CSensorObscurity::GetSubCaptorLabel(size_t index)
 {
-  if ( (index<0) || (index>GetSubCaptorNumber()) )
+  if (index>GetSubCaptorNumber())
     return ("bad index");
   else
     return ("level");

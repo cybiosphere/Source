@@ -61,7 +61,7 @@ class CBrainAnimal;
 typedef struct 
 {
   CBasicEntity*        pEntity;
-  int                  index;
+  size_t               index;
   entitySignatureType  signature;
   double               computedWeight;
   double               weightTab[VIEW_IDENTIFY_SIZE_PER_FOCUS];
@@ -82,20 +82,20 @@ class DLL_CYBIOCORE_API CSensorViewIdentify : public CSensor
 //---------------------------------------------------------------------------
 private:
   int             m_nRange;
-  int             m_Layer;
+  size_t          m_Layer;
   ViewAngleType_e m_Angle;
   bool            m_bDistanceEval;
   // Sect6 Sect4 Sect2
   // Sect8   0>  Sect1
   // Sect7 Sect5 Sect3
-  int             m_nFocusObjectsSect1; 
-  int             m_nFocusObjectsSect2; 
-  int             m_nFocusObjectsSect3; 
-  int             m_nFocusObjectsSect4; 
-  int             m_nFocusObjectsSect5; 
-  int             m_nFocusObjectsSect6;
-  int             m_nFocusObjectsSect7;
-  int             m_nFocusObjectsSect8;
+  size_t          m_nFocusObjectsSect1;
+  size_t          m_nFocusObjectsSect2;
+  size_t          m_nFocusObjectsSect3;
+  size_t          m_nFocusObjectsSect4;
+  size_t          m_nFocusObjectsSect5;
+  size_t          m_nFocusObjectsSect6;
+  size_t          m_nFocusObjectsSect7;
+  size_t          m_nFocusObjectsSect8;
 
 //---------------------------------------------------------------------------
 // associations
@@ -117,7 +117,7 @@ public:
 	CSensorViewIdentify(CBrainAnimal* pBrain, 
               std::vector<double>& tWeightRate,
               int range, 
-              int layer,
+              size_t layer,
               ViewAngleType_e angle,
               int totalNbFocusObjects,
               bool distanceEvaluation = true);
@@ -128,8 +128,8 @@ public:
 //---------------------------------------------------------------------------
 public:
   const std::vector<sensorValType>& UpdateAndGetStimulationTable();
-  string GetSubCaptorLabel(int index);
-  bool IsSexSpecific(int captorIndex);
+  string GetSubCaptorLabel(size_t index);
+  bool IsSexSpecific(size_t captorIndex);
 
 //---------------------------------------------------------------------------
 // other functions
@@ -137,19 +137,19 @@ public:
 public:
 
   int GetRange();
-  int GetLayer();
-  int GetSubCaptorIndexForDirection(int relativeDirection, int entityIndex);
+  size_t GetLayer();
+  size_t GetSubCaptorIndexForDirection(int relativeDirection, size_t entityIndex);
   double GetViewedEntityWeight(CBasicEntity* pEntity);
 
-  static int GetSubCaptorSubIndexForProximity(IdentificationType_e identity);
-  static int GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity);
-  static int GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity);
-  static int GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity);
-  static int GetSubCaptorSubIndexForDirRight(IdentificationType_e identity);
+  static size_t GetSubCaptorSubIndexForProximity(IdentificationType_e identity);
+  static size_t GetSubCaptorSubIndexForEscapeSpeed(IdentificationType_e identity);
+  static size_t GetSubCaptorSubIndexForApproachSpeed(IdentificationType_e identity);
+  static size_t GetSubCaptorSubIndexForDirLeft(IdentificationType_e identity);
+  static size_t GetSubCaptorSubIndexForDirRight(IdentificationType_e identity);
 
 
 private:
-  bool Scan45degSector(int stimulationTabOffset, int maxNumFocusObject, int direction);
+  bool Scan45degSector(size_t stimulationTabOffset, size_t maxNumFocusObject, int direction);
 
 };
 
