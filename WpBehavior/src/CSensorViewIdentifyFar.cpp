@@ -273,12 +273,13 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
   entitySignatureType previousEntitySignature = 0;
 
   // Find entities according to angle, distance and layer:
-  const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
+  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
 
-  for (i=0; i< tFoundIds.size(); i++)
+  for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
@@ -378,12 +379,14 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyFarTab[i].computedWeight = 0;
       for (j=0; j<VIEW_IDENTIFY_SIZE_PER_FOCUS; j++)
       {
-        // Use weight
-        m_pEntityViewIdentifyFarTab[i].weightTab[j] = m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_tSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
-        // Don't go over Max!
-        if (m_pEntityViewIdentifyFarTab[i].weightTab[j]  > MAX_SENSOR_VAL)
-          m_pEntityViewIdentifyFarTab[i].weightTab[j] = MAX_SENSOR_VAL;
-
+        if (m_pEntityViewIdentifyFarTab[i].weightTab[j] != 0)
+        {
+          // Use weight
+          m_pEntityViewIdentifyFarTab[i].weightTab[j] = m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_tSubCaptorWeightRate[stimulationTabOffset + j] / 100.0;
+          // Don't go over Max!
+          if (m_pEntityViewIdentifyFarTab[i].weightTab[j] > MAX_SENSOR_VAL)
+            m_pEntityViewIdentifyFarTab[i].weightTab[j] = MAX_SENSOR_VAL;
+        }
         m_pEntityViewIdentifyFarTab[i].computedWeight += m_pEntityViewIdentifyFarTab[i].weightTab[j] * m_tBonusRate[stimulationTabOffset+j];
       }
 
@@ -413,7 +416,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
     // 1 Find max weight
     maxComputedWeight = 0;
     maxWeightViewTabIndex = invalidIndex;
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       // Give 10% bonus to previousely selected entity
       if (m_pEntityViewIdentifyFarTab[i].pEntity == pBrainFocused->pPreviousEntity)
@@ -451,7 +454,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
     }
 
     // 5 Remove identical entities
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       if (m_pEntityViewIdentifyFarTab[i].signature == m_pEntityViewIdentifyFarTab[maxWeightViewTabIndex].signature)
         m_pEntityViewIdentifyFarTab[i].computedWeight = 0;

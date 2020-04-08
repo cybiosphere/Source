@@ -316,8 +316,10 @@ void CVegetSpermatophyta::nextHour()
       if ((getTypeOfReproduction() == REPRODUCT_SEXUAL) && (getSex() == SEX_FEMALE))
       {
         CBasicEntity *pFoundEntity = NULL;
-        const std::vector<FoundEntity_t>& tFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
-        for (size_t i = 0; i < tFoundIds.size(); i++)
+        const BiotopFoundIds_t & biotopFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
+        const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+ 
+        for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
         {
           pFoundEntity = tFoundIds[i].pEntity;
           ASSERT (pFoundEntity!=NULL);

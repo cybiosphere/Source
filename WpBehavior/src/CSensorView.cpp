@@ -257,12 +257,13 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
   double distanceWeight;
 
   // Find entities according to angle, distance and layer:
-  const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
+  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
 
-  for (i = 0; i < tFoundIds.size(); i++)
+  for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     distanceWeight = 0;
@@ -375,7 +376,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
     // 1 Find max weight
     maxComputedWeight = 0;
     maxWeightViewTabIndex = invalidIndex;
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       // Give 10% bonus to previousely selected entity
       if (m_pEntityViewTab[i].pEntity == pBrainFocused->pPreviousEntity)
@@ -413,7 +414,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
     }
 
     // 5 Remove identical entities
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       if (m_pEntityViewTab[i].signature == m_pEntityViewTab[maxWeightViewTabIndex].signature)
         m_pEntityViewTab[i].computedWeight = 0;

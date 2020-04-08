@@ -187,6 +187,12 @@ typedef struct
 
 } BiotopEntityPosition_t;
 
+typedef struct
+{
+  size_t nbFoundIds;
+  std::vector<FoundEntity_t> tFoundIds;
+} BiotopFoundIds_t;
+
 //===========================================================================
 //                                    CLASS            
 //=========================================================================== 
@@ -214,7 +220,7 @@ private:
   BiotopCube_t***  m_tBioGrid;    // Contain the info for all volumes in biotop
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
 
-  std::vector<FoundEntity_t> m_tFoundIds;   // structure to store temporarily found entities 
+  BiotopFoundIds_t m_BiotopFoundIds;  // structure to store temporarily found entities 
 
   //        3   2   1    
   //          \ | /          
@@ -296,9 +302,9 @@ public:
   CBasicEntity* getEntityByName(string& entityName);
   size_t        getEntityTableIndex(CBasicEntity* pEntity);
   CBasicEntity* findEntity(Point_t searchCoord, size_t Layer);
-  const std::vector<FoundEntity_t>& findEntities(Point_t startCoord, int distance, bool includeWater = false);
-  const std::vector<FoundEntity_t>& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
-  const std::vector<FoundEntity_t>& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax);
+  const BiotopFoundIds_t& findEntities(Point_t startCoord, int distance, bool includeWater = false);
+  const BiotopFoundIds_t& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
+  const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, size_t layer);
   inline bool isCoordValid(Point_t coord, size_t layer);

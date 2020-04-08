@@ -112,7 +112,10 @@ const std::vector<sensorValType>& CSensorComposite::UpdateAndGetStimulationTable
   for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
     // Compute stimulation
-    m_tStimulationValues[i] = vectorBaseStimulation[i] * factor * m_tSubCaptorWeightRate[i] / 100.0;
+    if (vectorBaseStimulation[i] != 0) // CPU Optim: vectorBaseStimulation[i] is often 0
+      m_tStimulationValues[i] = vectorBaseStimulation[i] * factor * m_tSubCaptorWeightRate[i] / 100.0;
+    else
+      m_tStimulationValues[i] = 0;
   }
 
   return m_tStimulationValues;

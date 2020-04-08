@@ -464,21 +464,22 @@ bool CBrain::PollAllSensors (void)
 
       // Fill new InputSensors and add purpose bonus
       curSensorVal = vectSensorVal[j];
-      if (bonusRate!=100)
+      if (curSensorVal != 0) // CPU optim: curSensorVal is often 0
       {
-        curSensorVal = curSensorVal * (double)bonusRate / 100.0;
-      }   
-
-      if (curSensorVal>MAX_SENSOR_VAL)
-      {
-        curSensorVal = MAX_SENSOR_VAL;  
-      }
-      if (curSensorVal<-MAX_SENSOR_VAL)
-      {
-        curSensorVal = -MAX_SENSOR_VAL;  
+        if (bonusRate != 100)
+        {
+          curSensorVal = curSensorVal * (double)bonusRate / 100.0;
+        }
+        if (curSensorVal > MAX_SENSOR_VAL)
+        {
+          curSensorVal = MAX_SENSOR_VAL;
+        }
+        if (curSensorVal < -MAX_SENSOR_VAL)
+        {
+          curSensorVal = -MAX_SENSOR_VAL;
+        }
       }
       m_vCurrentDecisionInput(cpt,0) = curSensorVal;
-
       cpt++;
     }
   }
@@ -487,7 +488,6 @@ bool CBrain::PollAllSensors (void)
   if (m_FocusedEntityInfo.computedWeight > 0)
   {
     cpt = GetBrainMatrixRowIndex (m_FocusedEntityInfo.captorUid, 1, m_FocusedEntityInfo.subcaptorIndex, 0);
-
     if (cpt != invalidIndex)
     {
       for (i=0; i<m_FocusedEntityInfo.subcaptorsSize;i++)

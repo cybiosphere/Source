@@ -95,8 +95,10 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
 
   // Process level
   RelativePos_t relPos = {1,0};
-  const std::vector<FoundEntity_t>& tFoundIds = pAnimal->getBiotop()->findEntities(pAnimal->getGridCoordRelative(relPos), m_nRange);
-  for (size_t ind = 0; ind < tFoundIds.size(); ind++)
+  const BiotopFoundIds_t& biotopFoundIds = pAnimal->getBiotop()->findEntities(pAnimal->getGridCoordRelative(relPos), m_nRange);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+
+  for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
     if ( (pCurEntity!=NULL) && (pCurEntity!=pAnimal) ) // Do not take into account my own pheromon

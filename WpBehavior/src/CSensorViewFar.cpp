@@ -266,12 +266,13 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
   double viewChance;
 
   // Find entities according to angle, distance and layer:
-  const std::vector<FoundEntity_t>& tFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
+  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
   // get focused entity
   BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
 
-  for (i = 0; i < tFoundIds.size(); i++)
+  for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     distanceWeight = 0;
@@ -400,7 +401,7 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
     // 1 Find max weight
     maxComputedWeight = 0;
     maxWeightViewTabIndex = invalidIndex;
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       if (m_pEntityViewFarTab[i].computedWeight>maxComputedWeight)
       {
@@ -431,7 +432,7 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
     }
 
     // 5 Remove identical entities
-    for (i = 0; i < tFoundIds.size(); i++)
+    for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
       if (m_pEntityViewFarTab[i].signature == m_pEntityViewFarTab[maxWeightViewTabIndex].signature)
         m_pEntityViewFarTab[i].computedWeight = 0;

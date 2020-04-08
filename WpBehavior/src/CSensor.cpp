@@ -175,7 +175,7 @@ const std::vector<sensorValType>& CSensor::UpdateAndGetStimulationTable()
 //---------------------------------------------------------------------------
 sensorValType CSensor::GetSubCaptorStimulationLevel(size_t captorIndex)
 {
-  if ((0<=captorIndex)&&(captorIndex<m_SubCaptorNumber))
+  if (captorIndex < m_SubCaptorNumber)
     return (m_tStimulationValues[captorIndex] * 100 / m_tSubCaptorWeightRate[captorIndex]);
   else
     return (0);
@@ -221,13 +221,16 @@ void CSensor::applySubCaptorWeightRate()
 {
   for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
-    // Use weight
-    m_tStimulationValues[i] = m_tStimulationValues[i] * m_tSubCaptorWeightRate[i] / 100.0;
-    // Don't go over Max!
-    if (m_tStimulationValues[i] > MAX_SENSOR_VAL)
-      m_tStimulationValues[i] = MAX_SENSOR_VAL;
-    if (m_tStimulationValues[i] < -MAX_SENSOR_VAL)
-      m_tStimulationValues[i] = -MAX_SENSOR_VAL;
+    if (m_tStimulationValues[i] != 0) // CPU optim: StimulationValue is often 0
+    {
+      // Use weight
+      m_tStimulationValues[i] = m_tStimulationValues[i] * m_tSubCaptorWeightRate[i] / 100.0;
+      // Don't go over Max!
+      if (m_tStimulationValues[i] > MAX_SENSOR_VAL)
+        m_tStimulationValues[i] = MAX_SENSOR_VAL;
+      if (m_tStimulationValues[i] < -MAX_SENSOR_VAL)
+        m_tStimulationValues[i] = -MAX_SENSOR_VAL;
+    }
   }
 }
 

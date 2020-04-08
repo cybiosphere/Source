@@ -53,7 +53,7 @@ RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
-CBiotop::CBiotop(int dimX,int dimY, int dimZ) 
+CBiotop::CBiotop(int dimX,int dimY, int dimZ)
 {
   // Initialisation
   m_Label = "Default biotop";
@@ -90,7 +90,8 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_pGrassGlobalEntity->setId(ENTITY_ID_GRASS);
   m_IdLastEntity = ENTITY_ID_FIRST_USER_ENTITY; // Grass is last id at startup
   m_tMeasures.resize(0);
-  m_tFoundIds.reserve(MAX_FOUND_ENTITIES);
+  m_BiotopFoundIds.tFoundIds.resize(MAX_FOUND_ENTITIES);
+  m_BiotopFoundIds.nbFoundIds = 0;
 
   resetCpuMarker();
 
@@ -922,14 +923,14 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
   return (pFoundEntity);
 }
 
-const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t startCoord, int distance, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, int distance, bool includeWater)
 {
   int nbFoundIds = 0;
   CBasicEntity*  pCurEntity = NULL;
   Point_t curCoord;
   int k, i, segment;
   size_t layer;
-  m_tFoundIds.resize(MAX_FOUND_ENTITIES);
+  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
 
   // Entities in center pos
   for (layer = 0; layer < m_nbLayer; layer++)
@@ -937,8 +938,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t startCoord, int 
     pCurEntity = findEntity(startCoord,layer);
     if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
     {
-      m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-      m_tFoundIds[nbFoundIds].distance = 0;
+      tFoundIds[nbFoundIds].pEntity = pCurEntity;
+      tFoundIds[nbFoundIds].distance = 0;
       nbFoundIds++;
     }
   }
@@ -977,21 +978,21 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t startCoord, int 
           pCurEntity = findEntity(curCoord,layer);
           if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
           {
-            m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-            m_tFoundIds[nbFoundIds].distance = k;
+            tFoundIds[nbFoundIds].pEntity = pCurEntity;
+            tFoundIds[nbFoundIds].distance = k;
             nbFoundIds++;
           }
         }
       }
     }
   }
-  m_tFoundIds.resize(nbFoundIds);
-  return (m_tFoundIds);
+  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIds);
 }
 
 
 //  startCoord entity not include
-const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
 {
   int nbFoundIds = 0;
   CBasicEntity*  pCurEntity = NULL;
@@ -999,7 +1000,7 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
-  m_tFoundIds.resize(MAX_FOUND_ENTITIES);
+  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -1017,8 +1018,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = i - startCoordx;
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = i - startCoordx;
           nbFoundIds++;
         }
       }
@@ -1044,8 +1045,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, j - startCoordy);
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, j - startCoordy);
           nbFoundIds++;
         }
       }
@@ -1073,8 +1074,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = j - startCoordy;
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = j - startCoordy;
           nbFoundIds++;
         }
       }
@@ -1100,8 +1101,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, j - startCoordy);
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, j - startCoordy);
           nbFoundIds++;
         }
       }
@@ -1129,8 +1130,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = startCoordx - i;
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = startCoordx - i;
           nbFoundIds++;
         }
       }
@@ -1156,8 +1157,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, startCoordy - j);
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, startCoordy - j);
           nbFoundIds++;
         }
       }
@@ -1185,8 +1186,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = startCoordy - j;
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = startCoordy - j;
           nbFoundIds++;
         }
       }
@@ -1212,8 +1213,8 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         pCurEntity = findEntity(curCoord,layer);
         if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId()!=0)) )
         {
-          m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          m_tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, startCoordy - j);
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, startCoordy - j);
           nbFoundIds++;
         }
       }
@@ -1225,12 +1226,12 @@ const std::vector<FoundEntity_t>& CBiotop::findEntities(Point_t centerCoord, UCH
         endy = startCoordy - distance;
     }
   }
-  m_tFoundIds.resize(nbFoundIds);
-  return (m_tFoundIds);
+  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIds);
 }
 
 //  find all entities betwen 2 range, on any layer except layer0 (under ground)
-const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax)
+const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax)
 {
   int nbFoundIds = 0;
   CBasicEntity*  pCurEntity = NULL;
@@ -1239,7 +1240,7 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
-  m_tFoundIds.resize(MAX_FOUND_ENTITIES);
+  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -1263,8 +1264,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             {
               if ( pCurEntity!=NULL ) 
               {
-                m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-                m_tFoundIds[nbFoundIds].distance = entityDist;
+                tFoundIds[nbFoundIds].pEntity = pCurEntity;
+                tFoundIds[nbFoundIds].distance = entityDist;
                 nbFoundIds++;
               }
             }
@@ -1298,8 +1299,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1334,8 +1335,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1368,8 +1369,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1404,8 +1405,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1438,8 +1439,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1474,8 +1475,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1508,8 +1509,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
             pCurEntity = findEntity(curCoord,layer);
             if ( pCurEntity!=NULL )
             {
-              m_tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              m_tFoundIds[nbFoundIds].distance = entityDist;
+              tFoundIds[nbFoundIds].pEntity = pCurEntity;
+              tFoundIds[nbFoundIds].distance = entityDist;
               nbFoundIds++;
             }
           }
@@ -1523,8 +1524,8 @@ const std::vector<FoundEntity_t>& CBiotop::findFarEntities(Point_t centerCoord, 
         endy = startCoordy - rangeMax;
     }
   }
-  m_tFoundIds.resize(nbFoundIds);
-  return (m_tFoundIds);
+  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIds);
 }
 
 bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
@@ -2660,10 +2661,11 @@ double CBiotop::getTemperature(Point_t coord, size_t layer)
 {
   double computedTemperature = m_pTemperature->getVal();
   CBasicEntity* pCurEntity = NULL;
-  const std::vector<FoundEntity_t>& tFoundIds = findEntities(coord, 1, true);
+  const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
   // Give bonus malus on temperature according to entities around
-  for (size_t ind = 0; ind < tFoundIds.size(); ind++)
+  for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
     if (pCurEntity->getClass() >= CLASS_ANIMAL_FIRST)
@@ -2777,8 +2779,10 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   // Find entities
   CBasicEntity* pCurEntity = NULL;
 
-  const std::vector<FoundEntity_t>& tFoundIds = findEntities(coordWind, range);
-  for (size_t ind = 0; ind < tFoundIds.size(); ind++)
+  const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
+  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+
+  for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
     if ((pCurEntity!=NULL) && (pCurEntity->getId() != excludedEntityId))
