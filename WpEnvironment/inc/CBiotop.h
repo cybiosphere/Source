@@ -56,6 +56,7 @@ distribution.
 #include "CMeasureFeeling.h"
 #include "CMeasurePopulation.h"
 #include "CMeasureReaction.h"
+#include "CGeoMapPopulation.h"
 // For odor mgt
 #include "CSensorSmell.h"
 
@@ -63,6 +64,7 @@ distribution.
 // Definitions            
 //===========================================================================
 class CBasicEntity;
+class CGeoMapPopulation;
 
 #define MAXIMUM_NB_ENTITIES 1000000
 #define MAX_FOUND_ENTITIES 1000
@@ -244,6 +246,7 @@ private:
   CWater* m_pWaterGlobalEntity;
   CGrass* m_pGrassGlobalEntity;
   std::vector<CMeasure*> m_tMeasures;
+  std::vector <CGeoMapPopulation*> m_tGeoMapSpecies;
   std::vector<CGenericParam*> m_tParam;
   std::vector<BiotopEvent_t> m_tEvents;
   std::vector<BiotopRandomEntitiyGeneration_t> m_tRandomEntitiesGeneration{};
@@ -302,7 +305,8 @@ public:
   CBasicEntity* getEntityByName(string& entityName);
   size_t        getEntityTableIndex(CBasicEntity* pEntity);
   CBasicEntity* findEntity(Point_t searchCoord, size_t Layer);
-  const BiotopFoundIds_t& findEntities(Point_t startCoord, int distance, bool includeWater = false);
+  const BiotopFoundIds_t& findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater = false);
+  const BiotopFoundIds_t& findEntities(Point_t startCoord, size_t distance, bool includeWater = false);
   const BiotopFoundIds_t& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
   const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
@@ -354,6 +358,10 @@ public:
    void      replaceMeasure(int id, CMeasure* pMeasure);
    bool      checkMeasureEvents();
    void      saveAllMeasuresInFile(string fileNameWithPath);
+
+   bool      addGeoMapSpeciePopulation(std::string specieName);
+   size_t    getNbOfGeoMapSpecie(void);
+   CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
 
 //---------------------------------------------------------------------------
 // Event management

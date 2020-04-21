@@ -29,7 +29,7 @@ distribution.
 #include "cybiosphere.h"
 #include "MapConfigView.h"
 #include "CAnimal.h"
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -67,6 +67,13 @@ CMapConfigView::CMapConfigView()
   m_sensorTxt2 = _T("");
   m_sensorTxt3 = _T("");
   m_sensorTxt4 = _T("");
+  m_populationTxt1 = _T("");
+  m_populationTxt2 = _T("");
+  m_populationTxt3 = _T("");
+  m_populationTxt4 = _T("");
+  m_populationTxt5 = _T("");
+  m_populationTxt6 = _T("");
+  m_populationDateTxt = _T("");
 	//}}AFX_DATA_INIT
 }
 
@@ -82,6 +89,7 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK2, m_bIsTemperatureMap);
   DDX_Check(pDX, IDC_CHECK3, m_bIsPurposeMap);
   DDX_Check(pDX, IDC_CHECK4, m_bIsSensorMap);
+  DDX_Check(pDX, IDC_CHECK5, m_bIsPopulationMap);
 	DDX_Text(pDX, IDC_PURPOSE_TXT1, m_purposeTxt1);
 	DDX_Text(pDX, IDC_PURPOSE_TXT2, m_purposeTxt2);
 	DDX_Text(pDX, IDC_PURPOSE_TXT3, m_purposeTxt3);
@@ -93,6 +101,14 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_SENSOR_TXT2, m_sensorTxt2);
   DDX_Text(pDX, IDC_SENSOR_TXT3, m_sensorTxt3);
   DDX_Text(pDX, IDC_SENSOR_TXT4, m_sensorTxt4);
+  DDX_Text(pDX, IDC_POPULATION_TXT1, m_populationTxt1);
+  DDX_Text(pDX, IDC_POPULATION_TXT2, m_populationTxt2);
+  DDX_Text(pDX, IDC_POPULATION_TXT3, m_populationTxt3);
+  DDX_Text(pDX, IDC_POPULATION_TXT4, m_populationTxt4);
+  DDX_Text(pDX, IDC_POPULATION_TXT5, m_populationTxt5);
+  DDX_Text(pDX, IDC_POPULATION_TXT6, m_populationTxt6);
+  DDX_Text(pDX, IDC_POPULATION_DATE, m_populationDateTxt);
+  DDX_Control(pDX, IDC_SLIDER_M1, m_SliderM1);
 	//}}AFX_DATA_MAP
 }
 
@@ -110,6 +126,7 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
 	ON_BN_CLICKED(IDC_CHECK2, OnCheck2)
 	ON_BN_CLICKED(IDC_CHECK3, OnCheck3)
   ON_BN_CLICKED(IDC_CHECK4, OnCheck4)
+  ON_BN_CLICKED(IDC_CHECK5, OnCheck5)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE1, OnRadioPurpose1)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE2, OnRadioPurpose2)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE3, OnRadioPurpose3)
@@ -121,6 +138,12 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
   ON_BN_CLICKED(IDC_RADIO_SENSOR2, OnRadioSensor2)
   ON_BN_CLICKED(IDC_RADIO_SENSOR3, OnRadioSensor3)
   ON_BN_CLICKED(IDC_RADIO_SENSOR4, OnRadioSensor4)
+  ON_BN_CLICKED(IDC_RADIO_POPULATION1, OnRadioPopulation1)
+  ON_BN_CLICKED(IDC_RADIO_POPULATION2, OnRadioPopulation2)
+  ON_BN_CLICKED(IDC_RADIO_POPULATION3, OnRadioPopulation3)
+  ON_BN_CLICKED(IDC_RADIO_POPULATION4, OnRadioPopulation4)
+  ON_BN_CLICKED(IDC_RADIO_POPULATION5, OnRadioPopulation5)
+  ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_M1, OnReleasedcaptureSliderM1)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -184,6 +207,11 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
       break;
     case MAP_TYPE_SENSORS:
       resu = BuildSensorsMap(m_CurMapSubType);
+      if (forceRefresh)
+        theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
+      break;
+    case MAP_TYPE_POPULATION:
+      resu = BuildPopulationMap(m_CurMapSubType);
       if (forceRefresh)
         theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       break;
@@ -288,7 +316,7 @@ bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
     return true;
   }
 
-  CGeoMap* pGeoMap = pEntity->getBrain()->GetGeographicMap();
+  CGeoMapPurpose* pGeoMap = pEntity->getBrain()->GetGeographicMap();
 
   // Update button label if necessary
   if (m_pSelectedEntity != pEntity)
@@ -351,7 +379,7 @@ bool CMapConfigView::BuildPurposeMap(int index)
     return true;
   }
 
-  CGeoMap* pGeoMap = m_pSelectedEntity->getBrain()->GetGeographicMap();
+  CGeoMapPurpose* pGeoMap = m_pSelectedEntity->getBrain()->GetGeographicMap();
 
   Point_t curCoord;
   Point_t dim = theApp.GetBiotop()->getDimension();
@@ -412,6 +440,60 @@ bool  CMapConfigView::BuildSensorsMap(int index)
       pSensor->UpdateAndGetStimulationTable();
   }
   m_pBiotop->SetColorizeSearchMode(false);
+}
+
+bool CMapConfigView::BuildPopulationMap(int index)
+{
+  int i, j;
+  BiotopSquare_t** tBioSquare;
+  tBioSquare = m_pBiotop->getpBioSquare();
+
+  ClearMap();
+  if ((m_pBiotop->getNbOfGeoMapSpecie() == 0) || (m_CurMapSubType > m_pBiotop->getNbOfGeoMapSpecie()))
+  {
+    return true;
+  }
+
+  CGeoMapPopulation* pGeoMap = m_pBiotop->getGeoMapSpecieByIndex(index);
+  if (pGeoMap == NULL)
+    return false;
+
+  Point_t curCoord;
+  Point_t dim = theApp.GetBiotop()->getDimension();
+  Point_t geoMapPos;
+  int populationSize = 0;
+  DWORD r, g, b;
+
+  // Trace map
+  for (i = 0; i < dim.x; i++)
+  {
+    for (j = 0; j < dim.y; j++)
+    {
+      curCoord.x = i;
+      curCoord.y = j;
+      pGeoMap->GridCoordToGeoMapCoord(curCoord, geoMapPos);
+      populationSize = pGeoMap->GetPopulationInSquareMap(m_SliderM1.GetPos(), geoMapPos);
+
+      if (populationSize > 0)
+      {
+        if (populationSize < 10)
+        {
+          r = 200 - populationSize * 20;
+          g = 240;
+          b = 200 - populationSize * 20;
+        }
+        else
+        {
+          r = 0;
+          g = 240;
+          b = 0;
+        }
+        tBioSquare[curCoord.x][curCoord.y].customColor = (b << 0x10) + (g << 0x08) + r;
+      }
+    }
+  }
+
+  return (true);
 }
 
 bool CMapConfigView::ClearMap()
@@ -491,6 +573,7 @@ void CMapConfigView::OnCheck1()
   m_bIsTemperatureMap = FALSE;
   m_bIsPurposeMap = FALSE;
   m_bIsSensorMap = FALSE;
+  m_bIsPopulationMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -510,6 +593,7 @@ void CMapConfigView::OnCheck2()
   m_bIsOdorMap = FALSE;
   m_bIsPurposeMap = FALSE;
   m_bIsSensorMap = FALSE;
+  m_bIsPopulationMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -530,6 +614,7 @@ void CMapConfigView::OnCheck3()
   m_bIsOdorMap = FALSE;
   m_bIsTemperatureMap = FALSE;
   m_bIsSensorMap = FALSE;
+  m_bIsPopulationMap = FALSE;
   UpdateData(FALSE);	
 }
 
@@ -550,6 +635,47 @@ void CMapConfigView::OnCheck4()
   m_bIsOdorMap = FALSE;
   m_bIsTemperatureMap = FALSE;
   m_bIsPurposeMap = FALSE;
+  m_bIsPopulationMap = FALSE;
+  UpdateData(FALSE);
+}
+
+void CMapConfigView::OnCheck5()
+{
+  UpdateData(TRUE);
+  OnRadioPopulation1();
+
+  m_SliderM1.SetRange(0, 364);
+  m_SliderM1.SetPos(0);
+  m_SliderM1.SetPageSize(1);
+
+  size_t nbSpecieMap = m_pBiotop->getNbOfGeoMapSpecie();
+  if (nbSpecieMap > 0)
+    m_populationTxt1 = m_pBiotop->getGeoMapSpecieByIndex(0)->GetSpecieName().c_str();
+  if (nbSpecieMap > 1)
+    m_populationTxt2 = m_pBiotop->getGeoMapSpecieByIndex(1)->GetSpecieName().c_str();
+  if (nbSpecieMap > 2)
+    m_populationTxt3 = m_pBiotop->getGeoMapSpecieByIndex(2)->GetSpecieName().c_str();
+  if (nbSpecieMap > 3)
+    m_populationTxt4 = m_pBiotop->getGeoMapSpecieByIndex(3)->GetSpecieName().c_str();
+  if (nbSpecieMap > 4)
+    m_populationTxt5 = m_pBiotop->getGeoMapSpecieByIndex(4)->GetSpecieName().c_str();
+  if (nbSpecieMap > 5)
+    m_populationTxt6 = m_pBiotop->getGeoMapSpecieByIndex(5)->GetSpecieName().c_str();
+
+  if (m_bIsPopulationMap)
+  {
+    m_CurMapType = MAP_TYPE_POPULATION;
+    BuildMap();
+  }
+  else
+  {
+    m_CurMapType = MAP_TYPE_NONE;
+    ClearMap();
+  }
+  m_bIsOdorMap = FALSE;
+  m_bIsTemperatureMap = FALSE;
+  m_bIsPurposeMap = FALSE;
+  m_bIsSensorMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -617,4 +743,49 @@ void CMapConfigView::OnRadioSensor4()
 {
   m_CurMapSubType = 3;
   BuildMap();
+}
+
+
+void CMapConfigView::OnRadioPopulation1()
+{
+  m_CurMapSubType = 0;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioPopulation2()
+{
+  m_CurMapSubType = 1;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioPopulation3()
+{
+  m_CurMapSubType = 2;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioPopulation4()
+{
+  m_CurMapSubType = 3;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioPopulation5()
+{
+  m_CurMapSubType = 4;
+  BuildMap();
+}
+
+void CMapConfigView::OnRadioPopulation6()
+{
+  m_CurMapSubType = 5;
+  BuildMap();
+}
+
+void CMapConfigView::OnReleasedcaptureSliderM1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+  m_populationDateTxt.Format("Day %d", m_SliderM1.GetPos());
+  UpdateData(FALSE);
+  BuildMap();
+  *pResult = 0;
 }

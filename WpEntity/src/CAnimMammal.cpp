@@ -37,7 +37,7 @@ distribution.
 #include "CAnimMammal.h"
 #include "CBiotop.h" 
 #include "Definitions.h"
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 
 //===========================================================================
 // Constructors / Destructors

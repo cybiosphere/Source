@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
   char resuBuffer[512];
   string resuStr;
   string fileIni = "Cybiosphere.ini";
-  int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
+  size_t resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
   resuStr = resuBuffer;
 
   if (resuStr != "")

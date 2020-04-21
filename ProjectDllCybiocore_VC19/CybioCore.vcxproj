@@ -326,17 +326,19 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\Program Files\Microsoft Visual Studio\VC98\Include\IOS.H" />
+    <ClInclude Include="..\WpBehavior\inc\CGeoMapPurpose.h" />
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h" />
+    <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
+    <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrain.h" />
     <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />
     <ClInclude Include="..\WpBehavior\inc\CFeelingFear.h" />
     <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h" />
-    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h" />
     <ClInclude Include="..\WpBehavior\inc\CPurpose.h" />
     <ClInclude Include="..\WpBehavior\inc\CReaction.h" />
     <ClInclude Include="..\WpBehavior\inc\CReactionAttack.h" />
@@ -417,7 +419,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpBehavior\src\CBrainAnimal.cpp" />
     <ClCompile Include="..\WpBehavior\src\CFeelingFear.cpp" />
     <ClCompile Include="..\WpBehavior\src\CFeelingWelfare.cpp" />
-    <ClCompile Include="..\WpBehavior\src\CGeoMap.cpp" />
+    <ClCompile Include="..\WpBehavior\src\CGeoMapPurpose.cpp" />
     <ClCompile Include="..\WpBehavior\src\CNeuronMatrix.cpp" />
     <ClCompile Include="..\WpBehavior\src\CPurpose.cpp" />
     <ClCompile Include="..\WpBehavior\src\CReaction.cpp" />
@@ -474,6 +476,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
     <ClCompile Include="..\WpEntity\src\CWater.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp" />
+    <ClCompile Include="..\WpEnvironment\src\CGeoMap.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CScenarioPlayer.cpp" />
     <ClCompile Include="..\WpCommon\src\CCyclicParam.cpp" />
@@ -484,6 +487,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpGenetic\src\CGene.cpp" />
     <ClCompile Include="..\WpGenetic\src\CGenome.cpp" />
     <ClCompile Include="..\WpGenetic\src\CPairOfChromosome.cpp" />
+    <ClCompile Include="..\WpMeasure\src\CGeoMapPopulation.cpp" />
     <ClCompile Include="..\WpMeasure\src\CMeasure.cpp" />
     <ClCompile Include="..\WpMeasure\src\CMeasureBiotopParam.cpp" />
     <ClCompile Include="..\WpMeasure\src\CMeasureEntityParam.cpp" />

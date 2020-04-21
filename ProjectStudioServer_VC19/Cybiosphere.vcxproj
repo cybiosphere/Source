@@ -462,7 +462,7 @@
     <ClInclude Include="..\WpBehavior\inc\CBrainAnimal.h" />
     <ClInclude Include="..\WpBehavior\inc\CFeelingFear.h" />
     <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h" />
-    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h" />
+    <ClInclude Include="..\WpBehavior\inc\CGeoMapPurpose.h" />
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h" />
     <ClInclude Include="..\WpBehavior\inc\CPurpose.h" />
     <ClInclude Include="..\WpBehavior\inc\CReaction.h" />
@@ -546,6 +546,7 @@
     <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h" />
     <ClInclude Include="..\WpEntity\inc\CWater.h" />
     <ClInclude Include="..\WpEnvironment\inc\CBiotop.h" />
+    <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpEnvironment\inc\CScenarioPlayer.h" />
     <ClInclude Include="..\WpGenetic\inc\CChromosome.h" />
@@ -599,6 +600,7 @@
     <ClInclude Include="..\WpGui\inc\StdAfx.h" />
     <ClInclude Include="..\WpGui\inc\TitleTip.h" />
     <ClInclude Include="..\WpGui\inc\TrainingDlg.h" />
+    <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasure.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureBiotopParam.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureEntityParam.h" />
@@ -660,6 +662,7 @@
     <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp" />
+    <ClCompile Include="..\WPGUI\INC\MAPCONFIGVIEW.CPP" />
     <ClCompile Include="..\WpGui\src\ActionButton.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlDoc.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlView.cpp" />

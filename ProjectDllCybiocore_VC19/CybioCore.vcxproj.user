@@ -16,7 +16,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommand>C:\Frederic\Perso\Cybiosphere\Source\Exec\CybiosphereD.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>C:\Frederic\Perso\Cybiosphere\Source\Exec\Evolution2D.exe</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>C:\Frederic\Perso\Cybiosphere\Source\Exec</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>

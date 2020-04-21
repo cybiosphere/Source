@@ -117,9 +117,6 @@
     <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
-    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h">
-      <Filter>WpBehavior\IncBehavior</Filter>
-    </ClInclude>
     <ClInclude Include="..\WpBehavior\inc\CPurpose.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
@@ -357,6 +354,15 @@
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CGeoMapPurpose.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
@@ -369,9 +375,6 @@
       <Filter>WpBehavior\SrcBehavior</Filter>
     </ClCompile>
     <ClCompile Include="..\WpBehavior\src\CFeelingWelfare.cpp">
-      <Filter>WpBehavior\SrcBehavior</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WpBehavior\src\CGeoMap.cpp">
       <Filter>WpBehavior\SrcBehavior</Filter>
     </ClCompile>
     <ClCompile Include="..\WpBehavior\src\CPurpose.cpp">
@@ -604,6 +607,15 @@
     </ClCompile>
     <ClCompile Include="..\WpEnvironment\src\CIdentifyChecker.cpp">
       <Filter>WpEnvironment\SrcEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpBehavior\src\CGeoMapPurpose.cpp">
+      <Filter>WpBehavior\SrcBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEnvironment\src\CGeoMap.cpp">
+      <Filter>WpEnvironment\SrcEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpMeasure\src\CGeoMapPopulation.cpp">
+      <Filter>WpMeasure\SrcMeasure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ distribution.
 
 #include "CScenarioPlayer.h"
 #include "CAnimal.h"
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 
 //===========================================================================
 // Definitions            

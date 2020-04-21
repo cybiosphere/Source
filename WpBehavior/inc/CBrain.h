@@ -65,7 +65,7 @@ class CReaction;
 class CPurpose;
 class CBasicEntity;
 class CFeelingWelfare;
-class CGeoMap;
+class CGeoMapPurpose;
 class CSensorPheromone;
 class CSensorSmell;
 
@@ -146,7 +146,7 @@ private:
   CSensorSmell*     m_pSensorSmell;     // keep a reference to smell sensor
   CSensorPheromone* m_pSensorPheromone; // keep a reference to pheromon sensor
 
-  CGeoMap* m_pGeoMap;
+  CGeoMapPurpose* m_pGeoMap;
 
   // Attention is focused on 1 particular entity
   BrainFocusedEntityView_t m_FocusedEntityInfo;
@@ -252,7 +252,7 @@ public:
   CPurpose*  GetCurrentPurpose(void);
   size_t GetCurrentPurposeIndex(void);
   CPurpose*  GetPurposeByTriggerSensor(DWORD sensorUniqueId, size_t sensorSubCaptorIndex);
-  CGeoMap*   GetGeographicMap(void);
+  CGeoMapPurpose* GetGeographicMap(void);
   void       ForceCurrentPurpose(size_t purposeIndex);
 
   bool PollAllSensors (void);

@@ -23,7 +23,7 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CGeoMap.cpp
+// FILE: CGeoMapPurpose.cpp
 //   
 // GENERAL DESCRIPTION:
 //         This CLASS represents a geographic map to store purpose success
@@ -38,7 +38,7 @@ distribution.
 //
 //===========================================================================
 
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 #include "CBrainAnimal.h"
 #include "CAnimal.h"
 #include <math.h>
@@ -48,7 +48,7 @@ distribution.
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CGeoMap::CGeoMap
+// METHOD:       CGeoMapPurpose::CGeoMapPurpose
 //  
 // DESCRIPTION:  Constructor 
 // 
@@ -58,27 +58,10 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGeoMap::CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec)
+CGeoMapPurpose::CGeoMapPurpose(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec)
+  : CGeoMap(gridCoordCenterPos, gridBiotopSize, { gridMapSize, gridMapSize }, nbPurposeRec)
 {
   m_pBrain = pBrain;
-  size_t expectedMapSize = (gridMapSize - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  int biotopMapSizeX = ((int)gridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  int biotopMapSizeY = ((int)gridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  int biotopMapSizeMin = cybio_min(biotopMapSizeX, biotopMapSizeY);
-
-  m_GeoMapSize = cybio_min(expectedMapSize, biotopMapSizeMin);
-  m_GeoCoordStart.x = (int)gridCoordCenterPos.x / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize/2;
-  m_GeoCoordStart.y = (int)gridCoordCenterPos.y / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize/2;
-
-  // shift to fit in biotop
-  if ((m_GeoCoordStart.x + m_GeoMapSize) > biotopMapSizeX)
-    m_GeoCoordStart.x = biotopMapSizeX - (int)m_GeoMapSize;
-  if ((m_GeoCoordStart.y + m_GeoMapSize) > biotopMapSizeY)
-    m_GeoCoordStart.y = biotopMapSizeY - (int)m_GeoMapSize;
-  if (m_GeoCoordStart.x < 0)
-    m_GeoCoordStart.x = 0;
-  if (m_GeoCoordStart.y < 0)
-    m_GeoCoordStart.y = 0;
   m_NbPurposeRec = nbPurposeRec;
 
   // attributes used to manage timeout on target direction in GeoMap
@@ -87,48 +70,20 @@ CGeoMap::CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopS
   m_curPurposeUidIdx  = 0xFFFFFFFF;
   m_curTargetTimout   = 0;
 
-  m_tPurposeUniqueId = new DWORD[nbPurposeRec];
+  m_tPurposeUniqueId.resize(nbPurposeRec);
   for (size_t idx=0; idx<nbPurposeRec; idx++)
     m_tPurposeUniqueId[idx] = 0;
-
-  // Build 3D dynamic table
-  m_pMemoryMap   = new short**[m_GeoMapSize];
-  ASSERT( m_pMemoryMap != NULL );
-  for (size_t i=0;i<m_GeoMapSize;i++)
-  {
-    m_pMemoryMap[i]   = new short*[m_GeoMapSize];
-    ASSERT( m_pMemoryMap[i] != NULL );
-    for (size_t j=0;j<m_GeoMapSize;j++)
-    {
-      m_pMemoryMap[i][j] = new short[nbPurposeRec];
-      ASSERT( m_pMemoryMap[i][j] != NULL );
-      for (size_t k=0; k<nbPurposeRec; k++)
-        m_pMemoryMap[i][j][k] = 0;
-    }
-  }
 }
 
-CGeoMap::~CGeoMap()
+CGeoMapPurpose::~CGeoMapPurpose()
 {
-  delete [] m_tPurposeUniqueId;
-
-  // Delete 3D dynamic table 
-  for (size_t i=0; i<m_GeoMapSize; i++)
-  {
-    for (size_t j=0; j<m_GeoMapSize; j++)
-    {
-      delete [] m_pMemoryMap[i][j];
-    }
-    delete [] m_pMemoryMap[i];
-  }
-  delete [] m_pMemoryMap;
 }
 
 
 //===========================================================================
 // public methods
 //===========================================================================
-bool CGeoMap::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight)
+bool CGeoMapPurpose::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight)
 {
   Point_t geoMapCoord;
 
@@ -140,22 +95,13 @@ bool CGeoMap::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int w
   return true;
 }
 
-void CGeoMap::ClearPurposeSuccessOnFullMap(DWORD purposeUid)
+void CGeoMapPurpose::ClearPurposeSuccessOnFullMap(DWORD purposeUid)
 {
   size_t UidIdx = GetPurposeUidTabIndex(purposeUid);
-  if (UidIdx < m_NbPurposeRec)
-  {
-    for (size_t i = 0; i < m_GeoMapSize; i++)
-    {
-      for (size_t j = 0; j < m_GeoMapSize; j++)
-      {
-        m_pMemoryMap[i][j][UidIdx] = 0;
-      }
-    }
-  }
+  ClearRecordOnFullMap(UidIdx);
 }
 
-GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection )
+GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection )
 {
   size_t range = 0;
   int maxWeight = 0;
@@ -183,7 +129,7 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
 
       maxWeight = curWeight;
       initialWeight = curWeight;
-      for (range=1; range<m_GeoMapSize; range++)
+      for (range=1; range<m_GeoMapSize.x; range++)
       {
         for(size_t i=0; i<(2*range); i++)
         {
@@ -305,62 +251,16 @@ GeoMapIntensityType_e CGeoMap::GetClosestSuccessPos(DWORD purposeUid, Point_t gr
 }
 
 
-void CGeoMap::NextDay()
+void CGeoMapPurpose::NextDay()
 {
-  for (size_t i=0; i<m_GeoMapSize; i++)
-  {
-    for (size_t j=0; j<m_GeoMapSize; j++)
-    {
-      for (size_t k=0; k<m_NbPurposeRec; k++)
-      {
-        if (m_pMemoryMap[i][j][k] > 0)
-          m_pMemoryMap[i][j][k]--;
-        else if (m_pMemoryMap[i][j][k] < 0)
-          m_pMemoryMap[i][j][k]++; 
-
-      }
-    }
-  }
+  ConvergeAllRecordsToNeutral();
 }
 
 //===========================================================================
 // private methods
 //===========================================================================
 
-bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut)
-{
-  bool gridPosIsInsideGeoMap = true;
-  Point_t geoMapCoord;
-  geoMapCoord.x = gridPos.x / NB_GRID_PER_GEOMAP_SQUARE;
-  geoMapCoord.y = gridPos.y / NB_GRID_PER_GEOMAP_SQUARE;
-
-  if(giveEdgePositionWhenOut)
-  {
-    if (geoMapCoord.x < m_GeoCoordStart.x)
-      geoMapCoord.x = m_GeoCoordStart.x;
-    else if (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize))
-      geoMapCoord.x = m_GeoCoordStart.x + m_GeoMapSize - 1;
-
-    if (geoMapCoord.y < m_GeoCoordStart.y)
-      geoMapCoord.y = m_GeoCoordStart.y;
-    else if (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize))
-      geoMapCoord.y = m_GeoCoordStart.y + m_GeoMapSize - 1;
-  }
-  else
-  {
-    if( (geoMapCoord.x < m_GeoCoordStart.x) || (geoMapCoord.x >= (m_GeoCoordStart.x + m_GeoMapSize))
-     || (geoMapCoord.y < m_GeoCoordStart.y) || (geoMapCoord.y >= (m_GeoCoordStart.y + m_GeoMapSize)) )
-    {
-      gridPosIsInsideGeoMap = false;
-    }
-  }
-
-  geoMapPos.x = geoMapCoord.x - m_GeoCoordStart.x;
-  geoMapPos.y = geoMapCoord.y - m_GeoCoordStart.y;
-  return gridPosIsInsideGeoMap;
-}
-
-size_t CGeoMap::GetPurposeUidTabIndex(DWORD purposeUid)
+size_t CGeoMapPurpose::GetPurposeUidTabIndex(DWORD purposeUid)
 {
   size_t i;
   // Check if purpose already exist
@@ -382,7 +282,7 @@ size_t CGeoMap::GetPurposeUidTabIndex(DWORD purposeUid)
   return invalidIndex;
 }
 
-DWORD CGeoMap::GettPurposeUniqueId (size_t index)
+DWORD CGeoMapPurpose::GettPurposeUniqueId (size_t index)
 {
   if (index >= m_NbPurposeRec)
     return 0;
@@ -390,12 +290,12 @@ DWORD CGeoMap::GettPurposeUniqueId (size_t index)
     return m_tPurposeUniqueId[index];
 }
 
-int CGeoMap::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
+int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 {
   // If pose out of teritory map, give negative weight -100
   int weight = -100;
 
-  if ((geoMapPos.x<m_GeoMapSize) && (geoMapPos.y<m_GeoMapSize))
+  if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y))
   {
     weight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
   }
@@ -404,12 +304,12 @@ int CGeoMap::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 }
 
 
-bool CGeoMap::MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t geoMapPos, int weight)
+bool CGeoMapPurpose::MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t geoMapPos, int weight)
 {
   bool resu = false;
   short newWeight;
 
-  if ((geoMapPos.x < m_GeoMapSize) && (geoMapPos.y < m_GeoMapSize) && (purposeIndex < m_NbPurposeRec))
+  if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
   {
     // Allow negative values to avoid staying static in a bad place
     newWeight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] + weight;

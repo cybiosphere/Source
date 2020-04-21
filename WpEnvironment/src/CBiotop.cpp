@@ -90,6 +90,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_pGrassGlobalEntity->setId(ENTITY_ID_GRASS);
   m_IdLastEntity = ENTITY_ID_FIRST_USER_ENTITY; // Grass is last id at startup
   m_tMeasures.resize(0);
+  m_tGeoMapSpecies.resize(0);
   m_BiotopFoundIds.tFoundIds.resize(MAX_FOUND_ENTITIES);
   m_BiotopFoundIds.nbFoundIds = 0;
 
@@ -643,13 +644,19 @@ void CBiotop::deleteAllEntities()
 
 void CBiotop::deleteAllMeasures() 
 {
-  // loop from top to bottom 
   for (size_t i = 0; i < m_tMeasures.size(); i++)
   {
     if (m_tMeasures[i] != NULL)
       delete (m_tMeasures[i]); 
   }
   m_tMeasures.clear();
+
+  for (size_t i = 0; i < m_tGeoMapSpecies.size(); i++)
+  {
+    if (m_tGeoMapSpecies[i] != NULL)
+      delete (m_tGeoMapSpecies[i]);
+  }
+  m_tGeoMapSpecies.clear();
 }   
 
 
@@ -923,7 +930,43 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
   return (pFoundEntity);
 }
 
-const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, int distance, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater)
+{
+  int nbFoundIds = 0;
+  CBasicEntity* pCurEntity = NULL;
+  Point_t curCoord;
+  size_t i,j;
+  size_t layer;
+  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
+  curCoord.x = bottomLeftCoord.x;
+  curCoord.y = bottomLeftCoord.y;
+
+  for (i = 0; i < squareSize; i++)
+  {
+    for (j = 0; j < squareSize; j++)
+    {
+      for (layer = 0; layer < m_nbLayer; layer++)
+      {
+        pCurEntity = findEntity(curCoord, layer);
+        if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != 0)))
+        {
+          tFoundIds[nbFoundIds].pEntity = pCurEntity;
+          tFoundIds[nbFoundIds].distance = i + j;
+          nbFoundIds++;
+        }
+      }
+      curCoord.y++;
+    }
+    curCoord.y = bottomLeftCoord.y;
+    curCoord.x++;
+  }
+
+  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIds);
+}
+
+
+const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distance, bool includeWater)
 {
   int nbFoundIds = 0;
   CBasicEntity*  pCurEntity = NULL;
@@ -1575,7 +1618,6 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
   feedbackValType resu = 0;
   CBasicEntity* pEntity = NULL;
   pEntity = getEntityById(idEntity);
-  bool isValid;
 
   // Force entity action
   if (pEntity != NULL)
@@ -1594,14 +1636,7 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
   }*/
 
   // Trigger measurement
-  for (auto pMeasure : m_tMeasures)
-  {
-    isValid = pMeasure->NextSecond();
-    if (!isValid)
-    {
-      pMeasure->StopMeasurement();
-    }
-  }
+  triggerMeasuresNextSecond();
 
   return(resu);
 }
@@ -1757,6 +1792,13 @@ void CBiotop::nextHour(void)
       m_BioTime.days = 0;
       m_BioTime.years++;
     }
+
+    // Save geomap with monitored specie populations
+    for (auto pGeoMap : m_tGeoMapSpecies)
+    {
+      pGeoMap->MemorizePopulationMap(m_BioTime.days);
+    }
+
   }
 }
 
@@ -2151,6 +2193,28 @@ void CBiotop::saveAllMeasuresInFile(string fileNameWithPath)
   {
     m_tMeasures[i]->saveInFile(fileNameWithPath);
   }
+}
+
+bool CBiotop::addGeoMapSpeciePopulation(std::string specieName)
+{
+  CGeoMapPopulation* pGeoMapPopulation = new CGeoMapPopulation(this, getDimension(), specieName);
+  m_tGeoMapSpecies.push_back(pGeoMapPopulation);
+  // Store initial population map
+  pGeoMapPopulation->MemorizePopulationMap(m_BioTime.days);
+  return true;
+}
+
+size_t CBiotop::getNbOfGeoMapSpecie(void)
+{
+  return (m_tGeoMapSpecies.size());
+}
+
+CGeoMapPopulation* CBiotop::getGeoMapSpecieByIndex(size_t index)
+{
+  CGeoMapPopulation* pGeoMap = NULL;
+  if (index < m_tGeoMapSpecies.size())
+    pGeoMap = m_tGeoMapSpecies[index];
+  return (pGeoMap);
 }
 
 

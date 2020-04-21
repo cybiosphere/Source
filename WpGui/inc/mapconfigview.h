@@ -38,6 +38,9 @@ distribution.
 #include <afxext.h>
 #endif
 
+#include "stdafx.h"
+#include "CBiotop.h" 
+
 typedef enum
 {
   MAP_TYPE_NONE = 0,
@@ -45,6 +48,7 @@ typedef enum
   MAP_TYPE_TEMPERATURE,
   MAP_TYPE_PURPOSE,
   MAP_TYPE_SENSORS,
+	MAP_TYPE_POPULATION,
   MAP_NUMBER_TYPE 
 } MapConfigType_e;
 
@@ -63,6 +67,7 @@ public:
 	BOOL	m_bIsTemperatureMap;
 	BOOL	m_bIsPurposeMap;
   BOOL	m_bIsSensorMap;
+	BOOL	m_bIsPopulationMap;
 	CString	m_purposeTxt1;
 	CString	m_purposeTxt2;
 	CString	m_purposeTxt3;
@@ -74,11 +79,19 @@ public:
   CString	m_sensorTxt2;
   CString	m_sensorTxt3;
   CString	m_sensorTxt4;
+	CString	m_populationTxt1;
+	CString	m_populationTxt2;
+	CString	m_populationTxt3;
+	CString	m_populationTxt4;
+	CString	m_populationTxt5;
+	CString	m_populationTxt6;
+	CString m_populationDateTxt;
+	CSliderCtrl	m_SliderM1;
 	//}}AFX_DATA
 
 // Attributes
 protected:
-   CBiotop* m_pBiotop;
+   CBiotop*        m_pBiotop;
    MapConfigType_e m_CurMapType;
    int             m_CurMapSubType;
    CBasicEntity*   m_pSelectedEntity;
@@ -93,6 +106,7 @@ public:
     bool BuildTemperatureMap();
     bool BuildPurposeMap(int index);
     bool BuildSensorsMap(int index);
+		bool BuildPopulationMap(int index);
     bool ClearMap();
     bool UpdateSelectedEntity(CBasicEntity* pEntity);
 
@@ -124,6 +138,7 @@ protected:
 	afx_msg void OnCheck2();
 	afx_msg void OnCheck3();
   afx_msg void OnCheck4();
+	afx_msg void OnCheck5();
 	afx_msg void OnRadioPurpose1();
 	afx_msg void OnRadioPurpose2();
 	afx_msg void OnRadioPurpose3();
@@ -135,6 +150,13 @@ protected:
   afx_msg void OnRadioSensor2();
   afx_msg void OnRadioSensor3();
   afx_msg void OnRadioSensor4();
+	afx_msg void OnRadioPopulation1();
+	afx_msg void OnRadioPopulation2();
+	afx_msg void OnRadioPopulation3();
+	afx_msg void OnRadioPopulation4();
+	afx_msg void OnRadioPopulation5();
+	afx_msg void OnRadioPopulation6();
+	afx_msg void OnReleasedcaptureSliderM1(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

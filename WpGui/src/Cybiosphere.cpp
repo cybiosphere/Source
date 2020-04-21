@@ -239,6 +239,7 @@ BOOL CCybiosphereApp::InitInstance()
 
   // Connect to server and wait for biotop init from server
   m_pClient->connect_to_server();
+  BeginWaitCursor();
   for (int i = 0; i < 200; i++)
   {
     System::sleep(10);
@@ -255,6 +256,7 @@ BOOL CCybiosphereApp::InitInstance()
     System::sleep(10);
     m_pClient->process_new_events();
   }
+  EndWaitCursor();
   m_pBiotop = m_pClient->get_pBiotop();
 
 #endif

@@ -37,7 +37,7 @@ distribution.
 #include "CBrain.h"
 #include "CFeelingWelfare.h"
 #include "CBiotop.h"
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 #include <fstream>
 
 //===========================================================================
@@ -161,7 +161,7 @@ void CBrain::NextSecond()
   if (m_pCurrentPurpose!=NULL)
   {
     if (m_pGeoMap == NULL)
-      m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
+      m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
 
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
@@ -414,7 +414,7 @@ CPurpose*  CBrain::GetPurposeByTriggerSensor(DWORD sensorUniqueId, size_t sensor
   return GetPurposeByUniqueId(CPurpose::ComputeUniqueId(sensorUniqueId, sensorSubCaptorIndex));
 }
 
-CGeoMap* CBrain::GetGeographicMap(void)
+CGeoMapPurpose* CBrain::GetGeographicMap(void)
 {
   return m_pGeoMap;
 }
@@ -1909,7 +1909,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     delete m_pGeoMap;
 
   // Create new geo map centered on baby
-  m_pGeoMap = new CGeoMap(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
+  m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
 
   // Memorize home position
   if (m_pGeoMap!=NULL)

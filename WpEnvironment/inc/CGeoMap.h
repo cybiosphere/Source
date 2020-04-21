@@ -51,15 +51,6 @@ distribution.
 //===========================================================================
 #define NB_GRID_PER_GEOMAP_SQUARE 25
 
-enum class GeoMapIntensityType_e
-{
-  FOUND_INTENSITY_NULL = 0,
-  FOUND_INTENSITY_LOW,
-  FOUND_INTENSITY_MEDIUM,
-  FOUND_INTENSITY_HIGH,    
-};
-
-class CBrainAnimal;
 
 //===========================================================================
 //                                    CLASS            
@@ -69,24 +60,16 @@ class DLL_CYBIOCORE_API CGeoMap
 //===========================================================================
 // Attributes 
 //===========================================================================
-private:
+protected:  // Fred remettre en private ?
   RelativePos_t m_GeoCoordStart;
-  size_t        m_GeoMapSize;
-  size_t        m_NbPurposeRec;
-
-  // attributes used to manage timeout on target direction in GeoMap
-  Point_t       m_curTargetMapPos;
-  size_t        m_curPurposeUidIdx;
-  size_t        m_curTargetTimout;
+  Point_t       m_GeoMapSize;
+  size_t        m_nbRecords;
 
 //---------------------------------------------------------------------------
 // associations
 //---------------------------------------------------------------------------
-private:
-  CBrain*       m_pBrain;
+protected: // Fred remettre en private ?
   short***      m_pMemoryMap;
-  DWORD*        m_tPurposeUniqueId;
-
 
 //===========================================================================
 // Methods 
@@ -96,29 +79,26 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGeoMap(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec);
+	CGeoMap(Point_t gridCoordCenterPos, Point_t gridBiotopSize, Point_t gridMapSize, size_t nbRecords);
   ~CGeoMap();
 
-//---------------------------------------------------------------------------
-// public methods
-//---------------------------------------------------------------------------
+  //---------------------------------------------------------------------------
+  // public methods
+  //---------------------------------------------------------------------------
 public:
+  bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t& geoMapPos, bool giveEdgePositionWhenOut = false);
 
-  bool MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight);
-  GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection);
-  void ClearPurposeSuccessOnFullMap(DWORD purposeUid);
-  void NextDay();
-
-  bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut = false);
-  int GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos);
-  DWORD GettPurposeUniqueId (size_t index);
+//---------------------------------------------------------------------------
+// protected methods
+//---------------------------------------------------------------------------
+protected:
+  void ConvergeAllRecordsToNeutral();
+  void ClearRecordOnFullMap(size_t recordIndex);
 
 //---------------------------------------------------------------------------
 // private methods
 //---------------------------------------------------------------------------
 private:
-  size_t GetPurposeUidTabIndex(DWORD purposeUid);
-  bool MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t geoMapPos, int weight);
 
 
 };

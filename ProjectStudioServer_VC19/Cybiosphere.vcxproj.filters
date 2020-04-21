@@ -448,9 +448,6 @@
     <ClInclude Include="..\WpBehavior\inc\CFeelingWelfare.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
-    <ClInclude Include="..\WpBehavior\inc\CGeoMap.h">
-      <Filter>WpBehavior\IncBehavior</Filter>
-    </ClInclude>
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h">
       <Filter>WpBehavior\IncBehavior</Filter>
     </ClInclude>
@@ -748,6 +745,15 @@
     <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h">
       <Filter>WpMeasure\IncMeasure</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpBehavior\inc\CGeoMapPurpose.h">
+      <Filter>WpBehavior\IncBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h">
+      <Filter>WpEnvironment\IncEnvironment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h">
+      <Filter>WpMeasure\IncMeasure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1031,6 +1037,9 @@
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WPGUI\INC\MAPCONFIGVIEW.CPP">
+      <Filter>Project2D\Src2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

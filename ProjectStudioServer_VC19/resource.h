@@ -40,7 +40,7 @@
 #define IDD_DLG_MEASURE_EDITOR          178
 #define IDD_DLG_ENTITY_FIND             179
 #define IDD_MAP_FORMVIEW                180
-#define IDB_ANIM1                       180
+#define IDB_ANIM1                       181
 #define IDB_ANIM2                       182
 #define IDB_ANIM3                       183
 #define IDB_ANIM4                       184
@@ -74,6 +74,7 @@
 #define IDC_CHECK2                      1006
 #define IDC_CHECK3                      1007
 #define IDC_CHECK4                      1008
+#define IDC_CHECK5                      1009
 #define IDC_BUTTON_EXEC                 1012
 #define IDC_FEEDBACK                    1013
 #define IDC_CUR_ACTION                  1014
@@ -208,6 +209,21 @@
 #define IDC_RADIO_SENSOR3               1122
 #define IDC_RADIO_PURPOSE11             1123
 #define IDC_RADIO_SENSOR4               1123
+#define IDC_RADIO_POPULATION1           1124
+#define IDC_POPULATION_TXT1             1125
+#define IDC_RADIO_POPULATION2           1126
+#define IDC_RADIO_POPULATION3           1127
+#define IDC_RADIO_POPULATION4           1128
+#define IDC_POPULATION_TXT2             1129
+#define IDC_POPULATION_TXT3             1130
+#define IDC_POPULATION_TXT4             1131
+#define IDC_RADIO_POPULATION5           1132
+#define IDC_RADIO_POPULATION6           1133
+#define IDC_POPULATION_TXT5             1134
+#define IDC_POPULATION_TXT6             1135
+#define IDC_SLIDER1                     1136
+#define IDC_POPULATION_TXT7             1137
+#define IDC_POPULATION_DATE             1137
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -247,9 +263,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        209
+#define _APS_NEXT_RESOURCE_VALUE        210
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         1118
+#define _APS_NEXT_CONTROL_VALUE         1137
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

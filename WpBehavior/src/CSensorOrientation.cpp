@@ -37,7 +37,7 @@ distribution.
 #include "CSensorOrientation.h"
 #include "CBrainAnimal.h"
 #include "CAnimal.h"
-#include "CGeoMap.h"
+#include "CGeoMapPurpose.h"
 
 //===========================================================================
 // Construction/Destruction
@@ -88,7 +88,7 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CPurpose* pPurpose = m_pBrain->GetCurrentPurpose();
-  CGeoMap*  pMap = m_pBrain->GetGeographicMap();
+  CGeoMapPurpose*  pMap = m_pBrain->GetGeographicMap();
 
   if ( (pPurpose != NULL) && (pMap != NULL) && (pPurpose->IsMemorizeSuccess()) )
   {
