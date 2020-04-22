@@ -662,7 +662,6 @@
     <ClCompile Include="..\WpClanNetwork\src\udp_socket.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\utf8_reader.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\zlib_compression.cpp" />
-    <ClCompile Include="..\WPGUI\INC\MAPCONFIGVIEW.CPP" />
     <ClCompile Include="..\WpGui\src\ActionButton.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlDoc.cpp" />
     <ClCompile Include="..\WpGui\src\BioCtrlView.cpp" />

@@ -211,7 +211,10 @@ void CBiotopDisplayMFC::RedrawScene()
       {
         pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00EEFFEE);
       }
-
+      else if (curLayer == LAYER_GLOBAL_ROCK)
+      {
+        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00F0F2F0);
+      }
       // draw user color
       custColor = m_pBiotop->getCustomColor(bioCoord);
       if (custColor != 0x00FFFFFF)

@@ -134,7 +134,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int index)
       Point_t coord = pBasicEntity->getStepCoord();
       m_tMesh[index]->pAnimState->setEnabled(false);
       m_tMesh[index]->pAnimState = m_tMesh[index]->pMeshEnt->getAnimationState("Dead");
-      m_tMesh[index]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, coord.x-OFFSET_COORD_X) );
+      m_tMesh[index]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, (int)coord.x-OFFSET_COORD_X) );
       m_tMesh[index]->pAnimState->setLoop(false);
       m_tMesh[index]->strCurACtion = "Dead";
       m_tMesh[index]->pAnimState->setEnabled(true);
@@ -152,7 +152,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int index)
 
     if ( (coord.x != prevCoord.x) || (coord.y != prevCoord.y) || (pBasicEntity->getStepDirection() != m_tMesh[index]->curDirection) )
     {
-      m_tMesh[index]->translateVect3 = Vector3(coord.y - prevCoord.y, 0, coord.x - prevCoord.x);
+      m_tMesh[index]->translateVect3 = Vector3((int)coord.y - (int)prevCoord.y, 0, (int)coord.x - (int)prevCoord.x);
       m_tMesh[index]->curRotation = (pBasicEntity->getStepDirection() - m_tMesh[index]->curDirection) % 360;
       if (m_tMesh[index]->curRotation > 180)
         m_tMesh[index]->curRotation -= 360;
@@ -225,7 +225,7 @@ void CybiOgre3DFrameListener::setMeshEntityPosition(int index)
   if ( pBasicEntity->isAlive() )
   {  
     Point_t coord = pBasicEntity->getStepCoord();
-    m_tMesh[index]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, coord.x-OFFSET_COORD_X) );
+    m_tMesh[index]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[index]->yPos, (int)coord.x-OFFSET_COORD_X) );
     Quaternion q;
     q.FromAngleAxis(Degree(pBasicEntity->getStepDirection()), Vector3::UNIT_Y);
     m_tMesh[index]->pMeshNode->setOrientation(q); 
@@ -642,7 +642,7 @@ bool CybiOgre3DApp::createMeshEntity (CBasicEntity* pBasicEntity, int insertInde
     pNewMesh->yPos = scale-1.0;
     pNewMesh->pMeshNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, pNewMesh->yPos, (int)coord.x-OFFSET_COORD_X) );
     pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
     pNewMesh->pMeshNode->setScale(scale,scale,scale);
 

@@ -49,6 +49,7 @@ distribution.
 #include "CBasicEntity.h" 
 #include "CWater.h"
 #include "CGrass.h"
+#include "CRock.h"
 #include "CCyclicParam.h"
 // Measures
 #include "CMeasureEntityParam.h"
@@ -96,7 +97,8 @@ typedef enum
   LAYER_UNDER_WATER, 
   LAYER_OVER_WET_GROUND,
   LAYER_IN_AIR,
-  LAYER_GLOBAL_GRASS
+  LAYER_GLOBAL_GRASS,
+  LAYER_GLOBAL_ROCK
 } LayerType_e;
 
 typedef struct 
@@ -134,6 +136,7 @@ typedef enum
   ENTITY_ID_INVALID =  -1,
   ENTITY_ID_WATER =     0,
   ENTITY_ID_GRASS,
+  ENTITY_ID_ROCK,
   ENTITY_ID_FIRST_USER_ENTITY
 } ReservedEntityIdType_e;
 
@@ -245,6 +248,7 @@ private:
   std::vector<CBasicEntity*> m_tEntity;
   CWater* m_pWaterGlobalEntity;
   CGrass* m_pGrassGlobalEntity;
+  CRock* m_pRockGlobalEntity;
   std::vector<CMeasure*> m_tMeasures;
   std::vector <CGeoMapPopulation*> m_tGeoMapSpecies;
   std::vector<CGenericParam*> m_tParam;
@@ -420,7 +424,6 @@ public:
   double getOdorTrace(Point_t coord, OdorType_e odor);
   bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
   COLORREF getCustomColor(Point_t coord);
-  WORD getMapId(Point_t coord);
   BiotopSquare_t** getpBioSquare();
   string getLabel();
   int  getWindDirection();

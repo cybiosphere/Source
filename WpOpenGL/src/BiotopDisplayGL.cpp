@@ -488,17 +488,17 @@ bool CBiotopDisplayGL::BuildMapFromBiotop()
       bioCoord.x = i;
       bioCoord.y = j;
       curLayer = m_pBiotop->getLayerType(bioCoord,1);
-      curMapId = m_pBiotop->getMapId(bioCoord);
           
       ConvertCoordBiotopGridToMap(i,j,cmx,cmy);
 
-      m_Map.SetBlock(cmx,cmy,curMapId);
       if (curLayer == LAYER_OVER_WATER)
         m_Map.SetBlock(cmx,cmy,3);
       else if (curLayer == LAYER_OVER_WET_GROUND)
         m_Map.SetBlock(cmx,cmy,4);
       else if (curLayer == LAYER_GLOBAL_GRASS)
         m_Map.SetBlock(cmx,cmy,5);
+      else if (curLayer == LAYER_GLOBAL_ROCK)
+        m_Map.SetBlock(cmx, cmy, 7);
       else
         m_Map.SetBlock(cmx,cmy,6);
     } 
@@ -545,8 +545,8 @@ void CBiotopDisplayGL::DrawAllVisibleEntities(bool noStep)
  
     Point_t coord = pEntity->getStepCoord();
 
-    if ( (coord.x>=cbx_min)&&(coord.x<=cbx_max)
-       &&(coord.y>=cby_min)&&(coord.y<=cby_max) )
+    if ( ((int)coord.x>=cbx_min)&&((int)coord.x<=cbx_max)
+       &&((int)coord.y>=cby_min)&&((int)coord.y<=cby_max) )
     {
       // Process coordonate
       ConvertCoordBiotopStepToMapStep(coord.x,coord.y,posMapX,posMapY);

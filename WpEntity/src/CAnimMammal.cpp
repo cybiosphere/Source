@@ -835,7 +835,7 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
     Point_t newCoord = getGridCoordRelative(relPos);
     
     CBasicEntity* pEatenEntity = m_pBiotop->findEntity(newCoord,getLayer()+relLayer);
-    if ( (pEatenEntity==NULL) || ( (pEatenEntity!=NULL) && (pEatenEntity->getId()==0) ) )// Rq: Water (id=0) cannot be eaten
+    if ( (pEatenEntity==NULL) || ( (pEatenEntity!=NULL) && (pEatenEntity->getId()==ENTITY_ID_WATER) ) )// Rq: Water (id=0) cannot be eaten
     {
       // Nothing to eat: small frustration
       pleasureRate = -failureFrustrationFactor;

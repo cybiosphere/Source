@@ -80,7 +80,7 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
     pNewMesh->yPos = scale-1.0;
     pNewMesh->pMeshNode = pSceneMgr->getRootSceneNode()->createChildSceneNode();
     pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, pNewMesh->yPos, coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, pNewMesh->yPos, (int)coord.x-OFFSET_COORD_X) );
     pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
     pNewMesh->pMeshNode->setScale(scale,scale,scale);
     pNewMesh->strCurACtion = "";
@@ -226,7 +226,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
       Point_t coord = pBasicEntity->getStepCoord();
       m_tMesh[meshIndex]->pAnimState->setEnabled(false);
       m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState("Dead");
-      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, coord.x-OFFSET_COORD_X) );
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, (int)coord.x-OFFSET_COORD_X) );
       m_tMesh[meshIndex]->pAnimState->setLoop(false);
       m_tMesh[meshIndex]->strCurACtion = "Dead";
       m_tMesh[meshIndex]->pAnimState->setEnabled(true);
@@ -246,7 +246,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 
     if ( (coord.x != prevCoord.x) || (coord.y != prevCoord.y) || (pBasicEntity->getStepDirection() != m_tMesh[meshIndex]->curDirection) )
     {
-      m_tMesh[meshIndex]->translateVect3 = Vector3((coord.y - prevCoord.y), 0, (coord.x - prevCoord.x));
+      m_tMesh[meshIndex]->translateVect3 = Vector3(((int)coord.y - (int)prevCoord.y), 0, ((int)coord.x - (int)prevCoord.x));
       m_tMesh[meshIndex]->curRotation = (pBasicEntity->getStepDirection() - m_tMesh[meshIndex]->curDirection) % 360;
       if (m_tMesh[meshIndex]->curRotation > 180)
         m_tMesh[meshIndex]->curRotation -= 360;
@@ -320,7 +320,7 @@ void CybiOgre3DFrameListener::setMeshEntityPreviousPosition(int meshIndex)
   {  
     Point_t coord = pBasicEntity->getPrevStepCoord();
     if (coord.x != -1)
-      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3(coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, coord.x-OFFSET_COORD_X) );
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, (int)coord.x-OFFSET_COORD_X) );
     Quaternion q;
     q.FromAngleAxis(Degree(pBasicEntity->getPrevStepDirection()), Vector3::UNIT_Y);
     m_tMesh[meshIndex]->pMeshNode->setOrientation(q); 

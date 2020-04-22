@@ -330,6 +330,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\WpBehavior\inc\CNeuronMatrix.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h" />
+    <ClInclude Include="..\WpEntity\inc\CRock.h" />
     <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h" />
@@ -472,6 +473,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpEntity\src\CLifeStage.cpp" />
     <ClCompile Include="..\WpEntity\src\CMineral.cpp" />
     <ClCompile Include="..\WpEntity\src\CPhysicalWelfare.cpp" />
+    <ClCompile Include="..\WpEntity\src\CRock.cpp" />
     <ClCompile Include="..\WpEntity\src\CVegetable.cpp" />
     <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
     <ClCompile Include="..\WpEntity\src\CWater.cpp" />
