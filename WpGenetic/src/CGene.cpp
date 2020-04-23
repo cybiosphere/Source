@@ -743,7 +743,8 @@ bool CGene::buildGeneFromStringData(string rawData)
   int dataLen; 
   int muteType; 
   int muteRate;
-  int tmpData;
+  BYTE tmpData;
+  char* pEnd;
   tmpStr = rawData.substr(0,14);
   sscanf( tmpStr.c_str(),"%02X%04X%04X%02X%02X",&geneType,&geneSubType,&dataLen,&muteType,&muteRate);
   m_GeneType    = (GeneType_e)geneType;
@@ -755,8 +756,8 @@ bool CGene::buildGeneFromStringData(string rawData)
   for (int j=0;j<dataLen;j++)
   {
     tmpStr = rawData.substr(14+2*j, 2);
-    sscanf (tmpStr.c_str(),"%02X",&tmpData);
-    m_RawData[j] = (BYTE)tmpData;
+    tmpData = (BYTE)strtol(tmpStr.c_str(), &pEnd, 16);
+    m_RawData[j] = tmpData;
   }
 
   return (true);

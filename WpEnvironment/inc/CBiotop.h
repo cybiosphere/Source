@@ -105,7 +105,7 @@ typedef struct
 {
   //entityIdType id;
   CBasicEntity* pEntity;
-  int distance;
+  size_t distance;
 } FoundEntity_t;
 
 typedef struct 

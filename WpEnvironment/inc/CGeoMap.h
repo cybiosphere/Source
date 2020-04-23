@@ -94,6 +94,8 @@ public:
 protected:
   void ConvergeAllRecordsToNeutral();
   void ClearRecordOnFullMap(size_t recordIndex);
+  string buildStringDataFromGeoMapRecord(size_t recordIndex);
+  bool buildGeoMapRecordFromStringData(size_t recordIndex, string rawData);
 
 //---------------------------------------------------------------------------
 // private methods

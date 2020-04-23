@@ -148,6 +148,51 @@ void CGeoMap::ConvergeAllRecordsToNeutral()
   }
 }
 
+string CGeoMap::buildStringDataFromGeoMapRecord(size_t recordIndex)
+{
+  string rawDataRsp = "";
+  string tmpStr;
+  if (recordIndex < m_nbRecords)
+  {
+    for (size_t i = 0; i < m_GeoMapSize.x; i++)
+    {
+      for (size_t j = 0; j < m_GeoMapSize.y; j++)
+      {
+        tmpStr = FormatString("%4X", m_pMemoryMap[i][j][recordIndex]);
+        rawDataRsp += tmpStr;
+      }
+    }
+  }
+  return (rawDataRsp);
+}
+
+bool CGeoMap::buildGeoMapRecordFromStringData(size_t recordIndex, string rawData)
+{
+  string tmpStr = "00";
+  WORD tempVal;
+  string rawDataRsp = "";
+  size_t strOffset = 0;
+  size_t dataLen = rawData.length();
+  char* pEnd;
+  if (recordIndex < m_nbRecords)
+  {
+    for (size_t i = 0; i < m_GeoMapSize.x; i++)
+    {
+      for (size_t j = 0; j < m_GeoMapSize.y; j++)
+      {
+        if ((strOffset + 4) > dataLen)
+        {
+          return (false);
+        }
+        tmpStr = rawData.substr(strOffset, 4);
+        m_pMemoryMap[i][j][recordIndex] = (short)strtol(tmpStr.c_str(), &pEnd, 16);
+        strOffset += 4;
+      }
+    }
+  }
+  return (true);
+}
+
 //===========================================================================
 // public methods
 //===========================================================================

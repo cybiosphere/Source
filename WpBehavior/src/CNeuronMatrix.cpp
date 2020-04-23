@@ -166,11 +166,11 @@ string CNeuronMatrix::buildStringDataFromNeuronTable()
 bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
 {
   string tmpStr = "00";
-  int msbVal,lsbVal; // ! sscanf needs int as argument, do not use BYTE
   WORD tempVal;
   string rawDataRsp = "";
   size_t strOffset = 0;
   size_t dataLen = rawData.length();
+  char* pEnd;
   for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
   {
     for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
@@ -180,17 +180,12 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
         NormalizeNeuronMatrix();
         return (false);
       }
-      tmpStr = rawData.substr(strOffset, 2);
-      sscanf (tmpStr.c_str(),"%02X",&msbVal);
-      strOffset += 2;
-      tmpStr = rawData.substr(strOffset, 2);
-      sscanf (tmpStr.c_str(),"%02X",&lsbVal);    
-      tempVal = lsbVal + 0x100*msbVal;
+      tmpStr = rawData.substr(strOffset, 4);
+      tempVal = (WORD)strtol(tmpStr.c_str(), &pEnd, 16);
       m_mNeuronTable(i,j) = (double)tempVal / 32767.0 - 1.0;
-      strOffset += 2;
+      strOffset += 4;
     }
   }
-
   NormalizeNeuronMatrix();
   return (true);
 }
@@ -365,8 +360,8 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
 {
   string loadedBrain;
   char* pbuf;
-  unsigned long int begin, end;
-  long int fLength; 
+  std::streamoff begin, end;
+  long fLength; 
   ifstream f1;
   bool resu = false;
 
@@ -374,7 +369,7 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
   begin = f1.tellg();
   f1.seekg(0, ios::end);
   end = f1.tellg();
-  fLength = (end - begin);
+  fLength = ((long)end - (long)begin);
   f1.seekg(0, ios::beg);
 
   if ( (fLength==0) || (fLength>1000000) )

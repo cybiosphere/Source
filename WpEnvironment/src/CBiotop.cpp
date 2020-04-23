@@ -2847,7 +2847,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   // Find entities
   CBasicEntity* pCurEntity = NULL;
 
-  const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
+  const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, range);
   const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)

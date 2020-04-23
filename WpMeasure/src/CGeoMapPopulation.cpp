@@ -77,7 +77,7 @@ bool CGeoMapPopulation::MemorizePopulationMap(size_t dayIndex)
   {
     for (size_t j = 0; j < m_GeoMapSize.y; j++)
     {
-      m_pMemoryMap[i][j][dayIndex] = CountEntitiesInMapSquare(m_specieName, i, j);
+      m_pMemoryMap[i][j][dayIndex] = (short)CountEntitiesInMapSquare(m_specieName, i, j);
     }
   }
 
