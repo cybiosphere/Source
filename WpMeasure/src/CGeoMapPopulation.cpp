@@ -55,10 +55,10 @@ distribution.
 CGeoMapPopulation::CGeoMapPopulation(CBiotop* pBiotop, Point_t gridBiotopSize, std::string specieName, size_t maxNumberRecords)
   : CGeoMap({ gridBiotopSize.x / 2, gridBiotopSize.y / 2 }, gridBiotopSize, gridBiotopSize, maxNumberRecords)
 {
-  m_MaxNumberRecords = maxNumberRecords;
   m_tTimeStamps.resize(maxNumberRecords);
   m_pBiotop = pBiotop;
   m_specieName = specieName;
+  m_CurrentNumberRecords = 0;
 }
 
 CGeoMapPopulation::~CGeoMapPopulation()
@@ -103,23 +103,161 @@ string CGeoMapPopulation::GetSpecieName()
 }
 
 //===========================================================================
+// File management
+//===========================================================================
+bool CGeoMapPopulation::saveInXmlFile(string fileNameWithPath)
+{
+  bool resu = false;
+  TiXmlDocument xmlDoc(fileNameWithPath);
+  xmlDoc.LoadFile();
+  saveInXmlFile(&xmlDoc);
+  resu = xmlDoc.SaveFile();
+  return resu;
+}
+
+bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
+{
+  TiXmlElement* pElement;
+  TiXmlNode* pNodeBiotop = NULL;
+  TiXmlNode* pNode = NULL;
+  TiXmlNode* pNodeChild = NULL;
+  size_t index;
+  CBasicEntity* pCurEntity = NULL;
+  string previousFileName = "";
+
+  pNodeBiotop = pXmlDoc->FirstChild(XML_NODE_BIOTOP);
+  if (pNodeBiotop == NULL)
+  {
+    TiXmlElement newNode(XML_NODE_BIOTOP);
+    pNodeBiotop = pXmlDoc->InsertEndChild(newNode);
+  }
+
+  if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
+  {
+    // Set attributes
+    pElement = (TiXmlElement*)pNodeBiotop;
+    pElement->SetAttribute(XML_ATTR_LABEL, m_pBiotop->getLabel());
+    pElement->SetAttribute(XML_ATTR_SIZE_X, (int)m_pBiotop->getDimension().x);
+    pElement->SetAttribute(XML_ATTR_SIZE_Y, (int)m_pBiotop->getDimension().y);
+    pElement->SetAttribute(XML_ATTR_SIZE_LAYER, (int)m_pBiotop->getNbLayer());
+    pElement->SetAttribute(XML_ATTR_BIO_TIME, convertBioTimeToCount(m_pBiotop->getBiotopTime()));
+  }
+
+  // Create new Records node
+  TiXmlElement newNode(XML_NODE_RECORDS);
+  pNode = pNodeBiotop->InsertEndChild(newNode);
+  if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+  {
+    // Set attributes
+    pElement = (TiXmlElement*)pNode;
+    pElement->SetAttribute(XML_ATTR_SPECIE, m_specieName);
+
+    // Save childs
+    for (index = 0; index < m_CurrentNumberRecords; index++)
+    {
+      TiXmlElement newPopulationNode(XML_NODE_POPULATION);
+      pNodeChild = pNode->InsertEndChild(newPopulationNode);
+      if (pNodeChild != NULL)
+      {
+        pElement = (TiXmlElement*)pNodeChild;
+        pElement->SetAttribute(XML_ATTR_BIO_DAY, (int)m_tTimeStamps[index]);
+        pElement->SetAttribute(XML_ATTR_RAW_DATA, buildStringDataFromGeoMapRecord(index));
+      }
+    }
+  }
+  return true;
+}
+
+bool CGeoMapPopulation::loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile)
+{
+  bool resu = false;
+  TiXmlDocument xmlDoc(fileNameWithPath);
+  resu = xmlDoc.LoadFile();
+  loadFromXmlFile(&xmlDoc, indexOfRecordInFile);
+  return resu;
+}
+
+bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRecordInFile)
+{
+  bool recordFound = false;
+  TiXmlElement* pElement;
+  TiXmlNode* pNode = NULL;
+  TiXmlNode* pNodeRecord = NULL;
+
+  TiXmlNode* pNodeBiotop = pXmlDoc->FirstChild(XML_NODE_BIOTOP);
+  if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
+  {
+    pElement = (TiXmlElement*)pNodeBiotop;
+    int sizeX, sizeY, nbLayer;
+    string timeCountStr;
+
+    pElement->QueryIntAttribute(XML_ATTR_SIZE_X, &sizeX);
+    pElement->QueryIntAttribute(XML_ATTR_SIZE_Y, &sizeY);
+    pElement->QueryIntAttribute(XML_ATTR_SIZE_LAYER, &nbLayer);
+    pElement->QueryStringAttribute(XML_ATTR_BIO_TIME, &timeCountStr);
+
+    if ((sizeX > m_pBiotop->getDimension().x) || (sizeY > m_pBiotop->getDimension().y) || (nbLayer > m_pBiotop->getNbLayer()))
+    {
+      return false;
+    }
+
+    // Record management
+    string specieName;
+    int dayOfRecord;
+    string rawData;
+    pNodeRecord = pNodeBiotop->FirstChild(XML_NODE_RECORDS);
+    if (pNodeRecord != NULL)
+    {
+      for (size_t index = 0; index < indexOfRecordInFile; index++)
+        pNodeRecord = pNodeRecord->NextSibling();
+
+      if ((pNodeRecord->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNodeRecord->ValueStr() == XML_NODE_RECORDS))
+      {
+        pElement = (TiXmlElement*)pNodeRecord;
+        if (pElement->QueryStringAttribute(XML_ATTR_SPECIE, &specieName) != TIXML_NO_ATTRIBUTE)
+        {
+          m_specieName = specieName;
+          pNode = pNodeRecord->FirstChild(XML_NODE_POPULATION);
+          while (pNode != NULL)
+          {
+            if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_POPULATION))
+            {
+              pElement = (TiXmlElement*)pNode;
+              pElement->QueryIntAttribute(XML_ATTR_BIO_DAY, &dayOfRecord);
+              if (pElement->QueryStringAttribute(XML_ATTR_RAW_DATA, &rawData) != TIXML_NO_ATTRIBUTE)
+              {
+                size_t indexRecord = GetNewTabIndex(dayOfRecord);
+                buildGeoMapRecordFromStringData(indexRecord, rawData);
+              }
+            }
+            pNode = pNode->NextSibling();
+          }
+        }
+      }  
+    }
+  }
+  return recordFound;
+}
+
+//===========================================================================
 // private methods
 //===========================================================================
 size_t CGeoMapPopulation::GetNewTabIndex(size_t dayIndex)
 {
   size_t i;
   // Check if dayIndex already exist
-  for (i = 0; i < m_MaxNumberRecords; i++)
+  for (i = 0; i < m_CurrentNumberRecords; i++)
   {
     if (dayIndex == m_tTimeStamps[i])
       return i;
   }
   // Check if there are free id in table
-  for (i = 0; i < m_MaxNumberRecords; i++)
+  for (i = 0; i < m_nbRecords; i++)
   {
     if (m_tTimeStamps[i] == 0)
     {
       m_tTimeStamps[i] = dayIndex;
+      m_CurrentNumberRecords++;
       return i;
     }
   }

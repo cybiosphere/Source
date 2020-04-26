@@ -61,7 +61,7 @@ class DLL_CYBIOCORE_API CGeoMapPopulation : public CGeoMap
 // Attributes 
 //===========================================================================
 private:
-  size_t   m_MaxNumberRecords;
+  size_t   m_CurrentNumberRecords;
   CBiotop* m_pBiotop;
   std::vector<size_t> m_tTimeStamps;
   std::string m_specieName;
@@ -84,6 +84,14 @@ public:
   bool MemorizePopulationMap(size_t dayIndex);
   size_t GetPopulationInSquareMap(size_t dayIndex, Point_t geoMapPos);
   string GetSpecieName();
+
+  //---------------------------------------------------------------------------
+  // File management
+  //---------------------------------------------------------------------------
+  bool saveInXmlFile(string fileNameWithPath);
+  bool saveInXmlFile(TiXmlDocument* pXmlDoc);
+  bool loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile);
+  bool loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRecordInFile);
 
 //---------------------------------------------------------------------------
 // private methods

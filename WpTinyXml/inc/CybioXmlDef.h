@@ -29,6 +29,7 @@
 #define XML_NODE_GRID         "GRID"
 #define XML_NODE_LAYER        "LAYER"
 #define XML_NODE_ENTITIES     "ENTITIES"
+#define XML_NODE_RECORDS      "RECORDS"
 
 #define XML_NODE_ENTITY       "ENTITY"
 #define XML_NODE_PARAMETER    "PARAMETER"
@@ -45,6 +46,7 @@
 #define XML_NODE_ACTION       "ACTION"
 #define XML_NODE_MEMO_ENTITY  "MEMORIZED_ENTITIES"
 #define XML_NODE_MEMO         "MEMO"
+#define XML_NODE_POPULATION   "POPULATION"
 
 #define XML_ATTR_LABEL        "Label"
 #define XML_ATTR_GENERATION   "Generation"
@@ -83,5 +85,6 @@
 #define XML_ATTR_SIZE_Y       "SizeY"
 #define XML_ATTR_SIZE_LAYER   "SizeLayer"
 #define XML_ATTR_BIO_TIME     "BioTime"
+#define XML_ATTR_BIO_DAY      "BioDay"
 
 #endif // !defined(CYBIO_XML_DEF_INCLUDED_)

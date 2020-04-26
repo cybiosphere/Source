@@ -165,7 +165,7 @@ string CNeuronMatrix::buildStringDataFromNeuronTable()
 
 bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
 {
-  string tmpStr = "00";
+  string tmpStr = "0000";
   WORD tempVal;
   string rawDataRsp = "";
   size_t strOffset = 0;

@@ -87,6 +87,8 @@ public:
 	CString	m_populationTxt6;
 	CString m_populationDateTxt;
 	CSliderCtrl	m_SliderM1;
+	CButton	m_ButtonSave;
+	CButton	m_ButtonLoad;
 	//}}AFX_DATA
 
 // Attributes
@@ -157,6 +159,8 @@ protected:
 	afx_msg void OnRadioPopulation5();
 	afx_msg void OnRadioPopulation6();
 	afx_msg void OnReleasedcaptureSliderM1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnButtonLoadSpecieMap();
+	afx_msg void OnButtonSaveSpecieMap();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -222,7 +222,6 @@
 #define IDC_POPULATION_TXT5             1134
 #define IDC_POPULATION_TXT6             1135
 #define IDC_SLIDER1                     1136
-#define IDC_POPULATION_TXT7             1137
 #define IDC_POPULATION_DATE             1137
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772

@@ -109,6 +109,8 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_POPULATION_TXT6, m_populationTxt6);
   DDX_Text(pDX, IDC_POPULATION_DATE, m_populationDateTxt);
   DDX_Control(pDX, IDC_SLIDER_M1, m_SliderM1);
+  DDX_Control(pDX, IDC_BUTTON_SAVE, m_ButtonSave);
+  DDX_Control(pDX, IDC_BUTTON_LOAD, m_ButtonLoad);
 	//}}AFX_DATA_MAP
 }
 
@@ -144,6 +146,8 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
   ON_BN_CLICKED(IDC_RADIO_POPULATION4, OnRadioPopulation4)
   ON_BN_CLICKED(IDC_RADIO_POPULATION5, OnRadioPopulation5)
   ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_M1, OnReleasedcaptureSliderM1)
+  ON_BN_CLICKED(IDC_BUTTON_LOAD, OnButtonLoadSpecieMap)
+  ON_BN_CLICKED(IDC_BUTTON_SAVE, OnButtonSaveSpecieMap)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -165,6 +169,12 @@ void CMapConfigView::Dump(CDumpContext& dc) const
 bool CMapConfigView::SetBiotop(CBiotop* pBiotop)
 {
   m_pBiotop = pBiotop;
+
+  HICON saveIco = theApp.LoadIcon(IDI_ICON_SAVE);
+  HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN);
+  m_ButtonSave.SetIcon(saveIco);
+  m_ButtonLoad.SetIcon(loadIco);
+
   return (true);
 }
 
@@ -788,4 +798,38 @@ void CMapConfigView::OnReleasedcaptureSliderM1(NMHDR* pNMHDR, LRESULT* pResult)
   UpdateData(FALSE);
   BuildMap();
   *pResult = 0;
+}
+
+void CMapConfigView::OnButtonLoadSpecieMap()
+{
+  // Open module
+  CString fileName;
+  CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""), 0, LPCTSTR("Records Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select records");
+  long nResp = fileDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    fileName = fileDlg.GetPathName();
+    m_pBiotop->addGeoMapSpeciePopulation("Unvalid");
+    CGeoMapPopulation* pGeoMapPopu = m_pBiotop->getGeoMapSpecieByIndex(m_pBiotop->getNbOfGeoMapSpecie()-1);
+    if (pGeoMapPopu != NULL)
+    {
+      pGeoMapPopu->loadFromXmlFile(fileName.GetBuffer(0), 0);
+    }
+  }
+}
+
+void CMapConfigView::OnButtonSaveSpecieMap()
+{
+  // Open module
+  CString fileName;
+  CFileDialog fileDlg(false, LPCTSTR("xml"), LPCTSTR(""), 0, LPCTSTR("Records Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+  fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select records");
+  long nResp = fileDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    fileName = fileDlg.GetPathName();
+    if (m_pBiotop->getNbOfGeoMapSpecie() > 0)
+      m_pBiotop->getGeoMapSpecieByIndex(0)->saveInXmlFile(fileName.GetBuffer(0));
+  }
 }
