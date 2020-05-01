@@ -39,6 +39,7 @@ Server::Server(CBiotop* pBiotop)
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Server::on_event_biotop_createmeasure);
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Server::on_event_biotop_requestentityrefresh);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
+  game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Server::on_event_biotop_createspeciemap);
 
   nb_users_connected = 0;
   m_pBiotop = pBiotop;
@@ -363,6 +364,11 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       send_event_add_entity_spawner(i, m_pBiotop->getRandomEntitiyGeneration(i), user);
     }
 
+    for (i = 0; i < m_pBiotop->getNbOfGeoMapSpecie(); i++)
+    {
+      send_event_create_specie_map(m_pBiotop->getGeoMapSpecieByIndex(i), user);
+    }
+
 	  user->send_event(NetGameEvent(labelEventStart));
   }
 
@@ -419,6 +425,11 @@ void Server::on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerU
 {
   CBasicEntity* pEntity = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
   send_event_update_entity_data(pEntity, user);
+}
+
+void Server::on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventCreateGeoMapSpecie(e, m_pBiotop);
 }
 
 void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
@@ -583,6 +594,33 @@ void Server::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
     log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
   }
 }
+
+void Server::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, ServerUser* user)
+{
+  if (pGeoMapSpecie == NULL)
+  {
+    log_event("Events  ", "Create specie Map : NULL map");
+    return;
+  }
+
+  log_event("Events  ", "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsCreateGeoMapSpecie(pGeoMapSpecie, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      if (user == NULL) // If user not define, broadcast info to all
+        network_server.send_event(eventToSend);
+      else
+        user->send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
+  }
+}
+
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {

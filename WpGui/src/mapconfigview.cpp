@@ -810,7 +810,7 @@ void CMapConfigView::OnButtonLoadSpecieMap()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    m_pBiotop->addGeoMapSpeciePopulation("Unvalid");
+    m_pBiotop->addGeoMapSpeciePopulation("Unset");
     CGeoMapPopulation* pGeoMapPopu = m_pBiotop->getGeoMapSpecieByIndex(m_pBiotop->getNbOfGeoMapSpecie()-1);
     if (pGeoMapPopu != NULL)
     {

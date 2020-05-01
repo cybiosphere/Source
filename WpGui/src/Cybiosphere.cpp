@@ -767,5 +767,19 @@ void CCybiosphereApp::proceedBiotopNextSecond()
 {
 #ifndef USE_CLAN_CLIENT
   m_pBiotop->nextSecond();
+#endif // !USE_CLAN_CLIENT
+}
+
+void CCybiosphereApp::addGeomapSpecieInBiotop(std::string specieName)
+{
+  m_pBiotop->addGeoMapSpeciePopulation(specieName);
+  CGeoMapPopulation* pGeoMapPopu = m_pBiotop->getGeoMapSpecieByIndex(m_pBiotop->getNbOfGeoMapSpecie() - 1);
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_create_specie_map(pGeoMapPopu);
 #endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_create_specie_map(pGeoMapPopu);
+#endif // USE_CLAN_SERVER
+
+
 }

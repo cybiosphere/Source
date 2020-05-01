@@ -978,7 +978,7 @@ void CBiotopView::OnAppMonitorSpecie()
     std::string specieName = pEntity->getGenome()->getSpecieName();
     m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC,
       10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
-    m_pBiotop->addGeoMapSpeciePopulation(specieName);
+    theApp.addGeomapSpecieInBiotop(specieName);
   }
 
   m_MenuSelCoord.x = 1;

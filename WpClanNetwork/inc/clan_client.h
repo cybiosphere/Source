@@ -41,6 +41,7 @@ public:
   void send_event_create_measure(CMeasure* pMeasure);
   void send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId);
   void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator);
+  void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie);
 
 private:
 	void on_connected();
@@ -61,6 +62,7 @@ private:
   void on_event_biotop_removeentity(const NetGameEvent &e);
   void on_event_biotop_createmeasure(const NetGameEvent& e);
   void on_event_biotop_addEntitySpawner(const NetGameEvent& e);
+  void on_event_biotop_createspeciemap(const NetGameEvent& e);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);

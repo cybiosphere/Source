@@ -528,7 +528,7 @@ namespace clan
     }
     else if (nbBlocks == 1)
     {
-      createSpawnerZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
+      createSpawnerWithZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
     }
     else
     {
@@ -565,7 +565,7 @@ namespace clan
             curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
           }
           // Create spawner
-          createSpawnerZipBuffer(fullXmlZipBuffer, pBiotop, transactionId, intensity, period, isProportional);
+          createSpawnerWithZipBuffer(fullXmlZipBuffer, pBiotop, transactionId, intensity, period, isProportional);
           // clean m_tEntityBufferEvent
           m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
         }
@@ -578,6 +578,94 @@ namespace clan
         newBufferEvent.nb_blocks_received = 1;
         newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
         m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
+      }
+    }
+  }
+
+  bool event_manager::buildEventsCreateGeoMapSpecie(CGeoMapPopulation* pGeoMap, std::vector<NetGameEvent>& eventVector)
+  {
+    TiXmlDocument xmlDoc;
+    pGeoMap->saveInXmlFile(&xmlDoc);
+    TiXmlPrinter xmlPrinter;
+    xmlDoc.Accept(&xmlPrinter);
+    std::string xmlString = xmlPrinter.Str();
+
+    // Compress xml string
+    DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
+    DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
+
+    return (build_events_long_string(labelEventCreateSpecieMap, xmlZipBuffer, pGeoMap->GetSpecieName().size(),
+      0, 0, 0, 0, eventVector));
+  }
+
+  void event_manager::handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int i;
+    int transactionId = e.get_argument(0); // contains entityId
+    int nbBlocks = e.get_argument(1);
+    int blocksIndex = e.get_argument(2);
+    int custom1 = e.get_argument(3);
+    int custom2 = e.get_argument(4);
+    int custom3 = e.get_argument(5);
+    int custom4 = e.get_argument(6);
+    DataBuffer xmlZipBufferBlock = e.get_argument(7);
+
+    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    {
+      log_event("events", "Biotop create geomap specie: ERROR bad nbBlocks: %1", nbBlocks);
+    }
+    else if (nbBlocks == 1)
+    {
+      createGeoMapSpecieWithZipBuffer(xmlZipBufferBlock, pBiotop);
+    }
+    else
+    {
+      int storeIndex = -1;
+      // Find current transaction if exists
+      for (i = 0; i < (int)m_tGeoMapBufferEvent.size(); i++)
+      {
+        if (m_tGeoMapBufferEvent[i].transactionId == transactionId)
+        {
+          storeIndex = i;
+          break;
+        }
+      }
+      // if context exist, fill context 
+      if (storeIndex > -1)
+      {
+        m_tGeoMapBufferEvent[storeIndex].nb_blocks_received++;
+        m_tGeoMapBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
+        if (m_tGeoMapBufferEvent[storeIndex].nb_blocks_received == m_tGeoMapBufferEvent[storeIndex].nb_blocks)
+        {
+          DataBuffer fullXmlZipBuffer;
+          int fullXmlZipBufferSize = 0;
+          int curBufIndex = 0;
+          // Process buffer size
+          for (i = 0; i < m_tGeoMapBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            fullXmlZipBufferSize += m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
+          // Copy blocks in single buffer
+          for (i = 0; i < m_tGeoMapBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tGeoMapBufferEvent[storeIndex].buffer[i][0]), m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size());
+            curBufIndex += m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          // Create geomap
+          createGeoMapSpecieWithZipBuffer(xmlZipBufferBlock, pBiotop);
+          // clean m_tEntityBufferEvent
+          m_tGeoMapBufferEvent.erase(m_tGeoMapBufferEvent.begin() + storeIndex);
+        }
+      }
+      else // (storeIndex==-1) new context creation needed
+      {
+        LongBufferEvent_t newBufferEvent;
+        newBufferEvent.transactionId = transactionId;
+        newBufferEvent.nb_blocks = nbBlocks;
+        newBufferEvent.nb_blocks_received = 1;
+        newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
+        m_tGeoMapBufferEvent.insert(m_tGeoMapBufferEvent.end(), newBufferEvent);
       }
     }
   }
@@ -699,7 +787,7 @@ namespace clan
     return true;
   }
 
-  bool event_manager::createSpawnerZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,
+  bool event_manager::createSpawnerWithZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,
                                              const int intensity, const int period, const bool isProportional)
   {
     DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
@@ -716,6 +804,21 @@ namespace clan
       log_event("events", "Add entity spawn error: Id%1 period=%2", spawnerId, period);
       return false;
     }
+  }
+
+  bool event_manager::createGeoMapSpecieWithZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop)
+  {
+    DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
+    TiXmlDocument xmlDoc;
+    xmlDoc.Parse(xmlBuffer.get_data());
+
+    pBiotop->addGeoMapSpeciePopulation("Unset");
+    CGeoMapPopulation* pGeoMapPopu = pBiotop->getGeoMapSpecieByIndex(pBiotop->getNbOfGeoMapSpecie() - 1);
+    if (pGeoMapPopu != NULL)
+    {
+      pGeoMapPopu->loadFromXmlFile(&xmlDoc, 0);
+    }
+    return true;
   }
 
 }

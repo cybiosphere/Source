@@ -49,9 +49,13 @@ namespace clan
     static bool buildEventsAddEntitySpawner(int index, BiotopRandomEntitiyGeneration_t& generator, std::vector<NetGameEvent>& eventVector);
     void handleEventAddEntitySpawner(const NetGameEvent& e, CBiotop* pBiotop);
 
+    static bool buildEventsCreateGeoMapSpecie(CGeoMapPopulation* pGeoMap, std::vector<NetGameEvent>& eventVector);
+    void handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop);
+
   private:
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
     std::vector<LongBufferEvent_t> m_tMeasureBufferEvent;
+    std::vector<LongBufferEvent_t> m_tGeoMapBufferEvent;
 
 	  static bool build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
                                          const int custom1, const int custom2, const int custom3, const int custom4,
@@ -62,7 +66,8 @@ namespace clan
     bool updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop, bool setAsRemoteControl);
     bool createMeasureWithZipBuffer(const DataBuffer& dataZipBuffer, CBiotop* pBiotop, const int measureId,
                                     const int period, const int typeSubType, const int paramId, const int entityId);
-    bool createSpawnerZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,
+    bool createSpawnerWithZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,
       const int intensity, const int period, const bool isProportional);
+    bool createGeoMapSpecieWithZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop);
   };
 }

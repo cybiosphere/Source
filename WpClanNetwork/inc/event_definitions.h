@@ -27,6 +27,7 @@ namespace clan
   const std::string labelEventRemoveEntity     { "Biotop-Remove entity" };
   const std::string labelEventCreateMeasure    { "Biotop-Create measure" };
   const std::string labelEventAddEntitySpawner { "Biotop-Add entity spawner" };
+  const std::string labelEventCreateSpecieMap  { "Biotop-Create specie map" };
 
 }
 

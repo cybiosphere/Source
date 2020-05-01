@@ -43,6 +43,7 @@ Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiO
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Client::on_event_biotop_createmeasure);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Client::on_event_biotop_addEntitySpawner);
+  game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Client::on_event_biotop_createspeciemap);
 
 	quit = false;
 	logged_in = false;
@@ -316,6 +317,11 @@ void Client::on_event_biotop_addEntitySpawner(const NetGameEvent& e)
   m_EventManager.handleEventAddEntitySpawner(e, m_pBiotop);
 }
 
+void Client::on_event_biotop_createspeciemap(const NetGameEvent& e)
+{
+  m_EventManager.handleEventCreateGeoMapSpecie(e, m_pBiotop);
+}
+
 void Client::displayBiotopEntities()
 {
   CBasicEntity* pEntity;
@@ -515,5 +521,28 @@ void Client::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
   else
   {
     log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
+  }
+}
+
+void Client::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie)
+{
+  if (pGeoMapSpecie == NULL)
+  {
+    log_event("Events  ", "Create specie Map : NULL map");
+    return;
+  }
+
+  log_event("Events  ", "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsCreateGeoMapSpecie(pGeoMapSpecie, eventVector))
+  {
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      network_client.send_event(eventToSend);
+    }
+  }
+  else
+  {
+    log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
   }
 }
