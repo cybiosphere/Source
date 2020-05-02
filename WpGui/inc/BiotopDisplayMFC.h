@@ -72,6 +72,8 @@ public:
   void OnMouseMove(CPoint point);
   void ScrollToGridCoord(Point_t centerPos); 
   Point_t GetCurrentGridCenterPos();
+  Point_t GetVisibleGridCoordStart();
+  Point_t GetVisibleGridCoordEnd();
   void SetZoomFactor(double zoomFactor);
 
   CBitmap m_bmpVeget;

@@ -787,7 +787,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
 
     coord.x = getRandInt(m_Dimension.x) + 1;
   	coord.y = getRandInt(m_Dimension.y) + 1;
-    grassId = createAndAddEntity("grassDry2",coord,1,pGenome);
+    grassId = createAndAddEntity("grassDry",coord,1,pGenome);
   }
 
   addMeasurePopulation(14400,7,MEASURE_POPULATION_VEGETAL,1000);
@@ -1876,45 +1876,31 @@ void CBiotop::initGridDefaultLayerType(void)
     for (j=0;j<m_Dimension.y;j++)
     {
       m_tBioGrid[i][j][0].layerType = LAYER_UNDER_GROUND;
-      m_tBioGrid[i][j][1].layerType = LAYER_OVER_GROUND;
+      if (testChance(30))
+      {
+        m_tBioGrid[i][j][1].layerType = LAYER_GLOBAL_ROCK;
+      }
+      else
+      {
+        m_tBioGrid[i][j][1].layerType = LAYER_OVER_GROUND;
+      }
       m_tBioGrid[i][j][2].layerType = LAYER_OVER_GROUND;
     }
   }
 
-  // Put Grass to the West:
-  /*for (i=0;i<m_Dimension.x/10;i++)
+  // Add a River in the middle
+  for (j = 1; j < m_Dimension.y / 2; j++)
   {
-    for (j=0;j<m_Dimension.y;j++)
-    {
-      m_tBioGrid[i][j][0].layerType = LAYER_UNDER_GROUND;
-      m_tBioGrid[i][j][1].layerType = LAYER_GLOBAL_GRASS; // grass 
-      m_tBioGrid[i][j][2].layerType = LAYER_OVER_GROUND;
-    }
-  }*/
-
-  // Add a River on South
-  /*for (i=0;i<m_Dimension.x;i++)
-  {
-    m_tBioGrid[i][0][0].layerType = LAYER_UNDER_WATER;
-    m_tBioGrid[i][0][1].layerType = LAYER_OVER_WATER;
-    m_tBioGrid[i][0][2].layerType = LAYER_IN_AIR;
-    m_tBioGrid[i][1][0].layerType = LAYER_UNDER_GROUND;
-    m_tBioGrid[i][1][1].layerType = LAYER_OVER_WET_GROUND;
-    m_tBioGrid[i][1][2].layerType = LAYER_OVER_GROUND;
+    m_tBioGrid[m_Dimension.x / 2][j][0].layerType = LAYER_UNDER_WATER;
+    m_tBioGrid[m_Dimension.x / 2][j][1].layerType = LAYER_OVER_WATER;
+    m_tBioGrid[m_Dimension.x / 2][j][2].layerType = LAYER_IN_AIR;
+    m_tBioGrid[m_Dimension.x / 2 + 1][j][0].layerType = LAYER_UNDER_GROUND;
+    m_tBioGrid[m_Dimension.x / 2 + 1][j][1].layerType = LAYER_OVER_WET_GROUND;
+    m_tBioGrid[m_Dimension.x / 2 + 1][j][2].layerType = LAYER_OVER_GROUND;
+    m_tBioGrid[m_Dimension.x / 2 - 1][j][0].layerType = LAYER_UNDER_GROUND;
+    m_tBioGrid[m_Dimension.x / 2 - 1][j][1].layerType = LAYER_OVER_WET_GROUND;
+    m_tBioGrid[m_Dimension.x / 2 - 1][j][2].layerType = LAYER_OVER_GROUND;
   }
-  // Add a River on West
-  for (j=1;j<m_Dimension.y;j++)
-  {
-    m_tBioGrid[0][j][0].layerType = LAYER_UNDER_WATER;
-    m_tBioGrid[0][j][1].layerType = LAYER_OVER_WATER;
-    m_tBioGrid[0][j][2].layerType = LAYER_IN_AIR;
-    m_tBioGrid[1][j][0].layerType = LAYER_UNDER_WATER;
-    m_tBioGrid[1][j][1].layerType = LAYER_OVER_WATER;
-    m_tBioGrid[1][j][2].layerType = LAYER_IN_AIR;
-  }
-  m_tBioGrid[2][2][0].layerType = LAYER_UNDER_GROUND;
-  m_tBioGrid[2][2][1].layerType = LAYER_OVER_WET_GROUND;
-  m_tBioGrid[2][2][2].layerType = LAYER_OVER_GROUND;*/
 
   // Add lake in the center
   for (i=(m_Dimension.x/2-5); i<(m_Dimension.x/2+5); i++)
@@ -1926,7 +1912,6 @@ void CBiotop::initGridDefaultLayerType(void)
       m_tBioGrid[i][j][2].layerType = LAYER_OVER_GROUND;
     }
   }
-
   for (i=(m_Dimension.x/2-4); i<(m_Dimension.x/2+4); i++)
   {
     for (j=(m_Dimension.y/2-4); j<(m_Dimension.y/2+4); j++)

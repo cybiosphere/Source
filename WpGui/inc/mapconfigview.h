@@ -101,7 +101,7 @@ protected:
 // Operations
 public:
 
-    void NextSecond();
+    void RefreshDisplay();
     bool SetBiotop(CBiotop* pBiotop);
     bool BuildMap (bool forceRefresh = true);
     bool BuildOdorMap(OdorType_e odorType);

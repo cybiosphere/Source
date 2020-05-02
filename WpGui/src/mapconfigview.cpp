@@ -178,7 +178,7 @@ bool CMapConfigView::SetBiotop(CBiotop* pBiotop)
   return (true);
 }
 
-void CMapConfigView::NextSecond()
+void CMapConfigView::RefreshDisplay()
 {
   BuildMap(false);
 }
@@ -221,9 +221,11 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
         theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       break;
     case MAP_TYPE_POPULATION:
-      resu = BuildPopulationMap(m_CurMapSubType);
       if (forceRefresh)
+      {
+        resu = BuildPopulationMap(m_CurMapSubType);
         theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
+      }
       break;
     default:
       resu = false;
@@ -473,6 +475,7 @@ bool CMapConfigView::BuildPopulationMap(int index)
   Point_t geoMapPos;
   int populationSize = 0;
   DWORD r, g, b;
+  size_t day = m_SliderM1.GetPos();
 
   // Trace map
   for (i = 0; i < dim.x; i++)
@@ -482,7 +485,7 @@ bool CMapConfigView::BuildPopulationMap(int index)
       curCoord.x = i;
       curCoord.y = j;
       pGeoMap->GridCoordToGeoMapCoord(curCoord, geoMapPos);
-      populationSize = pGeoMap->GetPopulationInSquareMap(m_SliderM1.GetPos(), geoMapPos);
+      populationSize = pGeoMap->GetPopulationInSquareMap(day, geoMapPos);
 
       if (populationSize > 0)
       {
@@ -502,7 +505,6 @@ bool CMapConfigView::BuildPopulationMap(int index)
       }
     }
   }
-
   return (true);
 }
 

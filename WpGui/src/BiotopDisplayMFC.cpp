@@ -183,14 +183,17 @@ void CBiotopDisplayMFC::RedrawScene()
   // remind the previous bitmap
   CBitmap *bmpPrevious = MemDCEnt.SelectObject(&m_bmpVeget);
 
-  int i,j,coordX,coordY,pos;
+  size_t i,j,pos;
+  int coordX, coordY;
   Point_t bioCoord;
   LayerType_e curLayer;
   COLORREF custColor;
-  
-  for (i=0;i<m_pBiotop->getDimension().x;i++)
+
+  Point_t startLoopCoord = GetVisibleGridCoordStart();
+  Point_t endLoopCoord = GetVisibleGridCoordEnd();
+  for (i = startLoopCoord.x; i < endLoopCoord.x; i++)
   {
-    for (j=0; j<m_pBiotop->getDimension().y; j++)
+    for (j = startLoopCoord.y; j < endLoopCoord.y; j++)
     { 
       bioCoord.x = i;
       bioCoord.y = j;
@@ -213,7 +216,7 @@ void CBiotopDisplayMFC::RedrawScene()
       }
       else if (curLayer == LAYER_GLOBAL_ROCK)
       {
-        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00F0F2F0);
+        pDc->FillSolidRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00FBF8F8);
       }
       // draw user color
       custColor = m_pBiotop->getCustomColor(bioCoord);
@@ -317,12 +320,12 @@ void CBiotopDisplayMFC::RefreshNextSecond()
         m_pView->InvalidateRect(refreshRect,true);
       }
       coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x - visibleCoordX;
-      coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 2) - visibleCoordY;
-      refreshRect.left   = coordX;
-      refreshRect.top    = coordY;
-      refreshRect.right  = coordX + m_nBitmapPixSizeX;
-      refreshRect.bottom = coordY + m_nBitmapPixSizeY;  
-      m_pView->InvalidateRect(refreshRect,true);
+      coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 2) - visibleCoordY;
+      refreshRect.left = coordX;
+      refreshRect.top = coordY;
+      refreshRect.right = coordX + m_nBitmapPixSizeX;
+      refreshRect.bottom = coordY + m_nBitmapPixSizeY;
+      m_pView->InvalidateRect(refreshRect, true);
     }
   }
 }
@@ -359,6 +362,28 @@ Point_t CBiotopDisplayMFC::GetCurrentGridCenterPos()
 
   return gridCoord;
 }
+
+Point_t CBiotopDisplayMFC::GetVisibleGridCoordStart() 
+{ 
+  Point_t gridCoord{ invalidCoord, invalidCoord };
+  int startPosGridX = m_pView->GetScrollPos(SB_HORZ) / m_nBitmapPixSizeX;
+  (startPosGridX > 10) ? startPosGridX -= 10 : startPosGridX = 0;
+  int startPosGridY = (m_pView->GetTotalSize().cy - m_pView->GetScrollPos(SB_VERT) - m_curViewSizeY) / m_nBitmapPixSizeY;
+  (startPosGridY > 10) ? startPosGridY -= 10 : startPosGridY = 0;
+  gridCoord.x = (size_t)startPosGridX;
+  gridCoord.y = (size_t)startPosGridY;
+  return(gridCoord); 
+};
+
+Point_t CBiotopDisplayMFC::GetVisibleGridCoordEnd()
+{
+  Point_t gridCoord{ invalidCoord, invalidCoord };
+  int endPosGridX = cybio_min(m_pBiotop->getDimension().x, (m_pView->GetScrollPos(SB_HORZ) + m_curViewSizeX) / m_nBitmapPixSizeX + 10);
+  int endPosGridY = cybio_min(m_pBiotop->getDimension().y, (m_pView->GetTotalSize().cy - m_pView->GetScrollPos(SB_VERT)) / m_nBitmapPixSizeY + 10);
+  gridCoord.x = (size_t)endPosGridX;
+  gridCoord.y = (size_t)endPosGridY;
+  return(gridCoord);
+};
 
 void CBiotopDisplayMFC::SetZoomFactor(double zoomFactor)
 {

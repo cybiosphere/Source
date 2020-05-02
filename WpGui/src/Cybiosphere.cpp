@@ -222,7 +222,7 @@ BOOL CCybiosphereApp::InitInstance()
   }
   else
   {
-    m_pBiotop = new CBiotop(1000,1000,3);
+    m_pBiotop = new CBiotop(2000,2000,3);
     SetDefaultBiotop();
   }
 #else
@@ -623,7 +623,7 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
   // additional Gui refresh
   GetEntityViewPtr()->RefreshParameters();
   GetStatisticViewPtr()->NextSecond();
-  GetMapConfigViewPtr()->NextSecond();
+  GetMapConfigViewPtr()->RefreshDisplay();
 }
 
 void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()

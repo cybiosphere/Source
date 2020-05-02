@@ -59,6 +59,8 @@ public:
   virtual void DisplayView()    {0;}; 
   virtual void ScrollToGridCoord(Point_t centerPos)  {0;}; 
   virtual Point_t GetCurrentGridCenterPos()  { Point_t bioCoord={0,0};return(bioCoord);}
+  virtual Point_t GetVisibleGridCoordStart() { Point_t gridCoord{ invalidCoord, invalidCoord }; return(gridCoord); };
+  virtual Point_t GetVisibleGridCoordEnd() { Point_t gridCoord{ invalidCoord, invalidCoord }; return(gridCoord); };
 
   void SetBiotop(CBiotop* pBiotop) {m_pBiotop = pBiotop;}; 
   void SetSelectedEntityId(entityIdType id) {m_nSelectedEntityId = id;};
