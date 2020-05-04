@@ -4,7 +4,7 @@
 #include "CBiotop.h"
 
 #define SENT_BUFFER_MAX_SIZE        30000
-#define SENT_BUFFER_MAX_NB_BLOCKS   12
+#define SENT_BUFFER_MAX_NB_BLOCKS   30
 
 namespace clan
 {
@@ -19,6 +19,9 @@ namespace clan
   class event_manager
   {
   public:
+    static bool buildEventsCreateBiotop(CBiotop* pBiotop, std::vector<NetGameEvent>& eventVector);
+    void handleEventCreateBiotop(const NetGameEvent& e, CBiotop* pBiotop);
+
 	  static bool buildEventsAddEntity(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector);
 	  void handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
 
@@ -53,13 +56,18 @@ namespace clan
     void handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop);
 
   private:
+    std::vector<LongBufferEvent_t> m_tBiotopBufferEvent;
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
     std::vector<LongBufferEvent_t> m_tMeasureBufferEvent;
     std::vector<LongBufferEvent_t> m_tGeoMapBufferEvent;
 
-	  static bool build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
-                                         const int custom1, const int custom2, const int custom3, const int custom4,
-                                         std::vector<NetGameEvent>& eventVector);
+	  static bool buildEventsLongString(const std::string event_label, const DataBuffer& data, const int transactionId,
+                                      const int custom1, const int custom2, const int custom3, const int custom4,
+                                      std::vector<NetGameEvent>& eventVector);
+    static bool handleEventsLongString(const NetGameEvent& e,
+                                       std::vector<LongBufferEvent_t>& tBufferEvent, DataBuffer& bufferOutput,
+                                       int& transactionId, int& custom1, int& custom2, int& custom3, int& custom4);
+
     bool addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,
                                 const int stepCoordX, const int stepCoordY, const int layer, const int stepDirection,
                                 CBiotop* pBiotop, bool setAsRemoteControl);

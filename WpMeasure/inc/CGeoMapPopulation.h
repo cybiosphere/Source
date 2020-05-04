@@ -97,7 +97,7 @@ public:
 // private methods
 //---------------------------------------------------------------------------
 private:
-  size_t GetNewTabIndex(size_t dayIndex);
+  size_t GetTableIndex(size_t dayIndex);
   size_t CountEntitiesInMapSquare(std::string specieName, size_t geoMapPosX, size_t geoMapPosY);
 
 };

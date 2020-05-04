@@ -6,6 +6,37 @@
 
 namespace clan
 {
+  bool event_manager::buildEventsCreateBiotop(CBiotop* pBiotop, std::vector<NetGameEvent>& eventVector)
+  {
+    TiXmlDocument xmlDoc;
+    pBiotop->saveInXmlFile(&xmlDoc, "", false);
+    TiXmlPrinter xmlPrinter;
+    xmlDoc.Accept(&xmlPrinter);
+    std::string xmlString = xmlPrinter.Str();
+
+    // Compress xml string
+    DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
+    DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
+
+    return (buildEventsLongString(labelEventLoadMap, xmlZipBuffer, 1, 0, 0, 0, 0, eventVector));
+  }
+
+  void event_manager::handleEventCreateBiotop(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int transactionId = 0;
+    int custom1, custom2, custom3, custom4;
+    DataBuffer bufferOutput;
+    bool bufferIsReady = handleEventsLongString(e, m_tBiotopBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+    if (bufferIsReady)
+    {
+      DataBuffer xmlBuffer = ZLibCompression::decompress(bufferOutput, false);
+      TiXmlDocument xmlDoc;
+      xmlDoc.Parse(xmlBuffer.get_data());
+      pBiotop->loadFromXmlFile(&xmlDoc, "");
+      log_event("events", "Loading biotop: %1, Size %2,%3,%4", pBiotop->getLabel(), pBiotop->getDimension().x, pBiotop->getDimension().y, pBiotop->getNbLayer());
+    }
+  }
+
   bool event_manager::buildEventsAddEntity(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector)
   {
     TiXmlDocument xmlDoc;
@@ -18,7 +49,7 @@ namespace clan
     DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-    return (build_events_long_string(labelEventAddEntity, xmlZipBuffer, pEntity->getId(),
+    return (buildEventsLongString(labelEventAddEntity, xmlZipBuffer, pEntity->getId(),
                                      pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
                                      eventVector));
   }
@@ -26,73 +57,13 @@ namespace clan
 
   void event_manager::handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
   {
-    int i;
-    int transactionId = e.get_argument(0); // contains entityId
-    int nbBlocks = e.get_argument(1);
-    int blocksIndex = e.get_argument(2);
-    int custom1 = e.get_argument(3);
-    int custom2 = e.get_argument(4);
-    int custom3 = e.get_argument(5);
-    int custom4 = e.get_argument(6);
-    DataBuffer xmlZipBufferBlock = e.get_argument(7);
-
-    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    int transactionId = 0; // contains entityId
+    int custom1, custom2, custom3, custom4;
+    DataBuffer bufferOutput;
+    bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+    if (bufferIsReady)
     {
-      log_event("events", "Biotop update full entity: ERROR bad nbBlocks: %1", nbBlocks);
-    }
-    else if (nbBlocks == 1)
-    {
-      addEntityWithZipBuffer(xmlZipBufferBlock, transactionId, custom1, custom2, custom3, custom4, pBiotop, setAsRemoteControl);
-    }
-    else
-    {
-      int storeIndex = -1;
-      // Find current transaction if exists
-      for (i = 0; i < (int)m_tEntityBufferEvent.size(); i++)
-      {
-        if (m_tEntityBufferEvent[i].transactionId == transactionId)
-        {
-          storeIndex = i;
-          break;
-        }
-      }
-      // if context exist, fill context 
-      if (storeIndex > -1)
-      {
-        m_tEntityBufferEvent[storeIndex].nb_blocks_received++;
-        m_tEntityBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
-        if (m_tEntityBufferEvent[storeIndex].nb_blocks_received == m_tEntityBufferEvent[storeIndex].nb_blocks)
-        {
-          DataBuffer fullXmlZipBuffer;
-          int fullXmlZipBufferSize = 0;
-          int curBufIndex = 0;
-          // Process buffer size
-          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            fullXmlZipBufferSize += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-          // Copy blocks in single buffer
-          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tEntityBufferEvent[storeIndex].buffer[i][0]), m_tEntityBufferEvent[storeIndex].buffer[i].get_size());
-            curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          // Update entity
-          addEntityWithZipBuffer(fullXmlZipBuffer, transactionId, custom1, custom2, custom3, custom4, pBiotop, setAsRemoteControl);
-          // clean m_tEntityBufferEvent
-          m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
-        }
-      }
-      else // (storeIndex==-1) new context creation needed
-      {
-        LongBufferEvent_t newBufferEvent;
-        newBufferEvent.transactionId = transactionId;
-        newBufferEvent.nb_blocks = nbBlocks;
-        newBufferEvent.nb_blocks_received = 1;
-        newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
-        m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
-      }
+      addEntityWithZipBuffer(bufferOutput, transactionId, custom1, custom2, custom3, custom4, pBiotop, setAsRemoteControl);
     }
   }
 
@@ -181,76 +152,20 @@ namespace clan
     DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-    return (build_events_long_string(labelEventUpdateEntityData, xmlZipBuffer, pEntity->getId(),
+    return (buildEventsLongString(labelEventUpdateEntityData, xmlZipBuffer, pEntity->getId(),
       pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
       eventVector));
   }
 
    void event_manager::handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
    {
-     int i;
-     int transactionId = e.get_argument(0); // contains entityId
-     int nbBlocks = e.get_argument(1);
-     int blocksIndex = e.get_argument(2);
-     DataBuffer xmlZipBufferBlock = e.get_argument(7);
-
-     if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+     int transactionId = 0; // contains entityId
+     int custom1, custom2, custom3, custom4;
+     DataBuffer bufferOutput;
+     bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+     if (bufferIsReady)
      {
-       log_event("events", "Biotop update full entity: ERROR bad nbBlocks: %1", nbBlocks);
-     }
-     else if (nbBlocks == 1)
-     {
-       updateEntityWithZipBuffer(xmlZipBufferBlock, transactionId, pBiotop, setAsRemoteControl);
-     }
-     else
-     {
-       int storeIndex = -1;
-       // Find current transaction if exists
-       for (i = 0; i < (int)m_tEntityBufferEvent.size(); i++)
-       {
-         if (m_tEntityBufferEvent[i].transactionId == transactionId)
-         {
-           storeIndex = i;
-           break;
-         }
-       }
-       // if context exist, fill context 
-       if (storeIndex > -1)
-       {
-         m_tEntityBufferEvent[storeIndex].nb_blocks_received++;
-         m_tEntityBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
-         if (m_tEntityBufferEvent[storeIndex].nb_blocks_received == m_tEntityBufferEvent[storeIndex].nb_blocks)
-         {
-           DataBuffer fullXmlZipBuffer;
-           int fullXmlZipBufferSize = 0;
-           int curBufIndex = 0;
-           // Process buffer size
-           for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-           {
-             fullXmlZipBufferSize += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-           }
-           fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-           // Copy blocks in single buffer
-           for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-           {
-             memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tEntityBufferEvent[storeIndex].buffer[i][0]), m_tEntityBufferEvent[storeIndex].buffer[i].get_size());
-             curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-           }
-           // Update entity
-           updateEntityWithZipBuffer(fullXmlZipBuffer, transactionId, pBiotop, setAsRemoteControl);
-           // clean m_tEntityBufferEvent
-           m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
-         }
-       }
-       else // (storeIndex==-1) new context creation needed
-       {
-         LongBufferEvent_t newBufferEvent;
-         newBufferEvent.transactionId = transactionId;
-         newBufferEvent.nb_blocks = nbBlocks;
-         newBufferEvent.nb_blocks_received = 1;
-         newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
-         m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
-       }
+       updateEntityWithZipBuffer(bufferOutput, transactionId, pBiotop, setAsRemoteControl);
      }
    }
 
@@ -402,79 +317,19 @@ namespace clan
     {
       entityId = pMeasure->GetEntity()->getId();
     }
-    return (build_events_long_string(labelEventCreateMeasure, dataZipBuffer, pMeasure->GetId(),
+    return (buildEventsLongString(labelEventCreateMeasure, dataZipBuffer, pMeasure->GetId(),
       pMeasure->GetPeriod(), measureTypeSubType, pMeasure->GetParameterIndex(), entityId, eventVector));
   }
 
   void event_manager::handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop)
   {
-    int i;
-    int transactionId = e.get_argument(0); // contains measureId
-    int nbBlocks = e.get_argument(1);
-    int blocksIndex = e.get_argument(2);
-    int custom1 = e.get_argument(3);
-    int custom2 = e.get_argument(4);
-    int custom3 = e.get_argument(5);
-    int custom4 = e.get_argument(6);
-    DataBuffer dataZipBufferBlock = e.get_argument(7);
-
-    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    int transactionId = 0; // contains measureId
+    int custom1, custom2, custom3, custom4;
+    DataBuffer bufferOutput;
+    bool bufferIsReady = handleEventsLongString(e, m_tMeasureBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+    if (bufferIsReady)
     {
-      log_event("events", "Biotop create measure: ERROR bad nbBlocks: %1", nbBlocks);
-    }
-    else if (nbBlocks == 1)
-    {
-      createMeasureWithZipBuffer(dataZipBufferBlock, pBiotop, transactionId, custom1, custom2, custom3, custom4);
-    }
-    else
-    {
-      int storeIndex = -1;
-      // Find current transaction if exists
-      for (i = 0; i < (int)m_tMeasureBufferEvent.size(); i++)
-      {
-        if (m_tMeasureBufferEvent[i].transactionId == transactionId)
-        {
-          storeIndex = i;
-          break;
-        }
-      }
-      // if context exist, fill context 
-      if (storeIndex > -1)
-      {
-        m_tMeasureBufferEvent[storeIndex].nb_blocks_received++;
-        m_tMeasureBufferEvent[storeIndex].buffer[blocksIndex] = dataZipBufferBlock;
-        if (m_tMeasureBufferEvent[storeIndex].nb_blocks_received == m_tMeasureBufferEvent[storeIndex].nb_blocks)
-        {
-          DataBuffer fullXmlZipBuffer;
-          int fullXmlZipBufferSize = 0;
-          int curBufIndex = 0;
-          // Process buffer size
-          for (i = 0; i < m_tMeasureBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            fullXmlZipBufferSize += m_tMeasureBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-          // Copy blocks in single buffer
-          for (i = 0; i < m_tMeasureBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tMeasureBufferEvent[storeIndex].buffer[i][0]), m_tMeasureBufferEvent[storeIndex].buffer[i].get_size());
-            curBufIndex += m_tMeasureBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          // Create measure
-          createMeasureWithZipBuffer(dataZipBufferBlock, pBiotop, transactionId, custom1, custom2, custom3, custom4);
-          // clean m_tMeasureBufferEvent
-          m_tMeasureBufferEvent.erase(m_tMeasureBufferEvent.begin() + storeIndex);
-        }
-      }
-      else // (storeIndex==-1) new context creation needed
-      {
-        LongBufferEvent_t newBufferEvent;
-        newBufferEvent.transactionId = transactionId;
-        newBufferEvent.nb_blocks = nbBlocks;
-        newBufferEvent.nb_blocks_received = 1;
-        newBufferEvent.buffer[blocksIndex] = dataZipBufferBlock;
-        m_tMeasureBufferEvent.insert(m_tMeasureBufferEvent.end(), newBufferEvent);
-      }
+      createMeasureWithZipBuffer(bufferOutput, pBiotop, transactionId, custom1, custom2, custom3, custom4);
     }
   }
 
@@ -506,79 +361,20 @@ namespace clan
     DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-    return (build_events_long_string(labelEventAddEntitySpawner, xmlZipBuffer, index,
+    return (buildEventsLongString(labelEventAddEntitySpawner, xmlZipBuffer, index,
       generator.intensity, generator.avaragePeriodicity, generator.IsProportionalToFertility, 0,
       eventVector));
   }
 
   void event_manager::handleEventAddEntitySpawner(const NetGameEvent& e, CBiotop* pBiotop)
   {
-    int i;
-    int transactionId = e.get_argument(0); // contains spawn index
-    int nbBlocks = e.get_argument(1);
-    int blocksIndex = e.get_argument(2);
-    int intensity = e.get_argument(3);
-    int period = e.get_argument(4);
-    int isProportional = e.get_argument(5);
-    DataBuffer xmlZipBufferBlock = e.get_argument(7);
-
-    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    int transactionId = 0;
+    int custom1, custom2, custom3, custom4;
+    DataBuffer bufferOutput;
+    bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+    if (bufferIsReady)
     {
-      log_event("events", "Biotop Add Entity Spawner: ERROR bad nbBlocks: %1", nbBlocks);
-    }
-    else if (nbBlocks == 1)
-    {
-      createSpawnerWithZipBuffer(xmlZipBufferBlock, pBiotop, transactionId, intensity, period, isProportional);
-    }
-    else
-    {
-      int storeIndex = -1;
-      // Find current transaction if exists
-      for (i = 0; i < (int)m_tEntityBufferEvent.size(); i++)
-      {
-        if (m_tEntityBufferEvent[i].transactionId == transactionId)
-        {
-          storeIndex = i;
-          break;
-        }
-      }
-      // if context exist, fill context 
-      if (storeIndex > -1)
-      {
-        m_tEntityBufferEvent[storeIndex].nb_blocks_received++;
-        m_tEntityBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
-        if (m_tEntityBufferEvent[storeIndex].nb_blocks_received == m_tEntityBufferEvent[storeIndex].nb_blocks)
-        {
-          DataBuffer fullXmlZipBuffer;
-          int fullXmlZipBufferSize = 0;
-          int curBufIndex = 0;
-          // Process buffer size
-          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            fullXmlZipBufferSize += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-          // Copy blocks in single buffer
-          for (i = 0; i < m_tEntityBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tEntityBufferEvent[storeIndex].buffer[i][0]), m_tEntityBufferEvent[storeIndex].buffer[i].get_size());
-            curBufIndex += m_tEntityBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          // Create spawner
-          createSpawnerWithZipBuffer(fullXmlZipBuffer, pBiotop, transactionId, intensity, period, isProportional);
-          // clean m_tEntityBufferEvent
-          m_tEntityBufferEvent.erase(m_tEntityBufferEvent.begin() + storeIndex);
-        }
-      }
-      else // (storeIndex==-1) new context creation needed
-      {
-        LongBufferEvent_t newBufferEvent;
-        newBufferEvent.transactionId = transactionId;
-        newBufferEvent.nb_blocks = nbBlocks;
-        newBufferEvent.nb_blocks_received = 1;
-        newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
-        m_tEntityBufferEvent.insert(m_tEntityBufferEvent.end(), newBufferEvent);
-      }
+      createSpawnerWithZipBuffer(bufferOutput, pBiotop, transactionId, custom1, custom2, custom3);
     }
   }
 
@@ -594,90 +390,30 @@ namespace clan
     DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
-    return (build_events_long_string(labelEventCreateSpecieMap, xmlZipBuffer, pGeoMap->GetSpecieName().size(),
+    return (buildEventsLongString(labelEventCreateSpecieMap, xmlZipBuffer, pGeoMap->GetSpecieName().size(),
       0, 0, 0, 0, eventVector));
   }
 
   void event_manager::handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop)
   {
-    int i;
-    int transactionId = e.get_argument(0); // contains entityId
-    int nbBlocks = e.get_argument(1);
-    int blocksIndex = e.get_argument(2);
-    int custom1 = e.get_argument(3);
-    int custom2 = e.get_argument(4);
-    int custom3 = e.get_argument(5);
-    int custom4 = e.get_argument(6);
-    DataBuffer xmlZipBufferBlock = e.get_argument(7);
-
-    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    int transactionId = 0; // contains measureId
+    int custom1, custom2, custom3, custom4;
+    DataBuffer bufferOutput;
+    bool bufferIsReady = handleEventsLongString(e, m_tGeoMapBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
+    if (bufferIsReady)
     {
-      log_event("events", "Biotop create geomap specie: ERROR bad nbBlocks: %1", nbBlocks);
-    }
-    else if (nbBlocks == 1)
-    {
-      createGeoMapSpecieWithZipBuffer(xmlZipBufferBlock, pBiotop);
-    }
-    else
-    {
-      int storeIndex = -1;
-      // Find current transaction if exists
-      for (i = 0; i < (int)m_tGeoMapBufferEvent.size(); i++)
-      {
-        if (m_tGeoMapBufferEvent[i].transactionId == transactionId)
-        {
-          storeIndex = i;
-          break;
-        }
-      }
-      // if context exist, fill context 
-      if (storeIndex > -1)
-      {
-        m_tGeoMapBufferEvent[storeIndex].nb_blocks_received++;
-        m_tGeoMapBufferEvent[storeIndex].buffer[blocksIndex] = xmlZipBufferBlock;
-        if (m_tGeoMapBufferEvent[storeIndex].nb_blocks_received == m_tGeoMapBufferEvent[storeIndex].nb_blocks)
-        {
-          DataBuffer fullXmlZipBuffer;
-          int fullXmlZipBufferSize = 0;
-          int curBufIndex = 0;
-          // Process buffer size
-          for (i = 0; i < m_tGeoMapBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            fullXmlZipBufferSize += m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
-          // Copy blocks in single buffer
-          for (i = 0; i < m_tGeoMapBufferEvent[storeIndex].nb_blocks; i++)
-          {
-            memcpy(&fullXmlZipBuffer[curBufIndex], &(m_tGeoMapBufferEvent[storeIndex].buffer[i][0]), m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size());
-            curBufIndex += m_tGeoMapBufferEvent[storeIndex].buffer[i].get_size();
-          }
-          // Create geomap
-          createGeoMapSpecieWithZipBuffer(xmlZipBufferBlock, pBiotop);
-          // clean m_tEntityBufferEvent
-          m_tGeoMapBufferEvent.erase(m_tGeoMapBufferEvent.begin() + storeIndex);
-        }
-      }
-      else // (storeIndex==-1) new context creation needed
-      {
-        LongBufferEvent_t newBufferEvent;
-        newBufferEvent.transactionId = transactionId;
-        newBufferEvent.nb_blocks = nbBlocks;
-        newBufferEvent.nb_blocks_received = 1;
-        newBufferEvent.buffer[blocksIndex] = xmlZipBufferBlock;
-        m_tGeoMapBufferEvent.insert(m_tGeoMapBufferEvent.end(), newBufferEvent);
-      }
+      createGeoMapSpecieWithZipBuffer(bufferOutput, pBiotop);
     }
   }
 
-  bool event_manager::build_events_long_string(const std::string event_label, const DataBuffer& data, const int transactionId,
+  bool event_manager::buildEventsLongString(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)
   {
     int nbBlocks = data.get_size() / SENT_BUFFER_MAX_SIZE + 1;
     if (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS)
     {
-      log_event("events", "Biotop update full entity: ERROR bad nbBlocks: %1", nbBlocks);
+      log_event("events", "event_manager buildEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
       return false;
     }
 
@@ -708,6 +444,82 @@ namespace clan
     genericEvent.add_argument(dataBlock);
     eventVector.push_back(std::move(genericEvent));
     return true;
+  }
+
+  bool event_manager::handleEventsLongString(const NetGameEvent& e, 
+                                             std::vector<LongBufferEvent_t>& tBufferEvent, DataBuffer& bufferOutput,
+                                             int& transactionId, int& custom1, int& custom2, int& custom3, int& custom4)
+  {
+    int i;
+    transactionId = e.get_argument(0); // contains entityId
+    int nbBlocks = e.get_argument(1);
+    int blocksIndex = e.get_argument(2);
+    custom1 = e.get_argument(3);
+    custom2 = e.get_argument(4);
+    custom3 = e.get_argument(5);
+    custom4 = e.get_argument(6);
+    DataBuffer bufferBlock = e.get_argument(7);
+
+    if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
+    {
+      log_event("events", "handleEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
+    }
+    else if (nbBlocks == 1)
+    {
+      bufferOutput = std::move(bufferBlock);
+      return true;
+    }
+    else
+    {
+      int storeIndex = -1;
+      // Find current transaction if exists
+      for (i = 0; i < (int)tBufferEvent.size(); i++)
+      {
+        if (tBufferEvent[i].transactionId == transactionId)
+        {
+          storeIndex = i;
+          break;
+        }
+      }
+      // if context exist, fill context 
+      if (storeIndex > -1)
+      {
+        tBufferEvent[storeIndex].nb_blocks_received++;
+        tBufferEvent[storeIndex].buffer[blocksIndex] = bufferBlock;
+        if (tBufferEvent[storeIndex].nb_blocks_received == tBufferEvent[storeIndex].nb_blocks)
+        {
+          DataBuffer fullXmlZipBuffer;
+          int fullXmlZipBufferSize = 0;
+          int curBufIndex = 0;
+          // Process buffer size
+          for (i = 0; i < tBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            fullXmlZipBufferSize += tBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          fullXmlZipBuffer.set_size(fullXmlZipBufferSize);
+          // Copy blocks in single buffer
+          for (i = 0; i < tBufferEvent[storeIndex].nb_blocks; i++)
+          {
+            memcpy(&fullXmlZipBuffer[curBufIndex], &(tBufferEvent[storeIndex].buffer[i][0]), tBufferEvent[storeIndex].buffer[i].get_size());
+            curBufIndex += tBufferEvent[storeIndex].buffer[i].get_size();
+          }
+          // clean tBufferEvent
+          tBufferEvent.erase(tBufferEvent.begin() + storeIndex);
+          bufferOutput = std::move(fullXmlZipBuffer);
+          return true;
+        }
+      }
+      else // (storeIndex==-1) new context creation needed
+      {
+        LongBufferEvent_t newBufferEvent;
+        newBufferEvent.transactionId = transactionId;
+        newBufferEvent.nb_blocks = nbBlocks;
+        newBufferEvent.nb_blocks_received = 1;
+        newBufferEvent.buffer[blocksIndex] = bufferBlock;
+        tBufferEvent.insert(tBufferEvent.end(), newBufferEvent);
+      }
+    }
+    return false;
   }
 
   bool event_manager::addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,

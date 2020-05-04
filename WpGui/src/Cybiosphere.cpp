@@ -780,6 +780,4 @@ void CCybiosphereApp::addGeomapSpecieInBiotop(std::string specieName)
 #ifdef USE_CLAN_SERVER
   m_pServer->send_event_create_specie_map(pGeoMapPopu);
 #endif // USE_CLAN_SERVER
-
-
 }

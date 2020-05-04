@@ -71,13 +71,12 @@ CGeoMapPopulation::~CGeoMapPopulation()
 //===========================================================================
 bool CGeoMapPopulation::MemorizePopulationMap(size_t dayIndex)
 {
-  size_t indexRecord = GetNewTabIndex(dayIndex);
-
+  size_t indexRecord = GetTableIndex(dayIndex);
   for (size_t i = 0; i < m_GeoMapSize.x; i++)
   {
     for (size_t j = 0; j < m_GeoMapSize.y; j++)
     {
-      m_pMemoryMap[i][j][dayIndex] = (short)CountEntitiesInMapSquare(m_specieName, i, j);
+      m_pMemoryMap[i][j][indexRecord] = (short)CountEntitiesInMapSquare(m_specieName, i, j);
     }
   }
 
@@ -86,12 +85,12 @@ bool CGeoMapPopulation::MemorizePopulationMap(size_t dayIndex)
 
 size_t CGeoMapPopulation::GetPopulationInSquareMap(size_t dayIndex, Point_t geoMapPos)
 {
-  // If pose out of teritory map, give negative weight -100
+  size_t indexRecord = GetTableIndex(dayIndex);
   size_t population = 0;
 
   if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y))
   {
-    population = m_pMemoryMap[geoMapPos.x][geoMapPos.y][dayIndex];
+    population = m_pMemoryMap[geoMapPos.x][geoMapPos.y][indexRecord];
   }
 
   return population;
@@ -226,7 +225,7 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
               pElement->QueryIntAttribute(XML_ATTR_BIO_DAY, &dayOfRecord);
               if (pElement->QueryStringAttribute(XML_ATTR_RAW_DATA, &rawData) != TIXML_NO_ATTRIBUTE)
               {
-                size_t indexRecord = GetNewTabIndex(dayOfRecord);
+                size_t indexRecord = GetTableIndex(dayOfRecord);
                 buildGeoMapRecordFromStringData(indexRecord, rawData);
               }
             }
@@ -242,7 +241,7 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
 //===========================================================================
 // private methods
 //===========================================================================
-size_t CGeoMapPopulation::GetNewTabIndex(size_t dayIndex)
+size_t CGeoMapPopulation::GetTableIndex(size_t dayIndex)
 {
   size_t i;
   // Check if dayIndex already exist

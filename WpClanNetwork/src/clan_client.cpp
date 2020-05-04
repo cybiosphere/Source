@@ -207,13 +207,7 @@ void Client::on_event_login_fail(const NetGameEvent &e)
 // "Game-LoadMap" event was received
 void Client::on_event_game_loadmap(const NetGameEvent &e) 
 {
-  DataBuffer xmlZipBuffer = e.get_argument(0);
-  DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
-  TiXmlDocument xmlDoc;
-  xmlDoc.Parse(xmlBuffer.get_data());
-
-  m_pBiotop->loadFromXmlFile(&xmlDoc, "");
-  log_event("events", "Loading biotop: %1, Size %2,%3,%4", m_pBiotop->getLabel(), m_pBiotop->getDimension().x, m_pBiotop->getDimension().y, m_pBiotop->getNbLayer());
+  m_EventManager.handleEventCreateBiotop(e, m_pBiotop);
 }
 
 // "Game-Start" event was received

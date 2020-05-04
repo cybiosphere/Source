@@ -300,26 +300,14 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
   m_biotopSpeed = 0;
   int i;
 
-  TiXmlDocument xmlDoc;
-  m_pBiotop->saveInXmlFile(&xmlDoc,"",false);
-  TiXmlPrinter xmlPrinter;
-  xmlDoc.Accept(&xmlPrinter);
-  std::string xmlString = xmlPrinter.Str();
-
-  // Compress xml string
-  DataBuffer xmlBuffer(xmlString.c_str(), xmlString.length());
-  DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
-
-  if (xmlZipBuffer.get_size() > SENT_BUFFER_MAX_SIZE)
+  std::vector<NetGameEvent> eventVector;
+  if (event_manager::buildEventsCreateBiotop(m_pBiotop, eventVector))
   {
-    log_event("-ERROR- ", "Client requested game error: Biotop to big to be sent");
-  }
-  else
-  {
-    // Send empty map without entities
-	  NetGameEvent loadMapEvent(labelEventLoadMap);
-    loadMapEvent.add_argument(xmlZipBuffer);
-	  user->send_event(loadMapEvent);
+    // Send biotop file without entities
+    for (NetGameEvent eventToSend : eventVector)
+    {
+      user->send_event(eventToSend);
+    }
 
     // Update entitiy data. Send info only 1 time if several entities has same name
     std::map<entityIdType, std::vector<BiotopEntityPosition_t>> cloneEntitiesMap;
