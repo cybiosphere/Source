@@ -2795,11 +2795,14 @@ void CAnimal::nextDay(bool forceGrowth)
     }
     else
     {
-      getParameter(m_id_Decomposition)->changeVal(1);
-      changeFatWeight(0.2);
-      if (getParameter(m_id_Decomposition)->isMaxReached())
+      if (isDead())
       {
-        autoRemove();
+        getParameter(m_id_Decomposition)->changeVal(1);
+        changeFatWeight(-0.2);
+        if (getParameter(m_id_Decomposition)->isMaxReached())
+        {
+          autoRemove();
+        }
       }
     }
   }

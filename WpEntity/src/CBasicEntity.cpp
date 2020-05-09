@@ -3423,6 +3423,14 @@ bool CBasicEntity::isAlive()
     return (false);
 }  
 
+bool CBasicEntity::isDead()
+{
+  if (m_Status == STATUS_DEAD)
+    return (true);
+  else
+    return (false);
+}
+
 void CBasicEntity::setUserControlled(bool active)
 {
   if (active == true)

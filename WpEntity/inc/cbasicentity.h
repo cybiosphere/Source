@@ -571,6 +571,7 @@ public:
   bool            isComestible();
   bool            isDrinkable();
   bool            isAlive();
+  bool            isDead();
   void            setUserControlled(bool active);
   bool            isUserControlled();
   bool            isLocalAutoControlled();
