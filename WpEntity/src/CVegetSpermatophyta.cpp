@@ -149,25 +149,12 @@ bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
     return (false);
   }
 
-  CGenericParam* pParam = NULL;
-  double minVal,initVal,maxVal;
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PARAM_POLLEN_RANGE:
     {
       if (m_id_PollenRange != invalidIndex) delete(getParameter(m_id_PollenRange)); // delete if already set
-      minVal  = 0;
-      initVal = scaledVal2;
-      maxVal  = 100;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Pollen Range",PARAM_REPRODUCTION);
-      m_id_PollenRange = addParameter(pParam);
+      m_id_PollenRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
@@ -210,84 +197,6 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
   }
 
   return (true);
-}
-
-//===========================================================================
-// Genetic description
-//===========================================================================
-
-//---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::buildParameterString 
-//  
-// DESCRIPTION:  Give info string on parameter interpretation.
-// 
-// ARGUMENTS:    CGene* pGen: gene reference
-//   
-// RETURN VALUE: string : description string.
-//  
-// REMARKS:      Should be called by all derived method but not elsewhere 
-//---------------------------------------------------------------------------
-string CVegetSpermatophyta::buildParameterString(CGene* pGen)
-{
-  string paramStr = CVegetable::buildParameterString(pGen);
-  string tempStr;
-  if (paramStr != STRING_GENE_UNUSED)
-  {
-    // The parameter has already been taken into account by basic entity
-    return (paramStr);
-  }
-
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
-  {
-    return (paramStr);
-  }
-  // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
-  size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
-  {
-    // not enought data to config param
-    return (paramStr);
-  }
-
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(pGen->getGeneSubType())
-  {
-  case GENE_PARAM_POLLEN_RANGE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal2 );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal3 );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      break;
-    }
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
-  }
-
-  return (paramStr);
 }
 
 //===========================================================================

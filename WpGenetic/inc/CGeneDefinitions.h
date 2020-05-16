@@ -23,10 +23,10 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CGene.h
+// FILE: CGeneDefinitions.h
 //   
 // GENERAL DESCRIPTION:
-//         This CLASS represents a basic gene
+//         This CLASS lists all gene definitions and parameters
 //     
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
@@ -34,8 +34,8 @@ distribution.
 //
 //===========================================================================
 
-#if !defined( CGENE_INCLUDED_)
-#define CGENE_INCLUDED_
+#if !defined( CGENE_DEFINITIONS_INCLUDED_)
+#define CGENE_DEFINITIONS_INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -44,16 +44,48 @@ distribution.
 //===========================================================================
 // Includes 
 //===========================================================================
-//#include <afxwin.h>
-//#include <afxtempl.h>
 #include "Definitions.h"
-#include "CGeneDefinitions.h"
+#include "CaracterDefinitions.h"
 #include <vector>
 
 //===========================================================================
 // Definitions            
 //===========================================================================
+
+
+// table subtype par type:
+// Type name subtypeId muteType  ListParameters => HexaDataSize(auto)
+//table parameter par subtype
+// name HexaSize  min max default muteType dominanceType
 /*
+{GENE_CARACTER, GENE_CARACT_COLOR, "color", GENE_MUTE_RANDOM_BIT,
+  {"R", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
+  {"G", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
+  {"B", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
+  {"A", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
+}
+*/
+
+typedef enum 
+{
+  GENE_DOMINANCE_HIGHEST = 0,
+  GENE_DOMINANCE_LOWEST,
+  GENE_DOMINANCE_RANDOM,
+  GENE_DOMINANCE_NUMBER_TYPE
+} GeneDominanceType_e;
+
+typedef struct
+{
+  string name;
+  size_t hexaSize;   // Hexa data size in byte
+  size_t hexaOffset; // Hexa data offset in byte
+  double valMin;
+  double valMax;
+  GeneDominanceType_e dominance;
+  bool isConfigurable;
+  double defaultValue; // Value used for not configurable parameter
+} GeneParamDefinition_t;
+
 typedef enum
 {
   GENE_GENERIC =     0,
@@ -114,7 +146,7 @@ typedef enum
   GENE_PARAM_SPEED         ,//  6  // 0         [0..100]   100
   GENE_PARAM_CURIOSITY     ,//  6  // 0         [0..100]   100
   GENE_PARAM_LEARNING      ,//  6  // 0         [0..100]   100
-  GENE_PARAM_METABOLISM    ,//  6  // 0         [0..100]   100
+  GENE_PARAM_METABOLISM    ,//  6  // 0         [0..100]   100  // Obsolete
   GENE_PARAM_POLLEN_RANGE  ,//  6  // 0         [0..100]   100
   GENE_PARAM_GESTA_TIME    ,//  6  // 0         0          [1..1000] 
   GENE_PARAM_GESTA_NB      ,//  6  // [0..100]< [0..100] < [0..100]
@@ -132,7 +164,7 @@ typedef enum
   GENE_PHYS_SENS_TEMPER    ,//  2  // ratio [0..100]  [-50..50]      X      [-50..50]
   GENE_PHYS_SENS_HABITAT   ,//  2  // ratio [0..100]     X           X          X
   GENE_PHYS_SENS_FERTILITY ,//  2  // ratio [0..100]  [0..100]   [0..100]   [0..100]
-  GENE_PHYS_SENS_SUNLIGHT  ,//  2  // ratio [0..100]  [0..100]   [0..100]   [0..100]
+  GENE_PHYS_SENS_SUNLIGHT  ,//  2  // ratio [0..100]  [0..100]   [0..100]   [0..100]   // Obsolete
   GENE_PHYS_SENS_RFU1      ,//  2  // ratio [0..100]     X           X          X 
   GENE_PHYS_SENS_RFU2      ,//  2  // ratio [0..100]     X           X          X 
 // Sensors                  //         Nb Weight   data1      data2      data3      data4 
@@ -197,20 +229,13 @@ typedef enum
 // End marker
   GENE_NUMBER_SUBTYPE
 } GeneSubType_e;
-*/
 
-typedef struct 
-{
-  GeneType_e    type;
-  const char*   Name;
-} GeneDefinition_t;
 
 //===========================================================================
 //                                    CLASS            
 //===========================================================================
-class DLL_CYBIOCORE_API CGene 
+class DLL_CYBIOCORE_API CGeneDefinitions
 {
-
 //===========================================================================
 // Attributes 
 //===========================================================================
@@ -218,103 +243,56 @@ class DLL_CYBIOCORE_API CGene
 //---------------------------------------------------------------------------
 // internal data:
 //---------------------------------------------------------------------------
-private:
-  GeneType_e     m_GeneType;
-  GeneSubType_e  m_GeneSubType;
-  BYTE           m_MuteRate;
-  GeneMuteType_e m_MuteType;
-  std::vector<BYTE> m_RawData;
-  const CGeneDefinitions* m_pDefinitions;
-
-//===========================================================================
-// Methods 
-//===========================================================================
+public:
+  GeneType_e     geneType;
+  GeneSubType_e  geneSubType;
+  string         label;
+  GeneMuteType_e muteType;
+  vector<GeneParamDefinition_t> parameters;
 
 //---------------------------------------------------------------------------
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGene();
-  CGene(CGene& model);
-  virtual ~CGene();
+  CGeneDefinitions(GeneType_e type, GeneSubType_e subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> paramList);
+  virtual ~CGeneDefinitions();
 
-//---------------------------------------------------------------------------
-// Configuration
-//---------------------------------------------------------------------------
-public:
-  bool setAsCaracter (GeneSubType_e subType, int muteRate, GeneMuteType_e muteType,int dataLen, BYTE* pData);
-  bool setAsParameter(GeneSubType_e subType, int muteRate, long min, long nominalVal, long max);
-  bool setAsLifeStage(GeneSubType_e subType, int muteRate, long duration);
-  bool setAsPhysicWelfare(GeneSubType_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max);
-  bool setAsSensor   (GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight, 
-                      long data1 = 0, long data2 = 0, long data3 = 0, long data4 = 0);
-  bool setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
-  bool setAsReaction (GeneSubType_e subType, int muteRate, long success, long failure, 
-                      long data1 = 0, long data2 = 0);
-  bool setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize);
-  bool setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
-  bool setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
-  bool setAsFeeling(GeneSubType_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi);
+}; // end CGeneDefinitions
 
-  bool setAsPurposeTrigger(GeneSubType_e subType, int muteRate, DWORD sensorUId, int duration, int subCaptorIndex, int startThreshold, int stopThreshold, int labelLen, char* pLabel); 
-  bool setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensorUId, int nbBonus, short* pBonusTable); 
-  bool setAsPurposeReactionBonus(int muteRate, DWORD purposeUId, DWORD reactionUId, int bonus); 
-  bool setAsBrainConfig(GeneSubType_e subType,int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData);
-
-//---------------------------------------------------------------------------
-// Raw data conversion
-//---------------------------------------------------------------------------
-  string buildStringDataFromGene();
-  bool buildGeneFromStringData(string rawData);
-
-//---------------------------------------------------------------------------
-// Genetic
-//---------------------------------------------------------------------------
-  int getDominanceFactor();
-  bool tryMutation();
-
-//---------------------------------------------------------------------------
-// Display 
-//---------------------------------------------------------------------------
-  string getLabel();
-  string getTypeLabel();
-
- //---------------------------------------------------------------------------
- // Internal processing 
- //---------------------------------------------------------------------------
+//===========================================================================
+//                                    CLASS            
+//===========================================================================
+class DLL_CYBIOCORE_API CGeneList
+{
+  //===========================================================================
+  // Attributes 
+  //===========================================================================
 private:
-  inline WORD encodeLongOnWord(long longValue, long rangeMax) { return (WORD)((longValue * 0xFFFF) / rangeMax);}
-  inline WORD encodeLongOnWordSigned(long longValue, long rangeMax) { return (WORD)(((longValue + rangeMax) * 0xFFFF) / (2 * rangeMax));}
+  static array< vector<CGeneDefinitions>, 6/* GENE_NUMBER_TYPE*/> geneListArray;
+  
+  static vector<CGeneDefinitions> geneListGeneric;
+  static vector<CGeneDefinitions> geneListCaracter;
+  static vector<CGeneDefinitions> geneListParameter;
+  static vector<CGeneDefinitions> geneListLifeStage;
+  static vector<CGeneDefinitions> geneListPhyWellfare;
+  static vector<CGeneDefinitions> geneListSensor;
+  //static vector<CGeneDefinitions> geneListReaction;
+  //static vector<CGeneDefinitions> geneListBrainSize;
+  //static vector<CGeneDefinitions> geneListBrainInstinct;
+  //static vector<CGeneDefinitions> geneListFeeling;
+  //static vector<CGeneDefinitions> geneListPurpose;
+  //static vector<CGeneDefinitions> geneListBrainConfig;
 
-//---------------------------------------------------------------------------
-// Get / Set for attributes
-//---------------------------------------------------------------------------
+
+  //===========================================================================
+  // Methods 
+  //===========================================================================
 public:
+  static const CGeneDefinitions* getDefinitions(GeneType_e type, GeneSubType_e subType);
 
-  std::vector<BYTE>& getData();
-  size_t getDataLen();
-  GeneType_e     getGeneType();
-  GeneSubType_e  getGeneSubType();
-  GeneMuteType_e getMuteType();
-  BYTE getMuteRate();
+};
 
-  size_t getNumParameter();
-  double getParameterValue(size_t index);
-  int getParameterRoundValue(size_t index);
-  string getParameterStrName(size_t index);
-  bool getParameterIsConfigurable(size_t index);
-  double getParameterDefaultValue(size_t index);
-
-  static string getGeneTypeStrName(GeneType_e type);  // Obsolete
-  static string getGeneSubTypeStrName(GeneSubType_e subType); // Obsolete
-  static string getGeneMuteTypeStrName(GeneMuteType_e muteType); // Obsolete
-
-  static GeneType_e getExpectedGeneType (GeneSubType_e subType);
-
-
-}; // end CGene
-
-#endif // !defined(CGENE_INCLUDED_)
+#endif // !defined(CGENE_DEFINITIONS_INCLUDED_)
 
 
 

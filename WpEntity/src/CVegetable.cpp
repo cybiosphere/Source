@@ -190,102 +190,47 @@ bool CVegetable::setParamFromGene (CGene* pGen)
     return (false);
   }
 
-  CGenericParam* pParam = NULL;
-  double minVal,initVal,maxVal;
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PARAM_AGE:
     {
       if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = scaledVal3;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Age",PARAM_DURATION,subType);
-      m_id_Age = addParameter(pParam);
+      m_id_Age = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_DECOMPOSITION:
     {
       if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
-      minVal  = 0.0;
-      initVal = 0.0;
-      maxVal  = scaledVal3;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Decomposition",PARAM_DURATION,subType);
-      m_id_Decomposition = addParameter(pParam);
+      m_id_Decomposition = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RATE:
     {
       if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
-      minVal  = 0;
-      initVal = scaledVal2;
-      maxVal  = 100;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Reproduction rate",PARAM_REPRODUCTION,subType);
-      m_id_ReproductionRate = addParameter(pParam);
+      m_id_ReproductionRate = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_HEALTH:
     {
       if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Health rate",PARAM_FEELING,subType);
-      m_id_Health = addParameter(pParam);
+      m_id_Health = addParameterFromGene(pGen, PARAM_FEELING);
       resu = true;
       break;
     }
-/*  case GENE_PARAM_FERTILITY_NEED:
-    {
-      if (m_id_FertilityNeed != invalidIndex) delete(getParameter(m_id_FertilityNeed)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Fertility rate need",PARAM_ENVIRONMENT);
-      m_id_FertilityNeed = addParameter(pParam);
-      resu = true;
-      break;
-    }
-  case GENE_PARAM_TEMPER_RANGE:
-    {
-      if (m_id_TemperatureRange != invalidIndex) delete(getParameter(m_id_TemperatureRange)); // delete if already set
-      minVal  = scaledVal1 - 50.0;
-      initVal = scaledVal2 - 50.0;
-      maxVal  = scaledVal3 - 50.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Temperature range",PARAM_ENVIRONMENT);
-      m_id_TemperatureRange = addParameter(pParam);
-      resu = true;
-      break;
-    }*/
   case GENE_PARAM_GROWTH_SPEED:
     {
       if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 1000.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Growth speed rate",PARAM_PHYSIC,subType);
-       m_id_GrowthSpeed = addParameter(pParam);
+      m_id_Health = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RANGE:
     {
       if (m_id_ReproductionRange != invalidIndex) delete(getParameter(m_id_ReproductionRange)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 10.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Reproduction Range",PARAM_REPRODUCTION,subType);
-      m_id_ReproductionRange = addParameter(pParam);
+      m_id_ReproductionRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
@@ -378,19 +323,18 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if (len<sizeof(WORD))
+  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
   {
     // not enought data to config param
     return (false);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double sensitivity = (double)pData[0] * getGeneScaleData1(subType);
-  double min = (double)pData[1] * getGeneScaleData2(subType);
-  double nominal = (double)pData[2] * getGeneScaleData3(subType);
-  double max = (double)pData[3] * getGeneScaleData4(subType);
+  double sensitivity = pGen->getParameterValue(0);
+  double min = pGen->getParameterValue(1);
+  double nominal = pGen->getParameterValue(2);
+  double max = pGen->getParameterValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PHYS_SENS_HABITAT:
     {
@@ -400,7 +344,7 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
     }
   case GENE_PHYS_SENS_TEMPER:
     {
-      m_pPhysicWelfare->SetTemperatureSensitivity(min - 50.0, max - 50.0, sensitivity);
+      m_pPhysicWelfare->SetTemperatureSensitivity(min, max, sensitivity);
       resu = true;
       break;
     }
@@ -469,96 +413,6 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::buildParameterString 
-//  
-// DESCRIPTION:  Give info string on parameter interpretation.
-// 
-// ARGUMENTS:    CGene* pGen: gene reference
-//   
-// RETURN VALUE: string : description string.
-//  
-// REMARKS:      Should be called by all derived method but not elsewhere 
-//---------------------------------------------------------------------------
-string CVegetable::buildParameterString(CGene* pGen)
-{
-  string paramStr = CBasicEntity::buildParameterString(pGen);
-  string tempStr;
-  if (paramStr != STRING_GENE_UNUSED)
-  {
-    // The parameter has already been taken into account by basic entity
-    return (paramStr);
-  }
-
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
-  {
-    return (paramStr);
-  }
-  // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
-  size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
-  {
-    // not enought data to config param
-    return (paramStr);
-  }
-
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
-  {
-  case GENE_PARAM_AGE:
-  case GENE_PARAM_DECOMPOSITION:
-  case GENE_PARAM_REPRO_RATE:
-  case GENE_PARAM_HEALTH:
-  case GENE_PARAM_GROWTH_SPEED:
-  case GENE_PARAM_REPRO_RANGE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal2 );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal3 );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      break;
-    }
-/*  case GENE_PARAM_TEMPER_RANGE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      tempStr = FormatString("=%6.2f C", scaledVal1 - 50.0);
-      paramStr += getGeneNameData1(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal2 - 50.0);
-      paramStr += getGeneNameData2(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal3 - 50.0);
-      paramStr += getGeneNameData3(subType) + tempStr;
-      break;
-    }*/
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
-  }
-
-  return (paramStr);
-}
-
-//---------------------------------------------------------------------------
 // METHOD:       CVegetable::buildPhysicWellfareString 
 //  
 // DESCRIPTION:  Give info string on Physic Wellfare interpretation.
@@ -587,52 +441,38 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if (len<sizeof(WORD))
+  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
   {
     // not enought data to config param
     return (welfareStr);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double sensitivity = (double)pData[0] * getGeneScaleData1(subType);
-  double scaledVal1  = (double)pData[1] * getGeneScaleData2(subType);
-  double scaledVal2  = (double)pData[2] * getGeneScaleData3(subType);
-  double scaledVal3  = (double)pData[3] * getGeneScaleData4(subType);
+  double sensitivity = pGen->getParameterValue(0);
+  double scaledVal1  = pGen->getParameterValue(1);
+  double scaledVal2  = pGen->getParameterValue(2);
+  double scaledVal3  = pGen->getParameterValue(3);
 
-
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PHYS_SENS_HABITAT:
     {
-      welfareStr = getGeneNameString(pGen) + " : ";
+      welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += getGeneNameData1(subType) + tempStr;
+      welfareStr += pGen->getParameterStrName(0) + tempStr;
       break;
     }
   case GENE_PHYS_SENS_TEMPER:
-    {
-      welfareStr = getGeneNameString(pGen) + " : ";
-      tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += getGeneNameData1(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal1 - 50.0);
-      welfareStr += getGeneNameData2(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal2 - 50.0);
-      welfareStr += getGeneNameData3(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal3 - 50.0);
-      welfareStr += getGeneNameData4(subType) + tempStr;
-      break;
-    }
   case GENE_PHYS_SENS_FERTILITY:
     {
-      welfareStr = getGeneNameString(pGen) + " : ";
+      welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += getGeneNameData1(subType) + tempStr;
+      welfareStr += pGen->getParameterStrName(0) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal1);
-      welfareStr += getGeneNameData2(subType) + tempStr;
+      welfareStr += pGen->getParameterStrName(1) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal2);
-      welfareStr += getGeneNameData3(subType) + tempStr;
+      welfareStr += pGen->getParameterStrName(2) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal3);
-      welfareStr += getGeneNameData4(subType) + tempStr;
+      welfareStr += pGen->getParameterStrName(3) + tempStr;
       break;
     }
   default:

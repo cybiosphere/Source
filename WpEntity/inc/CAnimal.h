@@ -151,7 +151,6 @@ public:
   size_t getExpectedBrainSensorWeightSize (CGene* pGen);
 
 protected:
-  string buildParameterString(CGene* pGen);
   string buildPhysicWellfareString(CGene* pGen);
   string buildSensorString(CGene* pGen);
   string buildReactionString(CGene* pGen);

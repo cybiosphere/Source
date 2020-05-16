@@ -94,7 +94,6 @@ protected:
 // Genetic description
 //---------------------------------------------------------------------------
 protected:
-  string buildParameterString(CGene* pGen);
   string buildPhysicWellfareString(CGene* pGen);
 
 //---------------------------------------------------------------------------

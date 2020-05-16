@@ -166,37 +166,20 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
     // not enought data to config param
     return (false);
   }
-  
-  CGenericParam* pParam = NULL;
-  double minVal,defVal,maxVal;
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-  
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-  
-  switch(subType)
+    
+  switch(pGen->getGeneSubType())
   {
   case GENE_PARAM_GESTA_TIME:
     {
       if (m_id_GestationTime != invalidIndex) delete(getParameter(m_id_GestationTime)); // delete if already set
-      minVal = 0;
-      defVal = 0;
-      maxVal = cybio_round(scaledVal3);
-      pParam = new CGenericParam(minVal,0,defVal,maxVal,"Gestation time",PARAM_REPRODUCTION,subType);
-      m_id_GestationTime = addParameter(pParam);
+      m_id_GestationTime = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_GESTA_NB:
     {
       if (m_id_GestationNumberRange != invalidIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
-      minVal = 0;
-      defVal = cybio_round(scaledVal2);
-      maxVal = cybio_round(scaledVal3);
-      pParam = new CGenericParam(minVal,0,defVal,maxVal,"Gestation baby number",PARAM_REPRODUCTION,subType);
-      m_id_GestationNumberRange = addParameter(pParam);
+      m_id_GestationNumberRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
@@ -281,11 +264,9 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   int duration;
   double lifeDuration = getLifeExpectation();
   double deathDuration = getRotenTimeExpectation();
-  
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double scaledRate = (double)pData[0] * getGeneScaleData1(subType);
-  
-  switch(subType)
+  double scaledRate = pGen->getParameterValue(0);
+
+  switch(pGen->getGeneSubType())
   {
   case GENE_STAGE_0:
     {
@@ -364,7 +345,6 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
       break;
     }
   }
-  
   return (resu);
 }
 
@@ -457,81 +437,6 @@ bool CAnimMammal::completeLifeStagesWithDefault(void)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CAnimMammal::buildParameterString 
-//  
-// DESCRIPTION:  Give info string on parameter interpretation.
-// 
-// ARGUMENTS:    CGene* pGen: gene reference
-//   
-// RETURN VALUE: string : description string.
-//  
-// REMARKS:      Should be called by all derived method but not elsewhere 
-//---------------------------------------------------------------------------
-string CAnimMammal::buildParameterString(CGene* pGen)
-{
-  string paramStr = CAnimal::buildParameterString(pGen);
-  string tempStr;
-  if (paramStr != STRING_GENE_UNUSED)
-  {
-    // The parameter has already been taken into account by basic entity
-    return (paramStr);
-  }
-  
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
-  {
-    return (paramStr);
-  }
-  // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
-  size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
-  {
-    // not enought data to config param
-    return (paramStr);
-  }
-  
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-  
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-  
-  switch(pGen->getGeneSubType())
-  {
-  case GENE_PARAM_GESTA_TIME:
-  case GENE_PARAM_GESTA_NB:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal2 );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal3 );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      break;
-    }
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
-  }
-  
-  return (paramStr);
-}
-
-//---------------------------------------------------------------------------
 // METHOD:       CAnimMammal::buildLifeStageString 
 //  
 // DESCRIPTION:  Give info string on Life Stage interpretation.
@@ -560,11 +465,8 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
     // not enought data to config param
     return (paramStr);
   }
-  
-  double scaledVal1;
-  GeneSubType_e subType = pGen->getGeneSubType();
-  
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
+ 
+  double scaledVal1 = pGen->getParameterValue(0);
   
   switch(pGen->getGeneSubType())
   {
@@ -576,12 +478,9 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
   case GENE_STAGE_5:
   case GENE_STAGE_6:
     {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f%%", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%6.2f%%", scaledVal1);
+      paramStr += pGen->getParameterStrName(0) + tempStr;
       break;
     }
   default:

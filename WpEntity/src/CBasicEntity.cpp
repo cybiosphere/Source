@@ -587,73 +587,55 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
-  auto rawData = pGen->getData();
-  BYTE* pData = rawData.data();
-  size_t len = rawData.size();
-  DWORD scaledVal;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  // For the moment, only size 1 and 4 are supported
-  if (len==sizeof(DWORD))
-  {
-    scaledVal = ( (BYTE)( (double)(pData[0]) * getGeneScaleData1(subType) ) )
-              + ( (BYTE)( (double)(pData[1]) * getGeneScaleData2(subType) ) << 8 )
-              + ( (BYTE)( (double)(pData[2]) * getGeneScaleData3(subType) ) << 16 )
-              + ( (BYTE)( (double)(pData[3]) * getGeneScaleData4(subType) ) << 24 );
-  }
-  else if (len==sizeof(BYTE))
-  {
-    scaledVal = ( (BYTE)( (double)(pData[0]) * getGeneScaleData1(subType) ) );
-  }
-  else
-  {
-    return (false);
-  }
-
-  switch(subType)
+  
+  switch(pGen->getGeneSubType())
   {
   case GENE_CARACT_COLOR:
-    setColor((COLORREF)scaledVal);
-    resu = true;
+    if (pGen->getData().size() == sizeof(COLORREF))
+    {
+      COLORREF colorData = *(COLORREF*)pGen->getData().data();
+      setColor(colorData);
+      resu = true;
+    }
     break;
   case GENE_CARACT_ODOR:
-    m_Odor = (OdorType_e)scaledVal;
+    m_Odor = (OdorType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHEROMONE:
-    m_Pheromone = (PheromoneType_e)scaledVal;
+    m_Pheromone = (PheromoneType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_TASTE:
-    m_Taste = (TasteType_e)scaledVal;
+    m_Taste = (TasteType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_FORM:
-    m_Silhouette = (FormType_e)scaledVal;
+    m_Silhouette = (FormType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_REPRO_TYPE:
-    m_TypeOfReproduction = (ReproType_e)scaledVal;
+    m_TypeOfReproduction = (ReproType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_HABITAT:
-    m_Habitat = (HabitatType_e)scaledVal;
+    m_Habitat = (HabitatType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_CONSUME_TYPE:
-    m_ConsumeClass = (ConsumeType_e)scaledVal;
+    m_ConsumeClass = (ConsumeType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_MOVE_TYPE:
-    m_MoveType = (MoveType_e)scaledVal;
+    m_MoveType = (MoveType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_TEXTURE:
-    m_Texture = (TextureType_e)scaledVal;
+    m_Texture = (TextureType_e)pGen->getParameterRoundValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHY_ATTRIBUTE:
-    setAttribute((PhyAttributeType_e)scaledVal);
+    setAttribute((PhyAttributeType_e)pGen->getParameterRoundValue(0));
     resu = true;
     break;
   default:
@@ -735,67 +717,40 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   }
   // We are sure Gene is a parameter
   bool resu = false;
-  auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
-  size_t len = rawData.size();
+  size_t len = pGen->getData().size();
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
     return (false);
   }
 
-  CGenericParam* pParam = NULL;
-  double minVal,initVal,maxVal;
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PARAM_WEIGHT:
     {
       if (m_id_Weight != invalidIndex) delete(getParameter(m_id_Weight)); // delete if already set
-      minVal  = scaledVal1;
-      initVal = scaledVal2;
-      maxVal  = scaledVal3;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Weight",PARAM_PHYSIC,subType);
-      m_id_Weight = addParameter(pParam);
+      m_id_Weight = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_TOXICITY:
     {
       if (m_id_Toxicity != invalidIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Toxicity rate",PARAM_PHYSIC,subType);
-      m_id_Toxicity = addParameter(pParam);
+      m_id_Toxicity = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_PROTECTION:
     {
       if (m_id_Protection != invalidIndex) delete(getParameter(m_id_Protection)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Protection factor",PARAM_PHYSIC,subType);
-      m_id_Protection = addParameter(pParam);
+      m_id_Protection = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_CAMOUFLAGE:
     {
       if (m_id_Camouflage != invalidIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Camouflage factor",PARAM_PHYSIC,subType);
-      m_id_Camouflage = addParameter(pParam);
+      m_id_Camouflage = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
@@ -1265,28 +1220,27 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
   auto rawData = pGen->getData();
   BYTE* pData = rawData.data();
   size_t len = rawData.size();
-  if (len<1)
+  if ((len < 1) || (pGen->getNumParameter() < 1))
   {
     return (caractStr);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  BYTE data1 = (BYTE)( (double)(pData[0]) * getGeneScaleData1(subType) );
+  BYTE data1 = pGen->getParameterRoundValue(0);
 
-  switch (subType)
+  switch (pGen->getGeneSubType())
   {
   case GENE_CARACT_COLOR:
     {
       if (len>=sizeof(DWORD))
       {
-        tempStr = FormatString("=%03d ", (BYTE)( (double)(pData[0]) * getGeneScaleData1(subType) ) );
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
-        tempStr = FormatString("=%03d ", (BYTE)( (double)(pData[1]) * getGeneScaleData2(subType) ) );
-        caractStr += getGeneNameData2(subType) + tempStr;
-        tempStr = FormatString("=%03d ", (BYTE)( (double)(pData[2]) * getGeneScaleData3(subType) ) );
-        caractStr += getGeneNameData3(subType) + tempStr;
-        tempStr = FormatString("=%03d ", (BYTE)( (double)(pData[3]) * getGeneScaleData4(subType) ) );
-        caractStr += getGeneNameData4(subType) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(0));
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(1));
+        caractStr += pGen->getParameterStrName(1) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(2));
+        caractStr += pGen->getParameterStrName(2) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(3));
+        caractStr += pGen->getParameterStrName(3) + tempStr;
         COLORREF rgbCol = (COLORREF)pData[0] + (COLORREF)(pData[1]<<8) + (COLORREF)(pData[2]<<16);
         tempStr = " ("; tempStr += ColorTypeNameList[convertRgbColorInCaracter(rgbCol)]; tempStr +=")";
         caractStr += tempStr;
@@ -1298,7 +1252,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<ODOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += OdorTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1307,7 +1261,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<PHEROMONE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PheromoneTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1316,7 +1270,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<TASTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TasteTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1325,7 +1279,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<FORM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += FormTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1334,7 +1288,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<REPRODUCT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ReproTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1343,7 +1297,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<HABITAT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += HabitatTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1352,7 +1306,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<CONSUM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ConsumeTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1361,7 +1315,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<MOVE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += MoveTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1370,7 +1324,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<TEXTURE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TextureTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1379,7 +1333,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<PHY_ATTRIBUTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PhyAttributeTypeNameList[data1]; tempStr += " ";
-        caractStr = getGeneNameString(pGen) + " : " + getGeneNameData1(subType) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
       }
       break;
     }
@@ -1417,49 +1371,32 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
+  if ((len<3*sizeof(WORD)) || (pGen->getNumParameter() < 3))
   {
     // not enought data to config param
     return (paramStr);
   }
 
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
+  double scaledVal0,scaledVal1,scaledVal2;
+  
+  paramStr = pGen->getLabel() + " : ";
+  if (pGen->getParameterIsConfigurable(0))
   {
-  case GENE_PARAM_WEIGHT:
-  case GENE_PARAM_TOXICITY:
-  case GENE_PARAM_PROTECTION:
-  case GENE_PARAM_CAMOUFLAGE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal2 );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal3 );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      break;
-    }
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
+    scaledVal0 = pGen->getParameterValue(0);
+    tempStr = FormatString("=%6.2f ", scaledVal0);
+    paramStr += pGen->getParameterStrName(0) + tempStr;
+  }
+  if (pGen->getParameterIsConfigurable(1))
+  {
+    scaledVal1 = pGen->getParameterValue(1);
+    tempStr = FormatString("=%6.2f ", scaledVal1);
+    paramStr += pGen->getParameterStrName(1) + tempStr;
+  }
+  if (pGen->getParameterIsConfigurable(2))
+  {
+    scaledVal2 = pGen->getParameterValue(2);
+    tempStr = FormatString("=%6.2f ", scaledVal2);
+    paramStr += pGen->getParameterStrName(2) + tempStr;
   }
 
   return (paramStr);
@@ -1619,52 +1556,52 @@ string CBasicEntity::buildPurposeString(CGene* pGen)
 }
 
 
-string CBasicEntity::getGeneNameString(CGene* pGen)
+string CBasicEntity::getGeneNameString(CGene* pGen) // Obsolete
 {
   string name = pGen->getLabel();
   return(name);
 }
 
-string CBasicEntity::getGeneNameData1(GeneSubType_e subType)
+string CBasicEntity::getGeneNameData1(GeneSubType_e subType) // Obsolete
 {
   string name = GeneDefinitionList[subType].data1Name;
   return(name);
 }
 
-string CBasicEntity::getGeneNameData2(GeneSubType_e subType)
+string CBasicEntity::getGeneNameData2(GeneSubType_e subType) // Obsolete
 {
   string name = GeneDefinitionList[subType].data2Name;
   return(name);
 }
 
-string CBasicEntity::getGeneNameData3(GeneSubType_e subType)
+string CBasicEntity::getGeneNameData3(GeneSubType_e subType) // Obsolete
 {
   string name = GeneDefinitionList[subType].data3Name;
   return(name);
 }
 
-string CBasicEntity::getGeneNameData4(GeneSubType_e subType)
+string CBasicEntity::getGeneNameData4(GeneSubType_e subType) // Obsolete
 {
   string name = GeneDefinitionList[subType].data4Name;
   return(name);
 }
 
-double CBasicEntity::getGeneScaleData1 (GeneSubType_e subType)
+double CBasicEntity::getGeneScaleData1 (GeneSubType_e subType) // Obsolete
 {
   return(GeneDefinitionList[subType].data1Scale);
 }
 
-double CBasicEntity::getGeneScaleData2 (GeneSubType_e subType)
+double CBasicEntity::getGeneScaleData2 (GeneSubType_e subType) // Obsolete
 {
   return(GeneDefinitionList[subType].data2Scale);
 }
 
-double CBasicEntity::getGeneScaleData3 (GeneSubType_e subType)
+double CBasicEntity::getGeneScaleData3 (GeneSubType_e subType) // Obsolete
 {
   return(GeneDefinitionList[subType].data3Scale);
 }
 
-double CBasicEntity::getGeneScaleData4 (GeneSubType_e subType)
+double CBasicEntity::getGeneScaleData4 (GeneSubType_e subType) // Obsolete
 {
   return(GeneDefinitionList[subType].data4Scale);
 }
@@ -1870,6 +1807,16 @@ int CBasicEntity::addParameter(CGenericParam* pParam)
 {
   m_tParam.push_back(pParam);
   return ((int)m_tParam.size()-1);
+}
+
+int CBasicEntity::addParameterFromGene(CGene* pGen, GenericParamType_e paramType)
+{
+  double minVal, initVal, maxVal;
+  pGen->getParameterIsConfigurable(0) ? minVal = pGen->getParameterValue(0) : minVal = pGen->getParameterDefaultValue(0);
+  pGen->getParameterIsConfigurable(1) ? initVal = pGen->getParameterValue(1) : initVal = pGen->getParameterDefaultValue(1);
+  pGen->getParameterIsConfigurable(2) ? maxVal = pGen->getParameterValue(2) : maxVal = pGen->getParameterDefaultValue(2);
+  CGenericParam* pParam = new CGenericParam(minVal, initVal, initVal, maxVal, pGen->getLabel(), paramType, pGen->getGeneSubType());
+  return addParameter(pParam);
 }
 
 //---------------------------------------------------------------------------

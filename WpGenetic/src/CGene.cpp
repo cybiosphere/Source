@@ -181,13 +181,14 @@ const char* GeneMuteTypeNameList[GENE_MUTE_NUMBER_TYPE] =
 //  
 // REMARKS:      To be used before SetAs...
 //---------------------------------------------------------------------------
-CGene::CGene()
+CGene::CGene():
+  m_GeneType{ GENE_GENERIC }, 
+  m_GeneSubType{ GENE_GENERIC_UNKNOWN },
+  m_MuteRate{ 0 },
+  m_MuteType{ GENE_MUTE_RANDOM_BIT },
+  m_RawData{},
+  m_pDefinitions{ CGeneList::getDefinitions(GENE_GENERIC, GENE_GENERIC_UNKNOWN) }
 {
-  m_GeneType    = GENE_GENERIC;
-  m_GeneSubType = GENE_GENERIC_UNKNOWN;
-  m_MuteRate    = 0;
-  m_MuteType    = GENE_MUTE_RANDOM_BIT;
-  m_RawData.resize(0);
 }
 
 //---------------------------------------------------------------------------
@@ -201,13 +202,14 @@ CGene::CGene()
 //  
 // REMARKS:      To be used for reproduction
 //---------------------------------------------------------------------------
-CGene::CGene(CGene& model)
+CGene::CGene(CGene& model):
+  m_GeneType{ model.m_GeneType },
+  m_GeneSubType{ model.m_GeneSubType },
+  m_MuteRate{ model.m_MuteRate },
+  m_MuteType{ model.m_MuteType },
+  m_RawData{ model.m_RawData },
+  m_pDefinitions{ model.m_pDefinitions }
 {
-  m_GeneType    = model.m_GeneType;
-  m_GeneSubType = model.m_GeneSubType;
-  m_MuteRate    = model.m_MuteRate;
-  m_MuteType    = model.m_MuteType;
-  m_RawData     = model.m_RawData;
 }
 
 CGene::~CGene()
@@ -238,6 +240,8 @@ bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e mu
   m_GeneSubType = subType;
   m_MuteRate    = muteRate;
   m_MuteType    = muteType;
+  m_pDefinitions = CGeneList::getDefinitions(GENE_CARACTER, subType);
+
   m_RawData.resize(dataLen);
   memcpy(m_RawData.data(), pData, dataLen);
   return (true);
@@ -264,12 +268,15 @@ bool CGene::setAsParameter(GeneSubType_e subType, int muteRate, long min, long n
   m_GeneSubType = subType;
   m_MuteRate    = muteRate;
   m_MuteType    = GENE_MUTE_INCREMENTAL_2;
+  m_pDefinitions = CGeneList::getDefinitions(GENE_PARAMETER, subType);
+
   m_RawData.resize(3 * sizeof(WORD));
   WORD* pWordData = (WORD*)m_RawData.data();
   // Generic scale for parameter is [0..1000]
   pWordData[0] = encodeLongOnWord(min, 1000);
   pWordData[1] = encodeLongOnWord(nominalVal, 1000);
   pWordData[2] = encodeLongOnWord(max, 1000);
+
   return (true);
 }
 
@@ -687,6 +694,53 @@ bool CGene::setAsBrainConfig(GeneSubType_e subType, int muteRate, GeneMuteType_e
 }
 
 //===========================================================================
+// Parameters 
+//===========================================================================
+
+size_t CGene::getNumParameter()
+{
+  return m_pDefinitions->parameters.size();
+}
+
+double CGene::getParameterValue(size_t index)
+{
+  double value = 0;
+  const GeneParamDefinition_t& def = m_pDefinitions->parameters[index];
+  BYTE* pDataParam = m_RawData.data() + def.hexaOffset;
+
+  if (def.hexaSize == 1)
+  {
+    value = (double)pDataParam[0] * (double)(def.valMax - def.valMin) / 255 + def.valMin;
+  }
+  else if (def.hexaSize == 2)
+  {
+    WORD* pDataWord = (WORD*)pDataParam;
+    value = (double)pDataWord[0] * (double)(def.valMax - def.valMin) / 65535 + def.valMin;
+  }
+  return value;
+}
+
+int CGene::getParameterRoundValue(size_t index)
+{
+  return cybio_round(getParameterValue(index));
+}
+
+string CGene::getParameterStrName(size_t index)
+{
+  return m_pDefinitions->parameters[index].name;
+}
+
+bool CGene::getParameterIsConfigurable(size_t index)
+{
+  return m_pDefinitions->parameters[index].isConfigurable;
+}
+
+double CGene::getParameterDefaultValue(size_t index)
+{
+  return m_pDefinitions->parameters[index].defaultValue;
+}
+
+//===========================================================================
 // Raw data conversion
 //===========================================================================
 
@@ -751,6 +805,7 @@ bool CGene::buildGeneFromStringData(string rawData)
   m_GeneSubType = (GeneSubType_e)geneSubType;
   m_MuteType    = (GeneMuteType_e)muteType;
   m_MuteRate    = muteRate;
+  m_pDefinitions = CGeneList::getDefinitions(m_GeneType, m_GeneSubType);
   dataLen -= 2; // mute type and rate are include in data
   m_RawData.resize(dataLen); // mute type and rate are include in data
   for (int j=0;j<dataLen;j++)
@@ -872,8 +927,7 @@ bool CGene::tryMutation()
 
 string CGene::getLabel()
 {
-  string label = GeneSubTypeNameList[m_GeneSubType].Name;
-  return (label);
+  return (m_pDefinitions->label);
 }
 
 string CGene::getTypeLabel()

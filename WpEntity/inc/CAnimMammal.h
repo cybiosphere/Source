@@ -90,7 +90,6 @@ protected:
 // Genetic description
 //---------------------------------------------------------------------------
 protected:
-  string buildParameterString(CGene* pGen);
   string buildLifeStageString(CGene* pGen);
 
 //---------------------------------------------------------------------------

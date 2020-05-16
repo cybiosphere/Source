@@ -282,135 +282,75 @@ bool CAnimal::setParamFromGene (CGene* pGen)
     return (false);
   }
 
-  CGenericParam* pParam = NULL;
-  double minVal,initVal,maxVal;
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
-
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PARAM_AGE:
     {
       if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
-      minVal  = 0.0;
-      initVal = cybio_round(scaledVal2);
-      maxVal  = cybio_round(scaledVal3);
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Age",PARAM_DURATION,subType);
-      m_id_Age = addParameter(pParam);
+      m_id_Age = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_DECOMPOSITION:
     {
       if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
-      minVal  = 0.0;
-      initVal = 0.0;
-      maxVal  = cybio_round(scaledVal3);
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Decomposition",PARAM_DURATION,subType);
-      m_id_Decomposition = addParameter(pParam);
+      m_id_Decomposition = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RATE:
     {
       if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Reproduction rate",PARAM_REPRODUCTION,subType);
-      m_id_ReproductionRate = addParameter(pParam);
+      m_id_ReproductionRate = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_HEALTH:
     {
       if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 100.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Health rate",PARAM_FEELING,subType);
-      m_id_Health = addParameter(pParam);
+      m_id_Health = addParameterFromGene(pGen, PARAM_FEELING);
       resu = true;
       break;
     }
-/*  case GENE_PARAM_TEMPER_RANGE:
-    {
-      if (m_id_TemperatureRange != invalidIndex) delete(getParameter(m_id_TemperatureRange)); // delete if already set
-      minVal  = scaledVal1 - 50.0;
-      initVal = scaledVal2 - 50.0;
-      maxVal  = scaledVal3 - 50.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Temperature range",PARAM_ENVIRONMENT);
-      m_id_TemperatureRange = addParameter(pParam);
-      resu = true;
-      break;
-    }*/
   case GENE_PARAM_GROWTH_SPEED:
     {
       if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2;
-      maxVal  = 10000.0;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Growth speed rate",PARAM_PHYSIC,subType);
-      m_id_GrowthSpeed = addParameter(pParam);
+      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_FAT_WEIGHT:
     {
       if (m_id_FatWeight != invalidIndex) delete(getParameter(m_id_FatWeight)); // delete if already set
-      minVal  = 0.0;
-      initVal = scaledVal2 + 0.1;
-      maxVal  = scaledVal3 + 0.1;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Fat weight",PARAM_PHYSIC,subType);
-      m_id_FatWeight = addParameter(pParam);
+      m_id_FatWeight = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_ATTACK_FACTOR:
     {
       if (m_id_AttackFactor != invalidIndex) delete(getParameter(m_id_AttackFactor)); // delete if already set
-      minVal  = 0;
-      initVal = scaledVal2;
-      maxVal  = 100;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Attack factor",PARAM_PHYSIC,subType);
-      m_id_AttackFactor = addParameter(pParam);
+      m_id_AttackFactor = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_SPEED:
     {
       if (m_id_CurrentSpeed != invalidIndex) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
-      minVal  = 0.0;
-      initVal = 0,0;
-      maxVal  = scaledVal3;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Speed",PARAM_PHYSIC,subType);
-      m_id_CurrentSpeed = addParameter(pParam);
+      m_id_CurrentSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
   case GENE_PARAM_CURIOSITY:
     {
       if (m_id_Curiosity != invalidIndex) delete(getParameter(m_id_Curiosity)); // delete if already set
-      minVal  = 0;
-      initVal = scaledVal2;
-      maxVal  = 100;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Curiosity rate",PARAM_BEHAVIOR,subType);
-      m_id_Curiosity = addParameter(pParam);
+      m_id_Curiosity = addParameterFromGene(pGen, PARAM_BEHAVIOR);
       resu = true;
       break;
     }    
   case GENE_PARAM_LEARNING:
     {
       if (m_id_Learning != invalidIndex) delete(getParameter(m_id_Learning)); // delete if already set
-      minVal  = 0;
-      initVal = scaledVal2;
-      maxVal  = 100;
-      pParam = new CGenericParam(minVal,initVal,initVal,maxVal,"Learning rate",PARAM_BEHAVIOR,subType);
-      m_id_Learning = addParameter(pParam);
+      m_id_Learning = addParameterFromGene(pGen, PARAM_BEHAVIOR);
       resu = true;
       break;
     }
@@ -585,13 +525,12 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
     return (false);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double sensitivity = (double)pData[0] * getGeneScaleData1(subType);
-  double min = (double)pData[1] * getGeneScaleData2(subType);
-  double nominal = (double)pData[2] * getGeneScaleData3(subType);
-  double max = (double)pData[3] * getGeneScaleData4(subType);
+  double sensitivity = pGen->getParameterValue(0);
+  double min = pGen->getParameterValue(1);
+  double nominal = pGen->getParameterValue(2);
+  double max = pGen->getParameterValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PHYS_SENS_HABITAT:
     {
@@ -694,20 +633,20 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
   }
 
-  double scaledVal1, scaledVal2, scaledVal3, scaledVal4;
-  GeneSubType_e subType = pGen->getGeneSubType();
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-  scaledVal4 = (double)pData[3] * getGeneScaleData4(subType);
+  int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
+  size_t numParam = pGen->getNumParameter();
+  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_SENS_TACTILE:
     {
-      if ( nbWeight==(cybio_round(scaledVal2-10.0)-cybio_round(scaledVal1-10.0)+1) )
+      if (nbWeight == (size_t)(scaledVal2 - scaledVal1 + 1))
       {
-        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1-10.0), cybio_round(scaledVal2-10.0));
+        pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2);
         resu = true;
       }
       else
@@ -719,11 +658,9 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     }
   case GENE_SENS_VIEW:
     {
-      if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
+      if (nbWeight == (size_t)(scaledVal4 * VIEW_SIZE_PER_FOCUS))
       {
-        pSensor = new CSensorView((CBrainAnimal*)m_pBrain, tWeight,
-                                  cybio_round(scaledVal1), cybio_round(scaledVal2),
-                                  (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
+        pSensor = new CSensorView((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
         resu = true;
       }
       else
@@ -737,7 +674,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_ODORS )
       {
-        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
         resu = true;
       }
       else
@@ -751,7 +688,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight == NUMBER_PHEROMONES )
       {
-        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
         resu = true;
       }
       else
@@ -779,7 +716,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==8 )
       {
-        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, tWeight, cybio_round(scaledVal1));
+        pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
         resu = true;
       }
       else
@@ -919,9 +856,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain, tWeight,
-                                     cybio_round(scaledVal1), cybio_round(scaledVal2),
-                                     (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
+        pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
         resu = true;
       }
       break;
@@ -987,7 +922,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight>0)
       {
         DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
-        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, tWeight, nbWeight, sensUid, cybio_round(scaledVal3));
+        pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, tWeight, nbWeight, sensUid, scaledVal3);
         resu = true;
       }
       else
@@ -1016,9 +951,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain, tWeight,
-                                          cybio_round(scaledVal1), cybio_round(scaledVal2),
-                                          (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
+        pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
         resu = true;
       }
       else
@@ -1032,9 +965,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
-        pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain, tWeight,
-                                             cybio_round(scaledVal1), cybio_round(scaledVal2),
-                                             (ViewAngleType_e)((int)cybio_round(scaledVal3)), cybio_round(scaledVal4));
+        pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
         resu = true;
       }
       else
@@ -1096,24 +1027,24 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
     return (0);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double scaledVal1, scaledVal2, scaledVal3, scaledVal4;
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-  scaledVal4 = (double)pData[3] * getGeneScaleData4(subType);
+  int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
+  size_t numParam = pGen->getNumParameter();
+  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_SENS_TACTILE:
     {
-      nbWeight = cybio_round(scaledVal2-10.0) - cybio_round(scaledVal1-10.0) + 1;
+      nbWeight = (size_t)(scaledVal2 - scaledVal1 + 1);
       break;
     }
   case GENE_SENS_VIEW:
   case GENE_SENS_VIEW_FAR:
     {
-      nbWeight = (cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS);
+      nbWeight = (size_t)scaledVal4 * VIEW_SIZE_PER_FOCUS;
       break;
     }
   case GENE_SENS_SMELL:
@@ -1183,7 +1114,7 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   case GENE_SENS_VIEW_IDENTIFY:
   case GENE_SENS_VIEW_IDENT_FAR:
     {
-      nbWeight = (cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS);
+      nbWeight = (size_t)scaledVal4 * VIEW_IDENTIFY_SIZE_PER_FOCUS;
       break;
     }
   default:
@@ -1803,100 +1734,6 @@ bool CAnimal::setBrainInstinctInGenes(void) // Idee FRED: Deplacer dans CGenome.
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CAnimal::buildParameterString 
-//  
-// DESCRIPTION:  Give info string on parameter interpretation.
-// 
-// ARGUMENTS:    CGene* pGen: gene reference
-//   
-// RETURN VALUE: string : description string.
-//  
-// REMARKS:      Should be called by all derived method but not elsewhere 
-//---------------------------------------------------------------------------
-string CAnimal::buildParameterString(CGene* pGen)
-{
-  string paramStr = CBasicEntity::buildParameterString(pGen);
-  string tempStr;
-  if (paramStr != STRING_GENE_UNUSED)
-  {
-    // The parameter has already been taken into account by basic entity
-    return (paramStr);
-  }
-
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
-  {
-    return (paramStr);
-  }
-  // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
-  size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
-  {
-    // not enought data to config param
-    return (paramStr);
-  }
-
-  double scaledVal1,scaledVal2,scaledVal3;
-  GeneSubType_e subType = pGen->getGeneSubType();
- 
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-
-  switch(subType)
-  {
-  case GENE_PARAM_AGE:
-  case GENE_PARAM_DECOMPOSITION:
-  case GENE_PARAM_REPRO_RATE:
-  case GENE_PARAM_HEALTH:
-  case GENE_PARAM_GROWTH_SPEED:
-  case GENE_PARAM_FAT_WEIGHT:
-  case GENE_PARAM_ATTACK_FACTOR:
-  case GENE_PARAM_SPEED:
-  case GENE_PARAM_CURIOSITY:
-  case GENE_PARAM_LEARNING:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal1 );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal2 );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%6.2f ", scaledVal3 );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      break;
-    }
-/*  case GENE_PARAM_TEMPER_RANGE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      tempStr = FormatString("=%6.2f C", scaledVal1 - 50.0);
-      paramStr += getGeneNameData1(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal2 - 50.0);
-      paramStr += getGeneNameData2(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal3 - 50.0);
-      paramStr += getGeneNameData3(subType) + tempStr;
-      break;
-    }*/
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
-  }
-
-  return (paramStr);
-}
-
-//---------------------------------------------------------------------------
 // METHOD:       CAnimal::buildPhysicWellfareString 
 //  
 // DESCRIPTION:  Give info string on Physic Wellfare interpretation.
@@ -1925,38 +1762,37 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if (len<sizeof(WORD))
+  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
   {
     // not enought data to config param
     return (welfareStr);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
-  double sensitivity = (double)pData[0] * getGeneScaleData1(subType);
-  double scaledVal1  = (double)pData[1] * getGeneScaleData2(subType);
-  double scaledVal2  = (double)pData[2] * getGeneScaleData3(subType);
-  double scaledVal3  = (double)pData[3] * getGeneScaleData4(subType);
+  double sensitivity = pGen->getParameterValue(0);
+  double scaledVal1 = pGen->getParameterValue(1);
+  double scaledVal2 = pGen->getParameterValue(2);
+  double scaledVal3 = pGen->getParameterValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_PHYS_SENS_HABITAT:
     {
-      welfareStr = getGeneNameString(pGen) + " : ";
-      tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += getGeneNameData1(subType) + tempStr;
+      welfareStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%6.2f %%", sensitivity);
+      welfareStr += pGen->getParameterStrName(0) + tempStr;
       break;
     }
   case GENE_PHYS_SENS_TEMPER:
     {
-      welfareStr = getGeneNameString(pGen) + " : ";
-      tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += getGeneNameData1(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal1 - 50.0);
-      welfareStr += getGeneNameData2(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal2 - 50.0);
-      welfareStr += getGeneNameData3(subType) + tempStr;
-      tempStr = FormatString("=%6.2f C", scaledVal3 - 50.0);
-      welfareStr += getGeneNameData4(subType) + tempStr;
+      welfareStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%6.2f %%", sensitivity);
+      welfareStr += pGen->getParameterStrName(0) + tempStr;
+      tempStr = FormatString("=%6.2f C", scaledVal1);
+      welfareStr += pGen->getParameterStrName(1) + tempStr;
+      tempStr = FormatString("=%6.2f C", scaledVal2);
+      welfareStr += pGen->getParameterStrName(2) + tempStr;
+      tempStr = FormatString("=%6.2f C", scaledVal3);
+      welfareStr += pGen->getParameterStrName(3) + tempStr;
       break;
     }
   default:
@@ -2003,30 +1839,23 @@ string CAnimal::buildSensorString(CGene* pGen)
     // not enought data to config param
     return (paramStr);
   }
-
-  double scaledVal1,scaledVal2,scaledVal3,scaledVal4;
-  GeneSubType_e subType = pGen->getGeneSubType();
  
-  scaledVal1 = (double)pData[0] * getGeneScaleData1(subType);
-  scaledVal2 = (double)pData[1] * getGeneScaleData2(subType);
-  scaledVal3 = (double)pData[2] * getGeneScaleData3(subType);
-  scaledVal4 = (double)pData[3] * getGeneScaleData4(subType);
+  int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
+  size_t numParam = pGen->getNumParameter();
+  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
 
-  switch(subType)
+  switch(pGen->getGeneSubType())
   {
   case GENE_SENS_TACTILE:
     {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1-10.0) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal2-10.0) );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%d ", scaledVal1 );
+      paramStr += pGen->getParameterStrName(0) + tempStr;
+      tempStr = FormatString("=%d ", scaledVal2);
+      paramStr += pGen->getParameterStrName(1) + tempStr;
       break;
     }
   case GENE_SENS_VIEW:
@@ -2034,70 +1863,28 @@ string CAnimal::buildSensorString(CGene* pGen)
   case GENE_SENS_VIEW_IDENTIFY:
   case GENE_SENS_VIEW_IDENT_FAR:
     {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      if (getGeneScaleData2(subType)!=0)
-      {
-        // Fred TBD : use angle string
-        tempStr = FormatString("=%d ", cybio_round(scaledVal2) );
-        paramStr += getGeneNameData2(subType) + tempStr;
-      }
-      if (getGeneScaleData3(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal3) );
-        paramStr += getGeneNameData3(subType) + tempStr;
-      }
-      if (getGeneScaleData4(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal4) );
-        paramStr += getGeneNameData4(subType) + tempStr;
-      }
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%d ", scaledVal1);
+      paramStr += pGen->getParameterStrName(0) + tempStr;
+      // Fred TBD : use angle string
+      tempStr = FormatString("=%d ", scaledVal2);
+      paramStr += pGen->getParameterStrName(1) + tempStr;
+      tempStr = FormatString("=%d ", scaledVal3);
+      paramStr += pGen->getParameterStrName(2) + tempStr;
+      tempStr = FormatString("=%d ", scaledVal4);
+      paramStr += pGen->getParameterStrName(3) + tempStr;
       break;
     }
   case GENE_SENS_SMELL:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      break;
-    }
   case GENE_SENS_PHEROMONE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      break;
-    }
-  case GENE_SENS_HORMONE:
-    {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
-      break;
-    }
   case GENE_SENS_EAR:
     {
-      paramStr = getGeneNameString(pGen) + " : ";
-      if (getGeneScaleData1(subType)!=0)
-      {
-        tempStr = FormatString("=%d ", cybio_round(scaledVal1) );
-        paramStr += getGeneNameData1(subType) + tempStr;
-      }
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%d ", scaledVal1);
+      paramStr += pGen->getParameterStrName(0) + tempStr;
       break;
     }
+ 
   case GENE_SENS_HUNGER:
   case GENE_SENS_THIRST:
   case GENE_SENS_STOMACH_LOAD:
@@ -2112,16 +1899,17 @@ string CAnimal::buildSensorString(CGene* pGen)
   case GENE_SENS_FEAR:
   case GENE_SENS_TEMPERATURE:
   case GENE_SENS_ORIENTATION:
+  case GENE_SENS_HORMONE:
     {
-      paramStr = getGeneNameString(pGen);
+      paramStr = pGen->getLabel();
       break;
     }
   case GENE_SENS_COMPOSITE:
     {
       DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
-      CGenericParam* pParam = getParameter(cybio_round(scaledVal3));
-      paramStr = getGeneNameString(pGen);
+      CGenericParam* pParam = getParameter(scaledVal3);
+      paramStr = pGen->getLabel();
 
       if (pParam!=NULL)
         paramStr = paramStr + " " + pParam->getLabel();

@@ -48,6 +48,7 @@ distribution.
 //#include <afxtempl.h>
 
 #include "Definitions.h"
+#include "CaracterDefinitions.h"
 #include "CBrain.h"
 #include "CGenericParam.h"
 #include "CGenericCaract.h"
@@ -65,7 +66,6 @@ class CPhysicalWelfare;
 #define COLOR_UNSET   0xFFFFFFFF
 #define COLOR_DEFAULT 0x000F0F0F
 
-#define MAX_VAL_WEIGHT  1000.0
 #define STRING_GENE_UNUSED "Unused gene"
 #define NB_STEPS_PER_GRID_SQUARE 10
 
@@ -85,147 +85,6 @@ typedef enum
   CONTROL_LOCAL_USER,
   CONTROL_REMOTE_AUTO
 } ControlType_e;
-
-typedef enum
-{
-  REPRODUCT_UNSET = -1,
-  REPRODUCT_NONE,
-  REPRODUCT_CLONAGE,
-  REPRODUCT_SEXUAL, 
-  REPRODUCT_NUMBER_TYPE,  
-} ReproType_e;
-
-typedef enum
-{
-  COLOR_CARACTER_UNSET = -1,
-  COLOR_CARACTER_FIRST_TYPE,
-  COLOR_CARACTER_WHITE = COLOR_CARACTER_FIRST_TYPE,
-  COLOR_CARACTER_BLACK,
-  COLOR_CARACTER_GREY,
-  COLOR_CARACTER_RED,
-  COLOR_CARACTER_BLUE,
-  COLOR_CARACTER_GREEN,
-  COLOR_CARACTER_YELLOW,
-  COLOR_CARACTER_ORANGE,
-  COLOR_CARACTER_PINK,
-  COLOR_CARACTER_BEIGE,
-  COLOR_CARACTER_BROWN,
-  COLOR_CARACTER_NUMBER_TYPE
-} ColorCaracterType_e;
-
-typedef enum
-{
-  TEXTURE_UNSET = -1,
-  TEXTURE_NONE,
-  TEXTURE_FIRST_TYPE,
-  TEXTURE_STRIPPED = TEXTURE_FIRST_TYPE,
-  TEXTURE_SPOTTED,
-  TEXTURE_REFLECT, 
-  TEXTURE_NUMBER_TYPE
-} TextureType_e;
-
-typedef enum
-{
-  PHY_ATTRIBUTE_UNSET = -1,
-  PHY_ATTRIBUTE_NONE,
-  PHY_ATTRIBUTE_FIRST_TYPE,
-  PHY_ATTRIBUTE_UDDER = PHY_ATTRIBUTE_FIRST_TYPE,
-  PHY_ATTRIBUTE_HORNS,
-  PHY_ATTRIBUTE_TUSKS,
-  PHY_ATTRIBUTE_MANE,
-  PHY_ATTRIBUTE_NUMBER_TYPE
-} PhyAttributeType_e;
-
-typedef enum
-{
-  ODOR_UNSET = -1,
-  ODOR_NONE,
-  ODOR_FIRST_TYPE,
-  ODOR_AROMATIC = ODOR_FIRST_TYPE,
-  ODOR_FRAGRANT,
-  ODOR_ALLIACEOUS,
-  ODOR_AMBROSIAL,
-  ODOR_HIRCINE,
-  ODOR_REPULSIVE,
-  ODOR_NAUSEOUS,
-  ODOR_NUMBER_TYPE
-} OdorType_e;
-
-typedef enum
-{
-  PHEROMONE_UNSET = -1,
-  PHEROMONE_NONE,
-  PHEROMONE_FIRST_TYPE,
-  PHEROMONE_SEXUAL_MALE = PHEROMONE_FIRST_TYPE,
-  PHEROMONE_SEXUAL_FEMALE,
-  PHEROMONE_MATERNAL,
-  PHEROMONE_BABY,
-  PHEROMONE_DOMINANT,
-  PHEROMONE_NUMBER_TYPE
-} PheromoneType_e;
-
-typedef enum
-{
-  FORM_UNSET = -1,
-  FORM_FIRST_TYPE,
-  FORM_UNKNOWN = FORM_FIRST_TYPE,
-  FORM_PLAN_SMOOTH,
-  FORM_PLAN_ROUGH,
-  FORM_ROUNDISH,
-  FORM_GEOMETRIC,
-  FORM_VEGET_LONG_LEEF,
-  FORM_VEGET_BUSH,
-  FORM_VEGET_TREE,
-  FORM_QUADRIPED_THIN,
-  FORM_QUADRIPED_LONG_NECK,
-  FORM_QUADRIPED_FAT,
-  FORM_BIPED,
-  FORM_CARRION,
-// TBD: complete form type
-  FORM_NUMBER_TYPE  
-} FormType_e;
-
-typedef enum
-{
-  TASTE_UNSET = -1,
-  TASTE_NONE,
-  TASTE_SWEET,
-  TASTE_ACID,
-  TASTE_SALTY,
-  TASTE_BITTER,
-  TASTE_UMANI,
-  TASTE_NUMBER_TYPE,  
-} TasteType_e;
-
-typedef enum
-{
-  HABITAT_UNSET = -1,
-  HABITAT_FIRST_TYPE,
-  HABITAT_EARTH = HABITAT_FIRST_TYPE,
-  HABITAT_AMPHIBIAN, 
-  HABITAT_WATER, 
-  HABITAT_AIR, 
-  HABITAT_NUMBER_TYPE,  
-} HabitatType_e;
-
-typedef enum
-{
-  CONSUM_UNSET = -1,
-  CONSUM_NONE,
-  CONSUM_VEGETAL, 
-  CONSUM_OMNI,
-  CONSUM_MEAT,
-  CONSUM_NUMBER_TYPE,  
-} ConsumeType_e;
-
-typedef enum
-{
-  MOVE_UNSET = -1,
-  MOVE_NONE,
-  MOVE_WALK, 
-// TBD: complete move type
-  MOVE_NUMBER_TYPE  
-} MoveType_e;
 
 typedef struct 
 {
@@ -458,6 +317,7 @@ public:
 //---------------------------------------------------------------------------
 protected:
   int addParameter(CGenericParam* pParam);
+  int addParameterFromGene(CGene* pGen, GenericParamType_e type);
 public:
   size_t getNumParameter();
   CGenericParam* getParameter(size_t id);
