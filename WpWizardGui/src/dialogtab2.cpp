@@ -91,24 +91,24 @@ BOOL CDialogTab2::OnInitDialog()
     m_comboViewAngle.SetCurSel(2);
 
 	// TODO: Add extra initialization here
-    m_pSensorButtonTable[0]  = new CGeneButton(GENE_SENS_VIEW, (CView*)this, true, 100, "range", 30, "N focus", 8);
-    m_pSensorButtonTable[1]  = new CGeneButton(GENE_SENS_SMELL, (CView*)this, true, 100, "range", 30);
-    m_pSensorButtonTable[2]  = new CGeneButton(GENE_SENS_PHEROMONE,(CView*)this, true, 200, "range", 10);
-    m_pSensorButtonTable[3]  = new CGeneButton(GENE_SENS_EAR,(CView*)this, true, 200, "range", 30);
-    m_pSensorButtonTable[4]  = new CGeneButton(GENE_SENS_HUNGER,(CView*)this, true, 100);
-    m_pSensorButtonTable[5]  = new CGeneButton(GENE_SENS_THIRST,(CView*)this, true, 200);
-    m_pSensorButtonTable[6]  = new CGeneButton(GENE_SENS_STOMACH_LOAD,(CView*)this, true, 500);
-    m_pSensorButtonTable[7]  = new CGeneButton(GENE_SENS_PLEASURE,(CView*)this, true, 100);
-    m_pSensorButtonTable[8]  = new CGeneButton(GENE_SENS_SUFFER,(CView*)this, true, 200);
-    m_pSensorButtonTable[9]  = new CGeneButton(GENE_SENS_TIREDNESS,(CView*)this, true, 500);
-    m_pSensorButtonTable[10] = new CGeneButton(GENE_SENS_OBSCURITY,(CView*)this, true, 100);
-    m_pSensorButtonTable[11] = new CGeneButton(GENE_SENS_LIBIDO,(CView*)this, true, 100);
-    m_pSensorButtonTable[12] = new CGeneButton(GENE_SENS_SPEED,(CView*)this, true, 300);
-    m_pSensorButtonTable[13] = new CGeneButton(GENE_SENS_COMPASS,(CView*)this, false, 100);
-    m_pSensorButtonTable[14] = new CGeneButton(GENE_SENS_FEAR,(CView*)this, true, 400);
-    m_pSensorButtonTable[15] = new CGeneButton(GENE_SENS_TEMPERATURE,(CView*)this, true, 200);
-    m_pSensorButtonTable[16] = new CGeneButton(GENE_SENS_HORMONE,(CView*)this, true, 300);
-    m_pSensorButtonTable[17] = new CGeneButton(GENE_SENS_ORIENTATION,(CView*)this, true, 300);
+    m_pSensorButtonTable[0]  = new CGeneButton(GENE_SENSOR, GENE_SENS_VIEW, (CView*)this, true, 100, "range", 30, "N focus", 8);
+    m_pSensorButtonTable[1]  = new CGeneButton(GENE_SENSOR, GENE_SENS_SMELL, (CView*)this, true, 100, "range", 30);
+    m_pSensorButtonTable[2]  = new CGeneButton(GENE_SENSOR, GENE_SENS_PHEROMONE,(CView*)this, true, 200, "range", 10);
+    m_pSensorButtonTable[3]  = new CGeneButton(GENE_SENSOR, GENE_SENS_EAR,(CView*)this, true, 200, "range", 30);
+    m_pSensorButtonTable[4]  = new CGeneButton(GENE_SENSOR, GENE_SENS_HUNGER,(CView*)this, true, 100);
+    m_pSensorButtonTable[5]  = new CGeneButton(GENE_SENSOR, GENE_SENS_THIRST,(CView*)this, true, 200);
+    m_pSensorButtonTable[6]  = new CGeneButton(GENE_SENSOR, GENE_SENS_STOMACH_LOAD,(CView*)this, true, 500);
+    m_pSensorButtonTable[7]  = new CGeneButton(GENE_SENSOR, GENE_SENS_PLEASURE,(CView*)this, true, 100);
+    m_pSensorButtonTable[8]  = new CGeneButton(GENE_SENSOR, GENE_SENS_SUFFER,(CView*)this, true, 200);
+    m_pSensorButtonTable[9]  = new CGeneButton(GENE_SENSOR, GENE_SENS_TIREDNESS,(CView*)this, true, 500);
+    m_pSensorButtonTable[10] = new CGeneButton(GENE_SENSOR, GENE_SENS_OBSCURITY,(CView*)this, true, 100);
+    m_pSensorButtonTable[11] = new CGeneButton(GENE_SENSOR, GENE_SENS_LIBIDO,(CView*)this, true, 100);
+    m_pSensorButtonTable[12] = new CGeneButton(GENE_SENSOR, GENE_SENS_SPEED,(CView*)this, true, 300);
+    m_pSensorButtonTable[13] = new CGeneButton(GENE_SENSOR, GENE_SENS_COMPASS,(CView*)this, false, 100);
+    m_pSensorButtonTable[14] = new CGeneButton(GENE_SENSOR, GENE_SENS_FEAR,(CView*)this, true, 400);
+    m_pSensorButtonTable[15] = new CGeneButton(GENE_SENSOR, GENE_SENS_TEMPERATURE,(CView*)this, true, 200);
+    m_pSensorButtonTable[16] = new CGeneButton(GENE_SENSOR, GENE_SENS_HORMONE,(CView*)this, true, 300);
+    m_pSensorButtonTable[17] = new CGeneButton(GENE_SENSOR, GENE_SENS_ORIENTATION,(CView*)this, true, 300);
 
     int iDpi = GetDpiForWindow(this->m_hWnd);
     int offsetX = MulDiv(20, iDpi, 96);

@@ -38,11 +38,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGeneButton
 
-CGeneButton::CGeneButton(GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
+CGeneButton::CGeneButton(GeneType_e geneType, GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
                          CString paramName1, int defValParam1, CString paramName2, int defValParam2)
 {
   m_pView = pView;
-  m_Label = CGene::getGeneSubTypeStrName(geneSubTtype).c_str();
+  m_Label = CGeneList::getDefinitions(geneType, geneSubTtype)->label.c_str();
 
   m_GeneSubTtype = geneSubTtype;
   m_ParamName1   = paramName1;

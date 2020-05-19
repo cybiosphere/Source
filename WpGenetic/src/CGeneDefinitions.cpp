@@ -38,7 +38,8 @@ distribution.
 
 //===========================================================================
 // Definitions            
-/*
+//===========================================================================
+
 const char* GeneTypeNameList[GENE_NUMBER_TYPE] =
 {
   "Generic",
@@ -55,116 +56,12 @@ const char* GeneTypeNameList[GENE_NUMBER_TYPE] =
   "Brain config"
 };
 
-GeneDefinition_t GeneSubTypeNameList[GENE_NUMBER_SUBTYPE] =
-{
-  { GENE_GENERIC     , "generic"                },
-  { GENE_CARACTER    , "color"                  },
-  { GENE_CARACTER    , "odor"                   },
-  { GENE_CARACTER    , "pheromone"              },
-  { GENE_CARACTER    , "taste"                  },
-  { GENE_CARACTER    , "form"                   },
-  { GENE_CARACTER    , "reproduction"           },
-  { GENE_CARACTER    , "habitat"                },
-  { GENE_CARACTER    , "consumption"            },
-  { GENE_CARACTER    , "move mode"              },
-  { GENE_CARACTER    , "texture"                },
-  { GENE_CARACTER    , "physical attribute"     },
-  { GENE_CARACTER    , "RFU1"                   },
-  { GENE_CARACTER    , "RFU2"                   },
-  { GENE_PARAMETER   , "weight"                 },
-  { GENE_PARAMETER   , "toxicity"               },
-  { GENE_PARAMETER   , "protection"             },
-  { GENE_PARAMETER   , "camouflage"             },
-  { GENE_PARAMETER   , "age"                    },
-  { GENE_PARAMETER   , "decomposition"          },
-  { GENE_PARAMETER   , "repro rate"             },
-  { GENE_PARAMETER   , "born health"            },
-  { GENE_PARAMETER   , "growth speed"           },
-  { GENE_PARAMETER   , "reproduction range"     },
-  { GENE_PARAMETER   , "fat weight"             },
-  { GENE_PARAMETER   , "attack"                 },
-  { GENE_PARAMETER   , "speed"                  },
-  { GENE_PARAMETER   , "curiosity"              },
-  { GENE_PARAMETER   , "learning"               },
-  { GENE_PARAMETER   , "metabolism"             },
-  { GENE_PARAMETER   , "pollen range"           },
-  { GENE_PARAMETER   , "gestation time"         },
-  { GENE_PARAMETER   , "baby number"            },
-  { GENE_PARAMETER   , "RFU1"                   },
-  { GENE_PARAMETER   , "RFU2"                   },
-  { GENE_LIFESTAGE   , "life stage 0"           },
-  { GENE_LIFESTAGE   , "life stage 1"           },
-  { GENE_LIFESTAGE   , "life stage 2"           },
-  { GENE_LIFESTAGE   , "life stage 3"           },
-  { GENE_LIFESTAGE   , "life stage 4"           },
-  { GENE_LIFESTAGE   , "life stage 5"           },
-  { GENE_LIFESTAGE   , "life stage 6"           },
-  { GENE_PHY_WELFARE , "sensitivity temperature"},
-  { GENE_PHY_WELFARE , "sensitivity habitat"    },
-  { GENE_PHY_WELFARE , "sensitivity fertility"  },
-  { GENE_PHY_WELFARE , "sensitivity sunlight"   },
-  { GENE_PHY_WELFARE , "RFU1"                   },
-  { GENE_PHY_WELFARE , "RFU2"                   },
-  { GENE_SENSOR      , "tactile"                },
-  { GENE_SENSOR      , "view"                   },
-  { GENE_SENSOR      , "smell"                  },
-  { GENE_SENSOR      , "pheromone detector"     },
-  { GENE_SENSOR      , "ear"                    }, // GENE_SENS_EAR
-  { GENE_SENSOR      , "hunger"                 }, // GENE_SENS_HUNGER
-  { GENE_SENSOR      , "thirst"                 }, // GENE_SENS_THIRST
-  { GENE_SENSOR      , "stomach overload"       }, // GENE_SENS_STOMACH_LOAD
-  { GENE_SENSOR      , "pleasure"               }, // GENE_SENS_PLEASURE
-  { GENE_SENSOR      , "suffer"                 }, // GENE_SENS_SUFFER
-  { GENE_SENSOR      , "tiredness"              }, // GENE_SENS_TIREDNESS
-  { GENE_SENSOR      , "obscurity"              }, // GENE_SENS_OBSCURITY
-  { GENE_SENSOR      , "libido"                 }, // GENE_SENS_LIBIDO
-  { GENE_SENSOR      , "speed"                  }, // GENE_SENS_SPEED
-  { GENE_SENSOR      , "view far"               }, // GENE_SENS_VIEW_FAR
-  { GENE_SENSOR      , "compass"                }, // GENE_SENS_COMPASS
-  { GENE_SENSOR      , "taste"                  }, // GENE_SENS_TASTE
-  { GENE_SENSOR      , "fear"                   }, // GENE_SENS_FEAR
-  { GENE_SENSOR      , "temperature"            }, // GENE_SENS_TEMPERATURE
-  { GENE_SENSOR      , "orientation"            }, // GENE_SENS_ORIENTATION
-  { GENE_SENSOR      , "view identify"          }, // GENE_SENS_VIEW_IDENTIFY
-  { GENE_SENSOR      , "view identify far"      }, // GENE_SENS_VIEW_IDENT_FAR
-  { GENE_SENSOR      , "Hormone level"          }, // GENE_SENS_HORMONE
-  { GENE_SENSOR      , "composite"              }, // GENE_SENS_COMPOSITE
-  { GENE_REACTION    , "nothing"                },
-  { GENE_REACTION    , "sleep"                  },
-  { GENE_REACTION    , "move forward"           },
-  { GENE_REACTION    , "step back"              },
-  { GENE_REACTION    , "turn left"              },
-  { GENE_REACTION    , "turn right"             },
-  { GENE_REACTION    , "eat"                    },
-  { GENE_REACTION    , "drink"                  },
-  { GENE_REACTION    , "copulate"               },
-  { GENE_REACTION    , "attack"                 },
-  { GENE_REACTION    , "turn head left"         },
-  { GENE_REACTION    , "turn head right"        },
-  { GENE_REACTION    , "ruminate"               },
-  { GENE_REACTION    , "hide"                   },
-  { GENE_REACTION    , "RFU1"                   },
-  { GENE_REACTION    , "RFU2"                   },
-  { GENE_BRAIN_SIZE  , "history input"          },
-  { GENE_BRAIN_SIZE  , "history experience"     },
-  { GENE_BRAIN_INIT  , "brain line"             },
-  { GENE_FEELING     , "wellfare sensor"        },
-  { GENE_FEELING     , "fear sensor"            },
-  { GENE_PURPOSE     , "purpose trigger up"     }, // GENE_PURPOSE_TRIGGER_UP
-  { GENE_PURPOSE     , "sensor bonus"           }, // GENE_PURPOSE_SENSOR
-  { GENE_PURPOSE     , "reaction bonus"         }, // GENE_PURPOSE_REACTION
-  { GENE_PURPOSE     , "purpose trigger down"   }, // GENE_PURPOSE_TRIGGER_DOWN
-  { GENE_BRAIN_INIT  , "identification line"    }, // GENE_BRAIN_IDENTIFY_LINE
-  { GENE_BRAIN_CONFIG, "behavior"               }  // GENE_BRAIN_BEHAVIOR
-};
-
 const char* GeneMuteTypeNameList[GENE_MUTE_NUMBER_TYPE] =
 {
   "Random bit",
   "Incremental 1 byte",
   "Incremental 2 bytes"
 };
-*/
 
 vector<CGeneDefinitions> CGeneList::geneListGeneric =
 {
@@ -173,7 +70,7 @@ vector<CGeneDefinitions> CGeneList::geneListGeneric =
 
 vector<CGeneDefinitions> CGeneList::geneListCaracter =
 {
-  { GENE_CARACTER, GENE_CARACT_COLOR, "Color", GENE_MUTE_RANDOM_BIT,
+  { GENE_CARACTER, GENE_CARACT_COLOR, "Color", GENE_MUTE_INCREMENTAL_1,
   { { "R", 1, 0, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
     { "G", 1, 1, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
     { "B", 1, 2, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
@@ -297,7 +194,7 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
       { "Start", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Duration", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 0 } } },
 
-  { GENE_PARAMETER, GENE_PARAM_GESTA_NB, "Gestation baby number", GENE_MUTE_INCREMENTAL_2,
+  { GENE_PARAMETER, GENE_PARAM_GESTA_NB, "Gestation size", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
       { "Usual", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } }
@@ -419,19 +316,147 @@ vector<CGeneDefinitions> CGeneList::geneListSensor =
   { GENE_SENSOR, GENE_SENS_HORMONE, "Hormone", GENE_MUTE_INCREMENTAL_2, { } },
 
   { GENE_SENSOR, GENE_SENS_COMPOSITE, "Composite", GENE_MUTE_INCREMENTAL_2,
-    { { "Sens Uid Hi", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false },
-      { "Sens Uid Lo", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, false },
+    { { "Sens Uid Hi", 2, 0, 0, 0xFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Sens Uid Lo", 2, 2, 0, 0xFFFF, GENE_DOMINANCE_HIGHEST, false },
       { "ParamId", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true } } }
 };
 
-array< vector<CGeneDefinitions>, 6> CGeneList::geneListArray = 
+vector<CGeneDefinitions> CGeneList::geneListReaction =
+{
+  { GENE_REACTION, GENE_REACT_NOTHING, "Nothing", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_SLEEP, "Sleep", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_MOVEFORWARD, "Move forward", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Steps sec", 2, 4, 0, 200, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_STEPBACKWARD, "Step back", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Steps", 2, 4, 0, 30, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_TURNLEFT, "Turn left", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_TURNRIGHT, "Turn right", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_EAT, "Eat", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Layer", 2, 4, -10, 10, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_DRINK, "Drink", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_COPULATE, "Copulate", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_ATTACK, "Attack", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Layer", 2, 4, -10, 10, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_TURNHEADLEFT, "Turn head left", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_TURNHEADRIGHT, "Turn head right", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_REACTION, GENE_REACT_RUMINATE, "Ruminate", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } }
+
+};
+
+vector<CGeneDefinitions> CGeneList::geneListBrainSize =
+{
+  { GENE_BRAIN_SIZE, GENE_BRAIN_SIZE_HIST_IN, "History input", GENE_MUTE_INCREMENTAL_2,
+    { { "Size", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_BRAIN_SIZE, GENE_BRAIN_SIZE_HIST_EXP, "History experience", GENE_MUTE_INCREMENTAL_2,
+    { { "Size", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true } } }
+};
+
+vector<CGeneDefinitions> CGeneList::geneListBrainInstinct =
+{
+  { GENE_BRAIN_INIT, GENE_BRAIN_LINE, "Brain line", GENE_MUTE_INCREMENTAL_2,
+    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_BRAIN_INIT, GENE_BRAIN_IDENTIFY_LINE, "Identification line", GENE_MUTE_INCREMENTAL_2,
+    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, true } } }
+};
+
+vector<CGeneDefinitions> CGeneList::geneListFeeling =
+{
+  { GENE_FEELING, GENE_FEEL_WELFARE, "Wellfare feeling", GENE_MUTE_INCREMENTAL_2,
+    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_FEELING, GENE_FEEL_FEAR, "Fear feeling", GENE_MUTE_INCREMENTAL_2,
+    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, true } } }
+};
+
+vector<CGeneDefinitions> CGeneList::geneListPurpose =
+{
+  { GENE_PURPOSE, GENE_PURPOSE_TRIGGER_UP, "Purpose trigger up", GENE_MUTE_INCREMENTAL_2,
+    { { "Time", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, true },
+      { "Index", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Start", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Stop", 2, 6, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_PURPOSE, GENE_PURPOSE_SENSOR, "Sensor bonus", GENE_MUTE_INCREMENTAL_2,
+    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Sensor ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Bonus", 2, 8, 0, 20000, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_PURPOSE, GENE_PURPOSE_REACTION, "Reaction bonus", GENE_MUTE_INCREMENTAL_2,
+    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Reaction ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+      { "Bonus", 2, 8, 0, 200, GENE_DOMINANCE_HIGHEST, true } } },
+
+  { GENE_PURPOSE, GENE_PURPOSE_TRIGGER_DOWN, "Purpose trigger down", GENE_MUTE_INCREMENTAL_2,
+    { { "Time", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, true },
+      { "Index", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Start", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Stop", 2, 6, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true } } },
+};
+
+vector<CGeneDefinitions> CGeneList::geneListBrainConfig =
+{
+  { GENE_BRAIN_CONFIG, GENE_BRAIN_BEHAVIOR, "Behavior", GENE_MUTE_INCREMENTAL_1,
+    { { "Type", 1, 0, 0, 10, GENE_DOMINANCE_HIGHEST, true } } }
+};
+
+array< vector<CGeneDefinitions>, GENE_NUMBER_TYPE> CGeneList::geneListArray =
 { 
   CGeneList::geneListGeneric , 
   CGeneList::geneListCaracter ,
   CGeneList::geneListParameter ,
   CGeneList::geneListLifeStage,
   CGeneList::geneListPhyWellfare,
-  CGeneList::geneListSensor 
+  CGeneList::geneListSensor,
+  CGeneList::geneListReaction,
+  CGeneList::geneListBrainSize,
+  CGeneList::geneListBrainInstinct,
+  CGeneList::geneListFeeling,
+  CGeneList::geneListPurpose,
+  CGeneList::geneListBrainConfig
 };
 
 
@@ -460,7 +485,6 @@ CGeneDefinitions::CGeneDefinitions(GeneType_e type, GeneSubType_e subType, strin
 {
 }
 
-
 CGeneDefinitions::~CGeneDefinitions()
 {
 }
@@ -481,4 +505,40 @@ const CGeneDefinitions* CGeneList::getDefinitions(GeneType_e type, GeneSubType_e
     }
   }
   return (&geneListArray[GENE_GENERIC][0]);
+}
+
+size_t CGeneList::getNumberOfGeneSubtype(GeneType_e type)
+{
+  size_t nbSubType = 0;
+  if (type < geneListArray.size())  // can be removed later...
+  {
+    nbSubType = geneListArray[type].size();
+  }
+  return nbSubType;
+}
+
+const CGeneDefinitions* CGeneList::getDefinitionsByIndex(GeneType_e type, size_t subTypeIndex)
+{
+  if (type < geneListArray.size())  // can be removed later...
+  {
+    if (subTypeIndex < geneListArray[type].size())
+    {
+        return (&geneListArray[type][subTypeIndex]);
+    }
+  }
+  return (&geneListArray[GENE_GENERIC][0]);
+}
+
+string CGeneList::getGeneTypeStrName(GeneType_e type)
+{
+  string typeName;
+  typeName = GeneTypeNameList[type];
+  return(typeName);
+}
+
+string CGeneList::getGeneMuteTypeStrName(GeneMuteType_e muteType)
+{
+  string typeName;
+  typeName = GeneMuteTypeNameList[muteType];
+  return(typeName);
 }

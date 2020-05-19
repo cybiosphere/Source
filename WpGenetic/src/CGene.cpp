@@ -40,131 +40,6 @@ distribution.
 // Definitions            
 //===========================================================================
 
-const char* GeneTypeNameList[GENE_NUMBER_TYPE] =
-{
-  "Generic",
-  "Caracter",
-  "Parameter",
-  "Lifestage",
-  "Physical wellfare",
-  "Sensor",
-  "Reaction",
-  "Brain size",
-  "Brain instinct",
-  "Feeling component",
-  "Purpose",
-  "Brain config"
-};
-
-GeneDefinition_t GeneSubTypeNameList[GENE_NUMBER_SUBTYPE] =
-{
-  { GENE_GENERIC     , "generic"                },
-  { GENE_CARACTER    , "color"                  },
-  { GENE_CARACTER    , "odor"                   },
-  { GENE_CARACTER    , "pheromone"              },
-  { GENE_CARACTER    , "taste"                  },
-  { GENE_CARACTER    , "form"                   },
-  { GENE_CARACTER    , "reproduction"           },
-  { GENE_CARACTER    , "habitat"                },
-  { GENE_CARACTER    , "consumption"            },
-  { GENE_CARACTER    , "move mode"              },
-  { GENE_CARACTER    , "texture"                },
-  { GENE_CARACTER    , "physical attribute"     },
-  { GENE_CARACTER    , "RFU1"                   },
-  { GENE_CARACTER    , "RFU2"                   },
-  { GENE_PARAMETER   , "weight"                 },
-  { GENE_PARAMETER   , "toxicity"               },
-  { GENE_PARAMETER   , "protection"             },
-  { GENE_PARAMETER   , "camouflage"             },
-  { GENE_PARAMETER   , "age"                    },
-  { GENE_PARAMETER   , "decomposition"          },
-  { GENE_PARAMETER   , "repro rate"             },
-  { GENE_PARAMETER   , "born health"            },
-  { GENE_PARAMETER   , "growth speed"           },
-  { GENE_PARAMETER   , "reproduction range"     },
-  { GENE_PARAMETER   , "fat weight"             },
-  { GENE_PARAMETER   , "attack"                 },
-  { GENE_PARAMETER   , "speed"                  },
-  { GENE_PARAMETER   , "curiosity"              },
-  { GENE_PARAMETER   , "learning"               },
-  { GENE_PARAMETER   , "metabolism"             },
-  { GENE_PARAMETER   , "pollen range"           },
-  { GENE_PARAMETER   , "gestation time"         },
-  { GENE_PARAMETER   , "baby number"            },
-  { GENE_PARAMETER   , "RFU1"                   },
-  { GENE_PARAMETER   , "RFU2"                   },
-  { GENE_LIFESTAGE   , "life stage 0"           },
-  { GENE_LIFESTAGE   , "life stage 1"           },
-  { GENE_LIFESTAGE   , "life stage 2"           },
-  { GENE_LIFESTAGE   , "life stage 3"           },
-  { GENE_LIFESTAGE   , "life stage 4"           },
-  { GENE_LIFESTAGE   , "life stage 5"           },
-  { GENE_LIFESTAGE   , "life stage 6"           },
-  { GENE_PHY_WELFARE , "sensitivity temperature"},
-  { GENE_PHY_WELFARE , "sensitivity habitat"    },
-  { GENE_PHY_WELFARE , "sensitivity fertility"  },
-  { GENE_PHY_WELFARE , "sensitivity sunlight"   },
-  { GENE_PHY_WELFARE , "RFU1"                   },
-  { GENE_PHY_WELFARE , "RFU2"                   },
-  { GENE_SENSOR      , "tactile"                },
-  { GENE_SENSOR      , "view"                   },
-  { GENE_SENSOR      , "smell"                  },
-  { GENE_SENSOR      , "pheromone detector"     },
-  { GENE_SENSOR      , "ear"                    }, // GENE_SENS_EAR
-  { GENE_SENSOR      , "hunger"                 }, // GENE_SENS_HUNGER
-  { GENE_SENSOR      , "thirst"                 }, // GENE_SENS_THIRST
-  { GENE_SENSOR      , "stomach overload"       }, // GENE_SENS_STOMACH_LOAD
-  { GENE_SENSOR      , "pleasure"               }, // GENE_SENS_PLEASURE
-  { GENE_SENSOR      , "suffer"                 }, // GENE_SENS_SUFFER
-  { GENE_SENSOR      , "tiredness"              }, // GENE_SENS_TIREDNESS
-  { GENE_SENSOR      , "obscurity"              }, // GENE_SENS_OBSCURITY
-  { GENE_SENSOR      , "libido"                 }, // GENE_SENS_LIBIDO
-  { GENE_SENSOR      , "speed"                  }, // GENE_SENS_SPEED
-  { GENE_SENSOR      , "view far"               }, // GENE_SENS_VIEW_FAR
-  { GENE_SENSOR      , "compass"                }, // GENE_SENS_COMPASS
-  { GENE_SENSOR      , "taste"                  }, // GENE_SENS_TASTE
-  { GENE_SENSOR      , "fear"                   }, // GENE_SENS_FEAR
-  { GENE_SENSOR      , "temperature"            }, // GENE_SENS_TEMPERATURE
-  { GENE_SENSOR      , "orientation"            }, // GENE_SENS_ORIENTATION
-  { GENE_SENSOR      , "view identify"          }, // GENE_SENS_VIEW_IDENTIFY
-  { GENE_SENSOR      , "view identify far"      }, // GENE_SENS_VIEW_IDENT_FAR
-  { GENE_SENSOR      , "Hormone level"          }, // GENE_SENS_HORMONE
-  { GENE_SENSOR      , "composite"              }, // GENE_SENS_COMPOSITE
-  { GENE_REACTION    , "nothing"                },
-  { GENE_REACTION    , "sleep"                  },
-  { GENE_REACTION    , "move forward"           },
-  { GENE_REACTION    , "step back"              },
-  { GENE_REACTION    , "turn left"              },
-  { GENE_REACTION    , "turn right"             },
-  { GENE_REACTION    , "eat"                    },
-  { GENE_REACTION    , "drink"                  },
-  { GENE_REACTION    , "copulate"               },
-  { GENE_REACTION    , "attack"                 },
-  { GENE_REACTION    , "turn head left"         },
-  { GENE_REACTION    , "turn head right"        },
-  { GENE_REACTION    , "ruminate"               },
-  { GENE_REACTION    , "hide"                   },
-  { GENE_REACTION    , "RFU1"                   },
-  { GENE_REACTION    , "RFU2"                   },
-  { GENE_BRAIN_SIZE  , "history input"          },
-  { GENE_BRAIN_SIZE  , "history experience"     },
-  { GENE_BRAIN_INIT  , "brain line"             },
-  { GENE_FEELING     , "wellfare sensor"        },
-  { GENE_FEELING     , "fear sensor"            },
-  { GENE_PURPOSE     , "purpose trigger up"     }, // GENE_PURPOSE_TRIGGER_UP
-  { GENE_PURPOSE     , "sensor bonus"           }, // GENE_PURPOSE_SENSOR
-  { GENE_PURPOSE     , "reaction bonus"         }, // GENE_PURPOSE_REACTION
-  { GENE_PURPOSE     , "purpose trigger down"   }, // GENE_PURPOSE_TRIGGER_DOWN
-  { GENE_BRAIN_INIT  , "identification line"    }, // GENE_BRAIN_IDENTIFY_LINE
-  { GENE_BRAIN_CONFIG, "behavior"               }  // GENE_BRAIN_BEHAVIOR
-};
-
-const char* GeneMuteTypeNameList[GENE_MUTE_NUMBER_TYPE] =
-{
-  "Random bit",
-  "Incremental 1 byte",
-  "Incremental 2 bytes"
-};
 
 //===========================================================================
 // Constructors / Destructors
@@ -231,7 +106,7 @@ CGene::~CGene()
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData)
+bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pRawData)
 {
   // Clean previous config
   m_RawData.clear();
@@ -243,8 +118,23 @@ bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e mu
   m_pDefinitions = CGeneList::getDefinitions(GENE_CARACTER, subType);
 
   m_RawData.resize(dataLen);
-  memcpy(m_RawData.data(), pData, dataLen);
+  memcpy(m_RawData.data(), pRawData, dataLen);
   return (true);
+}
+
+bool CGene::setAsCaracterUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value)
+{
+  // Clean previous config
+  m_RawData.clear();
+
+  m_GeneType = GENE_CARACTER;
+  m_GeneSubType = subType;
+  m_pDefinitions = CGeneList::getDefinitions(GENE_CARACTER, subType);
+  m_MuteRate = muteRate;
+  m_MuteType = m_pDefinitions->muteType;
+  setRawDataSizeWithDefinition();
+  setParameterValue(0, value);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -694,7 +584,7 @@ bool CGene::setAsBrainConfig(GeneSubType_e subType, int muteRate, GeneMuteType_e
 }
 
 //===========================================================================
-// Parameters 
+// Use Gene definition  
 //===========================================================================
 
 size_t CGene::getNumParameter()
@@ -710,12 +600,45 @@ double CGene::getParameterValue(size_t index)
 
   if (def.hexaSize == 1)
   {
-    value = (double)pDataParam[0] * (double)(def.valMax - def.valMin) / 255 + def.valMin;
+    value = (double)pDataParam[0] * (def.valMax - def.valMin) / 255.0 + def.valMin;
   }
   else if (def.hexaSize == 2)
   {
     WORD* pDataWord = (WORD*)pDataParam;
-    value = (double)pDataWord[0] * (double)(def.valMax - def.valMin) / 65535 + def.valMin;
+    value = (double)pDataWord[0] * (def.valMax - def.valMin) / 65535.0 + def.valMin;
+  }
+  return value;
+}
+
+bool CGene::setParameterValue(size_t index, double value)
+{
+  const GeneParamDefinition_t& def = m_pDefinitions->parameters[index];
+  BYTE* pDataParam = m_RawData.data() + def.hexaOffset;
+
+  if (def.hexaSize == 1)
+  {
+    pDataParam[0] = (value - def.valMin) * 255.0 / (def.valMax - def.valMin);
+  }
+  else if (def.hexaSize == 2)
+  {
+    WORD* pDataWord = (WORD*)pDataParam;
+    pDataWord[0] = (value - def.valMin) * 65535.0 / (def.valMax - def.valMin);
+  }
+  return true;
+}
+
+double CGene::getParameterScale(size_t index)
+{
+  double value = 0;
+  const GeneParamDefinition_t& def = m_pDefinitions->parameters[index];
+
+  if (def.hexaSize == 1)
+  {
+    value = (def.valMax - def.valMin) / 255 + def.valMin;
+  }
+  else if (def.hexaSize == 2)
+  {
+    value = (def.valMax - def.valMin) / 65535 + def.valMin;
   }
   return value;
 }
@@ -723,6 +646,34 @@ double CGene::getParameterValue(size_t index)
 int CGene::getParameterRoundValue(size_t index)
 {
   return cybio_round(getParameterValue(index));
+}
+
+int CGene::getParameterFloorValue(size_t index)
+{
+  return (int)(getParameterValue(index));
+}
+
+DWORD CGene::getParameterRawValue(size_t index)
+{
+  DWORD value = 0;
+  const GeneParamDefinition_t& def = m_pDefinitions->parameters[index];
+  BYTE* pDataParam = m_RawData.data() + def.hexaOffset;
+
+  if (def.hexaSize == 1)
+  {
+    value = pDataParam[0];
+  }
+  else if (def.hexaSize == 2)
+  {
+    WORD* pDataWord = (WORD*)pDataParam;
+    value = pDataWord[0];
+  }
+  else if (def.hexaSize == 4)
+  {
+    DWORD* pDataDWord = (DWORD*)pDataParam;
+    value = pDataDWord[0];
+  }
+  return value;
 }
 
 string CGene::getParameterStrName(size_t index)
@@ -739,6 +690,14 @@ double CGene::getParameterDefaultValue(size_t index)
 {
   return m_pDefinitions->parameters[index].defaultValue;
 }
+
+bool CGene::setRawDataSizeWithDefinition()
+{
+  // TODO loop on parameters
+  m_RawData.resize(1);
+  return true;
+}
+
 
 //===========================================================================
 // Raw data conversion
@@ -930,12 +889,6 @@ string CGene::getLabel()
   return (m_pDefinitions->label);
 }
 
-string CGene::getTypeLabel()
-{
-  string label;
-  label = GeneTypeNameList[m_GeneType];
-  return (label);
-}
 
 //===========================================================================
 // Get / Set for attributes
@@ -971,28 +924,3 @@ BYTE CGene::getMuteRate()
   return (m_MuteRate);
 }
 
-string CGene::getGeneTypeStrName(GeneType_e type)
-{
-  string typeName;
-  typeName = GeneTypeNameList[type];
-  return(typeName);
-}
-
-string CGene::getGeneSubTypeStrName(GeneSubType_e type)
-{
-  string typeName;
-  typeName = GeneSubTypeNameList[type].Name;
-  return(typeName);
-}
-
-string CGene::getGeneMuteTypeStrName(GeneMuteType_e muteType)
-{
-  string typeName;
-  typeName = GeneMuteTypeNameList[muteType];
-  return(typeName);
-}
-
-GeneType_e CGene::getExpectedGeneType (GeneSubType_e subType)
-{
-  return(GeneSubTypeNameList[subType].type);
-}

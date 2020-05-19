@@ -90,9 +90,9 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
     SetItemData(hChromoNode,(DWORD_PTR)pChromo);
     for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
     {
-      tmpLabel = CGene::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
+      tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
       tmpLabel +=  " ";
-      tmpLabel += CGene::getGeneSubTypeStrName(pChromo->getGene(nGene)->getGeneSubType()).c_str();
+      tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
       hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       if (showGenes)
         EnsureVisible(hGeneNode);
@@ -104,9 +104,9 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
     SetItemData(hChromoNode,(DWORD_PTR)pChromo);
     for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
     {
-      tmpLabel = CGene::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
+      tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
       tmpLabel += " ";
-      tmpLabel += CGene::getGeneSubTypeStrName(pChromo->getGene(nGene)->getGeneSubType()).c_str();
+      tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
       hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       if (showGenes)
         EnsureVisible(hGeneNode);
@@ -178,9 +178,9 @@ bool CGenomeTreeCtrl::UpdateAnyGeneFromItsPointer(CGene* pItem)
   {
     if ( (curItem!=NULL) && (GetItemData(curItem)==(DWORD_PTR)pItem) )
     { 
-      tmpLabel = CGene::getGeneTypeStrName(pItem->getGeneType()).c_str();
+      tmpLabel = CGeneList::getGeneTypeStrName(pItem->getGeneType()).c_str();
       tmpLabel +=  " ";
-      tmpLabel +=  CGene::getGeneSubTypeStrName(pItem->getGeneSubType()).c_str();
+      tmpLabel += pItem->getLabel().c_str();
       SetItemText(curItem,tmpLabel);
       UpdateWindow();
       return (true);

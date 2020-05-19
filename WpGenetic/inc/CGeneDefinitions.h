@@ -52,20 +52,6 @@ distribution.
 // Definitions            
 //===========================================================================
 
-
-// table subtype par type:
-// Type name subtypeId muteType  ListParameters => HexaDataSize(auto)
-//table parameter par subtype
-// name HexaSize  min max default muteType dominanceType
-/*
-{GENE_CARACTER, GENE_CARACT_COLOR, "color", GENE_MUTE_RANDOM_BIT,
-  {"R", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
-  {"G", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
-  {"B", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
-  {"A", 1, 0, 255, GENE_DOMINANCE_HIGHEST},
-}
-*/
-
 typedef enum 
 {
   GENE_DOMINANCE_HIGHEST = 0,
@@ -268,7 +254,7 @@ class DLL_CYBIOCORE_API CGeneList
   // Attributes 
   //===========================================================================
 private:
-  static array< vector<CGeneDefinitions>, 6/* GENE_NUMBER_TYPE*/> geneListArray;
+  static array< vector<CGeneDefinitions>, GENE_NUMBER_TYPE> geneListArray;
   
   static vector<CGeneDefinitions> geneListGeneric;
   static vector<CGeneDefinitions> geneListCaracter;
@@ -276,12 +262,12 @@ private:
   static vector<CGeneDefinitions> geneListLifeStage;
   static vector<CGeneDefinitions> geneListPhyWellfare;
   static vector<CGeneDefinitions> geneListSensor;
-  //static vector<CGeneDefinitions> geneListReaction;
-  //static vector<CGeneDefinitions> geneListBrainSize;
-  //static vector<CGeneDefinitions> geneListBrainInstinct;
-  //static vector<CGeneDefinitions> geneListFeeling;
-  //static vector<CGeneDefinitions> geneListPurpose;
-  //static vector<CGeneDefinitions> geneListBrainConfig;
+  static vector<CGeneDefinitions> geneListReaction;
+  static vector<CGeneDefinitions> geneListBrainSize;
+  static vector<CGeneDefinitions> geneListBrainInstinct;
+  static vector<CGeneDefinitions> geneListFeeling;
+  static vector<CGeneDefinitions> geneListPurpose;
+  static vector<CGeneDefinitions> geneListBrainConfig;
 
 
   //===========================================================================
@@ -289,7 +275,10 @@ private:
   //===========================================================================
 public:
   static const CGeneDefinitions* getDefinitions(GeneType_e type, GeneSubType_e subType);
-
+  static size_t getNumberOfGeneSubtype(GeneType_e type);
+  static const CGeneDefinitions* getDefinitionsByIndex(GeneType_e type, size_t subTypeIndex);
+  static string getGeneTypeStrName(GeneType_e type);
+  static string getGeneMuteTypeStrName(GeneMuteType_e muteType);
 };
 
 #endif // !defined(CGENE_DEFINITIONS_INCLUDED_)

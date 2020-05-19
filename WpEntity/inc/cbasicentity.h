@@ -96,7 +96,7 @@ typedef struct
   const char*   data3Name;
   double        data4Scale;
   const char*   data4Name;
-} GeneInterpreterDefinition_t;
+} GeneInterpreterDefinition_t; // TO BE REMOVED
 
 
 //===========================================================================
@@ -270,17 +270,11 @@ public:
 //---------------------------------------------------------------------------
 public:
   string getGeneDescriptionString(CGene* pGen);
-  string getGeneNameString(CGene* pGen);
 
-  static string getGeneNameData1 (GeneSubType_e subType);
-  static string getGeneNameData2 (GeneSubType_e subType);
-  static string getGeneNameData3 (GeneSubType_e subType);
-  static string getGeneNameData4 (GeneSubType_e subType);
-
-  static double getGeneScaleData1 (GeneSubType_e subType);
-  static double getGeneScaleData2 (GeneSubType_e subType);
-  static double getGeneScaleData3 (GeneSubType_e subType);
-  static double getGeneScaleData4 (GeneSubType_e subType);
+  static double getGeneScaleData1(GeneSubType_e subType);
+  static double getGeneScaleData2(GeneSubType_e subType);
+  static double getGeneScaleData3(GeneSubType_e subType);
+  static double getGeneScaleData4(GeneSubType_e subType);
 
   virtual size_t getExpectedBrainSensorWeightSize (CGene* pGen);
 

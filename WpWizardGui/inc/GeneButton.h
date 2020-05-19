@@ -42,7 +42,7 @@ class CGeneButton : public CButton
 {
 // Construction
 public:
-    CGeneButton(GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
+    CGeneButton(GeneType_e geneType, GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
                 CString paramName1 = "", int defValParam1=0, 
                 CString paramName2 = "", int defValParam2=0);
 

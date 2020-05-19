@@ -144,19 +144,19 @@ BOOL CDialogTab3::OnInitDialog()
 	m_ComboLifeMode.SetCurSel(0);
 
   // Action list
-  m_pActionButtonTable[0]  = new CGeneButton(GENE_REACT_TURNLEFT,(CView*)this,true,0);
-  m_pActionButtonTable[1]  = new CGeneButton(GENE_REACT_TURNRIGHT,(CView*)this,true,0);
-  m_pActionButtonTable[2]  = new CGeneButton(GENE_REACT_TURNHEADLEFT,(CView*)this,true,0);
-  m_pActionButtonTable[3]  = new CGeneButton(GENE_REACT_TURNHEADRIGHT,(CView*)this,true,0);
-  m_pActionButtonTable[4]  = new CGeneButton(GENE_REACT_NOTHING,(CView*)this,true,0); //Def param used as successRate
-  m_pActionButtonTable[5]  = new CGeneButton(GENE_REACT_DRINK,(CView*)this,true,0,"success",10,"failure",80);
-  m_pActionButtonTable[6]  = new CGeneButton(GENE_REACT_EAT,(CView*)this,true,0,"success",10,"failure",60);
-  m_pActionButtonTable[7]  = new CGeneButton(GENE_REACT_ATTACK,(CView*)this,false,0,"success",40,"failure",50);
-  m_pActionButtonTable[8]  = new CGeneButton(GENE_REACT_RUMINATE,(CView*)this,false,0);
-  m_pActionButtonTable[9]  = new CGeneButton(GENE_REACT_COPULATE,(CView*)this,true,0,"success",60,"failure",50);
-  m_pActionButtonTable[10] = new CGeneButton(GENE_REACT_HIDE,(CView*)this,false,0);
-  m_pActionButtonTable[11] = new CGeneButton(GENE_REACT_STEPBACKWARD,(CView*)this,false,0);
-  m_pActionButtonTable[12] = new CGeneButton(GENE_REACT_SLEEP,(CView*)this,true,0);
+  m_pActionButtonTable[0]  = new CGeneButton(GENE_REACTION, GENE_REACT_TURNLEFT,(CView*)this,true,0);
+  m_pActionButtonTable[1]  = new CGeneButton(GENE_REACTION, GENE_REACT_TURNRIGHT,(CView*)this,true,0);
+  m_pActionButtonTable[2]  = new CGeneButton(GENE_REACTION, GENE_REACT_TURNHEADLEFT,(CView*)this,true,0);
+  m_pActionButtonTable[3]  = new CGeneButton(GENE_REACTION, GENE_REACT_TURNHEADRIGHT,(CView*)this,true,0);
+  m_pActionButtonTable[4]  = new CGeneButton(GENE_REACTION, GENE_REACT_NOTHING,(CView*)this,true,0); //Def param used as successRate
+  m_pActionButtonTable[5]  = new CGeneButton(GENE_REACTION, GENE_REACT_DRINK,(CView*)this,true,0,"success",10,"failure",80);
+  m_pActionButtonTable[6]  = new CGeneButton(GENE_REACTION, GENE_REACT_EAT,(CView*)this,true,0,"success",10,"failure",60);
+  m_pActionButtonTable[7]  = new CGeneButton(GENE_REACTION, GENE_REACT_ATTACK,(CView*)this,false,0,"success",40,"failure",50);
+  m_pActionButtonTable[8]  = new CGeneButton(GENE_REACTION, GENE_REACT_RUMINATE,(CView*)this,false,0);
+  m_pActionButtonTable[9]  = new CGeneButton(GENE_REACTION, GENE_REACT_COPULATE,(CView*)this,true,0,"success",60,"failure",50);
+  m_pActionButtonTable[10] = new CGeneButton(GENE_REACTION, GENE_REACT_HIDE,(CView*)this,false,0);
+  m_pActionButtonTable[11] = new CGeneButton(GENE_REACTION, GENE_REACT_STEPBACKWARD,(CView*)this,false,0);
+  m_pActionButtonTable[12] = new CGeneButton(GENE_REACTION, GENE_REACT_SLEEP,(CView*)this,true,0);
 
   int i;
   int iDpi = GetDpiForWindow(this->m_hWnd);

@@ -180,6 +180,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
     {
       if (m_id_GestationNumberRange != invalidIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
       m_id_GestationNumberRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
+      setGestationBabyNumber(0);
       resu = true;
       break;
     }

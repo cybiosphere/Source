@@ -155,6 +155,7 @@ const char* PhyAttributeTypeNameList[PHY_ATTRIBUTE_NUMBER_TYPE] =
 // Don't forget to update GeneDefinitionList with new gene sub-types !
 // Note: scale set to 0 mean parameter not configurable
 // FRED TBD : should be dispatch between all inherited object level
+
 GeneInterpreterDefinition_t GeneDefinitionList [GENE_NUMBER_SUBTYPE] = 
 {
   {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_GENERIC_UNKNOWN
@@ -599,43 +600,43 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
     }
     break;
   case GENE_CARACT_ODOR:
-    m_Odor = (OdorType_e)pGen->getParameterRoundValue(0);
+    m_Odor = (OdorType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHEROMONE:
-    m_Pheromone = (PheromoneType_e)pGen->getParameterRoundValue(0);
+    m_Pheromone = (PheromoneType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_TASTE:
-    m_Taste = (TasteType_e)pGen->getParameterRoundValue(0);
+    m_Taste = (TasteType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_FORM:
-    m_Silhouette = (FormType_e)pGen->getParameterRoundValue(0);
+    m_Silhouette = (FormType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_REPRO_TYPE:
-    m_TypeOfReproduction = (ReproType_e)pGen->getParameterRoundValue(0);
+    m_TypeOfReproduction = (ReproType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_HABITAT:
-    m_Habitat = (HabitatType_e)pGen->getParameterRoundValue(0);
+    m_Habitat = (HabitatType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_CONSUME_TYPE:
-    m_ConsumeClass = (ConsumeType_e)pGen->getParameterRoundValue(0);
+    m_ConsumeClass = (ConsumeType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_MOVE_TYPE:
-    m_MoveType = (MoveType_e)pGen->getParameterRoundValue(0);
+    m_MoveType = (MoveType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_TEXTURE:
-    m_Texture = (TextureType_e)pGen->getParameterRoundValue(0);
+    m_Texture = (TextureType_e)pGen->getParameterFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHY_ATTRIBUTE:
-    setAttribute((PhyAttributeType_e)pGen->getParameterRoundValue(0));
+    setAttribute((PhyAttributeType_e)pGen->getParameterFloorValue(0));
     resu = true;
     break;
   default:
@@ -1217,15 +1218,13 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     return (caractStr);
   }
   // We are sure Gene is a caracteristic
-  auto rawData = pGen->getData();
-  BYTE* pData = rawData.data();
-  size_t len = rawData.size();
+  size_t len = pGen->getData().size();
   if ((len < 1) || (pGen->getNumParameter() < 1))
   {
     return (caractStr);
   }
 
-  BYTE data1 = pGen->getParameterRoundValue(0);
+  BYTE data1 = pGen->getParameterFloorValue(0);
 
   switch (pGen->getGeneSubType())
   {
@@ -1233,15 +1232,15 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     {
       if (len>=sizeof(DWORD))
       {
-        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(0));
+        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(0));
         caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(1));
+        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(1));
         caractStr += pGen->getParameterStrName(1) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(2));
+        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(2));
         caractStr += pGen->getParameterStrName(2) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterRoundValue(3));
+        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(3));
         caractStr += pGen->getParameterStrName(3) + tempStr;
-        COLORREF rgbCol = (COLORREF)pData[0] + (COLORREF)(pData[1]<<8) + (COLORREF)(pData[2]<<16);
+        COLORREF rgbCol = *(COLORREF*)pGen->getData().data();
         tempStr = " ("; tempStr += ColorTypeNameList[convertRgbColorInCaracter(rgbCol)]; tempStr +=")";
         caractStr += tempStr;
       }
@@ -1553,37 +1552,6 @@ string CBasicEntity::buildPurposeString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
   return(defStr);
-}
-
-
-string CBasicEntity::getGeneNameString(CGene* pGen) // Obsolete
-{
-  string name = pGen->getLabel();
-  return(name);
-}
-
-string CBasicEntity::getGeneNameData1(GeneSubType_e subType) // Obsolete
-{
-  string name = GeneDefinitionList[subType].data1Name;
-  return(name);
-}
-
-string CBasicEntity::getGeneNameData2(GeneSubType_e subType) // Obsolete
-{
-  string name = GeneDefinitionList[subType].data2Name;
-  return(name);
-}
-
-string CBasicEntity::getGeneNameData3(GeneSubType_e subType) // Obsolete
-{
-  string name = GeneDefinitionList[subType].data3Name;
-  return(name);
-}
-
-string CBasicEntity::getGeneNameData4(GeneSubType_e subType) // Obsolete
-{
-  string name = GeneDefinitionList[subType].data4Name;
-  return(name);
 }
 
 double CBasicEntity::getGeneScaleData1 (GeneSubType_e subType) // Obsolete
