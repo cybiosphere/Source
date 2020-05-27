@@ -70,7 +70,7 @@ vector<CGeneDefinitions> CGeneList::geneListGeneric =
 
 vector<CGeneDefinitions> CGeneList::geneListCaracter =
 {
-  { GENE_CARACTER, GENE_CARACT_COLOR, "Color", GENE_MUTE_INCREMENTAL_1,
+  { GENE_CARACTER, GENE_CARACT_COLOR, "Color", GENE_MUTE_RANDOM_BIT,
   { { "R", 1, 0, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
     { "G", 1, 1, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
     { "B", 1, 2, 0, 255, GENE_DOMINANCE_HIGHEST, true, 0 },
@@ -377,8 +377,11 @@ vector<CGeneDefinitions> CGeneList::geneListReaction =
 
   { GENE_REACTION, GENE_REACT_RUMINATE, "Ruminate", GENE_MUTE_INCREMENTAL_2,
     { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
-      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } }
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
 
+  { GENE_REACTION, GENE_REACT_HIDE, "Hide", GENE_MUTE_INCREMENTAL_2,
+    { { "Success", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true },
+      { "Failure", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true } } }
 };
 
 vector<CGeneDefinitions> CGeneList::geneListBrainSize =
@@ -480,8 +483,8 @@ array< vector<CGeneDefinitions>, GENE_NUMBER_TYPE> CGeneList::geneListArray =
 //  
 // REMARKS:      To be used before SetAs...
 //---------------------------------------------------------------------------
-CGeneDefinitions::CGeneDefinitions(GeneType_e type, GeneSubType_e subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> paramList):
- geneType{type}, geneSubType{subType}, label{name}, muteType{muteType}, parameters{paramList}
+CGeneDefinitions::CGeneDefinitions(GeneType_e type, GeneSubType_e subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> elementList):
+ geneType{type}, geneSubType{subType}, label{name}, muteType{muteType}, elements{ elementList }
 {
 }
 

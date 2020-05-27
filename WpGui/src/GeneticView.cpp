@@ -69,6 +69,7 @@ CGeneticView::CGeneticView()
 	m_strData2 = _T("");
 	m_strData3 = _T("");
 	m_strData4 = _T("");
+  m_strData5 = _T("");
 	m_strLabel1 = _T("");
 	m_strLabel2 = _T("");
 	m_strLabel3 = _T("");
@@ -97,6 +98,7 @@ void CGeneticView::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_DATA2, m_strData2);
 	DDX_Text(pDX, IDC_DATA3, m_strData3);
 	DDX_Text(pDX, IDC_DATA4, m_strData4);
+  DDX_Text(pDX, IDC_DATA5, m_strData5);
 	DDX_Text(pDX, IDC_LABEL1, m_strLabel1);
 	DDX_Text(pDX, IDC_LABEL2, m_strLabel2);
 	DDX_Text(pDX, IDC_LABEL3, m_strLabel3);
@@ -186,6 +188,7 @@ bool CGeneticView::SetEntity(CBasicEntity* pEntity)
     m_strData2 = "";
     m_strData3 = "";
     m_strData4 = "";
+    m_strData5 = "";
     m_GenomeTree.DeleteAllItems();
     UpdateData(false);
   }
@@ -260,6 +263,7 @@ void CGeneticView::DisplayGenome(CGenome* pGenome)
     tmpStr.Format(LPCTSTR("%d"),pGenome->getSpecieSignature());
     m_strData3 = tmpStr;
     m_strData4 = LPCTSTR("");
+    m_strData5 = LPCTSTR("");
   }
 
   // Update windows
@@ -302,6 +306,8 @@ void CGeneticView::DisplayPair(CPairOfChromosome* pPair)
 
   m_strData3 = "";
   m_strData4 = "";
+  m_strData4 = "";
+  m_strData5 = "";
 
   // Update windows
   UpdateData(false);
@@ -325,8 +331,9 @@ void CGeneticView::DisplayChromosome(CChromosome* pChromosome)
   tmpStr.Format(LPCTSTR("%d"),pChromosome->getIdNumber());
   m_strData2 = tmpStr;
   m_strData3 = LPCTSTR("");
-  m_strData4 = pChromosome->buildStringDataFromGenes().c_str();
-
+  m_strData4 = "Chromozome ";
+  m_strData4 += pChromosome->getLabel().c_str();
+  m_strData5 = pChromosome->buildStringDataFromGenes().c_str();
   // Update windows
   UpdateData(false);
 }
@@ -343,7 +350,7 @@ void CGeneticView::DisplayGene(CGene* pGene)
   m_strLabel1 = "Gene name";
   m_strLabel2 = "mutation";
   m_strLabel3 = "dominance";
-  m_strLabel4 = "infos";
+  m_strLabel4 = "Raw data";
 
   m_strData1 = pGene->getLabel().c_str();
   m_strData1 += FormatString(" (size=%d)", pGene->getDataLen()).c_str();
@@ -351,8 +358,8 @@ void CGeneticView::DisplayGene(CGene* pGene)
   m_strData2 = tmpStr;
   tmpStr.Format(LPCTSTR("%d"),pGene->getDominanceFactor());
   m_strData3 = tmpStr;
-  m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str(); //pGene->buildStringDataFromGene();
-
+  m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str();
+  m_strData5 = pGene->buildStringDataFromGene().c_str();
   // Update windows
   UpdateData(false);
 }

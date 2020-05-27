@@ -94,13 +94,16 @@ public:
   bool setAsCaracter (GeneSubType_e subType, int muteRate, GeneMuteType_e muteType,int dataLen, BYTE* pRawData);
   bool setAsCaracterUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value);
   bool setAsParameter(GeneSubType_e subType, int muteRate, long min, long nominalVal, long max);
+  bool setAsParameterUsingDefinition(GeneSubType_e subType, int muteRate, double min, double nominalVal, double max);
   bool setAsLifeStage(GeneSubType_e subType, int muteRate, long duration);
   bool setAsPhysicWelfare(GeneSubType_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max);
   bool setAsSensor   (GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight, 
-                      long data1 = 0, long data2 = 0, long data3 = 0, long data4 = 0);
+    long data1 = 0, long data2 = 0, long data3 = 0, long data4 = 0);
+  bool setAsSensorUsingDefinition(GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight,
+    double data1 = 0, double data2 = 0, double data3 = 0, double data4 = 0);
   bool setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
-  bool setAsReaction (GeneSubType_e subType, int muteRate, long success, long failure, 
-                      long data1 = 0, long data2 = 0);
+  bool setAsReaction (GeneSubType_e subType, int muteRate, long success, long failure, long data1 = 0, long data2 = 0);
+  bool setAsReactionUsingDefinition(GeneSubType_e subType, int muteRate, double success, double failure, double data1 = 0, double data2 = 0);
   bool setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize);
   bool setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
   bool setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
@@ -110,6 +113,7 @@ public:
   bool setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensorUId, int nbBonus, short* pBonusTable); 
   bool setAsPurposeReactionBonus(int muteRate, DWORD purposeUId, DWORD reactionUId, int bonus); 
   bool setAsBrainConfig(GeneSubType_e subType,int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData);
+  bool setAsBrainConfigUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value);
 
 //---------------------------------------------------------------------------
 // Raw data conversion
@@ -139,16 +143,17 @@ private:
 // Use Gene definition 
 //---------------------------------------------------------------------------
 public:
-  size_t getNumParameter();
-  double getParameterValue(size_t index);
-  bool setParameterValue(size_t index, double value);
-  double getParameterScale(size_t index);
-  int getParameterRoundValue(size_t index);
-  int getParameterFloorValue(size_t index);
-  DWORD getParameterRawValue(size_t index);
-  string getParameterStrName(size_t index);
-  bool getParameterIsConfigurable(size_t index);
-  double getParameterDefaultValue(size_t index);
+  size_t getNumElements();
+  double getElementValue(size_t index);
+  bool setElementValue(size_t index, double value);
+  double getElementScale(size_t index);
+  int getElementRoundValue(size_t index);
+  int getElementFloorValue(size_t index);
+  DWORD getElementRawValue(size_t index);
+  bool setElementRawValue(size_t index, DWORD value);
+  string getElementStrName(size_t index);
+  bool getElementIsConfigurable(size_t index);
+  double getElementDefaultValue(size_t index);
   bool setRawDataSizeWithDefinition();
 
 //---------------------------------------------------------------------------

@@ -525,10 +525,10 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
     return (false);
   }
 
-  double sensitivity = pGen->getParameterValue(0);
-  double min = pGen->getParameterValue(1);
-  double nominal = pGen->getParameterValue(2);
-  double max = pGen->getParameterValue(3);
+  double sensitivity = pGen->getElementValue(0);
+  double min = pGen->getElementValue(1);
+  double nominal = pGen->getElementValue(2);
+  double max = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -634,11 +634,11 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   }
 
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
-  size_t numParam = pGen->getNumParameter();
-  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
-  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
-  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
-  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
+  size_t numParam = pGen->getNumElements();
+  if (numParam > 0) scaledVal1 = pGen->getElementRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getElementRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getElementRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getElementRoundValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -1028,11 +1028,11 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   }
 
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
-  size_t numParam = pGen->getNumParameter();
-  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
-  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
-  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
-  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
+  size_t numParam = pGen->getNumElements();
+  if (numParam > 0) scaledVal1 = pGen->getElementRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getElementRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getElementRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getElementRoundValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -1167,8 +1167,8 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
 
   CReaction* pReaction = NULL;
   double success,failure;
-  success  = pGen->getParameterValue(0);
-  failure  = pGen->getParameterValue(1);
+  success  = pGen->getElementValue(0);
+  failure  = pGen->getElementValue(1);
 
   switch(pGen->getGeneSubType())
   {
@@ -1188,14 +1188,14 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
     }
   case GENE_REACT_MOVEFORWARD:
     {
-      pReaction = new CReactionVarySpeed((CBrainAnimal*)m_pBrain,success,failure, pGen->getParameterRoundValue(2));
+      pReaction = new CReactionVarySpeed((CBrainAnimal*)m_pBrain,success,failure, pGen->getElementRoundValue(2));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
     }
   case GENE_REACT_STEPBACKWARD:
     {
-      pReaction = new CReactionStepBackward((CBrainAnimal*)m_pBrain,success,failure, pGen->getParameterRoundValue(2));
+      pReaction = new CReactionStepBackward((CBrainAnimal*)m_pBrain,success,failure, pGen->getElementRoundValue(2));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1216,7 +1216,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
     }
   case GENE_REACT_EAT:
     {
-      pReaction = new CReactionEat((CBrainAnimal*)m_pBrain,success,failure, pGen->getParameterRoundValue(2));
+      pReaction = new CReactionEat((CBrainAnimal*)m_pBrain,success,failure, pGen->getElementRoundValue(2));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1237,7 +1237,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
     }
   case GENE_REACT_ATTACK:
     {
-      pReaction = new CReactionAttack((CBrainAnimal*)m_pBrain,success,failure, pGen->getParameterRoundValue(2));
+      pReaction = new CReactionAttack((CBrainAnimal*)m_pBrain,success,failure, pGen->getElementRoundValue(2));
       m_pBrain->AttachReaction(pReaction);
       resu = true;
       break;
@@ -1365,7 +1365,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
     return (false);
   }
 
-  int brainSize = pGen->getParameterRoundValue(0);
+  int brainSize = pGen->getElementRoundValue(0);
 
   switch(pGen->getGeneSubType())
   {
@@ -1422,7 +1422,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   size_t len = rawData.size() * sizeof(BYTE) / sizeof(WORD) - 1;
   // Process Line Id
   GeneSubType_e subType = pGen->getGeneSubType();
-  int lineId = pGen->getParameterRoundValue(0);
+  int lineId = pGen->getElementRoundValue(0);
   // Build Line
   if (subType == GENE_BRAIN_LINE)
   {
@@ -1465,7 +1465,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
   switch(pGen->getGeneSubType())
   {
   case GENE_BRAIN_BEHAVIOR:
-    if ((BrainBehaviorType_e)pGen->getParameterRoundValue(0) == BRAIN_BEHAVIOR_BABY_STAY_HOME)
+    if ((BrainBehaviorType_e)pGen->getElementRoundValue(0) == BRAIN_BEHAVIOR_BABY_STAY_HOME)
       m_pBrain->SetBabyStayHome(true);
     resu = true;
     break;
@@ -1525,7 +1525,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   }
 
   // Get associated Sensor
-  DWORD sensUid = pGen->getParameterRawValue(0);
+  DWORD sensUid = pGen->getElementRawValue(0);
   CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
   if ( pSens == NULL )
   {
@@ -1541,7 +1541,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * pGen->getParameterScale(1);
+        pSensiTable[i] = (double)pData[2+i] * pGen->getElementScale(1);
 
       resu = m_pBrain->AddFeelingWelfareSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1554,7 +1554,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * pGen->getParameterScale(1);
+        pSensiTable[i] = (double)pData[2+i] * pGen->getElementScale(1);
 
       resu = m_pFeelingFear->AddSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1612,16 +1612,16 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
         return (false);
       }
       // Get associated Sensor
-      DWORD sensUid = pGen->getParameterRawValue(4);
+      DWORD sensUid = pGen->getElementRawValue(4);
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
       if ( pSens == NULL )
       {
         return (false);
       }
-      int duration           = pGen->getParameterRoundValue(0);
-      int subCaptorIndex     = pGen->getParameterRoundValue(1);
-      int startRateThreshold = pGen->getParameterRoundValue(2);
-      int stopRateThreshold  = pGen->getParameterRoundValue(3);
+      int duration           = pGen->getElementRoundValue(0);
+      int subCaptorIndex     = pGen->getElementRoundValue(1);
+      int startRateThreshold = pGen->getElementRoundValue(2);
+      int stopRateThreshold  = pGen->getElementRoundValue(3);
       char* pLabel = (char*)pData + 12;
 
       PurposeTriggerType_e trigType = PURPOSE_TRIG_UP;
@@ -1643,8 +1643,8 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
         // not enought data to config param
         return (false);
       }
-      DWORD purposeUid = pGen->getParameterRawValue(0);
-      DWORD sensUid = pGen->getParameterRawValue(1);
+      DWORD purposeUid = pGen->getElementRawValue(0);
+      DWORD sensUid = pGen->getElementRawValue(1);
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(purposeUid);
       CSensor* pSensor   = m_pBrain->GetSensorByUniqueId(sensUid);
 
@@ -1658,7 +1658,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       std::vector<int> bonusTable(bonusTableSize);
       for (int index=0; index<bonusTableSize; index++)
       {
-        bonusTable[index] = cybio_round((double)pData[4+index] * pGen->getParameterScale(2));
+        bonusTable[index] = cybio_round((double)pData[4+index] * pGen->getElementScale(2));
       }
       resu = pPurpose->AddSensorBonus(pSensor, bonusTable);
       break;
@@ -1670,11 +1670,11 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
         // not enought data to config param
         return (false);
       }
-      DWORD purposeUid = pGen->getParameterRawValue(0);
-      DWORD reactionUid = pGen->getParameterRawValue(1);
+      DWORD purposeUid = pGen->getElementRawValue(0);
+      DWORD reactionUid = pGen->getElementRawValue(1);
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(purposeUid);
       CReaction* pReaction = m_pBrain->GetReactionByUniqueId(reactionUid);
-      int bonus = pGen->getParameterRoundValue(2);
+      int bonus = pGen->getElementRoundValue(2);
       if (pPurpose && pReaction)
         resu = pPurpose->AddReactionBonus(pReaction,bonus);
       break;
@@ -1743,16 +1743,16 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
+  if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
     // not enought data to config param
     return (welfareStr);
   }
 
-  double sensitivity = pGen->getParameterValue(0);
-  double scaledVal1 = pGen->getParameterValue(1);
-  double scaledVal2 = pGen->getParameterValue(2);
-  double scaledVal3 = pGen->getParameterValue(3);
+  double sensitivity = pGen->getElementValue(0);
+  double scaledVal1 = pGen->getElementValue(1);
+  double scaledVal2 = pGen->getElementValue(2);
+  double scaledVal3 = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -1760,20 +1760,20 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
     {
       welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity);
-      welfareStr += pGen->getParameterStrName(0) + tempStr;
+      welfareStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
   case GENE_PHYS_SENS_TEMPER:
     {
       welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity);
-      welfareStr += pGen->getParameterStrName(0) + tempStr;
+      welfareStr += pGen->getElementStrName(0) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal1);
-      welfareStr += pGen->getParameterStrName(1) + tempStr;
+      welfareStr += pGen->getElementStrName(1) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal2);
-      welfareStr += pGen->getParameterStrName(2) + tempStr;
+      welfareStr += pGen->getElementStrName(2) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal3);
-      welfareStr += pGen->getParameterStrName(3) + tempStr;
+      welfareStr += pGen->getElementStrName(3) + tempStr;
       break;
     }
   default:
@@ -1822,11 +1822,11 @@ string CAnimal::buildSensorString(CGene* pGen)
   }
  
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
-  size_t numParam = pGen->getNumParameter();
-  if (numParam > 0) scaledVal1 = pGen->getParameterRoundValue(0);
-  if (numParam > 1) scaledVal2 = pGen->getParameterRoundValue(1);
-  if (numParam > 2) scaledVal3 = pGen->getParameterRoundValue(2);
-  if (numParam > 3) scaledVal4 = pGen->getParameterRoundValue(3);
+  size_t numParam = pGen->getNumElements();
+  if (numParam > 0) scaledVal1 = pGen->getElementRoundValue(0);
+  if (numParam > 1) scaledVal2 = pGen->getElementRoundValue(1);
+  if (numParam > 2) scaledVal3 = pGen->getElementRoundValue(2);
+  if (numParam > 3) scaledVal4 = pGen->getElementRoundValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -1834,9 +1834,9 @@ string CAnimal::buildSensorString(CGene* pGen)
     {
       paramStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%d ", scaledVal1 );
-      paramStr += pGen->getParameterStrName(0) + tempStr;
+      paramStr += pGen->getElementStrName(0) + tempStr;
       tempStr = FormatString("=%d ", scaledVal2);
-      paramStr += pGen->getParameterStrName(1) + tempStr;
+      paramStr += pGen->getElementStrName(1) + tempStr;
       break;
     }
   case GENE_SENS_VIEW:
@@ -1846,14 +1846,14 @@ string CAnimal::buildSensorString(CGene* pGen)
     {
       paramStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%d ", scaledVal1);
-      paramStr += pGen->getParameterStrName(0) + tempStr;
+      paramStr += pGen->getElementStrName(0) + tempStr;
       // Fred TBD : use angle string
       tempStr = FormatString("=%d ", scaledVal2);
-      paramStr += pGen->getParameterStrName(1) + tempStr;
+      paramStr += pGen->getElementStrName(1) + tempStr;
       tempStr = FormatString("=%d ", scaledVal3);
-      paramStr += pGen->getParameterStrName(2) + tempStr;
+      paramStr += pGen->getElementStrName(2) + tempStr;
       tempStr = FormatString("=%d ", scaledVal4);
-      paramStr += pGen->getParameterStrName(3) + tempStr;
+      paramStr += pGen->getElementStrName(3) + tempStr;
       break;
     }
   case GENE_SENS_SMELL:
@@ -1862,7 +1862,7 @@ string CAnimal::buildSensorString(CGene* pGen)
     {
       paramStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%d ", scaledVal1);
-      paramStr += pGen->getParameterStrName(0) + tempStr;
+      paramStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
  
@@ -1965,14 +1965,14 @@ string CAnimal::buildReactionString(CGene* pGen)
   case GENE_REACT_MOVEFORWARD:
     {
       paramStr = pGen->getLabel() + " : ";
-      tempStr = FormatString("=%d ", pGen->getParameterRoundValue(0));
-      paramStr += pGen->getParameterStrName(0) + tempStr;
-      tempStr = FormatString("=%d ", pGen->getParameterRoundValue(1));
-      paramStr += pGen->getParameterStrName(1) + tempStr;
-      if (pGen->getNumParameter() > 2)
+      tempStr = FormatString("=%d ", pGen->getElementRoundValue(0));
+      paramStr += pGen->getElementStrName(0) + tempStr;
+      tempStr = FormatString("=%d ", pGen->getElementRoundValue(1));
+      paramStr += pGen->getElementStrName(1) + tempStr;
+      if (pGen->getNumElements() > 2)
       {
-        tempStr = FormatString("=%d ", pGen->getParameterRoundValue(2));
-        paramStr += pGen->getParameterStrName(2) + tempStr;
+        tempStr = FormatString("=%d ", pGen->getElementRoundValue(2));
+        paramStr += pGen->getElementStrName(2) + tempStr;
       }
       break;
     }
@@ -2020,7 +2020,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
     return (brainStr);
   }
 
-  int brainSize = pGen->getParameterRoundValue(0);
+  int brainSize = pGen->getElementRoundValue(0);
 
   switch(pGen->getGeneSubType())
   {
@@ -2029,7 +2029,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
     {
       brainStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%d", brainSize );
-      brainStr += pGen->getParameterStrName(0) + tempStr;
+      brainStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
   default:
@@ -2077,8 +2077,8 @@ string CAnimal::buildBrainInstinctString(CGene* pGen)
   case GENE_BRAIN_IDENTIFY_LINE:
     {
       brainStr = pGen->getLabel() + " : ";
-      tempStr = FormatString("=%d", pGen->getParameterRoundValue(0));
-      brainStr += pGen->getParameterStrName(0) + tempStr;
+      tempStr = FormatString("=%d", pGen->getElementRoundValue(0));
+      brainStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
   default:
@@ -2118,7 +2118,7 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
     return (caractStr);
   }
 
-  BYTE data1 = pGen->getParameterRoundValue(0);
+  BYTE data1 = pGen->getElementRoundValue(0);
 
   switch (pGen->getGeneSubType())
   {
@@ -2127,7 +2127,7 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
       if (data1 < BRAIN_BEHAVIOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += BrainBehaviorTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -2177,7 +2177,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
   }
 
   // Get associated Sensor
-  DWORD sensUid = pGen->getParameterRawValue(0);
+  DWORD sensUid = pGen->getElementRawValue(0);
   CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
   if ( pSens == NULL )
   {
@@ -2192,7 +2192,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
   case GENE_FEEL_FEAR:
     {
       welfareStr = pGen->getLabel() + " : ";
-      welfareStr += pGen->getParameterStrName(0) + pSens->GetLabel();
+      welfareStr += pGen->getElementStrName(0) + pSens->GetLabel();
       break;
     }
   default:
@@ -2245,25 +2245,25 @@ string CAnimal::buildPurposeString(CGene* pGen)
       if ( len < (sizeof(DWORD)+4*sizeof(WORD)) )
         break;
       // Get associated Sensor
-      DWORD sensUid = pGen->getParameterRawValue(4);
+      DWORD sensUid = pGen->getElementRawValue(4);
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
       if ( pSens == NULL )
         break;
-      int duration           = pGen->getParameterRoundValue(0);
-      int subCaptorIndex     = pGen->getParameterRoundValue(1);
-      int startRateThreshold = pGen->getParameterRoundValue(2);
-      int stopRateThreshold  = pGen->getParameterRoundValue(3);
+      int duration           = pGen->getElementRoundValue(0);
+      int subCaptorIndex     = pGen->getElementRoundValue(1);
+      int startRateThreshold = pGen->getElementRoundValue(2);
+      int stopRateThreshold  = pGen->getElementRoundValue(3);
       char* pLabel = (char*)pData + 12;
 
       tempStr = " <"; tempStr += pLabel; tempStr += ">";
       purposeStr = pGen->getLabel() + tempStr + " on " + pSens->GetLabel() + " ";
       purposeStr += pSens->GetSubCaptorLabel(subCaptorIndex) + " : ";     
       tempStr = FormatString("=%d ", duration );
-      purposeStr += pGen->getParameterStrName(0) + tempStr;
+      purposeStr += pGen->getElementStrName(0) + tempStr;
       tempStr = FormatString("=%d ", startRateThreshold );
-      purposeStr += pGen->getParameterStrName(2) + tempStr;
+      purposeStr += pGen->getElementStrName(2) + tempStr;
       tempStr = FormatString("=%d ", stopRateThreshold );
-      purposeStr += pGen->getParameterStrName(3) + tempStr;
+      purposeStr += pGen->getElementStrName(3) + tempStr;
       break;
     }
   case GENE_PURPOSE_SENSOR:
@@ -2271,8 +2271,8 @@ string CAnimal::buildPurposeString(CGene* pGen)
       if ( len < (2*sizeof(DWORD)) )
         break;
 
-      DWORD purposeUid = pGen->getParameterRawValue(0);
-      DWORD sensUid = pGen->getParameterRawValue(1);
+      DWORD purposeUid = pGen->getElementRawValue(0);
+      DWORD sensUid = pGen->getElementRawValue(1);
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(purposeUid);
       CSensor*  pSensor = m_pBrain->GetSensorByUniqueId(sensUid);
       if (pPurpose && pSensor)
@@ -2284,14 +2284,14 @@ string CAnimal::buildPurposeString(CGene* pGen)
       if ( len < (2*sizeof(DWORD)+sizeof(WORD)) )
         break;
 
-      DWORD purposeUid = pGen->getParameterRawValue(0);
-      DWORD reactionUid = pGen->getParameterRawValue(1);
+      DWORD purposeUid = pGen->getElementRawValue(0);
+      DWORD reactionUid = pGen->getElementRawValue(1);
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(purposeUid);
       CReaction* pReaction = m_pBrain->GetReactionByUniqueId(reactionUid);
-      int bonus = pGen->getParameterRoundValue(2);
+      int bonus = pGen->getElementRoundValue(2);
       tempStr = FormatString("=%d ", bonus );
       if (pPurpose && pReaction)
-        purposeStr = pGen->getLabel() + " for " + pPurpose->GetLabel() + " on " + pReaction->GetLabel() + pGen->getParameterStrName(2) + tempStr;
+        purposeStr = pGen->getLabel() + " for " + pPurpose->GetLabel() + " on " + pReaction->GetLabel() + pGen->getElementStrName(2) + tempStr;
       break;
     }
   default:

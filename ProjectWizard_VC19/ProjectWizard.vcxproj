@@ -207,7 +207,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>../Exec/ProjectWizardD.exe</OutputFile>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore3D.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -375,6 +375,7 @@
     <ClInclude Include="..\WpWizardProc\inc\CWizardBrain.h" />
     <ClInclude Include="..\WpWizardProc\inc\CWizardPurpose.h" />
     <ClInclude Include="..\WpWizardProc\inc\CWizardSensor.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\FileSelectButton.cpp" />

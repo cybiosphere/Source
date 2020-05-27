@@ -323,16 +323,16 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
+  if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
     // not enought data to config param
     return (false);
   }
 
-  double sensitivity = pGen->getParameterValue(0);
-  double min = pGen->getParameterValue(1);
-  double nominal = pGen->getParameterValue(2);
-  double max = pGen->getParameterValue(3);
+  double sensitivity = pGen->getElementValue(0);
+  double min = pGen->getElementValue(1);
+  double nominal = pGen->getElementValue(2);
+  double max = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -441,16 +441,16 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if ((len < sizeof(WORD)) || (pGen->getNumParameter() < 4))
+  if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
     // not enought data to config param
     return (welfareStr);
   }
 
-  double sensitivity = pGen->getParameterValue(0);
-  double scaledVal1  = pGen->getParameterValue(1);
-  double scaledVal2  = pGen->getParameterValue(2);
-  double scaledVal3  = pGen->getParameterValue(3);
+  double sensitivity = pGen->getElementValue(0);
+  double scaledVal1  = pGen->getElementValue(1);
+  double scaledVal2  = pGen->getElementValue(2);
+  double scaledVal3  = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
   {
@@ -458,7 +458,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
     {
       welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += pGen->getParameterStrName(0) + tempStr;
+      welfareStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
   case GENE_PHYS_SENS_TEMPER:
@@ -466,13 +466,13 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
     {
       welfareStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f %%", sensitivity );
-      welfareStr += pGen->getParameterStrName(0) + tempStr;
+      welfareStr += pGen->getElementStrName(0) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal1);
-      welfareStr += pGen->getParameterStrName(1) + tempStr;
+      welfareStr += pGen->getElementStrName(1) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal2);
-      welfareStr += pGen->getParameterStrName(2) + tempStr;
+      welfareStr += pGen->getElementStrName(2) + tempStr;
       tempStr = FormatString("=%6.2f C", scaledVal3);
-      welfareStr += pGen->getParameterStrName(3) + tempStr;
+      welfareStr += pGen->getElementStrName(3) + tempStr;
       break;
     }
   default:

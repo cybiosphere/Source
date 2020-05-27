@@ -579,11 +579,11 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     GeneSubType_e geneSubType = (GeneSubType_e)m_Combo2.GetItemData(m_Combo2.GetCurSel());
     
     double scaleData1{ 0 }, scaleData2{ 0 }, scaleData3{ 0 }, scaleData4{ 0 };
-    size_t numParam = m_pCurrentEditGeneM->getNumParameter();
-    if (numParam > 0) scaleData1 = m_pCurrentEditGeneM->getParameterScale(0);
-    if (numParam > 1) scaleData2 = m_pCurrentEditGeneM->getParameterScale(1);
-    if (numParam > 2) scaleData3 = m_pCurrentEditGeneM->getParameterScale(2);
-    if (numParam > 3) scaleData4 = m_pCurrentEditGeneM->getParameterScale(3);
+    size_t numParam = m_pCurrentEditGeneM->getNumElements();
+    if (numParam > 0) scaleData1 = m_pCurrentEditGeneM->getElementScale(0);
+    if (numParam > 1) scaleData2 = m_pCurrentEditGeneM->getElementScale(1);
+    if (numParam > 2) scaleData3 = m_pCurrentEditGeneM->getElementScale(2);
+    if (numParam > 3) scaleData4 = m_pCurrentEditGeneM->getElementScale(3);
 
     long range    = 1;
     long pageSize = 1;
@@ -854,14 +854,14 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     m_SliderP1.SetRange(0,range);
     m_SliderP1.SetPos(range - initSlideP[0]);
     m_SliderP1.SetPageSize(pageSize);
-    if ((numParam > 0) && m_pCurrentEditGeneM->getParameterIsConfigurable(0))
+    if ((numParam > 0) && m_pCurrentEditGeneM->getElementIsConfigurable(0))
     { 
       m_SliderM1.SetTicFreq((long)floor(ticDiv/scaleData1));
       m_SliderM1.ShowWindow(true);     
       m_SliderP1.SetTicFreq((long)floor(ticDiv/scaleData1));
       m_SliderP1.ShowWindow(true);
-      m_SliderM1Title = m_pCurrentEditGeneM->getParameterStrName(0).c_str();
-      m_SliderP1Title = m_pCurrentEditGeneP->getParameterStrName(0).c_str();
+      m_SliderM1Title = m_pCurrentEditGeneM->getElementStrName(0).c_str();
+      m_SliderP1Title = m_pCurrentEditGeneP->getElementStrName(0).c_str();
     }
     else
     {
@@ -877,14 +877,14 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     m_SliderP2.SetRange(0,range);
     m_SliderP2.SetPos(range - initSlideP[1]);
     m_SliderP2.SetPageSize(pageSize);
-    if ((numParam > 1) && m_pCurrentEditGeneM->getParameterIsConfigurable(1))
+    if ((numParam > 1) && m_pCurrentEditGeneM->getElementIsConfigurable(1))
     {
       m_SliderM2.SetTicFreq((long)floor(ticDiv/scaleData2));
       m_SliderM2.ShowWindow(true);
       m_SliderP2.SetTicFreq((long)floor(ticDiv/scaleData2));
       m_SliderP2.ShowWindow(true);
-      m_SliderM2Title = m_pCurrentEditGeneM->getParameterStrName(1).c_str();
-      m_SliderP2Title = m_pCurrentEditGeneP->getParameterStrName(1).c_str();
+      m_SliderM2Title = m_pCurrentEditGeneM->getElementStrName(1).c_str();
+      m_SliderP2Title = m_pCurrentEditGeneP->getElementStrName(1).c_str();
     }
     else
     {
@@ -900,14 +900,14 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     m_SliderP3.SetRange(0,range);
     m_SliderP3.SetPos(range - initSlideP[2]);
     m_SliderP3.SetPageSize(pageSize);
-    if ((numParam > 2) && m_pCurrentEditGeneM->getParameterIsConfigurable(2))
+    if ((numParam > 2) && m_pCurrentEditGeneM->getElementIsConfigurable(2))
     {
       m_SliderM3.SetTicFreq((long)floor(ticDiv/scaleData3));
       m_SliderM3.ShowWindow(true);
       m_SliderP3.SetTicFreq((long)floor(ticDiv/scaleData3));
       m_SliderP3.ShowWindow(true);
-      m_SliderM3Title = m_pCurrentEditGeneM->getParameterStrName(2).c_str();
-      m_SliderP3Title = m_pCurrentEditGeneP->getParameterStrName(2).c_str();
+      m_SliderM3Title = m_pCurrentEditGeneM->getElementStrName(2).c_str();
+      m_SliderP3Title = m_pCurrentEditGeneP->getElementStrName(2).c_str();
     }
     else
     {
@@ -923,14 +923,14 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
     m_SliderP4.SetRange(0,range);
     m_SliderP4.SetPos(range - initSlideP[3]);
     m_SliderP4.SetPageSize(pageSize);
-    if ((numParam > 3) && m_pCurrentEditGeneM->getParameterIsConfigurable(3))
+    if ((numParam > 3) && m_pCurrentEditGeneM->getElementIsConfigurable(3))
     {
       m_SliderM4.SetTicFreq((long)floor(ticDiv/scaleData4));
       m_SliderM4.ShowWindow(true);
       m_SliderP4.SetTicFreq((long)floor(ticDiv/scaleData4));
       m_SliderP4.ShowWindow(true);
-      m_SliderM4Title = m_pCurrentEditGeneM->getParameterStrName(3).c_str();
-      m_SliderP4Title = m_pCurrentEditGeneM->getParameterStrName(3).c_str();
+      m_SliderM4Title = m_pCurrentEditGeneM->getElementStrName(3).c_str();
+      m_SliderP4Title = m_pCurrentEditGeneM->getElementStrName(3).c_str();
     }
     else
     {

@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by ProjectWizard.rc
 //
 #define IDD_ABOUTBOX                    100
@@ -75,6 +75,7 @@
 #define IDC_EDIT_ITERARTIONS            1062
 #define IDC_CHECK_IDENTIFY              1062
 #define IDC_CHECK_BABY_HOME             1063
+#define IDC_DATA5                       1063
 
 // Next default values for new objects
 // 

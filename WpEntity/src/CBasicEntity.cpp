@@ -152,122 +152,6 @@ const char* PhyAttributeTypeNameList[PHY_ATTRIBUTE_NUMBER_TYPE] =
   "Mane"
 };
 
-// Don't forget to update GeneDefinitionList with new gene sub-types !
-// Note: scale set to 0 mean parameter not configurable
-// FRED TBD : should be dispatch between all inherited object level
-
-GeneInterpreterDefinition_t GeneDefinitionList [GENE_NUMBER_SUBTYPE] = 
-{
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_GENERIC_UNKNOWN
-  {                          1.0, "R"        ,                         1.0, "G"        ,                         1.0, "B"        ,                         1.0, "UV"      },// GENE_CARACT_COLOR
-  {       ODOR_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_ODOR
-  {  PHEROMONE_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_PHEROMONE
-  {      TASTE_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_TASTE
-  {       FORM_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_FORM
-  {  REPRODUCT_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_REPRO_TYPE
-  {    HABITAT_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_HABITAT
-  {     CONSUM_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_CONSUME_TYPE
-  {       MOVE_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_MOVE_TYPE
-  {    TEXTURE_NUMBER_TYPE/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_TEXTURE
-  {PHY_ATTRIBUTE_NUMBER_TYPE/256.0,"Type"    ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_CARACT_PHY_ATTRIBUTE
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_GENERIC_RFU1
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""        },// GENE_GENERIC_RFU2
-
-  {       MAX_VAL_WEIGHT/65536.0, "Min"      ,      MAX_VAL_WEIGHT/65536.0, "Init"     ,      MAX_VAL_WEIGHT/65536.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_WEIGHT
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_TOXICITY
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_PROTECTION
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_CAMOUFLAGE
-  {                          0.0, "Min"      ,             10000.0/65536.0, "Start"    ,             10000.0/65536.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_AGE
-  {                          0.0, "Min"      ,                         0.0, ""         ,              1000.0/65536.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_DECOMPOSITION
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_REPRO_RATE
-  {                          0.0, "Min"      ,               100.0/65536.0, "Start"    ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_HEALTH
-  {                          0.0, "Min"      ,             10000.0/65536.0, "mU day"   ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_GROWTH_SPEED
-  {                          0.0, "Min"      ,                10.0/65536.0, "Range"    ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_REPRO_RANGE
-  {                          0.0, "Min"      ,      MAX_VAL_WEIGHT/65536.0, "Init"     ,      MAX_VAL_WEIGHT/65536.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_FAT_WEIGHT
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_ATTACK_FACTOR
-  {                          0.0, "Min"      ,                         0.0, "Speed"    ,               200.0/65536.0, "Steps sec",                         0.0, ""         },// GENE_PARAM_SPEED
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_CURIOSITY
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_LEARNING
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_METABOLISM
-  {                          0.0, "Min"      ,               100.0/65536.0, "Range"    ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_POLLEN_RANGE
-  {                          0.0, "Min"      ,                         0.0, "Rate"     ,              1000.0/65536.0, "duration" ,                         0.0, ""         },// GENE_PARAM_GESTA_TIME
-  {                100.0/65536.0, "Min"      ,               100.0/65536.0, "Usual"    ,               100.0/65536.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_GESTA_NB
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_REPRO_RFU1
-  {                          0.0, "Min"      ,               100.0/65536.0, "Rate"     ,                         0.0, "Max"      ,                         0.0, ""         },// GENE_PARAM_REPRO_RFU2
-
-  {                100.0/65536.0, "Life time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_0
-  {                100.0/65536.0, "Life time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_1
-  {                100.0/65536.0, "Life time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_2
-  {                100.0/65536.0, "Life time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_3
-  {                100.0/65536.0, "Life time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_4
-  {                100.0/65536.0, "Dead time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_5
-  {                100.0/65536.0, "Dead time",                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_STAGE_6
-
-  {                100.0/65536.0, "Rate"     ,               100.0/65536.0, "Min"      ,               100.0/65536.0, "Ideal"    ,               100.0/65536.0, "Max"      },// GENE_PHYS_SENS_TEMPER
-  {                100.0/65536.0, "Rate"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_PHYS_SENS_HABITAT
-  {                100.0/65536.0, "Rate"     ,               100.0/65536.0, "Min"      ,               100.0/65536.0, "Ideal"    ,               100.0/65536.0, "Max"      },// GENE_PHYS_SENS_FERTILITY
-  {                100.0/65536.0, "Rate"     ,               100.0/65536.0, "Min"      ,               100.0/65536.0, "Ideal"    ,               100.0/65536.0, "Max"      },// GENE_PHYS_SENS_SUNLIGHT
-  {                100.0/65536.0, "Rate"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_PHYS_SENS_RFU1
-  {                100.0/65536.0, "Rate"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_PHYS_SENS_RFU2
-
-  {                 20.0/65536.0, "level min",                20.0/65536.0, "level max",                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_TACTILE
-  {                100.0/65536.0, "range"    ,                10.0/65536.0, "layer"    ,                 4.0/65536.0, "angle"    ,                10.0/65536.0, "Nb focus" },// GENE_SENS_VIEW
-  {                100.0/65536.0, "range"    ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_SMELL
-  {                100.0/65536.0, "range"    ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_PHEROMONE
-  {                100.0/65536.0, "range"    ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_EAR
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_HUNGER
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_THIRST
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_STOMACH_LOAD
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_PLEASURE
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_SUFFER
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_TIREDNESS
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_OBSCURITY
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_LIBIDO
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_SPEED
-  {                100.0/65536.0, "range min",               100.0/65536.0, "range max",                 4.0/65536.0, "angle"    ,                10.0/65536.0, "Nb focus" },// GENE_SENS_VIEW_FAR
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_COMPASS
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_TASTE
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_FEAR
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_TEMPERATURE
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_ORIENTATION
-  {                100.0/65536.0, "range"    ,                10.0/65536.0, "layer"    ,                 4.0/65536.0, "angle"    ,                10.0/65536.0, "Nb focus" },// GENE_SENS_VIEW_IDENTIFY
-  {                100.0/65536.0, "range min",               100.0/65536.0, "range max",                 4.0/65536.0, "angle"    ,                10.0/65536.0, "Nb focus" },// GENE_SENS_VIEW_IDENT_FAR
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_SENS_HORMONE
-  {                          1.0, "SensUidH" ,                         1.0, "SensUidL" ,              1000.0/65536.0, "paramId"  ,                         0.0, ""         },// GENE_SENS_COMPOSITE
-
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_NOTHING
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_SLEEP
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,               200.0/65536.0, "steps sec",                         0.0, ""         },// GENE_REACT_VARYSPEED
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                30.0/65536.0, "steps"    ,                         0.0, ""         },// GENE_REACT_STEPBACKWARD
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_TURNLEFT
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_TURNRIGHT
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                20.0/65536.0, "layer"    ,                         0.0, ""         },// GENE_REACT_EAT
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_DRINK
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_COPULATE
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                20.0/65536.0, "layer"    ,                 3.0/65536.0, "range"    },// GENE_REACT_ATTACK
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_TURNHEADLEFT
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_TURNHEADRIGHT
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_RUMINATE
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_HIDE
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_RFU1
-  {                100.0/65536.0, "success"  ,               100.0/65536.0, "failure"  ,                         0.0, ""         ,                         0.0, ""         },// GENE_REACT_RFU2
-
-  {                100.0/65536.0, "Size"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_BRAIN_SIZE_HIST_IN
-  {                100.0/65536.0, "Size"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_BRAIN_SIZE_HIST_EXP
-
-  {              10000.0/65536.0, "Line"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_BRAIN_LINE
-
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_FEEL_WELFARE
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_FEEL_FEAR
-
-  {               1000.0/65536.0, "time"     ,               100.0/65536.0, "index"    ,               100.0/65536.0, "start"    ,               100.0/65536.0, "stop"     },// GENE_PURPOSE_TRIGGER_UP
-  {                          0.0, ""         ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_PURPOSE_SENSOR
-  {                200.0/65536.0, "bonus"    ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_PURPOSE_REACTION
-  {               1000.0/65536.0, "time"     ,               100.0/65536.0, "index"    ,               100.0/65536.0, "start"    ,               100.0/65536.0, "stop"     },// GENE_PURPOSE_TRIGGER_DOWN
-  {              10000.0/65536.0, "Line"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_BRAIN_IDENTIFY_LINE
-  {                     10/256.0, "Type"     ,                         0.0, ""         ,                         0.0, ""         ,                         0.0, ""         },// GENE_BRAIN_BEHAVIOR
-};
-
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
@@ -600,43 +484,43 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
     }
     break;
   case GENE_CARACT_ODOR:
-    m_Odor = (OdorType_e)pGen->getParameterFloorValue(0);
+    m_Odor = (OdorType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHEROMONE:
-    m_Pheromone = (PheromoneType_e)pGen->getParameterFloorValue(0);
+    m_Pheromone = (PheromoneType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_TASTE:
-    m_Taste = (TasteType_e)pGen->getParameterFloorValue(0);
+    m_Taste = (TasteType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_FORM:
-    m_Silhouette = (FormType_e)pGen->getParameterFloorValue(0);
+    m_Silhouette = (FormType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_REPRO_TYPE:
-    m_TypeOfReproduction = (ReproType_e)pGen->getParameterFloorValue(0);
+    m_TypeOfReproduction = (ReproType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_HABITAT:
-    m_Habitat = (HabitatType_e)pGen->getParameterFloorValue(0);
+    m_Habitat = (HabitatType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_CONSUME_TYPE:
-    m_ConsumeClass = (ConsumeType_e)pGen->getParameterFloorValue(0);
+    m_ConsumeClass = (ConsumeType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_MOVE_TYPE:
-    m_MoveType = (MoveType_e)pGen->getParameterFloorValue(0);
+    m_MoveType = (MoveType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_TEXTURE:
-    m_Texture = (TextureType_e)pGen->getParameterFloorValue(0);
+    m_Texture = (TextureType_e)pGen->getElementFloorValue(0);
     resu = true;
     break;
   case GENE_CARACT_PHY_ATTRIBUTE:
-    setAttribute((PhyAttributeType_e)pGen->getParameterFloorValue(0));
+    setAttribute((PhyAttributeType_e)pGen->getElementFloorValue(0));
     resu = true;
     break;
   default:
@@ -1219,12 +1103,12 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
   }
   // We are sure Gene is a caracteristic
   size_t len = pGen->getData().size();
-  if ((len < 1) || (pGen->getNumParameter() < 1))
+  if ((len < 1) || (pGen->getNumElements() < 1))
   {
     return (caractStr);
   }
 
-  BYTE data1 = pGen->getParameterFloorValue(0);
+  BYTE data1 = pGen->getElementFloorValue(0);
 
   switch (pGen->getGeneSubType())
   {
@@ -1232,14 +1116,14 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     {
       if (len>=sizeof(DWORD))
       {
-        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(0));
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(1));
-        caractStr += pGen->getParameterStrName(1) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(2));
-        caractStr += pGen->getParameterStrName(2) + tempStr;
-        tempStr = FormatString("=%03d ", pGen->getParameterFloorValue(3));
-        caractStr += pGen->getParameterStrName(3) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getElementFloorValue(0));
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getElementFloorValue(1));
+        caractStr += pGen->getElementStrName(1) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getElementFloorValue(2));
+        caractStr += pGen->getElementStrName(2) + tempStr;
+        tempStr = FormatString("=%03d ", pGen->getElementFloorValue(3));
+        caractStr += pGen->getElementStrName(3) + tempStr;
         COLORREF rgbCol = *(COLORREF*)pGen->getData().data();
         tempStr = " ("; tempStr += ColorTypeNameList[convertRgbColorInCaracter(rgbCol)]; tempStr +=")";
         caractStr += tempStr;
@@ -1251,7 +1135,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<ODOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += OdorTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1260,7 +1144,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<PHEROMONE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PheromoneTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1269,7 +1153,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<TASTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TasteTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1278,7 +1162,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<FORM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += FormTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1287,7 +1171,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<REPRODUCT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ReproTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1296,7 +1180,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<HABITAT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += HabitatTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1305,7 +1189,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<CONSUM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ConsumeTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1314,7 +1198,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<MOVE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += MoveTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1323,7 +1207,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<TEXTURE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TextureTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1332,7 +1216,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
       if (data1<PHY_ATTRIBUTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PhyAttributeTypeNameList[data1]; tempStr += " ";
-        caractStr = pGen->getLabel() + " : " + pGen->getParameterStrName(0) + tempStr;
+        caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
       }
       break;
     }
@@ -1370,7 +1254,7 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if ((len<3*sizeof(WORD)) || (pGen->getNumParameter() < 3))
+  if ((len<3*sizeof(WORD)) || (pGen->getNumElements() < 3))
   {
     // not enought data to config param
     return (paramStr);
@@ -1379,23 +1263,23 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   double scaledVal0,scaledVal1,scaledVal2;
   
   paramStr = pGen->getLabel() + " : ";
-  if (pGen->getParameterIsConfigurable(0))
+  if (pGen->getElementIsConfigurable(0))
   {
-    scaledVal0 = pGen->getParameterValue(0);
+    scaledVal0 = pGen->getElementValue(0);
     tempStr = FormatString("=%6.2f ", scaledVal0);
-    paramStr += pGen->getParameterStrName(0) + tempStr;
+    paramStr += pGen->getElementStrName(0) + tempStr;
   }
-  if (pGen->getParameterIsConfigurable(1))
+  if (pGen->getElementIsConfigurable(1))
   {
-    scaledVal1 = pGen->getParameterValue(1);
+    scaledVal1 = pGen->getElementValue(1);
     tempStr = FormatString("=%6.2f ", scaledVal1);
-    paramStr += pGen->getParameterStrName(1) + tempStr;
+    paramStr += pGen->getElementStrName(1) + tempStr;
   }
-  if (pGen->getParameterIsConfigurable(2))
+  if (pGen->getElementIsConfigurable(2))
   {
-    scaledVal2 = pGen->getParameterValue(2);
+    scaledVal2 = pGen->getElementValue(2);
     tempStr = FormatString("=%6.2f ", scaledVal2);
-    paramStr += pGen->getParameterStrName(2) + tempStr;
+    paramStr += pGen->getElementStrName(2) + tempStr;
   }
 
   return (paramStr);
@@ -1553,27 +1437,6 @@ string CBasicEntity::buildPurposeString(CGene* pGen)
   string defStr = STRING_GENE_UNUSED;
   return(defStr);
 }
-
-double CBasicEntity::getGeneScaleData1 (GeneSubType_e subType) // Obsolete
-{
-  return(GeneDefinitionList[subType].data1Scale);
-}
-
-double CBasicEntity::getGeneScaleData2 (GeneSubType_e subType) // Obsolete
-{
-  return(GeneDefinitionList[subType].data2Scale);
-}
-
-double CBasicEntity::getGeneScaleData3 (GeneSubType_e subType) // Obsolete
-{
-  return(GeneDefinitionList[subType].data3Scale);
-}
-
-double CBasicEntity::getGeneScaleData4 (GeneSubType_e subType) // Obsolete
-{
-  return(GeneDefinitionList[subType].data4Scale);
-}
-
 
 //===========================================================================
 // Biotop Connection
@@ -1780,9 +1643,9 @@ int CBasicEntity::addParameter(CGenericParam* pParam)
 int CBasicEntity::addParameterFromGene(CGene* pGen, GenericParamType_e paramType)
 {
   double minVal, initVal, maxVal;
-  pGen->getParameterIsConfigurable(0) ? minVal = pGen->getParameterValue(0) : minVal = pGen->getParameterDefaultValue(0);
-  pGen->getParameterIsConfigurable(1) ? initVal = pGen->getParameterValue(1) : initVal = pGen->getParameterDefaultValue(1);
-  pGen->getParameterIsConfigurable(2) ? maxVal = pGen->getParameterValue(2) : maxVal = pGen->getParameterDefaultValue(2);
+  pGen->getElementIsConfigurable(0) ? minVal = pGen->getElementValue(0) : minVal = pGen->getElementDefaultValue(0);
+  pGen->getElementIsConfigurable(1) ? initVal = pGen->getElementValue(1) : initVal = pGen->getElementDefaultValue(1);
+  pGen->getElementIsConfigurable(2) ? maxVal = pGen->getElementValue(2) : maxVal = pGen->getElementDefaultValue(2);
   CGenericParam* pParam = new CGenericParam(minVal, initVal, initVal, maxVal, pGen->getLabel(), paramType, pGen->getGeneSubType());
   return addParameter(pParam);
 }

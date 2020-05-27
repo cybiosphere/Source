@@ -62,6 +62,7 @@ public:
 	CString	m_strData2;
 	CString	m_strData3;
 	CString	m_strData4;
+	CString	m_strData5;
 	CString	m_strLabel1;
 	CString	m_strLabel2;
 	CString	m_strLabel3;

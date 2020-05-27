@@ -5,4 +5,12 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>C:\Frederic\Perso\Cybiosphere\Source\Exec\</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommand>C:\Frederic\Perso\Cybiosphere\Source\Exec\ProjectWizardD.exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>C:\Frederic\Perso\Cybiosphere\Source\Exec</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RESOURCE_FILE>ProjectWizard.rc</RESOURCE_FILE>
+  </PropertyGroup>
 </Project>

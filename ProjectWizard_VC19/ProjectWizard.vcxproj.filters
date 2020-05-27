@@ -442,6 +442,7 @@
     <ClInclude Include="..\WpGui\inc\FileSelectButton.h">
       <Filter>WpGui\IncGui</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpWizardGui\src\ChildFrm.cpp">

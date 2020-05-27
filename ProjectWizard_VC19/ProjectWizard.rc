@@ -165,7 +165,7 @@ BEGIN
     LTEXT           "ProjectWizard Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2014",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
-    LTEXT           "Use Wizard to create all species you want to integrate in your ecosystems. For each specie, generate several members of a familly with ""paramaters variation"" to let natural selection keep alive the most adapted entities. Then use the Studio to build your eT?",IDC_STATIC,7,47,221,49,SS_NOPREFIX
+    LTEXT           "Use Wizard to create all species you want to integrate in your ecosystems. For each specie, generate several members of a familly with ""paramaters variation"" to let natural selection keep alive the most adapted entities. Then use the Studio to build your ",IDC_STATIC,7,47,221,49,SS_NOPREFIX
 END
 
 IDD_PROJECTWIZARD_FORM DIALOG 0, 0, 520, 400
@@ -269,11 +269,11 @@ BEGIN
     CONTROL         "Babies stay at home",IDC_CHECK_BABY_HOME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,135,190,102,12
 END
 
-IDD_DIALOG_TAB4 DIALOG 0, 0, 500, 380
+IDD_DIALOG_TAB4 DIALOGEX 0, 0, 500, 380
 STYLE DS_SETFONT | WS_CHILD
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    CONTROL         "Tree1",IDC_TREE_GENOME,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,17,131,296,134
+    CONTROL         "Tree1",IDC_TREE_GENOME,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,17,131,296,134
     EDITTEXT        IDC_EDIT_NB_CHROMO,117,29,38,12,ES_AUTOHSCROLL
     CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_AUTOTICKS | TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,175,55,100,11
     LTEXT           "Number of chromosomes",IDC_STATIC,25,30,79,11
@@ -296,14 +296,15 @@ BEGIN
     EDITTEXT        IDC_DATA2,405,154,79,12,ES_AUTOHSCROLL | WS_DISABLED
     EDITTEXT        IDC_LABEL3,322,172,74,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
     EDITTEXT        IDC_DATA3,405,169,79,12,ES_AUTOHSCROLL | WS_DISABLED
-    EDITTEXT        IDC_LABEL4,327,256,166,12,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
-    EDITTEXT        IDC_DATA4,325,190,159,63,ES_MULTILINE | WS_DISABLED
+    EDITTEXT        IDC_LABEL4,327,215,78,12,ES_AUTOHSCROLL | WS_DISABLED | NOT WS_BORDER
+    EDITTEXT        IDC_DATA4,325,190,159,21,ES_MULTILINE | WS_DISABLED
     EDITTEXT        IDC_EDIT_VARIATION,205,67,38,12,ES_AUTOHSCROLL | WS_DISABLED
     CONTROL         "Perform auto learning",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,156,321,85,11
     EDITTEXT        IDC_EDIT_SCORE,300,292,186,74,ES_MULTILINE | ES_READONLY | ES_WANTRETURN | WS_DISABLED | NOT WS_BORDER | WS_VSCROLL
     LTEXT           "Scores:",IDC_STATIC,260,323,27,10
     LTEXT           "Iterations:",IDC_STATIC,143,347,38,13
     EDITTEXT        IDC_EDIT_ITERARTIONS,185,346,51,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DATA5,327,230,159,34,ES_MULTILINE | WS_DISABLED
 END
 
 
@@ -463,6 +464,11 @@ BEGIN
 END
 
 IDD_DIALOG_TAB3 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_TAB4 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

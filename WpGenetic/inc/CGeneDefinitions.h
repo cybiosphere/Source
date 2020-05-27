@@ -26,7 +26,7 @@ distribution.
 // FILE: CGeneDefinitions.h
 //   
 // GENERAL DESCRIPTION:
-//         This CLASS lists all gene definitions and parameters
+//         This CLASS lists all gene definitions and elements
 //     
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
@@ -97,7 +97,6 @@ typedef enum
   GENE_MUTE_NUMBER_TYPE
 } GeneMuteType_e;
 
-// Don't forget to update GeneDefinitionList with new gene sub-types !
 typedef enum
 {
 // Subtype    ID            // len // data
@@ -234,7 +233,7 @@ public:
   GeneSubType_e  geneSubType;
   string         label;
   GeneMuteType_e muteType;
-  vector<GeneParamDefinition_t> parameters;
+  vector<GeneParamDefinition_t> elements;
 
 //---------------------------------------------------------------------------
 // Constructors / Destructors

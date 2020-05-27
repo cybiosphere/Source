@@ -86,19 +86,6 @@ typedef enum
   CONTROL_REMOTE_AUTO
 } ControlType_e;
 
-typedef struct 
-{
-  double        data1Scale;
-  const char*   data1Name;
-  double        data2Scale;
-  const char*   data2Name;
-  double        data3Scale;
-  const char*   data3Name;
-  double        data4Scale;
-  const char*   data4Name;
-} GeneInterpreterDefinition_t; // TO BE REMOVED
-
-
 //===========================================================================
 //                                    CLASS            
 //===========================================================================
@@ -270,11 +257,6 @@ public:
 //---------------------------------------------------------------------------
 public:
   string getGeneDescriptionString(CGene* pGen);
-
-  static double getGeneScaleData1(GeneSubType_e subType);
-  static double getGeneScaleData2(GeneSubType_e subType);
-  static double getGeneScaleData3(GeneSubType_e subType);
-  static double getGeneScaleData4(GeneSubType_e subType);
 
   virtual size_t getExpectedBrainSensorWeightSize (CGene* pGen);
 

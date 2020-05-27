@@ -265,7 +265,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   int duration;
   double lifeDuration = getLifeExpectation();
   double deathDuration = getRotenTimeExpectation();
-  double scaledRate = pGen->getParameterValue(0);
+  double scaledRate = pGen->getElementValue(0);
 
   switch(pGen->getGeneSubType())
   {
@@ -467,7 +467,7 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
     return (paramStr);
   }
  
-  double scaledVal1 = pGen->getParameterValue(0);
+  double scaledVal1 = pGen->getElementValue(0);
   
   switch(pGen->getGeneSubType())
   {
@@ -481,7 +481,7 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
     {
       paramStr = pGen->getLabel() + " : ";
       tempStr = FormatString("=%6.2f%%", scaledVal1);
-      paramStr += pGen->getParameterStrName(0) + tempStr;
+      paramStr += pGen->getElementStrName(0) + tempStr;
       break;
     }
   default:

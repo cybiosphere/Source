@@ -102,6 +102,7 @@
 #define IDC_LABEL3                      1032
 #define IDC_COMBO_CLASS                 1032
 #define IDC_ENTITY_NAME                 1033
+#define IDC_DATA5                       1033
 #define IDC_RADIO1                      1034
 #define IDC_LABEL4                      1035
 #define IDC_RADIO2                      1035

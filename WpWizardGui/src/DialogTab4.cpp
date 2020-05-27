@@ -61,6 +61,7 @@ CDialogTab4::CDialogTab4(CWnd* pParent /*=NULL*/)
 	m_strData2 = _T("");
 	m_strData3 = _T("");
 	m_strData4 = _T("");
+  m_strData5 = _T("");
 	m_strLabel1 = _T("");
 	m_strLabel2 = _T("");
 	m_strLabel3 = _T("");
@@ -111,6 +112,7 @@ void CDialogTab4::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_DATA2, m_strData2);
 	DDX_Text(pDX, IDC_DATA3, m_strData3);
 	DDX_Text(pDX, IDC_DATA4, m_strData4);
+  DDX_Text(pDX, IDC_DATA5, m_strData5);
 	DDX_Text(pDX, IDC_LABEL1, m_strLabel1);
 	DDX_Text(pDX, IDC_LABEL2, m_strLabel2);
 	DDX_Text(pDX, IDC_LABEL3, m_strLabel3);
@@ -220,6 +222,7 @@ void CDialogTab4::DisplayGenome(CGenome* pGenome)
     tmpStr.Format("%d",pGenome->getSpecieSignature());
     m_strData3 = tmpStr;
     m_strData4 = "";
+    m_strData5 = "";
   }
 
   // Update windows
@@ -256,6 +259,7 @@ void CDialogTab4::DisplayPair(CPairOfChromosome* pPair)
 
   m_strData3 = "";
   m_strData4 = "";
+  m_strData5 = "";
 
   // Update windows
   UpdateData(false);
@@ -274,7 +278,9 @@ void CDialogTab4::DisplayChromosome(CChromosome* pChromosome)
   tmpStr.Format("%d",pChromosome->getIdNumber());
   m_strData2 = tmpStr;
   m_strData3 = "";
-  m_strData4 = pChromosome->buildStringDataFromGenes().c_str();
+  m_strData4 = "Chromozome ";
+  m_strData4 += pChromosome->getLabel().c_str();
+  m_strData5 = pChromosome->buildStringDataFromGenes().c_str();
 
   // Update windows
   UpdateData(false);
@@ -296,7 +302,8 @@ void CDialogTab4::DisplayGene(CGene* pGene)
   tmpStr.Format("%d",pGene->getDominanceFactor());
   m_strData3 = tmpStr;
   m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str(); 
-
+  m_strData5 = pGene->buildStringDataFromGene().c_str();
+  
   // Update windows
   UpdateData(false);
 }
@@ -504,19 +511,15 @@ void CDialogTab4::AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComb
   else
     pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   
-  double scale = 1/pView->GetpEntity()->getGeneScaleData1(subtype);
-
-  dataFemale = BYTE((double)dataFemale * scale + 1.0);
   geneIndex = pCurPaire->getMaterChromosome()->addGene();
   pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsCaracter(subtype, 1, GENE_MUTE_INCREMENTAL_1, 1, &dataFemale);
+  pCurGene->setAsCaracterUsingDefinition(subtype, 1, dataFemale);
   if (m_Variation > 50)
     pCurGene->tryMutation();
 
-  dataMale = BYTE((double)(pComboCur->GetCurSel()) * scale + 1.0);
   geneIndex = pCurPaire->getPaterChromosome()->addGene();
   pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsCaracter(subtype, 1, GENE_MUTE_INCREMENTAL_1, 1, &dataMale);
+  pCurGene->setAsCaracterUsingDefinition(subtype, 1, dataMale);
   if (m_Variation > 50)
     pCurGene->tryMutation();
 }
@@ -546,7 +549,6 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   int geneIndex;
   CGene* pCurGene = NULL;
   CGenericParam *pParamFemale,*pParamMale,*pParamCurrent;
-  double scale1,scale2,scale3;
   double paramMin, paramNominal, paramMax;
   GeneSubType_e curGeneSubType;
 
@@ -576,25 +578,15 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
 
       curGeneSubType = pParamFemale->getCodingGeneSubtype();
-
-      scale1 = pView->GetpEntity()->getGeneScaleData1(curGeneSubType) * 65536.0;
-      if (scale1!=0)
-        scale1 = 1000.0 / scale1 * (1000 + getRandInt(m_Variation)) / 1000;
-      scale2 = pView->GetpEntity()->getGeneScaleData2(curGeneSubType) * 65536.0;
-      if (scale2!=0)
-        scale2 = 1000.0 / scale2 * (1000 + getRandInt(m_Variation)) / 1000;
-      scale3 = pView->GetpEntity()->getGeneScaleData3(curGeneSubType) * 65536.0;
-      if (scale3!=0)
-        scale3 = 1000.0 / scale3 * (1000 + getRandInt(m_Variation)) / 1000;
    
       if ( (curGeneSubType == GENE_PARAM_SPEED) 
         || (curGeneSubType == GENE_PARAM_GESTA_TIME)
         || (curGeneSubType == GENE_PARAM_GESTA_NB) )
       {
         // User choice is max
-        paramMin     = pParamFemale->getMin() * scale1;
-        paramNominal = pParamFemale->getVal() * scale2 / 2.0;
-        paramMax     = pParamFemale->getVal() * scale3;
+        paramMin     = pParamFemale->getMin();
+        paramNominal = pParamFemale->getVal() / 2.0;
+        paramMax     = pParamFemale->getVal();
         if (curGeneSubType == GENE_PARAM_SPEED)
         {
           m_EntitySpeedMax = pParamFemale->getVal();
@@ -602,13 +594,13 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       }
       else
       {
-        paramMin     = pParamFemale->getMin() * scale1;
-        paramNominal = pParamFemale->getVal() * scale2;
-        paramMax     = pParamFemale->getMax() * scale3;
+        paramMin     = pParamFemale->getMin();
+        paramNominal = pParamFemale->getVal();
+        paramMax     = pParamFemale->getMax();
       }
       geneIndex = pCurPaire->getMaterChromosome()->addGene();
       pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(curGeneSubType, 10, paramMin, paramNominal, paramMax);
+      pCurGene->setAsParameterUsingDefinition(curGeneSubType, 10, paramMin, paramNominal, paramMax);
 
       curGeneSubType = pParamCurrent->getCodingGeneSubtype();
       if ( (curGeneSubType == GENE_PARAM_SPEED) 
@@ -616,9 +608,9 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         || (curGeneSubType == GENE_PARAM_GESTA_NB) )
       {
         // User choice is max
-        paramMin     = pParamFemale->getMin() * scale1;
-        paramNominal = pParamFemale->getVal() * scale2 / 2.0;
-        paramMax     = pParamFemale->getVal() * scale3;
+        paramMin     = pParamFemale->getMin();
+        paramNominal = pParamFemale->getVal() / 2.0;
+        paramMax     = pParamFemale->getVal();
         if (curGeneSubType == GENE_PARAM_SPEED)
         {
           m_EntitySpeedMax = pParamFemale->getVal();
@@ -626,14 +618,14 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       }
       else
       {
-        paramMin     = pParamFemale->getMin() * scale1;
-        paramNominal = pParamFemale->getVal() * scale2;
-        paramMax     = pParamFemale->getMax() * scale3;
+        paramMin     = pParamFemale->getMin();
+        paramNominal = pParamFemale->getVal();
+        paramMax     = pParamFemale->getMax();
       }
       geneIndex = pCurPaire->getPaterChromosome()->addGene();
       pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(curGeneSubType, 10, paramMin, paramNominal, paramMax);
-    
+      pCurGene->setAsParameterUsingDefinition(curGeneSubType, 10, paramMin, paramNominal, paramMax);
+
       m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
     }
   }
@@ -644,47 +636,37 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   else
     pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
 
-  scale1 = pView->GetpEntity()->getGeneScaleData1(GENE_PARAM_WEIGHT) * 65536.0;
-  if (scale1!=0)
-    scale1 = 1000.0 / scale1 * (1000 + getRandInt(m_Variation)) / 1000;
-  scale2 = pView->GetpEntity()->getGeneScaleData2(GENE_PARAM_WEIGHT) * 65536.0;
-  if (scale2!=0)
-    scale2 = 1000.0 / scale2 * (1000 + getRandInt(m_Variation)) / 1000;
-  scale3 = pView->GetpEntity()->getGeneScaleData3(GENE_PARAM_WEIGHT) * 65536.0;
-  if (scale3!=0)
-    scale3 = 1000.0 / scale3 * (1000 + getRandInt(m_Variation)) / 1000; 
-
-  paramMin     = (double)(pTabFemale->m_WeightMin) * scale1;
-  paramNominal = (double)(pTabFemale->m_WeightMin) * scale2 * 1.1;
-  paramMax     = (double)(pTabFemale->m_Weight) * scale3;
+  paramMin     = (double)(pTabFemale->m_WeightMin);
+  paramMax     = (double)(pTabFemale->m_Weight);
+  paramNominal = paramMin + (paramMax - paramMin) * 0.1;
 
   geneIndex = pCurPaire->getMaterChromosome()->addGene();
   pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsParameter(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
+  pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
   if (pView->GetpEntity()->getClass() > CLASS_VEGETAL_LAST)
   {
     geneIndex = pCurPaire->getMaterChromosome()->addGene();
     pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-    pCurGene->setAsParameter(GENE_PARAM_FAT_WEIGHT, 10, paramMin/2.0 + 0.1, paramNominal/2.0 + 0.1, paramMax/2.0);
+    pCurGene->setAsParameterUsingDefinition(GENE_PARAM_FAT_WEIGHT, 10, paramMin / 2.0 + 0.1, paramNominal / 2.0 + 0.1, paramMax / 2.0);
   }
 
   if (sexualDimorph && (sex == SEX_MALE))
   {
-    paramMin     = (double)(pTabMale->m_WeightMin) * scale1;
-    paramNominal = (double)(pTabMale->m_WeightMin) * scale2 * 1.1;
-    paramMax     = (double)(pTabMale->m_Weight) * scale3;
+    paramMin     = (double)(pTabMale->m_WeightMin);
+    paramNominal = (double)(pTabMale->m_WeightMin) * 1.1;
+    paramMax     = (double)(pTabMale->m_Weight);
   }
 
   geneIndex = pCurPaire->getPaterChromosome()->addGene();
   pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsParameter(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
+  pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
   if (pView->GetpEntity()->getClass() > CLASS_VEGETAL_LAST)
   {
     geneIndex = pCurPaire->getPaterChromosome()->addGene();
     pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-    pCurGene->setAsParameter(GENE_PARAM_FAT_WEIGHT, 10, paramMin/2.0, paramNominal/2.0, paramMax/2.0);
+    pCurGene->setAsParameterUsingDefinition(GENE_PARAM_FAT_WEIGHT, 10, paramMin / 2.0 + 0.1, paramNominal / 2.0 + 0.1, paramMax / 2.0);
   }
 
   if (pView->GetpEntity()->getClass() > CLASS_MINERAL_LAST)
@@ -695,29 +677,24 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       else
         pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
 
-      scale3 = pView->GetpEntity()->getGeneScaleData3(GENE_PARAM_AGE) * 65536.0;
-      if (scale3!=0)
-        scale3 = 1000.0 / scale3 * (1000 + getRandInt(m_Variation)) / 1000; 
-
       paramMin     = 0;
       paramNominal = 0;
-      paramMax     = (double)(pTabFemale->m_LifeExpectency) * scale3;
+      paramMax     = (double)(pTabFemale->m_LifeExpectency);
 
       geneIndex = pCurPaire->getMaterChromosome()->addGene();
       pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
+      pCurGene->setAsParameterUsingDefinition(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
 
       if (sexualDimorph && (sex == SEX_MALE))
       {
         paramMin     = 0;
         paramNominal = 0;
-        paramMax     = (double)(pTabMale->m_LifeExpectency) * scale3;
+        paramMax     = (double)(pTabMale->m_LifeExpectency);
       }
 
       geneIndex = pCurPaire->getPaterChromosome()->addGene();
       pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
-
+      pCurGene->setAsParameterUsingDefinition(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
 
       // Decomposition
       if (sexualDimorph && (pTabFemale->m_DecompositionTime != pTabMale->m_DecompositionTime))
@@ -725,28 +702,24 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       else
         pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
 
-      scale3 = pView->GetpEntity()->getGeneScaleData3(GENE_PARAM_DECOMPOSITION) * 65536.0;
-      if (scale3!=0)
-        scale3 = 1000.0 / scale3 * (1000 + getRandInt(m_Variation)) / 1000; 
-
       paramMin     = 0;
       paramNominal = 0;
-      paramMax     = (double)(pTabFemale->m_DecompositionTime) * scale3;
+      paramMax     = (double)(pTabFemale->m_DecompositionTime);
 
       geneIndex = pCurPaire->getMaterChromosome()->addGene();
       pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
+      pCurGene->setAsParameterUsingDefinition(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
 
       if (sexualDimorph && (sex == SEX_MALE))
       {
         paramMin     = 0;
         paramNominal = 0;
-        paramMax     = (double)(pTabMale->m_DecompositionTime) * scale3;
+        paramMax     = (double)(pTabMale->m_DecompositionTime);
       }
 
       geneIndex = pCurPaire->getPaterChromosome()->addGene();
       pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-      pCurGene->setAsParameter(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
+      pCurGene->setAsParameterUsingDefinition(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
   }
 }
 
@@ -972,24 +945,21 @@ void CDialogTab4::AddGenesForReactions()
   CPairOfChromosome* pCurPaire = NULL;
   int geneIndex,i,j;
   CGene* pCurGene = NULL;
-  double succes, failure, param1, scale3;
+  double succes, failure, param1;
   CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
   CDialogTab3* pTabBehavior = pView->GetTabBehavior();
 
   // Movt mgt
-  scale3 = pView->GetpEntity()->getGeneScaleData3(GENE_REACT_MOVEFORWARD) * 65536.0;
-  if (scale3!=0)  
-    scale3 = 1000.0 / scale3;
   succes  = 0;
   failure = 0;
   param1  = 8 + m_EntitySpeedMax/50;
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   geneIndex = pCurPaire->getMaterChromosome()->addGene();
   pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
+  pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
   geneIndex = pCurPaire->getPaterChromosome()->addGene();
   pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
+  pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
@@ -997,23 +967,12 @@ void CDialogTab4::AddGenesForReactions()
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   geneIndex = pCurPaire->getMaterChromosome()->addGene();
   pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
+  pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
   geneIndex = pCurPaire->getPaterChromosome()->addGene();
   pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
+  pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
-
-  /*param1  = 0;
-  pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-  pCurGene->setAsReaction(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1*scale3);
-
-  m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;*/
 
   CString param1Str, param2Str;
   GeneSubType_e type ;
@@ -1049,41 +1008,37 @@ void CDialogTab4::AddGenesForReactions()
         else
           param2Str = "0";
 
-        scale3 = pView->GetpEntity()->getGeneScaleData3(type) * 65536.0;
-        if (scale3!=0)  
-          scale3 = 1000.0 / scale3;
-
         if ( (type == GENE_REACT_ATTACK) || (type == GENE_REACT_EAT) )
         {
           for (j=0; j<MAX_NB_LAYER_VIEW; j++)
           {
             if (isPreyOnLayer[j])
             {
-              succes  = atoi(param1Str) * 10;
-              failure = atoi(param2Str) * 10;
+              succes  = atoi(param1Str);
+              failure = atoi(param2Str);
               param1  = j + 10 - pView->GetTabCaractFemale()->m_Layer;
               pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
               geneIndex = pCurPaire->getMaterChromosome()->addGene();
               pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-              pCurGene->setAsReaction(type, 1.0, succes, failure, param1*scale3);
+              pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
               geneIndex = pCurPaire->getPaterChromosome()->addGene();
               pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-              pCurGene->setAsReaction(type, 1.0, succes, failure, param1*scale3);
+              pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
             }
           }
         }
         else
         {
-          succes  = atoi(param1Str) * 10;
-          failure = atoi(param2Str) * 10;
+          succes  = atoi(param1Str);
+          failure = atoi(param2Str);
           param1  = 0;
           pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
           geneIndex = pCurPaire->getMaterChromosome()->addGene();
           pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-          pCurGene->setAsReaction(type, 1.0, succes, failure, param1*scale3);
+          pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
           geneIndex = pCurPaire->getPaterChromosome()->addGene();
           pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-          pCurGene->setAsReaction(type, 1.0, succes, failure, param1*scale3);
+          pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
         }
     }
   }
@@ -1298,15 +1253,12 @@ void CDialogTab4::AddGenesForBrain()
 
   if (pTabBehavior->m_bBabiesStayHome)
   {
-    double scale = 1/pView->GetpEntity()->getGeneScaleData1(GENE_BRAIN_BEHAVIOR);
-    BYTE behavior = BYTE((double)BRAIN_BEHAVIOR_BABY_STAY_HOME * scale + 1.0);
-
     geneIndex = pCurPaire->getMaterChromosome()->addGene();
     pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
-    pCurGene->setAsBrainConfig(GENE_BRAIN_BEHAVIOR, 1, GENE_MUTE_RANDOM_BIT, 1, &behavior);
+    pCurGene->setAsBrainConfigUsingDefinition(GENE_BRAIN_BEHAVIOR, 1, BRAIN_BEHAVIOR_BABY_STAY_HOME);
     geneIndex = pCurPaire->getPaterChromosome()->addGene();
     pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
-    pCurGene->setAsBrainConfig(GENE_BRAIN_BEHAVIOR, 1, GENE_MUTE_RANDOM_BIT, 1, &behavior);
+    pCurGene->setAsBrainConfigUsingDefinition(GENE_BRAIN_BEHAVIOR, 1, BRAIN_BEHAVIOR_BABY_STAY_HOME);
   }
 
 }
