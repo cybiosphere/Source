@@ -318,7 +318,7 @@ vector<CGeneDefinitions> CGeneList::geneListSensor =
   { GENE_SENSOR, GENE_SENS_COMPOSITE, "Composite", GENE_MUTE_INCREMENTAL_2,
     { { "Sens Uid Hi", 2, 0, 0, 0xFFFF, GENE_DOMINANCE_HIGHEST, false },
       { "Sens Uid Lo", 2, 2, 0, 0xFFFF, GENE_DOMINANCE_HIGHEST, false },
-      { "ParamId", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true } } }
+      { "ParamId", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, false } } }
 };
 
 vector<CGeneDefinitions> CGeneList::geneListReaction =
@@ -396,21 +396,21 @@ vector<CGeneDefinitions> CGeneList::geneListBrainSize =
 vector<CGeneDefinitions> CGeneList::geneListBrainInstinct =
 {
   { GENE_BRAIN_INIT, GENE_BRAIN_LINE, "Brain line", GENE_MUTE_INCREMENTAL_2,
-    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, true } } },
+    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, false } } },
 
   { GENE_BRAIN_INIT, GENE_BRAIN_IDENTIFY_LINE, "Identification line", GENE_MUTE_INCREMENTAL_2,
-    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, true } } }
+    { { "Line", 2, 0, 0, 10000, GENE_DOMINANCE_HIGHEST, false } } }
 };
 
 vector<CGeneDefinitions> CGeneList::geneListFeeling =
 {
   { GENE_FEELING, GENE_FEEL_WELFARE, "Wellfare feeling", GENE_MUTE_INCREMENTAL_2,
-    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
-      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, true } } },
+    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, false } } },
 
   { GENE_FEELING, GENE_FEEL_FEAR, "Fear feeling", GENE_MUTE_INCREMENTAL_2,
-    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
-      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, true } } }
+    { { "Sensor ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Sensivity", 2, 4, -100, 100, GENE_DOMINANCE_HIGHEST, false } } }
 };
 
 vector<CGeneDefinitions> CGeneList::geneListPurpose =
@@ -420,16 +420,16 @@ vector<CGeneDefinitions> CGeneList::geneListPurpose =
       { "Index", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
       { "Start", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true },
       { "Stop", 2, 6, 0, 100, GENE_DOMINANCE_HIGHEST, true },
-      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true } } },
+      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false } } },
 
   { GENE_PURPOSE, GENE_PURPOSE_SENSOR, "Sensor bonus", GENE_MUTE_INCREMENTAL_2,
-    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
-      { "Sensor ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
-      { "Bonus", 2, 8, 0, 20000, GENE_DOMINANCE_HIGHEST, true } } },
+    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Sensor ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Bonus", 2, 8, 0, 20000, GENE_DOMINANCE_HIGHEST, false } } },
 
   { GENE_PURPOSE, GENE_PURPOSE_REACTION, "Reaction bonus", GENE_MUTE_INCREMENTAL_2,
-    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
-      { "Reaction ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true },
+    { { "Purpose ", 4, 0, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
+      { "Reaction ", 4, 4, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false },
       { "Bonus", 2, 8, 0, 200, GENE_DOMINANCE_HIGHEST, true } } },
 
   { GENE_PURPOSE, GENE_PURPOSE_TRIGGER_DOWN, "Purpose trigger down", GENE_MUTE_INCREMENTAL_2,
@@ -437,7 +437,7 @@ vector<CGeneDefinitions> CGeneList::geneListPurpose =
       { "Index", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true },
       { "Start", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true },
       { "Stop", 2, 6, 0, 100, GENE_DOMINANCE_HIGHEST, true },
-      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, true } } },
+      { "Sensor ", 4, 8, 0, 0xFFFFFFFF, GENE_DOMINANCE_HIGHEST, false } } },
 };
 
 vector<CGeneDefinitions> CGeneList::geneListBrainConfig =

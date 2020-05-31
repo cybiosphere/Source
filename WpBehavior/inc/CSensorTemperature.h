@@ -55,7 +55,7 @@ typedef enum
 {
   TEMPERATURE_TOO_HOT  =     0,
   TEMPERATURE_TOO_COLD,
-  TEMPERATURE_PLEASANT
+  TEMPERATURE_COLD_WATER
 } SensorTemperatureType_e;
 
 

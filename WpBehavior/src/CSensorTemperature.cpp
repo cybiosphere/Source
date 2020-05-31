@@ -90,7 +90,7 @@ const std::vector<sensorValType>& CSensorTemperature::UpdateAndGetStimulationTab
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CPhysicalWelfare* pPhyWelfare = pAnimal->getpPhysicalWelfare();
-  double biotopTemperature = pAnimal->getBiotop()->getTemperature(pAnimal->getGridCoord(), pAnimal->getLayer()); // TBD Fred; use coord!
+  double biotopTemperature = pAnimal->getBiotop()->getTemperature(pAnimal->getGridCoord(), pAnimal->getLayer());
   double perfectTemperature = (pPhyWelfare->GetTemperatureMin()+pPhyWelfare->GetTemperatureMax())/2; 
   double deltaTemperature= fabs(biotopTemperature - perfectTemperature);
 
@@ -100,8 +100,11 @@ const std::vector<sensorValType>& CSensorTemperature::UpdateAndGetStimulationTab
   if(biotopTemperature < pPhyWelfare->GetTemperatureMin())
     m_tStimulationValues[TEMPERATURE_TOO_COLD] = (pPhyWelfare->GetTemperatureMin() - biotopTemperature) * MAX_SENSOR_VAL/5;
 
-  if(deltaTemperature<5)
-    m_tStimulationValues[TEMPERATURE_PLEASANT] = (5-deltaTemperature) * MAX_SENSOR_VAL/5;
+  LayerType_e curLayer = pAnimal->getBiotop()->getLayerType(pAnimal->getGridCoord(), 1);
+  if (curLayer == LAYER_OVER_WET_GROUND)
+    m_tStimulationValues[TEMPERATURE_COLD_WATER] = MAX_SENSOR_VAL/4;
+  else if(curLayer == LAYER_OVER_WATER)
+    m_tStimulationValues[TEMPERATURE_COLD_WATER] = MAX_SENSOR_VAL;
 
   applySubCaptorWeightRate();
 
@@ -125,9 +128,9 @@ string CSensorTemperature::GetSubCaptorLabel(size_t index)
 
   switch(index)
   {
-  case 0:  label = "too hot";   break;
-  case 1:  label = "too cold";   break;
-  case 2:  label = "pleasant";   break;
+  case TEMPERATURE_TOO_HOT:  label = "too hot";   break;
+  case TEMPERATURE_TOO_COLD:  label = "too cold";   break;
+  case TEMPERATURE_COLD_WATER:  label = "cold water";   break;
   default: label = "bad index"; break;
   }
 

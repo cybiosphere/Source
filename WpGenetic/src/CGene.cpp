@@ -734,11 +734,11 @@ double CGene::getElementScale(size_t index)
     const GeneParamDefinition_t& def = m_pDefinitions->elements[index];
     if (def.hexaSize == 1)
     {
-      value = (def.valMax - def.valMin) / 255 + def.valMin;
+      value = (def.valMax - def.valMin) / 255;
     }
     else if (def.hexaSize == 2)
     {
-      value = (def.valMax - def.valMin) / 65535 + def.valMin;
+      value = (def.valMax - def.valMin) / 65535;
     }
   }
   return value;

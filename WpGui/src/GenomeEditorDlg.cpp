@@ -803,8 +803,8 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
         else if ( (geneSubType==GENE_PURPOSE_REACTION) && (pBrain != NULL) )       
         {
           range         = 2000;
-          initSlideM[0] = ((WORD*)pDataM)[4] * 2000 / 0xFFFF;
-          initSlideP[0] = ((WORD*)pDataP)[4] * 2000 / 0xFFFF;
+          initSlideM[2] = ((WORD*)pDataM)[4] * 2000 / 0xFFFF;
+          initSlideP[2] = ((WORD*)pDataP)[4] * 2000 / 0xFFFF;
 
           // Get associated Sensor
           DWORD* pPurposeUid = (DWORD*)pDataM;
@@ -1124,7 +1124,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
         else if (geneSubType==GENE_PURPOSE_REACTION)
         {
           long data1;
-          data1 = m_SliderM1.GetRangeMax() - m_SliderM1.GetPos(); 
+          data1 = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos(); 
 
           int curPurposeSel = m_ComboLeft.GetCurSel();
           if (curPurposeSel<0)
@@ -1334,7 +1334,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
         else if (geneSubType==GENE_PURPOSE_REACTION)
         {
           long data1;
-          data1 = m_SliderP1.GetRangeMax() - m_SliderP1.GetPos(); 
+          data1 = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos(); 
 
           int curPurposeSel = m_ComboLeft.GetCurSel();
           if (curPurposeSel<0)

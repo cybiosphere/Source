@@ -630,7 +630,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   tWeight.resize(nbWeight);
   for (size_t i = 0; i < nbWeight; i++)
   {
-    tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );
+    tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );  // TODO: use gene definition
   }
 
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
@@ -1541,7 +1541,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * pGen->getElementScale(1);
+        pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100; // TODO: use gene definition
 
       resu = m_pBrain->AddFeelingWelfareSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1554,7 +1554,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * pGen->getElementScale(1);
+        pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100; // TODO: use gene definition
 
       resu = m_pFeelingFear->AddSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1658,7 +1658,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       std::vector<int> bonusTable(bonusTableSize);
       for (int index=0; index<bonusTableSize; index++)
       {
-        bonusTable[index] = cybio_round((double)pData[4+index] * pGen->getElementScale(2));
+        bonusTable[index] = cybio_round((double)pData[4+index] * 20000.0 / 65536.0); // TODO: use gene definition
       }
       resu = pPurpose->AddSensorBonus(pSensor, bonusTable);
       break;
