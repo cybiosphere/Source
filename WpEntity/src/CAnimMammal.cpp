@@ -223,7 +223,7 @@ bool CAnimMammal::completeParamsWithDefault()
   }
   if (m_id_GestationNumberRange == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,3,10,"Gestation baby number",PARAM_REPRODUCTION,GENE_PARAM_GESTA_NB);
+    CGenericParam* pParam = new CGenericParam(0,0,3,10,"Gestation size",PARAM_REPRODUCTION,GENE_PARAM_GESTA_NB);
     pParam->forceVal(0);
     m_id_GestationNumberRange = addParameter(pParam);
   }
@@ -966,7 +966,7 @@ int CAnimMammal::getGestationMinNumber()
 
 int CAnimMammal::getGestationNominalNumber()
 {
-  return ((int)getParameter(m_id_GestationNumberRange)->getValNominal());
+  return (max((int)getParameter(m_id_GestationNumberRange)->getValNominal(), 1));
 }
 
 int CAnimMammal::getGestationBabyNumber()

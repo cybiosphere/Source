@@ -127,9 +127,9 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   m_pMaxStatic->Create(tmpStr,SS_RIGHT,rectMax,pParentWnd);
 	m_pMaxStatic->SetFont(m_pFont);
   
-  SetRange((short)m_pParam->getMin(),(short)m_pParam->getMax());
+  SetRange(cybio_round(m_pParam->getMin()), cybio_round(m_pParam->getMax()));
   SetStep(1);
-  SetPos((short)m_pParam->getVal());
+  SetPos(cybio_round(m_pParam->getVal()));
   
   ShowWindow(SW_SHOW);
   m_pMinStatic->ShowWindow(SW_SHOW);
@@ -150,6 +150,8 @@ bool CParameterCrtl::RefreshDisplayParam(bool resetMinMax)
   
   if (resetMinMax)
   {
+    SetRange(cybio_round(m_pParam->getMin()), cybio_round(m_pParam->getMax()));
+
     tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMin());
     m_pMinStatic->SetWindowText(tmpStr);
     m_pMinStatic->UpdateWindow();
@@ -160,7 +162,7 @@ bool CParameterCrtl::RefreshDisplayParam(bool resetMinMax)
   }
 
   // refresh Bar
-  SetPos((short)m_pParam->getVal());
+  SetPos(cybio_round(m_pParam->getVal()));
   UpdateWindow();
 
   return (true);

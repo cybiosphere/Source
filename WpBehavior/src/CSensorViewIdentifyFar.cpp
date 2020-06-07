@@ -306,10 +306,19 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyFarTab[i].signature = pCurEntity->getEntitySignature();
       offset = 0;
 
-      if (pCurEntity->getEntitySignature() != previousEntitySignature)
+      if (pCurEntity->getEntitySignature() != previousEntitySignature) // CPU optim
       {
         pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity, false);
         previousEntitySignature = pCurEntity->getEntitySignature();
+      }
+      else if (i > maxNumFocusObject)  // CPU optim
+      {
+        // If same entity already taken into account and too much entities in list, just skip it
+        m_pEntityViewIdentifyFarTab[i].index = invalidIndex;
+        m_pEntityViewIdentifyFarTab[i].computedWeight = 0;
+        m_pEntityViewIdentifyFarTab[i].signature = 0;
+        m_pEntityViewIdentifyFarTab[i].pEntity = NULL;
+        continue;
       }
 
       relativeSpeed = pAnimal->getRelativeSpeed(pCurEntity);

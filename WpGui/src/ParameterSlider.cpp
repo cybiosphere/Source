@@ -141,9 +141,9 @@ bool CParameterSlider::CreateNewParam(CGenericParam* pParam, const RECT &rect, C
   m_pMaxStatic->SetFont(m_pFont);
   m_pMaxStatic->SetWindowText(tmpStr);
   
-  SetRange((short)m_pParam->getMin(),(short)m_pParam->getMax());
+  SetRange(cybio_round(m_pParam->getMin()), cybio_round(m_pParam->getMax()));
   SetPageSize(1);
-  SetPos((short)m_pParam->getVal());
+  SetPos(cybio_round(m_pParam->getVal()));
   
   ShowWindow(SW_SHOW);
   m_pMinStatic->ShowWindow(SW_SHOW);
@@ -165,7 +165,7 @@ bool CParameterSlider::RefreshDisplayParam()
     m_pValStatic->UpdateWindow();
 
     // refresh Bar
-    SetPos((short)m_pParam->getVal());
+    SetPos(cybio_round(m_pParam->getVal()));
     UpdateWindow();
   }
   else

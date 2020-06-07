@@ -552,8 +552,11 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
     p_popup->EnableMenuItem(ID_APP_REMOVE_ENTITY, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_EDIT_GENOME, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_EDIT_BRAIN, MF_GRAYED);
-    p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED); 
-    p_popup->EnableMenuItem(ID_APP_EDIT_IDENTIFY, MF_GRAYED);
+    p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED);
+    if (m_pBiotop->getLayerType(bioCoord, 1) == LAYER_OVER_GROUND)
+    {
+      p_popup->EnableMenuItem(ID_APP_EDIT_IDENTIFY, MF_GRAYED);
+    }
     p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_MONITOR_SPECIE, MF_GRAYED);
   }

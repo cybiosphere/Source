@@ -67,7 +67,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_DefaultFilePath = "";
 
   m_tParam.resize(0);
-  m_pFertilityRate = new CCyclicParam(0,50,864,"Avarage fertility",PARAM_ENVIRONMENT);
+  m_pFertilityRate = new CCyclicParam(10,50,864,"Avarage fertility",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pFertilityRate);
   m_pSunlightRate = new CCyclicParam(0,100,24,"Sunlight",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
@@ -1783,7 +1783,7 @@ void CBiotop::nextHour(void)
   m_BioTime.hours++;
   // Cyclic parameters updates
   m_pSunlightRate->NextStep();
-  //m_pFertilityRate->NextStep();
+  m_pFertilityRate->NextStep();
   m_pTemperature->NextStep();
 
   if (m_BioTime.hours >= 24)
@@ -1795,6 +1795,11 @@ void CBiotop::nextHour(void)
       m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM1].cpuTimeCumulated,
       m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM2].cpuTimeCumulated,
       getNbOfAnimals());
+    if (getNbOfAnimals() > 0)
+    {
+      CYBIOCORE_LOG_TIME(m_BioTime);
+      CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfAnimals());
+    }
     resetCpuMarker();
 
     m_BioTime.hours = 0;

@@ -269,6 +269,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   int relativeAngle;
   double curWeight;
   double viewChance;
+  entitySignatureType previousEntitySignature = 0;
 
   // Find entities according to angle, distance and layer:
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
@@ -301,7 +302,11 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyTab[i].signature = pCurEntity->getEntitySignature();
 
       offset = 0;
-      pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity);
+      if ((pCurEntity->getClass() > CLASS_MINERAL_LAST) || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
+      {
+        pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity);
+        previousEntitySignature = pCurEntity->getEntitySignature();
+      }
       relativeSpeed = pAnimal->getRelativeSpeed(pCurEntity);
       relativeAngle = (pAnimal->getDirection() + 8 - pCurEntity->getDirection()) % 8 - 4;
 

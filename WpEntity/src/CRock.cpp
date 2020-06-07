@@ -68,7 +68,7 @@ CRock::CRock()
   m_TotalChildNumber = 0;
  
   setColor(0x008A8F8A); // Color
-  setForm(FORM_ROUNDISH);
+  setForm(FORM_PLAN_ROUGH);
   setOdor(ODOR_NONE);
 
   completeCaractsWithDefault();
