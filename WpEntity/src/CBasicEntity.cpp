@@ -37,6 +37,7 @@ distribution.
 #include "CBasicEntity.h"
 #include "CPhysicalWelfare.h"
 #include "CBiotop.h" 
+#include "CEntityFactory.h"
 
 //===========================================================================
 // Definitions            
@@ -2869,7 +2870,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
           pBabyGenome = new CGenome(CLASS_NONE,"");
           getGenomeFromXmlFile(fileNameWithPathStr,*pBabyGenome);
           getEntityNameFromXmlFile(fileNameWithPathStr,babName);    
-          pEntity = CBiotop::createEntity(babName,pBabyGenome);
+          pEntity = CEntityFactory::createEntity(babName,pBabyGenome);
           if (pEntity)
           {
             pEntity->loadBrainFromXmlFile(fileNameWithPathStr);

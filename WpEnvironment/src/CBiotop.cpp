@@ -36,17 +36,7 @@ distribution.
 
 #include "CBiotop.h"
 
-// Mineral entities
-#include "CMineral.h"
-#include "CWater.h"
-
-// Vegetable entities
-#include "CVegetable.h"
-#include "CVegetSpermatophyta.h"
-
-// Animal entities
-#include "CAnimal.h"
-#include "CAnimMammal.h"
+#include "CEntityFactory.h"
 
 RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
 
@@ -245,181 +235,6 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
 }
 
 
-CBasicEntity* CBiotop::createEntity(string name, CGenome* pGenome)
-{
-  if (pGenome==NULL)
-     return (NULL); 
-
-  CBasicEntity* pNewEntity = NULL;
-
-  // Set defaut coord
-  Point_t coord = { invalidCoord, invalidCoord };
-  size_t layer = invalidCoord;
-
-  // Create the BasicEntity derived object
-  switch(pGenome->getClass())
-  {
-  // Vegetable classs
-  case CLASS_PHYCOPHYTA:
-  case CLASS_MYCOPHYTA:
-  case CLASS_BRYOPHYTA:
-  case CLASS_PTERIDOPHYTA:
-    pNewEntity = new CVegetable(name,coord,layer,pGenome);
-    break;
-
-  case CLASS_SPERMATOPHYTA:
-    pNewEntity = new CVegetSpermatophyta(name,coord,layer,pGenome);
-    break;
-
-   // Animal classs
-  case CLASS_MAMMAL:
-    pNewEntity = new CAnimMammal(name,coord,layer,pGenome);
-
-    break;
-
-  case CLASS_REPTILE:
-  case CLASS_ARTHROPOD:
-  case CLASS_AVE:
-    pNewEntity = new CAnimal(name,coord,layer,pGenome);
-    break; 
-
-  case CLASS_WATER:
-    pNewEntity = new CWater(name,coord,pGenome);
-    break; 
-
-  default:
-    pNewEntity = new CMineral(name,coord,layer,pGenome);
-
-  }
-
-  if (pNewEntity==NULL)
-     return (NULL); 
-
-  // Initialise the new entity
-  pNewEntity->setEntityFromGenome();
-
-  return (pNewEntity);
-}
-
-CBasicEntity* CBiotop::createEntity(string fileName, string pathName)
-{
-  string fileNameWithPath = pathName + fileName;
-  TiXmlDocument* pXmlDoc = new TiXmlDocument(fileNameWithPath);
-  if (!pXmlDoc->LoadFile())
-  {
-    CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
-    delete pXmlDoc;
-    return NULL;
-  }
-  CBasicEntity* pNewEntity = CBiotop::createEntity(pXmlDoc, pathName);
-  delete pXmlDoc;
-  return (pNewEntity);
-}
-
-CBasicEntity* CBiotop::createEntity(TiXmlDocument *pXmlDoc, string pathNameForBabies)
-{
-  string name;
-  CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
-  int startLayer;
-  CBasicEntity::getDefaultLayerFromXmlFile(pXmlDoc, startLayer);
-  CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
-  CBasicEntity::getEntityNameFromXmlFile(pXmlDoc, name);
-
-  CBasicEntity* pNewEntity = createEntity(name, pTempGenome);
-  pNewEntity->jumpToGridCoord({invalidCoord, invalidCoord}, true, startLayer);
-
-  if(pNewEntity != NULL)
-  {
-    pNewEntity->loadDataFromXmlFile(pXmlDoc, pathNameForBabies);
-    pNewEntity->loadBrainFromXmlFile(pXmlDoc);
-  }
-  else
-  {
-    delete pTempGenome;
-  }
-
-  return (pNewEntity);
-}
-
-
-CBasicEntity* CBiotop::createCloneEntity(CBasicEntity* pModelEntity)
-{
-  CBasicEntity* pNewEntity = NULL;
-  string name = pModelEntity->getLabel();
-
-  if (pModelEntity->getGenome() == NULL)
-  {
-    pNewEntity = new CBasicEntity(); // FRED Should use constructor with copy caracters
-    if (pNewEntity==NULL)
-      return (NULL);
-    pNewEntity->setLabel(name);
-  }
-  else
-  {
-    // Create the BasicEntity derived object
-    switch(pModelEntity->getGenome()->getClass())
-    {
-    // Vegetable classs
-    case CLASS_PHYCOPHYTA:
-    case CLASS_MYCOPHYTA:
-    case CLASS_BRYOPHYTA:
-    case CLASS_PTERIDOPHYTA:
-      pNewEntity = new CVegetable(name,*(CVegetable*)pModelEntity);
-      break;
-
-    case CLASS_SPERMATOPHYTA:
-      pNewEntity = new CVegetSpermatophyta(name,*(CVegetSpermatophyta*)pModelEntity);
-      break;
-
-     // Animal classs
-    case CLASS_MAMMAL:
-      pNewEntity = new CAnimMammal(name,*(CAnimMammal*)pModelEntity);
-      break;
-
-    case CLASS_REPTILE:
-    case CLASS_ARTHROPOD:
-    case CLASS_AVE:
-      pNewEntity = new CAnimal(name,*(CAnimal*)pModelEntity);
-      break; 
-
-    case CLASS_WATER:
-      pNewEntity = new CWater(name,*(CWater*)pModelEntity);
-      break; 
-
-    default:
-      pNewEntity = new CMineral(name,*(CMineral*)pModelEntity);
-
-    }
-
-    if (pNewEntity==NULL)
-      return (NULL);
-
-    // Set parameters
-    pNewEntity->setEntityFromGenome(0);
-
-    // quick aging
-    pNewEntity->quickAgeing(pModelEntity->getAge());
-
-    // If dead quick aging in dead mode
-    if (pModelEntity->getStatus() == STATUS_DEAD)
-    {
-      pNewEntity->autoKill();
-      pNewEntity->quickAgeing(pModelEntity->getDecompositionTime());
-    }
-
-  }
-
-  // Copie parameters
-  for (size_t i=0; i<pNewEntity->getNumParameter(); i++)
-    pNewEntity->getParameter(i)->forceVal(pModelEntity->getParameter(i)->getVal());
-
-  // Copie Status
-  pNewEntity->setStatus(pModelEntity->getStatus());
-
-  return pNewEntity;
-}
-
-
 entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome)
 {
   // Check coords
@@ -427,7 +242,7 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, size_t laye
      return (ENTITY_ID_INVALID);
 
   // Create entity
-  CBasicEntity* pNewEntity = createEntity(name,pGenome);
+  CBasicEntity* pNewEntity = CEntityFactory::createEntity(name,pGenome);
   if (pNewEntity==NULL)
     return (ENTITY_ID_INVALID);
 
@@ -519,7 +334,7 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
   if ( !isCoordValidAndFree(cloneCoord,layer) )
      return (ENTITY_ID_INVALID);
 
-  pNewEntity = createCloneEntity(pModelEntity);
+  pNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
 
   if (pNewEntity==NULL)
   {
@@ -554,7 +369,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   size_t prevIndex = deleteEntity(oldId, false);
 
   // Create new entity
-  CBasicEntity* pNewEntity = createEntity(oldLabel,pNewEntityGenome);
+  CBasicEntity* pNewEntity = CEntityFactory::createEntity(oldLabel,pNewEntityGenome);
   if (pNewEntity==NULL)
     return (false);
 
@@ -1881,7 +1696,7 @@ void CBiotop::initGridDefaultLayerType(void)
     for (j=0;j<m_Dimension.y;j++)
     {
       m_tBioGrid[i][j][0].layerType = LAYER_UNDER_GROUND;
-      if (testChance(30))
+      if (testChance(0)) // choose here de % of rocky ground
       {
         m_tBioGrid[i][j][1].layerType = LAYER_GLOBAL_ROCK;
       }
@@ -2608,7 +2423,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
 //===========================================================================
 bool CBiotop::addEntitySpawner(size_t index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility)
 {
-  CBasicEntity* pEntity = createEntity(entityFileName, pathName);
+  CBasicEntity* pEntity = CEntityFactory::createEntity(entityFileName, pathName);
   addEntitySpawner(index, pEntity, intensityRate, avaragePeriod, isProportionalToFertility);
   if (index < m_tRandomEntitiesGeneration.size())
   {
@@ -2652,7 +2467,7 @@ void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
     {
       coord.x = getRandInt(m_Dimension.x) + 2;
       coord.y = getRandInt(m_Dimension.y) + 2;
-      CBasicEntity* pNewEntity = createCloneEntity(pModelEntity);
+      CBasicEntity* pNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
       this->addEntity(pNewEntity, coord, true, pModelEntity->getLayer());
     }
     CYBIOCORE_LOG_TIME(m_BioTime);

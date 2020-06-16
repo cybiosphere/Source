@@ -443,6 +443,9 @@
       <Filter>WpGui\IncGui</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="..\WpEntity\inc\CEntityFactory.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpWizardGui\src\ChildFrm.cpp">

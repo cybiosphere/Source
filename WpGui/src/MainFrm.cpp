@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_APP_SELECT_CARROT, OnAppSelectCarrot)
 	ON_COMMAND(ID_APP_DISPLAY_2D, OnAppDisplay2d)
 	ON_COMMAND(ID_APP_DISPLAY_3D, OnAppDisplay3d)
+  ON_COMMAND(ID_APP_DISPLAY_2DSAT, OnAppDisplay2dSat)
 	ON_COMMAND(ID_EDIT_FIND, OnAppFindEntity)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -535,28 +536,41 @@ void CMainFrame::OnAppSelectCarrot()
 
 void CMainFrame::OnAppDisplay2d() 
 {
-  if (m_ViewMode == VIEW_MODE_3D)
+  if (m_ViewMode != VIEW_MODE_2D)
   {
     theApp.GetBiotopViewPtr()->SwitchToDisplay2d();
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2D,true);
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_3D,false);
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2DSAT, false);
     m_ViewMode = VIEW_MODE_2D;
 
     CMenu* myMenu = GetMenu( );
     myMenu->EnableMenuItem(ID_APP_DISPLAY_2D, MF_GRAYED);
     myMenu->EnableMenuItem(ID_APP_DISPLAY_2D, MF_ENABLED);
-
   }
 }
 
 void CMainFrame::OnAppDisplay3d() 
 {
-  if (m_ViewMode == VIEW_MODE_2D)
+  if (m_ViewMode != VIEW_MODE_3D)
   {
     theApp.GetBiotopViewPtr()->SwitchToDisplay3d();
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_3D,true);
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2D,false);
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2DSAT, false);
     m_ViewMode = VIEW_MODE_3D;
+  }
+}
+
+void CMainFrame::OnAppDisplay2dSat()
+{
+  if (m_ViewMode != VIEW_MODE_2DSAT)
+  {
+    theApp.GetBiotopViewPtr()->SwitchToDisplay2dSat();
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2D, false);
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_3D, false);
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_2DSAT, true);
+    m_ViewMode = VIEW_MODE_2DSAT;
   }
 }
 

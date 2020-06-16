@@ -43,7 +43,6 @@ protected: // create from serialization only
 	CBiotopView();
 	DECLARE_DYNCREATE(CBiotopView)
 
-// Attributes
 public:
 	CBiotopDoc* GetDocument();
   void SetZoomRate (int zoomRate);
@@ -52,13 +51,18 @@ public:
   void StartTimers();
   void SwitchToDisplay2d();
   void SwitchToDisplay3d();
+	void SwitchToDisplay2dSat();
   void ScrollToGridCoord (Point_t centerPos);
+
+protected:
+	void UpdateDisplayZoomRate();
 
 //Attributes
 protected:
   CBiotopDisplay* m_pBioDisplay;
   CBiotopDisplay* m_pBioDisplay2D;
   CBiotopDisplay* m_pBioDisplay3D;
+	CBiotopDisplay* m_pBioDisplay2DSat;
   UINT SECOND_TIMER_ID;
   UINT REFRESH_TIMER_ID;
   CBiotop* m_pBiotop;

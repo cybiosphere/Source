@@ -3,6 +3,7 @@
 #include "API/Core/Zip/zlib_compression.h"
 #include "API/Core/Text/console_logger.h"
 #include "CMeasureFactory.h"
+#include "CEntityFactory.h"
 
 namespace clan
 {
@@ -119,7 +120,7 @@ namespace clan
       stepCoord.y = stepCoordy;
       index += 5;
 
-      CBasicEntity* pClonedNewEntity = pBiotop->createCloneEntity(pModelEntity);
+      CBasicEntity* pClonedNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
       pClonedNewEntity->setStepDirection(direction);
       if (setAsRemoteControl)
       {
@@ -530,7 +531,7 @@ namespace clan
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
 
-    CBasicEntity* pNewEntity = pBiotop->createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
     log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 ID %5", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, (int)entityId);
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
@@ -562,7 +563,7 @@ namespace clan
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
 
-    CBasicEntity* pNewEntity = pBiotop->createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
     log_event("events", "Biotop update full entity: %1 state %2", pNewEntity->getLabel(), pNewEntity->getStatus());
 
     CBasicEntity* pCurEntity;
@@ -605,7 +606,7 @@ namespace clan
     DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
-    CBasicEntity* pNewEntity = pBiotop->createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
     if (pNewEntity!=NULL)
     {
       log_event("events", "Add entity spawn: Id%1 period=%2 label=%3", spawnerId, period, pNewEntity->getLabel());

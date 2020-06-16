@@ -32,6 +32,7 @@ distribution.
 #include "CAnimMammal.h"
 #include "CBiotop.h"
 #include "CWater.h"
+#include "CEntityFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -260,7 +261,7 @@ bool CDialogTab3::LoadSensorsAndPredatorsEntities()
         CBasicEntity::getDefaultLayerFromXmlFile(fileNameWithPath.GetBuffer(0), startLayer);
 
         Point_t coord = {1,1};
-        m_pPreyEntities[i] = CBiotop::createEntity(name, pTempGenome);   
+        m_pPreyEntities[i] = CEntityFactory::createEntity(name, pTempGenome);
         if (m_pPreyEntities[i] != NULL)
         {
           m_pPreyEntities[i]->jumpToGridCoord(coord, true, startLayer);
@@ -294,7 +295,7 @@ bool CDialogTab3::LoadSensorsAndPredatorsEntities()
         CBasicEntity::getDefaultLayerFromXmlFile(fileNameWithPath.GetBuffer(0), startLayer);
 
         Point_t coord = {1,1};
-        m_pPredatorEntities[i] = CBiotop::createEntity(name, pTempGenome);   
+        m_pPredatorEntities[i] = CEntityFactory::createEntity(name, pTempGenome);
         if (m_pPredatorEntities[i] != NULL)
         {
           m_pPredatorEntities[i]->jumpToGridCoord(coord, true,  startLayer);       

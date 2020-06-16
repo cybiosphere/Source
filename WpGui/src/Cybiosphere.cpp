@@ -27,7 +27,7 @@ distribution.
 
 #include "stdafx.h"
 #include "Cybiosphere.h"
-
+#include "CEntityFactory.h"
 #include "MainFrm.h"
 #include "ChildFrm.h"
 #include "BiotopDoc.h"
@@ -704,7 +704,7 @@ void CCybiosphereApp::removeEntityFromBiotop(CBasicEntity* pEntity)
 void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord)
 {
 #ifdef USE_CLAN_CLIENT
-  CBasicEntity* pEntity = CBiotop::createEntity(fileName, pathName);
+  CBasicEntity* pEntity = CEntityFactory::createEntity(fileName, pathName);
   if (pEntity != NULL)
   {
     pEntity->jumpToGridCoord(coord, false);

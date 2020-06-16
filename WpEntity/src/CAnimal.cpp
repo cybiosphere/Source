@@ -2478,6 +2478,9 @@ void CAnimal::nextDay(bool forceGrowth)
       if (getParameter(m_id_Age)->isMaxReached())
       {
         autoKill();
+        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to old age\n",
+          getSpecieName().c_str(), getLabel().c_str());
       }
     }
     else

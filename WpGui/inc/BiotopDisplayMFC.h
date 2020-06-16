@@ -51,10 +51,11 @@ protected:
 	int m_curViewSizeY;
 
   double m_ZoomFactor;
+  bool m_SatelliteView;
 
 // Operations
 public:
-	CBiotopDisplayMFC();
+	CBiotopDisplayMFC(bool isSatelliteVew);
   ~CBiotopDisplayMFC();
 
 public:
@@ -81,7 +82,8 @@ public:
   CBitmap m_bmpMineral;
 
 protected:
-
+  void RedrawSceneAerialView();
+  void RedrawSceneSatelliteView();
 };
 
 #endif // !defined(AFX_BIOTOPDISPLAYMFC_INCLUDED_)

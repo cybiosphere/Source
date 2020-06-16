@@ -34,6 +34,7 @@ distribution.
 #include "CBiotop.h"
 #include "CScenarioPlayer.h"
 #include "CMineral.h"
+#include "CEntityFactory.h"
 
 #include "CWizardSensor.h"
 #include "CWizardBrain.h"
@@ -395,7 +396,7 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
 
   // create new entity
   CDialogTab1* pTabFemale = pView->GetTabCaractFemale();
-  m_pEntity = CBiotop::createEntity(pTabFemale->m_EditBoxSpecieName.GetBuffer(0), m_pGenome);   
+  m_pEntity = CEntityFactory::createEntity(pTabFemale->m_EditBoxSpecieName.GetBuffer(0), m_pGenome);
   Point_t coor = {0,0};
   m_pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
@@ -748,7 +749,7 @@ void CDialogTab4::AddGenesForSensors()
   int numPrey = pTabBehavior->GetPreyEntityList(&pPreyList,false);
   int numPred = pTabBehavior->GetPredatorEntityList(&pPredList);
 
-  CAnimal* pAnimal = (CAnimal*)CBiotop::createEntity("toto", m_pGenome);   
+  CAnimal* pAnimal = (CAnimal*)CEntityFactory::createEntity("toto", m_pGenome);   
 
   if (pAnimal == NULL)
     return;
@@ -1052,7 +1053,7 @@ void CDialogTab4::AddGenesForPurposes()
   int bonusSensor, bonusReaction, trigger;
 
   CGenome* pTmpGenome = new CGenome(*m_pGenome);
-  CBasicEntity* pEntity = CBiotop::createEntity("toto", pTmpGenome);   
+  CBasicEntity* pEntity = CEntityFactory::createEntity("toto", pTmpGenome);
   Point_t coor = {0,0};
   pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
@@ -1567,7 +1568,7 @@ void CDialogTab4::OnButtonSaveEntity()
 
       CGenome* pMotherGenome = new CGenome(*(m_pEntity->getGenome()));
       pMotherGenome->setSexFemale(m_SexualChrom_Idx, pView->IsSexualDimorphism());
-      CBasicEntity* pMother = CBiotop::createEntity("mother", pMotherGenome);
+      CBasicEntity* pMother = CEntityFactory::createEntity("mother", pMotherGenome);
       PrepareBrainInstinct((CAnimal*)pMother);
       ((CAnimal*)pMother)->setBrainInstinctInGenes();
       pMother->quickAgeing(50); // FRED TBD: force age to adult according to tab1 ages

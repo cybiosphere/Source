@@ -30,7 +30,7 @@ distribution.
 #include "DialogTab1.h"
 #include "ProjectWizardDoc.h"
 #include "ProjectWizardView.h"
-#include "CBiotop.h"
+#include "CEntityFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -443,7 +443,7 @@ void CDialogTab1::OnPaint()
   {
     CBasicEntity* pTempEntity = NULL;
     CGenome* pTempGenome = new CGenome(*GetpEntity()->getGenome());
-    pTempEntity = CBiotop::createEntity("titi", pTempGenome);
+    pTempEntity = CEntityFactory::createEntity("titi", pTempGenome);
     
     UpdateData(true);
     
@@ -580,7 +580,7 @@ void CDialogTab1::OnSelchangeComboClass()
   ClassType_e selectedClass = (ClassType_e)m_ComboClass.GetItemData(m_ComboClass.GetCurSel());
   CGenome* pTempGenome = new CGenome(selectedClass,/*m_EditBoxSpecieName.GetBuffer(0)*/ "titi");
   
-  pEntity = CBiotop::createEntity("toto", pTempGenome);
+  pEntity = CEntityFactory::createEntity("toto", pTempGenome);
   pView->SetpEntity(pEntity, m_bSexualDimorphism);
   
 }

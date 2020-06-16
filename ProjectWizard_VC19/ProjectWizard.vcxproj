@@ -332,6 +332,7 @@
     <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />
     <ClInclude Include="..\WpEntity\inc\CBasicEntity.h" />
+    <ClInclude Include="..\WpEntity\inc\CEntityFactory.h" />
     <ClInclude Include="..\WpEntity\inc\CGrass.h" />
     <ClInclude Include="..\WpEntity\inc\CLifeStage.h" />
     <ClInclude Include="..\WpEntity\inc\CMineral.h" />

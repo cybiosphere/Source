@@ -257,6 +257,7 @@
 #define ID_APP_EDIT_CHECK_IDENTIFY      32809
 #define ID_APP_DISPLAY_LOGSERVER        32810
 #define ID_APP_MONITOR_SPECIE           32811
+#define ID_APP_DISPLAY_2DSAT            32812
 
 // Next default values for new objects
 // 
@@ -264,7 +265,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        210
-#define _APS_NEXT_COMMAND_VALUE         32810
+#define _APS_NEXT_COMMAND_VALUE         32812
 #define _APS_NEXT_CONTROL_VALUE         1137
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

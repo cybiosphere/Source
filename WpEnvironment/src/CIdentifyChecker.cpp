@@ -34,7 +34,7 @@ distribution.
 //
 //===========================================================================
 #include "CIdentifyChecker.h"
-#include "CAnimal.h"
+#include "CEntityFactory.h"
 
 //===========================================================================
 // Definitions            
@@ -198,7 +198,7 @@ bool CIdentifyChecker::NextCheck()
     delete pXmlDoc;
     return true;
   }
-  CBasicEntity* pTargetEntity = CBiotop::createEntity(pXmlDoc,"");
+  CBasicEntity* pTargetEntity = CEntityFactory::createEntity(pXmlDoc,"");
   delete pXmlDoc;
 
   if (pTargetEntity == NULL)

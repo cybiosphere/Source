@@ -47,7 +47,8 @@ typedef enum
 typedef enum
 {
   VIEW_MODE_2D =     0,
-  VIEW_MODE_3D
+  VIEW_MODE_3D,
+	VIEW_MODE_2DSAT
 } AppliViewMode_e;
 
 typedef enum
@@ -115,6 +116,7 @@ protected:
 	afx_msg void OnAppSelectCarrot();
 	afx_msg void OnAppDisplay2d();
 	afx_msg void OnAppDisplay3d();
+	afx_msg void OnAppDisplay2dSat();
   afx_msg void OnAppFindEntity();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

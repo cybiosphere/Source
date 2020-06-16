@@ -294,11 +294,6 @@ public:
   size_t getNbOfMinerals(void);
   size_t getNbOfSpecieEntities(string& SpecieName);
 
-public:
-  static CBasicEntity* createEntity(string name, CGenome* pGenome);
-  static CBasicEntity* createEntity(string fileName, string pathName);
-  static CBasicEntity* createEntity(TiXmlDocument *pXmlDoc, string pathNameForBabies);
-  static CBasicEntity* createCloneEntity(CBasicEntity* pModelEntity);
 
 //---------------------------------------------------------------------------
 // Entities access

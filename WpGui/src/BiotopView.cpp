@@ -102,7 +102,8 @@ END_MESSAGE_MAP()
 CBiotopView::CBiotopView()
 {
   m_pBioDisplay3D = new CBiotopDisplayGL();
-  m_pBioDisplay2D = new CBiotopDisplayMFC();
+  m_pBioDisplay2D = new CBiotopDisplayMFC(false);
+  m_pBioDisplay2DSat = new CBiotopDisplayMFC(true);
 
   m_pBioDisplay = m_pBioDisplay2D;
 
@@ -130,6 +131,7 @@ CBiotopView::~CBiotopView()
 	  m_pBioDisplay->KillWindow();	// Shutdown
     delete ((CBiotopDisplayGL*)m_pBioDisplay3D);
     delete ((CBiotopDisplayMFC*)m_pBioDisplay2D);
+    delete ((CBiotopDisplayMFC*)m_pBioDisplay2DSat);
   }
  
 }
@@ -222,8 +224,9 @@ void CBiotopView::OnPaint()
 
 void CBiotopView::OnSize(UINT nType, int cx, int cy) 
 {
-  m_pBioDisplay2D->ResizeScene( cx, cy);
-  m_pBioDisplay3D->ResizeScene( cx, cy);
+  m_pBioDisplay2D->ResizeScene(cx, cy);
+  m_pBioDisplay3D->ResizeScene(cx, cy);
+  m_pBioDisplay2DSat->ResizeScene(cx, cy);
   if (m_pBioDisplay == m_pBioDisplay3D)
   {
     m_pBioDisplay3D->RefreshScene();
@@ -392,6 +395,7 @@ bool CBiotopView::SetSelectedEntity(CBasicEntity* pEntity)
   // Reset focused entity
   m_pBioDisplay3D->SetFocusedEntityId(ENTITY_ID_INVALID);
   m_pBioDisplay2D->SetFocusedEntityId(ENTITY_ID_INVALID);
+  m_pBioDisplay2DSat->SetFocusedEntityId(ENTITY_ID_INVALID);
 
   if (m_pFocusedEntity != NULL)        
     m_pFocusedEntity->forceHasChanged();
@@ -473,14 +477,21 @@ bool CBiotopView::SetBiotop(CBiotop* pBiotop)
   m_pBioDisplay2D->Initialize(this);
   m_pBioDisplay3D->SetBiotop(pBiotop);
   m_pBioDisplay3D->Initialize(this);
+  m_pBioDisplay2DSat->SetBiotop(pBiotop);
+  m_pBioDisplay2DSat->Initialize(this);
 
   return (true);
 }
 
-void CBiotopView::SetZoomRate (int zoomRate)
+void CBiotopView::SetZoomRate(int zoomRate)
 {
   m_zoomFactor = zoomRate;
-  m_pBioDisplay->SetZoomFactor((double)(zoomRate*2/25 * 25)/200.0);
+  UpdateDisplayZoomRate();
+}
+
+void CBiotopView::UpdateDisplayZoomRate()
+{
+  m_pBioDisplay->SetZoomFactor((double)(m_zoomFactor * 2 / 25 * 25) / 200.0);
 }
 
 void CBiotopView::StartTimers()
@@ -782,6 +793,7 @@ void CBiotopView::SwitchToDisplay2d()
   Point_t centerCoord = m_pBioDisplay3D->GetCurrentGridCenterPos();
   m_pBioDisplay = m_pBioDisplay2D;
   m_pBioDisplay2D->DisplayView();
+  UpdateDisplayZoomRate();
   ForceRefreshDisplay();
   m_pBioDisplay2D->ScrollToGridCoord(centerCoord);
 }
@@ -791,9 +803,18 @@ void CBiotopView::SwitchToDisplay3d()
   Point_t centerCoord = m_pBioDisplay2D->GetCurrentGridCenterPos();
   m_pBioDisplay = m_pBioDisplay3D;
   m_pBioDisplay3D->DisplayView();
+  UpdateDisplayZoomRate();
   ForceRefreshDisplay();
   SetZoomRate(m_zoomFactor);
   m_pBioDisplay3D->ScrollToGridCoord(centerCoord);
+}
+
+void CBiotopView::SwitchToDisplay2dSat()
+{
+  m_pBioDisplay = m_pBioDisplay2DSat;
+  m_pBioDisplay2DSat->DisplayView();
+  UpdateDisplayZoomRate();
+  ForceRefreshDisplay();
 }
 
 void CBiotopView::ScrollToGridCoord (Point_t centerPos)
