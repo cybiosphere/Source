@@ -221,6 +221,7 @@ public:
 
 protected:
   bool checkConsumeClass(ClassType_e eatenClass);
+  void logDeathCause(std::string deathCauseStr = "\n");
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

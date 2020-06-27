@@ -2501,14 +2501,7 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
   // Save parameters
   for (i=0; i<getNumParameter(); i++)
   {
-    TiXmlElement newParam(XML_NODE_PARAMETER);
-    pNodeChild = pNodeEntity->InsertEndChild(newParam);
-    if (pNodeChild != NULL) 
-    {
-      pElement = (TiXmlElement*)pNodeChild;
-      pElement->SetAttribute(XML_ATTR_NAME, getParameter(i)->getLabel());
-      pElement->SetDoubleAttribute(XML_ATTR_VALUE, getParameter(i)->getVal());
-    }
+    getParameter(i)->saveInXmlFile(pNodeEntity);
   }
 
   // Clear previous caracters
@@ -2803,15 +2796,14 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
     {
       if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_PARAMETER))
       {
-        pElement = (TiXmlElement*)pNode; 
-        if ( pElement->QueryDoubleAttribute(XML_ATTR_VALUE,  &paramVal) == TIXML_NO_ATTRIBUTE)
-          paramVal = 0;
-        
-        if ( pElement->QueryStringAttribute(XML_ATTR_NAME,  &paramName) != TIXML_NO_ATTRIBUTE)
+        pElement = (TiXmlElement*)pNode;
+        if (pElement->QueryStringAttribute(XML_ATTR_NAME, &paramName) != TIXML_NO_ATTRIBUTE)
         {
           pParam = getParameterByName(paramName);
           if (pParam != NULL)
-            pParam->setVal(paramVal);
+          {
+            pParam->loadFromXmlFile(pNode);
+          }
         }
       }
       pNode = pNode->NextSibling();

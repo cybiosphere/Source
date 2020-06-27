@@ -2389,16 +2389,13 @@ void CAnimal::nextSecond()
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
     if ((healthVar!=0) && (getParameter(m_id_Health)->getVal()>0) && (changeHealthRate(healthVar) == false))
     {
-      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
       if (checkVitalNeedsOk())
       {
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare (coordx %d coordy %d)\n",
-          getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+        logDeathCause(FormatString("due to bad physical welfare (coordx %d coordy %d)\n", getGridCoord().x, getGridCoord().y));
       }
       else
       {
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs (coordx %d coordy %d)\n",
-          getSpecieName().c_str(), getLabel().c_str(), getGridCoord().x, getGridCoord().y);
+        logDeathCause(FormatString("due to vital needs (coordx %d coordy %d)\n", getGridCoord().x, getGridCoord().y));
       }
     }
 
@@ -2478,9 +2475,7 @@ void CAnimal::nextDay(bool forceGrowth)
       if (getParameter(m_id_Age)->isMaxReached())
       {
         autoKill();
-        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to old age\n",
-          getSpecieName().c_str(), getLabel().c_str());
+        logDeathCause("due to old age\n");
       }
     }
     else
@@ -2638,9 +2633,7 @@ void CAnimal::changeStomachFillingRate(double variation)
   {
     if (changeHealthRate(-1) == false)
     {
-      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-      CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to stomach overload\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+      logDeathCause("due to stomach overload\n");
     }
   }
   return;
@@ -2791,9 +2784,7 @@ void CAnimal::changeTirednessRate(double variation)
   {
     if (changeHealthRate(-1) == false)
     {
-      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-      CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to burnout\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+      logDeathCause("due to burnout\n");
     }
   }
   return;
@@ -2978,16 +2969,13 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
     if (changeHealthRate(healthVar) == false)
     {
-      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
       if (checkVitalNeedsOk())
       {
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to bad physical welfare\n",
-          getSpecieName().c_str(), getLabel().c_str());
+        logDeathCause("due to bad physical welfare\n");
       }
       else
       {
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to vital needs\n",
-          getSpecieName().c_str(), getLabel().c_str());
+        logDeathCause("due to vital needs\n");
       }
     }
 
@@ -3125,9 +3113,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
       pleasureRate = -failureFrustrationFactor;
       if (changeHealthRate(-2.0, pWater) == false)
       {
-        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to water\n", 
-                     getSpecieName().c_str(), getLabel().c_str());
+        logDeathCause("due to water\n");
       }
     }
   }
@@ -3146,9 +3132,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
         pleasureRate = -failureFrustrationFactor;
         if (changeHealthRate(-2.0, pWater) == false)
         {
-          CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-          CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to water2\n", 
-                       getSpecieName().c_str(), getLabel().c_str());
+          logDeathCause("due to water2\n");
         }  
       }
     }
@@ -3170,9 +3154,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
           injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(pHitEntity->getProtection() - getProtection()) / 100.0;
           if (changeHealthRate(-injuryLevel) == false)
           {
-            CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-            CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to run in obstacle %s\n",
-              getSpecieName().c_str(), getLabel().c_str(), pHitEntity->getLabel().c_str());
+            logDeathCause(FormatString("due to run in obstacle %s\n", pHitEntity->getLabel().c_str()));
           }
         }
 
@@ -3184,9 +3166,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
             injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(getAttackFactor() - pHitEntity->getProtection()) / 100.0;
             if (((CAnimal*)pHitEntity)->changeHealthRate(-injuryLevel, this) == false)
             {
-              CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-              CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to shock by animal %s\n",
-                pHitEntity->getSpecieName().c_str(), pHitEntity->getLabel().c_str(), getLabel().c_str());
+              ((CAnimal*)pHitEntity)->logDeathCause(FormatString("due to shock by animal %s\n", getLabel().c_str()));
             }
           }
         }
@@ -3279,6 +3259,24 @@ bool CAnimal::checkConsumeClass (ClassType_e eatenClass)
 }
 
 //---------------------------------------------------------------------------
+// METHOD:       CAnimal::logDeathCause
+//  
+// DESCRIPTION:  Display death cause
+// 
+// ARGUMENTS:    string deathCauseStr: string that will follow "is dead ". End with "\n"
+//   
+// RETURN VALUE: None 
+//  
+// REMARKS:      
+//---------------------------------------------------------------------------
+void CAnimal::logDeathCause(std::string deathCauseStr)
+{
+  CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+  CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead ", getSpecieName().c_str(), getLabel().c_str());
+  CYBIOCORE_LOG(deathCauseStr.c_str());
+}
+
+//---------------------------------------------------------------------------
 // METHOD:       CAnimal::ExecuteEatAction
 //  
 // DESCRIPTION:  Action other entity
@@ -3332,9 +3330,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         // If toxic, be injured
         if (changeHealthRate(-toxicityRate) == false)
         {
-          CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-          CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead due to poison when eating %s\n", 
-                     getSpecieName().c_str(), getLabel().c_str(), pEatenEntity->getLabel().c_str());
+          logDeathCause(FormatString("due to poison when eating %s\n", pEatenEntity->getLabel().c_str()));
         }
       }
 
@@ -3523,9 +3519,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
 
         if (((CAnimal*)pAttackedEntity)->changeHealthRate(-diffScore) == false)
         {
-          CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-          CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead killed by %s\n", 
-                     pAttackedEntity->getSpecieName().c_str(), pAttackedEntity->getLabel().c_str(), getLabel().c_str());
+          ((CAnimal*)pAttackedEntity)->logDeathCause(FormatString("killed by %s\n", getLabel().c_str()));
         }
         // Animal is hurt and can loose health for a duration
         pAttackedEntity->getpPhysicalWelfare()->SetInjuryMalus((double)getRandInt(attackScore-defenseScore)/10.0);
@@ -3545,9 +3539,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
       // Attack failure hurts
       if (changeHealthRate((attackScore-defenseScore)/4, pAttackedEntity) == false)  
       {
-        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead while trying to attack %s\n", 
-                   getSpecieName().c_str(), getLabel().c_str(), pAttackedEntity->getLabel().c_str());
+        logDeathCause(FormatString("while trying to attack %s\n", pAttackedEntity->getLabel().c_str()));
       }
     }
   }

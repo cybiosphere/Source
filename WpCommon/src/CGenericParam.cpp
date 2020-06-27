@@ -72,6 +72,36 @@ CGenericParam::~CGenericParam()
 }
 
 //===========================================================================
+// Save/Load in xml file
+//===========================================================================
+bool CGenericParam::saveInXmlFile(TiXmlNode* pNode)
+{
+  bool resu = false;
+  TiXmlElement newParam(XML_NODE_PARAMETER);
+  TiXmlNode* pNodeChild = pNode->InsertEndChild(newParam);
+  if (pNodeChild != NULL)
+  {
+    TiXmlElement* pElement = (TiXmlElement*)pNodeChild;
+    pElement->SetAttribute(XML_ATTR_NAME, getLabel());
+    pElement->SetDoubleAttribute(XML_ATTR_VALUE, getVal());
+    resu = true;
+  }
+  return resu;
+}
+
+bool CGenericParam::loadFromXmlFile(TiXmlNode* pNode)
+{
+  TiXmlElement* pElement = (TiXmlElement*)pNode;
+  double paramVal;
+  if (pElement->QueryDoubleAttribute(XML_ATTR_VALUE, &paramVal) != TIXML_NO_ATTRIBUTE)
+  {
+    setVal(paramVal);
+  }
+  return true;
+}
+
+
+//===========================================================================
 // Get / Set for attributes
 //===========================================================================
 

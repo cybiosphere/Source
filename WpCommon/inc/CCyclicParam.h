@@ -77,6 +77,13 @@ public:
 	CCyclicParam(double valMin, double valMax, int nbStepPerCycle, string label, GenericParamType_e type);
 	virtual ~CCyclicParam();
 
+ //---------------------------------------------------------------------------
+ // Save/Load in xml file
+ //---------------------------------------------------------------------------
+  virtual bool saveInXmlFile(TiXmlNode* pNode);
+  virtual bool loadFromXmlFile(TiXmlNode* pNode);
+
+
 //---------------------------------------------------------------------------
 // Cycle management
 //---------------------------------------------------------------------------

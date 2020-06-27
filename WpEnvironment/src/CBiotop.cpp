@@ -2118,15 +2118,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
   // Save parameters
   for (i=0; i<m_tParam.size(); i++)
   {
-    TiXmlElement newParam(XML_NODE_PARAMETER);
-    pNodeChild = pNodeBiotop->InsertEndChild(newParam);
-    if (pNodeChild != NULL) 
-    {
-      pElement = (TiXmlElement*)pNodeChild;
-      pElement->SetAttribute(XML_ATTR_NAME, getParameter(i)->getLabel());
-      pElement->SetDoubleAttribute(XML_ATTR_VALUE, getParameter(i)->getVal());
-      pElement->SetDoubleAttribute(XML_ATTR_PHASE, getParameter(i)->getCurrentPhase());
-    }
+    getParameter(i)->saveInXmlFile(pNodeBiotop);
   }
 
   // Grid
@@ -2281,20 +2273,13 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     {
       if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_PARAMETER))
       {
-        pElement = (TiXmlElement*)pNode; 
-        if ( pElement->QueryDoubleAttribute(XML_ATTR_VALUE,  &paramVal) == TIXML_NO_ATTRIBUTE)
-          paramVal = 0;
-        
+        pElement = (TiXmlElement*)pNode;
         if ( pElement->QueryStringAttribute(XML_ATTR_NAME,  &paramName) != TIXML_NO_ATTRIBUTE)
         {
           pParam = getParameterByName(paramName);
           if (pParam != NULL)
           {
-            pParam->setVal(paramVal);
-            if (pElement->QueryDoubleAttribute(XML_ATTR_PHASE, &paramPhase) != TIXML_NO_ATTRIBUTE)
-            {
-              pParam->setCurrentPhase(paramPhase);
-            }
+            pParam->loadFromXmlFile(pNode);
           }
         }
       }

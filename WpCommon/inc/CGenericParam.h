@@ -47,6 +47,7 @@ distribution.
 //#include <afxwin.h>
 
 #include "Definitions.h"
+#include "CybioXmlDef.h"
 #include "CGene.h"
 
 //===========================================================================
@@ -95,6 +96,12 @@ public:
 	CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,
                   GenericParamType_e type, GeneSubType_e codingGeneSubType = GENE_GENERIC_UNKNOWN);
 	virtual ~CGenericParam();
+
+ //---------------------------------------------------------------------------
+// Save/Load in xml file
+//---------------------------------------------------------------------------
+  virtual bool saveInXmlFile(TiXmlNode* pNode);
+  virtual bool loadFromXmlFile(TiXmlNode* pNode);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

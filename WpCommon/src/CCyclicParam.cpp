@@ -54,6 +54,52 @@ CCyclicParam::~CCyclicParam()
 }
 
 //===========================================================================
+// Save/Load in xml file
+//===========================================================================
+bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode)
+{
+  bool resu = false;
+  TiXmlElement newParam(XML_NODE_PARAMETER);
+  TiXmlNode* pNodeChild = pNode->InsertEndChild(newParam);
+  if (pNodeChild != NULL)
+  {
+    TiXmlElement* pElement = (TiXmlElement*)pNodeChild;
+    pElement->SetAttribute(XML_ATTR_NAME, getLabel());
+    pElement->SetDoubleAttribute(XML_ATTR_VALUE, getVal());
+    pElement->SetDoubleAttribute(XML_ATTR_PHASE, getCurrentPhase());
+    pElement->SetDoubleAttribute(XML_ATTR_RANGE_MIN, getMin());
+    pElement->SetDoubleAttribute(XML_ATTR_RANGE_MAX, getMax());
+    resu = true;
+  }
+  return resu;
+}
+
+bool CCyclicParam::loadFromXmlFile(TiXmlNode* pNode)
+{
+  TiXmlElement* pElement = (TiXmlElement*)pNode;
+  double paramVal, paramPhase, paramMin, paramMax;
+
+  if (pElement->QueryDoubleAttribute(XML_ATTR_VALUE, &paramVal) != TIXML_NO_ATTRIBUTE)
+  {
+    setVal(paramVal);
+  }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_PHASE, &paramPhase) != TIXML_NO_ATTRIBUTE)
+  {
+    setCurrentPhase(paramPhase);
+  }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_RANGE_MIN, &paramMin) != TIXML_NO_ATTRIBUTE)
+  {
+    setValMin(paramMin);
+  }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_RANGE_MAX, &paramMax) != TIXML_NO_ATTRIBUTE)
+  {
+    setValMax(paramMax);
+  }
+
+  return true;
+}
+
+//===========================================================================
 // Cycle management
 //===========================================================================
 void CCyclicParam::NextStep(void)
