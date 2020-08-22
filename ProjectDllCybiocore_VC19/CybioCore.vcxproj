@@ -331,6 +331,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h" />
     <ClInclude Include="..\WpCommon\inc\CaracterDefinitions.h" />
+    <ClInclude Include="..\WpEntity\inc\CEntityFactory.h" />
     <ClInclude Include="..\WpEntity\inc\CRock.h" />
     <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
@@ -471,6 +472,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpEntity\src\CAnimal.cpp" />
     <ClCompile Include="..\WpEntity\src\CAnimMammal.cpp" />
     <ClCompile Include="..\WpEntity\src\CBasicEntity.cpp" />
+    <ClCompile Include="..\WpEntity\src\CEntityFactory.cpp" />
     <ClCompile Include="..\WpEntity\src\CGrass.cpp" />
     <ClCompile Include="..\WpEntity\src\CLifeStage.cpp" />
     <ClCompile Include="..\WpEntity\src\CMineral.cpp" />

@@ -57,12 +57,13 @@ class CBiotop;
 
 typedef enum
 {
-  MEASURE_POPULATION_TOTAL       = 0,
-  MEASURE_POPULATION_ANIMAL      = 1,
-  MEASURE_POPULATION_VEGETAL     = 2,
-  MEASURE_POPULATION_MINERAL     = 3,
-  MEASURE_POPULATION_SPECIFIC    = 4,
-  MEASURE_POPULATION_NUMBER_TYPE = 5
+  MEASURE_POPULATION_TOTAL            = 0,
+  MEASURE_POPULATION_ANIMAL           = 1,
+  MEASURE_POPULATION_VEGETAL          = 2,
+  MEASURE_POPULATION_MINERAL          = 3,
+  MEASURE_POPULATION_SPECIFIC         = 4,
+  MEASURE_POPULATION_SPECIFIC_BIOMASS = 5,
+  MEASURE_POPULATION_NUMBER_TYPE      = 6
 } MeasurePopulationType_e;
 
 //===========================================================================

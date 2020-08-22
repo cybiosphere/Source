@@ -325,7 +325,8 @@ void CMeasureEditorDlg::RefreshEditSection()
 		m_ComboSubtype.ShowWindow(SW_SHOW);
 		m_ComboEntity.ShowWindow(SW_HIDE);
 		m_ComboReaction.ShowWindow(SW_HIDE);
-    if ( (m_pCurMeasure!=NULL) && (m_pCurMeasure->GetSubTypeId()==MEASURE_POPULATION_SPECIFIC) )
+    if ((m_pCurMeasure!=NULL) && 
+        ((m_pCurMeasure->GetSubTypeId()==MEASURE_POPULATION_SPECIFIC) || (m_pCurMeasure->GetSubTypeId() == MEASURE_POPULATION_SPECIFIC_BIOMASS)))
     {
       m_Title5.ShowWindow(SW_SHOW);
       m_ComboSpecie.ShowWindow(SW_SHOW);
@@ -486,7 +487,7 @@ void CMeasureEditorDlg::InitSelComboSpecie (CMeasure* pMeas)
   switch (pMeas->GetType())
   {
   case MEASURE_TYPE_POPULATION:
-    if (pMeas->GetSubTypeId()==MEASURE_POPULATION_SPECIFIC)
+    if ((pMeas->GetSubTypeId()==MEASURE_POPULATION_SPECIFIC) || (m_pCurMeasure->GetSubTypeId() == MEASURE_POPULATION_SPECIFIC_BIOMASS))
     {
       m_ComboSpecie.SelectString(0, LPCTSTR(((CMeasurePopulation*)pMeas)->GetSpecieName().c_str()));
     }

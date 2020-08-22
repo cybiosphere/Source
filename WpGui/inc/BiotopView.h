@@ -133,6 +133,7 @@ protected:
 	afx_msg void OnAppMonitorShort();
 	afx_msg void OnAppMonitorLong();
   afx_msg void OnAppMonitorSpecie();
+	afx_msg void OnAppMonitorSpecieBiomass();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

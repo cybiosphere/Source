@@ -47,7 +47,8 @@ const char* MeasurePopulationTypeNameList[MEASURE_POPULATION_NUMBER_TYPE] =
   "Animals",
   "Vegetals",
   "Minerals",
-  "Specific"
+  "Specific",
+  "Specific biomass"
 };
 
 //===========================================================================
@@ -77,6 +78,9 @@ CMeasurePopulation::CMeasurePopulation(CBiotop* pBiotop, int period, int id, Mea
     break;
   case  MEASURE_POPULATION_SPECIFIC:
     m_Label = "Population : " + m_SpecieName;
+    break;
+  case  MEASURE_POPULATION_SPECIFIC_BIOMASS:
+    m_Label = "Population biomass : " + m_SpecieName;
     break;
   default:
     m_Label = "error";
@@ -117,6 +121,9 @@ double CMeasurePopulation::GetCurrentValue()
   case  MEASURE_POPULATION_SPECIFIC:
     val = m_pBiotop->getNbOfSpecieEntities(m_SpecieName);
     break;
+  case  MEASURE_POPULATION_SPECIFIC_BIOMASS:
+    val = cybio_round(m_pBiotop->getSpecieBiomass(m_SpecieName));
+    break;
   default:
     val = 0;
     break;
@@ -137,6 +144,12 @@ bool CMeasurePopulation::buildMeasureDataFromString(string dataString)
     // Update specie name
     m_SpecieName = label.substr(13);
     m_Label = "Population : " + m_SpecieName;
+  }
+  else if ((label.find("Population biomass : ") != string::npos) && (m_SubType == MEASURE_POPULATION_SPECIFIC_BIOMASS))
+  {
+    // Update specie name
+    m_SpecieName = label.substr(13);
+    m_Label = "Population biomass : " + m_SpecieName;
   }
   return resu;
 }

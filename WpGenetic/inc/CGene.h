@@ -156,6 +156,10 @@ public:
   double getElementDefaultValue(size_t index);
   bool setRawDataSizeWithDefinition();
 
+  double computeWeightFromData(WORD rawData);
+  double computeSensitivityFromData(WORD rawData);
+  double computeBonusFromData(WORD rawData);
+
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------

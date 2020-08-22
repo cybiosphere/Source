@@ -293,6 +293,7 @@ public:
   size_t getNbOfVegetals(void);
   size_t getNbOfMinerals(void);
   size_t getNbOfSpecieEntities(string& SpecieName);
+  double getSpecieBiomass(string& SpecieName);
 
 
 //---------------------------------------------------------------------------

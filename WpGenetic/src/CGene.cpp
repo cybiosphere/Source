@@ -850,6 +850,21 @@ bool CGene::setRawDataSizeWithDefinition()
   return true;
 }
 
+double CGene::computeWeightFromData(WORD rawData)
+{
+  return cybio_round((double)rawData * 200.0 / 65536.0 - 100.0);
+}
+
+double CGene::computeSensitivityFromData(WORD rawData)
+{
+  return cybio_round((double)rawData * 200.0 / 65536.0 - 100.0);
+}
+
+double CGene::computeBonusFromData(WORD rawData)
+{
+  return cybio_round((double)rawData * 20000.0 / 65536.0);
+}
+
 
 //===========================================================================
 // Raw data conversion

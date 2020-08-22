@@ -372,6 +372,9 @@
     <ClInclude Include="..\WpCommon\inc\CaracterDefinitions.h">
       <Filter>WpCommon\IncCommon</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CEntityFactory.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
@@ -631,6 +634,9 @@
     </ClCompile>
     <ClCompile Include="..\WpGenetic\src\CGeneDefinitions.cpp">
       <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CEntityFactory.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

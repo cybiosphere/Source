@@ -630,7 +630,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   tWeight.resize(nbWeight);
   for (size_t i = 0; i < nbWeight; i++)
   {
-    tWeight[i] = cybio_round( (double)pData[4+i]*200.0/65536.0 - 100.0 );  // TODO: use gene definition
+    tWeight[i] = pGen->computeWeightFromData(pData[4+i]);
   }
 
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
@@ -921,7 +921,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     {
       if (nbWeight>0)
       {
-        DWORD sensUid = (DWORD)scaledVal1 * 65536 + (DWORD)scaledVal2;
+        DWORD sensUid = (DWORD)scaledVal1 * 65536 + (DWORD)scaledVal2; //TODO : should use getElementRawValue but need to swap rawData first
         pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, tWeight, nbWeight, sensUid, scaledVal3);
         resu = true;
       }
@@ -1098,7 +1098,7 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
     }
   case GENE_SENS_COMPOSITE:
     {
-      DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1];
+      DWORD sensUid = (DWORD)(pData[0])*65536 + pData[1]; //TODO : should use getElementRawValue but need to swap rawData first
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
       if (pSens != NULL)
         nbWeight = pSens->GetSubCaptorNumber();
@@ -1541,7 +1541,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100; // TODO: use gene definition
+        pSensiTable[i] = pGen->computeSensitivityFromData(pData[2+i]);
 
       resu = m_pBrain->AddFeelingWelfareSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1554,7 +1554,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
       size_t lenSensiTable = len / sizeof(WORD) - 2;
       double* pSensiTable = new double[lenSensiTable];
       for (size_t i=0; i<lenSensiTable; i++)
-        pSensiTable[i] = (double)pData[2+i] * 200.0 / 65536.0 - 100; // TODO: use gene definition
+        pSensiTable[i] = pGen->computeSensitivityFromData(pData[2+i]);
 
       resu = m_pFeelingFear->AddSensitivity(pSens,lenSensiTable,pSensiTable);
       if (resu == false)
@@ -1658,7 +1658,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       std::vector<int> bonusTable(bonusTableSize);
       for (int index=0; index<bonusTableSize; index++)
       {
-        bonusTable[index] = cybio_round((double)pData[4+index] * 20000.0 / 65536.0); // TODO: use gene definition
+        bonusTable[index] = pGen->computeBonusFromData(pData[4+index]);
       }
       resu = pPurpose->AddSensorBonus(pSensor, bonusTable);
       break;
@@ -1887,7 +1887,7 @@ string CAnimal::buildSensorString(CGene* pGen)
     }
   case GENE_SENS_COMPOSITE:
     {
-      DWORD sensUid = (DWORD)scaledVal1 * 65536 + (DWORD)scaledVal2;
+      DWORD sensUid = (DWORD)scaledVal1 * 65536 + (DWORD)scaledVal2; //TODO : should use getElementRawValue but need to swap rawData first 
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
       CGenericParam* pParam = getParameter(scaledVal3);
       paramStr = pGen->getLabel();

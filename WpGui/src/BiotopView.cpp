@@ -89,6 +89,7 @@ BEGIN_MESSAGE_MAP(CBiotopView, CView)
 	ON_COMMAND(ID_APP_MONITOR_SHORT, OnAppMonitorShort)
 	ON_COMMAND(ID_APP_MONITOR_LONG, OnAppMonitorLong)
   ON_COMMAND(ID_APP_MONITOR_SPECIE, OnAppMonitorSpecie)
+  ON_COMMAND(ID_APP_MONITOR_BIOMASS, OnAppMonitorSpecieBiomass)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -1001,6 +1002,25 @@ void CBiotopView::OnAppMonitorSpecie()
   {
     std::string specieName = pEntity->getGenome()->getSpecieName();
     m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC,
+      10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+    theApp.addGeomapSpecieInBiotop(specieName);
+  }
+
+  m_MenuSelCoord.x = 1;
+  m_MenuSelCoord.y = 1;
+  theApp.updateAllBiotopNewMeasures();
+}
+
+void CBiotopView::OnAppMonitorSpecieBiomass()
+{
+  CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord);
+  // Do not take into account global water and grass
+  if ((pEntity != NULL) && (pEntity->getId() < ENTITY_ID_FIRST_USER_ENTITY))
+    pEntity = NULL;
+  if ((pEntity != NULL) && (pEntity->getGenome() != NULL))
+  {
+    std::string specieName = pEntity->getGenome()->getSpecieName();
+    m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC_BIOMASS,
       10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
     theApp.addGeomapSpecieInBiotop(specieName);
   }
