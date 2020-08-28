@@ -386,6 +386,9 @@ vector<CGeneDefinitions> CGeneList::geneListReaction =
 
 vector<CGeneDefinitions> CGeneList::geneListBrainSize =
 {
+  { GENE_BRAIN_SIZE, GENE_BRAIN_SIZE_TERRITORY, "Territory size", GENE_MUTE_INCREMENTAL_2,
+    { { "Size", 2, 0, 0, 5000, GENE_DOMINANCE_HIGHEST, true } } },
+
   { GENE_BRAIN_SIZE, GENE_BRAIN_SIZE_HIST_IN, "History input", GENE_MUTE_INCREMENTAL_2,
     { { "Size", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true } } },
 
@@ -483,7 +486,7 @@ array< vector<CGeneDefinitions>, GENE_NUMBER_TYPE> CGeneList::geneListArray =
 //  
 // REMARKS:      To be used before SetAs...
 //---------------------------------------------------------------------------
-CGeneDefinitions::CGeneDefinitions(GeneType_e type, GeneSubType_e subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> elementList):
+CGeneDefinitions::CGeneDefinitions(GeneType_e type, int subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> elementList):
  geneType{type}, geneSubType{subType}, label{name}, muteType{muteType}, elements{ elementList }
 {
 }
@@ -497,7 +500,7 @@ CGeneDefinitions::~CGeneDefinitions()
 //                          CGeneList            
 //===========================================================================
 
-const CGeneDefinitions* CGeneList::getDefinitions(GeneType_e type, GeneSubType_e subType)
+const CGeneDefinitions* CGeneList::getDefinitions(GeneType_e type, int subType)
 {
   if (type < geneListArray.size())  // can be removed later...
   {

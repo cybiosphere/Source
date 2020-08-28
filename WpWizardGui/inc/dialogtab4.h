@@ -98,7 +98,7 @@ protected:
     void DisplayGene(CGene* pGene);
 
     void AddGenesForCaracters(SexType_e sex);
-    void AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComboMale, SexType_e sex, GeneSubType_e subtype);
+    void AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComboMale, SexType_e sex, GeneSubTypeCaracter_e subtype);
     void AddGenesForParameters(SexType_e sex);
     void AddGenesForLifeStages(SexType_e sex);
     void AddGenesForPhysic();

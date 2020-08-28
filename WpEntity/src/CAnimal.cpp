@@ -420,37 +420,37 @@ bool CAnimal::completeParamsWithDefault()
   } 
   if (m_id_Hunger == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Hunger rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Hunger rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Hunger = addParameter(pParam);
   } 
   if (m_id_Thirst == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Thirst rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Thirst rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Thirst = addParameter(pParam);
   } 
   if (m_id_StomachFilling == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Stomach filling",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Stomach filling",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_StomachFilling = addParameter(pParam);
   } 
   if (m_id_Libido == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Libido rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Libido rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Libido = addParameter(pParam);
   } 
   if (m_id_Suffering == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Suffering rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Suffering rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Suffering = addParameter(pParam);
   }
   if (m_id_Pleasure == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,50,50,100,"Pleasure rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,50,50,100,"Pleasure rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Pleasure = addParameter(pParam);
   }
   if (m_id_Tiredness == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Tiredness rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Tiredness rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Tiredness = addParameter(pParam);
   }
   if (m_id_CurrentSpeed == invalidIndex)
@@ -483,13 +483,13 @@ bool CAnimal::completeParamsWithDefault()
 
   if (m_id_Fear == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Fear rate",PARAM_FEELING,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Fear rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
     m_id_Fear = addParameter(pParam);
   } 
 
   if (m_id_Vigilance == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR, GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR, GENE_PARAM_UNKNOWN);
     m_id_Vigilance = addParameter(pParam);
   }
 
@@ -1369,6 +1369,12 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
 
   switch(pGen->getGeneSubType())
   {
+  case GENE_BRAIN_SIZE_TERRITORY:
+    {
+      m_pBrain->SetGeoMapSize(brainSize);
+      resu = true;
+      break;
+    }
   case GENE_BRAIN_SIZE_HIST_IN:
     {
       m_pBrain->SetNumberInputHistory(brainSize);
@@ -1421,7 +1427,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size() * sizeof(BYTE) / sizeof(WORD) - 1;
   // Process Line Id
-  GeneSubType_e subType = pGen->getGeneSubType();
+  GeneSubTypeBrainLine_e subType = (GeneSubTypeBrainLine_e)pGen->getGeneSubType();
   int lineId = pGen->getElementRoundValue(0);
   // Build Line
   if (subType == GENE_BRAIN_LINE)
@@ -1532,7 +1538,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
     return (false);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
+  GeneSubTypeFeeling_e subType = (GeneSubTypeFeeling_e)pGen->getGeneSubType();
 
   switch(subType)
   {
@@ -1599,7 +1605,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
 
-  GeneSubType_e subType = pGen->getGeneSubType();
+  GeneSubTypePurpose_e subType = (GeneSubTypePurpose_e)pGen->getGeneSubType();
 
   switch(subType)
   {
@@ -2024,6 +2030,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
 
   switch(pGen->getGeneSubType())
   {
+  case GENE_BRAIN_SIZE_TERRITORY:
   case GENE_BRAIN_SIZE_HIST_IN:
   case GENE_BRAIN_SIZE_HIST_EXP:
     {
@@ -2184,7 +2191,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
     return (welfareStr);
   }
 
-  GeneSubType_e subType = pGen->getGeneSubType();
+  GeneSubTypeFeeling_e subType = (GeneSubTypeFeeling_e)pGen->getGeneSubType();
 
   switch(subType)
   {
@@ -2235,7 +2242,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
 
-  GeneSubType_e subType = pGen->getGeneSubType();
+  GeneSubTypePurpose_e subType = (GeneSubTypePurpose_e)pGen->getGeneSubType();
 
   switch(subType)
   {

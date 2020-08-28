@@ -576,7 +576,7 @@ void CGenomeEditorDlg::UpdateCombo2(bool rebuildGene)
 	if (m_EditMode == EDIT_MODE_GENE)
   {
     GeneType_e geneType = (GeneType_e)m_Combo1.GetItemData(m_Combo1.GetCurSel());
-    GeneSubType_e geneSubType = (GeneSubType_e)m_Combo2.GetItemData(m_Combo2.GetCurSel());
+    int geneSubType = m_Combo2.GetItemData(m_Combo2.GetCurSel());
     
     double scaleData1{ 0 }, scaleData2{ 0 }, scaleData3{ 0 }, scaleData4{ 0 };
     size_t numParam = m_pCurrentEditGeneM->getNumElements();
@@ -960,7 +960,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
 	if ((m_EditMode == EDIT_MODE_GENE)&&(rebuildGene))
   {
     GeneType_e geneType = (GeneType_e)m_Combo1.GetItemData(m_Combo1.GetCurSel());
-    GeneSubType_e geneSubType = (GeneSubType_e)m_Combo2.GetItemData(m_Combo2.GetCurSel());
+    int geneSubType = m_Combo2.GetItemData(m_Combo2.GetCurSel());
     GeneMuteType_e muteType = (GeneMuteType_e)m_ComboMuteType.GetItemData(m_ComboMuteType.GetCurSel());
     int i;
 
@@ -972,19 +972,19 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
       data[1] = m_SliderM2.GetRangeMax() - m_SliderM2.GetPos(); 
       data[2] = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos(); 
       data[3] = m_SliderM4.GetRangeMax() - m_SliderM4.GetPos(); 
-      m_pCurrentEditGeneM->setAsCaracter(geneSubType,m_MuteRate,muteType,4,data);
+      m_pCurrentEditGeneM->setAsCaracter((GeneSubTypeCaracter_e)geneSubType,m_MuteRate,muteType,4,data);
       break;
     case GENE_PARAMETER:
       long min,nominal,max;
       min     = m_SliderM1.GetRangeMax() - m_SliderM1.GetPos(); // Reverse to have min at bottom!
       nominal = m_SliderM2.GetRangeMax() - m_SliderM2.GetPos(); 
       max     = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos(); 
-      m_pCurrentEditGeneM->setAsParameter(geneSubType,m_MuteRate,min,nominal,max);
+      m_pCurrentEditGeneM->setAsParameter((GeneSubTypeParam_e)geneSubType,m_MuteRate,min,nominal,max);
       break;
     case GENE_LIFESTAGE:
       long ratio;
       ratio   = m_SliderM1.GetRangeMax() - m_SliderM1.GetPos(); // Reverse to have min at bottom!
-      m_pCurrentEditGeneM->setAsLifeStage(geneSubType,m_MuteRate,ratio);
+      m_pCurrentEditGeneM->setAsLifeStage((GeneSubTypeLifeStage_e)geneSubType,m_MuteRate,ratio);
       break;
     case GENE_PHY_WELFARE:
       long sensi;
@@ -992,7 +992,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
       min     = m_SliderM2.GetRangeMax() - m_SliderM2.GetPos(); // Reverse to have min at bottom!
       nominal = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos(); 
       max     = m_SliderM4.GetRangeMax() - m_SliderM4.GetPos(); 
-      m_pCurrentEditGeneM->setAsPhysicWelfare(geneSubType,m_MuteRate,sensi,min,nominal,max);
+      m_pCurrentEditGeneM->setAsPhysicWelfare((GeneSubTypePhySensi_e)geneSubType,m_MuteRate,sensi,min,nominal,max);
       break;
     case GENE_SENSOR:
       {
@@ -1004,13 +1004,13 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
 
         if (resetWeightTable == true)
         {
-          m_pCurrentEditGeneM->setAsSensor(geneSubType,0,0,NULL,data1,data2,data3,data4);
+          m_pCurrentEditGeneM->setAsSensor((GeneSubTypeSensor_e)geneSubType,0,0,NULL,data1,data2,data3,data4);
           // Weight table must be built dynamically according to Sensor type
           int weightSize = m_pOldEntity->getExpectedBrainSensorWeightSize(m_pCurrentEditGeneM);
           short* weightTab = new short[weightSize];
           for (i=0; i<weightSize; i++)
             weightTab[i] = 100; // Def value
-          m_pCurrentEditGeneM->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
+          m_pCurrentEditGeneM->setAsSensor((GeneSubTypeSensor_e)geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
           CSensor* pSens = m_pOldEntity->getTemporarySensorFromGene(m_pCurrentEditGeneM);
           auto rawDataM = m_pCurrentEditGeneM->getData();
           BYTE* pDataM = rawDataM.data();
@@ -1022,7 +1022,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
         {
           int weightSize = m_WeightListCtrl_M.GetWeightBufSize();
           short* weightTab = m_WeightListCtrl_M.GetWeightBuf();
-          m_pCurrentEditGeneM->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
+          m_pCurrentEditGeneM->setAsSensor((GeneSubTypeSensor_e)geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
         }
         break;
       }
@@ -1033,14 +1033,14 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
         data2 = m_SliderM2.GetRangeMax() - m_SliderM2.GetPos(); 
         data3 = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos();
         data4 = m_SliderM4.GetRangeMax() - m_SliderM4.GetPos(); 
-        m_pCurrentEditGeneM->setAsReaction(geneSubType,m_MuteRate,data1,data2,data3,data4);
+        m_pCurrentEditGeneM->setAsReaction((GeneSubTypeReaction_e)geneSubType,m_MuteRate,data1,data2,data3,data4);
         break;
       }
     case GENE_BRAIN_SIZE:
       {
         long data1;
         data1 = m_SliderM1.GetRangeMax() - m_SliderM1.GetPos(); // Reverse to have min at bottom!
-        m_pCurrentEditGeneM->setAsBrainSize(geneSubType,m_MuteRate,data1);
+        m_pCurrentEditGeneM->setAsBrainSize((GeneSubTypeBrainSize_e)geneSubType,m_MuteRate,data1);
         break;
       }
     case GENE_FEELING:
@@ -1056,7 +1056,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
           short* sensiTab = new short[sensiSize];
           for (i=0; i<sensiSize; i++)
             sensiTab[i] = 100; // Def value
-          m_pCurrentEditGeneM->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
+          m_pCurrentEditGeneM->setAsFeeling((GeneSubTypeFeeling_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
           auto rawDataM = m_pCurrentEditGeneM->getData();
           BYTE* pDataM = rawDataM.data();
           int dataLenM = rawDataM.size();
@@ -1067,7 +1067,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
         {
           int sensiSize = m_WeightListCtrl_M.GetWeightBufSize();
           short* sensiTab = m_WeightListCtrl_M.GetWeightBuf();
-          m_pCurrentEditGeneM->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
+          m_pCurrentEditGeneM->setAsFeeling((GeneSubTypeFeeling_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
         }
         break;
       }  
@@ -1087,7 +1087,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
           CSensor* pSens = (CSensor*)m_ComboLeft.GetItemData(curSensSel);
           CString label; 
           m_EditLabel.GetWindowText(label);
-          m_pCurrentEditGeneM->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
+          m_pCurrentEditGeneM->setAsPurposeTrigger((GeneSubTypePurpose_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
         }
         else if (geneSubType==GENE_PURPOSE_SENSOR)
         {
@@ -1145,7 +1145,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneM(bool rebuildGene, bool resetWeightTab
       data[1] = m_SliderM2.GetRangeMax() - m_SliderM2.GetPos(); // FRU 
       data[2] = m_SliderM3.GetRangeMax() - m_SliderM3.GetPos(); // FRU 
       data[3] = m_SliderM4.GetRangeMax() - m_SliderM4.GetPos(); // FRU 
-      m_pCurrentEditGeneM->setAsBrainConfig(geneSubType,m_MuteRate,muteType,1,data);
+      m_pCurrentEditGeneM->setAsBrainConfig((GeneSubTypeBrainBehavior_e)geneSubType,m_MuteRate,muteType,1,data);
       break;
     default:
 
@@ -1170,7 +1170,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
 	if ((m_EditMode == EDIT_MODE_GENE)&&(rebuildGene))
   {
     GeneType_e geneType = (GeneType_e)m_Combo1.GetItemData(m_Combo1.GetCurSel());
-    GeneSubType_e geneSubType = (GeneSubType_e)m_Combo2.GetItemData(m_Combo2.GetCurSel());
+    int geneSubType = m_Combo2.GetItemData(m_Combo2.GetCurSel());
     GeneMuteType_e muteType = (GeneMuteType_e)m_ComboMuteType.GetItemData(m_ComboMuteType.GetCurSel());
     int i;
 
@@ -1182,19 +1182,19 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
       data[1] = m_SliderP2.GetRangeMax() - m_SliderP2.GetPos(); 
       data[2] = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos(); 
       data[3] = m_SliderP4.GetRangeMax() - m_SliderP4.GetPos(); 
-      m_pCurrentEditGeneP->setAsCaracter(geneSubType,m_MuteRate,muteType,4,data);
+      m_pCurrentEditGeneP->setAsCaracter((GeneSubTypeCaracter_e)geneSubType,m_MuteRate,muteType,4,data);
       break;
     case GENE_PARAMETER:
       long min,nominal,max;
       min     = m_SliderP1.GetRangeMax() - m_SliderP1.GetPos(); // Reverse to have min at bottom!
       nominal = m_SliderP2.GetRangeMax() - m_SliderP2.GetPos(); 
       max     = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos(); 
-      m_pCurrentEditGeneP->setAsParameter(geneSubType,m_MuteRate,min,nominal,max);
+      m_pCurrentEditGeneP->setAsParameter((GeneSubTypeParam_e)geneSubType,m_MuteRate,min,nominal,max);
       break;
     case GENE_LIFESTAGE:
       long ratio;
       ratio   = m_SliderP1.GetRangeMax() - m_SliderP1.GetPos(); // Reverse to have min at bottom!
-      m_pCurrentEditGeneP->setAsLifeStage(geneSubType,m_MuteRate,ratio);
+      m_pCurrentEditGeneP->setAsLifeStage((GeneSubTypeLifeStage_e)geneSubType,m_MuteRate,ratio);
       break;
     case GENE_PHY_WELFARE:
       long sensi;
@@ -1202,7 +1202,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
       min     = m_SliderP2.GetRangeMax() - m_SliderP2.GetPos(); // Reverse to have min at bottom!
       nominal = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos(); 
       max     = m_SliderP4.GetRangeMax() - m_SliderP4.GetPos(); 
-      m_pCurrentEditGeneP->setAsPhysicWelfare(geneSubType,m_MuteRate,sensi,min,nominal,max);
+      m_pCurrentEditGeneP->setAsPhysicWelfare((GeneSubTypePhySensi_e)geneSubType,m_MuteRate,sensi,min,nominal,max);
       break;
     case GENE_SENSOR:
       {
@@ -1214,13 +1214,13 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
 
         if (resetWeightTable == true)
         {
-          m_pCurrentEditGeneP->setAsSensor(geneSubType,0,0,NULL,data1,data2,data3,data4);
+          m_pCurrentEditGeneP->setAsSensor((GeneSubTypeSensor_e)geneSubType,0,0,NULL,data1,data2,data3,data4);
           // Weight table must be built dynamically according to Sensor type
           int weightSize = m_pOldEntity->getExpectedBrainSensorWeightSize(m_pCurrentEditGeneP);
           short* weightTab = new short[weightSize];
           for (i=0; i<weightSize; i++)
             weightTab[i] = 100; // Def value
-          m_pCurrentEditGeneP->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
+          m_pCurrentEditGeneP->setAsSensor((GeneSubTypeSensor_e)geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
           CSensor* pSens = m_pOldEntity->getTemporarySensorFromGene(m_pCurrentEditGeneP);
           auto rawDataP = m_pCurrentEditGeneP->getData();
           BYTE* pDataP = rawDataP.data();
@@ -1232,7 +1232,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
         {
           int weightSize = m_WeightListCtrl_P.GetWeightBufSize();
           short* weightTab = m_WeightListCtrl_P.GetWeightBuf();
-          m_pCurrentEditGeneP->setAsSensor(geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
+          m_pCurrentEditGeneP->setAsSensor((GeneSubTypeSensor_e)geneSubType,m_MuteRate,weightSize,weightTab,data1,data2,data3,data4);
         }
         break;
       }
@@ -1243,14 +1243,14 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
         data2 = m_SliderP2.GetRangeMax() - m_SliderP2.GetPos(); 
         data3 = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos();
         data4 = m_SliderP4.GetRangeMax() - m_SliderP4.GetPos(); 
-        m_pCurrentEditGeneP->setAsReaction(geneSubType,m_MuteRate,data1,data2,data3,data4);
+        m_pCurrentEditGeneP->setAsReaction((GeneSubTypeReaction_e)geneSubType,m_MuteRate,data1,data2,data3,data4);
         break;
       }
     case GENE_BRAIN_SIZE:
       {
         long data1;
         data1 = m_SliderP1.GetRangeMax() - m_SliderP1.GetPos(); // Reverse to have min at bottom!
-        m_pCurrentEditGeneP->setAsBrainSize(geneSubType,m_MuteRate,data1);
+        m_pCurrentEditGeneP->setAsBrainSize((GeneSubTypeBrainSize_e)geneSubType,m_MuteRate,data1);
         break;
       }
     case GENE_FEELING:
@@ -1266,7 +1266,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
           short* sensiTab = new short[sensiSize];
           for (i=0; i<sensiSize; i++)
             sensiTab[i] = 100; // Def value
-          m_pCurrentEditGeneP->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
+          m_pCurrentEditGeneP->setAsFeeling((GeneSubTypeFeeling_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
           auto rawDataP = m_pCurrentEditGeneP->getData();
           BYTE* pDataP = rawDataP.data();
           int dataLenP = rawDataP.size();
@@ -1277,7 +1277,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
         {
           int sensiSize = m_WeightListCtrl_P.GetWeightBufSize();
           short* sensiTab = m_WeightListCtrl_P.GetWeightBuf();
-          m_pCurrentEditGeneP->setAsFeeling(geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
+          m_pCurrentEditGeneP->setAsFeeling((GeneSubTypeFeeling_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),sensiSize,sensiTab);
         }
         break;
       } 
@@ -1297,7 +1297,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
           CSensor* pSens = (CSensor*)m_ComboLeft.GetItemData(curSensSel);
           CString label; 
           m_EditLabel.GetWindowText(label);
-          m_pCurrentEditGeneP->setAsPurposeTrigger(geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
+          m_pCurrentEditGeneP->setAsPurposeTrigger((GeneSubTypePurpose_e)geneSubType,m_MuteRate,pSens->GetUniqueId(),data1,data2,data3,data4,label.GetLength()+1,(char*)label.GetBuffer(0));
         }
         else if (geneSubType==GENE_PURPOSE_SENSOR)
         {
@@ -1355,7 +1355,7 @@ bool CGenomeEditorDlg::RefreshCurrentGeneP(bool rebuildGene, bool resetWeightTab
       data[1] = m_SliderP2.GetRangeMax() - m_SliderP2.GetPos(); // FRU
       data[2] = m_SliderP3.GetRangeMax() - m_SliderP3.GetPos(); // FRU 
       data[3] = m_SliderP4.GetRangeMax() - m_SliderP4.GetPos(); // FRU 
-      m_pCurrentEditGeneP->setAsBrainConfig(geneSubType,m_MuteRate,muteType,1,data);
+      m_pCurrentEditGeneP->setAsBrainConfig((GeneSubTypeBrainBehavior_e)geneSubType,m_MuteRate,muteType,1,data);
       break;
     default:
 

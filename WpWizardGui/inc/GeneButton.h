@@ -42,7 +42,7 @@ class CGeneButton : public CButton
 {
 // Construction
 public:
-    CGeneButton(GeneType_e geneType, GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
+    CGeneButton(GeneType_e geneType, int geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
                 CString paramName1 = "", int defValParam1=0, 
                 CString paramName2 = "", int defValParam2=0);
 
@@ -64,8 +64,8 @@ public:
 
 	CEdit*   m_pParam1Edit;
 	CEdit*   m_pParam2Edit;
-    GeneSubType_e m_GeneSubTtype;
-    short m_defParam;
+  int m_GeneSubTtype;
+  short m_defParam;
 
 	// Generated message map functions
 protected:

@@ -2279,8 +2279,6 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
 
     // Parameters management
     string paramName;
-    double paramVal;
-    double paramPhase;
     CGenericParam* pParam;
     pNode = pNodeBiotop->FirstChild(XML_NODE_PARAMETER);
     while (pNode != NULL)

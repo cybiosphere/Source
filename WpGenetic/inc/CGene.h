@@ -69,7 +69,7 @@ class DLL_CYBIOCORE_API CGene
 //---------------------------------------------------------------------------
 private:
   GeneType_e     m_GeneType;
-  GeneSubType_e  m_GeneSubType;
+  int            m_GeneSubType;
   BYTE           m_MuteRate;
   GeneMuteType_e m_MuteType;
   std::vector<BYTE> m_RawData;
@@ -91,29 +91,29 @@ public:
 // Configuration
 //---------------------------------------------------------------------------
 public:
-  bool setAsCaracter (GeneSubType_e subType, int muteRate, GeneMuteType_e muteType,int dataLen, BYTE* pRawData);
-  bool setAsCaracterUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value);
-  bool setAsParameter(GeneSubType_e subType, int muteRate, long min, long nominalVal, long max);
-  bool setAsParameterUsingDefinition(GeneSubType_e subType, int muteRate, double min, double nominalVal, double max);
-  bool setAsLifeStage(GeneSubType_e subType, int muteRate, long duration);
-  bool setAsPhysicWelfare(GeneSubType_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max);
-  bool setAsSensor   (GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight, 
+  bool setAsCaracter (GeneSubTypeCaracter_e subType, int muteRate, GeneMuteType_e muteType,int dataLen, BYTE* pRawData);
+  bool setAsCaracterUsingDefinition(GeneSubTypeCaracter_e subType, int muteRate, DWORD value);
+  bool setAsParameter(GeneSubTypeParam_e subType, int muteRate, long min, long nominalVal, long max);
+  bool setAsParameterUsingDefinition(GeneSubTypeParam_e subType, int muteRate, double min, double nominalVal, double max);
+  bool setAsLifeStage(GeneSubTypeLifeStage_e subType, int muteRate, long duration);
+  bool setAsPhysicWelfare(GeneSubTypePhySensi_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max);
+  bool setAsSensor   (GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
     long data1 = 0, long data2 = 0, long data3 = 0, long data4 = 0);
-  bool setAsSensorUsingDefinition(GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight,
+  bool setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
     double data1 = 0, double data2 = 0, double data3 = 0, double data4 = 0);
-  bool setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
-  bool setAsReaction (GeneSubType_e subType, int muteRate, long success, long failure, long data1 = 0, long data2 = 0);
-  bool setAsReactionUsingDefinition(GeneSubType_e subType, int muteRate, double success, double failure, double data1 = 0, double data2 = 0);
-  bool setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize);
+  bool setAsSensorComposite(int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
+  bool setAsReaction (GeneSubTypeReaction_e subType, int muteRate, long success, long failure, long data1 = 0, long data2 = 0);
+  bool setAsReactionUsingDefinition(GeneSubTypeReaction_e subType, int muteRate, double success, double failure, double data1 = 0, double data2 = 0);
+  bool setAsBrainSize (GeneSubTypeBrainSize_e subType, int muteRate, size_t brainSize);
   bool setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
   bool setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
-  bool setAsFeeling(GeneSubType_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi);
+  bool setAsFeeling(GeneSubTypeFeeling_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi);
 
-  bool setAsPurposeTrigger(GeneSubType_e subType, int muteRate, DWORD sensorUId, int duration, int subCaptorIndex, int startThreshold, int stopThreshold, int labelLen, char* pLabel); 
+  bool setAsPurposeTrigger(GeneSubTypePurpose_e subType, int muteRate, DWORD sensorUId, int duration, int subCaptorIndex, int startThreshold, int stopThreshold, int labelLen, char* pLabel);
   bool setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensorUId, int nbBonus, short* pBonusTable); 
   bool setAsPurposeReactionBonus(int muteRate, DWORD purposeUId, DWORD reactionUId, int bonus); 
-  bool setAsBrainConfig(GeneSubType_e subType,int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData);
-  bool setAsBrainConfigUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value);
+  bool setAsBrainConfig(GeneSubTypeBrainBehavior_e subType,int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData);
+  bool setAsBrainConfigUsingDefinition(GeneSubTypeBrainBehavior_e subType, int muteRate, DWORD value);
 
 //---------------------------------------------------------------------------
 // Raw data conversion
@@ -167,7 +167,7 @@ public:
   std::vector<BYTE>& getData();
   size_t getDataLen();
   GeneType_e     getGeneType();
-  GeneSubType_e  getGeneSubType();
+  int  getGeneSubType();
   GeneMuteType_e getMuteType();
   BYTE getMuteRate();
 

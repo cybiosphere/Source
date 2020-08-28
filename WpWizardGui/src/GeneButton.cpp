@@ -38,7 +38,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGeneButton
 
-CGeneButton::CGeneButton(GeneType_e geneType, GeneSubType_e geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
+CGeneButton::CGeneButton(GeneType_e geneType, int geneSubTtype, CView* pView, bool defaultChecked, short defaultValue,
                          CString paramName1, int defValParam1, CString paramName2, int defValParam2)
 {
   m_pView = pView;

@@ -71,7 +71,7 @@ protected:
     CView*  m_pView;
     CString m_Label;
     CFont *m_pFont;
-    GeneSubType_e m_GeneSubTtype;
+    int m_GeneSubTtype;
 
     CString m_ButtonText;
 

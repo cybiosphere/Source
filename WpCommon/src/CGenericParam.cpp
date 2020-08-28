@@ -40,7 +40,7 @@ distribution.
 // Constructors / Destructors
 //===========================================================================
 
-CGenericParam::CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,GenericParamType_e type, GeneSubType_e codingGeneSubType)
+CGenericParam::CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,GenericParamType_e type, GeneSubTypeParam_e codingGeneSubType)
 {
   m_ValMin     = valMin;
   m_ValCurrent = valInit;
@@ -259,7 +259,7 @@ GenericParamType_e CGenericParam::getType()
   return m_Type;
 }
 
-GeneSubType_e CGenericParam::getCodingGeneSubtype()
+GeneSubTypeParam_e CGenericParam::getCodingGeneSubtype()
 {
   return m_CodingGeneSubType;
 }

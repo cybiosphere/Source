@@ -97,123 +97,169 @@ typedef enum
   GENE_MUTE_NUMBER_TYPE
 } GeneMuteType_e;
 
+
+typedef enum
+{        
+  GENE_GENERIC_UNKNOWN = 0,
+} GeneSubTypeUnset_e;
+
 typedef enum
 {
-// Subtype    ID            // len // data
-  GENE_GENERIC_UNKNOWN  = 0,//  X  // X
-// Caracteristics     
-  GENE_CARACT_COLOR        ,//  4  // 00 bb gg rr
-  GENE_CARACT_ODOR         ,//  1  // enum
-  GENE_CARACT_PHEROMONE    ,//  1  // enum  // Note: Can be set in gene as def value, but change dynamically according to entity live
-  GENE_CARACT_TASTE        ,//  1  // enum
-  GENE_CARACT_FORM         ,//  1  // enum
-  GENE_CARACT_REPRO_TYPE   ,//  1  // enum
-  GENE_CARACT_HABITAT      ,//  1  // enum
-  GENE_CARACT_CONSUME_TYPE ,//  1  // enum
-  GENE_CARACT_MOVE_TYPE    ,//  1  // enum
-  GENE_CARACT_TEXTURE      ,//  1  // enum
-  GENE_CARACT_PHY_ATTRIBUTE,//  1  // enum
-  GENE_CARACT_RFU1         ,//  1  // enum
-  GENE_CARACT_RFU2         ,//  1  // enum
-// Parameters                      // Min    /  Nominal  /  Max  
-  GENE_PARAM_WEIGHT        ,//  6  // [1..]  =  [1..]    < [2..1000]
-  GENE_PARAM_TOXICITY      ,//  6  // 0         [0..100]   100
-  GENE_PARAM_PROTECTION    ,//  6  // 0         [0..100]   100
-  GENE_PARAM_CAMOUFLAGE    ,//  6  // 0         [0..100]   100
-  GENE_PARAM_AGE           ,//  6  // 0         0          [1..10000]
-  GENE_PARAM_DECOMPOSITION ,//  6  // 0         0          [1..1000] 
-  GENE_PARAM_REPRO_RATE    ,//  6  // 0         [0..100]   100
-  GENE_PARAM_HEALTH        ,//  6  // 0         [0..100]   100
-  GENE_PARAM_GROWTH_SPEED  ,//  6  // 0         [0..10000] 10000        // mU growth per day
-  GENE_PARAM_REPRO_RANGE   ,//  6  // 0         [0..10]    10
-  GENE_PARAM_FAT_WEIGHT    ,//  6  // [0..]  =  [0..]    < [2..1000]
-  GENE_PARAM_ATTACK_FACTOR ,//  6  // 0         [0..100]   100
-  GENE_PARAM_SPEED         ,//  6  // 0         [0..100]   100
-  GENE_PARAM_CURIOSITY     ,//  6  // 0         [0..100]   100
-  GENE_PARAM_LEARNING      ,//  6  // 0         [0..100]   100
-  GENE_PARAM_METABOLISM    ,//  6  // 0         [0..100]   100  // Obsolete
-  GENE_PARAM_POLLEN_RANGE  ,//  6  // 0         [0..100]   100
-  GENE_PARAM_GESTA_TIME    ,//  6  // 0         0          [1..1000] 
-  GENE_PARAM_GESTA_NB      ,//  6  // [0..100]< [0..100] < [0..100]
-  GENE_PARAM_RFU1          ,//  6  // 0         [0..100]   100
-  GENE_PARAM_RFU2          ,//  6  // 0         [0..100]   100
-// Life Stages
-  GENE_STAGE_0             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_1             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_2             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_3             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_4             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_5             ,//  2  // duration ratio [0.1..100]
-  GENE_STAGE_6             ,//  2  // duration ratio [0.1..100]
-// Welfare physical sensitivity       Sensitivity    /  Min    /  Nominal  /  Max  
-  GENE_PHYS_SENS_TEMPER    ,//  2  // ratio [0..100]  [-50..50]      X      [-50..50]
-  GENE_PHYS_SENS_HABITAT   ,//  2  // ratio [0..100]     X           X          X
-  GENE_PHYS_SENS_FERTILITY ,//  2  // ratio [0..100]  [0..100]   [0..100]   [0..100]
-  GENE_PHYS_SENS_SUNLIGHT  ,//  2  // ratio [0..100]  [0..100]   [0..100]   [0..100]   // Obsolete
-  GENE_PHYS_SENS_RFU1      ,//  2  // ratio [0..100]     X           X          X 
-  GENE_PHYS_SENS_RFU2      ,//  2  // ratio [0..100]     X           X          X 
-// Sensors                  //         Nb Weight   data1      data2      data3      data4 
-  GENE_SENS_TACTILE        ,// N+8 // data2-data1 [-10..10]  [-10..10]     X          X
-  GENE_SENS_VIEW           ,// N+8 // data4xSize  [0..100]   [0..10]    [0..4]     [0..10] 
-  GENE_SENS_SMELL          ,// N+8 // 7           [0..100]      X          X          X
-  GENE_SENS_PHEROMONE      ,// N+8 // N           [0..100]      X          X          X
-  GENE_SENS_EAR            ,// N+8 // 8           [0..100]      X          X          X       
-  GENE_SENS_HUNGER         ,// N+8 // 1              X          X          X          X
-  GENE_SENS_THIRST         ,// N+8 // 1              X          X          X          X
-  GENE_SENS_STOMACH_LOAD   ,// N+8 // 1              X          X          X          X
-  GENE_SENS_PLEASURE       ,// N+8 // 1              X          X          X          X
-  GENE_SENS_SUFFER         ,// N+8 // 1              X          X          X          X
-  GENE_SENS_TIREDNESS      ,// N+8 // 1              X          X          X          X
-  GENE_SENS_OBSCURITY      ,// N+8 // 1              X          X          X          X
-  GENE_SENS_LIBIDO         ,// N+8 // 1              X          X          X          X
-  GENE_SENS_SPEED          ,// N+8 // 1              X          X          X          X
-  GENE_SENS_VIEW_FAR       ,// N+8 // Nb reac =>!!!  X          X          X          X
-  GENE_SENS_COMPASS        ,// N+8 // 8              X          X          X          X
-  GENE_SENS_TASTE          ,// N+8 // Nb taste       X          X          X          X
-  GENE_SENS_FEAR           ,// N+8 // 1              X          X          X          X
-  GENE_SENS_TEMPERATURE    ,// N+8 // 1              X          X          X          X
-  GENE_SENS_ORIENTATION    ,// N+8 // 1              X          X          X          X
-  GENE_SENS_VIEW_IDENTIFY  ,// N+8 // 1              X          X          X          X
-  GENE_SENS_VIEW_IDENT_FAR ,// N+8 // 8              X          X          X          X
-  GENE_SENS_HORMONE        ,// N+8 // N              X          X          X          X
-  GENE_SENS_COMPOSITE      ,// N+8 // N           [0..0xFF]  [0..0xFF]  [0..100]      X
-// Reactions                            //  Success  Failure    data1      data2      data3 
-  GENE_REACT_NOTHING       ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_SLEEP         ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_MOVEFORWARD   ,// 10  // [0..100] [0..100]  [-20..20]      X          X
-  GENE_REACT_STEPBACKWARD  ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_TURNLEFT      ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_TURNRIGHT     ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_EAT           ,// 10  // [0..100] [0..100]  [-10..10]      X          X
-  GENE_REACT_DRINK         ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_COPULATE      ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_ATTACK        ,// 10  // [0..100] [0..100]  [-10..10]      X          X
-  GENE_REACT_TURNHEADLEFT  ,// 10  // [0..100] [0..100]  [-10..10]      X          X
-  GENE_REACT_TURNHEADRIGHT ,// 10  // [0..100] [0..100]  [-10..10]      X          X
-  GENE_REACT_RUMINATE      ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_HIDE          ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_RFU1          ,// 10  // [0..100] [0..100]      X          X          X
-  GENE_REACT_RFU2          ,// 10  // [0..100] [0..100]      X          X          X
-// Brain size
-  GENE_BRAIN_SIZE_HIST_IN  ,//  n  // [1..100]
-  GENE_BRAIN_SIZE_HIST_EXP ,//  n  // [1..100]
-// Brain Instinct
-  GENE_BRAIN_LINE          ,// 1+n // [0..10000] [-1..1]...[-1..1]
-// Feeling
-  GENE_FEEL_WELFARE        ,//  N  // ratio [0..100] : 0 not sensitive / 100 max sensitivity
-  GENE_FEEL_FEAR           ,//  N  // ratio [0..100] : 0 not sensitive / 100 max sensitivity
-// Purpose
-  GENE_PURPOSE_TRIGGER_UP  ,//  N  //
-  GENE_PURPOSE_SENSOR      ,//  N  //
-  GENE_PURPOSE_REACTION    ,//  N  //
-  GENE_PURPOSE_TRIGGER_DOWN,//  N  //
-// Brain Identification
-  GENE_BRAIN_IDENTIFY_LINE , // 1+n // [0..10000] [-1..1]...[-1..1]
-// Brain Config
-  GENE_BRAIN_BEHAVIOR,       //  1  // enum
-// End marker
-  GENE_NUMBER_SUBTYPE
-} GeneSubType_e;
+  // Caracteristics
+  GENE_CARACT_UNKNOWN = 0,
+  GENE_CARACT_COLOR = 1,
+  GENE_CARACT_ODOR,
+  GENE_CARACT_PHEROMONE,
+  GENE_CARACT_TASTE,
+  GENE_CARACT_FORM,
+  GENE_CARACT_REPRO_TYPE,
+  GENE_CARACT_HABITAT,
+  GENE_CARACT_CONSUME_TYPE,
+  GENE_CARACT_MOVE_TYPE,
+  GENE_CARACT_TEXTURE,
+  GENE_CARACT_PHY_ATTRIBUTE
+} GeneSubTypeCaracter_e;
+
+typedef enum
+{
+  GENE_PARAM_UNKNOWN = 0,
+
+  GENE_PARAM_WEIGHT = 14, // keep historical value
+  GENE_PARAM_TOXICITY,
+  GENE_PARAM_PROTECTION,
+  GENE_PARAM_CAMOUFLAGE,
+  GENE_PARAM_AGE,
+  GENE_PARAM_DECOMPOSITION,
+  GENE_PARAM_REPRO_RATE,
+  GENE_PARAM_HEALTH,
+  GENE_PARAM_GROWTH_SPEED,
+  GENE_PARAM_REPRO_RANGE,
+  GENE_PARAM_FAT_WEIGHT,
+  GENE_PARAM_ATTACK_FACTOR,
+  GENE_PARAM_SPEED,
+  GENE_PARAM_CURIOSITY,
+  GENE_PARAM_LEARNING,
+  GENE_PARAM_METABOLISM,
+  GENE_PARAM_POLLEN_RANGE,
+  GENE_PARAM_GESTA_TIME,
+  GENE_PARAM_GESTA_NB
+} GeneSubTypeParam_e;
+
+typedef enum
+{
+  GENE_STAGE_UNKNOWN = 0,
+
+  GENE_STAGE_0 = 35, // keep historical value
+  GENE_STAGE_1,
+  GENE_STAGE_2,
+  GENE_STAGE_3,
+  GENE_STAGE_4,
+  GENE_STAGE_5,
+  GENE_STAGE_6
+} GeneSubTypeLifeStage_e;
+
+typedef enum
+{
+  GENE_PHYS_SENS_UNKNOWN = 0,
+
+  GENE_PHYS_SENS_TEMPER = 42, // keep historical value
+  GENE_PHYS_SENS_HABITAT,
+  GENE_PHYS_SENS_FERTILITY,
+  GENE_PHYS_SENS_SUNLIGHT
+} GeneSubTypePhySensi_e;
+
+typedef enum
+{
+  GENE_SENS_UNKNOWN = 0,
+
+  GENE_SENS_TACTILE = 48, // keep historical value
+  GENE_SENS_VIEW,
+  GENE_SENS_SMELL,
+  GENE_SENS_PHEROMONE,
+  GENE_SENS_EAR,
+  GENE_SENS_HUNGER,
+  GENE_SENS_THIRST,
+  GENE_SENS_STOMACH_LOAD,
+  GENE_SENS_PLEASURE,
+  GENE_SENS_SUFFER,
+  GENE_SENS_TIREDNESS,
+  GENE_SENS_OBSCURITY,
+  GENE_SENS_LIBIDO,
+  GENE_SENS_SPEED,
+  GENE_SENS_VIEW_FAR,
+  GENE_SENS_COMPASS,
+  GENE_SENS_TASTE,
+  GENE_SENS_FEAR,
+  GENE_SENS_TEMPERATURE,
+  GENE_SENS_ORIENTATION,
+  GENE_SENS_VIEW_IDENTIFY,
+  GENE_SENS_VIEW_IDENT_FAR,
+  GENE_SENS_HORMONE,
+  GENE_SENS_COMPOSITE
+} GeneSubTypeSensor_e;
+
+typedef enum
+{
+  GENE_REACT_UNKNOWN = 0,
+
+  GENE_REACT_NOTHING = 72, // keep historical value
+  GENE_REACT_SLEEP,
+  GENE_REACT_MOVEFORWARD,
+  GENE_REACT_STEPBACKWARD,
+  GENE_REACT_TURNLEFT,
+  GENE_REACT_TURNRIGHT,
+  GENE_REACT_EAT,
+  GENE_REACT_DRINK,
+  GENE_REACT_COPULATE,
+  GENE_REACT_ATTACK,
+  GENE_REACT_TURNHEADLEFT,
+  GENE_REACT_TURNHEADRIGHT,
+  GENE_REACT_RUMINATE,
+  GENE_REACT_HIDE
+} GeneSubTypeReaction_e;
+
+typedef enum
+{
+  GENE_BRAIN_SIZE_UNKNOWN = 0,
+  GENE_BRAIN_SIZE_TERRITORY,
+
+  GENE_BRAIN_SIZE_HIST_IN = 88, // keep historical value
+  GENE_BRAIN_SIZE_HIST_EXP
+} GeneSubTypeBrainSize_e;
+
+typedef enum
+{
+  GENE_BRAIN_LINE_UNKNOWN = 0,
+
+  GENE_BRAIN_LINE = 90, // keep historical value
+  GENE_BRAIN_IDENTIFY_LINE = 97 // keep historical value
+} GeneSubTypeBrainLine_e;
+
+typedef enum
+{
+  GENE_FEEL_UNKNOWN = 0,
+
+  GENE_FEEL_WELFARE = 91, // keep historical value
+  GENE_FEEL_FEAR
+} GeneSubTypeFeeling_e;
+
+typedef enum
+{
+  GENE_PURPOSE_UNKNOWN = 0,
+
+  GENE_PURPOSE_TRIGGER_UP = 93, // keep historical value
+  GENE_PURPOSE_SENSOR,
+  GENE_PURPOSE_REACTION,
+  GENE_PURPOSE_TRIGGER_DOWN
+} GeneSubTypePurpose_e;
+
+typedef enum
+{
+  GENE_BRAIN_BEHAVIOR_UNKNOWN = 0,
+
+  GENE_BRAIN_BEHAVIOR = 98 // keep historical value
+} GeneSubTypeBrainBehavior_e;
+
 
 
 //===========================================================================
@@ -230,7 +276,7 @@ class DLL_CYBIOCORE_API CGeneDefinitions
 //---------------------------------------------------------------------------
 public:
   GeneType_e     geneType;
-  GeneSubType_e  geneSubType;
+  int            geneSubType;
   string         label;
   GeneMuteType_e muteType;
   vector<GeneParamDefinition_t> elements;
@@ -239,7 +285,7 @@ public:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGeneDefinitions(GeneType_e type, GeneSubType_e subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> paramList);
+  CGeneDefinitions(GeneType_e type, int subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> paramList);
   virtual ~CGeneDefinitions();
 
 }; // end CGeneDefinitions
@@ -273,7 +319,7 @@ private:
   // Methods 
   //===========================================================================
 public:
-  static const CGeneDefinitions* getDefinitions(GeneType_e type, GeneSubType_e subType);
+  static const CGeneDefinitions* getDefinitions(GeneType_e type, int subType);
   static size_t getNumberOfGeneSubtype(GeneType_e type);
   static const CGeneDefinitions* getDefinitionsByIndex(GeneType_e type, size_t subTypeIndex);
   static string getGeneTypeStrName(GeneType_e type);

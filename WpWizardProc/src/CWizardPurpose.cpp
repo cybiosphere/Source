@@ -505,7 +505,7 @@ bool CWizardPurpose::AddAllPurposeGenesToAnimal(int mutationRate)
   PurposeDefinition_t* pCurPurpose = NULL;
   int geneIndex;
   CGene* pCurGene = NULL;
-  GeneSubType_e curGeneSubType;
+  GeneSubTypePurpose_e curGeneSubType;
   DWORD sensorUid  = UID_UNSET;
   DWORD purposeUid = UID_UNSET;
   CSensor* pSensor = NULL;

@@ -83,7 +83,7 @@ protected:
   double m_ValMax;
   string m_Label;        // User defined name
   GenericParamType_e m_Type;
-  GeneSubType_e      m_CodingGeneSubType;
+  GeneSubTypeParam_e m_CodingGeneSubType;
 
 //===========================================================================
 // Methods 
@@ -94,7 +94,7 @@ protected:
 //---------------------------------------------------------------------------
 public:
 	CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,
-                  GenericParamType_e type, GeneSubType_e codingGeneSubType = GENE_GENERIC_UNKNOWN);
+                  GenericParamType_e type, GeneSubTypeParam_e codingGeneSubType = GENE_PARAM_UNKNOWN);
 	virtual ~CGenericParam();
 
  //---------------------------------------------------------------------------
@@ -121,7 +121,7 @@ public:
   bool isMaxReached(void);
   bool isMinReached(void);
   GenericParamType_e getType();
-  GeneSubType_e getCodingGeneSubtype();
+  GeneSubTypeParam_e getCodingGeneSubtype();
   virtual double getCurrentPhase() { return 0; };
   virtual void setCurrentPhase(double phase) { };
 };

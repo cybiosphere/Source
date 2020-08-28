@@ -77,6 +77,8 @@ CBrain::CBrain()
   m_nInputHistory = 1;
   // Historical used to compute experience 
   m_nExperienceHistory = 1;
+  // Size of geomap for purpose memory 
+  size_t m_GeoMapSize = 800;
 
   m_historyWeight = 0.6;
 
@@ -161,7 +163,7 @@ void CBrain::NextSecond()
   if (m_pCurrentPurpose!=NULL)
   {
     if (m_pGeoMap == NULL)
-      m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
+      m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), m_GeoMapSize, 6);
 
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
@@ -1897,6 +1899,12 @@ bool CBrain::IsBabyStayHome()
   return m_bBabyStayHome;
 }
 
+bool CBrain::SetGeoMapSize(size_t geoMapSize)
+{
+  m_GeoMapSize = geoMapSize;
+  return true;
+}
+
 bool CBrain::SetHomePurposePositionInGeoMap()
 {
   CPurpose* pPurpose = NULL;
@@ -1909,7 +1917,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     delete m_pGeoMap;
 
   // Create new geo map centered on baby
-  m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), 800, 6);
+  m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), m_GeoMapSize, 6);
 
   // Memorize home position
   if (m_pGeoMap!=NULL)

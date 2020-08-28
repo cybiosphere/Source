@@ -493,7 +493,7 @@ bool CWizardSensor::AddGenesSmellSensor(int chromoIdx, int mutationRate, int ran
 }
 
 
-bool CWizardSensor::AddGenesGenericSensor(GeneSubType_e geneSubType, int defChromoIdx, int sexChromoIdx, 
+bool CWizardSensor::AddGenesGenericSensor(GeneSubTypeSensor_e geneSubType, int defChromoIdx, int sexChromoIdx,
                                           int mutationRate, short defWeight,int variation, int param1, int param2)
 {
   int i;

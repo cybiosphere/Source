@@ -491,7 +491,7 @@ void CDialogTab4::AddGenesForCaracters(SexType_e sex)
 }
 
 
-void CDialogTab4::AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComboMale, SexType_e sex, GeneSubType_e subtype)
+void CDialogTab4::AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComboMale, SexType_e sex, GeneSubTypeCaracter_e subtype)
 {
   int geneIndex;
   CGene* pCurGene = NULL;
@@ -551,7 +551,7 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   CGene* pCurGene = NULL;
   CGenericParam *pParamFemale,*pParamMale,*pParamCurrent;
   double paramMin, paramNominal, paramMax;
-  GeneSubType_e curGeneSubType;
+  GeneSubTypeParam_e curGeneSubType;
 
   if (sexualDimorph && (sex == SEX_MALE))
     pTabCurCar = pTabMale;
@@ -801,7 +801,7 @@ void CDialogTab4::AddGenesForSensors()
         param2Str = "0";
 
       m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
-      wizard.AddGenesGenericSensor(pTabSensors->m_pSensorButtonTable[i]->m_GeneSubTtype, m_CurChrom_Idx, m_SexualChrom_Idx,
+      wizard.AddGenesGenericSensor((GeneSubTypeSensor_e)(pTabSensors->m_pSensorButtonTable[i]->m_GeneSubTtype), m_CurChrom_Idx, m_SexualChrom_Idx,
                                     1.0, pTabSensors->m_pSensorButtonTable[i]->m_defParam, m_Variation, atoi(param1Str), atoi(param2Str));
     }
   }
@@ -976,7 +976,7 @@ void CDialogTab4::AddGenesForReactions()
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
   CString param1Str, param2Str;
-  GeneSubType_e type ;
+  GeneSubTypeReaction_e type ;
 
   bool isPreyOnLayer[MAX_NB_LAYER_VIEW];
   for (i=0;i<MAX_NB_LAYER_VIEW;i++)
@@ -997,7 +997,7 @@ void CDialogTab4::AddGenesForReactions()
   {
     if ( pTabBehavior->m_pActionButtonTable[i] && pTabBehavior->m_pActionButtonTable[i]->GetState() )
     {
-        type = pTabBehavior->m_pActionButtonTable[i]->m_GeneSubTtype;
+        type = (GeneSubTypeReaction_e)pTabBehavior->m_pActionButtonTable[i]->m_GeneSubTtype;
 
         if (pTabBehavior->m_pActionButtonTable[i]->m_pParam1Edit)
           pTabBehavior->m_pActionButtonTable[i]->m_pParam1Edit->GetWindowText(param1Str);

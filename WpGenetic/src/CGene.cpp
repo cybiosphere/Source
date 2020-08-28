@@ -106,7 +106,7 @@ CGene::~CGene()
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pRawData)
+bool CGene::setAsCaracter(GeneSubTypeCaracter_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pRawData)
 {
   // Clean previous config
   m_RawData.clear();
@@ -121,7 +121,7 @@ bool CGene::setAsCaracter(GeneSubType_e subType, int muteRate, GeneMuteType_e mu
   return (true);
 }
 
-bool CGene::setAsCaracterUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value)
+bool CGene::setAsCaracterUsingDefinition(GeneSubTypeCaracter_e subType, int muteRate, DWORD value)
 {
   // Clean previous config
   m_RawData.clear();
@@ -149,7 +149,7 @@ bool CGene::setAsCaracterUsingDefinition(GeneSubType_e subType, int muteRate, DW
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsParameter(GeneSubType_e subType, int muteRate, long min, long nominalVal, long max)
+bool CGene::setAsParameter(GeneSubTypeParam_e subType, int muteRate, long min, long nominalVal, long max)
 {
   m_RawData.clear();
 
@@ -168,7 +168,7 @@ bool CGene::setAsParameter(GeneSubType_e subType, int muteRate, long min, long n
   return (true);
 }
 
-bool CGene::setAsParameterUsingDefinition(GeneSubType_e subType, int muteRate, double min, double nominalVal, double max)
+bool CGene::setAsParameterUsingDefinition(GeneSubTypeParam_e subType, int muteRate, double min, double nominalVal, double max)
 {
   m_RawData.clear();
 
@@ -196,7 +196,7 @@ bool CGene::setAsParameterUsingDefinition(GeneSubType_e subType, int muteRate, d
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsLifeStage(GeneSubType_e subType, int muteRate, long durationRatio)
+bool CGene::setAsLifeStage(GeneSubTypeLifeStage_e subType, int muteRate, long durationRatio)
 {
   m_RawData.clear();
 
@@ -223,7 +223,7 @@ bool CGene::setAsLifeStage(GeneSubType_e subType, int muteRate, long durationRat
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsPhysicWelfare(GeneSubType_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max)
+bool CGene::setAsPhysicWelfare(GeneSubTypePhySensi_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max)
 {
   m_RawData.clear();
 
@@ -256,7 +256,7 @@ bool CGene::setAsPhysicWelfare(GeneSubType_e subType, int muteRate, long sensiti
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsSensor (GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight, 
+bool CGene::setAsSensor(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
                          long data1, long data2, long data3, long data4)
 {
   m_RawData.clear();
@@ -280,7 +280,7 @@ bool CGene::setAsSensor (GeneSubType_e subType, int muteRate, int nbWeight, shor
   return (true);
 }
 
-bool CGene::setAsSensorUsingDefinition(GeneSubType_e subType, int muteRate, int nbWeight, short* pWeight,
+bool CGene::setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
   double data1, double data2, double data3, double data4)
 {
   m_RawData.clear();
@@ -353,7 +353,7 @@ bool CGene::setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DW
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsReaction ( GeneSubType_e subType, int muteRate, long success, long failure, 
+bool CGene::setAsReaction(GeneSubTypeReaction_e subType, int muteRate, long success, long failure,
                             long data1, long data2)
 {
   m_RawData.clear();
@@ -373,7 +373,7 @@ bool CGene::setAsReaction ( GeneSubType_e subType, int muteRate, long success, l
   return (true);
 }
 
-bool CGene::setAsReactionUsingDefinition(GeneSubType_e subType, int muteRate, double success, double failure, double data1, double data2)
+bool CGene::setAsReactionUsingDefinition(GeneSubTypeReaction_e subType, int muteRate, double success, double failure, double data1, double data2)
 {
   m_RawData.clear();
 
@@ -402,7 +402,7 @@ bool CGene::setAsReactionUsingDefinition(GeneSubType_e subType, int muteRate, do
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainSize (GeneSubType_e subType, int muteRate, size_t brainSize)
+bool CGene::setAsBrainSize(GeneSubTypeBrainSize_e subType, int muteRate, size_t brainSize)
 {
   m_RawData.clear();
 
@@ -495,7 +495,7 @@ bool CGene::setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nb
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsFeeling(GeneSubType_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi)
+bool CGene::setAsFeeling(GeneSubTypeFeeling_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi)
 {
   m_RawData.clear();
 
@@ -533,7 +533,7 @@ bool CGene::setAsFeeling(GeneSubType_e subType, int muteRate, DWORD sensorUId, i
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsPurposeTrigger(GeneSubType_e subType, int muteRate, 
+bool CGene::setAsPurposeTrigger(GeneSubTypePurpose_e subType, int muteRate,
                                 DWORD sensorUId, int duration, int subCaptorIndex, 
                                 int startThreshold, int stopThreshold, int labelLen, char* pLabel)
 {
@@ -638,7 +638,7 @@ bool CGene::setAsPurposeReactionBonus(int muteRate, DWORD purposeUId, DWORD reac
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainConfig(GeneSubType_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData)
+bool CGene::setAsBrainConfig(GeneSubTypeBrainBehavior_e subType, int muteRate, GeneMuteType_e muteType, int dataLen, BYTE* pData)
 {
   // Clean previous config
   m_RawData.clear();
@@ -653,7 +653,7 @@ bool CGene::setAsBrainConfig(GeneSubType_e subType, int muteRate, GeneMuteType_e
   return (true);
 }
 
-bool CGene::setAsBrainConfigUsingDefinition(GeneSubType_e subType, int muteRate, DWORD value)
+bool CGene::setAsBrainConfigUsingDefinition(GeneSubTypeBrainBehavior_e subType, int muteRate, DWORD value)
 {
   // Clean previous config
   m_RawData.clear();
@@ -928,7 +928,7 @@ bool CGene::buildGeneFromStringData(string rawData)
   tmpStr = rawData.substr(0,14);
   sscanf( tmpStr.c_str(),"%02X%04X%04X%02X%02X",&geneType,&geneSubType,&dataLen,&muteType,&muteRate);
   m_GeneType    = (GeneType_e)geneType;
-  m_GeneSubType = (GeneSubType_e)geneSubType;
+  m_GeneSubType = geneSubType;
   m_MuteType    = (GeneMuteType_e)muteType;
   m_MuteRate    = muteRate;
   m_pDefinitions = CGeneList::getDefinitions(m_GeneType, m_GeneSubType);
@@ -1076,7 +1076,7 @@ GeneType_e CGene::getGeneType()
   return (m_GeneType);
 }
 
-GeneSubType_e CGene::getGeneSubType()
+int CGene::getGeneSubType()
 {
   return (m_GeneSubType);
 }

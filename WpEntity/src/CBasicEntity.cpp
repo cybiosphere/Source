@@ -690,7 +690,7 @@ bool CBasicEntity::completeParamsWithDefault(void)
   }
   if (m_id_Noise == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"NoiseRate",PARAM_ENVIRONMENT,GENE_GENERIC_UNKNOWN);
+    CGenericParam* pParam = new CGenericParam(0,0,0,100,"NoiseRate",PARAM_ENVIRONMENT, GENE_PARAM_UNKNOWN);
     m_id_Noise       = addParameter(pParam);
   }
   
@@ -1647,7 +1647,7 @@ int CBasicEntity::addParameterFromGene(CGene* pGen, GenericParamType_e paramType
   pGen->getElementIsConfigurable(0) ? minVal = pGen->getElementValue(0) : minVal = pGen->getElementDefaultValue(0);
   pGen->getElementIsConfigurable(1) ? initVal = pGen->getElementValue(1) : initVal = pGen->getElementDefaultValue(1);
   pGen->getElementIsConfigurable(2) ? maxVal = pGen->getElementValue(2) : maxVal = pGen->getElementDefaultValue(2);
-  CGenericParam* pParam = new CGenericParam(minVal, initVal, initVal, maxVal, pGen->getLabel(), paramType, pGen->getGeneSubType());
+  CGenericParam* pParam = new CGenericParam(minVal, initVal, initVal, maxVal, pGen->getLabel(), paramType, (GeneSubTypeParam_e)pGen->getGeneSubType());
   return addParameter(pParam);
 }
 
@@ -2789,7 +2789,6 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
 
     // Parameters management
     string paramName;
-    double paramVal;
     CGenericParam* pParam;
     pNode = pNodeEntity->FirstChild(XML_NODE_PARAMETER);
     while (pNode != NULL)

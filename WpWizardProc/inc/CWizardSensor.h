@@ -69,7 +69,7 @@ public:
     bool AddGenesVisualSensors(int chromoIdx, int mutationRate, int range, ViewAngleType_e angle, int nbFocus, int variation);
     bool AddGenesVisualIdentifySensors(int chromoIdx, int mutationRate, int range, ViewAngleType_e angle, int nbFocus, int variation);
     bool AddGenesSmellSensor(int chromoIdx, int mutationRate, int range, int variation);
-    bool AddGenesGenericSensor(GeneSubType_e type, int defChromoIdx, int sexChromoIdx, int mutationRate, 
+    bool AddGenesGenericSensor(GeneSubTypeSensor_e type, int defChromoIdx, int sexChromoIdx, int mutationRate,
                                short defWeight, int variation, int param1=-1, int param2=-1);
 
 private:
