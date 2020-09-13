@@ -279,13 +279,13 @@ public:
   int            geneSubType;
   string         label;
   GeneMuteType_e muteType;
-  vector<GeneParamDefinition_t> elements;
+  std::vector<GeneParamDefinition_t> elements;
 
 //---------------------------------------------------------------------------
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGeneDefinitions(GeneType_e type, int subType, string name, GeneMuteType_e muteType, vector<GeneParamDefinition_t> paramList);
+  CGeneDefinitions(GeneType_e type, int subType, string name, GeneMuteType_e muteType, std::vector<GeneParamDefinition_t> paramList);
   virtual ~CGeneDefinitions();
 
 }; // end CGeneDefinitions
@@ -299,20 +299,20 @@ class DLL_CYBIOCORE_API CGeneList
   // Attributes 
   //===========================================================================
 private:
-  static array< vector<CGeneDefinitions>, GENE_NUMBER_TYPE> geneListArray;
+  static array< std::vector<CGeneDefinitions>, GENE_NUMBER_TYPE> geneListArray;
   
-  static vector<CGeneDefinitions> geneListGeneric;
-  static vector<CGeneDefinitions> geneListCaracter;
-  static vector<CGeneDefinitions> geneListParameter;
-  static vector<CGeneDefinitions> geneListLifeStage;
-  static vector<CGeneDefinitions> geneListPhyWellfare;
-  static vector<CGeneDefinitions> geneListSensor;
-  static vector<CGeneDefinitions> geneListReaction;
-  static vector<CGeneDefinitions> geneListBrainSize;
-  static vector<CGeneDefinitions> geneListBrainInstinct;
-  static vector<CGeneDefinitions> geneListFeeling;
-  static vector<CGeneDefinitions> geneListPurpose;
-  static vector<CGeneDefinitions> geneListBrainConfig;
+  static std::vector<CGeneDefinitions> geneListGeneric;
+  static std::vector<CGeneDefinitions> geneListCaracter;
+  static std::vector<CGeneDefinitions> geneListParameter;
+  static std::vector<CGeneDefinitions> geneListLifeStage;
+  static std::vector<CGeneDefinitions> geneListPhyWellfare;
+  static std::vector<CGeneDefinitions> geneListSensor;
+  static std::vector<CGeneDefinitions> geneListReaction;
+  static std::vector<CGeneDefinitions> geneListBrainSize;
+  static std::vector<CGeneDefinitions> geneListBrainInstinct;
+  static std::vector<CGeneDefinitions> geneListFeeling;
+  static std::vector<CGeneDefinitions> geneListPurpose;
+  static std::vector<CGeneDefinitions> geneListBrainConfig;
 
 
   //===========================================================================
