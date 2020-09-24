@@ -4,7 +4,7 @@
 //#ifdef WIN32
 //int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 //#else
-int main(int, char**)
+int main(int argc, char* argv[])
 //#endif
 {
 	try
@@ -16,6 +16,21 @@ int main(int, char**)
     char resuBuffer[512];
     string resuStr;
     string fileIni = "Cybiosphere.ini";
+    if (argc == 2)
+    {
+      fileIni = argv[1];
+      log_event("Start ", "Open ini file " + fileIni);
+    }
+    string serverPortStr;
+    if (getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni) > 0)
+    {
+      serverPortStr = resuBuffer;
+    }
+    else
+    {
+      serverPortStr = "4556";
+    }
+
     int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
     resuStr = resuBuffer;
 
@@ -41,7 +56,7 @@ int main(int, char**)
       log_event("Biotop  ", "Default empty biotop created");
     }
 
-		Server server(pBiotop);
+		Server server(serverPortStr, pBiotop);
 		server.exec();
 
     delete pBiotop;

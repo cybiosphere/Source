@@ -7,7 +7,7 @@ using namespace clan;
 //FRED #ifdef WIN32
 //FRED int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 //FRED #else
-int main(int, char**)
+int main(int argc, char* argv[])
 //FRED #endif
 {
 	try
@@ -20,6 +20,11 @@ int main(int, char**)
     string ServerPortStr;
     char resuBuffer[512];
     string fileIni = "Cybiosphere.ini";
+    if (argc == 2)
+    {
+      fileIni = argv[1];
+      log_event("Start ", "Use specific ini file " + fileIni);
+    }
     int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
     ServerAddrStr = resuBuffer;
     resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);

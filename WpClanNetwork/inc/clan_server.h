@@ -22,7 +22,7 @@ class ServerUser;
 class Server
 {
 public:
-	Server(CBiotop* pBiotop);
+	Server(std::string portStr, CBiotop* pBiotop);
 	~Server();
 
 	// start only
@@ -75,12 +75,13 @@ private:
 	NetGameEventDispatcher<ServerUser*> login_events;
 	NetGameEventDispatcher<ServerUser*> game_events;
 
+	std::string serverPortStr;
+	CBiotop* m_pBiotop;
 	int next_user_id;
 	int  nb_users_connected;
-  CBiotop* m_pBiotop;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
-	event_manager m_EventManager;
 	bool m_bManualMode;
+	event_manager m_EventManager;
 
 public:
   // Functions for CMD line

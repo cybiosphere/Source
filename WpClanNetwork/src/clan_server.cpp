@@ -18,8 +18,13 @@ CommandHandler_t ServerCmdNameList[SERVER_CMD_NUMBER] =
 };
 
 
-Server::Server(CBiotop* pBiotop)
-: next_user_id(1)
+Server::Server(std::string portStr, CBiotop* pBiotop)
+: serverPortStr{ portStr },
+m_pBiotop{ pBiotop },
+next_user_id(1),
+nb_users_connected(0),
+m_biotopSpeed(1.0),
+m_bManualMode(false)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_server.sig_client_connected(), clan::bind_member(this, &Server::on_client_connected));
@@ -40,11 +45,6 @@ Server::Server(CBiotop* pBiotop)
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Server::on_event_biotop_requestentityrefresh);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Server::on_event_biotop_createspeciemap);
-
-  nb_users_connected = 0;
-  m_pBiotop = pBiotop;
-  m_biotopSpeed = 1.0;
-  m_bManualMode = false;
 }
 
 Server::~Server()
@@ -53,8 +53,8 @@ Server::~Server()
 
 void Server::startServer()
 {
-  network_server.start("4556");
-  log_event("System  ", "SERVER started");
+  network_server.start(serverPortStr);
+  log_event("System  ", "SERVER started on port " + serverPortStr);
 }
 
 void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
@@ -123,9 +123,9 @@ void Server::exec()
   std::chrono::time_point<std::chrono::system_clock> curTick;
   std::chrono::time_point<std::chrono::system_clock> lastRunTick = std::chrono::system_clock::now();
 
-	network_server.start("4556");
+	network_server.start(serverPortStr);
 
-	log_event("System  ", "SERVER started");
+	log_event("System  ", "SERVER started on port " + serverPortStr);
 	while (true)
 	{
 		// Lets not worry about exiting this function!
@@ -608,7 +608,6 @@ void Server::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, Serv
     log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
   }
 }
-
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {

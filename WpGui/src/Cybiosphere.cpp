@@ -203,17 +203,21 @@ BOOL CCybiosphereApp::InitInstance()
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 
+  char bufferStr[512];
+  string fileIni = m_AppliPath + "\\Cybiosphere.ini";
+  string ServerPortStr;
+
 #ifndef USE_CLAN_CLIENT
   string resuStr = "";
-  char bufferStr[512];
-  CString fileIni = m_AppliPath + "\\Cybiosphere.ini";
-  BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", bufferStr, 512, (char*)fileIni.GetBuffer(0));
+  getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", bufferStr, 512, fileIni);
+  ServerPortStr = bufferStr;
+  BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", bufferStr, 512, fileIni);
   resuStr= bufferStr;
   if (resuStr != "")
   {
     string resuDataPath = "";
     m_pBiotop = new CBiotop(0,0,0);
-    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, (char*)fileIni.GetBuffer(0));
+    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, fileIni);
     resuDataPath= bufferStr;
     if (resuDataPath != "")
       m_pBiotop->loadFromXmlFile(resuStr, resuDataPath);
@@ -228,13 +232,10 @@ BOOL CCybiosphereApp::InitInstance()
 #else
   // Get Server info in ini file
   string ServerAddrStr;
-  string ServerPortStr;
-  char resuBuffer[512];
-  string fileIni = "Cybiosphere.ini";
-  int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
-  ServerAddrStr = resuBuffer;
-  resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
-  ServerPortStr = resuBuffer;
+  int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", bufferStr, 512, fileIni);
+  ServerAddrStr = bufferStr;
+  resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", bufferStr, 512, fileIni);
+  ServerPortStr = bufferStr;
   m_pClient = new Client(ServerAddrStr, ServerPortStr);
 
   // Connect to server and wait for biotop init from server
@@ -266,7 +267,7 @@ BOOL CCybiosphereApp::InitInstance()
 #ifdef USE_CLAN_SERVER
   //ConsoleWindow console("Server Console", 160, 1000);
   //ConsoleLogger logger;
-  m_pServer = new Server(m_pBiotop);
+  m_pServer = new Server(ServerPortStr, m_pBiotop);
   m_pServer->startServer();
 #endif
 

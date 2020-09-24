@@ -62,7 +62,7 @@ Client::~Client()
 
 void Client::exec()
 {
-	log_event("system", "CLIENT started");
+	log_event("system", "CLIENT started. Connect to server " + m_ServerAddr + " port:" + m_PortId);
 
   //std::string serverAddr = "192.168.1.14"; //"localhost"; //"192.168.1.67"
   //std::string portId     = "4556";
@@ -96,7 +96,7 @@ void Client::exec()
 	}
 }
 
-// Connect to localhost server
+// Connect to server
 void Client::connect_to_server()
 {
 	try

@@ -19,8 +19,8 @@ Global
 		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Debug|x86.Build.0 = Debug|Win32
 		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x64.ActiveCfg = Release|x64
 		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x64.Build.0 = Release|x64
-		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x86.ActiveCfg = Release|Win32
-		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x86.Build.0 = Release|Win32
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x86.ActiveCfg = Release|x64
+		{C64A77AD-F674-40EE-B4CA-14E55DF787D6}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

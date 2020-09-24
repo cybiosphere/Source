@@ -96,7 +96,6 @@ int main(int argc, char* argv[])
     scanf("%d",&choice);
     printf ("\n");
 
-
     switch(choice)
     {
     case 0:
