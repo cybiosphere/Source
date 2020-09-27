@@ -512,7 +512,7 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
 //---------------------------------------------------------------------------
 void CAnimMammal::nextHour() 
 {
-  if (isAlive() && isLocalAutoControlled())
+  if (isAlive() && !isRemoteControlled())
   {
     if (getCurrentLifeStage()->getStageType() == STAGE_3)
     {
@@ -549,13 +549,12 @@ void CAnimMammal::nextHour()
 void CAnimMammal::nextDay(bool forceGrowth)
 {
   // get older
-  if (isAlive() && isLocalAutoControlled())
+  if (isAlive() && !isRemoteControlled())
   {
     if (getGestationBabyNumber()>0)
     {
       increaseGestationTime(1); 
     }
-    
   }
   
   CAnimal::nextDay(forceGrowth);

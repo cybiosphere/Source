@@ -14,7 +14,7 @@ class CybiOgre3DApp;
 class Client
 {
 public:
-	Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp = NULL);
+	Client(std::string serverAddr, std::string portId, std::string loginName, CybiOgre3DApp* pCybiOgre3DApp = NULL);
 	~Client();
 
 	void exec();
@@ -79,6 +79,7 @@ private:
 
   std::string m_ServerAddr; //"localhost"; //"192.168.1.67"
   std::string m_PortId;
+  std::string m_LoginName;
 
   CBiotop* m_pBiotop;
   bool     m_bBiotopConfigComplete;

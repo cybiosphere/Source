@@ -530,34 +530,36 @@ void CVegetable::nextHour()
 //---------------------------------------------------------------------------
 void CVegetable::nextDay(bool forceGrowth)
 {
-  // get older
-  if (isAlive() && isLocalAutoControlled())
+  if (!isRemoteControlled())
   {
-    // retore def values (new leafs are available)
-    setColor(m_OriginalColorRgb);     
-    setProtection( m_OriginalProtection);
-    setOdor(m_OriginalOdor);
-
-    double growthWeight = getParameter(m_id_GrowthSpeed)->getVal()/1000;
-    changeWeight(growthWeight);
-
-    getParameter(m_id_Age)->changeVal(1);
-    if (getParameter(m_id_Age)->isMaxReached())
+    // get older
+    if (isAlive())
     {
-      setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
-      autoKill();
+      // retore def values (new leafs are available)
+      setColor(m_OriginalColorRgb);
+      setProtection(m_OriginalProtection);
+      setOdor(m_OriginalOdor);
+
+      double growthWeight = getParameter(m_id_GrowthSpeed)->getVal() / 1000;
+      changeWeight(growthWeight);
+
+      getParameter(m_id_Age)->changeVal(1);
+      if (getParameter(m_id_Age)->isMaxReached())
+      {
+        setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
+        autoKill();
+      }
+    }
+    else
+    {
+      getParameter(m_id_Decomposition)->changeVal(1);
+      changeWeight(-0.2);
+      if (getParameter(m_id_Decomposition)->isMaxReached())
+      {
+        autoRemove();
+      }
     }
   }
-  else 
-  {
-    getParameter(m_id_Decomposition)->changeVal(1);
-    changeWeight(-0.2);
-    if (getParameter(m_id_Decomposition)->isMaxReached())
-    {
-      autoRemove();
-    }
-  }
-
   CBasicEntity::nextDay(forceGrowth);
 }
 

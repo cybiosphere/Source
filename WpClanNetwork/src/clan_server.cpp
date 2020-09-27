@@ -271,12 +271,11 @@ void Server::on_event_received(NetGameConnection *connection, const NetGameEvent
 // "Login" event was received
 void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 {
-	log_event("Events  ", "Client requested login");
-
 	std::string user_name = e.get_argument(0);
 
 	if(user_name.length() == 0)
 	{
+    log_event("Events  ", "Client requested login error : Missing user name");
 		user->send_event(NetGameEvent(labelEventLoginKo,  "Missing user name"));
 	}
 	else
@@ -284,7 +283,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 		// Assign name and id to User object (created when user connected earlier)
 		user->user_name = user_name;
 		user->id = next_user_id++;
-
+    log_event("Events  ", "Client requested login: " + user_name);
 		user->send_event(NetGameEvent(labelEventLoginOk));
 	}
 }

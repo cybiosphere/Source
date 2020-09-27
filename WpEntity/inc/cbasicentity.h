@@ -411,6 +411,7 @@ public:
   void            setUserControlled(bool active);
   bool            isUserControlled();
   bool            isLocalAutoControlled();
+  bool            isRemoteControlled();
   void            setRemoteControlled(bool active);
   double          getToxicity();
   void            setToxicity(double newRate);

@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     // Get Server info in ini file
     string ServerAddrStr;
     string ServerPortStr;
+    string LogInStr;
     char resuBuffer[512];
     string fileIni = "Cybiosphere.ini";
     if (argc == 2)
@@ -29,8 +30,10 @@ int main(int argc, char* argv[])
     ServerAddrStr = resuBuffer;
     resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
     ServerPortStr = resuBuffer;
+    resu = getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", resuBuffer, 512, fileIni);
+    LogInStr = resuBuffer;
 
-		Client client(ServerAddrStr, ServerPortStr);
+		Client client(ServerAddrStr, ServerPortStr, LogInStr);
 		client.exec();
 
 		return 0;

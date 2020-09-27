@@ -2430,7 +2430,7 @@ void CAnimal::nextSecond()
 //---------------------------------------------------------------------------
 void CAnimal::nextHour() 
 {
-  if (isAlive() && isLocalAutoControlled())
+  if (isAlive() && !isRemoteControlled())
   {
     if (isSleeping())
     {
@@ -2470,7 +2470,7 @@ void CAnimal::nextHour()
 //---------------------------------------------------------------------------
 void CAnimal::nextDay(bool forceGrowth)
 {
-  if (isLocalAutoControlled())
+  if (!isRemoteControlled())
   {
     // get older 
     if (isAlive())

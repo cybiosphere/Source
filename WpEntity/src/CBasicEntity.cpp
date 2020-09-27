@@ -3225,6 +3225,14 @@ bool CBasicEntity::isLocalAutoControlled()
     return (false);
 }
 
+bool CBasicEntity::isRemoteControlled()
+{
+  if (m_Control == CONTROL_REMOTE_AUTO)
+    return (true);
+  else
+    return (false);
+}
+
 void CBasicEntity::setRemoteControlled(bool active)
 {
   if (active == true)

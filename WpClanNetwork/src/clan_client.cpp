@@ -18,11 +18,12 @@ CommandHandler_t ClientCmdNameList[CLIENT_CMD_NUMBER] =
   { "DISPLAY_BIOTOP",            Client::CmdDisplayBiotop,          "DISPLAY_BIOTOP" }
 };
 
-Client::Client(std::string serverAddr, std::string portId, CybiOgre3DApp* pCybiOgre3DApp)
+Client::Client(std::string serverAddr, std::string portId, std::string loginName, CybiOgre3DApp* pCybiOgre3DApp)
 {
-  // Update attributes
+  // Update attributesName
   m_ServerAddr = serverAddr;
   m_PortId = portId;
+  m_LoginName = loginName;
 
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_client.sig_event_received(), clan::bind_member(this, &Client::on_event_received));
@@ -152,7 +153,7 @@ void Client::on_connected()
 	log_event("network", "Connected to server");
 
 	// Properly login
-	network_client.send_event(NetGameEvent(labelEventLogin, "my user name"));
+	network_client.send_event(NetGameEvent(labelEventLogin, m_LoginName));
 }
 
 // Disconnected from server
