@@ -257,6 +257,11 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
       // Update data
       m_nEntityId = m_pEntity->getId();
       m_Label = m_pEntity->getLabel().c_str();
+      if (m_pEntity->isRemoteControlled())
+      {
+        // identify remote control with *
+        m_Label = "*" + m_Label;
+      }
 
       if (m_pEntity->getCurrentLifeStage()!=NULL)
       {

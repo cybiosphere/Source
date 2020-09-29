@@ -232,11 +232,15 @@ BOOL CCybiosphereApp::InitInstance()
 #else
   // Get Server info in ini file
   string ServerAddrStr;
+  string LogInStr;
   int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", bufferStr, 512, fileIni);
   ServerAddrStr = bufferStr;
   resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", bufferStr, 512, fileIni);
   ServerPortStr = bufferStr;
-  m_pClient = new Client(ServerAddrStr, ServerPortStr);
+  resu = getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", bufferStr, 512, fileIni);
+  LogInStr = bufferStr;
+
+  m_pClient = new Client(ServerAddrStr, ServerPortStr, LogInStr);
 
   // Connect to server and wait for biotop init from server
   m_pClient->connect_to_server();
