@@ -1501,54 +1501,38 @@ choiceIndType CBiotop::predictEntityAction(entityIdType idEntity)
 // Time management
 //===========================================================================
 
-void CBiotop::nextSecond(void)
+void CBiotop::nextSecond(bool doIncreaseTime)
 {
-  CBasicEntity* pEntity = NULL;
-  int i;
-  m_BioTime.seconds++;
   logCpuMarkerStart(BIOTOP_CPUMARKER_TOTAL);
+  resetBiotopEvents();
 
-  if (m_BioTime.seconds>=3600)
+  if (doIncreaseTime)
   {
-    // Next hour for biotop
-    nextHour();
-
-    // loop from top to bottom to clear entities each hour
-    for (i = (int)getNbOfEntities() - 1; i >= 0; i--)   
+    m_BioTime.seconds++;
+    if (m_BioTime.seconds >= 3600)
     {
-      pEntity = m_tEntity[i];
-      if (pEntity != NULL) 
-      {
-        if (pEntity->isToBeRemoved())
-        {
-          deleteEntity(pEntity->getId());
-        }
-        else
-        {
-          pEntity->nextHour();
-          if (pEntity->checkIfhasChanged())
-            addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
-        }
-      }
+      // Next hour for biotop
+      nextHour();
+      generateRandomEntities();
+      memorizeAllPopulationMaps();
     }
+  }
+
+  if (m_BioTime.seconds == 0)
+  {
+    decreaseOdorMap();
+    nextHourForAllEntities();
+    resetCpuMarker();
   }
 
   // Loop on all animals for basic action
-  logCpuMarkerStart(BIOTOP_CPUMARKER_ANIMALS);
-  for (i=0; i<getNbOfAnimals(); i++)    
-  {
-    pEntity = m_tEntity[i];
-    if (pEntity != NULL)
-    {
-      pEntity->nextSecond();
-      if (pEntity->checkIfhasChanged())
-        addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
-    }
-  }
-  logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
+  nextSecondForAllAnimals();
 
   // Trigger measurement
-  triggerMeasuresNextSecond();
+  if (doIncreaseTime)
+  {
+    triggerMeasuresNextSecond();
+  }
 
   logCpuMarkerEnd(BIOTOP_CPUMARKER_TOTAL);
 }
@@ -1568,45 +1552,6 @@ void CBiotop::triggerMeasuresNextSecond(void)
 
 void CBiotop::nextHour(void)
 {
-  for (size_t i=0;i<m_Dimension.x;i++)
-  {
-    for (size_t j=0;j<m_Dimension.y;j++)
-    {
-      for (size_t odor=0;odor<ODOR_NUMBER_TYPE;odor++)
-      {
-        if (m_tBioSquare[i][j].odorTrace[odor]<0.01)
-          m_tBioSquare[i][j].odorTrace[odor] = 0;
-        else
-          m_tBioSquare[i][j].odorTrace[odor] = m_tBioSquare[i][j].odorTrace[odor]/2.0;
-      }
-    }
-  }
-
-  // Random entities generation
-  for (size_t ind = 0; ind < MAX_NUMBER_RANDOM_ENTITIES; ind++)
-  {
-    BiotopRandomEntitiyGeneration_t& randomEntity = m_tRandomEntitiesGeneration[ind];
-    if (randomEntity.pModelEntity != NULL)
-    {
-      double coverRate = randomEntity.intensity + getRandInt(10);
-      double fertilityFactor = 100;
-      double periodicityFactor = 100;
-      if (randomEntity.IsProportionalToFertility)
-      {
-        fertilityFactor = getFertility({1, 1});
-        coverRate = coverRate * fertilityFactor / 100.0;
-      }
-      if (randomEntity.avaragePeriodicity > 0)
-      {
-        periodicityFactor = 100.0 / ((double)(randomEntity.avaragePeriodicity) * 24.0);
-      }
-      if (testChance(periodicityFactor, fertilityFactor))
-      {
-        spawnEntitiesRandomly(randomEntity.pModelEntity, cybio_round(coverRate));
-      }
-    }
-  }
-
   // Update time
   m_BioTime.seconds = 0;
   m_BioTime.hours++;
@@ -1629,7 +1574,6 @@ void CBiotop::nextHour(void)
       CYBIOCORE_LOG_TIME(m_BioTime);
       CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfAnimals());
     }
-    resetCpuMarker();
 
     m_BioTime.hours = 0;
     m_BioTime.days++;
@@ -1638,16 +1582,101 @@ void CBiotop::nextHour(void)
       m_BioTime.days = 0;
       m_BioTime.years++;
     }
-
-    // Save geomap with monitored specie populations
-    for (auto pGeoMap : m_tGeoMapSpecies)
-    {
-      pGeoMap->MemorizePopulationMap(m_BioTime.days);
-    }
-
   }
 }
 
+void CBiotop::nextHourForAllEntities(void)
+{
+  CBasicEntity* pEntity = NULL;
+  // loop from top to bottom to clear entities each hour
+  for (int i = (int)getNbOfEntities() - 1; i >= 0; i--)
+  {
+    pEntity = m_tEntity[i];
+    if (pEntity != NULL)
+    {
+      if (pEntity->isToBeRemoved())
+      {
+        deleteEntity(pEntity->getId());
+      }
+      else
+      {
+        pEntity->nextHour();
+        if (pEntity->checkIfhasChangedAndClear())
+          addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
+      }
+    }
+  }
+}
+
+void CBiotop::nextSecondForAllAnimals(void)
+{
+  CBasicEntity* pEntity = NULL;
+  // Loop on all animals for basic action
+  logCpuMarkerStart(BIOTOP_CPUMARKER_ANIMALS);
+  for (size_t i = 0; i < getNbOfAnimals(); i++)
+  {
+    pEntity = m_tEntity[i];
+    if (pEntity != NULL)
+    {
+      pEntity->nextSecond();
+      if (pEntity->checkIfhasChangedAndClear())
+        addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
+    }
+  }
+  logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
+}
+
+void CBiotop::decreaseOdorMap()
+{
+  for (size_t i = 0; i < m_Dimension.x; i++)
+  {
+    for (size_t j = 0; j < m_Dimension.y; j++)
+    {
+      for (size_t odor = 0; odor < ODOR_NUMBER_TYPE; odor++)
+      {
+        if (m_tBioSquare[i][j].odorTrace[odor] < 0.01)
+          m_tBioSquare[i][j].odorTrace[odor] = 0;
+        else
+          m_tBioSquare[i][j].odorTrace[odor] = m_tBioSquare[i][j].odorTrace[odor] / 2.0;
+      }
+    }
+  }
+}
+
+void CBiotop::memorizeAllPopulationMaps()
+{
+  for (auto pGeoMap : m_tGeoMapSpecies)
+  {
+    pGeoMap->MemorizePopulationMap(m_BioTime.days);
+  }
+}
+
+void CBiotop::generateRandomEntities()
+{
+  for (size_t ind = 0; ind < MAX_NUMBER_RANDOM_ENTITIES; ind++)
+  {
+    BiotopRandomEntitiyGeneration_t& randomEntity = m_tRandomEntitiesGeneration[ind];
+    if (randomEntity.pModelEntity != NULL)
+    {
+      double coverRate = randomEntity.intensity + getRandInt(10);
+      double fertilityFactor = 100;
+      double periodicityFactor = 100;
+      if (randomEntity.IsProportionalToFertility)
+      {
+        fertilityFactor = getFertility({ 1, 1 });
+        coverRate = coverRate * fertilityFactor / 100.0;
+      }
+      if (randomEntity.avaragePeriodicity > 0)
+      {
+        periodicityFactor = 100.0 / ((double)(randomEntity.avaragePeriodicity) * 24.0);
+      }
+      if (testChance(periodicityFactor, fertilityFactor))
+      {
+        spawnEntitiesRandomly(randomEntity.pModelEntity, cybio_round(coverRate));
+      }
+    }
+  }
+}
 
 BiotopTime_t CBiotop::getBiotopTime(void)
 {
@@ -1844,10 +1873,12 @@ void CBiotop::updateGridAllEntities(void)
 {
   Point_t tmpCoord;
   size_t tmpLayer;
+  bool hasMoved = false;
 
   // Clear previous positions
   for (CBasicEntity* pCurEntity : m_tEntity)
   {  
+    hasMoved = pCurEntity->checkIfhasMovedAndClear();
     if ( (pCurEntity) && (pCurEntity->checkIfhasMoved()) )
     {
       tmpCoord = pCurEntity->getPrevGridCoord();
@@ -2384,8 +2415,6 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
             {
               pEntity->setDirection(direction);
               pEntity->jumpToStepCoord(stepCoord, false);
-              pEntity->checkIfhasMovedAndClear();
-              pEntity->checkIfhasChangedAndClear();
             }
           }
           else

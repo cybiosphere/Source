@@ -860,7 +860,7 @@ double CGene::computeSensitivityFromData(WORD rawData)
   return cybio_round((double)rawData * 200.0 / 65536.0 - 100.0);
 }
 
-double CGene::computeBonusFromData(WORD rawData)
+int CGene::computeBonusFromData(WORD rawData)
 {
   return cybio_round((double)rawData * 20000.0 / 65536.0);
 }

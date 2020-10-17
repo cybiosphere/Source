@@ -104,6 +104,7 @@ private:
 public:
   CybiOgre3DFrameListener(SceneManager *sceneMgr, RenderWindow* win, Camera* cam);
   bool frameStarted(const FrameEvent& evt);
+  void proceedBiotopEvents();
   //bool createMeshEntity (CBasicEntity* pBasicEntity);
   void updateAllMeshEntityNewSecond();
   void updateMeshEntityNewSecond(int meshIndex);

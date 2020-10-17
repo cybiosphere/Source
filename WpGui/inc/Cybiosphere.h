@@ -120,6 +120,7 @@ public:
   void addEntitySpawnerInBiotop(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
   void proceedBiotopNextSecond();
   void addGeomapSpecieInBiotop(std::string specieName);
+  void proceedBiotopEvents();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

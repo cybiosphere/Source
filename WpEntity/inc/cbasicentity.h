@@ -147,6 +147,7 @@ private:
   Point_t m_PrevGridCoord;  // Previous coordinate in the Biotop used by biotop grid
   Point_t m_PrevStepCoord;  // Previous coordinate in the Biotop used by biotop grid
   Point_t m_GuiGridCoord;   // Coordinate in the Biotop that can be used by GUI
+  Point_t m_GuiStepCoord;   // Coordinate in the Biotop that can be used by GUI
 
   bool         m_IsAttached;  // Is attached to the biotop ?
   entityIdType m_Id;          // Unique ID (Set by Biotop)
@@ -383,7 +384,8 @@ public:
   Point_t         getGridCoord();
   Point_t         getPrevGridCoord();
   Point_t         getPrevStepCoord();
-  Point_t         getGuiGridCoord();
+  Point_t         getAndUpdateGuiGridCoord();
+  Point_t         getAndUpdateGuiStepCoord();
   Point_t         getGridCoordRelative(const RelativePos_t& relativeCoord);
   Point_t         getStepCoord();
   Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
@@ -392,7 +394,7 @@ public:
   int             getDirection();
   void            setDirection(int direction);
   int             getStepDirection();
-  void            setStepDirection(int stepDirection);
+  void            setStepDirection(int stepDirection, bool addMoveEvent = false);
   int             getPrevStepDirection();
   entityIdType    getId();
   void            setId(entityIdType id);
@@ -435,7 +437,6 @@ public:
   CBiotop*        getBiotop();
   CBrain*         getBrain();
   bool            checkIfhasMoved();
-  bool            checkIfhasChanged();
   bool            checkIfhasMovedAndClear();
   bool            checkIfhasChangedAndClear();
   void            forceHasChanged();

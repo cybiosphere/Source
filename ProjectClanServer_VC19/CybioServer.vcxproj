@@ -279,6 +279,8 @@
     <ClInclude Include="..\WpClanNetwork\inc\API\Core\Zip\zlib_compression.h" />
     <ClInclude Include="..\WpClanNetwork\inc\clan_server.h" />
     <ClInclude Include="..\WpClanNetwork\inc\clan_server_user.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\server_impl.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />
     <ClInclude Include="..\WpEntity\inc\CBasicEntity.h" />
@@ -323,6 +325,7 @@
     <ClCompile Include="..\WpClanNetwork\src\network_condition_variable.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\network_data.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\server.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\setupnetwork_win32.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\setup_core.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\socket_error.cpp" />

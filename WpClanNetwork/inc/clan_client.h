@@ -9,12 +9,10 @@
 
 using namespace clan;
 
-class CybiOgre3DApp;
-
 class Client
 {
 public:
-	Client(std::string serverAddr, std::string portId, std::string loginName, CybiOgre3DApp* pCybiOgre3DApp = NULL);
+	Client(std::string serverAddr, std::string portId, std::string loginName);
 	~Client();
 
 	void exec();
@@ -27,6 +25,9 @@ public:
   bool is_biotop_config_complete();
   bool is_logged_in();
   float get_biotop_speed();
+  void processBiotopEvents();
+  bool get_manual_mode();
+  void set_manual_mode(bool newManualMode);
 
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
@@ -63,6 +64,8 @@ private:
   void on_event_biotop_createmeasure(const NetGameEvent& e);
   void on_event_biotop_addEntitySpawner(const NetGameEvent& e);
   void on_event_biotop_createspeciemap(const NetGameEvent& e);
+  void on_event_biotop_changeentitycontrol(const NetGameEvent& e);
+  void on_event_biotop_changespeed(const NetGameEvent& e);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);
@@ -88,8 +91,7 @@ private:
   bool m_bEventNextSecondEnd;
   int m_lastEventTimeStamp;
   float m_biotopSpeed; // Controled by server. 1.0 is real time speed. Biotp update every 1sec
-
-  CybiOgre3DApp* m_pCybiOgre3DApp;
+  bool m_bManualMode;
 };
 
 #endif // #ifndef __ClanClient_h_

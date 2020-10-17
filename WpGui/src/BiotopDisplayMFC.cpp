@@ -354,16 +354,15 @@ void CBiotopDisplayMFC::RefreshNextSecond()
   int coordX,coordY;
   CRect refreshRect;
 
-  // Update Refresh grid with changing entities
-  for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
+  BiotopEvent_t bioEvent;
+  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
   {
-    CBasicEntity* pEntity = m_pBiotop->getEntityByIndex(i);
-    if ((pEntity == NULL) || (!pEntity->checkIfhasChanged()))
-      continue;
-
-    Point_t prevCoord = pEntity->getGuiGridCoord();
-    if (pEntity->checkIfhasChangedAndClear())
+    bioEvent = m_pBiotop->getBiotopEvent(i);
+    if (bioEvent.pEntity && ((bioEvent.eventType == BIOTOP_EVENT_ENTITY_MOVED) || (bioEvent.eventType == BIOTOP_EVENT_ENTITY_ADDED)))
     {
+      CBasicEntity* pEntity = bioEvent.pEntity;
+      Point_t prevCoord = pEntity->getAndUpdateGuiGridCoord();
+
       if ( (prevCoord.x != pEntity->getGridCoord().x) || (prevCoord.y != pEntity->getGridCoord().y) )
       {
         coordX = m_nBitmapPixSizeX * prevCoord.x - visibleCoordX;

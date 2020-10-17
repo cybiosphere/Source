@@ -421,6 +421,8 @@ void CCybiosphereApp::SetModeManual(BOOL isManual)
     modifyBiotopSpeed(GetBiotopViewPtr()->GetSpeedRate());
 #ifdef USE_CLAN_SERVER
     m_pServer->set_manual_mode(isManual);
+#elif USE_CLAN_CLIENT
+    m_pClient->set_manual_mode(isManual);
 #endif
   }
 }
@@ -543,9 +545,8 @@ bool CCybiosphereApp::setSelectedEntity(CBasicEntity* pEntity)
 {
   m_pSelectedEntity = pEntity;
 #ifdef USE_CLAN_CLIENT
-  if (pEntity != NULL)
+  if ((pEntity != NULL) && (pEntity->isRemoteControlled()))
   {
-    m_pBiotop->resetBiotopEvents();
     entityIdType entityId = pEntity->getId();
     m_pClient->send_event_request_entity_refresh(pEntity, entityId);
     // Wait for entity update from server (TODO: confirm reception)
@@ -563,7 +564,6 @@ bool CCybiosphereApp::updateSelectedEntity(CBasicEntity* pEntity)
 #ifdef USE_CLAN_CLIENT
   if (pEntity != NULL)
   {
-    m_pBiotop->resetBiotopEvents();
     entityIdType entityId = pEntity->getId();
     m_pClient->send_event_update_entity_data(pEntity);
     // Wait for entity update from server (TODO: confirm reception)
@@ -611,12 +611,12 @@ CBasicEntity* CCybiosphereApp::GetpSelectedEntity()
 void CCybiosphereApp::NextSecondStart()
 {
 #ifdef USE_CLAN_CLIENT
-  m_pClient->process_new_events();
   if (fabs(m_pClient->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
   {
     GetBioCtrlViewPtr()->ForceSetSpeed(m_pClient->get_biotop_speed());
     GetBiotopViewPtr()->SetSpeedRate(m_pClient->get_biotop_speed());
   }
+  SetModeManual(m_pClient->get_manual_mode());
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #endif
 }
@@ -637,15 +637,25 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
   GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
 
 #ifdef USE_CLAN_SERVER
-  m_pServer->ProcessEvents(true, GetBiotopViewPtr()->GetSpeedRate());
   SetModeManual(m_pServer->get_manual_mode());
   if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
   {
     GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
   }
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
-#else
-  m_pBiotop->resetBiotopEvents();
+#endif
+}
+
+void CCybiosphereApp::proceedBiotopEvents()
+{
+  GetBiotopViewPtr()->SoftRefreshDisplay();
+#ifdef USE_CLAN_CLIENT
+  m_pClient->processBiotopEvents();
+  m_pClient->process_new_events();
+#endif
+#ifdef USE_CLAN_SERVER
+  m_pServer->processBiotopEvents();
+  m_pServer->process_new_events();
 #endif
 }
 
@@ -725,6 +735,9 @@ void CCybiosphereApp::modifyBiotopSpeed(const float newBiotopSpeed)
 #ifdef USE_CLAN_CLIENT
   m_pClient->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual);
 #else
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual);
+#endif
   GetBiotopViewPtr()->SetSpeedRate(newBiotopSpeed);
 #endif
 }
@@ -771,7 +784,14 @@ void CCybiosphereApp::addEntitySpawnerInBiotop(int index, string entityFileName,
 void CCybiosphereApp::proceedBiotopNextSecond()
 {
 #ifndef USE_CLAN_CLIENT
-  m_pBiotop->nextSecond();
+#ifdef USE_CLAN_SERVER
+  proceedBiotopEvents();
+  m_pServer->send_event_new_second_start();
+#endif
+  m_pBiotop->nextSecond(true);
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_new_second_end();
+#endif
 #endif // !USE_CLAN_CLIENT
 }
 

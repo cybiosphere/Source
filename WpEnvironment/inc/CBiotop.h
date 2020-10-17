@@ -320,12 +320,14 @@ public:
 // Time management
 //---------------------------------------------------------------------------
 public:
-  void nextSecond(void);
+  void nextSecond(bool doIncreaseTime = true);
   void triggerMeasuresNextSecond(void);
-  void nextHour(void);
   BiotopTime_t getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
-
+private:
+  void nextHour(void);
+  void nextHourForAllEntities(void);
+  void nextSecondForAllAnimals(void);
 
 //---------------------------------------------------------------------------
 // Grid management
@@ -389,7 +391,11 @@ public:
 public:
   bool addEntitySpawner(size_t index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
   bool addEntitySpawner(size_t index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+private:
+  void generateRandomEntities();
   void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
+  void decreaseOdorMap();
+  void memorizeAllPopulationMaps();
 
 //---------------------------------------------------------------------------
 // CPU Marker

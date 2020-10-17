@@ -56,7 +56,7 @@ namespace clan
   }
 
 
-  void event_manager::handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
+  CBasicEntity* event_manager::handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
   {
     int transactionId = 0; // contains entityId
     int custom1, custom2, custom3, custom4;
@@ -64,8 +64,9 @@ namespace clan
     bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
     if (bufferIsReady)
     {
-      addEntityWithZipBuffer(bufferOutput, transactionId, custom1, custom2, custom3, custom4, pBiotop, setAsRemoteControl);
+      return addEntityWithZipBuffer(bufferOutput, transactionId, custom1, custom2, custom3, custom4, pBiotop, setAsRemoteControl);
     }
+    return NULL;
   }
 
   bool event_manager::buildEventsAddCloneEntities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, std::vector<NetGameEvent>& eventVector)
@@ -158,7 +159,7 @@ namespace clan
       eventVector));
   }
 
-   void event_manager::handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
+   void event_manager::handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop)
    {
      int transactionId = 0; // contains entityId
      int custom1, custom2, custom3, custom4;
@@ -166,7 +167,8 @@ namespace clan
      bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
      if (bufferIsReady)
      {
-       updateEntityWithZipBuffer(bufferOutput, transactionId, pBiotop, setAsRemoteControl);
+       log_event("events", "Biotop update entity data");
+       updateEntityWithZipBuffer(bufferOutput, transactionId, pBiotop);
      }
    }
 
@@ -181,6 +183,7 @@ namespace clan
     newEvent.add_argument((int)pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument((int)pEntity->isImmortal());
+    log_event("events", "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
     // Add parameters
     for (int i = 0; i < pEntity->getNumParameter(); i++)
     {
@@ -196,7 +199,7 @@ namespace clan
     return (std::move(newEvent));
   }
 
-  CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
+  CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate)
   {
     int entityId = e.get_argument(0);
     std::string  entityLabel = e.get_argument(1);
@@ -212,11 +215,12 @@ namespace clan
 
     // Check if entity exists
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-    // If entity does not exist, create one with default parameters
-    if (pEntity != NULL)
+    // If entity exist, update only if remoteControlled or manual mode
+    if ((pEntity != NULL) && (forceEntityUpdate || pEntity->isRemoteControlled()))
     {
       float paramValue = 0;
       int index = 8;
+      //log_event("events", "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
       if (pEntity->getLabel() != entityLabel)
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
       pEntity->setStatus((StatusType_e)status);
@@ -407,6 +411,33 @@ namespace clan
     }
   }
 
+  NetGameEvent event_manager::buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl)
+  {
+    NetGameEvent newEvent(labelEventChangeRemoteControl);
+    newEvent.add_argument((int)entityId);
+    newEvent.add_argument((int)setRemoteControl);
+    return (std::move(newEvent));
+  }
+
+  bool event_manager::handleEventChangeEntityRemoteControl(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    int entityId = e.get_argument(0);
+    int setRemoteCtrl = e.get_argument(1);
+    CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
+
+    if (pEntity != NULL) 
+    {
+      //log_event("events", "Biotop set entity remote control: entity %1 remote:%2", pEntity->getLabel(), setRemoteCtrl);
+      pEntity->setRemoteControlled(setRemoteCtrl);
+      return true;
+    }
+    else
+    {
+      log_event("events", "Biotop set entity remote control: Error entityID %1", entityId);
+      return false;
+    }
+  }
+
   bool event_manager::buildEventsLongString(const std::string event_label, const DataBuffer& data, const int transactionId,
                                                const int custom1, const int custom2, const int custom3, const int custom4,
                                                std::vector<NetGameEvent>& eventVector)
@@ -523,7 +554,7 @@ namespace clan
     return false;
   }
 
-  bool event_manager::addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,
+  CBasicEntity* event_manager::addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,
                                              const int stepCoordX, const int stepCoordY, const int layer, const int stepDirection,
                                              CBiotop* pBiotop, bool setAsRemoteControl)
   {
@@ -532,6 +563,7 @@ namespace clan
     xmlDoc.Parse(xmlBuffer.get_data());
 
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
+    pNewEntity->setStepDirection(stepDirection);
     log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 ID %5", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, (int)entityId);
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
@@ -540,24 +572,25 @@ namespace clan
     {
       if (!pBiotop->addRemoteCtrlEntity(entityId, pNewEntity, stepCoord, true, layer))
       {
+        log_event("events", "Biotop add entity: Error in addRemoteCtrlEntity");
         delete pNewEntity;
-        return false;
+        return NULL;
       }
     }
     else
     {
       if (!pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer))
       {
+        log_event("events", "Biotop add entity: Error in addEntity");
         delete pNewEntity;
-        return false;
+        return NULL;
       }
     }
-    pNewEntity->setStepDirection(stepDirection);
-    return true;
+    return pNewEntity;
   }
 
 
-  bool event_manager::updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop, bool setAsRemoteControl)
+ bool event_manager::updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop)
   {
     DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
     TiXmlDocument xmlDoc;
@@ -569,13 +602,14 @@ namespace clan
     CBasicEntity* pCurEntity;
     bool bFound = false;
     int curStepDirection;
-
+    bool curRemoteCtrl;
     // Update entity with same Id
     pCurEntity = pBiotop->getEntityById(entityId);
     if (pCurEntity != NULL)
     {
       curStepDirection = pCurEntity->getStepDirection();
-      pNewEntity->setRemoteControlled(setAsRemoteControl);
+      curRemoteCtrl = pCurEntity->isRemoteControlled();
+      pNewEntity->setRemoteControlled(curRemoteCtrl);
       pNewEntity->setStepDirection(curStepDirection);
       if (!pBiotop->replaceEntityByAnother(pCurEntity->getId(), pNewEntity))
       {

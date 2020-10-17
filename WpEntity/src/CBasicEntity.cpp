@@ -197,8 +197,6 @@ CBasicEntity::CBasicEntity()
   m_PrevStepCoord.x = invalidCoord;
   m_PrevStepCoord.y = invalidCoord;
   m_PrevStepDirection = -1;
-  m_GuiGridCoord.x = invalidCoord;
-  m_GuiGridCoord.y = invalidCoord;
   m_bIsImmortal = false;
   m_bIsDrinkable = false;
 
@@ -1462,6 +1460,7 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
   {
     m_IsAttached = true;
     m_pBiotop->updateGridEntity(this);
+    getAndUpdateGuiGridCoord();
   }
 }
 
@@ -2266,7 +2265,7 @@ bool CBasicEntity::turnToCenterDir()
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnRight(size_t nDegree)
 {
-  setStepDirection(m_StepDirection + 360 - (int)nDegree);
+  setStepDirection(m_StepDirection + 360 - (int)nDegree, true);
   return (true);
 }
 
@@ -2283,7 +2282,7 @@ bool CBasicEntity::turnRight(size_t nDegree)
 //---------------------------------------------------------------------------
 bool CBasicEntity::turnLeft(size_t nDegree)
 {
-  setStepDirection(m_StepDirection + (int)nDegree);
+  setStepDirection(m_StepDirection + (int)nDegree, true);
   return (true);
 }
 
@@ -2975,9 +2974,18 @@ Point_t CBasicEntity::getPrevStepCoord()
   return (m_PrevStepCoord);
 }
 
-Point_t CBasicEntity::getGuiGridCoord()
+Point_t CBasicEntity::getAndUpdateGuiGridCoord()
 {
-  return (m_GuiGridCoord);
+  Point_t prevGridCoord = m_GuiGridCoord;
+  m_GuiGridCoord = m_GridCoord;
+  return (prevGridCoord);
+}
+
+Point_t CBasicEntity::getAndUpdateGuiStepCoord()
+{
+  Point_t prevStepCoord = m_GuiStepCoord;
+  m_GuiStepCoord = m_StepCoord;
+  return (prevStepCoord);
 }
 
 Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
@@ -3082,10 +3090,14 @@ int CBasicEntity::getDirection()
 
 void CBasicEntity::setDirection(int direction)
 {
-  m_Direction = direction%8; // avoid invalid direction
-  m_PrevStepDirection = m_StepDirection;
-  m_StepDirection = 45*m_Direction;
-  m_bHasChanged = true;
+  int newDirection = direction % 8;
+  if (m_Direction != newDirection)
+  {
+    m_Direction = newDirection; // avoid invalid direction
+    m_PrevStepDirection = m_StepDirection;
+    m_StepDirection = 45 * m_Direction;
+    m_bHasChanged = true;
+  }
 }
 
 int CBasicEntity::getStepDirection()
@@ -3093,12 +3105,20 @@ int CBasicEntity::getStepDirection()
   return (m_StepDirection);
 }
 
-void  CBasicEntity::setStepDirection(int stepDirection)
+void  CBasicEntity::setStepDirection(int stepDirection, bool addMoveEvent)
 {
   m_PrevStepDirection = m_StepDirection;
   m_StepDirection = stepDirection % 360;
-  m_Direction = ((m_StepDirection + 22) / 45) % 8;
   m_bHasChanged = true;
+  int newDirection = ((m_StepDirection + 22) / 45) % 8;
+  if (m_Direction != newDirection)
+  {
+    m_Direction = newDirection;
+    if (addMoveEvent)
+    {
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
+    }
+  }
 }
 
 int CBasicEntity::getPrevStepDirection()
@@ -3362,11 +3382,6 @@ bool CBasicEntity::checkIfhasMoved()
   return (m_bHasMoved);
 }
 
-bool CBasicEntity::checkIfhasChanged()
-{
-  return (m_bHasChanged);
-}
-
 bool CBasicEntity::checkIfhasMovedAndClear()
 {
   bool resu = m_bHasMoved;
@@ -3377,7 +3392,6 @@ bool CBasicEntity::checkIfhasMovedAndClear()
 bool CBasicEntity::checkIfhasChangedAndClear()
 {
   bool resu = m_bHasChanged;
-  m_GuiGridCoord = m_GridCoord;
   m_bHasChanged = false;
   return (resu);
 }

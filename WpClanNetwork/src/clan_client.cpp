@@ -5,9 +5,6 @@
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include "CAnimal.h"
-#ifdef USE_OGRE3D
-#include "CybiOgre3D.h"
-#endif
 #include "CScenarioPlayer.h"
 
 #define CLIENT_CMD_NUMBER 2
@@ -18,7 +15,7 @@ CommandHandler_t ClientCmdNameList[CLIENT_CMD_NUMBER] =
   { "DISPLAY_BIOTOP",            Client::CmdDisplayBiotop,          "DISPLAY_BIOTOP" }
 };
 
-Client::Client(std::string serverAddr, std::string portId, std::string loginName, CybiOgre3DApp* pCybiOgre3DApp)
+Client::Client(std::string serverAddr, std::string portId, std::string loginName)
 {
   // Update attributesName
   m_ServerAddr = serverAddr;
@@ -45,6 +42,8 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Client::on_event_biotop_createmeasure);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Client::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Client::on_event_biotop_createspeciemap);
+  game_events.func_event(labelEventChangeRemoteControl) = clan::bind_member(this, &Client::on_event_biotop_changeentitycontrol);
+  game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Client::on_event_biotop_changespeed);
 
 	quit = false;
 	logged_in = false;
@@ -53,8 +52,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   m_bEventNextSecondStart = false;
   m_bEventNextSecondEnd = false;
   m_biotopSpeed = 1.0;
-  m_pCybiOgre3DApp = pCybiOgre3DApp;
-
+  m_bManualMode = true;
 }
 
 Client::~Client()
@@ -84,7 +82,8 @@ void Client::exec()
 	while (!quit)
 	{
 		System::sleep(10);
-		network_client.process_events();
+    processBiotopEvents();
+    process_new_events();
     std::string inputcommand;
     bool resu = log_get_console_input(inputcommand);
     if (resu)
@@ -120,6 +119,41 @@ void Client::disconnect_from_server()
 	{
 		log_event("error", e.message);
 	}
+}
+
+void Client::processBiotopEvents()
+{
+  // Update all entities
+  BiotopEvent_t bioEvent;
+  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+  {
+    bioEvent = m_pBiotop->getBiotopEvent(i);
+    if (bioEvent.pEntity && !bioEvent.pEntity->isRemoteControlled())
+    {
+      switch (bioEvent.eventType)
+      {
+      case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
+        send_event_update_entity_position(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_MODIFIED:
+        send_event_update_entity_data(bioEvent.pEntity);
+        break;
+      default:
+        break;
+      }
+    }
+  }
+  m_pBiotop->resetBiotopEvents();
+}
+
+bool Client::get_manual_mode()
+{
+  return m_bManualMode;
+}
+
+void Client::set_manual_mode(bool newManualMode)
+{
+  m_bManualMode = newManualMode;
 }
 
 void Client::process_new_events()
@@ -222,6 +256,9 @@ void Client::on_event_game_startgame(const NetGameEvent &e)
 // "Biotop-Next second" event was received
 void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e) 
 {
+  // Process event of previous second
+  processBiotopEvents(); 
+
   CustomType biotopTime = e.get_argument(0);
   m_biotopSpeed = e.get_argument(1);
   float sunlight = e.get_argument(2);
@@ -232,6 +269,7 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   m_pBiotop->getParamSunlight()->forceVal(sunlight);
   m_pBiotop->getParamFertility()->forceVal(fertility);
   m_pBiotop->getParamTemperature()->forceVal(temperature);
+  m_pBiotop->nextSecond(false);
 	//log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
@@ -244,14 +282,6 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
 	//log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
   m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
   m_pBiotop->triggerMeasuresNextSecond();
-
-#ifdef USE_OGRE3D
-  // Prepare new movement and animation in case of Ogre3D Application
-  if (m_pCybiOgre3DApp != NULL)
-  {
-    m_pCybiOgre3DApp->updateAllMeshEntityNewSecond();
-  }
-#endif // USE_OGRE3D
 }
 
 bool  Client::check_if_event_next_second_start_and_clean()
@@ -280,21 +310,12 @@ void Client::on_event_biotop_addcloneentity(const NetGameEvent& e)
 
 void Client::on_event_biotop_updatefullentity(const NetGameEvent &e) 
 {
-  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop, true);
+  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop);
 }
 
 void Client::on_event_biotop_updateentityposition(const NetGameEvent &e) 
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
-
-#ifdef USE_OGRE3D
-  // Prepare new movement and animation in case of Ogre3D Application
-  if (m_pCybiOgre3DApp != NULL)
-  {
-    m_pCybiOgre3DApp->setMeshEntityPreviousPosition(pEntity);
-    //m_pCybiOgre3DApp->updateMeshEntityNewSecond(pEntity);
-  }
-#endif // USE_OGRE3D
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
 }
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)
@@ -315,6 +336,16 @@ void Client::on_event_biotop_addEntitySpawner(const NetGameEvent& e)
 void Client::on_event_biotop_createspeciemap(const NetGameEvent& e)
 {
   m_EventManager.handleEventCreateGeoMapSpecie(e, m_pBiotop);
+}
+
+void Client::on_event_biotop_changeentitycontrol(const NetGameEvent& e)
+{
+  event_manager::handleEventChangeEntityRemoteControl(e, m_pBiotop);
+}
+
+void Client::on_event_biotop_changespeed(const NetGameEvent& e)
+{
+  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
 }
 
 void Client::displayBiotopEntities()
@@ -455,6 +486,7 @@ void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bo
 {
   log_event("Events  ", "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
   m_biotopSpeed = newBiotopSpeed;
+  m_bManualMode = isManualMode;
   NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
   network_client.send_event(bioChangeSpeedEvent);
 }

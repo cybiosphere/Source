@@ -152,52 +152,14 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   }
 
   m_secCnt += evt.timeSinceLastFrame * m_pClient->get_biotop_speed();
+
+  proceedBiotopEvents();
   m_pClient->process_new_events();
- 
-  if ((m_secCnt >= 1) && (m_pClient->check_if_event_next_second_end_and_clean()))
+
+  if ((m_secCnt >= 1) && (m_pClient->check_if_event_next_second_start_and_clean()))
   {
     forcePlayerAction();
-    m_pBiotop->nextSecond();
     m_secCnt = 0;
-
-    BiotopEvent_t bioEvent;
-    CBasicEntity* pEntity;
-    for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
-    {
-      bioEvent = m_pBiotop->getBiotopEvent(i); 
-      switch (bioEvent.eventType)
-      {
-      case BIOTOP_EVENT_ENTITY_MOVED:
-      case BIOTOP_EVENT_ENTITY_CHANGED:
-      {
-        // Replace from Client::on_event_biotop_updateentityposition
-        /*int meshIndex = getMeshEntityIndex(bioEvent.entityId);
-        setMeshEntityPreviousPosition(meshIndex);
-        updateMeshEntityNewSecond(meshIndex);*/
-        break;
-      }
-      case BIOTOP_EVENT_ENTITY_MODIFIED:
-      {
-        int meshIndex = getMeshEntityIndex(bioEvent.entityId);
-        if (meshIndex >= 0) 
-        {
-          updateMeshEntityNewSecond(meshIndex);
-        }
-        break;
-      }
-      case BIOTOP_EVENT_ENTITY_ADDED:
-        pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
-        createMeshEntity(mSceneMgr, pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_REMOVED:
-        removeMeshEntity(mSceneMgr, bioEvent.pEntity);
-        break;
-      default:
-        break;
-      }
-    }
-    m_pBiotop->resetBiotopEvents();
-
     updateInfoParamTime();
     updateInfoPopulation();
     // reset player to idle
@@ -206,6 +168,50 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
 
   return true;
 }
+
+void CybiOgre3DFrameListener::proceedBiotopEvents()
+{
+  BiotopEvent_t bioEvent;
+  CBasicEntity* pEntity;
+  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+  {
+    bioEvent = m_pBiotop->getBiotopEvent(i);
+    switch (bioEvent.eventType)
+    {
+    case BIOTOP_EVENT_ENTITY_CHANGED:
+    {
+      // Replace from Client::on_event_biotop_updateentityposition
+      int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+      if (meshIndex >= 0)
+      {
+        setMeshEntityPreviousPosition(meshIndex);
+        updateMeshEntityNewSecond(meshIndex);
+      }
+      break;
+    }
+    case BIOTOP_EVENT_ENTITY_MODIFIED:
+    {
+      int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+      if (meshIndex >= 0)
+      {
+        updateMeshEntityNewSecond(meshIndex);
+      }
+      break;
+    }
+    case BIOTOP_EVENT_ENTITY_ADDED:
+      pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
+      createMeshEntity(mSceneMgr, pEntity);
+      break;
+    case BIOTOP_EVENT_ENTITY_REMOVED:
+      removeMeshEntity(mSceneMgr, bioEvent.pEntity);
+      break;
+    default:
+      break;
+    }
+  }
+  m_pBiotop->resetBiotopEvents();
+}
+
 
 void CybiOgre3DFrameListener::updateAllMeshEntityNewSecond()
 {
@@ -318,7 +324,7 @@ void CybiOgre3DFrameListener::setMeshEntityPreviousPosition(int meshIndex)
   CBasicEntity* pBasicEntity = m_tMesh[meshIndex]->pBasicEntity;
   if ( pBasicEntity->isAlive() )
   {  
-    Point_t coord = pBasicEntity->getPrevStepCoord();
+    Point_t coord = pBasicEntity->getAndUpdateGuiStepCoord();
     if (coord.x != -1)
       m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, (int)coord.x-OFFSET_COORD_X) );
     Quaternion q;
@@ -637,6 +643,14 @@ void CybiOgre3DApp::createScene(void)
   pPlaneEnt->setCastShadows(false);
   mSceneMgr->getRootSceneNode()->createChildSceneNode(Vector3(0,99,0))->attachObject(pPlaneEnt);
 
+  CBasicEntity* pEntity;
+  for (int i = 0; i < m_pBiotop->getNbOfEntities(); i++)
+  {
+    pEntity = m_pBiotop->getEntityByIndex(i);
+    pEntity->getAndUpdateGuiStepCoord();
+    createMeshEntity(mSceneMgr, pEntity);
+  }
+  m_pBiotop->nextSecond(false);
   initComplete = true;
 }
 
@@ -738,17 +752,20 @@ extern "C" {
     // Get Server info in ini file
     string ServerAddrStr;
     string ServerPortStr;
+    string LogInStr;
     char resuBuffer[512];
     string fileIni = "Cybiosphere.ini";
     int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
     ServerAddrStr = resuBuffer;
     resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
     ServerPortStr = resuBuffer;
+    resu = getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", resuBuffer, 512, fileIni);
+    LogInStr = resuBuffer;
 
     //std::string serverAddr = "localhost"; //"192.168.1.67"
     //std::string portId     = "4556";
 
-    m_pClient = new Client(ServerAddrStr, ServerPortStr, &app);
+    m_pClient = new Client(ServerAddrStr, ServerPortStr, LogInStr);
     // Connect to server and wait for biotop init from server
     m_pClient->connect_to_server();
     while (!(m_pClient->is_biotop_config_complete()))
@@ -758,7 +775,7 @@ extern "C" {
     }
 
     m_pBiotop = m_pClient->get_pBiotop();
-    
+
     try {
       app.go();
     } catch( Ogre::Exception& e ) {

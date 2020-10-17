@@ -1,6 +1,7 @@
 #include "clan_server.h"
 #include "clan_server_user.h"
 #include "event_definitions.h"
+#include "server_coprocessor.h"
 #include "custom_type.h"
 #include "API/Core/Zip/zlib_compression.h"
 #include <chrono>
@@ -24,7 +25,8 @@ m_pBiotop{ pBiotop },
 next_user_id(1),
 nb_users_connected(0),
 m_biotopSpeed(1.0),
-m_bManualMode(false)
+m_bManualMode(false),
+m_nbCoprocessors(0)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_server.sig_client_connected(), clan::bind_member(this, &Server::on_client_connected));
@@ -57,63 +59,37 @@ void Server::startServer()
   log_event("System  ", "SERVER started on port " + serverPortStr);
 }
 
-void Server::ProcessEvents(bool isNewSec, float biotopSpeed)
+void Server::processBiotopEvents()
 {
-  m_biotopSpeed = biotopSpeed;
-  network_server.process_events();
-  if (isNewSec)
-  {
 	// Update clients with biotop evolution
-	  if (nb_users_connected > 0)
-	  {
-      // Send event next second start update
-      NetGameEvent bioNextSecEventStart(labelEventNextSecStart);
-      CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
-      bioNextSecEventStart.add_argument(biotopTime);
-      bioNextSecEventStart.add_argument(m_biotopSpeed);
-      bioNextSecEventStart.add_argument((float)m_pBiotop->getSunlight());
-      bioNextSecEventStart.add_argument((float)m_pBiotop->getParamFertility()->getVal());
-      bioNextSecEventStart.add_argument((float)m_pBiotop->getParamTemperature()->getVal());
-      network_server.send_event(bioNextSecEventStart);
-
-      // Update all entities
-      BiotopEvent_t bioEvent;
-      for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
-      {
-        bioEvent = m_pBiotop->getBiotopEvent(i);
-        switch (bioEvent.eventType)
-        {
-        //case BIOTOP_EVENT_ENTITY_MOVED:  // Move is reserved for studio 
-        case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
-          send_event_update_entity_position(bioEvent.pEntity);
-          break;
-        case BIOTOP_EVENT_ENTITY_MODIFIED:
-          send_event_update_entity_data(bioEvent.pEntity);
-          break;
-        case BIOTOP_EVENT_ENTITY_ADDED:
-          send_event_add_entity(bioEvent.pEntity);
-          break;
-        case BIOTOP_EVENT_ENTITY_REMOVED:
-          send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
-          break;
-        default:
-          break;
-        }
-      }
-      m_pBiotop->resetBiotopEvents();
-
-		  // Send event next second end
-		  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
-		  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
-      //TODO: missing years
-		  bioNextSecEventEnd.add_argument(biotopTimeEnd);
-		  network_server.send_event(bioNextSecEventEnd);
-	  }
-    else
+	if (nb_users_connected > 0)
+	{
+    // Update all entities
+    BiotopEvent_t bioEvent;
+    for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
     {
-      m_pBiotop->resetBiotopEvents();
+      bioEvent = m_pBiotop->getBiotopEvent(i);
+      switch (bioEvent.eventType)
+      {
+      //case BIOTOP_EVENT_ENTITY_MOVED:  // Move is reserved for studio 
+      case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
+        send_event_update_entity_position(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_MODIFIED:
+        send_event_update_entity_data(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_ADDED:
+        send_event_add_entity(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_REMOVED:
+        send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
+        break;
+      default:
+        break;
+      }
     }
   }
+  m_pBiotop->resetBiotopEvents();
 }
 
 // Server main loop
@@ -131,6 +107,7 @@ void Server::exec()
 		// Lets not worry about exiting this function!
 		System::sleep(10);
 		network_server.process_events();
+    processBiotopEvents();
 
     // Run biotop every sec
     //
@@ -142,15 +119,14 @@ void Server::exec()
     {
       if (!m_bManualMode)
       {
+        send_event_new_second_start();
         // Next second in biotop
         m_pBiotop->nextSecond();
+        send_event_new_second_end();
       }
       // Reset timer
       timeCount = 0;
       lastRunTick = std::chrono::system_clock::now();
-
-      // Update clients with biotop evolution
-      ProcessEvents(true, m_biotopSpeed);
     }
     else
     {
@@ -167,6 +143,11 @@ void Server::exec()
 	network_server.stop();
 }
 
+void Server::process_new_events()
+{
+  network_server.process_events();
+}
+
 float Server::get_biotop_speed()
 {
   return m_biotopSpeed;
@@ -179,6 +160,11 @@ bool Server::get_manual_mode()
 
 void Server::set_manual_mode(bool newManualMode)
 {
+  if (m_bManualMode == false)
+  {
+    // Need to call new_second_end before next new_second_start to avoid to loose events raised during manual mode
+    send_event_new_second_end();
+  }
   m_bManualMode = newManualMode;
 }
 
@@ -283,6 +269,17 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 		// Assign name and id to User object (created when user connected earlier)
 		user->user_name = user_name;
 		user->id = next_user_id++;
+    if (user->user_name == "Coprocessor")
+    {
+      user->isCoprocessor = true;
+      m_nbCoprocessors++;
+      ServerCoprocessor newCoprocessor(this, user, m_pBiotop, m_pBiotop->getDimension().x / 2, 0);
+      m_tCoprocessors.push_back(std::move(newCoprocessor));
+    }
+    else
+    {
+      user->isCoprocessor = false;
+    }
     log_event("Events  ", "Client requested login: " + user_name);
 		user->send_event(NetGameEvent(labelEventLoginOk));
 	}
@@ -356,6 +353,16 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       send_event_create_specie_map(m_pBiotop->getGeoMapSpecieByIndex(i), user);
     }
 
+    // If new coprocessor arrives, update all entities control
+    if (user->isCoprocessor)
+    {
+      for (auto coprocess : m_tCoprocessors)
+      {
+        log_event("Events  ", "New coprocessor added. Update control");
+        coprocess.update_all_entities_control();
+      }
+    }
+
 	  user->send_event(NetGameEvent(labelEventStart));
   }
 
@@ -375,12 +382,19 @@ void Server::on_event_biotop_addcloneentity(const NetGameEvent& e, ServerUser* u
 
 void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser* user)
 {
-  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop, false);
+  m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop);
 }
 
 void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user)
 {
-  event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, false);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
+  if (pEntity && (m_nbCoprocessors > 0))
+  {
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.update_entity_control(pEntity, false);
+    }
+  }
 }
 
 void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user)
@@ -391,6 +405,8 @@ void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* use
 void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user)
 {
   event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
+  // Broadcast to all client new speed
+  send_event_change_biotop_speed(m_biotopSpeed, m_bManualMode);
 }
 
 void Server::on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user)
@@ -423,16 +439,16 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
 {
   if (pEntity == NULL)
   {
-    log_event("Events  ", "Add entity: NULL entity");
+    log_event("Events  ", "Send event Add entity: NULL entity");
     return;
   }
   if (pEntity->isToBeRemoved())
   {
-    log_event("Events  ", "Add removed entity: %1", pEntity->getLabel());
+    log_event("Events  ", "Send event Add removed entity: %1", pEntity->getLabel());
     return;
   }
 
-  log_event("Events  ", "Add entity: %1", pEntity->getLabel());
+  log_event("Events  ", "Send event Add entity: %1", pEntity->getLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))
   {
@@ -447,6 +463,14 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
   else
   {
     log_event("-ERROR- ", "send_event_add_entity: Event not sent");
+  }
+
+  if (pEntity && (m_nbCoprocessors > 0))
+  {
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.update_entity_control(pEntity, true);
+    }
   }
 }
 
@@ -518,6 +542,14 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
     network_server.send_event(bioUpdateEntityPosEvent);
   else
     user->send_event(bioUpdateEntityPosEvent);
+
+  if (pEntity && (m_nbCoprocessors > 0))
+  {
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.update_entity_control(pEntity, false);
+    }
+  }
 }
 
 void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
@@ -606,6 +638,48 @@ void Server::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, Serv
   {
     log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
   }
+}
+
+void Server::send_event_change_remote_control(CBasicEntity* pEntity, bool setRemoteControl, ServerUser* user)
+{
+  //log_event("Events  ", "Change entity remote control: %1 setControl: %2", pEntity->getLabel(), setRemoteControl);
+  NetGameEvent bioChangeCtrlEntityEvent{ event_manager::buildEventChangeEntityRemoteControl(pEntity->getId(), setRemoteControl) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioChangeCtrlEntityEvent);
+  else
+    user->send_event(bioChangeCtrlEntityEvent);
+}
+
+void Server::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user)
+{
+  log_event("Events  ", "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
+  m_biotopSpeed = newBiotopSpeed;
+  m_bManualMode = isManualMode;
+  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioChangeSpeedEvent);
+  else
+    user->send_event(bioChangeSpeedEvent);
+}
+
+void Server::send_event_new_second_start(ServerUser* user)
+{
+  NetGameEvent bioNextSecEventStart(labelEventNextSecStart);
+  CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+  bioNextSecEventStart.add_argument(biotopTime);
+  bioNextSecEventStart.add_argument(m_biotopSpeed);
+  bioNextSecEventStart.add_argument((float)m_pBiotop->getSunlight());
+  bioNextSecEventStart.add_argument((float)m_pBiotop->getParamFertility()->getVal());
+  bioNextSecEventStart.add_argument((float)m_pBiotop->getParamTemperature()->getVal());
+  network_server.send_event(bioNextSecEventStart);
+}
+
+void Server::send_event_new_second_end(ServerUser* user)
+{
+  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
+  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+  bioNextSecEventEnd.add_argument(biotopTimeEnd);
+  network_server.send_event(bioNextSecEventEnd);
 }
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)

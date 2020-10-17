@@ -25,6 +25,7 @@ public:
 public:
 	int id;
 	std::string user_name;
+	bool isCoprocessor; 
 
 private:
 	NetGameConnection *connection;

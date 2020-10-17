@@ -23,16 +23,16 @@ namespace clan
     void handleEventCreateBiotop(const NetGameEvent& e, CBiotop* pBiotop);
 
 	  static bool buildEventsAddEntity(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector);
-	  void handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
+    CBasicEntity* handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
 
     static bool buildEventsAddCloneEntities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, std::vector<NetGameEvent>& eventVector);
     static bool handleEventAddCloneEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
 
 	  static bool buildEventsUpdateEntityData(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector);
-	  void handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
+    void handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop);
 
 	  static NetGameEvent buildEventUpdateEntityPos(CBasicEntity* pEntity);
-	  static CBasicEntity* handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
+	  static CBasicEntity* handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate);
 
 	  static NetGameEvent buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId);
     static bool handleEventRemoveEntity(const NetGameEvent& e, CBiotop* pBiotop);
@@ -55,6 +55,9 @@ namespace clan
     static bool buildEventsCreateGeoMapSpecie(CGeoMapPopulation* pGeoMap, std::vector<NetGameEvent>& eventVector);
     void handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop);
 
+    static NetGameEvent buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl);
+    static bool handleEventChangeEntityRemoteControl(const NetGameEvent& e, CBiotop* pBiotop);
+
   private:
     std::vector<LongBufferEvent_t> m_tBiotopBufferEvent;
 	  std::vector<LongBufferEvent_t> m_tEntityBufferEvent;
@@ -68,10 +71,10 @@ namespace clan
                                        std::vector<LongBufferEvent_t>& tBufferEvent, DataBuffer& bufferOutput,
                                        int& transactionId, int& custom1, int& custom2, int& custom3, int& custom4);
 
-    bool addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,
+    CBasicEntity* addEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, const entityIdType entityId,
                                 const int stepCoordX, const int stepCoordY, const int layer, const int stepDirection,
                                 CBiotop* pBiotop, bool setAsRemoteControl);
-    bool updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop, bool setAsRemoteControl);
+    bool updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop);
     bool createMeasureWithZipBuffer(const DataBuffer& dataZipBuffer, CBiotop* pBiotop, const int measureId,
                                     const int period, const int typeSubType, const int paramId, const int entityId);
     bool createSpawnerWithZipBuffer(const DataBuffer& xmlZipBuffer, CBiotop* pBiotop, const int spawnerId,

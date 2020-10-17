@@ -28,9 +28,7 @@
 
 #include "Network/precomp.h"
 #include "API/Core/System/databuffer.h"
-//FRED #include "API/Core/IOData/memory_device.h"
 #include "API/Core/Text/string_help.h"
-//FRED #include "API/Core/Zip/zlib_compression.h"
 #include "network_data.h"
 
 namespace clan

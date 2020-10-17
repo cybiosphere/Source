@@ -158,7 +158,7 @@ public:
 
   double computeWeightFromData(WORD rawData);
   double computeSensitivityFromData(WORD rawData);
-  double computeBonusFromData(WORD rawData);
+  int computeBonusFromData(WORD rawData);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

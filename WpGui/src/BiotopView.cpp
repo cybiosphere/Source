@@ -300,7 +300,6 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 
       if (!m_IdleDisplayMode)
       {
-        m_pBioDisplay->RefreshNextSecond();
         theApp.NextSecondRefreshAllViews();
       }
       else
@@ -336,7 +335,6 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
     }
     else 
     {
-      m_pBioDisplay->RefreshNextSecond();
       theApp.NextSecondRefreshAllViewsLowCPU();
       if (m_IdleDisplayMode)
       {
@@ -363,7 +361,6 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
           {
             m_pFocusedEntity->forceHasChanged();
             m_pBioDisplay->SetFocusedEntityId (m_pFocusedEntity->getId());
-            m_pBioDisplay->RefreshNextSecond();
           }
         }
       }
@@ -371,6 +368,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
   }
   else if (nIDEvent==REFRESH_TIMER_ID)
   {
+    theApp.proceedBiotopEvents();
     if (!m_IdleDisplayMode)
       m_pBioDisplay->RefreshScene();
   }
@@ -422,6 +420,14 @@ void CBiotopView::ForceRefreshDisplay(bool clearAll)
     m_pBioDisplay->RefreshSceneIdleNoCPU();
   m_pBioDisplay->RefreshNextSecond();
   m_pBioDisplay->RefreshScene();
+}
+
+void CBiotopView::SoftRefreshDisplay()
+{
+  if (!m_IdleDisplayMode)
+  {
+    m_pBioDisplay->RefreshNextSecond();
+  }
 }
 
 void CBiotopView::OnLButtonDblClk(UINT nFlags, CPoint point) 

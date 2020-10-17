@@ -18,6 +18,7 @@
 using namespace clan;
 
 class ServerUser;
+class ServerCoprocessor;
 
 class Server
 {
@@ -27,13 +28,14 @@ public:
 
 	// start only
 	void startServer();
-	void ProcessEvents(bool isNewSec, float biotopSpeed);
+	void processBiotopEvents();
 
 	// Start and loop on ProcessEvents
 	void exec();
 	float get_biotop_speed();
 	bool get_manual_mode();
 	void set_manual_mode(bool newManualMode);
+	void process_new_events();
 
 private:
 	void on_client_connected(NetGameConnection *connection);
@@ -64,6 +66,10 @@ public:
 	void send_event_create_measure(CMeasure* pMeasure, ServerUser* user = NULL);
 	void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator, ServerUser* user = NULL);
 	void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, ServerUser* user = NULL);
+	void send_event_change_remote_control(CBasicEntity* pEntity, bool setRemoteControl, ServerUser* user = NULL);
+	void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user = NULL);
+	void send_event_new_second_start(ServerUser* user = NULL);
+	void send_event_new_second_end(ServerUser* user = NULL);
 
 private:
   bool process_cmd_line(const std::string input_cmd_string);
@@ -81,6 +87,8 @@ private:
 	int  nb_users_connected;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
 	bool m_bManualMode;
+	int m_nbCoprocessors;
+	std::vector<ServerCoprocessor> m_tCoprocessors;
 	event_manager m_EventManager;
 
 public:
