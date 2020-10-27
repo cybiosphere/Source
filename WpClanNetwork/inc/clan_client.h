@@ -43,6 +43,7 @@ public:
   void send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId);
   void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator);
   void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie);
+  void send_event_new_second_end();
 
 private:
 	void on_connected();

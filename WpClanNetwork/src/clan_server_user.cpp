@@ -8,7 +8,7 @@ using namespace clan;
 #include "clan_server_user.h"
 
 ServerUser::ServerUser()
-: connection(0), id(0)
+: connection(0), id(0), isNextSecondCompleted(true)
 {
 }
 

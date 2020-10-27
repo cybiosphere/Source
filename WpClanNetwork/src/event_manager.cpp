@@ -183,7 +183,7 @@ namespace clan
     newEvent.add_argument((int)pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument((int)pEntity->isImmortal());
-    log_event("events", "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
+    //log_event("events", "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
     // Add parameters
     for (int i = 0; i < pEntity->getNumParameter(); i++)
     {

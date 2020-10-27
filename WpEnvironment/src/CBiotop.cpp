@@ -1464,6 +1464,7 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
   if (pEntity != NULL)
   {
     resu = pEntity->forceNextAction(myChoice);
+    pEntity->updateEntityChangedBiotopEvent();
   }
 
   // Loop on all other entities for basic action  
@@ -1601,8 +1602,7 @@ void CBiotop::nextHourForAllEntities(void)
       else
       {
         pEntity->nextHour();
-        if (pEntity->checkIfhasChangedAndClear())
-          addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
+        pEntity->updateEntityChangedBiotopEvent();
       }
     }
   }
@@ -1619,8 +1619,7 @@ void CBiotop::nextSecondForAllAnimals(void)
     if (pEntity != NULL)
     {
       pEntity->nextSecond();
-      if (pEntity->checkIfhasChangedAndClear())
-        addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, pEntity);
+      pEntity->updateEntityChangedBiotopEvent();
     }
   }
   logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);

@@ -49,3 +49,13 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity, bool isNewE
     }
   }
 }
+
+bool ServerCoprocessor::checkNextSecondComplete()
+{
+  return m_pUser->isNextSecondCompleted;
+}
+
+void ServerCoprocessor::resetNextSecondComplete()
+{
+  m_pUser->isNextSecondCompleted = false;
+}

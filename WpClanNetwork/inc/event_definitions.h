@@ -16,7 +16,6 @@ namespace clan
   const std::string labelEventLoadMap            { "Game-LoadMap" };
   const std::string labelEventStart              { "Game-Start" };
   const std::string labelEventNextSecStart       { "Biotop-Next second start" };
-  const std::string labelEventNextSecEnd         { "Biotop-Next second end" };
   const std::string labelEventChangeRemoteControl{ "Biotop-Change entity remote control" };
 
   // Both directions
@@ -29,6 +28,6 @@ namespace clan
   const std::string labelEventAddEntitySpawner { "Biotop-Add entity spawner" };
   const std::string labelEventCreateSpecieMap  { "Biotop-Create specie map" };
   const std::string labelEventChangeBiotopSpeed{ "Biotop-Change speed" };
-
+  const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
 }
 

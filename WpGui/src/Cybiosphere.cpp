@@ -785,6 +785,8 @@ void CCybiosphereApp::proceedBiotopNextSecond()
 {
 #ifndef USE_CLAN_CLIENT
 #ifdef USE_CLAN_SERVER
+  if (!m_pServer->checkAllCoprocessorCompleteSecond())
+    return;
   proceedBiotopEvents();
   m_pServer->send_event_new_second_start();
 #endif

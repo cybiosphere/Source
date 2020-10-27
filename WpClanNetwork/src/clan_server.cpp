@@ -47,6 +47,7 @@ m_nbCoprocessors(0)
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Server::on_event_biotop_requestentityrefresh);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Server::on_event_biotop_createspeciemap);
+  game_events.func_event(labelEventNextSecEnd) = clan::bind_member(this, &Server::on_event_biotop_nextsecond_end);
 }
 
 Server::~Server()
@@ -115,7 +116,7 @@ void Server::exec()
     curTick = std::chrono::system_clock::now();
     std::chrono::milliseconds elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(curTick - lastRunTick);
 
-    if ((elapsedTime.count() * m_biotopSpeed) >= 1000)
+    if (((elapsedTime.count() * m_biotopSpeed) >= 1000) && checkAllCoprocessorCompleteSecond())
     {
       if (!m_bManualMode)
       {
@@ -146,6 +147,25 @@ void Server::exec()
 void Server::process_new_events()
 {
   network_server.process_events();
+}
+
+bool Server::checkAllCoprocessorCompleteSecond()
+{
+  for (auto coprocess : m_tCoprocessors)
+  {
+    if (coprocess.checkNextSecondComplete() == false)
+    {
+      //log_event("network ", "Latency: waiting for coprocessor");
+      return false;
+    }
+  }
+  // Every coprocess is done
+  for (auto coprocess : m_tCoprocessors)
+  {
+    coprocess.resetNextSecondComplete();
+    //log_event("network ", "Latency: coprocessor complete OK");
+  }
+  return true;
 }
 
 float Server::get_biotop_speed()
@@ -433,6 +453,12 @@ void Server::on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerU
 void Server::on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* user)
 {
   m_EventManager.handleEventCreateGeoMapSpecie(e, m_pBiotop);
+}
+
+
+void Server::on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user)
+{
+  user->isNextSecondCompleted = true;
 }
 
 void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)

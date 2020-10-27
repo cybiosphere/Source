@@ -36,6 +36,7 @@ public:
 	bool get_manual_mode();
 	void set_manual_mode(bool newManualMode);
 	void process_new_events();
+	bool checkAllCoprocessorCompleteSecond();
 
 private:
 	void on_client_connected(NetGameConnection *connection);
@@ -56,6 +57,7 @@ private:
 	void on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user);
 
 public:
 	void send_event_add_entity(CBasicEntity* pEntity, ServerUser* user = NULL);

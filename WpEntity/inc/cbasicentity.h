@@ -438,7 +438,7 @@ public:
   CBrain*         getBrain();
   bool            checkIfhasMoved();
   bool            checkIfhasMovedAndClear();
-  bool            checkIfhasChangedAndClear();
+  void            updateEntityChangedBiotopEvent();
   void            forceHasChanged();
   double          getProtection();
   void            setProtection(double newRate);

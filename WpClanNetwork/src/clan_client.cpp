@@ -270,6 +270,7 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   m_pBiotop->getParamFertility()->forceVal(fertility);
   m_pBiotop->getParamTemperature()->forceVal(temperature);
   m_pBiotop->nextSecond(false);
+  send_event_new_second_end();
 	//log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
@@ -572,4 +573,12 @@ void Client::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie)
   {
     log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
   }
+}
+
+void Client::send_event_new_second_end()
+{
+  NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
+  CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
+  bioNextSecEventEnd.add_argument(biotopTimeEnd);
+  network_client.send_event(bioNextSecEventEnd);
 }

@@ -3389,11 +3389,13 @@ bool CBasicEntity::checkIfhasMovedAndClear()
   return (resu);
 }
 
-bool CBasicEntity::checkIfhasChangedAndClear()
+void CBasicEntity::updateEntityChangedBiotopEvent()
 {
-  bool resu = m_bHasChanged;
+  if (m_bHasChanged)
+  {
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, this);
+  }
   m_bHasChanged = false;
-  return (resu);
 }
 
 void  CBasicEntity::forceHasChanged()
