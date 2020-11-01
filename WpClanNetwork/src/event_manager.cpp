@@ -104,7 +104,7 @@ namespace clan
     int modelEntityId = e.get_argument(1);
     int index = 2;
     CBasicEntity* pModelEntity = pBiotop->getEntityById(modelEntityId);
-    log_event("events", "handleEventAddCloneEntity nbEntityPosInEvent: %1 modelId=%2", nbEntityPosInEvent, modelEntityId);
+    //log_event("events", "handleEventAddCloneEntity nbEntityPosInEvent: %1 modelId=%2", nbEntityPosInEvent, modelEntityId);
     if (pModelEntity == NULL)
     {
       return false;
@@ -123,9 +123,9 @@ namespace clan
 
       CBasicEntity* pClonedNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
       pClonedNewEntity->setStepDirection(direction);
-      if (setAsRemoteControl)
+      if (entityId != ENTITY_ID_INVALID)
       {
-        if (!pBiotop->addRemoteCtrlEntity(entityId, pClonedNewEntity, stepCoord, true, layer))
+        if (pBiotop->addEntityWithPresetId(entityId, pClonedNewEntity, stepCoord, true, layer) == ENTITY_ID_INVALID)
         {
           delete pClonedNewEntity;
           return false;
@@ -133,12 +133,13 @@ namespace clan
       }
       else
       {
-        if (!pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer))
+        if (pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer) == ENTITY_ID_INVALID)
         {
           delete pClonedNewEntity;
           return false;
         }
       }
+      pClonedNewEntity->setRemoteControlled(setAsRemoteControl);
     }
   }
 
@@ -196,6 +197,10 @@ namespace clan
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentReactionIndex());
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentPurposeIndex());
     }
+    if (pEntity->getClass() == CLASS_MAMMAL)
+    {
+      newEvent.add_argument((int)((CAnimMammal*)pEntity)->getGestationBabyNumber());
+    }
     return (std::move(newEvent));
   }
 
@@ -241,8 +246,15 @@ namespace clan
         int reactIndex = e.get_argument(index);
         index++;
         int purposeIndex = e.get_argument(index);
+        index++;
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
+      }
+      if (pEntity->getClass() == CLASS_MAMMAL)
+      {
+        int gestationNb = e.get_argument(index);
+        index++;
+        ((CAnimMammal*)pEntity)->setGestationBabyNumber(gestationNb);
       }
     }
     return pEntity;
@@ -568,24 +580,25 @@ namespace clan
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
 
-    if (setAsRemoteControl)
+    if (entityId != ENTITY_ID_INVALID)
     {
-      if (!pBiotop->addRemoteCtrlEntity(entityId, pNewEntity, stepCoord, true, layer))
+      if (pBiotop->addEntityWithPresetId(entityId, pNewEntity, stepCoord, true, layer) == ENTITY_ID_INVALID)
       {
-        log_event("events", "Biotop add entity: Error in addRemoteCtrlEntity");
+        log_event("events", "Biotop add entity: Error in addEntityWithPresetId");
         delete pNewEntity;
         return NULL;
       }
     }
     else
     {
-      if (!pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer))
+      if (pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer) == ENTITY_ID_INVALID)
       {
         log_event("events", "Biotop add entity: Error in addEntity");
         delete pNewEntity;
         return NULL;
       }
     }
+    pNewEntity->setRemoteControlled(setAsRemoteControl);
     return pNewEntity;
   }
 

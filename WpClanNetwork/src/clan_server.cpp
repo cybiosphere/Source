@@ -162,7 +162,7 @@ bool Server::checkAllCoprocessorCompleteSecond()
   // Every coprocess is done
   for (auto coprocess : m_tCoprocessors)
   {
-    coprocess.resetNextSecondComplete();
+    coprocess.forceNextSecondComplete(false);
     //log_event("network ", "Latency: coprocessor complete OK");
   }
   return true;
@@ -392,7 +392,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 
 void Server::on_event_biotop_addentity(const NetGameEvent& e, ServerUser* user)
 {
-  m_EventManager.handleEventAddEntity(e, m_pBiotop, false);
+  CBasicEntity* pEntity = m_EventManager.handleEventAddEntity(e, m_pBiotop, false);
 }
 
 void Server::on_event_biotop_addcloneentity(const NetGameEvent& e, ServerUser* user)
@@ -427,6 +427,11 @@ void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user
   event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
   // Broadcast to all client new speed
   send_event_change_biotop_speed(m_biotopSpeed, m_bManualMode);
+  // Reset coprocess synchro
+  for (auto coprocess : m_tCoprocessors)
+  {
+    coprocess.forceNextSecondComplete(true);
+  }
 }
 
 void Server::on_event_biotop_forceentityaction(const NetGameEvent& e, ServerUser* user)

@@ -52,6 +52,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
   m_nbLayer      = dimZ;
   m_IndexLastAnimal = 0;
   setBiotopTime(0, 12, 0, 0);
+  m_NextHourTimeOffset = 0;
   m_WindDirection = 1;
   m_WindStrenght  = 1; // 0,1 or 2
   m_DefaultFilePath = "";
@@ -174,7 +175,7 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, bool choos
   return (m_IdLastEntity);
 }
 
-bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer)
+entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer)
 {
   size_t layer;
   if (chooseLayer)
@@ -183,14 +184,14 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
     layer = pEntity->getLayer();
 
   if (getNbOfEntities()>MAXIMUM_NB_ENTITIES)
-    return false; 
+    return ENTITY_ID_INVALID;
   
   if ( !isCoordValidAndFree(CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) )
-    return false; 
+    return ENTITY_ID_INVALID;
 
   //check ID:
   if (getEntityById(idEntity) != NULL)
-    return false; 
+    return ENTITY_ID_INVALID;
 
   pEntity->setId(idEntity);
 
@@ -198,8 +199,6 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
   pEntity->jumpToStepCoord(stepCoord, true, layer);
   // Attach it to biotop
   pEntity->attachToBiotop(this);
-
-  pEntity->setRemoteControlled(true);
   
   if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
   {
@@ -231,7 +230,7 @@ bool CBiotop::addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, 
 
   addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
 
-  return true;
+  return idEntity;
 }
 
 
@@ -1519,7 +1518,7 @@ void CBiotop::nextSecond(bool doIncreaseTime)
     }
   }
 
-  if (m_BioTime.seconds == 0)
+  if (m_BioTime.seconds == m_NextHourTimeOffset)
   {
     decreaseOdorMap();
     nextHourForAllEntities();
@@ -1688,6 +1687,11 @@ void CBiotop::setBiotopTime(int seconds, int hours, int days, int years)
   m_BioTime.hours = hours;
   m_BioTime.days = days;
   m_BioTime.years = years;
+}
+
+void CBiotop::setNextHourTimeOffset(unsigned char nextHourTimeOffset)
+{
+  m_NextHourTimeOffset = nextHourTimeOffset;
 }
 
 //===========================================================================

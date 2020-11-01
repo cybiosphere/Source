@@ -217,6 +217,7 @@ private:
   entityIdType   m_IdLastEntity;
   int            m_IndexLastAnimal;
   BiotopTime_t   m_BioTime;
+  unsigned char  m_NextHourTimeOffset; // Time offset for nextHourForAllEntities to avoid entity generation colisions between instances
   CCyclicParam*  m_pFertilityRate;     // 0 to 100 
   CCyclicParam*  m_pSunlightRate;      // 0 to 100  
   CGenericParam* m_pRadioactivity;     // 0 to 100
@@ -271,7 +272,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, bool chooseLayer, size_t newLayer = invalidCoord);
-  bool addRemoteCtrlEntity(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer= invalidCoord);
+  entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer= invalidCoord);
   entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);
   entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord);
@@ -324,6 +325,8 @@ public:
   void triggerMeasuresNextSecond(void);
   BiotopTime_t getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
+  void setNextHourTimeOffset(unsigned char nextHourTimeOffset);
+
 private:
   void nextHour(void);
   void nextHourForAllEntities(void);

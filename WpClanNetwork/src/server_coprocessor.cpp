@@ -4,6 +4,7 @@
 using namespace clan;
 #include "server_coprocessor.h"
 #include "clan_server.h"
+#include "CAnimMammal.h"
 
 void ServerCoprocessor::update_all_entities_control()
 {
@@ -17,6 +18,13 @@ void ServerCoprocessor::update_all_entities_control()
 
 void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity, bool isNewEntity)
 {
+  // Do not change control for pregnant animals
+  if ((pEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pEntity)->getGestationBabyNumber() > 0))
+  {
+    //log_event("Server", "Skip Transfer control for pregnant animal");
+    return;
+  }
+
   int spatialOffset = 0;
   if (!isNewEntity) spatialOffset = spatialHisteresisSize;
 
@@ -55,7 +63,7 @@ bool ServerCoprocessor::checkNextSecondComplete()
   return m_pUser->isNextSecondCompleted;
 }
 
-void ServerCoprocessor::resetNextSecondComplete()
+void ServerCoprocessor::forceNextSecondComplete(bool newValue)
 {
-  m_pUser->isNextSecondCompleted = false;
+  m_pUser->isNextSecondCompleted = newValue;
 }

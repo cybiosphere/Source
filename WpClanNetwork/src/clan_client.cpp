@@ -82,7 +82,10 @@ void Client::exec()
 	while (!quit)
 	{
 		System::sleep(10);
-    processBiotopEvents();
+    if (is_biotop_config_complete())
+    {
+      processBiotopEvents();
+    }
     process_new_events();
     std::string inputcommand;
     bool resu = log_get_console_input(inputcommand);
@@ -137,6 +140,12 @@ void Client::processBiotopEvents()
         break;
       case BIOTOP_EVENT_ENTITY_MODIFIED:
         send_event_update_entity_data(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_ADDED:
+        send_event_add_entity(bioEvent.pEntity);
+        break;
+      case BIOTOP_EVENT_ENTITY_REMOVED:
+        send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
         break;
       default:
         break;
@@ -249,8 +258,10 @@ void Client::on_event_game_loadmap(const NetGameEvent &e)
 void Client::on_event_game_startgame(const NetGameEvent &e) 
 {
   //displayBiotopEntities();
+  m_pBiotop->resetBiotopEvents();
   m_bBiotopConfigComplete = true;
-	log_event("events", "Starting game!");
+  m_pBiotop->setNextHourTimeOffset(10);
+  log_event("events", "Starting game!");
 }
 
 // "Biotop-Next second" event was received
@@ -398,7 +409,10 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
     log_event("Events  ", "Add removed entity: %1", pEntity->getLabel());
     return;
   }
-
+  if (pEntity->isRemoteControlled())
+  {
+    return;
+  }
   log_event("Events  ", "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))

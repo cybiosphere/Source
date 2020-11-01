@@ -24,7 +24,7 @@ class ServerCoprocessor
 		void update_all_entities_control();
 		void update_entity_control(CBasicEntity* pEntity, bool isNewEntity);
 		bool checkNextSecondComplete();
-		void resetNextSecondComplete();
+		void forceNextSecondComplete(bool newValue);
 
 	private:
 		Server* m_pServer;
