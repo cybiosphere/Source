@@ -133,7 +133,7 @@ namespace clan
       }
       else
       {
-        if (pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer) == ENTITY_ID_INVALID)
+        if (pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
         {
           delete pClonedNewEntity;
           return false;
@@ -282,7 +282,7 @@ namespace clan
     }
     else
     {
-      log_event("events", "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
+      //log_event("events", "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
       return false;
     }
   }
@@ -576,7 +576,7 @@ namespace clan
 
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
     pNewEntity->setStepDirection(stepDirection);
-    log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 ID %5", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, (int)entityId);
+    log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
 
@@ -584,14 +584,14 @@ namespace clan
     {
       if (pBiotop->addEntityWithPresetId(entityId, pNewEntity, stepCoord, true, layer) == ENTITY_ID_INVALID)
       {
-        log_event("events", "Biotop add entity: Error in addEntityWithPresetId");
+        //log_event("events", "Biotop add entity: Error in addEntityWithPresetId");
         delete pNewEntity;
         return NULL;
       }
     }
     else
     {
-      if (pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), true, layer) == ENTITY_ID_INVALID)
+      if (pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
       {
         log_event("events", "Biotop add entity: Error in addEntity");
         delete pNewEntity;

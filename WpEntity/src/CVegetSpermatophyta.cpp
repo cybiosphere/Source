@@ -281,7 +281,8 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, false);
+  pChildEntity->changeWeight(0.1); // ensure weight is more than min
+  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
 
   if (resuId == ENTITY_ID_INVALID)
   {
@@ -321,7 +322,8 @@ bool CVegetSpermatophyta::autoClone()
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, false);
+  pChildEntity->changeWeight(0.1); // ensure weight is more than min
+  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
 
   if (resuId == ENTITY_ID_INVALID)
   {

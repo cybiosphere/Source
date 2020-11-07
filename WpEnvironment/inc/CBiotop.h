@@ -264,15 +264,15 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CBiotop(int dimX,int dimY, int dimZ) ;
+  CBiotop(int dimX,int dimY, int dimZ, string logFileName = "CybioCore.log") ;
   virtual ~CBiotop();
 
 //---------------------------------------------------------------------------
 // Entities management
 //---------------------------------------------------------------------------
 public:
-  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, bool chooseLayer, size_t newLayer = invalidCoord);
-  entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer= invalidCoord);
+  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
+  entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
   entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);
   entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord);

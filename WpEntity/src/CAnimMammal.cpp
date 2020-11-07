@@ -917,7 +917,8 @@ bool CAnimMammal::deliverAllBabies()
         int xOfset = getRandInt(2) - 1;
         int yOfset = getRandInt(2) - 1;
         Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-        entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, false); 
+        pGestationChild->changeWeight(0.2); // ensure weight is more than min
+        entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, getLayer()); 
         if (resuId == ENTITY_ID_INVALID)
         {
           delete (pGestationChild);

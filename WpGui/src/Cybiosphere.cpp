@@ -216,7 +216,7 @@ BOOL CCybiosphereApp::InitInstance()
   if (resuStr != "")
   {
     string resuDataPath = "";
-    m_pBiotop = new CBiotop(0,0,0);
+    m_pBiotop = new CBiotop(0 ,0, 0);
     BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, fileIni);
     resuDataPath= bufferStr;
     if (resuDataPath != "")
@@ -226,7 +226,7 @@ BOOL CCybiosphereApp::InitInstance()
   }
   else
   {
-    m_pBiotop = new CBiotop(2000,2000,3);
+    m_pBiotop = new CBiotop(2000, 2000, 3);
     SetDefaultBiotop();
   }
 #else

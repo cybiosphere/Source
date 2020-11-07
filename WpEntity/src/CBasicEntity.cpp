@@ -2323,7 +2323,9 @@ void CBasicEntity::autoKill()
     m_bHasChanged = true;
 
     if (!checkHabitat())
+    {
       autoRemove();
+    }
 
     setCurrentLifeStages(STAGE_5);
   }

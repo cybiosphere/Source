@@ -43,7 +43,7 @@ RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
-CBiotop::CBiotop(int dimX,int dimY, int dimZ)
+CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
 {
   // Initialisation
   m_Label = "Default biotop";
@@ -103,7 +103,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ)
 
   m_bColorizeSearch = false;
 
-  CYBIOCORE_LOG_INIT;
+  CYBIOCORE_LOG_INIT(logFileName.c_str());
   CYBIOCORE_LOG("BIOTOP - Biotop created\n");
 }
    
@@ -124,17 +124,11 @@ CBiotop::~CBiotop()
 // Entities management
 //===========================================================================
 
-entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, bool chooseLayer, size_t newLayer)
+entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
 {
   if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
     return (ENTITY_ID_INVALID);
-
-  size_t layer;
-  if (chooseLayer)
-    layer = newLayer;
-  else
-    layer = pEntity->getLayer();
-  
+ 
   if ( !isCoordValidAndFree(coord,layer) )
      return (ENTITY_ID_INVALID);
 
@@ -252,7 +246,7 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, size_t laye
   }
 
   // Put it in the biotop (with check coord);
-  entityIdType resuId = addEntity(pNewEntity, coord, true, layer);
+  entityIdType resuId = addEntity(pNewEntity, coord, layer);
   if (resuId == ENTITY_ID_INVALID)
     delete pNewEntity;
 
@@ -343,7 +337,7 @@ entityIdType CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_
   }
 
   // Put it in the biotop (with check coord);
-  entityIdType resuId = addEntity(pNewEntity, cloneCoord, true, layer);
+  entityIdType resuId = addEntity(pNewEntity, cloneCoord, layer);
   if (resuId == ENTITY_ID_INVALID)
     delete pNewEntity;
 
@@ -411,7 +405,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   // Destroy Old entity
   pOldEntity->autoRemove();
 
-  addEntity(pNewEntity, oldCoord, true, oldLayer);
+  addEntity(pNewEntity, oldCoord, oldLayer);
   pNewEntity->setId(oldId);
 
   CYBIOCORE_LOG_TIME(m_BioTime);
@@ -2497,7 +2491,7 @@ void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
       coord.x = getRandInt(m_Dimension.x) + 2;
       coord.y = getRandInt(m_Dimension.y) + 2;
       CBasicEntity* pNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
-      this->addEntity(pNewEntity, coord, true, pModelEntity->getLayer());
+      this->addEntity(pNewEntity, coord, pModelEntity->getLayer());
     }
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pModelEntity->getLabel().c_str());
