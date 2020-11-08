@@ -40,7 +40,7 @@ public:
   void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode);
   void send_event_force_entity_action(const entityIdType entityId, const int actionIndex);
   void send_event_create_measure(CMeasure* pMeasure);
-  void send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId);
+  void send_event_request_entity_refresh(CBasicEntity* pEntity);
   void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator);
   void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie);
   void send_event_new_second_end();
@@ -67,6 +67,7 @@ private:
   void on_event_biotop_createspeciemap(const NetGameEvent& e);
   void on_event_biotop_changeentitycontrol(const NetGameEvent& e);
   void on_event_biotop_changespeed(const NetGameEvent& e);
+  void on_event_biotop_requestentityrefresh(const NetGameEvent& e);
 
   void displayBiotopEntities();
   void displayBiotopEntityDetail(entityIdType entityId);

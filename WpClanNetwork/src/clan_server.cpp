@@ -713,6 +713,16 @@ void Server::send_event_new_second_end(ServerUser* user)
   network_server.send_event(bioNextSecEventEnd);
 }
 
+void Server::send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user)
+{
+  log_event("Events  ", "Request entity refresh: label %1", pEntity->getLabel());
+  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioReqActionRefresh);
+  else
+    user->send_event(bioReqActionRefresh);
+}
+
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
   int i;

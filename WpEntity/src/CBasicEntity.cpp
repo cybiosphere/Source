@@ -3405,6 +3405,11 @@ void  CBasicEntity::forceHasChanged()
   m_bHasChanged = true;
 }
 
+void  CBasicEntity::forceHasNotChanged()
+{
+  m_bHasChanged = false;
+}
+
 double CBasicEntity::getProtection() 
 {
   return (getParameter(m_id_Protection)->getVal());

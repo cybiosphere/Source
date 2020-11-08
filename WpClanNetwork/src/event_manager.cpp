@@ -350,10 +350,10 @@ namespace clan
     }
   }
 
-  NetGameEvent event_manager::buildEventReqEntityRefresh(CBasicEntity* pEntity, entityIdType entityId)
+  NetGameEvent event_manager::buildEventReqEntityRefresh(CBasicEntity* pEntity)
   {
     NetGameEvent newEvent(labelEventReqEntityRefresh);
-    newEvent.add_argument((int)entityId);
+    newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     return (std::move(newEvent));
   }

@@ -440,6 +440,7 @@ public:
   bool            checkIfhasMovedAndClear();
   void            updateEntityChangedBiotopEvent();
   void            forceHasChanged();
+  void            forceHasNotChanged();
   double          getProtection();
   void            setProtection(double newRate);
   ConsumeType_e   getConsumeClass();

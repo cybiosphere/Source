@@ -72,6 +72,7 @@ public:
 	void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user = NULL);
 	void send_event_new_second_start(ServerUser* user = NULL);
 	void send_event_new_second_end(ServerUser* user = NULL);
+	void send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user = NULL);
 
 private:
   bool process_cmd_line(const std::string input_cmd_string);

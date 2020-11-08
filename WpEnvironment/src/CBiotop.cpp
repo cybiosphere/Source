@@ -164,6 +164,7 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t lay
     pEntity->getBrain()->SetHomePurposePositionInGeoMap();
   }
 
+  pEntity->forceHasNotChanged();
   addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
 
   return (m_IdLastEntity);
@@ -222,6 +223,7 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
   if (m_IdLastEntity <= idEntity)
     m_IdLastEntity = idEntity + 1;
 
+  pEntity->forceHasNotChanged();
   addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
 
   return idEntity;

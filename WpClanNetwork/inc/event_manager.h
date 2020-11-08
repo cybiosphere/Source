@@ -46,7 +46,7 @@ namespace clan
     static bool buildEventsCreateMeasure(CMeasure* pMeasure, std::vector<NetGameEvent>& eventVector);
     void handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent buildEventReqEntityRefresh(CBasicEntity* pEntity, entityIdType entityId);
+    static NetGameEvent buildEventReqEntityRefresh(CBasicEntity* pEntity);
     static CBasicEntity* handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop);
 
     static bool buildEventsAddEntitySpawner(int index, BiotopRandomEntitiyGeneration_t& generator, std::vector<NetGameEvent>& eventVector);

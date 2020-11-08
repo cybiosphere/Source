@@ -139,7 +139,7 @@ void Client::processBiotopEvents()
         send_event_update_entity_position(bioEvent.pEntity);
         break;
       case BIOTOP_EVENT_ENTITY_MODIFIED:
-        send_event_update_entity_data(bioEvent.pEntity);
+        //send_event_update_entity_data(bioEvent.pEntity); // On client side, only on demand update
         break;
       case BIOTOP_EVENT_ENTITY_ADDED:
         send_event_add_entity(bioEvent.pEntity);
@@ -360,6 +360,12 @@ void Client::on_event_biotop_changespeed(const NetGameEvent& e)
   event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
 }
 
+void Client::on_event_biotop_requestentityrefresh(const NetGameEvent& e)
+{
+  CBasicEntity* pEntity = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
+  send_event_update_entity_data(pEntity);
+}
+
 void Client::displayBiotopEntities()
 {
   CBasicEntity* pEntity;
@@ -536,10 +542,10 @@ void Client::send_event_create_measure(CMeasure* pMeasure)
   }
 }
 
-void Client::send_event_request_entity_refresh(CBasicEntity* pEntity, const entityIdType entityId)
+void Client::send_event_request_entity_refresh(CBasicEntity* pEntity)
 {
-  log_event("Events  ", "Request entity refresh: Id %1 label: %2", (int)entityId, pEntity->getLabel());
-  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity, entityId) };
+  log_event("Events  ", "Request entity refresh: label %1", pEntity->getLabel());
+  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
   network_client.send_event(bioReqActionRefresh);
 }
 

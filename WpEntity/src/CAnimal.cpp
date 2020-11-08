@@ -103,7 +103,7 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
 
-  m_BusySecondCounter = 0;
+  m_BusySecondCounter = 2;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
   for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
@@ -159,7 +159,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
 
-  m_BusySecondCounter = 0;
+  m_BusySecondCounter = 2;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
   for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
@@ -215,7 +215,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
 
-  m_BusySecondCounter = 0;
+  m_BusySecondCounter = 2;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
   for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)

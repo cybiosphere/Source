@@ -35,8 +35,8 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity, bool isNewE
       // Transfer control from coprocessor to server
       if (!isNewEntity)
       {
-        log_event("Server", "Transfer control from coprocessor to server entiy %1", pEntity->getLabel());
-        // TODO: m_pServer->send_event_request_entity_refresh(pEntity, m_pUser);
+        log_event("Server", "Transfer control from coprocessor to server entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
+        m_pServer->send_event_request_entity_refresh(pEntity, m_pUser);
       }
       m_pServer->send_event_change_remote_control(pEntity, true, m_pUser);  
       pEntity->setRemoteControlled(false);
@@ -49,8 +49,8 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity, bool isNewE
       // Transfer control from server to coprocessor
       if (!isNewEntity)
       {
-        log_event("Server", "Transfer control from server to coprocessor entiy %1", pEntity->getLabel());
-        // TODO: m_pServer->send_event_update_entity_data(pEntity, m_pUser);
+        log_event("Server", "Transfer control from server to coprocessor entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
+        m_pServer->send_event_update_entity_data(pEntity, m_pUser);
       }
       m_pServer->send_event_change_remote_control(pEntity, false, m_pUser);
       pEntity->setRemoteControlled(true);

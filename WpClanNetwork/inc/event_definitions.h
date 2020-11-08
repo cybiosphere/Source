@@ -8,7 +8,6 @@ namespace clan
   const std::string labelEventLogin            { "Login" };
   const std::string labelEventRequestStart     { "Game-RequestStart" };
   const std::string labelEventForceEntityAction{ "Biotop-Force entity action" };
-  const std::string labelEventReqEntityRefresh { "Biotop-Req entity refresh" };
 
   // From Server to Client only
   const std::string labelEventLoginOk            { "Login-Success" };
@@ -29,5 +28,6 @@ namespace clan
   const std::string labelEventCreateSpecieMap  { "Biotop-Create specie map" };
   const std::string labelEventChangeBiotopSpeed{ "Biotop-Change speed" };
   const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
+  const std::string labelEventReqEntityRefresh { "Biotop-Req entity refresh" };
 }
 
