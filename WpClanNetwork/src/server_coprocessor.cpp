@@ -6,6 +6,16 @@ using namespace clan;
 #include "clan_server.h"
 #include "CAnimMammal.h"
 
+void ServerCoprocessor::reset_all_entities_control(CBiotop* pBiotop)
+{
+  CBasicEntity* pCurEntity = nullptr;
+  for (int i = 0; i < pBiotop->getNbOfEntities(); i++)
+  {
+    pCurEntity = pBiotop->getEntityByIndex(i);
+    pCurEntity->setRemoteControlled(false);
+  }
+}
+
 void ServerCoprocessor::update_all_entities_control()
 {
   CBasicEntity* pCurEntity = nullptr;

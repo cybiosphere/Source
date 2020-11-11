@@ -25,8 +25,7 @@ m_pBiotop{ pBiotop },
 next_user_id(1),
 nb_users_connected(0),
 m_biotopSpeed(1.0),
-m_bManualMode(false),
-m_nbCoprocessors(0)
+m_bManualMode(false)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_server.sig_client_connected(), clan::bind_member(this, &Server::on_client_connected));
@@ -251,12 +250,29 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
 	log_event("Network ", "Client disconnected");
 
 	ServerUser *user = ServerUser::get_user(connection);
-	if(user)
-		delete user;
-
-  if (nb_users_connected > 0)
+  if (user)
+  {
+    if (user->isCoprocessor)
+    {
+      std::vector<ServerCoprocessor>::iterator iter;
+      for (iter = m_tCoprocessors.begin(); iter != m_tCoprocessors.end(); iter++)
+      {
+        if (iter->getUser() == user)
+        {
+          m_tCoprocessors.erase(iter);
+          break;
+        }
+      }
+      log_event("Events  ", "Coprocessor removed. Update control");
+      ServerCoprocessor::reset_all_entities_control(m_pBiotop);
+      for (auto coprocess : m_tCoprocessors)
+      {
+        coprocess.update_all_entities_control();
+      }
+    }
+    delete user;
     nb_users_connected--;
-
+  }
 }
 
 // An event was received from a client
@@ -304,10 +320,17 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 		user->id = next_user_id++;
     if (user->user_name == "Coprocessor")
     {
-      user->isCoprocessor = true;
-      m_nbCoprocessors++;
-      ServerCoprocessor newCoprocessor(this, user, m_pBiotop, m_pBiotop->getDimension().x / 2, 0);
-      m_tCoprocessors.push_back(std::move(newCoprocessor));
+      if (m_tCoprocessors.size() < MaxNumberCoprocessor)
+      {
+        user->isCoprocessor = true;
+        ServerCoprocessor newCoprocessor(this, user, m_pBiotop, m_pBiotop->getDimension().x / 2, 0);
+        m_tCoprocessors.push_back(std::move(newCoprocessor));
+      }
+      else
+      {
+        log_event("Server  ", "Too many coprocessors. Set user as simple client");
+        user->isCoprocessor = false;
+      }
     }
     else
     {
@@ -389,9 +412,10 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     // If new coprocessor arrives, update all entities control
     if (user->isCoprocessor)
     {
+      ServerCoprocessor::reset_all_entities_control(m_pBiotop);
+      log_event("Events  ", "New coprocessor added. Update control");
       for (auto coprocess : m_tCoprocessors)
       {
-        log_event("Events  ", "New coprocessor added. Update control");
         coprocess.update_all_entities_control();
       }
     }
@@ -421,7 +445,7 @@ void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser*
 void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user)
 {
   CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
-  if (pEntity && (m_nbCoprocessors > 0))
+  if (pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
     {
@@ -517,7 +541,7 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
     log_event("-ERROR- ", "send_event_add_entity: Event not sent");
   }
 
-  if (pEntity && (m_nbCoprocessors > 0))
+  if (pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
     {
@@ -595,7 +619,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
   else
     user->send_event(bioUpdateEntityPosEvent);
 
-  if (pEntity && (m_nbCoprocessors > 0))
+  if (pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
     {

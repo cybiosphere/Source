@@ -168,7 +168,6 @@ namespace clan
      bool bufferIsReady = handleEventsLongString(e, m_tEntityBufferEvent, bufferOutput, transactionId, custom1, custom2, custom3, custom4);
      if (bufferIsReady)
      {
-       log_event("events", "Biotop update entity data");
        updateEntityWithZipBuffer(bufferOutput, transactionId, pBiotop);
      }
    }

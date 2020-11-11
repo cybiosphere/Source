@@ -8,7 +8,7 @@ using namespace clan;
 
 class Server;
 
-constexpr int spatialHisteresisSize = 10;
+constexpr int spatialHisteresisSize = 20;
 
 class ServerCoprocessor
 {
@@ -21,6 +21,7 @@ class ServerCoprocessor
 			m_startCoordY(startCoordY)
 		{};
 
+		static void reset_all_entities_control(CBiotop* pBiotop);
 		void update_all_entities_control();
 		void update_entity_control(CBasicEntity* pEntity, bool isNewEntity);
 		bool checkNextSecondComplete();
