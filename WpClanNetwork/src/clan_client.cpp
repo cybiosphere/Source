@@ -44,6 +44,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Client::on_event_biotop_createspeciemap);
   game_events.func_event(labelEventChangeRemoteControl) = clan::bind_member(this, &Client::on_event_biotop_changeentitycontrol);
   game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Client::on_event_biotop_changespeed);
+  game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Client::on_event_biotop_requestentityrefresh);
 
 	quit = false;
 	logged_in = false;

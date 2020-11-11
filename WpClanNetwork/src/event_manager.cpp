@@ -618,8 +618,15 @@ namespace clan
     bool curRemoteCtrl;
     // Update entity with same Id
     pCurEntity = pBiotop->getEntityById(entityId);
+
     if (pCurEntity != NULL)
     {
+      // Do not update entity for pregnant animals
+      if (pCurEntity->isLocalAutoControlled() && (pCurEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pCurEntity)->getGestationBabyNumber() > 0))
+      {
+        log_event("Client ", "Skip update entity for pregnant animal %1", pCurEntity->getLabel());
+        return false;
+      }
       curStepDirection = pCurEntity->getStepDirection();
       curRemoteCtrl = pCurEntity->isRemoteControlled();
       pNewEntity->setRemoteControlled(curRemoteCtrl);

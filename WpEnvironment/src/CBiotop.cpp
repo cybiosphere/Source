@@ -124,7 +124,7 @@ CBiotop::~CBiotop()
 // Entities management
 //===========================================================================
 
-entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
+entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer, bool addEvent)
 {
   if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
     return (ENTITY_ID_INVALID);
@@ -165,7 +165,10 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t lay
   }
 
   pEntity->forceHasNotChanged();
-  addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
+  if (addEvent)
+  {
+    addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
+  }
 
   return (m_IdLastEntity);
 }
@@ -405,9 +408,9 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
-  pOldEntity->autoRemove();
+  pOldEntity->autoRemove(false);
 
-  addEntity(pNewEntity, oldCoord, oldLayer);
+  addEntity(pNewEntity, oldCoord, oldLayer, false);
   pNewEntity->setId(oldId);
 
   CYBIOCORE_LOG_TIME(m_BioTime);

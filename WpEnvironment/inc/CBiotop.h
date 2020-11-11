@@ -271,7 +271,7 @@ public:
 // Entities management
 //---------------------------------------------------------------------------
 public:
-  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
+  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord, bool addEvent = true);
   entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
   entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);

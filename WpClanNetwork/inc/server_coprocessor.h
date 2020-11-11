@@ -25,6 +25,8 @@ class ServerCoprocessor
 		void update_entity_control(CBasicEntity* pEntity, bool isNewEntity);
 		bool checkNextSecondComplete();
 		void forceNextSecondComplete(bool newValue);
+		bool checkIfEntityOwner(CBasicEntity* pEntity);
+		ServerUser* getUser();
 
 	private:
 		Server* m_pServer;

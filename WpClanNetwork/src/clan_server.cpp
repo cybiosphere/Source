@@ -168,6 +168,19 @@ bool Server::checkAllCoprocessorCompleteSecond()
   return true;
 }
 
+ServerUser* Server::getCoprocessorOwnerUser(CBasicEntity* pEntity)
+{
+  ServerUser* ownerUser = NULL;
+  for (auto coprocess : m_tCoprocessors)
+  {
+    if (coprocess.checkIfEntityOwner(pEntity))
+    {
+      ownerUser = coprocess.getUser();
+    }
+  }
+  return ownerUser;
+}
+
 float Server::get_biotop_speed()
 {
   return m_biotopSpeed;
@@ -452,7 +465,15 @@ void Server::on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser*
 void Server::on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user)
 {
   CBasicEntity* pEntity = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
-  send_event_update_entity_data(pEntity, user);
+  ServerUser* pOwnerUser = getCoprocessorOwnerUser(pEntity);
+  if (pOwnerUser != NULL)
+  {
+    send_event_request_entity_refresh(pEntity, pOwnerUser);
+  }
+  else
+  {
+    send_event_update_entity_data(pEntity, user);
+  }
 }
 
 void Server::on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* user)

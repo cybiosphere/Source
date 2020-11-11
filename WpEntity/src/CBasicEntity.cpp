@@ -1527,15 +1527,15 @@ bool CBasicEntity::isAttachedToBiotop()
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-void CBasicEntity::autoRemove()
+void CBasicEntity::autoRemove(bool addRemoveEvent)
 {
   m_Status = STATUS_TOBEREMOVED;
   Point_t coord = { invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);
-
-  if (m_pBiotop!=NULL)
+  if ((m_pBiotop != NULL) && addRemoveEvent)
+  {
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_REMOVED, this);
-
+  }
   // To avoid problem until biotop removal (TBC)
   m_Id = ENTITY_ID_INVALID;
 }

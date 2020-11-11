@@ -67,3 +67,20 @@ void ServerCoprocessor::forceNextSecondComplete(bool newValue)
 {
   m_pUser->isNextSecondCompleted = newValue;
 }
+
+bool ServerCoprocessor::checkIfEntityOwner(CBasicEntity* pEntity)
+{
+  if (pEntity && (pEntity->getGridCoord().x > m_startCoordX))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+ServerUser* ServerCoprocessor::getUser()
+{
+  return m_pUser;
+}

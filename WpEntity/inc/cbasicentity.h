@@ -281,7 +281,7 @@ public:
   void attachToBiotop(CBiotop* Biotop);
   void detachFromBiotop();
   bool isToBeRemoved();
-  void autoRemove();
+  void autoRemove(bool addRemoveEvent = true);
   bool isAttachedToBiotop();
 
 //---------------------------------------------------------------------------
