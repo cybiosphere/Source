@@ -805,7 +805,7 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
   else
   {
     if ( (m_pGenome->checkSpecieCompatibility(pPartnerEntity->getGenome()) == true)
-      &&(pPartnerEntity->isAlive()) && (pPartnerEntity->getSex() == SEX_FEMALE) )
+      && pPartnerEntity->isAlive() && (pPartnerEntity->getSex() == SEX_FEMALE) && pPartnerEntity->isLocalAutoControlled() )
     {
       if ( ((CAnimMammal*)pPartnerEntity)->reproductWith(this) )
       {

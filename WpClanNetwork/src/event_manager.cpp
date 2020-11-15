@@ -196,15 +196,17 @@ namespace clan
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentReactionIndex());
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentPurposeIndex());
     }
-    if (pEntity->getClass() == CLASS_MAMMAL)
-    {
-      newEvent.add_argument((int)((CAnimMammal*)pEntity)->getGestationBabyNumber());
-    }
     return (std::move(newEvent));
   }
 
   CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate)
   {
+    if (e.get_argument_count() < 8)
+    {
+      log_event("events", "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
+      return false;
+    }
+
     int entityId = e.get_argument(0);
     std::string  entityLabel = e.get_argument(1);
     int status = e.get_argument(2);
@@ -239,7 +241,7 @@ namespace clan
         index++;
       }
       // Additional infos
-      if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+      if ((pEntity->getClass() >= CLASS_ANIMAL_FIRST) && (e.get_argument_count() > index + 1))
       {
         CAnimal* pAnimal = (CAnimal*)pEntity;
         int reactIndex = e.get_argument(index);
@@ -248,12 +250,6 @@ namespace clan
         index++;
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
-      }
-      if (pEntity->getClass() == CLASS_MAMMAL)
-      {
-        int gestationNb = e.get_argument(index);
-        index++;
-        ((CAnimMammal*)pEntity)->setGestationBabyNumber(gestationNb);
       }
     }
     return pEntity;
@@ -493,6 +489,11 @@ namespace clan
                                              std::vector<LongBufferEvent_t>& tBufferEvent, DataBuffer& bufferOutput,
                                              int& transactionId, int& custom1, int& custom2, int& custom3, int& custom4)
   {
+    if (e.get_argument_count() < 8)
+    {
+      log_event("events", "handleEventsLongString: ERROR bad number of arguments: %1", e.get_argument_count());
+      return false;
+    }
     int i;
     transactionId = e.get_argument(0); // contains entityId
     int nbBlocks = e.get_argument(1);
@@ -574,6 +575,11 @@ namespace clan
     xmlDoc.Parse(xmlBuffer.get_data());
 
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
+    if (pNewEntity == NULL)
+    {
+      log_event("events", "ERROR Biotop add entity with NULL entity ");
+      return false;
+    }
     pNewEntity->setStepDirection(stepDirection);
     log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
 
@@ -609,8 +615,13 @@ namespace clan
     xmlDoc.Parse(xmlBuffer.get_data());
 
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
-    log_event("events", "Biotop update full entity: %1 state %2", pNewEntity->getLabel(), pNewEntity->getStatus());
+    if (pNewEntity == NULL)
+    {
+      log_event("events", "ERROR Biotop update full entity with NULL entity ID %1", entityId);
+      return false;
+    }
 
+    log_event("events", "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), entityId);
     CBasicEntity* pCurEntity;
     bool bFound = false;
     int curStepDirection;
