@@ -36,9 +36,8 @@ public:
 	bool get_manual_mode();
 	void set_manual_mode(bool newManualMode);
 	void process_new_events();
-
-private:
 	bool checkAllCoprocessorCompleteSecond();
+private:
 	ServerUser* getCoprocessorOwnerUser(CBasicEntity* pEntity);
 
 private:

@@ -757,6 +757,9 @@
     <ClInclude Include="..\WpEntity\inc\CEntityFactory.h">
       <Filter>WpEntity\IncEntity</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h">
+      <Filter>WpClanNetwork\IncClan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1039,6 +1042,9 @@
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
+      <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
   </ItemGroup>

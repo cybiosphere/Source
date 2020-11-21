@@ -279,6 +279,8 @@ public:
   bool exportDecisionInCsvFile(string fileNameWithPath);
   bool importDecisionFromCsvFile(string fileNameWithPath);
 
+  bool exportIdentificationInCsvFile(string fileNameWithPath);
+
 //---------------------------------------------------------------------------
 // Brain decision process
 //---------------------------------------------------------------------------

@@ -49,7 +49,10 @@ protected:
 	CButton	m_ButtonSave;
 	CButton	m_ButtonMore;
 	CButton	m_ButtonLess;
-  CBrainGridCtrl	m_BrainGrid;
+  CBrainGridCtrl m_BrainGrid;
+	BOOL m_bColorizeDeltaFromBirth;
+	BOOL m_bColorizeDeltaWithOther;
+
 	//}}AFX_DATA
 
   CBrain* m_pBrain;
@@ -57,6 +60,7 @@ protected:
   CNeuronMatrix* m_pNeuronMatrix;
   string m_strBrainBackup;
   CString m_strWindowsTitle;
+	CBasicEntity* m_pReferenceAnimal{ NULL };
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -67,6 +71,7 @@ protected:
 
 // Implementation
 protected:
+	void ColorizeDeltaFromReference();
 
 	// Generated message map functions
 	//{{AFX_MSG(CBrainEditorDlg)
@@ -80,6 +85,8 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnButtonExport();
 	afx_msg void OnButtonImport();
+	afx_msg void OnCheckColorizeDeltaFromBirth();
+	afx_msg void OnCheckColorizeDeltaWithOther();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

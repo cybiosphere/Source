@@ -80,6 +80,12 @@ bool CNeuronMatrixCtrl::SetNeuronMatrix(CNeuronMatrix* pNeuronMatrix)
   return (true);
 }
 
+void CNeuronMatrixCtrl::SetReferenceNeuronMatrixToCompare(CNeuronMatrix* pNeuronMatrix)
+{
+  m_pReferenceNeuronMatrixToCompare = pNeuronMatrix;
+}
+
+
 void CNeuronMatrixCtrl::RefreshNeuronMatrixData()
 {
 	if (m_pNeuronMatrix == NULL)
@@ -136,6 +142,62 @@ void CNeuronMatrixCtrl::RefreshInputOutputVectAndThresholds(CMatrix* pInputVect,
   Invalidate();
 }
 
+
+void CNeuronMatrixCtrl::ColorizeDeltaFromReference()
+{
+  if ((m_pNeuronMatrix == NULL) || (m_pReferenceNeuronMatrixToCompare == NULL))
+    return;
+  if (m_pNeuronMatrix->GetNeuronTableRowCount() != m_pReferenceNeuronMatrixToCompare->GetNeuronTableRowCount())
+    return;
+  if (m_pNeuronMatrix->GetNeuronTableColumnCount() != m_pReferenceNeuronMatrixToCompare->GetNeuronTableColumnCount())
+    return;
+
+  CString curTxt;
+  double curVal = 0;
+  neuroneValType curValue, refValue;
+  constexpr neuroneValType minDelta = 0.01;
+  COLORREF curColor;
+
+  for (size_t i = 0; i < m_pNeuronMatrix->GetNeuronTableRowCount(); i++)
+  {
+    for (size_t j = 0; j < m_pNeuronMatrix->GetNeuronTableColumnCount(); j++)
+    {
+      curValue = m_pNeuronMatrix->GetNeuronTableData(i, j);
+      refValue = m_pReferenceNeuronMatrixToCompare->GetNeuronTableData(i, j);
+      if ((curValue - refValue) > minDelta)
+      {
+        if ((curValue - refValue) > 0.2)
+          curColor = 0x00D0FFD0;
+        else
+          curColor = 0x00E0EBE0 + 255 * cybio_round(100 * (curValue - refValue));
+        SetItemBkColour(i + 2, j + 2, curColor);
+      }
+      else if ((refValue - curValue) > minDelta)
+      {
+        if ((refValue - curValue) > 0.2)
+          curColor = 0x00D0D0FF;
+        else
+          curColor = 0x00E0E0EB + cybio_round(100 * (refValue - curValue));
+        SetItemBkColour(i + 2, j + 2, curColor);
+      }
+    }
+  }
+  // Update windows
+  Invalidate();
+}
+
+void CNeuronMatrixCtrl::ClearColorizedCells()
+{
+  for (size_t i = 0; i < m_pNeuronMatrix->GetNeuronTableRowCount(); i++)
+  {
+    for (size_t j = 0; j < m_pNeuronMatrix->GetNeuronTableColumnCount(); j++)
+    {
+        SetItemBkColour(i + 2, j + 2, 0x00FFFFFF);
+    }
+  }
+  // Update windows
+  Invalidate();
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CBrainGridCtrl

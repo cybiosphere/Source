@@ -28,6 +28,7 @@ distribution.
 #include "stdafx.h"
 #include "cybiosphere.h"
 #include "BrainEditorDlg.h"
+#include "CEntityFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -46,6 +47,8 @@ CBrainEditorDlg::CBrainEditorDlg(CBrain* pBrain, bool identifyBrain, CString use
 {
 	//{{AFX_DATA_INIT(CBrainEditorDlg)
 		// NOTE: the ClassWizard will add member initialization here
+  m_bColorizeDeltaFromBirth = FALSE;
+  m_bColorizeDeltaWithOther = FALSE;
 	//}}AFX_DATA_INIT
 
   m_bIdentifyBrain = identifyBrain;
@@ -72,6 +75,8 @@ void CBrainEditorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_MORE, m_ButtonMore);
 	DDX_Control(pDX, IDC_BUTTON_LESS, m_ButtonLess);
 	DDX_GridControl(pDX, IDC_BRAIN_EDIT_GRID, m_BrainGrid);
+  DDX_Check(pDX, IDC_DELTA_CHECK1, m_bColorizeDeltaFromBirth);
+  DDX_Check(pDX, IDC_DELTA_CHECK2, m_bColorizeDeltaWithOther);
 	//}}AFX_DATA_MAP
 }
 
@@ -85,6 +90,8 @@ BEGIN_MESSAGE_MAP(CBrainEditorDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_LESS, OnButtonLess)
 	ON_BN_CLICKED(IDC_BUTTON_EXPORT, OnButtonExport)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT, OnButtonImport)
+  ON_BN_CLICKED(IDC_DELTA_CHECK1, OnCheckColorizeDeltaFromBirth)
+  ON_BN_CLICKED(IDC_DELTA_CHECK2, OnCheckColorizeDeltaWithOther)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -105,16 +112,37 @@ BOOL CBrainEditorDlg::OnInitDialog()
   m_ButtonLess.SetIcon(lessIco);
 
   if (m_bIdentifyBrain == true)
+  {
     m_BrainGrid.SetIdentifyBrain(m_pBrain);
+  }
   else
+  {
     m_BrainGrid.SetBrain(m_pBrain);
-  
+  }
+
   // Set user title if set
   if (m_strWindowsTitle!="")
     this->SetWindowText(m_strWindowsTitle);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CBrainEditorDlg::ColorizeDeltaFromReference()
+{
+  m_BrainGrid.ClearColorizedCells();
+  if ((m_pReferenceAnimal != NULL) && (m_pReferenceAnimal->getBrain() != NULL))
+  {
+    if (m_bIdentifyBrain == true)
+    {
+      m_BrainGrid.SetReferenceNeuronMatrixToCompare(m_pReferenceAnimal->getBrain()->GetIdentifyNeuronTable());
+    }
+    else
+    {
+      m_BrainGrid.SetReferenceNeuronMatrixToCompare(m_pReferenceAnimal->getBrain()->GetDecisionNeuronTable());
+    }
+    m_BrainGrid.ColorizeDeltaFromReference();
+  }
 }
 
 void CBrainEditorDlg::OnSize(UINT nType, int cx, int cy)
@@ -201,6 +229,8 @@ void CBrainEditorDlg::OnButtonMore()
     m_BrainGrid.RefreshIdentifyBrainData();
   else
     m_BrainGrid.RefreshBrainData();
+
+  ColorizeDeltaFromReference();
 }
 
 void CBrainEditorDlg::OnButtonLess() 
@@ -221,19 +251,24 @@ void CBrainEditorDlg::OnButtonLess()
     m_BrainGrid.RefreshIdentifyBrainData();
   else
     m_BrainGrid.RefreshBrainData();
+
+  ColorizeDeltaFromReference();
 }
 
 void CBrainEditorDlg::OnCancel() 
 {
   if (m_pNeuronMatrix!=NULL)
 	  m_pNeuronMatrix->buildNeuronTableFromStringData(m_strBrainBackup);
-
+  if (m_pReferenceAnimal!=NULL)
+    delete m_pReferenceAnimal;
 	CDialog::OnCancel();
 }
 
 void CBrainEditorDlg::OnOK()
 {
   theApp.updateSelectedEntity(m_pBrain->GetEntity());
+  if (m_pReferenceAnimal != NULL)
+    delete m_pReferenceAnimal;
   CDialog::OnOK();
 }
 
@@ -246,13 +281,23 @@ void CBrainEditorDlg::OnButtonExport()
 	if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-
-    bool resu = m_pBrain->exportDecisionInCsvFile((char*)fileName.GetBuffer(0));
+    if (m_bIdentifyBrain == true)
+    {
+      m_pBrain->exportIdentificationInCsvFile((char*)fileName.GetBuffer(0));
+    }
+    else
+    {
+      m_pBrain->exportDecisionInCsvFile((char*)fileName.GetBuffer(0));
+    }
   }
 }
 
 void CBrainEditorDlg::OnButtonImport() 
 {
+  if (m_bIdentifyBrain == true)
+  {
+    return; // Not supported
+  }
   CString fileName;
 	CFileDialog fileDlg(true, LPCTSTR("csv"), LPCTSTR(""),0, LPCTSTR("Brain Files (*.csv)|*.csv; *.csv|All Files (*.*)|*.*||"));
 	fileDlg.m_ofn.lpstrTitle = LPCTSTR("Export in csv file");
@@ -263,4 +308,60 @@ void CBrainEditorDlg::OnButtonImport()
     bool resu = m_pBrain->importDecisionFromCsvFile((char*)fileName.GetBuffer(0));
     m_BrainGrid.SetNeuronMatrix(m_pNeuronMatrix); // Refresh grid
   }
+}
+
+void CBrainEditorDlg::OnCheckColorizeDeltaFromBirth()
+{
+  if (m_pReferenceAnimal != NULL)
+  {
+    delete m_pReferenceAnimal;
+    m_pReferenceAnimal = NULL;
+  }
+
+  if (m_bColorizeDeltaFromBirth)
+  {
+    m_bColorizeDeltaFromBirth = FALSE;
+  }
+  else
+  {
+    m_bColorizeDeltaFromBirth = TRUE;
+    m_pReferenceAnimal = CEntityFactory::createCloneEntity(m_pBrain->GetEntity());
+  }
+  m_bColorizeDeltaWithOther = FALSE;
+  this->UpdateData(false);
+  ColorizeDeltaFromReference();
+}
+
+void CBrainEditorDlg::OnCheckColorizeDeltaWithOther()
+{
+  if (m_pReferenceAnimal != NULL)
+  {
+    delete m_pReferenceAnimal;
+    m_pReferenceAnimal = NULL;
+  }
+
+  m_bColorizeDeltaFromBirth = FALSE;
+  if (m_bColorizeDeltaWithOther)
+  {
+    m_bColorizeDeltaWithOther = FALSE;
+  }
+  else
+  {
+    m_bColorizeDeltaWithOther = TRUE;
+    CFileDialog fileDlg(true, LPCTSTR("xml"), LPCTSTR(""), 0, LPCTSTR("Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||"));
+    fileDlg.m_ofn.lpstrTitle = LPCTSTR("Select entity");
+    long nResp = fileDlg.DoModal();
+    if (nResp == IDOK)
+    {
+     CString fileName = fileDlg.GetFileName();
+     CString pathName = fileDlg.GetPathName();
+      int endPath = pathName.ReverseFind('\\');
+      if (endPath > 0)
+        pathName = pathName.Left(endPath + 1);
+
+      m_pReferenceAnimal = CEntityFactory::createEntity(fileName.GetBuffer(0), pathName.GetBuffer(0));
+    }
+  }
+  this->UpdateData(false);
+  ColorizeDeltaFromReference();
 }

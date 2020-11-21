@@ -522,6 +522,7 @@
     <ClInclude Include="..\WpClanNetwork\inc\miniz.h" />
     <ClInclude Include="..\WpClanNetwork\inc\network_data.h" />
     <ClInclude Include="..\WpClanNetwork\inc\network_event.h" />
+    <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h" />
     <ClInclude Include="..\WpClanNetwork\inc\server_impl.h" />
     <ClInclude Include="..\WpClanNetwork\inc\setupnetwork.h" />
     <ClInclude Include="..\WpClanNetwork\inc\setup_core.h" />
@@ -647,6 +648,7 @@
     <ClCompile Include="..\WpClanNetwork\src\network_condition_variable.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\network_data.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\server.cpp" />
+    <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\setupnetwork_win32.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\setup_core.cpp" />
     <ClCompile Include="..\WpClanNetwork\src\socket_error.cpp" />

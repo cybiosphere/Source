@@ -956,6 +956,40 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
   return (resu);
 }
 
+bool CBrain::exportIdentificationInCsvFile(string fileNameWithPath)
+{
+  size_t i, j;
+  string tmpStr;
+  string savedBrain = " ;";
+
+  // First line
+  for (j = 0; j < m_mIdentifyNeuronTable.GetNeuronTableColumnCount(); j++)
+  {
+    savedBrain += getIdentificationLabel(j) + ";";
+  }
+  savedBrain += "\n";
+
+  // Next lines
+  for (i = 0; i < m_mIdentifyNeuronTable.GetNeuronTableRowCount(); i++)
+  {
+    // First column
+    savedBrain += getIdentifyInputLabel(i) + ";";
+    // Next columns
+    for (j = 0; j < m_mIdentifyNeuronTable.GetNeuronTableColumnCount(); j++)
+    {
+      tmpStr = FormatString("%02.3f", m_mIdentifyNeuronTable.GetNeuronTableData(i, j));
+      savedBrain += tmpStr + ";";
+    }
+    savedBrain += "\n";
+  }
+
+  ofstream f1;
+  f1.open(fileNameWithPath.c_str());
+  f1.write(savedBrain.c_str(), savedBrain.length());
+  f1.close();
+
+  return true;
+}
 
 //---------------------------------------------------------------------------
 // Brain decision process

@@ -224,6 +224,8 @@
 #define IDC_POPULATION_TXT6             1135
 #define IDC_SLIDER1                     1136
 #define IDC_POPULATION_DATE             1137
+#define IDC_DELTA_CHECK1                1137
+#define IDC_DELTA_CHECK2                1138
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -268,7 +270,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        210
 #define _APS_NEXT_COMMAND_VALUE         32814
-#define _APS_NEXT_CONTROL_VALUE         1137
+#define _APS_NEXT_CONTROL_VALUE         1139
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -617,11 +617,11 @@ namespace clan
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
     if (pNewEntity == NULL)
     {
-      log_event("events", "ERROR Biotop update full entity with NULL entity ID %1", entityId);
+      log_event("events", "ERROR Biotop update full entity with NULL entity ID %1", (int)entityId);
       return false;
     }
 
-    log_event("events", "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), entityId);
+    log_event("events", "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), (int)entityId);
     CBasicEntity* pCurEntity;
     bool bFound = false;
     int curStepDirection;

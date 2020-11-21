@@ -127,6 +127,12 @@
     <ClInclude Include="..\WpClanNetwork\inc\API\Core\Zip\zlib_compression.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpClanNetwork\inc\server_impl.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -273,6 +279,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\event_manager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

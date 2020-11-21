@@ -47,6 +47,7 @@ public:
 // Attributes
 public:
   CNeuronMatrix* m_pNeuronMatrix;
+  CNeuronMatrix* m_pReferenceNeuronMatrixToCompare;
 
 // Operations
 public:
@@ -58,8 +59,11 @@ public:
 
 public:
   bool SetNeuronMatrix(CNeuronMatrix* pNeuronMatrix);
+  void SetReferenceNeuronMatrixToCompare(CNeuronMatrix* pNeuronMatrix);
   void RefreshNeuronMatrixData();
   void RefreshInputOutputVectAndThresholds(CMatrix* pInputVect, CMatrix* pOutputVect, double maxVal, double midThreshold, double lowThreshold);
+  void ColorizeDeltaFromReference();
+  void ClearColorizedCells();
 
 // Implementation
 public:
