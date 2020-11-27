@@ -2424,7 +2424,24 @@ bool CBasicEntity::saveInXmlFile(string fileName, string newLabel)
 }
 
 
-bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
+bool CBasicEntity::saveInXmlFile(TiXmlDocument* pXmlDoc, string newLabel)
+{
+  if (pXmlDoc == NULL)
+    return false;
+
+  pXmlDoc->Clear();
+  bool resu = addEntityInXmlFile(pXmlDoc, newLabel, this, false);
+
+  for (int i = 0; i < m_tGestationChilds.size(); i++)
+  {
+    CBasicEntity* pFetus = m_tGestationChilds[i];
+    addEntityInXmlFile(pXmlDoc, "", pFetus, true);
+  }
+
+  return resu;
+}
+
+bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, CBasicEntity * pEntity, bool setAsFetusEntity)
 {
   bool resu = false;
   TiXmlElement* pElement;
@@ -2432,20 +2449,18 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
   TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeChild = NULL;
   string tempLabel;
+  string labelEntityNode;
   int i;
 
-  if (pXmlDoc==NULL) 
+  if ((pXmlDoc==NULL) || (pEntity==NULL))
     return false;
 
-  pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-  if (pNodeEntity==NULL)
-  {
-    TiXmlElement newNode(XML_NODE_ENTITY);
-    pNodeEntity = pXmlDoc->InsertEndChild(newNode);
-  }
+  setAsFetusEntity? labelEntityNode = XML_NODE_FETUS_ENTITY: labelEntityNode = XML_NODE_ENTITY;
+  TiXmlElement newNode(labelEntityNode);
+  pNodeEntity = pXmlDoc->InsertEndChild(newNode);
 
   if (newLabel == "")
-    tempLabel = m_Label;
+    tempLabel = pEntity->getLabel();
   else
     tempLabel = newLabel;
 
@@ -2453,36 +2468,26 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
   {
     // Set attributes
     pElement = (TiXmlElement*)pNodeEntity;
-    pElement->SetAttribute( XML_ATTR_LABEL,      tempLabel);
-    pElement->SetAttribute( XML_ATTR_GENERATION, m_Generation);
-    pElement->SetAttribute( XML_ATTR_STATUS,     m_Status);
-    pElement->SetAttribute( XML_ATTR_LAYER,      (int)m_Layer);
-    pElement->SetAttribute( XML_ATTR_DIRECTION,  m_Direction);
-    pElement->SetAttribute( XML_ATTR_HOUR_COUNT, m_HourCounter);
-    pElement->SetAttribute( XML_ATTR_IMMORTAL,   (int)m_bIsImmortal);
+    pElement->SetAttribute( XML_ATTR_LABEL, tempLabel);
+    pElement->SetAttribute( XML_ATTR_GENERATION, pEntity->m_Generation);
+    pElement->SetAttribute( XML_ATTR_STATUS, pEntity->m_Status);
+    pElement->SetAttribute( XML_ATTR_LAYER, (int)pEntity->m_Layer);
+    pElement->SetAttribute( XML_ATTR_DIRECTION, pEntity->m_Direction);
+    pElement->SetAttribute( XML_ATTR_HOUR_COUNT, pEntity->m_HourCounter);
+    pElement->SetAttribute( XML_ATTR_IMMORTAL, (int)pEntity->m_bIsImmortal);
   }
 
-  pNode = pNodeEntity->FirstChild(XML_NODE_LIFE_STAGES);
-  if (pNode==NULL)
-  {
-    // Create Life stages node
-    TiXmlElement newNode(XML_NODE_LIFE_STAGES);
-    pNode = pNodeEntity->InsertEndChild(newNode);
-  }
-  else
-  {
-    // Clear previous Life stages
-    while (pNode->FirstChild() != NULL)
-      pNode->RemoveChild(pNode->FirstChild());
-  }
+  // Create Life stages node
+  TiXmlElement newNodeStages(XML_NODE_LIFE_STAGES);
+  pNode = pNodeEntity->InsertEndChild(newNodeStages);
 
   if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     // Set attributes
     pElement = (TiXmlElement*)pNode;
-    pElement->SetAttribute( XML_ATTR_CURRENT_IND, (int)m_indCurrentLifeStage);
+    pElement->SetAttribute( XML_ATTR_CURRENT_IND, (int)pEntity->m_indCurrentLifeStage);
 
-    for (i=0; i<getNbLifeStages(); i++)
+    for (i=0; i< pEntity->getNbLifeStages(); i++)
     {
       TiXmlElement newLifeStage(XML_NODE_LIFE_STAGE);
       pNodeChild = pNode->InsertEndChild(newLifeStage);
@@ -2490,91 +2495,56 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel)
       {
         pElement = (TiXmlElement*)pNodeChild;
         pElement->SetAttribute(XML_ATTR_INDEX, i);
-        pElement->SetAttribute(XML_ATTR_DAY_COUNT, getLifeStage(i)->getCurDayCount());
+        pElement->SetAttribute(XML_ATTR_DAY_COUNT, pEntity->getLifeStage(i)->getCurDayCount());
       }
     }
   }
 
-  // Clear previous parameters
-  while (pNodeEntity->FirstChild(XML_NODE_PARAMETER) != NULL)
-    pNodeEntity->RemoveChild(pNodeEntity->FirstChild(XML_NODE_PARAMETER));
-
   // Save parameters
-  for (i=0; i<getNumParameter(); i++)
+  for (i=0; i<pEntity->getNumParameter(); i++)
   {
-    getParameter(i)->saveInXmlFile(pNodeEntity);
+    pEntity->getParameter(i)->saveInXmlFile(pNodeEntity);
   }
-
-  // Clear previous caracters
-  while (pNodeEntity->FirstChild(XML_NODE_CARACTER) != NULL)
-    pNodeEntity->RemoveChild(pNodeEntity->FirstChild(XML_NODE_CARACTER));
 
   // Set caracters
   TiXmlElement newCaract(XML_NODE_CARACTER);
   newCaract.SetAttribute(XML_ATTR_NAME, "ColorRGB");
-  newCaract.SetAttribute(XML_ATTR_VALUE, m_ColorRgb);
+  newCaract.SetAttribute(XML_ATTR_VALUE, pEntity->m_ColorRgb);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Odor");
-  newCaract.SetAttribute(XML_ATTR_VALUE, (int)m_Odor);
+  newCaract.SetAttribute(XML_ATTR_VALUE, (int)pEntity->m_Odor);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Pheromone");
-  newCaract.SetAttribute(XML_ATTR_VALUE, (int)m_Pheromone);
+  newCaract.SetAttribute(XML_ATTR_VALUE, (int)pEntity->m_Pheromone);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Form");
-  newCaract.SetAttribute(XML_ATTR_VALUE,(int)m_Silhouette);
+  newCaract.SetAttribute(XML_ATTR_VALUE,(int)pEntity->m_Silhouette);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Texture");
-  newCaract.SetAttribute(XML_ATTR_VALUE, (int)m_Texture);
+  newCaract.SetAttribute(XML_ATTR_VALUE, (int)pEntity->m_Texture);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Attribute");
-  newCaract.SetAttribute(XML_ATTR_VALUE, m_pPhyAttribute->getPresenceMask());
+  newCaract.SetAttribute(XML_ATTR_VALUE, pEntity->m_pPhyAttribute->getPresenceMask());
   pNodeEntity->InsertEndChild(newCaract);
 
   // Gestation
-  pNode = pNodeEntity->FirstChild(XML_NODE_GESTATION);
-  if (pNode==NULL)
-  {
-    // Create gestation node
-    TiXmlElement newNode(XML_NODE_GESTATION);
-    pNode = pNodeEntity->InsertEndChild(newNode);
-  }
-  else
-  {
-    // Clear previous childs
-    while (pNode->FirstChild() != NULL)
-      pNode->RemoveChild(pNode->FirstChild());
-  }
-
+  TiXmlElement newNodeGestation(XML_NODE_GESTATION);
+  pNode = pNodeEntity->InsertEndChild(newNodeGestation);
   if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     // Set attributes
     pElement = (TiXmlElement*)pNode;
-    pElement->SetAttribute(XML_ATTR_TOTAL_CHILDS, m_TotalChildNumber);
-
-    // Save childs
-    for (i=0; i<m_tGestationChilds.size(); i++)
-    {
-      CBasicEntity* pBaby = m_tGestationChilds[i];
-      string babyFileName = pBaby->getLabel() + ".xml";
-      pBaby->saveInXmlFile(babyFileName);
-      TiXmlElement newBaby(XML_NODE_ENTITY);
-      pNodeChild = pNode->InsertEndChild(newBaby);
-      if (pNodeChild != NULL) 
-      {
-        pElement = (TiXmlElement*)pNodeChild;
-        pElement->SetAttribute(XML_ATTR_FILE_NAME, babyFileName);
-      }
-    }
+    pElement->SetAttribute(XML_ATTR_TOTAL_CHILDS, pEntity->m_TotalChildNumber);
   }
 
-  if (m_pGenome!=NULL)
+  if (pEntity->m_pGenome!=NULL)
   {
-    m_pGenome->saveInXmlFile(pXmlDoc);
+    pEntity->m_pGenome->saveInXmlNode(pNodeEntity);
   }
 
-  if (m_pBrain!=NULL)
+  if ((pEntity->m_pBrain!=NULL) && (!setAsFetusEntity))
   {
-    m_pBrain->saveInTiXmlFile(pXmlDoc);
+    pEntity->m_pBrain->saveInTiXmlFile(pXmlDoc);
   }
 
   return resu;
@@ -2663,19 +2633,22 @@ bool CBasicEntity::getEntityNameFromXmlFile(string fileName, string& name)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CBasicEntity::getEntityNameFromXmlFile(TiXmlDocument *pXmlDoc, string& name)
+bool CBasicEntity::getEntityNameFromXmlFile(TiXmlDocument* pXmlDoc, string& name)
 {
-  if (pXmlDoc==NULL)
+  if (pXmlDoc == NULL)
     return false;
-
   TiXmlNode* pNode = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-  if((pNode!=NULL)&&(pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+  return getEntityNameFromXmlNode(pNode, name);
+}
+
+bool CBasicEntity::getEntityNameFromXmlNode(TiXmlNode * pNodeEntity, string & name)
+{
+  if((pNodeEntity !=NULL)&&(pNodeEntity->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
-    TiXmlElement* pElement = (TiXmlElement*)pNode;
+    TiXmlElement* pElement = (TiXmlElement*)pNodeEntity;
     if ( pElement->QueryStringAttribute(XML_ATTR_LABEL,  &name) == TIXML_NO_ATTRIBUTE)
       return false;
   }
-
   return true;
 }
 
@@ -2685,18 +2658,17 @@ bool CBasicEntity::getEntityNameFromXmlFile(TiXmlDocument *pXmlDoc, string& name
 // DESCRIPTION:  Load entity data
 // 
 // ARGUMENTS:    string fileNameWithPath
-//               stringt& name: result
 //   
 // RETURN VALUE: bool: success
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CBasicEntity::loadDataFromXmlFile(string fileName, string pathNameForBabies)
+bool CBasicEntity::loadDataFromXmlFile(string fileName)
 {
   bool resu = false;
   TiXmlDocument xmlDoc(fileName);
   resu = xmlDoc.LoadFile();
-  loadDataFromXmlFile(&xmlDoc, pathNameForBabies);
+  loadDataFromXmlFile(&xmlDoc);
   return resu;
 }
 
@@ -2705,14 +2677,13 @@ bool CBasicEntity::loadDataFromXmlFile(string fileName, string pathNameForBabies
 //  
 // DESCRIPTION:  Load entity data
 // 
-// ARGUMENTS:    string fileNameWithPath
-//               stringt& name: result
+// ARGUMENTS:    TiXmlDocument *pXmlDoc
 //   
 // RETURN VALUE: bool: success
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForBabies)
+bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
 {
   TiXmlElement* pElement;
   TiXmlNode* pNode = NULL;
@@ -2847,35 +2818,35 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameFo
       pElement = (TiXmlElement*)pNode;
       if ( pElement->QueryIntAttribute(XML_ATTR_TOTAL_CHILDS,  &m_TotalChildNumber) == TIXML_NO_ATTRIBUTE)
         m_TotalChildNumber = 0;
-
-      // Load babies
-      CGenome* pBabyGenome;
-      CBasicEntity* pEntity;
-      string fileStr, babName;
-      pNode = pNode->FirstChild(XML_NODE_ENTITY);
-      while (pNode != NULL)
-      {
-        pElement = (TiXmlElement*)pNode;
-        if ((pElement!=NULL) &&  (pElement->QueryStringAttribute(XML_ATTR_FILE_NAME, &fileStr) != TIXML_NO_ATTRIBUTE))
-        { 
-          string fileNameWithPathStr = pathNameForBabies + fileStr;
-          pBabyGenome = new CGenome(CLASS_NONE,"");
-          getGenomeFromXmlFile(fileNameWithPathStr,*pBabyGenome);
-          getEntityNameFromXmlFile(fileNameWithPathStr,babName);    
-          pEntity = CEntityFactory::createEntity(babName,pBabyGenome);
-          if (pEntity)
-          {
-            pEntity->loadBrainFromXmlFile(fileNameWithPathStr);
-            pEntity->loadDataFromXmlFile(fileNameWithPathStr, pathNameForBabies);
-            m_tGestationChilds.push_back(pEntity);
-          }
-        }
-        pNode = pNode->NextSibling();
-      }
     }
   }
 
+  loadBabiesFromXmlFile(pXmlDoc);
+
   return true;
+}
+
+bool CBasicEntity::loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc)
+{
+  if (pXmlDoc == NULL)
+    return false;
+
+  TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_FETUS_ENTITY);
+  while (pNodeEntity!=NULL)
+  {
+    CGenome* pBabyGenome;
+    string babyName;
+    CBasicEntity* pFetusEntity;
+    pBabyGenome = new CGenome(CLASS_NONE, "");
+    if (pBabyGenome != NULL)
+    {
+      pBabyGenome->loadFromXmlNode(pNodeEntity);
+      getEntityNameFromXmlNode(pNodeEntity, babyName);
+      pFetusEntity = CEntityFactory::createEntity(babyName, pBabyGenome);
+      m_tGestationChilds.push_back(pFetusEntity);
+    }
+    pNodeEntity = pNodeEntity->NextSibling(XML_NODE_FETUS_ENTITY);
+  }
 }
 
 //---------------------------------------------------------------------------

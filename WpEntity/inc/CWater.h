@@ -73,6 +73,7 @@ public:
   CWater(string label, CWater& model);
   double  changeWeight(double variation); // Overload
   ClassType_e getClass();
+  void nextHour();
 };// end CWater
 
 #endif // !defined(CWATER_INCLUDED_)

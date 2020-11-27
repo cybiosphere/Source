@@ -93,9 +93,8 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   return (pNewEntity);
 }
 
-CBasicEntity* CEntityFactory::createEntity(string fileName, string pathName)
+CBasicEntity* CEntityFactory::createEntity(string fileNameWithPath)
 {
-  string fileNameWithPath = pathName + fileName;
   TiXmlDocument* pXmlDoc = new TiXmlDocument(fileNameWithPath);
   if (!pXmlDoc->LoadFile())
   {
@@ -103,12 +102,12 @@ CBasicEntity* CEntityFactory::createEntity(string fileName, string pathName)
     delete pXmlDoc;
     return NULL;
   }
-  CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc, pathName);
+  CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc);
   delete pXmlDoc;
   return (pNewEntity);
 }
 
-CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc, string pathNameForBabies)
+CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
 {
   string name;
   CGenome* pTempGenome = new CGenome(CLASS_NONE, "");
@@ -122,7 +121,7 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc, string pathNa
 
   if (pNewEntity != NULL)
   {
-    pNewEntity->loadDataFromXmlFile(pXmlDoc, pathNameForBabies);
+    pNewEntity->loadDataFromXmlFile(pXmlDoc);
     pNewEntity->loadBrainFromXmlFile(pXmlDoc);
   }
   else

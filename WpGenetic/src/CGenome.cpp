@@ -368,22 +368,33 @@ bool CGenome::saveInXmlFile(string fileNameWithPath)
   return resu;
 }
 
-bool CGenome::saveInXmlFile(TiXmlDocument *pXmlDoc)
+bool CGenome::saveInXmlFile(TiXmlDocument* pXmlDoc)
+{
+  TiXmlNode* pNodeEntity = NULL;
+
+  if (pXmlDoc == NULL)
+    return false;
+
+  pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
+  if (pNodeEntity == NULL)
+  {
+    TiXmlElement newNode(XML_NODE_ENTITY);
+    pNodeEntity = pXmlDoc->InsertEndChild(newNode);
+  }
+
+  return saveInXmlNode(pNodeEntity);
+}
+
+bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
 {
   TiXmlElement* pElement;
-  TiXmlNode* pNodeEntity = NULL;
   TiXmlNode* pNodeGenome = NULL;
   TiXmlNode* pNodePair = NULL;
   TiXmlNode* pNodeGene = NULL;
 
-  if (pXmlDoc==NULL) 
-    return false;
-
-  pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
   if (pNodeEntity==NULL)
   {
-    TiXmlElement newNode(XML_NODE_ENTITY);
-    pNodeEntity = pXmlDoc->InsertEndChild(newNode);
+    return false;
   }
 
   pNodeGenome = pNodeEntity->FirstChild(XML_NODE_GENOME);
@@ -453,18 +464,21 @@ bool CGenome::loadFromXmlFile(string fileNameWithPath)
   return resu;
 }
 
-bool CGenome::loadFromXmlFile(TiXmlDocument *pXmlDoc)
+bool CGenome::loadFromXmlFile(TiXmlDocument* pXmlDoc)
+{
+  if (pXmlDoc == NULL)
+    return false;
+
+  return loadFromXmlNode(pXmlDoc->FirstChild(XML_NODE_ENTITY));
+}
+
+bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
 {
   TiXmlElement* pElement;
-  TiXmlNode* pNodeEntity = NULL;
   TiXmlNode* pNodeGenome = NULL;
   TiXmlNode* pNodePair = NULL;
   TiXmlNode* pNodeGene = NULL;
 
-  if (pXmlDoc==NULL)
-    return false;
-
-  pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
   if (pNodeEntity!=NULL)
     pNodeGenome = pNodeEntity->FirstChild(XML_NODE_GENOME);
 

@@ -105,12 +105,7 @@ void CEntityEditorDlg::OnButtonLoad()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetFileName();	
-    pathName = fileDlg.GetPathName();	 
-    int endPath = pathName.ReverseFind ('\\');
-    if (endPath>0)
-      pathName = pathName.Left(endPath+1); 
-
-    bool resu = m_pEntity->loadDataFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0), (char*)pathName.GetBuffer(0));
+    bool resu = m_pEntity->loadDataFromXmlFile((char*)fileDlg.GetPathName().GetBuffer(0));
 
     if (!resu)
     {

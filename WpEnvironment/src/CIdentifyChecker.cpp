@@ -198,7 +198,7 @@ bool CIdentifyChecker::NextCheck()
     delete pXmlDoc;
     return true;
   }
-  CBasicEntity* pTargetEntity = CEntityFactory::createEntity(pXmlDoc,"");
+  CBasicEntity* pTargetEntity = CEntityFactory::createEntity(pXmlDoc);
   delete pXmlDoc;
 
   if (pTargetEntity == NULL)

@@ -59,8 +59,8 @@ class DLL_CYBIOCORE_API CEntityFactory
 {
 public:
   static CBasicEntity* createEntity(string name, CGenome* pGenome);
-  static CBasicEntity* createEntity(string fileName, string pathName);
-  static CBasicEntity* createEntity(TiXmlDocument* pXmlDoc, string pathNameForBabies);
+  static CBasicEntity* createEntity(string fileNameWithPath);
+  static CBasicEntity* createEntity(TiXmlDocument* pXmlDoc);
   static CBasicEntity* createCloneEntity(CBasicEntity* pModelEntity);
 
 };

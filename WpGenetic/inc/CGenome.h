@@ -136,8 +136,10 @@ public:
 
   bool saveInXmlFile(string fileNameWithPath);
   bool saveInXmlFile(TiXmlDocument *pXmlDoc);
+  bool saveInXmlNode(TiXmlNode* pNodeEntity);
   bool loadFromXmlFile(string fileNameWithPath);
   bool loadFromXmlFile(TiXmlDocument *pXmlDoc);
+  bool loadFromXmlNode(TiXmlNode* pNodeEntity);
 
   bool setBrainInstinctInGenes(CBrain* pBrain);
   bool setBrainIdentifyInGenes(CBrain* pBrain);

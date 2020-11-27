@@ -574,7 +574,7 @@ namespace clan
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
 
-    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity == NULL)
     {
       log_event("events", "ERROR Biotop add entity with NULL entity ");
@@ -614,7 +614,7 @@ namespace clan
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
 
-    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity == NULL)
     {
       log_event("events", "ERROR Biotop update full entity with NULL entity ID %1", (int)entityId);
@@ -670,7 +670,7 @@ namespace clan
     DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
-    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc, ".\\temp\\");
+    CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity!=NULL)
     {
       log_event("events", "Add entity spawn: Id%1 period=%2 label=%3", spawnerId, period, pNewEntity->getLabel());

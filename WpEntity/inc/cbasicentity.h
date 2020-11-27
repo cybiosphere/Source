@@ -367,11 +367,15 @@ public:
   static bool getDefaultLayerFromXmlFile(TiXmlDocument *pXmlDoc, int& layer);
   static bool getEntityNameFromXmlFile(string fileName, string& name);
   static bool getEntityNameFromXmlFile(TiXmlDocument *pXmlDoc, string& name);
-  bool loadDataFromXmlFile(string fileName, string pathNameForBabies);
-  bool loadDataFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForBabies);
+  bool loadDataFromXmlFile(string fileName);
+  bool loadDataFromXmlFile(TiXmlDocument *pXmlDoc);
   bool loadBrainFromXmlFile(string fileName);
   bool loadBrainFromXmlFile(TiXmlDocument *pXmlDoc);
   
+private:
+  static bool addEntityInXmlFile(TiXmlDocument* pXmlDoc, string newLabel, CBasicEntity* pEntity, bool setAsFetusEntity);
+  bool loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc);
+  static bool getEntityNameFromXmlNode(TiXmlNode* pNodeEntity, string& name);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

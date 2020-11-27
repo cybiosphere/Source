@@ -169,3 +169,9 @@ ClassType_e  CWater::getClass()
 {
   return CLASS_WATER;
 }
+
+void CWater::nextHour()
+{
+  // Decrease slowly content
+  changeWeight(-0.1);
+}

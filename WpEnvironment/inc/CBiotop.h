@@ -274,8 +274,8 @@ public:
   entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord, bool addEvent = true);
   entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
   entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
-  entityIdType createAndAddEntity(string fileName, string pathName, Point_t coord);
-  entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord);
+  entityIdType createAndAddEntity(string fileNameWithPath, string pathName, Point_t coord);
+  entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord);
   entityIdType createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName = "");
 
   bool resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome);

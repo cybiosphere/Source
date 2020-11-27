@@ -354,12 +354,7 @@ void CBrainEditorDlg::OnCheckColorizeDeltaWithOther()
     if (nResp == IDOK)
     {
      CString fileName = fileDlg.GetFileName();
-     CString pathName = fileDlg.GetPathName();
-      int endPath = pathName.ReverseFind('\\');
-      if (endPath > 0)
-        pathName = pathName.Left(endPath + 1);
-
-      m_pReferenceAnimal = CEntityFactory::createEntity(fileName.GetBuffer(0), pathName.GetBuffer(0));
+      m_pReferenceAnimal = CEntityFactory::createEntity(fileName.GetBuffer(0));
     }
   }
   this->UpdateData(false);

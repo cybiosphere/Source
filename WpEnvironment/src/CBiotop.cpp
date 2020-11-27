@@ -262,7 +262,6 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, size_t laye
 entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point_t coord)
 {
   entityIdType newEntityId;
-
   string fileNameWithPath = pathName + fileName;
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileNameWithPath);
   if (!pXmlDoc->LoadFile())
@@ -272,13 +271,13 @@ entityIdType CBiotop::createAndAddEntity(string fileName, string pathName, Point
     delete pXmlDoc;
     return ENTITY_ID_INVALID;
   }
-  newEntityId = createAndAddEntity(pXmlDoc, pathName, coord);
+  newEntityId = createAndAddEntity(pXmlDoc, coord);
   delete pXmlDoc;
   return newEntityId;
 }
 
 
-entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName, Point_t coord)
+entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord)
 {
   int startLayer;
   string name;
@@ -298,7 +297,7 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, string pathName
   CBasicEntity* pEntity = getEntityById(newEntityId);
   if (pEntity!=NULL)
   {
-    pEntity->loadDataFromXmlFile(pXmlDoc, pathName);
+    pEntity->loadDataFromXmlFile(pXmlDoc);
     pEntity->loadBrainFromXmlFile(pXmlDoc);
 
     // Set home position if needed
@@ -2451,7 +2450,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
 //===========================================================================
 bool CBiotop::addEntitySpawner(size_t index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility)
 {
-  CBasicEntity* pEntity = CEntityFactory::createEntity(entityFileName, pathName);
+  CBasicEntity* pEntity = CEntityFactory::createEntity(pathName + entityFileName);
   addEntitySpawner(index, pEntity, intensityRate, avaragePeriod, isProportionalToFertility);
   if (index < m_tRandomEntitiesGeneration.size())
   {

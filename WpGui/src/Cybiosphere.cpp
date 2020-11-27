@@ -719,7 +719,7 @@ void CCybiosphereApp::removeEntityFromBiotop(CBasicEntity* pEntity)
 void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord)
 {
 #ifdef USE_CLAN_CLIENT
-  CBasicEntity* pEntity = CEntityFactory::createEntity(fileName, pathName);
+  CBasicEntity* pEntity = CEntityFactory::createEntity(pathName + fileName);
   if (pEntity != NULL)
   {
     pEntity->jumpToGridCoord(coord, false);
