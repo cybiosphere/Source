@@ -109,6 +109,9 @@ public:
   int GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos);
   DWORD GettPurposeUniqueId (size_t index);
 
+  bool saveInXmlFile(TiXmlDocument* pXmlDoc);
+  bool loadFromXmlFile(TiXmlDocument* pXmlDoc);
+
 //---------------------------------------------------------------------------
 // private methods
 //---------------------------------------------------------------------------

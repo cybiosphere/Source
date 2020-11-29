@@ -151,7 +151,7 @@ bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
     pElement = (TiXmlElement*)pNode;
     pElement->SetAttribute(XML_ATTR_SPECIE, m_specieName);
 
-    // Save childs
+    // Save record data
     for (index = 0; index < m_CurrentNumberRecords; index++)
     {
       TiXmlElement newPopulationNode(XML_NODE_POPULATION);

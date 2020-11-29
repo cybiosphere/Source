@@ -147,6 +147,7 @@ namespace clan
   {
     TiXmlDocument xmlDoc;
     pEntity->saveInXmlFile(&xmlDoc);
+    pEntity->saveBrainPurposeMapInXmlFile(&xmlDoc);
     TiXmlPrinter xmlPrinter;
     xmlDoc.Accept(&xmlPrinter);
     std::string xmlString = xmlPrinter.Str();
@@ -645,6 +646,7 @@ namespace clan
       {
         delete pNewEntity;
       }
+      pNewEntity->loadPurposeMapFromXmlFile(&xmlDoc);
       bFound = true;
     }
     return (bFound);

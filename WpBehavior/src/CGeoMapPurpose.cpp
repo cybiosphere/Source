@@ -256,6 +256,99 @@ void CGeoMapPurpose::NextDay()
   ConvergeAllRecordsToNeutral();
 }
 
+bool CGeoMapPurpose::saveInXmlFile(TiXmlDocument* pXmlDoc)
+{
+  TiXmlElement* pElement;
+  TiXmlNode* pNodeEntity = NULL;
+  TiXmlNode* pNode = NULL;
+  TiXmlNode* pNodeChild = NULL;
+  size_t index;
+
+  pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
+  if (pNodeEntity == NULL)
+  {
+    TiXmlElement newNode(XML_NODE_ENTITY);
+    pNodeEntity = pXmlDoc->InsertEndChild(newNode);
+  }
+
+  // Create new Records node
+  TiXmlElement newNode(XML_NODE_PURPOSE_MAPS);
+  pNode = pNodeEntity->InsertEndChild(newNode);
+  if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+  {
+    // Set attributes
+    pElement = (TiXmlElement*)pNode;
+    pElement->SetAttribute(XML_ATTR_COORD_X, (int)m_GeoCoordStart.x);
+    pElement->SetAttribute(XML_ATTR_COORD_Y, (int)m_GeoCoordStart.y);
+    pElement->SetAttribute(XML_ATTR_SIZE_X, (int)m_GeoMapSize.x);
+    pElement->SetAttribute(XML_ATTR_SIZE_Y, (int)m_GeoMapSize.y);
+
+    // Save record data
+    for (index = 0; index < m_NbPurposeRec; index++)
+    {
+      CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(GettPurposeUniqueId(index));
+      if (pPurpose != NULL)
+      {
+        TiXmlElement newPurposeNode(XML_NODE_PURPOSE);
+        pNodeChild = pNode->InsertEndChild(newPurposeNode);
+        if (pNodeChild != NULL)
+        {
+          pElement = (TiXmlElement*)pNodeChild;
+          pElement->SetAttribute(XML_ATTR_LABEL, pPurpose->GetLabel());
+          pElement->SetAttribute(XML_ATTR_RAW_DATA, buildStringDataFromGeoMapRecord(index));
+        }
+      }
+    }
+  }
+}
+
+bool CGeoMapPurpose::loadFromXmlFile(TiXmlDocument* pXmlDoc)
+{
+  bool recordFound = false;
+  TiXmlElement* pElement;
+  TiXmlNode* pNode = NULL;
+  TiXmlNode* pNodeMaps = NULL;
+  TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
+  if (pNodeEntity != NULL)
+  {
+    pNodeMaps = pNodeEntity->FirstChild(XML_NODE_PURPOSE_MAPS);
+    if ((pNodeMaps != NULL) && (pNodeMaps->Type() == TiXmlNode::TINYXML_ELEMENT))
+    {
+      // clear previous data
+      for (size_t idx = 0; idx < m_NbPurposeRec; idx++)
+      {
+        ClearRecordOnFullMap(idx);
+        m_tPurposeUniqueId[idx] = 0;
+      }
+
+      pElement = (TiXmlElement*)pNodeMaps;
+      int posX, posY;
+      pElement->QueryIntAttribute(XML_ATTR_COORD_X, &posX);
+      pElement->QueryIntAttribute(XML_ATTR_COORD_Y, &posY);
+      m_GeoCoordStart.x = posX;
+      m_GeoCoordStart.y = posY;
+
+      size_t recordIdx = 0;
+      TiXmlNode* pNodeRecord = pNodeMaps->FirstChild(XML_NODE_PURPOSE);
+      while (pNodeRecord != NULL)
+      {
+        pElement = (TiXmlElement*)pNodeRecord;
+        string purposeLabel, rawData;
+        pElement->QueryStringAttribute(XML_ATTR_LABEL, &purposeLabel);
+        CPurpose* pPurpose = m_pBrain->GetPurposeByLabel(purposeLabel);
+        if ((pPurpose != NULL) && (pElement->QueryStringAttribute(XML_ATTR_RAW_DATA, &rawData) != TIXML_NO_ATTRIBUTE))
+        {
+          m_tPurposeUniqueId[recordIdx] = pPurpose->GetUniqueId();
+          buildGeoMapRecordFromStringData(recordIdx, rawData);
+          recordIdx++;
+        }
+        pNodeRecord = pNodeRecord->NextSibling(XML_NODE_PURPOSE);
+      }
+    }
+  }
+  return true;
+}
+
 //===========================================================================
 // private methods
 //===========================================================================
@@ -294,12 +387,10 @@ int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 {
   // If pose out of teritory map, give negative weight -100
   int weight = -100;
-
   if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y))
   {
     weight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
   }
-
   return weight;
 }
 
@@ -308,7 +399,6 @@ bool CGeoMapPurpose::MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t g
 {
   bool resu = false;
   short newWeight;
-
   if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
   {
     // Allow negative values to avoid staying static in a bad place
@@ -322,6 +412,5 @@ bool CGeoMapPurpose::MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t g
    m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex] = newWeight;
     resu = true;
   }
-  
   return resu;
 }

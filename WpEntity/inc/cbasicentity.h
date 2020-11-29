@@ -361,6 +361,7 @@ private:
 public:
   bool saveInXmlFile(string fileName, string newLabel="");
   bool saveInXmlFile(TiXmlDocument *pXmlDoc, string newLabel="");
+  bool saveBrainPurposeMapInXmlFile(TiXmlDocument* pXmlDoc);
   static bool getGenomeFromXmlFile(string fileName, CGenome& genome);
   static bool getGenomeFromXmlFile(TiXmlDocument *pXmlDoc, CGenome& genome);
   static bool getDefaultLayerFromXmlFile(string fileName, int& layer);
@@ -371,7 +372,8 @@ public:
   bool loadDataFromXmlFile(TiXmlDocument *pXmlDoc);
   bool loadBrainFromXmlFile(string fileName);
   bool loadBrainFromXmlFile(TiXmlDocument *pXmlDoc);
-  
+  bool loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc);
+
 private:
   static bool addEntityInXmlFile(TiXmlDocument* pXmlDoc, string newLabel, CBasicEntity* pEntity, bool setAsFetusEntity);
   bool loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc);

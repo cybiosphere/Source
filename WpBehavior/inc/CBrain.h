@@ -50,7 +50,6 @@ typedef size_t choiceIndType;
 #include "CGenome.h"
 #include "CybioXmlDef.h"
 
-
 //===========================================================================
 // Definitions            
 //===========================================================================
@@ -251,6 +250,7 @@ public:
   CReaction* GetReactionByUniqueId(DWORD uniqueId);
   CPurpose*  GetPurposeByIndex(size_t index);
   CPurpose*  GetPurposeByUniqueId(DWORD uniqueId);
+  CPurpose*  GetPurposeByLabel(string label);
   CPurpose*  GetCurrentPurpose(void);
   size_t GetCurrentPurposeIndex(void);
   CPurpose*  GetPurposeByTriggerSensor(DWORD sensorUniqueId, size_t sensorSubCaptorIndex);
@@ -352,9 +352,10 @@ protected:
 // Brain special behaviors
 //---------------------------------------------------------------------------
 public:
+  bool SetGeoMapSize(size_t geoMapSize);
+  void CreateGeoMapArroudCurrentPosition();
   void SetBabyStayHome(bool stay);
   bool IsBabyStayHome();
-  bool SetGeoMapSize(size_t geoMapSize);
   bool SetHomePurposePositionInGeoMap();
 
 };

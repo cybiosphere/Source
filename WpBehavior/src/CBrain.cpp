@@ -163,7 +163,7 @@ void CBrain::NextSecond()
   if (m_pCurrentPurpose!=NULL)
   {
     if (m_pGeoMap == NULL)
-      m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), m_GeoMapSize, 6);
+      CreateGeoMapArroudCurrentPosition();
 
     purposeEnd = m_pCurrentPurpose->CheckSucces();
     if (purposeEnd)
@@ -391,6 +391,17 @@ CPurpose* CBrain::GetPurposeByUniqueId(DWORD uniqueId)
   for (size_t i=0; i<m_tPurposes.size(); i++) 
   {
     if (m_tPurposes[i]->GetUniqueId() == uniqueId)
+      pPurp = m_tPurposes[i];
+  }
+  return (pPurp);
+}
+
+CPurpose* CBrain::GetPurposeByLabel(string label)
+{
+  CPurpose* pPurp = NULL;
+  for (size_t i = 0; i < m_tPurposes.size(); i++)
+  {
+    if (m_tPurposes[i]->GetLabel() == label)
       pPurp = m_tPurposes[i];
   }
   return (pPurp);
@@ -1939,6 +1950,14 @@ bool CBrain::SetGeoMapSize(size_t geoMapSize)
   return true;
 }
 
+void CBrain::CreateGeoMapArroudCurrentPosition()
+{
+  if ((m_pGeoMap == NULL) && (m_pEntity != NULL) && (m_pEntity->getBiotop() != NULL))
+  {
+    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), m_pEntity->getBiotop()->getDimension(), m_GeoMapSize, 6);
+  }
+}
+
 bool CBrain::SetHomePurposePositionInGeoMap()
 {
   CPurpose* pPurpose = NULL;
@@ -1947,11 +1966,13 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     return false;
 
   // Delete memory map if exist
-  if(m_pGeoMap==NULL)
+  if (m_pGeoMap == NULL)
+  {
     delete m_pGeoMap;
-
+    m_pGeoMap = NULL;
+  }
   // Create new geo map centered on baby
-  m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), GetEntity()->getBiotop()->getDimension(), m_GeoMapSize, 6);
+  CreateGeoMapArroudCurrentPosition();
 
   // Memorize home position
   if (m_pGeoMap!=NULL)

@@ -38,6 +38,7 @@ distribution.
 #include "CPhysicalWelfare.h"
 #include "CBiotop.h" 
 #include "CEntityFactory.h"
+#include "CGeoMapPurpose.h"
 
 //===========================================================================
 // Definitions            
@@ -2551,6 +2552,16 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
 }
 
 
+bool CBasicEntity::saveBrainPurposeMapInXmlFile(TiXmlDocument* pXmlDoc)
+{
+  if ((m_pBrain != NULL) && (m_pBrain->GetGeographicMap() != NULL))
+  {
+    return m_pBrain->GetGeographicMap()->saveInXmlFile(pXmlDoc);
+  }
+  return false;
+}
+
+
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::getDefaultLayerFromXmlFile
 //  
@@ -2922,11 +2933,19 @@ bool CBasicEntity::loadBrainFromXmlFile(TiXmlDocument *pXmlDoc)
 {
   if (m_pBrain == NULL)
     return false;
-
   bool resu = m_pBrain->loadFromTiXmlFile(pXmlDoc);
-
   return (resu);
 }
+
+bool CBasicEntity::loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc)
+{
+  if (m_pBrain == NULL)
+    return false;
+  m_pBrain->CreateGeoMapArroudCurrentPosition();
+  bool resu = m_pBrain->GetGeographicMap()->loadFromXmlFile(pXmlDoc);
+  return (resu);
+}
+
 
 //===========================================================================
 // Get / Set for attributes
