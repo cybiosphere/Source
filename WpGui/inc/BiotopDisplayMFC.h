@@ -84,6 +84,7 @@ public:
 protected:
   void RedrawSceneAerialView();
   void RedrawSceneSatelliteView();
+  void InvalidateRectForOneEntity(CBasicEntity* pEntity);
 };
 
 #endif // !defined(AFX_BIOTOPDISPLAYMFC_INCLUDED_)

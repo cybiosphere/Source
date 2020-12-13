@@ -45,6 +45,7 @@ distribution.
 // Includes 
 //===========================================================================
 #include <chrono>
+#include <bitset>
 #include "Definitions.h" 
 #include "CBasicEntity.h" 
 #include "CWater.h"
@@ -143,18 +144,20 @@ typedef enum
 typedef enum
 {
   BIOTOP_EVENT_ENTITY_ADDED = 0,
-  BIOTOP_EVENT_ENTITY_MOVED,
-  BIOTOP_EVENT_ENTITY_CHANGED,
   BIOTOP_EVENT_ENTITY_MODIFIED,
   BIOTOP_EVENT_ENTITY_REMOVED,
-} BiotopEventType_e;
+  BIOTOP_EVENT_ENTITY_MOVED,
+  BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE,
+  BIOTOP_EVENT_ENTITY_BEHAVIOR_CHANGE,
+} EntityEventList_e;
 
 typedef struct
 {
-  BiotopEventType_e eventType;
-  entityIdType      entityId;
+  std::bitset<8>    eventList;
   CBasicEntity*     pEntity;
 } BiotopEvent_t;
+
+using BiotopEventPair = std::pair<entityIdType, BiotopEvent_t>;
 
 typedef enum
 {
@@ -253,7 +256,7 @@ private:
   std::vector<CMeasure*> m_tMeasures;
   std::vector <CGeoMapPopulation*> m_tGeoMapSpecies;
   std::vector<CGenericParam*> m_tParam;
-  std::vector<BiotopEvent_t> m_tEvents;
+  std::map<entityIdType, BiotopEvent_t> m_tEvents;
   std::vector<BiotopRandomEntitiyGeneration_t> m_tRandomEntitiesGeneration{};
 
 //===========================================================================
@@ -271,7 +274,7 @@ public:
 // Entities management
 //---------------------------------------------------------------------------
 public:
-  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord, bool addEvent = true);
+  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
   entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
   entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
   entityIdType createAndAddEntity(string fileNameWithPath, string pathName, Point_t coord);
@@ -372,9 +375,8 @@ public:
 // Event management
 //---------------------------------------------------------------------------
 public:
-   bool          addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity);
-   size_t        getNbOfBiotopEvents(void);
-   BiotopEvent_t getBiotopEvent(size_t index);
+   bool          addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
+   const std::map<entityIdType, BiotopEvent_t>& getBiotopEventMap();
    bool          resetBiotopEvents();
 
 //---------------------------------------------------------------------------

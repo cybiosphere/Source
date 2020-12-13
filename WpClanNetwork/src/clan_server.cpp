@@ -39,6 +39,7 @@ m_bManualMode(false)
   game_events.func_event(labelEventAddCloneEntity) = clan::bind_member(this, &Server::on_event_biotop_addcloneentity);
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Server::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Server::on_event_biotop_updateentityposition);
+  game_events.func_event(labelEventUpdateEntityPhy) = clan::bind_member(this, &Server::on_event_biotop_updateentityphysic);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Server::on_event_biotop_removeentity);
   game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Server::on_event_biotop_changespeed);
   game_events.func_event(labelEventForceEntityAction) = clan::bind_member(this, &Server::on_event_biotop_forceentityaction);
@@ -64,28 +65,30 @@ void Server::processBiotopEvents()
 	// Update clients with biotop evolution
 	if (nb_users_connected > 0)
 	{
-    // Update all entities
-    BiotopEvent_t bioEvent;
-    for (int i = 0; i<m_pBiotop->getNbOfBiotopEvents(); i++)
+    for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
     {
-      bioEvent = m_pBiotop->getBiotopEvent(i);
-      switch (bioEvent.eventType)
+      BiotopEvent_t& bioEvent{ eventPair.second };
+      entityIdType entityId = eventPair.first;
+
+      if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
       {
-      //case BIOTOP_EVENT_ENTITY_MOVED:  // Move is reserved for studio 
-      case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
-        send_event_update_entity_position(bioEvent.pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_MODIFIED:
+        send_event_remove_entity(bioEvent.pEntity, entityId);
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
+      {
         send_event_update_entity_data(bioEvent.pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_ADDED:
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+      {
         send_event_add_entity(bioEvent.pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_REMOVED:
-        send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
-        break;
-      default:
-        break;
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
+      {
+        send_event_update_entity_physic(bioEvent.pEntity);
+      }
+      else
+      {
+        send_event_update_entity_position(bioEvent.pEntity);
       }
     }
   }
@@ -454,6 +457,19 @@ void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerU
   }
 }
 
+void Server::on_event_biotop_updateentityphysic(const NetGameEvent& e, ServerUser* user)
+{
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
+  if (pEntity && (m_tCoprocessors.size() > 0))
+  {
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.update_entity_control(pEntity, false);
+    }
+  }
+}
+
+
 void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* user)
 {
   event_manager::handleEventRemoveEntity(e, m_pBiotop);
@@ -603,17 +619,35 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
 
 void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)
 {
-  if (pEntity == NULL)
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-  	log_event("Events  ", "Update entity position: NULL");
+  	log_event("Events  ", "Update entity position: NULL or removed");
     return;
   }
-  if (pEntity->isToBeRemoved())
+
+  NetGameEvent bioUpdateEntityPosEvent { event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPos) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioUpdateEntityPosEvent);
+  else
+    user->send_event(bioUpdateEntityPosEvent);
+
+  if (pEntity && (m_tCoprocessors.size() > 0))
   {
-    log_event("Events  ", "Update entity position: removed");
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.update_entity_control(pEntity, false);
+    }
+  }
+}
+
+void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* user)
+{
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
+  {
+    log_event("Events  ", "Update entity physic: NULL or removed");
     return;
   }
-  NetGameEvent bioUpdateEntityPosEvent { event_manager::buildEventUpdateEntityPos(pEntity) };
+  NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPhy) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioUpdateEntityPosEvent);
   else

@@ -2381,7 +2381,9 @@ void CAnimal::nextSecond()
 
     // if reaction change, set HasChanged flag
     if (m_pBrain->GetCurrentReactionIndex() != prevReactIndex)
-      forceHasChanged();
+    {
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_BEHAVIOR_CHANGE, this);
+    }
 
     // Speed management step2 (new speed)
     currentSpeed = getCurrentSpeed();
@@ -2956,6 +2958,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
       {
         m_pBrain->HistorizeDecision(myChoice);
         myFeedback = m_pBrain->ComputeFeedback(myChoice, REACTION_INTENSITY_MEDIUM);  // FRED TBD: user define intensity
+        m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_BEHAVIOR_CHANGE, this);
         //TRACE("Force Choice:%d  Auto choice:%d Feeback:%f\n",myChoice,autoChoice,myFeedback);
       }
       else

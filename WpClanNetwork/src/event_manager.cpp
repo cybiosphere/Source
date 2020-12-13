@@ -173,9 +173,9 @@ namespace clan
      }
    }
 
-  NetGameEvent event_manager::buildEventUpdateEntityPos(CBasicEntity* pEntity)
+  NetGameEvent event_manager::buildEventUpdateEntityPos(CBasicEntity* pEntity, std::string eventLabel)
   {
-    NetGameEvent newEvent(labelEventUpdateEntityPos);
+    NetGameEvent newEvent(eventLabel);
     newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     newEvent.add_argument(pEntity->getStatus());
@@ -184,6 +184,12 @@ namespace clan
     newEvent.add_argument((int)pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument((int)pEntity->isImmortal());
+    newEvent.add_argument((int)pEntity->getColorRgb());
+    newEvent.add_argument((int)pEntity->getForm());
+    newEvent.add_argument((int)pEntity->getTexture());
+    newEvent.add_argument((int)pEntity->getOdor());
+    newEvent.add_argument((int)pEntity->getPheromone());
+    newEvent.add_argument((int)pEntity->getAttributePresenceMask());
     //log_event("events", "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
     // Add parameters
     for (int i = 0; i < pEntity->getNumParameter(); i++)
@@ -196,6 +202,7 @@ namespace clan
       CAnimal* pAnimal = (CAnimal*)pEntity;
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentReactionIndex());
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentPurposeIndex());
+      newEvent.add_argument((int)pEntity->getCurrentLifeStage()->getStageType());
     }
     return (std::move(newEvent));
   }
@@ -207,26 +214,31 @@ namespace clan
       log_event("events", "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
       return false;
     }
-
     int entityId = e.get_argument(0);
     std::string  entityLabel = e.get_argument(1);
     int status = e.get_argument(2);
     Point_t position;
     int positionx = e.get_argument(3);
     int positiony = e.get_argument(4);
+    position.x = positionx;
+    position.y = positiony;
     int layer = e.get_argument(5);
     int direction = e.get_argument(6);
     int isImmortal = e.get_argument(7);
-    position.x = positionx;
-    position.y = positiony;
+    int color = e.get_argument(8);
+    int form = e.get_argument(9);
+    int texture = e.get_argument(10);
+    int odor = e.get_argument(11);
+    int pheromon = e.get_argument(12);
+    int AttributeMask = e.get_argument(13);
+    int index = 14;
 
     // Check if entity exists
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
     // If entity exist, update only if remoteControlled or manual mode
     if ((pEntity != NULL) && (forceEntityUpdate || pEntity->isRemoteControlled()))
     {
-      float paramValue = 0;
-      int index = 8;
+      float paramValue = 0;    
       //log_event("events", "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
       if (pEntity->getLabel() != entityLabel)
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
@@ -234,6 +246,12 @@ namespace clan
       pEntity->jumpToStepCoord(position, true, layer);
       pEntity->setStepDirection(direction);
       pEntity->setImmortal(isImmortal);
+      pEntity->setColor((COLORREF)color);
+      pEntity->setForm((FormType_e)form);
+      pEntity->setTexture((TextureType_e)texture);
+      pEntity->setOdor((OdorType_e)odor);
+      pEntity->setPheromone((PheromoneType_e)pheromon);
+      pEntity->setAttributePresenceMask((DWORD)AttributeMask); 
       // Update parameters
       for (int i = 0; i < pEntity->getNumParameter(); i++)
       {
@@ -249,8 +267,10 @@ namespace clan
         index++;
         int purposeIndex = e.get_argument(index);
         index++;
+        int lifeStage = e.get_argument(index);
         pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
+        pAnimal->setCurrentLifeStages((LifeStage_e)lifeStage);
       }
     }
     return pEntity;

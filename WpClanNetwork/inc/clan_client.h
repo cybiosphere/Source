@@ -36,6 +36,7 @@ public:
   void send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions);
   void send_event_update_entity_data(CBasicEntity* pEntity);
   void send_event_update_entity_position(CBasicEntity* pEntity);
+  void send_event_update_entity_physic(CBasicEntity* pEntity);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId);
   void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode);
   void send_event_force_entity_action(const entityIdType entityId, const int actionIndex);
@@ -61,6 +62,7 @@ private:
   void on_event_biotop_addcloneentity(const NetGameEvent& e);
 	void on_event_biotop_updatefullentity(const NetGameEvent &e);
 	void on_event_biotop_updateentityposition(const NetGameEvent &e);
+  void on_event_biotop_updateentityphysic(const NetGameEvent& e);
   void on_event_biotop_removeentity(const NetGameEvent &e);
   void on_event_biotop_createmeasure(const NetGameEvent& e);
   void on_event_biotop_addEntitySpawner(const NetGameEvent& e);

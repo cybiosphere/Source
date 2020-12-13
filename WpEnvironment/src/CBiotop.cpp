@@ -124,7 +124,7 @@ CBiotop::~CBiotop()
 // Entities management
 //===========================================================================
 
-entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer, bool addEvent)
+entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
 {
   if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
     return (ENTITY_ID_INVALID);
@@ -162,12 +162,6 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t lay
   if (pEntity->getBrain() != NULL)
   {
     pEntity->getBrain()->SetHomePurposePositionInGeoMap();
-  }
-
-  pEntity->forceHasNotChanged();
-  if (addEvent)
-  {
-    addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
   }
 
   return (m_IdLastEntity);
@@ -225,9 +219,6 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
   // Update m_IdLastEntity
   if (m_IdLastEntity <= idEntity)
     m_IdLastEntity = idEntity + 1;
-
-  pEntity->forceHasNotChanged();
-  addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, pEntity);
 
   return idEntity;
 }
@@ -389,6 +380,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
 
   // Enter 1st day and change LifeStage
   pNewEntity->nextDay();
+  addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, pNewEntity);
 
   return (true);
 }
@@ -409,12 +401,11 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   // Destroy Old entity
   pOldEntity->autoRemove(false);
 
-  addEntity(pNewEntity, oldCoord, oldLayer, false);
+  addEntity(pNewEntity, oldCoord, oldLayer);
   pNewEntity->setId(oldId);
 
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - Entity full update : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
-
   addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, pNewEntity);
 
   return true;
@@ -1461,7 +1452,6 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
   if (pEntity != NULL)
   {
     resu = pEntity->forceNextAction(myChoice);
-    pEntity->updateEntityChangedBiotopEvent();
   }
 
   // Loop on all other entities for basic action  
@@ -1599,7 +1589,6 @@ void CBiotop::nextHourForAllEntities(void)
       else
       {
         pEntity->nextHour();
-        pEntity->updateEntityChangedBiotopEvent();
       }
     }
   }
@@ -1616,7 +1605,6 @@ void CBiotop::nextSecondForAllAnimals(void)
     if (pEntity != NULL)
     {
       pEntity->nextSecond();
-      pEntity->updateEntityChangedBiotopEvent();
     }
   }
   logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
@@ -2076,39 +2064,43 @@ CGeoMapPopulation* CBiotop::getGeoMapSpecieByIndex(size_t index)
 //===========================================================================
 // Event management
 //===========================================================================
-bool CBiotop::addBiotopEvent(BiotopEventType_e biotopEvent, CBasicEntity* pEntity)
+bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity)
 {
-  BiotopEvent_t newEvent;
-  newEvent.eventType = biotopEvent;
-  newEvent.pEntity = pEntity;
-  newEvent.entityId = pEntity->getId();
-  m_tEvents.push_back(std::move(newEvent));
+  if ((pEntity == NULL) || (pEntity->getId() == ENTITY_ID_INVALID))
+    return false;
 
-  // Avoid overload by cleaning oldest events
-  if (m_tEvents.size() > 100000)
+  auto search = m_tEvents.find(pEntity->getId());
+  if (search != m_tEvents.end())
   {
-    m_tEvents.erase(m_tEvents.begin(), m_tEvents.begin() + 1000);
+    search->second.eventList.set(entityEventList);
+    search->second.pEntity = pEntity;
   }
+  else
+  {
+    BiotopEvent_t newEvent;
+    newEvent.eventList.set(entityEventList);
+    newEvent.pEntity = pEntity;
+    m_tEvents[pEntity->getId()] = std::move(newEvent);
 
+    // Avoid overload by cleaning oldest events
+    if (m_tEvents.size() > 100000)
+    {
+      m_tEvents.erase(m_tEvents.begin());
+    }
+  }
   return true;
 }
 
 bool CBiotop::resetBiotopEvents()
 {
-  m_tEvents.resize(0);
+  m_tEvents.clear();
   return true;
 }
 
-size_t CBiotop::getNbOfBiotopEvents(void)
+const std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMap()
 {
-  return m_tEvents.size();
+  return m_tEvents;
 }
-
-BiotopEvent_t CBiotop::getBiotopEvent(size_t index)
-{
-  return m_tEvents[index];
-}
-
 
 //===========================================================================
 // Save/Load in file

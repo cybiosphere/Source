@@ -49,6 +49,7 @@ distribution.
 #include <string>
 #include <vector>
 #include <array>
+#include <map>
 #include <cassert>
 #include <fstream>
 #include <limits>

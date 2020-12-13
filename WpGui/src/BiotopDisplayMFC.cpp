@@ -347,41 +347,48 @@ void CBiotopDisplayMFC::RefreshNextSecond()
   if (!m_bAppIsActive)
     return;
 
-  int visibleCoordX = m_pView->GetScrollPos(SB_HORZ);
-  int visibleCoordY = m_pView->GetScrollPos(SB_VERT);
-  
-  int i;
-  int coordX,coordY;
-  CRect refreshRect;
-
   BiotopEvent_t bioEvent;
-  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
   {
-    bioEvent = m_pBiotop->getBiotopEvent(i);
-    if (bioEvent.pEntity && ((bioEvent.eventType == BIOTOP_EVENT_ENTITY_MOVED) || (bioEvent.eventType == BIOTOP_EVENT_ENTITY_ADDED)))
+    BiotopEvent_t& bioEvent{ eventPair.second };
+    entityIdType entityId = eventPair.first;
+    if ((bioEvent.pEntity) && ((bioEvent.eventList.count() > 1) || (!bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_BEHAVIOR_CHANGE))))
     {
       CBasicEntity* pEntity = bioEvent.pEntity;
-      Point_t prevCoord = pEntity->getAndUpdateGuiGridCoord();
-
-      if ( (prevCoord.x != pEntity->getGridCoord().x) || (prevCoord.y != pEntity->getGridCoord().y) )
-      {
-        coordX = m_nBitmapPixSizeX * prevCoord.x - visibleCoordX;
-        coordY =  m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 2) - visibleCoordY;
-        refreshRect.left   = coordX;
-        refreshRect.top    = coordY;
-        refreshRect.right  = coordX + m_nBitmapPixSizeX;
-        refreshRect.bottom = coordY + m_nBitmapPixSizeY;  
-        m_pView->InvalidateRect(refreshRect,true);
-      }
-      coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x - visibleCoordX;
-      coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 2) - visibleCoordY;
-      refreshRect.left = coordX;
-      refreshRect.top = coordY;
-      refreshRect.right = coordX + m_nBitmapPixSizeX;
-      refreshRect.bottom = coordY + m_nBitmapPixSizeY;
-      m_pView->InvalidateRect(refreshRect, true);
+      InvalidateRectForOneEntity(pEntity);
     }
   }
+  InvalidateRectForOneEntity(m_pBiotop->getEntityById(m_nFocusedEntityId));
+}
+
+void CBiotopDisplayMFC::InvalidateRectForOneEntity(CBasicEntity* pEntity)
+{
+  if (pEntity == NULL)
+    return;
+
+  int visibleCoordX = m_pView->GetScrollPos(SB_HORZ);
+  int visibleCoordY = m_pView->GetScrollPos(SB_VERT);
+  int coordX, coordY;
+  CRect refreshRect;
+  Point_t prevCoord = pEntity->getAndUpdateGuiGridCoord();
+
+  if ((prevCoord.x != pEntity->getGridCoord().x) || (prevCoord.y != pEntity->getGridCoord().y))
+  {
+    coordX = m_nBitmapPixSizeX * prevCoord.x - visibleCoordX;
+    coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (prevCoord.y + 2) - visibleCoordY;
+    refreshRect.left = coordX;
+    refreshRect.top = coordY;
+    refreshRect.right = coordX + m_nBitmapPixSizeX;
+    refreshRect.bottom = coordY + m_nBitmapPixSizeY;
+    m_pView->InvalidateRect(refreshRect, true);
+  }
+  coordX = m_nBitmapPixSizeX * pEntity->getGridCoord().x - visibleCoordX;
+  coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (pEntity->getGridCoord().y + 2) - visibleCoordY;
+  refreshRect.left = coordX;
+  refreshRect.top = coordY;
+  refreshRect.right = coordX + m_nBitmapPixSizeX;
+  refreshRect.bottom = coordY + m_nBitmapPixSizeY;
+  m_pView->InvalidateRect(refreshRect, true);
 }
 
 /*void CBiotopDisplayMFC::RefreshScene()

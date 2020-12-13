@@ -353,13 +353,9 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
       {
         if (m_pFocusedEntity != pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity)
         {
-          if (m_pFocusedEntity != NULL)        
-            m_pFocusedEntity->forceHasChanged();
-
           m_pFocusedEntity = pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity;
           if (m_pFocusedEntity != NULL)        
           {
-            m_pFocusedEntity->forceHasChanged();
             m_pBioDisplay->SetFocusedEntityId (m_pFocusedEntity->getId());
           }
         }
@@ -395,9 +391,6 @@ bool CBiotopView::SetSelectedEntity(CBasicEntity* pEntity)
   m_pBioDisplay3D->SetFocusedEntityId(ENTITY_ID_INVALID);
   m_pBioDisplay2D->SetFocusedEntityId(ENTITY_ID_INVALID);
   m_pBioDisplay2DSat->SetFocusedEntityId(ENTITY_ID_INVALID);
-
-  if (m_pFocusedEntity != NULL)        
-    m_pFocusedEntity->forceHasChanged();
   m_pFocusedEntity = NULL;
 
   if (pEntity != NULL)

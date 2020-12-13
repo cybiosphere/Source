@@ -616,7 +616,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setGrowthSpeedToNominalRatio(200);
       setAttackFactorToNominalRatio(20);
       setPheromone(PHEROMONE_BABY);
-      forceHasChanged();
       break;
     }
   case STAGE_2:
@@ -628,7 +627,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setAttackFactorToNominalRatio(80);
       setPheromone(PHEROMONE_NONE);
       m_pBrain->ResetReactionsFailureSuccessFactor();
-      forceHasChanged();
       break;
     }
   case STAGE_3:
@@ -640,7 +638,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setAttackFactorToNominalRatio(100);
       if (getSex() == SEX_MALE)
         setPheromone(PHEROMONE_SEXUAL_MALE);
-      forceHasChanged();
       break;
     }
   case STAGE_4:
@@ -652,7 +649,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setAttackFactorToNominalRatio(100);
       setPheromone(PHEROMONE_NONE);
       removeAttribute(PHY_ATTRIBUTE_UDDER);
-      forceHasChanged();
       break;
     }
   case STAGE_5:
@@ -665,7 +661,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setPheromone(PHEROMONE_NONE);
       removeAttribute(PHY_ATTRIBUTE_UDDER);
       setOdor(ODOR_REPULSIVE);
-      forceHasChanged();
       break;
     }
   case STAGE_6:
@@ -674,7 +669,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setOdor(ODOR_NAUSEOUS);
       setPheromone(PHEROMONE_NONE);
       setForm(FORM_CARRION); // Change form (should be skeleton)
-      forceHasChanged();
       break;
     }
   default:
@@ -682,7 +676,6 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       break;
     }
   }
-  
 }
 
 //===========================================================================

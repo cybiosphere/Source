@@ -154,7 +154,6 @@ private:
 
   int       m_HourCounter;    // internal Day Counter
   bool      m_bHasMoved;      // Indicates if coord has changed. Must be clear after use
-  bool      m_bHasChanged;    // Indicates if display has to be refresh. Must be clear after use
 
 //---------------------------------------------------------------------------
 // Caracteristics
@@ -444,9 +443,6 @@ public:
   CBrain*         getBrain();
   bool            checkIfhasMoved();
   bool            checkIfhasMovedAndClear();
-  void            updateEntityChangedBiotopEvent();
-  void            forceHasChanged();
-  void            forceHasNotChanged();
   double          getProtection();
   void            setProtection(double newRate);
   ConsumeType_e   getConsumeClass();
@@ -465,11 +461,11 @@ public:
   void                removeAttribute(PhyAttributeType_e delAttrib);
   PhyAttributeType_e  getMainPhyAttribute();
   DWORD               getAttributePresenceMask();
+  void                setAttributePresenceMask(DWORD mask);
   CPhysicalWelfare*   getpPhysicalWelfare();
   string              getSpecieName();
   entitySignatureType getEntitySignature();
   
-      
   virtual int    getCurrentSpeed();
   int            getRelativeSpeed(CBasicEntity* pReference);
 
@@ -488,7 +484,6 @@ public:
   static string  getReproStrName(ReproType_e type);
   static Point_t getGridCoordFromStepCoord(Point_t stepCoord);
   static size_t getGridPosFromStepPos(size_t stepCoord);
-
 };
 
 #endif // !defined(CBASICENTITY_INCLUDED_)

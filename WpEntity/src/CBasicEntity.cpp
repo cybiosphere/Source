@@ -180,7 +180,6 @@ CBasicEntity::CBasicEntity()
   m_tGestationChilds.resize(0);
   m_tLifeStage.resize(0);
   m_IsAttached  = false;
-  m_bHasChanged = false;
   m_bHasMoved   = true;
   m_indCurrentLifeStage = invalidIndex;
   m_HourCounter = 0;
@@ -1462,6 +1461,7 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
     m_IsAttached = true;
     m_pBiotop->updateGridEntity(this);
     getAndUpdateGuiGridCoord();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
   }
 }
 
@@ -1797,6 +1797,7 @@ void CBasicEntity::nextDay(bool forceGrowth)
         m_indCurrentLifeStage++;
         pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
         enterInNewLifeStage(pLifeStage);
+        m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
       }      
     }
   }
@@ -1931,6 +1932,9 @@ void CBasicEntity::deleteAllLifeStages()
 //---------------------------------------------------------------------------
 bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage) 
 {
+  if (newStage == m_tLifeStage[m_indCurrentLifeStage]->getStageType())
+    return true;
+
   bool resu = false;
   for (size_t i=0; i<m_tLifeStage.size(); i++)
   {
@@ -1939,7 +1943,7 @@ bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage)
       m_indCurrentLifeStage = i;
       CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
       enterInNewLifeStage(pLifeStage);
-      m_bHasChanged = true;
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
       resu = true;
     }
   }
@@ -2080,7 +2084,6 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
     m_PrevStepCoord.y = invalidCoord;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
-    m_bHasChanged = true;
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_PrevLayer = invalidCoord;
@@ -2099,7 +2102,6 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
     m_PrevStepCoord = m_StepCoord;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
-    m_bHasChanged = true;
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_PrevLayer = m_Layer; 
@@ -2134,7 +2136,6 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_
 {
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
-  m_bHasChanged = true;
 
   // Update grid coord if needed
   Point_t newGridCoord;
@@ -2320,14 +2321,11 @@ void CBasicEntity::autoKill()
   {
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_Status = STATUS_DEAD;
-    m_bHasChanged = true;
-
+    setStatus(STATUS_DEAD);
     if (!checkHabitat())
     {
       autoRemove();
     }
-
     setCurrentLifeStages(STAGE_5);
   }
 }
@@ -3088,7 +3086,7 @@ void CBasicEntity::setDirection(int direction)
     m_Direction = newDirection; // avoid invalid direction
     m_PrevStepDirection = m_StepDirection;
     m_StepDirection = 45 * m_Direction;
-    m_bHasChanged = true;
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
   }
 }
 
@@ -3101,7 +3099,6 @@ void  CBasicEntity::setStepDirection(int stepDirection, bool addMoveEvent)
 {
   m_PrevStepDirection = m_StepDirection;
   m_StepDirection = stepDirection % 360;
-  m_bHasChanged = true;
   int newDirection = ((m_StepDirection + 22) / 45) % 8;
   if (m_Direction != newDirection)
   {
@@ -3135,10 +3132,13 @@ COLORREF CBasicEntity::getColorRgb()
 
 void CBasicEntity::setColor(COLORREF newColor)
 {
-  m_ColorRgb = newColor;
-  m_ColorCaracter = convertRgbColorInCaracter(newColor);
-  m_bHasChanged = true;
-  computeEntitySignature();
+  if (newColor != m_ColorRgb)
+  {
+    m_ColorRgb = newColor;
+    m_ColorCaracter = convertRgbColorInCaracter(newColor);
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+    computeEntitySignature();
+  }
 }
 
 FormType_e CBasicEntity::getForm()
@@ -3148,9 +3148,12 @@ FormType_e CBasicEntity::getForm()
 
 void CBasicEntity::setForm(FormType_e newForm)
 {
-  m_Silhouette = newForm;
-  m_bHasChanged = true;
-  computeEntitySignature();
+  if (newForm != m_Silhouette)
+  {
+    m_Silhouette = newForm;
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+    computeEntitySignature();
+  }
 }
  
 TextureType_e CBasicEntity::getTexture()
@@ -3160,9 +3163,12 @@ TextureType_e CBasicEntity::getTexture()
 
 void CBasicEntity::setTexture(TextureType_e newText)
 {
-  m_Texture = newText;
-  m_bHasChanged = true;
-  computeEntitySignature();
+  if (newText != m_Texture)
+  {
+    m_Texture = newText;
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+    computeEntitySignature();
+  }
 }
 
 string CBasicEntity::getLabel() 
@@ -3276,8 +3282,12 @@ TasteType_e CBasicEntity::getTaste()
 
 void CBasicEntity::setOdor(OdorType_e newOdor)
 {
-  m_Odor = newOdor;
-  computeEntitySignature();
+  if (newOdor != m_Odor)
+  {
+    m_Odor = newOdor;
+    computeEntitySignature();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+  }
 }
 
 PheromoneType_e CBasicEntity::getPheromone()
@@ -3287,8 +3297,12 @@ PheromoneType_e CBasicEntity::getPheromone()
 
 void CBasicEntity::setPheromone(PheromoneType_e pheroType)
 {
-  m_Pheromone = pheroType;
-  computeEntitySignature();
+  if (pheroType != m_Pheromone)
+  {
+    m_Pheromone = pheroType;
+    computeEntitySignature();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+  }
 }
 
 int CBasicEntity::getGeneration() 
@@ -3379,25 +3393,6 @@ bool CBasicEntity::checkIfhasMovedAndClear()
   bool resu = m_bHasMoved;
   m_bHasMoved = false;
   return (resu);
-}
-
-void CBasicEntity::updateEntityChangedBiotopEvent()
-{
-  if (m_bHasChanged)
-  {
-    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_CHANGED, this);
-  }
-  m_bHasChanged = false;
-}
-
-void  CBasicEntity::forceHasChanged()
-{
-  m_bHasChanged = true;
-}
-
-void  CBasicEntity::forceHasNotChanged()
-{
-  m_bHasChanged = false;
 }
 
 double CBasicEntity::getProtection() 
@@ -3622,8 +3617,10 @@ StatusType_e CBasicEntity::getStatus()
 void CBasicEntity::setStatus(StatusType_e newStatus)
 {
   if (m_Status != newStatus)
-    m_bHasChanged = true;
-  m_Status = newStatus;
+  {
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+    m_Status = newStatus;
+  }
 }
 
 CPhysicalWelfare* CBasicEntity::getpPhysicalWelfare()
@@ -3676,19 +3673,21 @@ bool CBasicEntity::isPhyAttributePresent(PhyAttributeType_e type)
 
 void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)
 {
-  if (newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE)
+  if ((newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && !(m_pPhyAttribute->isCaractPresent(newAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
   {
     m_pPhyAttribute->setCaractPresent(newAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
     computeEntitySignature();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
 }
 
 void CBasicEntity::removeAttribute(PhyAttributeType_e delAttrib)
 {
-  if (delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE)
+  if ((delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && (m_pPhyAttribute->isCaractPresent(delAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
   {
     m_pPhyAttribute->setCaractAbsent(delAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
     computeEntitySignature();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
 }
 
@@ -3705,6 +3704,11 @@ PhyAttributeType_e  CBasicEntity::getMainPhyAttribute()
 DWORD CBasicEntity::getAttributePresenceMask()
 {
   return m_pPhyAttribute->getPresenceMask();
+}
+
+void CBasicEntity::setAttributePresenceMask(DWORD mask)
+{
+  m_pPhyAttribute->setPresenceMask(mask);
 }
 
 Point_t CBasicEntity::getGridCoordFromStepCoord(Point_t stepCoord)

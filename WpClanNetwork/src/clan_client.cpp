@@ -38,6 +38,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   game_events.func_event(labelEventAddCloneEntity) = clan::bind_member(this, &Client::on_event_biotop_addcloneentity);
   game_events.func_event(labelEventUpdateEntityData) = clan::bind_member(this, &Client::on_event_biotop_updatefullentity);
   game_events.func_event(labelEventUpdateEntityPos) = clan::bind_member(this, &Client::on_event_biotop_updateentityposition);
+  game_events.func_event(labelEventUpdateEntityPhy) = clan::bind_member(this, &Client::on_event_biotop_updateentityphysic);
   game_events.func_event(labelEventRemoveEntity) = clan::bind_member(this, &Client::on_event_biotop_removeentity);
   game_events.func_event(labelEventCreateMeasure) = clan::bind_member(this, &Client::on_event_biotop_createmeasure);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Client::on_event_biotop_addEntitySpawner);
@@ -127,29 +128,38 @@ void Client::disconnect_from_server()
 
 void Client::processBiotopEvents()
 {
-  // Update all entities
-  BiotopEvent_t bioEvent;
-  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
   {
-    bioEvent = m_pBiotop->getBiotopEvent(i);
-    if (bioEvent.pEntity && !bioEvent.pEntity->isRemoteControlled())
+    BiotopEvent_t& bioEvent{ eventPair.second };
+    entityIdType entityId = eventPair.first;
+    if (bioEvent.pEntity)
     {
-      switch (bioEvent.eventType)
+      if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
       {
-      case BIOTOP_EVENT_ENTITY_CHANGED:  // Include generic move
-        send_event_update_entity_position(bioEvent.pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_MODIFIED:
+        send_event_remove_entity(bioEvent.pEntity, entityId);
+
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
+      {
         //send_event_update_entity_data(bioEvent.pEntity); // On client side, only on demand update
-        break;
-      case BIOTOP_EVENT_ENTITY_ADDED:
-        send_event_add_entity(bioEvent.pEntity);
-        break;
-      case BIOTOP_EVENT_ENTITY_REMOVED:
-        send_event_remove_entity(bioEvent.pEntity, bioEvent.entityId);
-        break;
-      default:
-        break;
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+      {
+        if (!bioEvent.pEntity->isRemoteControlled())
+        {
+          send_event_add_entity(bioEvent.pEntity);
+        }
+      }
+      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
+      {
+        send_event_update_entity_physic(bioEvent.pEntity);
+      }
+      else
+      {
+        if (!bioEvent.pEntity->isRemoteControlled())
+        {
+          send_event_update_entity_position(bioEvent.pEntity);
+        }
       }
     }
   }
@@ -331,6 +341,11 @@ void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
   CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
 }
 
+void Client::on_event_biotop_updateentityphysic(const NetGameEvent& e)
+{
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
+}
+
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)
 {
   event_manager::handleEventRemoveEntity(e, m_pBiotop);
@@ -483,17 +498,23 @@ void Client::send_event_update_entity_data(CBasicEntity* pEntity)
 
 void Client::send_event_update_entity_position(CBasicEntity* pEntity)
 {
-  if (pEntity == NULL)
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    log_event("Events  ", "Update entity position: NULL");
+    log_event("Events  ", "Update entity position: NULL or removed");
     return;
   }
-  if (pEntity->isToBeRemoved())
+  NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPos) };
+  network_client.send_event(bioUpdateEntityPosEvent);
+}
+
+void Client::send_event_update_entity_physic(CBasicEntity* pEntity)
+{
+  if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    log_event("Events  ", "Update entity position: removed");
+    log_event("Events  ", "Update entity physic: NULL or removed");
     return;
   }
-  NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity) };
+  NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPhy) };
   network_client.send_event(bioUpdateEntityPosEvent);
 }
 

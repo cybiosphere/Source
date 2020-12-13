@@ -531,10 +531,10 @@ void CCybiosphereApp::WaitForEventRefreshEntity(entityIdType entityId)
   {
     Sleep(10);
     m_pClient->process_new_events();
-    BiotopEvent_t bioEvent;
-    for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+    for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
     {
-      if (m_pBiotop->getBiotopEvent(i).eventType == BIOTOP_EVENT_ENTITY_MODIFIED)
+      BiotopEvent_t& bioEvent{ eventPair.second };
+      if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
         return;  
     }
   }
