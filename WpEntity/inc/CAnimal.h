@@ -218,6 +218,7 @@ public:
   void setForbidenActionInd(choiceIndType actionInd);
   string getForbidenActionLabel();
   int getForbidenActionCount();
+  bool SetCurrentReactionIndex(size_t index);
 
 protected:
   bool checkConsumeClass(ClassType_e eatenClass);

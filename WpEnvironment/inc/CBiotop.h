@@ -155,6 +155,7 @@ typedef struct
 {
   std::bitset<8>    eventList;
   CBasicEntity*     pEntity;
+  bool              markAsReadByGui;
 } BiotopEvent_t;
 
 using BiotopEventPair = std::pair<entityIdType, BiotopEvent_t>;
@@ -256,7 +257,8 @@ private:
   std::vector<CMeasure*> m_tMeasures;
   std::vector <CGeoMapPopulation*> m_tGeoMapSpecies;
   std::vector<CGenericParam*> m_tParam;
-  std::map<entityIdType, BiotopEvent_t> m_tEvents;
+  std::map<entityIdType, BiotopEvent_t> m_tEventsOdd;
+  std::map<entityIdType, BiotopEvent_t> m_tEventsEven;
   std::vector<BiotopRandomEntitiyGeneration_t> m_tRandomEntitiesGeneration{};
 
 //===========================================================================
@@ -375,9 +377,12 @@ public:
 // Event management
 //---------------------------------------------------------------------------
 public:
-   bool          addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
-   const std::map<entityIdType, BiotopEvent_t>& getBiotopEventMap();
-   bool          resetBiotopEvents();
+   bool addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
+   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapCurrent();
+   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
+   BiotopEventPair getNextUnreadGuiBiotopEvent();
+//private:
+   bool resetBiotopEventsMapCurrent();
 
 //---------------------------------------------------------------------------
 // Save/Load in file

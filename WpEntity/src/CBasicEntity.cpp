@@ -1461,6 +1461,8 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
     m_IsAttached = true;
     m_pBiotop->updateGridEntity(this);
     getAndUpdateGuiGridCoord();
+    getAndUpdateGuiStepCoord();
+    turnToCenterDir();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
   }
 }

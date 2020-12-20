@@ -128,7 +128,7 @@ void Client::disconnect_from_server()
 
 void Client::processBiotopEvents()
 {
-  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
+  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMapCurrent())
   {
     BiotopEvent_t& bioEvent{ eventPair.second };
     entityIdType entityId = eventPair.first;
@@ -163,7 +163,7 @@ void Client::processBiotopEvents()
       }
     }
   }
-  m_pBiotop->resetBiotopEvents();
+  //FRED m_pBiotop->resetBiotopEventsMapCurrent();
 }
 
 bool Client::get_manual_mode()
@@ -269,7 +269,7 @@ void Client::on_event_game_loadmap(const NetGameEvent &e)
 void Client::on_event_game_startgame(const NetGameEvent &e) 
 {
   //displayBiotopEntities();
-  m_pBiotop->resetBiotopEvents();
+  m_pBiotop->resetBiotopEventsMapCurrent();
   m_bBiotopConfigComplete = true;
   m_pBiotop->setNextHourTimeOffset(10);
   log_event("events", "Starting game!");
@@ -300,10 +300,10 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
 void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e) 
 {
   CustomType biotopTime = e.get_argument(0);
-  m_bEventNextSecondEnd = true;
   m_lastEventTimeStamp = biotopTime.get_x();
 	//log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
   m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
+  m_bEventNextSecondEnd = true;
   m_pBiotop->triggerMeasuresNextSecond();
 }
 

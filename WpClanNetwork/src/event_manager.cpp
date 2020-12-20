@@ -268,7 +268,7 @@ namespace clan
         int purposeIndex = e.get_argument(index);
         index++;
         int lifeStage = e.get_argument(index);
-        pAnimal->getBrain()->SetCurrentReactionIndex(reactIndex);
+        pAnimal->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
         pAnimal->setCurrentLifeStages((LifeStage_e)lifeStage);
       }

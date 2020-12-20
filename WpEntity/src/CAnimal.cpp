@@ -3689,6 +3689,15 @@ int CAnimal::getForbidenActionCount()
   return m_forbidenActionCount;
 }
 
+bool CAnimal::SetCurrentReactionIndex(size_t reactIndex)
+{
+  if (m_pBrain->GetCurrentReactionIndex() != reactIndex)
+  {
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_BEHAVIOR_CHANGE, this);
+    return getBrain()->SetCurrentReactionIndex(reactIndex);
+  }
+  return true;
+}
 
 //===========================================================================
 // Get / Set for attributes

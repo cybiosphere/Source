@@ -347,8 +347,8 @@ void CBiotopDisplayMFC::RefreshNextSecond()
   if (!m_bAppIsActive)
     return;
 
-  BiotopEvent_t bioEvent;
-  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMap())
+  BiotopEventPair eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
+  while (eventPair.first != ENTITY_ID_INVALID)
   {
     BiotopEvent_t& bioEvent{ eventPair.second };
     entityIdType entityId = eventPair.first;
@@ -357,6 +357,7 @@ void CBiotopDisplayMFC::RefreshNextSecond()
       CBasicEntity* pEntity = bioEvent.pEntity;
       InvalidateRectForOneEntity(pEntity);
     }
+    eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
   InvalidateRectForOneEntity(m_pBiotop->getEntityById(m_nFocusedEntityId));
 }

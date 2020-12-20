@@ -145,7 +145,7 @@ private:
   Point_t m_GridCoord;      // Coordinate in the Biotop grid
   Point_t m_StepCoord;      // Detailed coord that share grid into NB_STEPS_PER_GRID_SQUARE steps
   Point_t m_PrevGridCoord;  // Previous coordinate in the Biotop used by biotop grid
-  Point_t m_PrevStepCoord;  // Previous coordinate in the Biotop used by biotop grid
+  Point_t m_PrevStepCoord;  // Previous coordinate in the Biotop used by biotop step
   Point_t m_GuiGridCoord;   // Coordinate in the Biotop that can be used by GUI
   Point_t m_GuiStepCoord;   // Coordinate in the Biotop that can be used by GUI
 

@@ -300,6 +300,7 @@ bool CGeoMapPurpose::saveInXmlFile(TiXmlDocument* pXmlDoc)
       }
     }
   }
+  return true;
 }
 
 bool CGeoMapPurpose::loadFromXmlFile(TiXmlDocument* pXmlDoc)

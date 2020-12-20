@@ -140,9 +140,7 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   if( ( ExampleFrameListener::frameStarted(evt) == false ) || (!initComplete) )
     return false;
 
-  int i;
-
-  for (i = 0; i < m_tMesh.size(); ++i)
+  for (int i = 0; i < m_tMesh.size(); ++i)
   {
     Real inc = evt.timeSinceLastFrame * m_pClient->get_biotop_speed(); //* mAnimationSpeed[i]; 
     updateMeshEntityPosition(i, inc);
@@ -150,14 +148,13 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
       continue;
     m_tMesh[i]->pAnimState->addTime(inc);
   }
-
+  
   m_secCnt += evt.timeSinceLastFrame * m_pClient->get_biotop_speed();
-
-  proceedBiotopEvents();
   m_pClient->process_new_events();
 
-  if ((m_secCnt >= 1) && (m_pClient->check_if_event_next_second_start_and_clean()))
+  if ((m_secCnt >= 1) /*&& (m_pClient->check_if_event_next_second_end_and_clean())*/)
   {
+    proceedBiotopEvents();
     forcePlayerAction();
     m_secCnt = 0;
     updateInfoParamTime();
@@ -173,43 +170,40 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
 {
   BiotopEvent_t bioEvent;
   CBasicEntity* pEntity;
-  for (int i = 0; i < m_pBiotop->getNbOfBiotopEvents(); i++)
+  BiotopEventPair eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
+  while (eventPair.first != ENTITY_ID_INVALID)
   {
-    bioEvent = m_pBiotop->getBiotopEvent(i);
-    switch (bioEvent.eventType)
+    BiotopEvent_t& bioEvent{ eventPair.second };
+    entityIdType entityId = eventPair.first;
+    if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
     {
-    case BIOTOP_EVENT_ENTITY_CHANGED:
+      removeMeshEntity(mSceneMgr, bioEvent.pEntity);
+    }
+    else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
     {
-      // Replace from Client::on_event_biotop_updateentityposition
-      int meshIndex = getMeshEntityIndex(bioEvent.entityId);
+      int meshIndex = getMeshEntityIndex(entityId);
+      if (meshIndex >= 0)
+      {
+        updateMeshEntityNewSecond(meshIndex);
+      }
+    }
+    else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+    {
+      pEntity = m_pBiotop->getEntityById(entityId);
+      createMeshEntity(mSceneMgr, pEntity);
+    }
+    else
+    {
+      int meshIndex = getMeshEntityIndex(entityId);
       if (meshIndex >= 0)
       {
         setMeshEntityPreviousPosition(meshIndex);
         updateMeshEntityNewSecond(meshIndex);
       }
-      break;
     }
-    case BIOTOP_EVENT_ENTITY_MODIFIED:
-    {
-      int meshIndex = getMeshEntityIndex(bioEvent.entityId);
-      if (meshIndex >= 0)
-      {
-        updateMeshEntityNewSecond(meshIndex);
-      }
-      break;
-    }
-    case BIOTOP_EVENT_ENTITY_ADDED:
-      pEntity = m_pBiotop->getEntityById(bioEvent.entityId);
-      createMeshEntity(mSceneMgr, pEntity);
-      break;
-    case BIOTOP_EVENT_ENTITY_REMOVED:
-      removeMeshEntity(mSceneMgr, bioEvent.pEntity);
-      break;
-    default:
-      break;
-    }
+    eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
-  m_pBiotop->resetBiotopEvents();
+ // m_pBiotop->resetBiotopEvents();
 }
 
 
@@ -275,6 +269,10 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     double squareLen = m_tMesh[meshIndex]->translateVect3.squaredLength();
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
+
+    LogManager::getSingletonPtr()->logMessage("*** FRED updateMeshEntityNewSecond ***");
+    LogManager::getSingletonPtr()->logMessage(labelAction);
+
     if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") )
     {
       labelAction = "Walk";
@@ -295,6 +293,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 
     if (m_tMesh[meshIndex]->strCurACtion != labelAction)
     {
+      LogManager::getSingletonPtr()->logMessage(labelAction);
       m_tMesh[meshIndex]->pAnimState->setEnabled(false);
       m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState(labelAction);
       m_tMesh[meshIndex]->pAnimState->setEnabled(true);

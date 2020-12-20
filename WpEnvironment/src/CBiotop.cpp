@@ -1492,11 +1492,11 @@ choiceIndType CBiotop::predictEntityAction(entityIdType idEntity)
 void CBiotop::nextSecond(bool doIncreaseTime)
 {
   logCpuMarkerStart(BIOTOP_CPUMARKER_TOTAL);
-  resetBiotopEvents();
 
   if (doIncreaseTime)
   {
     m_BioTime.seconds++;
+    resetBiotopEventsMapCurrent();
     if (m_BioTime.seconds >= 3600)
     {
       // Next hour for biotop
@@ -1673,6 +1673,7 @@ void CBiotop::setBiotopTime(int seconds, int hours, int days, int years)
   m_BioTime.hours = hours;
   m_BioTime.days = days;
   m_BioTime.years = years;
+  resetBiotopEventsMapCurrent();
 }
 
 void CBiotop::setNextHourTimeOffset(unsigned char nextHourTimeOffset)
@@ -2068,38 +2069,82 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
 {
   if ((pEntity == NULL) || (pEntity->getId() == ENTITY_ID_INVALID))
     return false;
-
-  auto search = m_tEvents.find(pEntity->getId());
-  if (search != m_tEvents.end())
+  std::map<entityIdType, BiotopEvent_t>& tEventMap{ getBiotopEventMapCurrent() };
+  auto search = tEventMap.find(pEntity->getId());
+  if (search != tEventMap.end())
   {
     search->second.eventList.set(entityEventList);
     search->second.pEntity = pEntity;
+    search->second.markAsReadByGui = false;
   }
   else
   {
     BiotopEvent_t newEvent;
     newEvent.eventList.set(entityEventList);
     newEvent.pEntity = pEntity;
-    m_tEvents[pEntity->getId()] = std::move(newEvent);
+    newEvent.markAsReadByGui = false;
+    tEventMap[pEntity->getId()] = std::move(newEvent);
 
     // Avoid overload by cleaning oldest events
-    if (m_tEvents.size() > 100000)
+    if (tEventMap.size() > 100000)
     {
-      m_tEvents.erase(m_tEvents.begin());
+      tEventMap.erase(tEventMap.begin());
     }
   }
   return true;
 }
 
-bool CBiotop::resetBiotopEvents()
+BiotopEventPair CBiotop::getNextUnreadGuiBiotopEvent()
 {
-  m_tEvents.clear();
+  std::map<entityIdType, BiotopEvent_t>& prevMap{ getBiotopEventMapPrevious() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap.begin(); it != prevMap.end(); ++it)
+  {
+    if (!it->second.markAsReadByGui)
+    {
+      it->second.markAsReadByGui = true;
+      return { it->first, it->second };
+    }
+  }
+  std::map<entityIdType, BiotopEvent_t>& curMap{ getBiotopEventMapCurrent() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap.begin(); it != curMap.end(); ++it)
+  {
+    if (!it->second.markAsReadByGui)
+    {
+      it->second.markAsReadByGui = true;
+      return { it->first, it->second };
+    }
+  }
+  return { ENTITY_ID_INVALID, {} };
+}
+
+bool CBiotop::resetBiotopEventsMapCurrent()
+{
+  getBiotopEventMapCurrent().clear();
   return true;
 }
 
-const std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMap()
+std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMapCurrent()
 {
-  return m_tEvents;
+  if (m_BioTime.seconds % 2 == 0)
+  {
+    return m_tEventsEven;
+  }
+  else
+  {
+    return m_tEventsOdd;
+  }
+}
+
+std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMapPrevious()
+{
+  if (m_BioTime.seconds % 2 == 0)
+  {
+    return m_tEventsOdd;
+  }
+  else
+  {
+    return m_tEventsEven;
+  }
 }
 
 //===========================================================================
