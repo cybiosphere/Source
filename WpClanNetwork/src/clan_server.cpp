@@ -113,7 +113,6 @@ void Server::exec()
     processBiotopEvents();
 
     // Run biotop every sec
-    //
     timeCount += (int)round(10.0 * m_biotopSpeed);
     curTick = std::chrono::system_clock::now();
     std::chrono::milliseconds elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(curTick - lastRunTick);
@@ -326,8 +325,16 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
       if (m_tCoprocessors.size() < MaxNumberCoprocessor)
       {
         user->isCoprocessor = true;
-        ServerCoprocessor newCoprocessor(this, user, m_pBiotop, m_pBiotop->getDimension().x / 2, 0);
-        m_tCoprocessors.push_back(std::move(newCoprocessor));
+        if (m_tCoprocessors.empty())
+        {
+          ServerCoprocessor newCoprocessor(this, user, m_pBiotop, 2 * m_pBiotop->getDimension().x / 3, m_pBiotop->getDimension().x);
+          m_tCoprocessors.push_back(std::move(newCoprocessor));
+        }
+        else
+        {
+          ServerCoprocessor newCoprocessor(this, user, m_pBiotop, 0, m_pBiotop->getDimension().x / 3);
+          m_tCoprocessors.push_back(std::move(newCoprocessor));
+        }
       }
       else
       {
@@ -452,7 +459,7 @@ void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerU
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity, false);
+      coprocess.update_entity_control(pEntity);
     }
   }
 }
@@ -464,7 +471,7 @@ void Server::on_event_biotop_updateentityphysic(const NetGameEvent& e, ServerUse
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity, false);
+      coprocess.update_entity_control(pEntity);
     }
   }
 }
@@ -561,7 +568,7 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity, true);
+      coprocess.assign_entity_control(pEntity);
     }
   }
 }
@@ -635,7 +642,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity, false);
+      coprocess.update_entity_control(pEntity);
     }
   }
 }
@@ -657,7 +664,7 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity, false);
+      coprocess.update_entity_control(pEntity);
     }
   }
 }

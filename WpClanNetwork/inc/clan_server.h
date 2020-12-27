@@ -94,7 +94,7 @@ private:
 	int  nb_users_connected;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
 	bool m_bManualMode;
-	static const size_t MaxNumberCoprocessor = 1;
+	static const size_t MaxNumberCoprocessor = 2;
 	std::vector<ServerCoprocessor> m_tCoprocessors;
 	event_manager m_EventManager;
 

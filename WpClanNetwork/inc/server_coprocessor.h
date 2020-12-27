@@ -13,17 +13,18 @@ constexpr int spatialHisteresisSize = 20;
 class ServerCoprocessor
 {
 	public:
-		ServerCoprocessor(Server* pServer, ServerUser* pUser, CBiotop* pBiotop, unsigned int startCoordX, unsigned int startCoordY) :
+		ServerCoprocessor(Server* pServer, ServerUser* pUser, CBiotop* pBiotop, unsigned int startCoordX, unsigned int endCoordX) :
 			m_pServer(pServer),
 			m_pUser(pUser),
 			m_pBiotop(pBiotop),
 			m_startCoordX(startCoordX),
-			m_startCoordY(startCoordY)
+			m_endCoordX(endCoordX)
 		{};
 
 		static void reset_all_entities_control(CBiotop* pBiotop);
 		void update_all_entities_control();
-		void update_entity_control(CBasicEntity* pEntity, bool isNewEntity);
+		void assign_entity_control(CBasicEntity* pEntity);
+		void update_entity_control(CBasicEntity* pEntity);
 		bool checkNextSecondComplete();
 		void forceNextSecondComplete(bool newValue);
 		bool checkIfEntityOwner(CBasicEntity* pEntity);
@@ -34,5 +35,5 @@ class ServerCoprocessor
 		ServerUser* m_pUser;
 		CBiotop* m_pBiotop;
 		unsigned int m_startCoordX;
-		unsigned int m_startCoordY;
+		unsigned int m_endCoordX;
 	};
