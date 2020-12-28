@@ -61,10 +61,10 @@ public:
   virtual Point_t GetCurrentGridCenterPos()  { Point_t bioCoord={0,0};return(bioCoord);}
   virtual Point_t GetVisibleGridCoordStart() { Point_t gridCoord{ invalidCoord, invalidCoord }; return(gridCoord); };
   virtual Point_t GetVisibleGridCoordEnd() { Point_t gridCoord{ invalidCoord, invalidCoord }; return(gridCoord); };
+  virtual void SetFocusedEntityId(entityIdType id) { m_nFocusedEntityId = id; };
 
   void SetBiotop(CBiotop* pBiotop) {m_pBiotop = pBiotop;}; 
   void SetSelectedEntityId(entityIdType id) {m_nSelectedEntityId = id;};
-  void SetFocusedEntityId(entityIdType id) {m_nFocusedEntityId = id;};
   void SetLButtonIsDown(bool isDown) {m_bLButtonIsDown = isDown;}; 
   void SetNbRefreshPerStep (int nbRefresh) {m_nbRefreshPerStep = nbRefresh;};
 

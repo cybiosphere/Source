@@ -76,6 +76,7 @@ public:
   Point_t GetVisibleGridCoordStart();
   Point_t GetVisibleGridCoordEnd();
   void SetZoomFactor(double zoomFactor);
+  void SetFocusedEntityId(entityIdType id);
 
   CBitmap m_bmpVeget;
   CBitmap m_bmpAnim[7];

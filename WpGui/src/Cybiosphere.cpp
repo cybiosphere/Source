@@ -650,12 +650,12 @@ void CCybiosphereApp::proceedBiotopEvents()
 {
   GetBiotopViewPtr()->SoftRefreshDisplay();
 #ifdef USE_CLAN_CLIENT
-  m_pClient->processBiotopEvents();
   m_pClient->process_new_events();
+  m_pClient->processBiotopEvents();
 #endif
 #ifdef USE_CLAN_SERVER
-  m_pServer->processBiotopEvents();
   m_pServer->process_new_events();
+  m_pServer->processBiotopEvents();
 #endif
 }
 

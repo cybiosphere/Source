@@ -2076,6 +2076,7 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
     search->second.eventList.set(entityEventList);
     search->second.pEntity = pEntity;
     search->second.markAsReadByGui = false;
+    search->second.markAsReadByNetwork = false;
   }
   else
   {
@@ -2083,6 +2084,7 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
     newEvent.eventList.set(entityEventList);
     newEvent.pEntity = pEntity;
     newEvent.markAsReadByGui = false;
+    search->second.markAsReadByNetwork = false;
     tEventMap[pEntity->getId()] = std::move(newEvent);
 
     // Avoid overload by cleaning oldest events
@@ -2111,6 +2113,29 @@ BiotopEventPair CBiotop::getNextUnreadGuiBiotopEvent()
     if (!it->second.markAsReadByGui)
     {
       it->second.markAsReadByGui = true;
+      return { it->first, it->second };
+    }
+  }
+  return { ENTITY_ID_INVALID, {} };
+}
+
+BiotopEventPair CBiotop::getNextUnreadNetworkBiotopEvent()
+{
+  std::map<entityIdType, BiotopEvent_t>& prevMap{ getBiotopEventMapPrevious() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap.begin(); it != prevMap.end(); ++it)
+  {
+    if (!it->second.markAsReadByNetwork)
+    {
+      it->second.markAsReadByNetwork = true;
+      return { it->first, it->second };
+    }
+  }
+  std::map<entityIdType, BiotopEvent_t>& curMap{ getBiotopEventMapCurrent() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap.begin(); it != curMap.end(); ++it)
+  {
+    if (!it->second.markAsReadByNetwork)
+    {
+      it->second.markAsReadByNetwork = true;
       return { it->first, it->second };
     }
   }

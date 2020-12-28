@@ -65,7 +65,8 @@ void Server::processBiotopEvents()
 	// Update clients with biotop evolution
 	if (nb_users_connected > 0)
 	{
-    for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMapCurrent())
+    BiotopEventPair eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
+    while (eventPair.first != ENTITY_ID_INVALID)
     {
       BiotopEvent_t& bioEvent{ eventPair.second };
       entityIdType entityId = eventPair.first;
@@ -90,9 +91,9 @@ void Server::processBiotopEvents()
       {
         send_event_update_entity_position(bioEvent.pEntity);
       }
+      eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
     }
   }
-  m_pBiotop->resetBiotopEventsMapCurrent();
 }
 
 // Server main loop

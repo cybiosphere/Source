@@ -156,7 +156,7 @@ Point_t CBiotopDisplayMFC::GetGridCoordFromScreenPos(CPoint screenPos)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CBiotopDisplayMFC RenderGLScene
+// CBiotopDisplayMFC 
 
 void CBiotopDisplayMFC::RedrawScene()
 {
@@ -341,7 +341,9 @@ void CBiotopDisplayMFC::RedrawSceneIdleNoCPU()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CBiotopDisplayMFC RenderGLScene
+// CBiotopDisplayMFC
+/////////////////////////////////////////////////////////////////////////////
+
 void CBiotopDisplayMFC::RefreshNextSecond()
 {
   if (!m_bAppIsActive)
@@ -359,7 +361,6 @@ void CBiotopDisplayMFC::RefreshNextSecond()
     }
     eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
-  InvalidateRectForOneEntity(m_pBiotop->getEntityById(m_nFocusedEntityId));
 }
 
 void CBiotopDisplayMFC::InvalidateRectForOneEntity(CBasicEntity* pEntity)
@@ -495,5 +496,11 @@ void CBiotopDisplayMFC::SetZoomFactor(double zoomFactor)
   DisplayView();
   RefreshSceneIdleNoCPU();
 }
-/////////////////////////////////////////////////////////////////////////////
+
+void CBiotopDisplayMFC::SetFocusedEntityId(entityIdType id)
+{
+  InvalidateRectForOneEntity(m_pBiotop->getEntityById(m_nFocusedEntityId));
+  CBiotopDisplay::SetFocusedEntityId(id);
+  InvalidateRectForOneEntity(m_pBiotop->getEntityById(m_nFocusedEntityId));
+}
 

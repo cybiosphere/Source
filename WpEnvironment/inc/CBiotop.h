@@ -156,6 +156,7 @@ typedef struct
   std::bitset<8>    eventList;
   CBasicEntity*     pEntity;
   bool              markAsReadByGui;
+  bool              markAsReadByNetwork;
 } BiotopEvent_t;
 
 using BiotopEventPair = std::pair<entityIdType, BiotopEvent_t>;
@@ -379,10 +380,11 @@ public:
 public:
    bool addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
    std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapCurrent();
-   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
    BiotopEventPair getNextUnreadGuiBiotopEvent();
-//private:
+   BiotopEventPair getNextUnreadNetworkBiotopEvent();
    bool resetBiotopEventsMapCurrent();
+private:
+   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
 
 //---------------------------------------------------------------------------
 // Save/Load in file

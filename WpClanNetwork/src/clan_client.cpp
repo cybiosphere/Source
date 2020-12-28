@@ -128,7 +128,8 @@ void Client::disconnect_from_server()
 
 void Client::processBiotopEvents()
 {
-  for (BiotopEventPair eventPair : m_pBiotop->getBiotopEventMapCurrent())
+  BiotopEventPair eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
+  while (eventPair.first != ENTITY_ID_INVALID)
   {
     BiotopEvent_t& bioEvent{ eventPair.second };
     entityIdType entityId = eventPair.first;
@@ -162,8 +163,8 @@ void Client::processBiotopEvents()
         }
       }
     }
+    eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
   }
-  //FRED m_pBiotop->resetBiotopEventsMapCurrent();
 }
 
 bool Client::get_manual_mode()
