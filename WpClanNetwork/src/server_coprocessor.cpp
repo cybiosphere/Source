@@ -14,7 +14,7 @@ void ServerCoprocessor::reset_all_entities_control(CBiotop* pBiotop)
   }
 }
 
-void ServerCoprocessor::update_all_entities_control()
+void ServerCoprocessor::assign_all_entities_control()
 {
   CBasicEntity* pCurEntity = nullptr;
   for (int i = 0; i < m_pBiotop->getNbOfEntities(); i++)
@@ -24,11 +24,49 @@ void ServerCoprocessor::update_all_entities_control()
   }
 }
 
+bool ServerCoprocessor::isEntityInAssignZone(CBasicEntity* pEntity)
+{
+  if ((pEntity->getGridCoord().x >= m_startCoordX) && (pEntity->getGridCoord().x < m_endCoordX))
+  {
+    return true;
+  }
+  return false ;
+}
+
+bool ServerCoprocessor::isEntityInExtendedZone(CBasicEntity* pEntity)
+{
+  if (((int)pEntity->getGridCoord().x >= ((int)m_startCoordX - spatialHisteresisSize)) && (pEntity->getGridCoord().x < (m_endCoordX + spatialHisteresisSize)))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool ServerCoprocessor::isEntityInExclusiveZone(CBasicEntity* pEntity)
+{
+  if ((pEntity->getGridCoord().x >= (m_startCoordX + spatialHisteresisSize)) && ((int)pEntity->getGridCoord().x < ((int)m_endCoordX - spatialHisteresisSize)))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool ServerCoprocessor::isEntityInMonitoringZone(CBasicEntity* pEntity)
+{
+  constexpr int monitoringOffset = spatialHisteresisSize + 10;
+  if (((int)pEntity->getGridCoord().x >= ((int)m_startCoordX - monitoringOffset)) && (pEntity->getGridCoord().x < (m_endCoordX + monitoringOffset)))
+  {
+    return true;
+  }
+  return false;
+}
+
+
 void ServerCoprocessor::assign_entity_control(CBasicEntity* pEntity)
 {
   if (!pEntity->isRemoteControlled())
   {
-    if ((pEntity->getGridCoord().x >= m_startCoordX) && (pEntity->getGridCoord().x < m_endCoordX))
+    if (isEntityInAssignZone(pEntity))
     {
       // Transfer control from server to coprocessor
       m_pServer->send_event_change_remote_control(pEntity, false, m_pUser);
@@ -46,11 +84,14 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity)
     return;
   }
 
-  int spatialOffset = spatialHisteresisSize;
+  if (!isEntityInMonitoringZone(pEntity))
+  {
+    return;
+  }
 
   if (pEntity->isRemoteControlled())
   {
-    if (((int)pEntity->getGridCoord().x < ((int)m_startCoordX - spatialOffset)) || (pEntity->getGridCoord().x >= (m_endCoordX + spatialOffset)))
+    if (!isEntityInExtendedZone(pEntity))
     {
       // Transfer control from coprocessor to server
       log_event("Server", "Transfer control from coprocessor to server entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
@@ -61,7 +102,7 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity)
   }
   else
   {
-    if ((pEntity->getGridCoord().x >= (m_startCoordX + spatialOffset)) && (pEntity->getGridCoord().x < (m_endCoordX - spatialOffset)))
+    if (isEntityInExclusiveZone(pEntity))
     {
       // Transfer control from server to coprocessor
       log_event("Server", "Transfer control from server to coprocessor entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
@@ -84,7 +125,7 @@ void ServerCoprocessor::forceNextSecondComplete(bool newValue)
 
 bool ServerCoprocessor::checkIfEntityOwner(CBasicEntity* pEntity)
 {
-  if (pEntity && (pEntity->getGridCoord().x >= m_startCoordX) && (pEntity->getGridCoord().x < m_endCoordX))
+  if (pEntity && pEntity->isRemoteControlled() && isEntityInExtendedZone(pEntity))
   {
     return true;
   }

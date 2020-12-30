@@ -55,8 +55,10 @@ void removeMeshEntity(SceneManager* pSceneMgr, CBasicEntity* pEntity )
 
 bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
 {
-  if ( (pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()) )
+  if ((pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()))
+  {
     return false;
+  }
 
   Point_t coord = pBasicEntity->getStepCoord();
 
@@ -203,7 +205,6 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
     }
     eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
- // m_pBiotop->resetBiotopEvents();
 }
 
 
@@ -270,9 +271,6 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
 
-    LogManager::getSingletonPtr()->logMessage("*** FRED updateMeshEntityNewSecond ***");
-    LogManager::getSingletonPtr()->logMessage(labelAction);
-
     if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") )
     {
       labelAction = "Walk";
@@ -293,7 +291,6 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
 
     if (m_tMesh[meshIndex]->strCurACtion != labelAction)
     {
-      LogManager::getSingletonPtr()->logMessage(labelAction);
       m_tMesh[meshIndex]->pAnimState->setEnabled(false);
       m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState(labelAction);
       m_tMesh[meshIndex]->pAnimState->setEnabled(true);

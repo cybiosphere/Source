@@ -22,7 +22,7 @@ class ServerCoprocessor
 		{};
 
 		static void reset_all_entities_control(CBiotop* pBiotop);
-		void update_all_entities_control();
+		void assign_all_entities_control();
 		void assign_entity_control(CBasicEntity* pEntity);
 		void update_entity_control(CBasicEntity* pEntity);
 		bool checkNextSecondComplete();
@@ -31,6 +31,11 @@ class ServerCoprocessor
 		ServerUser* getUser();
 
 	private:
+		bool isEntityInAssignZone(CBasicEntity* pEntity);
+		bool isEntityInExclusiveZone(CBasicEntity* pEntity);
+		bool isEntityInExtendedZone(CBasicEntity* pEntity);
+		bool isEntityInMonitoringZone(CBasicEntity* pEntity);
+
 		Server* m_pServer;
 		ServerUser* m_pUser;
 		CBiotop* m_pBiotop;

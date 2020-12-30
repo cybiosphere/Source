@@ -270,7 +270,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
       ServerCoprocessor::reset_all_entities_control(m_pBiotop);
       for (auto coprocess : m_tCoprocessors)
       {
-        coprocess.update_all_entities_control();
+        coprocess.assign_all_entities_control();
       }
     }
     delete user;
@@ -423,11 +423,11 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     // If new coprocessor arrives, update all entities control
     if (user->isCoprocessor)
     {
-      ServerCoprocessor::reset_all_entities_control(m_pBiotop);
+      //ServerCoprocessor::reset_all_entities_control(m_pBiotop);
       log_event("Events  ", "New coprocessor added. Update control");
       for (auto coprocess : m_tCoprocessors)
       {
-        coprocess.update_all_entities_control();
+        coprocess.assign_all_entities_control();
       }
     }
 
