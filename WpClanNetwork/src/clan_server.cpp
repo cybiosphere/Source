@@ -99,7 +99,6 @@ void Server::processBiotopEvents()
 // Server main loop
 void Server::exec()
 {
-  int timeCount = 0;
   std::chrono::time_point<std::chrono::system_clock> curTick;
   std::chrono::time_point<std::chrono::system_clock> lastRunTick = std::chrono::system_clock::now();
 
@@ -109,12 +108,11 @@ void Server::exec()
 	while (true)
 	{
 		// Lets not worry about exiting this function!
-		System::sleep(10);
+		System::sleep(5);
 		network_server.process_events();
     processBiotopEvents();
 
     // Run biotop every sec
-    timeCount += (int)round(10.0 * m_biotopSpeed);
     curTick = std::chrono::system_clock::now();
     std::chrono::milliseconds elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(curTick - lastRunTick);
 
@@ -128,7 +126,6 @@ void Server::exec()
         send_event_new_second_end();
       }
       // Reset timer
-      timeCount = 0;
       lastRunTick = std::chrono::system_clock::now();
     }
     else

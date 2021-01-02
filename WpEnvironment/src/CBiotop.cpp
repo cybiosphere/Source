@@ -2084,7 +2084,7 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
     newEvent.eventList.set(entityEventList);
     newEvent.pEntity = pEntity;
     newEvent.markAsReadByGui = false;
-    search->second.markAsReadByNetwork = false;
+    newEvent.markAsReadByNetwork = false;
     tEventMap[pEntity->getId()] = std::move(newEvent);
 
     // Avoid overload by cleaning oldest events

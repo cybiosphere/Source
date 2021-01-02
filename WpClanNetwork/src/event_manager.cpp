@@ -244,7 +244,7 @@ namespace clan
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
       pEntity->setStatus((StatusType_e)status);
       pEntity->jumpToStepCoord(position, true, layer);
-      pEntity->setStepDirection(direction);
+      pEntity->setStepDirection(direction, true);
       pEntity->setImmortal(isImmortal);
       pEntity->setColor((COLORREF)color);
       pEntity->setForm((FormType_e)form);

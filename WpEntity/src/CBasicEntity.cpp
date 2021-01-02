@@ -2055,6 +2055,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
   {
     // No trouble found: goto exact coord
     m_StepCoord = newStepCoord;
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
   }
 
   setNoise(nbSteps);
@@ -2138,6 +2139,10 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_
 {
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
+  if ((m_PrevStepCoord.x != m_StepCoord.x) || (m_PrevStepCoord.y != m_StepCoord.y))
+  {
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
+  }
 
   // Update grid coord if needed
   Point_t newGridCoord;
@@ -3101,15 +3106,11 @@ void  CBasicEntity::setStepDirection(int stepDirection, bool addMoveEvent)
 {
   m_PrevStepDirection = m_StepDirection;
   m_StepDirection = stepDirection % 360;
-  int newDirection = ((m_StepDirection + 22) / 45) % 8;
-  if (m_Direction != newDirection)
+  if ((addMoveEvent) && (m_StepDirection != m_PrevStepDirection))
   {
-    m_Direction = newDirection;
-    if (addMoveEvent)
-    {
-      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
-    }
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
   }
+  m_Direction = ((m_StepDirection + 22) / 45) % 8;
 }
 
 int CBasicEntity::getPrevStepDirection()
