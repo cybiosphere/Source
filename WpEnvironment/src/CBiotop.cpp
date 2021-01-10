@@ -24,10 +24,10 @@ distribution.
 
 //===========================================================================
 // FILE: CBiotop.cpp
-//   
+//
 // GENERAL DESCRIPTION:
 //         This CLASS represents a biotop environment
-//     
+//
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
 //  26/09/2002 : Creation
@@ -106,8 +106,8 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   CYBIOCORE_LOG_INIT(logFileName.c_str());
   CYBIOCORE_LOG("BIOTOP - Biotop created\n");
 }
-   
-CBiotop::~CBiotop() 
+
+CBiotop::~CBiotop()
 {
   deleteAllMeasures();
   deleteAllParameters();
@@ -128,7 +128,7 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t lay
 {
   if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
     return (ENTITY_ID_INVALID);
- 
+
   if ( !isCoordValidAndFree(coord,layer) )
      return (ENTITY_ID_INVALID);
 
@@ -177,7 +177,7 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
 
   if (getNbOfEntities()>MAXIMUM_NB_ENTITIES)
     return ENTITY_ID_INVALID;
-  
+
   if ( !isCoordValidAndFree(CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) )
     return ENTITY_ID_INVALID;
 
@@ -191,7 +191,7 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
   pEntity->jumpToStepCoord(stepCoord, true, layer);
   // Attach it to biotop
   pEntity->attachToBiotop(this);
-  
+
   if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
   {
     // Add it to list at the begining
@@ -362,7 +362,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
     return (false);
 
   // Set coord
-  pNewEntity->jumpToGridCoord(oldCoord, true, oldLayer); 
+  pNewEntity->jumpToGridCoord(oldCoord, true, oldLayer);
 
   // Set old id
   pNewEntity->setId(oldId);
@@ -413,10 +413,10 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
 
 
 size_t CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
-{ 
+{
   CBasicEntity* pEntity = NULL;
-  for (size_t i = 0; i < getNbOfEntities(); i++)     
-  { 
+  for (size_t i = 0; i < getNbOfEntities(); i++)
+  {
     pEntity = m_tEntity[i];
     if (pEntity->getId() == idEntity)
     {
@@ -429,7 +429,7 @@ size_t CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
         CYBIOCORE_LOG_TIME(m_BioTime);
         CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
       }
-      delete (m_tEntity[i]); 
+      delete (m_tEntity[i]);
       m_tEntity.erase(m_tEntity.begin()+i);
       return (i);
     }
@@ -437,27 +437,27 @@ size_t CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
   // If not found
   return (invalidIndex);
 }
- 
 
-void CBiotop::deleteAllEntities() 
+
+void CBiotop::deleteAllEntities()
 {
-  // loop from top to bottom 
+  // loop from top to bottom
   for (size_t i = 0; i < m_tEntity.size(); i++)
   {
     if (m_tEntity[i] != NULL)
-      delete (m_tEntity[i]); 
+      delete (m_tEntity[i]);
   }
   m_tEntity.clear();
   m_IndexLastAnimal = 0;
-}          
+}
 
 
-void CBiotop::deleteAllMeasures() 
+void CBiotop::deleteAllMeasures()
 {
   for (size_t i = 0; i < m_tMeasures.size(); i++)
   {
     if (m_tMeasures[i] != NULL)
-      delete (m_tMeasures[i]); 
+      delete (m_tMeasures[i]);
   }
   m_tMeasures.clear();
 
@@ -467,16 +467,16 @@ void CBiotop::deleteAllMeasures()
       delete (m_tGeoMapSpecies[i]);
   }
   m_tGeoMapSpecies.clear();
-}   
+}
 
 
-void CBiotop::deleteAllParameters() 
+void CBiotop::deleteAllParameters()
 {
-  // loop from top to bottom 
+  // loop from top to bottom
   for (size_t i= 0; i < m_tParam.size(); i++)
   {
     if (m_tParam[i] != NULL)
-      delete (m_tParam[i]); 
+      delete (m_tParam[i]);
   }
   m_tParam.clear();
 
@@ -484,7 +484,7 @@ void CBiotop::deleteAllParameters()
   m_pSunlightRate = NULL;
   m_pRadioactivity = NULL;
   m_pTemperature = NULL;
-}  
+}
 
 
 void CBiotop::displayEntities(void)
@@ -494,7 +494,7 @@ void CBiotop::displayEntities(void)
     printf("x=%2d, y=%2d ", (int)pEntity->getGridCoord().x, (int)pEntity->getGridCoord().y);
     printf("%-12s", pEntity->getLabel().c_str());
     printf("ID=%3d Direction=%3d \n", pEntity->getId(), pEntity->getDirection());
-  }  
+  }
 }
 
 
@@ -607,12 +607,12 @@ void CBiotop::setDefaultEntitiesForTest(void)
 size_t CBiotop::getNbOfEntities()
 {
   return (m_tEntity.size());
-}  
+}
 
 size_t CBiotop::getNbOfAnimals()
 {
   return (m_IndexLastAnimal);
-}  
+}
 
 size_t CBiotop::getNbOfVegetals()
 {
@@ -624,10 +624,10 @@ size_t CBiotop::getNbOfVegetals()
     curClass = pEntity->getClass();
     if ( (curClass >= CLASS_VEGETAL_FIRST) && (curClass <= CLASS_VEGETAL_LAST) && (pEntity->getId()>0) )
       tempCount++;
-  } 
+  }
 
   return (tempCount);
-}  
+}
 
 size_t CBiotop::getNbOfMinerals()
 {
@@ -639,10 +639,10 @@ size_t CBiotop::getNbOfMinerals()
     curClass = pEntity->getClass();
     if ( (curClass >= CLASS_MINERAL_FIRST) && (curClass <= CLASS_MINERAL_LAST) && (pEntity->getId()>0) )
       tempCount++;
-  } 
+  }
 
   return (tempCount);
-}  
+}
 
 size_t CBiotop::getNbOfSpecieEntities(string& SpecieName)
 {
@@ -654,10 +654,10 @@ size_t CBiotop::getNbOfSpecieEntities(string& SpecieName)
     pCurGenome = pEntity->getGenome();
     if ( (pCurGenome!=NULL) && (pCurGenome->getSpecieName()== SpecieName) && (pEntity->isAlive()) )
       tempCount++;
-  } 
+  }
 
   return (tempCount);
-}  
+}
 
 double CBiotop::getSpecieBiomass(string& SpecieName)
 {
@@ -678,7 +678,7 @@ double CBiotop::getSpecieBiomass(string& SpecieName)
 // Entities access
 //===========================================================================
 
-CBasicEntity* CBiotop::getEntityById(entityIdType idEntity) 
+CBasicEntity* CBiotop::getEntityById(entityIdType idEntity)
 {
   // Check if it is water
   if (idEntity==ENTITY_ID_WATER)
@@ -690,14 +690,14 @@ CBasicEntity* CBiotop::getEntityById(entityIdType idEntity)
   {
     return (m_pGrassGlobalEntity);
   }
- 
+
   if (idEntity == ENTITY_ID_ROCK)
   {
     return (m_pRockGlobalEntity);
   }
 
   for (CBasicEntity* pEntity : m_tEntity)
-  {   
+  {
     if ((pEntity)->getId() == idEntity)
     {
         return (pEntity);
@@ -705,7 +705,7 @@ CBasicEntity* CBiotop::getEntityById(entityIdType idEntity)
   }
   // If not found
   return (NULL);
-}   
+}
 
 CBasicEntity* CBiotop::getEntityByIndex(size_t index)
 {
@@ -715,14 +715,14 @@ CBasicEntity* CBiotop::getEntityByIndex(size_t index)
   {
     pFoundEntity = m_tEntity[index];
   }
-  
+
   return (pFoundEntity);
 }
 
 CBasicEntity* CBiotop::getEntityByName(string& entityName)
 {
   for (CBasicEntity* pEntity : m_tEntity)
-  {   
+  {
     if (pEntity->getLabel() == entityName)
     {
         return (pEntity);
@@ -733,8 +733,8 @@ CBasicEntity* CBiotop::getEntityByName(string& entityName)
 
 size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
 {
-  for (size_t i=0; i<getNbOfEntities(); i++)   
-  {   
+  for (size_t i=0; i<getNbOfEntities(); i++)
+  {
     if (m_tEntity[i] == pEntity)
     {
         return (i);
@@ -742,9 +742,9 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
   }
   return (invalidIndex);
 }
-   
+
 CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
-{ 
+{
   CBasicEntity* pFoundEntity = NULL;
 
   if ( isCoordValid(searchCoord,layer) )
@@ -755,7 +755,7 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
       m_tBioSquare[searchCoord.x][searchCoord.y].customColor -= 0x00001010; //blue
     }
   }
-  
+
   return (pFoundEntity);
 }
 
@@ -922,7 +922,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
           nbFoundIds++;
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty += offset;
       endy += 2;
@@ -978,7 +978,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
           nbFoundIds++;
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty += offset;
       endy += 2;
@@ -1034,7 +1034,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
           nbFoundIds++;
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty -= offset;
       endy -= 2;
@@ -1090,7 +1090,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
           nbFoundIds++;
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty -= offset;
       endy -= 2;
@@ -1134,7 +1134,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
               break;
             pCurEntity = findEntity(curCoord,layer);
             {
-              if ( pCurEntity!=NULL ) 
+              if ( pCurEntity!=NULL )
               {
                 tFoundIds[nbFoundIds].pEntity = pCurEntity;
                 tFoundIds[nbFoundIds].distance = entityDist;
@@ -1178,7 +1178,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
           }
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty += offset;
       endy += 2;
@@ -1248,7 +1248,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
           }
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty += offset;
       endy += 2;
@@ -1318,7 +1318,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
           }
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty -= offset;
       endy -= 2;
@@ -1388,7 +1388,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
           }
         }
       }
-      // Enlarge y range 
+      // Enlarge y range
       offset = (offset+1)%2;
       starty -= offset;
       endy -= 2;
@@ -1407,7 +1407,7 @@ bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
   {
     return (false);
   }
-  else 
+  else
   {
     return (true);
   }
@@ -1419,20 +1419,20 @@ bool CBiotop::isCoordValid(Point_t coord, size_t layer)
   {
     return (true);
   }
-  else 
+  else
   {
     return (false);
   }
 }
 
-CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord) 
+CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord)
 {
   CBasicEntity* pFoundEntity = NULL;
-   
+
   for (int layer = (int)m_nbLayer - 1; layer >= 0; layer--)
-  {       
+  {
     pFoundEntity = findEntity(searchCoord, layer);
-    if (pFoundEntity!=NULL) 
+    if (pFoundEntity!=NULL)
     {
       return (pFoundEntity);
     }
@@ -1454,8 +1454,8 @@ feedbackValType CBiotop::forceEntityAction(entityIdType idEntity,choiceIndType m
     resu = pEntity->forceNextAction(myChoice);
   }
 
-  // Loop on all other entities for basic action  
-  /*for (size_t i=0; i<getNbOfAnimals(); i++)    
+  // Loop on all other entities for basic action
+  /*for (size_t i=0; i<getNbOfAnimals(); i++)
   {
     pEntity = m_tEntity[i];
     if ((pEntity != NULL)&&(pEntity->getId()!=idEntity))
@@ -1705,7 +1705,7 @@ void CBiotop::buildGrid(size_t dimX, size_t dimY, size_t dimZ)
 
 void CBiotop::deleteGrid(void)
 {
-  // Delete 3D dynamic table 
+  // Delete 3D dynamic table
   for (size_t i=0;i<m_Dimension.x;i++)
   {
     for (size_t j=0;j<m_Dimension.y;j++)
@@ -1790,7 +1790,7 @@ void CBiotop::initGridDefaultAltitude(void)
 
 void CBiotop::initGridEntity(void)
 {
-  // 
+  //
   for (size_t i=0;i<m_Dimension.x;i++)
   {
     for (size_t j=0;j<m_Dimension.y;j++)
@@ -1806,7 +1806,7 @@ void CBiotop::initGridEntity(void)
         //m_tBioGrid[i][j][0].pEntity = m_pWaterGlobalEntity;
         m_tBioGrid[i][j][1].pEntity = m_pWaterGlobalEntity;
       }
-      else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_GRASS) 
+      else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_GRASS)
       {
         m_tBioGrid[i][j][1].pEntity = m_pGrassGlobalEntity;
       }
@@ -1834,7 +1834,7 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
   ASSERT (pCurEntity!=NULL);
   Point_t tmpCoord;
   size_t tmpLayer;
-   
+
   if ( pCurEntity->checkIfhasMovedAndClear() )
   {
     tmpCoord = pCurEntity->getPrevGridCoord();
@@ -1843,13 +1843,13 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
     {
       // memorize odor trace
       m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[pCurEntity->getOdor()] = MAX_SENSOR_VAL/10;
-      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity = NULL; 
+      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity = NULL;
     }
     tmpCoord = pCurEntity->getGridCoord();
     tmpLayer = pCurEntity->getLayer();
     if ( isCoordValid(tmpCoord,tmpLayer) )
     {
-      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity; 
+      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity;
     }
   }
 }
@@ -1867,7 +1867,7 @@ void CBiotop::updateGridAllEntities(void)
 
   // Clear previous positions
   for (CBasicEntity* pCurEntity : m_tEntity)
-  {  
+  {
     hasMoved = pCurEntity->checkIfhasMovedAndClear();
     if ( (pCurEntity) && (pCurEntity->checkIfhasMoved()) )
     {
@@ -1875,20 +1875,20 @@ void CBiotop::updateGridAllEntities(void)
       tmpLayer = pCurEntity->getPrevLayer();
       if ( isCoordValid(tmpCoord,tmpLayer) )
       {
-        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = NULL; 
+        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = NULL;
       }
     }
   }
   // Set new positions
   for (CBasicEntity* pCurEntity : m_tEntity)
-  {  
+  {
     if ( (pCurEntity) && (pCurEntity->checkIfhasMovedAndClear()) )
     {
       tmpCoord = pCurEntity->getGridCoord();
       tmpLayer = pCurEntity->getLayer();
       if ( isCoordValid(tmpCoord,tmpLayer) )
       {
-        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity; 
+        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity;
       }
     }
   }
@@ -1993,7 +1993,7 @@ void CBiotop::replaceMeasure(int id, CMeasure* pMeasure)
   CMeasure* foundMeas = NULL;
   size_t foundIndex = invalidIndex;
 
-  for (size_t i=0; i<m_tMeasures.size(); i++) 
+  for (size_t i=0; i<m_tMeasures.size(); i++)
   {
     if (m_tMeasures[i]->GetId() == id)
     {
@@ -2013,7 +2013,7 @@ void CBiotop::replaceMeasure(int id, CMeasure* pMeasure)
   {
     m_tMeasures.push_back(pMeasure);
   }
-  
+
   pMeasure->StartMeasurement(m_BioTime);
 }
 
@@ -2021,7 +2021,7 @@ void CBiotop::replaceMeasure(int id, CMeasure* pMeasure)
 bool CBiotop::checkMeasureEvents()
 {
   bool resu = false;
-  for (size_t i=0; i<m_tMeasures.size(); i++) 
+  for (size_t i=0; i<m_tMeasures.size(); i++)
   {
     if (m_tMeasures[i]->CheckEvent() == true)
     {
@@ -2069,9 +2069,9 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
 {
   if ((pEntity == NULL) || (pEntity->getId() == ENTITY_ID_INVALID))
     return false;
-  std::map<entityIdType, BiotopEvent_t>& tEventMap{ getBiotopEventMapCurrent() };
-  auto search = tEventMap.find(pEntity->getId());
-  if (search != tEventMap.end())
+  std::map<entityIdType, BiotopEvent_t>* tEventMap{ &getBiotopEventMapCurrent() };
+  auto search = tEventMap->find(pEntity->getId());
+  if (search != tEventMap->end())
   {
     search->second.eventList.set(entityEventList);
     search->second.pEntity = pEntity;
@@ -2085,12 +2085,12 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
     newEvent.pEntity = pEntity;
     newEvent.markAsReadByGui = false;
     newEvent.markAsReadByNetwork = false;
-    tEventMap[pEntity->getId()] = std::move(newEvent);
+    tEventMap->insert({ pEntity->getId(), newEvent });
 
     // Avoid overload by cleaning oldest events
-    if (tEventMap.size() > 100000)
+    if (tEventMap->size() > 100000)
     {
-      tEventMap.erase(tEventMap.begin());
+      tEventMap->erase(tEventMap->begin());
     }
   }
   return true;
@@ -2098,8 +2098,8 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
 
 BiotopEventPair CBiotop::getNextUnreadGuiBiotopEvent()
 {
-  std::map<entityIdType, BiotopEvent_t>& prevMap{ getBiotopEventMapPrevious() };
-  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap.begin(); it != prevMap.end(); ++it)
+  std::map<entityIdType, BiotopEvent_t>* prevMap{ &getBiotopEventMapPrevious() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap->begin(); it != prevMap->end(); ++it)
   {
     if (!it->second.markAsReadByGui)
     {
@@ -2107,8 +2107,8 @@ BiotopEventPair CBiotop::getNextUnreadGuiBiotopEvent()
       return { it->first, it->second };
     }
   }
-  std::map<entityIdType, BiotopEvent_t>& curMap{ getBiotopEventMapCurrent() };
-  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap.begin(); it != curMap.end(); ++it)
+  std::map<entityIdType, BiotopEvent_t>* curMap{ &getBiotopEventMapCurrent() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap->begin(); it != curMap->end(); ++it)
   {
     if (!it->second.markAsReadByGui)
     {
@@ -2121,8 +2121,8 @@ BiotopEventPair CBiotop::getNextUnreadGuiBiotopEvent()
 
 BiotopEventPair CBiotop::getNextUnreadNetworkBiotopEvent()
 {
-  std::map<entityIdType, BiotopEvent_t>& prevMap{ getBiotopEventMapPrevious() };
-  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap.begin(); it != prevMap.end(); ++it)
+  std::map<entityIdType, BiotopEvent_t>* prevMap{ &getBiotopEventMapPrevious() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = prevMap->begin(); it != prevMap->end(); ++it)
   {
     if (!it->second.markAsReadByNetwork)
     {
@@ -2130,8 +2130,8 @@ BiotopEventPair CBiotop::getNextUnreadNetworkBiotopEvent()
       return { it->first, it->second };
     }
   }
-  std::map<entityIdType, BiotopEvent_t>& curMap{ getBiotopEventMapCurrent() };
-  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap.begin(); it != curMap.end(); ++it)
+  std::map<entityIdType, BiotopEvent_t>* curMap{ &getBiotopEventMapCurrent() };
+  for (std::map<entityIdType, BiotopEvent_t>::iterator it = curMap->begin(); it != curMap->end(); ++it)
   {
     if (!it->second.markAsReadByNetwork)
     {
@@ -2180,7 +2180,7 @@ bool CBiotop::saveInXmlFile(string fileName, string pathName)
   bool resu = false;
   TiXmlDocument *pXmlDoc = new TiXmlDocument(pathName + fileName);
 
-  if (pXmlDoc==NULL) 
+  if (pXmlDoc==NULL)
     return false;
 
   saveInXmlFile(pXmlDoc, pathName, true);
@@ -2251,14 +2251,14 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
     {
       TiXmlElement newLayer(XML_NODE_LAYER);
       pNodeChild = pNode->InsertEndChild(newLayer);
-      if (pNodeChild != NULL) 
+      if (pNodeChild != NULL)
       {
         string strData = "";
         for (size_t cx = 0; cx < m_Dimension.x; cx++)
         {
           for (size_t cy = 0; cy < m_Dimension.y; cy++)
           {
-            strData += FormatString("%02u",(BYTE)m_tBioGrid[cx][cy][k].layerType); 
+            strData += FormatString("%02u",(BYTE)m_tBioGrid[cx][cy][k].layerType);
           }
         }
         pElement = (TiXmlElement*)pNodeChild;
@@ -2290,11 +2290,11 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
     {
       TiXmlElement newEntityNode(XML_NODE_ENTITY);
       pNodeChild = pNode->InsertEndChild(newEntityNode);
-      if (pNodeChild != NULL) 
+      if (pNodeChild != NULL)
       {
         pCurEntity = getEntityByIndex(i);
         string entityFileName = pCurEntity->getLabel() + ".xml";
-       
+
         pElement = (TiXmlElement*)pNodeChild;
         pElement->SetAttribute(XML_ATTR_COORD_X,   (int)pCurEntity->getStepCoord().x);
         pElement->SetAttribute(XML_ATTR_COORD_Y,   (int)pCurEntity->getStepCoord().y);
@@ -2361,7 +2361,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     // Clear Previous Biotop
     deleteAllEntities();
     deleteAllMeasures();
-    deleteGrid(); 
+    deleteGrid();
 
     m_Dimension.x = sizeX;
     m_Dimension.y = sizeY;
@@ -2404,7 +2404,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     {
       if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_LAYER))
       {
-        pElement = (TiXmlElement*)pNode; 
+        pElement = (TiXmlElement*)pNode;
         if ( pElement->QueryIntAttribute(XML_ATTR_INDEX,  &layerIndex) == TIXML_NO_ATTRIBUTE)
           layerIndex = 0;
         if ( pElement->QueryStringAttribute(XML_ATTR_RAW_DATA,  &dataStr) != TIXML_NO_ATTRIBUTE)
@@ -2448,7 +2448,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     {
       if ((pNode->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNode->ValueStr() == XML_NODE_ENTITY))
       {
-        pElement = (TiXmlElement*)pNode; 
+        pElement = (TiXmlElement*)pNode;
         if ( pElement->QueryIntAttribute(XML_ATTR_COORD_X,  &stepCoordX) == TIXML_NO_ATTRIBUTE)
           stepCoord.x = invalidCoord;
         else
@@ -2481,7 +2481,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
             }
           }
           else
-          { 
+          {
             resuId = createAndAddEntity(entityFileName, pathNameForEntities, gridCoord);
             if (resuId != ENTITY_ID_INVALID)
             {
@@ -2597,26 +2597,26 @@ void CBiotop::logCpuMarkerEnd(BiotopCpuMarkerType_e markerId)
 // Get / Set for attributes
 //===========================================================================
 
-Point_t CBiotop::getDimension() 
+Point_t CBiotop::getDimension()
 {
   return (m_Dimension);
 }
 
-double CBiotop::getFertility(Point_t coord) 
+double CBiotop::getFertility(Point_t coord)
 {
   // coord may be used later
-  return m_pFertilityRate->getVal();    
+  return m_pFertilityRate->getVal();
 }
-   
-void CBiotop::setFertilityRate(int fertilityRate) 
+
+void CBiotop::setFertilityRate(int fertilityRate)
 {
-  m_pFertilityRate->setVal(fertilityRate);    
+  m_pFertilityRate->setVal(fertilityRate);
 }
-     
-double CBiotop::getRadioactivityRate() 
+
+double CBiotop::getRadioactivityRate()
 {
   // TBD: coord may be used later
-  return (m_pRadioactivity->getVal());    
+  return (m_pRadioactivity->getVal());
 }
 
 double CBiotop::getTemperature(Point_t coord, size_t layer)
@@ -2651,7 +2651,7 @@ double CBiotop::getTemperature(Point_t coord, size_t layer)
 
   return (computedTemperature);
 }
- 
+
 double CBiotop::getSunlight()
 {
   // TBD: Shadow may be used later
@@ -2685,11 +2685,11 @@ CGenericParam* CBiotop::getParamSunlight()
 CGenericParam* CBiotop::getParamRadioactivity()
 {
   return (m_pRadioactivity);
-} 
+}
 CGenericParam* CBiotop::getParamTemperature()
 {
   return (m_pTemperature);
-} 
+}
 
 CGenericParam* CBiotop::getParameter(size_t id)
 {
@@ -2714,10 +2714,10 @@ CGenericParam* CBiotop::getParameterByName(string& paramName)
   return (NULL);
 }
 
-double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor) 
+double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor)
 {
   // coord may be used later
-  return (m_tBioSquare[coord.x][coord.y].odorTrace[odor]);    
+  return (m_tBioSquare[coord.x][coord.y].odorTrace[odor]);
 }
 
 bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
@@ -2777,7 +2777,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
 COLORREF CBiotop::getCustomColor(Point_t coord)
 {
   // coord may be used later
-  return (m_tBioSquare[coord.x][coord.y].customColor);    
+  return (m_tBioSquare[coord.x][coord.y].customColor);
 }
 
 BiotopSquare_t** CBiotop::getpBioSquare()

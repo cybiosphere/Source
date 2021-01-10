@@ -237,11 +237,17 @@ namespace clan
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
     // If entity exist, update only if remoteControlled or manual mode
     if ((pEntity != NULL) && (forceEntityUpdate || pEntity->isRemoteControlled()))
-    {
-      float paramValue = 0;    
+    { 
       //log_event("events", "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
       if (pEntity->getLabel() != entityLabel)
+      {
         log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
+      }
+      if ((int)pEntity->getStatus() > status)
+      {
+        log_event("events", "Biotop update entity position %1: Unexpected status transition from %2 to %3", pEntity->getLabel(), (int)pEntity->getStatus(), status);
+        return pEntity;
+      }
       pEntity->setStatus((StatusType_e)status);
       pEntity->jumpToStepCoord(position, true, layer);
       pEntity->setStepDirection(direction, true);
@@ -253,6 +259,7 @@ namespace clan
       pEntity->setPheromone((PheromoneType_e)pheromon);
       pEntity->setAttributePresenceMask((DWORD)AttributeMask); 
       // Update parameters
+      float paramValue = 0;
       for (int i = 0; i < pEntity->getNumParameter(); i++)
       {
         paramValue = e.get_argument(index);

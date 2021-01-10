@@ -131,35 +131,35 @@ void Client::processBiotopEvents()
   BiotopEventPair eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
   while (eventPair.first != ENTITY_ID_INVALID)
   {
-    BiotopEvent_t& bioEvent{ eventPair.second };
+    BiotopEvent_t* bioEvent{ &eventPair.second };
     entityIdType entityId = eventPair.first;
-    if (bioEvent.pEntity)
+    if (bioEvent->pEntity)
     {
-      if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
+      if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
       {
-        send_event_remove_entity(bioEvent.pEntity, entityId);
+        send_event_remove_entity(bioEvent->pEntity, entityId);
 
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
       {
-        //send_event_update_entity_data(bioEvent.pEntity); // On client side, only on demand update
+        //send_event_update_entity_data(bioEvent->pEntity); // On client side, only on demand update
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
       {
-        if (!bioEvent.pEntity->isRemoteControlled())
+        if (!bioEvent->pEntity->isRemoteControlled())
         {
-          send_event_add_entity(bioEvent.pEntity);
+          send_event_add_entity(bioEvent->pEntity);
         }
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
       {
-        send_event_update_entity_physic(bioEvent.pEntity);
+        send_event_update_entity_physic(bioEvent->pEntity);
       }
       else
       {
-        if (!bioEvent.pEntity->isRemoteControlled())
+        if (!bioEvent->pEntity->isRemoteControlled())
         {
-          send_event_update_entity_position(bioEvent.pEntity);
+          send_event_update_entity_position(bioEvent->pEntity);
         }
       }
     }
@@ -219,11 +219,11 @@ void Client::on_disconnected()
 }
 
 // An event was received from server
-void Client::on_event_received(const NetGameEvent &e) 
+void Client::on_event_received(const NetGameEvent &e)
 {
 	//log_event("events", "Server sent event: %1", e.to_string());
 	bool handled_event = false;
-	
+
 	if(!logged_in)
 	{
 		// We haven't logged in, so route events to login dispatcher
@@ -261,26 +261,27 @@ void Client::on_event_login_fail(const NetGameEvent &e)
 }
 
 // "Game-LoadMap" event was received
-void Client::on_event_game_loadmap(const NetGameEvent &e) 
+void Client::on_event_game_loadmap(const NetGameEvent &e)
 {
   m_EventManager.handleEventCreateBiotop(e, m_pBiotop);
 }
 
 // "Game-Start" event was received
-void Client::on_event_game_startgame(const NetGameEvent &e) 
+void Client::on_event_game_startgame(const NetGameEvent &e)
 {
   //displayBiotopEntities();
+  int nextHourTimeOffset = e.get_argument(0);
   m_pBiotop->resetBiotopEventsMapCurrent();
   m_bBiotopConfigComplete = true;
-  m_pBiotop->setNextHourTimeOffset(10);
-  log_event("events", "Starting game!");
+  m_pBiotop->setNextHourTimeOffset(nextHourTimeOffset);
+  log_event("events", "Starting game! Time offset = %1", nextHourTimeOffset);
 }
 
 // "Biotop-Next second" event was received
-void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e) 
+void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
 {
   // Process event of previous second
-  processBiotopEvents(); 
+  processBiotopEvents();
 
   CustomType biotopTime = e.get_argument(0);
   m_biotopSpeed = e.get_argument(1);
@@ -298,7 +299,7 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
 }
 
 // "Biotop-Next second" event was received
-void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e) 
+void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
 {
   CustomType biotopTime = e.get_argument(0);
   m_lastEventTimeStamp = biotopTime.get_x();
@@ -332,12 +333,12 @@ void Client::on_event_biotop_addcloneentity(const NetGameEvent& e)
   m_EventManager.handleEventAddCloneEntity(e, m_pBiotop, true);
 }
 
-void Client::on_event_biotop_updatefullentity(const NetGameEvent &e) 
+void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
 {
   m_EventManager.handleEvenUpdateEntityData(e, m_pBiotop);
 }
 
-void Client::on_event_biotop_updateentityposition(const NetGameEvent &e) 
+void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
 {
   CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
 }

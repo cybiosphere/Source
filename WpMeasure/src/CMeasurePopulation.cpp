@@ -148,7 +148,7 @@ bool CMeasurePopulation::buildMeasureDataFromString(string dataString)
   else if ((label.find("Population biomass : ") != string::npos) && (m_SubType == MEASURE_POPULATION_SPECIFIC_BIOMASS))
   {
     // Update specie name
-    m_SpecieName = label.substr(13);
+    m_SpecieName = label.substr(21);
     m_Label = "Population biomass : " + m_SpecieName;
   }
   return resu;

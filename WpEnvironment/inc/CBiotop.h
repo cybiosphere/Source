@@ -302,7 +302,6 @@ public:
   size_t getNbOfSpecieEntities(string& SpecieName);
   double getSpecieBiomass(string& SpecieName);
 
-
 //---------------------------------------------------------------------------
 // Entities access
 //---------------------------------------------------------------------------
@@ -357,45 +356,42 @@ private:
 // Measure management
 //---------------------------------------------------------------------------
 public:
-   bool      addMeasureBiotopParam(BiotopParameterType_e type, int period, int id);
-   bool      addMeasureEntityParam(CBasicEntity* pEntity, int paramId, int period, int id);
-   bool      addMeasureFeeling(CBasicEntity* pEntity, int period, int id, MeasureFeelingType_e type);
-   bool      addMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type);
-   bool      addMeasurePopulation(int period, int id, MeasurePopulationType_e type, int maxVal, string SpecieName = "");
-   CMeasure* getMeasureById(int id);
-   CMeasure* getMeasureByIndex(size_t index);
-   size_t    getNbOfMeasures(void);
-   int       getUnusedMeasureId(int maxMeasureId);
-   void      replaceMeasure(int id, CMeasure* pMeasure);
-   bool      checkMeasureEvents();
-   void      saveAllMeasuresInFile(string fileNameWithPath);
-
-   bool      addGeoMapSpeciePopulation(std::string specieName);
-   size_t    getNbOfGeoMapSpecie(void);
-   CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
+  bool      addMeasureBiotopParam(BiotopParameterType_e type, int period, int id);
+  bool      addMeasureEntityParam(CBasicEntity* pEntity, int paramId, int period, int id);
+  bool      addMeasureFeeling(CBasicEntity* pEntity, int period, int id, MeasureFeelingType_e type);
+  bool      addMeasureReaction(CBasicEntity* pEntity, int reactionInd, int period, int id, MeasureReactionType_e type);
+  bool      addMeasurePopulation(int period, int id, MeasurePopulationType_e type, int maxVal, string SpecieName = "");
+  CMeasure* getMeasureById(int id);
+  CMeasure* getMeasureByIndex(size_t index);
+  size_t    getNbOfMeasures(void);
+  int       getUnusedMeasureId(int maxMeasureId);
+  void      replaceMeasure(int id, CMeasure* pMeasure);
+  bool      checkMeasureEvents();
+  void      saveAllMeasuresInFile(string fileNameWithPath);
+  bool      addGeoMapSpeciePopulation(std::string specieName);
+  size_t    getNbOfGeoMapSpecie(void);
+  CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
 
 //---------------------------------------------------------------------------
 // Event management
 //---------------------------------------------------------------------------
 public:
-   bool addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
-   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapCurrent();
-   BiotopEventPair getNextUnreadGuiBiotopEvent();
-   BiotopEventPair getNextUnreadNetworkBiotopEvent();
-   bool resetBiotopEventsMapCurrent();
+  bool addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pEntity);
+  BiotopEventPair getNextUnreadGuiBiotopEvent();
+  BiotopEventPair getNextUnreadNetworkBiotopEvent();
+  bool resetBiotopEventsMapCurrent();
 private:
-   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
+  std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapCurrent();
+  std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
 
 //---------------------------------------------------------------------------
 // Save/Load in file
 //---------------------------------------------------------------------------
 public:
-
   bool saveInXmlFile(string fileName, string pathName);
   bool saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntities=true);
   bool loadFromXmlFile(string fileName, string pathName);
   bool loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities);
-
 
 //---------------------------------------------------------------------------
 // Specific behaviors

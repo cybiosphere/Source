@@ -12,9 +12,9 @@
 CommandHandler_t ServerCmdNameList[SERVER_CMD_NUMBER] =
 {
 // cmd name                     cmd function                       help string
-  {"HELP",                      Server::CmdHelp,                   "HELP"}, 
-  {"STOP_BIOTOP",               Server::CmdStopBiotop,             "STOP_BIOTOP"}, 
-  {"START_BIOTOP",              Server::CmdStartBiotop,            "START_BIOTOP"}, 
+  {"HELP",                      Server::CmdHelp,                   "HELP"},
+  {"STOP_BIOTOP",               Server::CmdStopBiotop,             "STOP_BIOTOP"},
+  {"START_BIOTOP",              Server::CmdStartBiotop,            "START_BIOTOP"},
   {"SET_BIOTOP_SPEED",          Server::CmdSetBiotopSpeed,         "SET_BIOTOP_SPEED <speed int>"}
 };
 
@@ -68,28 +68,28 @@ void Server::processBiotopEvents()
     BiotopEventPair eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
     while (eventPair.first != ENTITY_ID_INVALID)
     {
-      BiotopEvent_t& bioEvent{ eventPair.second };
+      BiotopEvent_t* bioEvent{ &eventPair.second };
       entityIdType entityId = eventPair.first;
 
-      if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
+      if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_REMOVED))
       {
-        send_event_remove_entity(bioEvent.pEntity, entityId);
+        send_event_remove_entity(bioEvent->pEntity, entityId);
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
       {
-        send_event_update_entity_data(bioEvent.pEntity);
+        send_event_update_entity_data(bioEvent->pEntity);
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
       {
-        send_event_add_entity(bioEvent.pEntity);
+        send_event_add_entity(bioEvent->pEntity);
       }
-      else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
+      else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
       {
-        send_event_update_entity_physic(bioEvent.pEntity);
+        send_event_update_entity_physic(bioEvent->pEntity);
       }
       else
       {
-        send_event_update_entity_position(bioEvent.pEntity);
+        send_event_update_entity_position(bioEvent->pEntity);
       }
       eventPair = m_pBiotop->getNextUnreadNetworkBiotopEvent();
     }
@@ -229,7 +229,7 @@ bool Server::process_cmd_line(const std::string input_cmd_string)
       log_event("User cmd", "Invalid command");
     }
   }
-    
+
   return resu;
 }
 
@@ -389,8 +389,8 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       {
         // Store in clone entity map
         BiotopEntityPosition_t entityPos{ pCurEntity->getId(),
-                                          pCurEntity->getLayer(), 
-                                          pCurEntity->getStepCoord().x, 
+                                          pCurEntity->getLayer(),
+                                          pCurEntity->getStepCoord().x,
                                           pCurEntity->getStepCoord().y,
                                           pCurEntity->getStepDirection() };
         cloneEntitiesMap[prevEntityId].push_back(entityPos);
@@ -417,18 +417,20 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       send_event_create_specie_map(m_pBiotop->getGeoMapSpecieByIndex(i), user);
     }
 
+    int nextHourTimeOffsetForClient = 0;
     // If new coprocessor arrives, update all entities control
     if (user->isCoprocessor)
     {
       //ServerCoprocessor::reset_all_entities_control(m_pBiotop);
-      log_event("Events  ", "New coprocessor added. Update control");
+      nextHourTimeOffsetForClient = m_tCoprocessors.size() * 10;
+      log_event("Events  ", "New coprocessor added. Update control. Time offset = %1", nextHourTimeOffsetForClient);
       for (auto coprocess : m_tCoprocessors)
       {
         coprocess.assign_all_entities_control();
       }
     }
 
-	  user->send_event(NetGameEvent(labelEventStart));
+	  user->send_event(NetGameEvent(labelEventStart, nextHourTimeOffsetForClient));
   }
 
   // Restore biotop time
