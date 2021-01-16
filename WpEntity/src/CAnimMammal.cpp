@@ -850,6 +850,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   {
     return (false);
   }
+ 
   // Chose a number between 0 to 10
   int childNb = getRandInt(10);
   // If out of range, give nominal value
@@ -864,6 +865,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
                  childNb, getSpecieName().c_str(), getLabel().c_str(), partner->getLabel().c_str());
 
   CBasicEntity* pGestationChild = NULL;
+  deleteAllGestationChilds();
   for(int i=0; i<childNb; i++)
   {
     string childLabel;
@@ -942,6 +944,38 @@ bool CAnimMammal::deliverAllBabies()
 
   return (true);
 }
+
+//---------------------------------------------------------------------------
+// METHOD:       CAnimMammal::checkBabyNumberAndAdjustGestationChildsTable
+//  
+// DESCRIPTION:  Check the coherency between GestationNumber parameter and m_tGestationChilds
+// 
+// ARGUMENTS:    None
+//   
+// RETURN VALUE: bool : false if an error occured
+//  
+// REMARKS:      None
+//---------------------------------------------------------------------------
+bool CAnimMammal::checkCoherenceAndAdjustBabyNumberParam()
+{
+  int nbBabies = getGestationBabyNumber();
+  if ((nbBabies == 0) && (m_tGestationChilds.size() > 0))
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("MAMMAL - Reproduction : %s gestation childs deleted but not delivered\n", getLabel().c_str());
+    deleteAllGestationChilds();
+    return false;
+  }
+  else if (nbBabies != m_tGestationChilds.size())
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("MAMMAL - Reproduction : %s gestation baby number forced to fit to gestation table\n", getLabel().c_str());
+    setGestationBabyNumber(m_tGestationChilds.size());
+    return false;
+  }
+  return true;
+}
+
 
 //===========================================================================
 // Get / Set for attributes

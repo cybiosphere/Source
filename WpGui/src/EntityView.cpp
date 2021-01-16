@@ -32,6 +32,7 @@ distribution.
 #include "EntityView.h"
 #include "EntityEditorDlg.h"
 #include "CPhysicalWelfare.h"
+#include "CAnimMammal.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -479,6 +480,10 @@ void CEntityView::OnEdit()
     dlg.DoModal();
     // Refresh label
     m_Label = m_pEntity->getLabel().c_str();
+    if (m_pEntity->getClass() == CLASS_MAMMAL)
+    {
+      ((CAnimMammal*)m_pEntity)->checkCoherenceAndAdjustBabyNumberParam();
+    }
     UpdateData(false);
   }
   theApp.refreshSelectedEntity(m_pEntity);

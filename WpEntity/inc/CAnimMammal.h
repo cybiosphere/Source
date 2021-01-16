@@ -62,7 +62,6 @@ private:
   size_t m_id_GestationTime;
   size_t m_id_GestationNumberRange;
 
-
 //===========================================================================
 // methods 
 //===========================================================================
@@ -115,7 +114,8 @@ public:
   bool ExecuteEatAction(int relLayer, double successSatisfactionFactor, double failureFrustrationFactor);
   bool ExecuteCopulateAction(double successSatisfactionFactor, double failureFrustrationFactor);
   bool deliverAllBabies();
-  
+  bool checkCoherenceAndAdjustBabyNumberParam();
+
 protected:
   bool reproductWith(CAnimMammal* partner);
 

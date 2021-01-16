@@ -652,7 +652,7 @@ size_t CBiotop::getNbOfSpecieEntities(string& SpecieName)
   for (CBasicEntity* pEntity : m_tEntity)
   {
     pCurGenome = pEntity->getGenome();
-    if ( (pCurGenome!=NULL) && (pCurGenome->getSpecieName()== SpecieName) && (pEntity->isAlive()) )
+    if ((pCurGenome!=NULL) && (pCurGenome->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
       tempCount++;
   }
 
@@ -667,7 +667,7 @@ double CBiotop::getSpecieBiomass(string& SpecieName)
   for (CBasicEntity* pEntity : m_tEntity)
   {
     pCurGenome = pEntity->getGenome();
-    if ((pCurGenome != NULL) && (pCurGenome->getSpecieName() == SpecieName) && (pEntity->isAlive()))
+    if ((pCurGenome != NULL) && (pCurGenome->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
       tempCount += pEntity->getWeight();
   }
 
