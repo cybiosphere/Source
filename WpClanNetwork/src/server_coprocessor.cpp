@@ -3,6 +3,7 @@
 
 using namespace clan;
 #include "server_coprocessor.h"
+#include "event_definitions.h"
 #include "clan_server.h"
 #include "CAnimMammal.h"
 
@@ -80,7 +81,7 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity)
   // Do not change control for pregnant animals
   if ((pEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pEntity)->getGestationBabyNumber() > 0))
   {
-    //log_event("Server", "Skip Transfer control for pregnant animal");
+    //log_event(labelServer, "Skip Transfer control for pregnant animal");
     return;
   }
 
@@ -94,7 +95,7 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity)
     if (!isEntityInExtendedZone(pEntity))
     {
       // Transfer control from coprocessor to server
-      log_event("Server", "Transfer control from coprocessor to server entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
+      log_event(labelServer, "Transfer control from coprocessor to server entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
       m_pServer->send_event_request_entity_refresh(pEntity, m_pUser);
       m_pServer->send_event_change_remote_control(pEntity, true, m_pUser);  
       pEntity->setRemoteControlled(false);
@@ -105,7 +106,7 @@ void ServerCoprocessor::update_entity_control(CBasicEntity* pEntity)
     if (isEntityInExclusiveZone(pEntity))
     {
       // Transfer control from server to coprocessor
-      log_event("Server", "Transfer control from server to coprocessor entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
+      log_event(labelServer, "Transfer control from server to coprocessor entiy %1 ID %2", pEntity->getLabel(), (int)pEntity->getId());
       m_pServer->send_event_update_entity_data(pEntity, m_pUser);
       m_pServer->send_event_change_remote_control(pEntity, false, m_pUser);
       pEntity->setRemoteControlled(true);

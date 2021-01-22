@@ -63,7 +63,7 @@ Client::~Client()
 
 void Client::exec()
 {
-	log_event("system", "CLIENT started. Connect to server " + m_ServerAddr + " port:" + m_PortId);
+	log_event(labelAttach, "CLIENT started. Connect to server " + m_ServerAddr + " port:" + m_PortId);
 
   //std::string serverAddr = "192.168.1.14"; //"localhost"; //"192.168.1.67"
   //std::string portId     = "4556";
@@ -76,7 +76,7 @@ void Client::exec()
   }
   if (logged_in != true)
   {
-    log_event("Server connection:", "FAILED");
+    log_event(labelAttach, "Connection FAILED");
     System::sleep(1000);
     return;
   }
@@ -95,7 +95,7 @@ void Client::exec()
     {
       int var1 = -1;
       int var2 = -1;
-      log_event("Input command:", inputcommand);
+      log_event(labelInput, inputcommand);
       CScenarioPlayer::ExecuteCmd(m_pBiotop, inputcommand, "C:\\temp", var1, var2, ClientCmdNameList, CLIENT_CMD_NUMBER);
     }
 	}
@@ -110,7 +110,7 @@ void Client::connect_to_server()
 	}
 	catch(const clan::Exception &e)
 	{
-		log_event("error", e.message);
+		log_event(labelError, e.message);
 	}
 }
 
@@ -122,7 +122,7 @@ void Client::disconnect_from_server()
 	}
 	catch(const clan::Exception &e)
 	{
-		log_event("error", e.message);
+		log_event(labelError, e.message);
 	}
 }
 
@@ -205,7 +205,7 @@ float Client::get_biotop_speed()
 // Successfully connected to server
 void Client::on_connected()
 {
-	log_event("network", "Connected to server");
+	log_event(labelAttach, "Connected to server");
 
 	// Properly login
 	network_client.send_event(NetGameEvent(labelEventLogin, m_LoginName));
@@ -214,14 +214,14 @@ void Client::on_connected()
 // Disconnected from server
 void Client::on_disconnected()
 {
-	log_event("network", "Disconnected from server");
+	log_event(labelAttach, "Disconnected from server");
 	quit = true;
 }
 
 // An event was received from server
 void Client::on_event_received(const NetGameEvent &e)
 {
-	//log_event("events", "Server sent event: %1", e.to_string());
+	//log_event(labelClient, "Server sent event: %1", e.to_string());
 	bool handled_event = false;
 
 	if(!logged_in)
@@ -238,14 +238,14 @@ void Client::on_event_received(const NetGameEvent &e)
 	if(!handled_event)
 	{
 		// We received an event which we didn't hook up
-		log_event("events", "Unhandled event: %1", e.to_string());
+		log_event(labelClient, "Unhandled event: %1", e.to_string());
 	}
 }
 
 // "Login-Success" event was received
 void Client::on_event_login_success(const NetGameEvent &e)
 {
-	log_event("events", "Login success");
+	log_event(labelLogin, "Login success");
 
 	logged_in = true;
 
@@ -257,7 +257,7 @@ void Client::on_event_login_fail(const NetGameEvent &e)
 {
 	std::string fail_reason = e.get_argument(0);
 
-	log_event("events", "Login failed: %1", fail_reason);
+	log_event(labelLogin, "Login failed: %1", fail_reason);
 }
 
 // "Game-LoadMap" event was received
@@ -274,7 +274,7 @@ void Client::on_event_game_startgame(const NetGameEvent &e)
   m_pBiotop->resetBiotopEventsMapCurrent();
   m_bBiotopConfigComplete = true;
   m_pBiotop->setNextHourTimeOffset(nextHourTimeOffset);
-  log_event("events", "Starting game! Time offset = %1", nextHourTimeOffset);
+  log_event(labelLogin, "Starting game! Time offset = %1", nextHourTimeOffset);
 }
 
 // "Biotop-Next second" event was received
@@ -295,7 +295,7 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   m_pBiotop->getParamTemperature()->forceVal(temperature);
   m_pBiotop->nextSecond(false);
   send_event_new_second_end();
-	//log_event("events", "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+	//log_event(labelClient, "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
 // "Biotop-Next second" event was received
@@ -303,7 +303,7 @@ void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
 {
   CustomType biotopTime = e.get_argument(0);
   m_lastEventTimeStamp = biotopTime.get_x();
-	//log_event("events", "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
+	//log_event(labelClient, "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
   m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
   m_bEventNextSecondEnd = true;
   m_pBiotop->triggerMeasuresNextSecond();
@@ -387,11 +387,11 @@ void Client::on_event_biotop_requestentityrefresh(const NetGameEvent& e)
 void Client::displayBiotopEntities()
 {
   CBasicEntity* pEntity;
-  log_event("INFO", "Biotop display:");
+  log_event(labelInfo, "Biotop display:");
   for (int i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
     pEntity = m_pBiotop->getEntityByIndex(i);
-    log_event("INFO", "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
+    log_event(labelInfo, "%1 pos %2 %3 dir%4", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection());
   }
 }
 
@@ -405,7 +405,7 @@ bool Client::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* un
   int i;
   for (i = 0; i<CLIENT_CMD_NUMBER; i++)
   {
-    log_event("Client cmd", ClientCmdNameList[i].helpString);
+    log_event(labelInfo, ClientCmdNameList[i].helpString);
   }
   return true;
 }
@@ -416,7 +416,7 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
   for (int i = 0; i<pBiotop->getNbOfEntities(); i++)
   {
     pEntity = pBiotop->getEntityByIndex(i);
-    log_event("INFO", "%1 pos %2 %3 dir%4 ID=%5", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection(), (int)(pEntity->getId()));
+    log_event(labelInfo, "%1 pos %2 %3 dir%4 ID=%5", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getDirection(), (int)(pEntity->getId()));
   }
   return true;
 }
@@ -425,19 +425,19 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
 {
   if (pEntity == NULL)
   {
-    log_event("Events  ", "Add entity: NULL entity");
+    log_event(labelClient, "Add entity: NULL entity");
     return;
   }
   if (pEntity->isToBeRemoved())
   {
-    log_event("Events  ", "Add removed entity: %1", pEntity->getLabel());
+    log_event(labelClient, "Add removed entity: %1", pEntity->getLabel());
     return;
   }
   if (pEntity->isRemoteControlled())
   {
     return;
   }
-  log_event("Events  ", "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+  log_event(labelClient, "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))
   {
@@ -448,13 +448,13 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+    log_event(labelError, "send_event_update_entity_data: Event not sent");
   }
 }
 
 void Client::send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions)
 {
-  //log_event("Events  ", "Add clone entities");
+  //log_event(labelClient, "Add clone entities");
   std::vector<NetGameEvent> eventVector;
   if (event_manager::event_manager::buildEventsAddCloneEntities(modelEntityId, vectPositions, eventVector))
   {
@@ -465,7 +465,7 @@ void Client::send_events_add_clone_entities(entityIdType modelEntityId, std::vec
   }
   else
   {
-    log_event("-ERROR- ", "send_events_add_clone_entities: Event not sent");
+    log_event(labelError, "send_events_add_clone_entities: Event not sent");
   }
 }
 
@@ -473,16 +473,16 @@ void Client::send_event_update_entity_data(CBasicEntity* pEntity)
 {
   if (pEntity == NULL)
   {
-    log_event("Events  ", "Update entity data: NULL entity");
+    log_event(labelClient, "Update entity data: NULL entity");
     return;
   }
   if (pEntity->isToBeRemoved())
   {
-    log_event("Events  ", "Update removed entity: %1", pEntity->getLabel());
+    log_event(labelClient, "Update removed entity: %1", pEntity->getLabel());
     return;
   }
 
-  log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
+  log_event(labelClient, "Update entity data: %1", pEntity->getLabel());
 
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsUpdateEntityData(pEntity, eventVector))
@@ -494,7 +494,7 @@ void Client::send_event_update_entity_data(CBasicEntity* pEntity)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+    log_event(labelError, "send_event_update_entity_data: Event not sent");
   }
 }
 
@@ -502,7 +502,7 @@ void Client::send_event_update_entity_position(CBasicEntity* pEntity)
 {
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    log_event("Events  ", "Update entity position: NULL or removed");
+    log_event(labelClient, "Update entity position: NULL or removed");
     return;
   }
   NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPos) };
@@ -513,7 +513,7 @@ void Client::send_event_update_entity_physic(CBasicEntity* pEntity)
 {
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    log_event("Events  ", "Update entity physic: NULL or removed");
+    log_event(labelClient, "Update entity physic: NULL or removed");
     return;
   }
   NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPhy) };
@@ -522,14 +522,14 @@ void Client::send_event_update_entity_physic(CBasicEntity* pEntity)
 
 void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId)
 {
-  log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
+  log_event(labelClient, "Remove entity: %1 ID %2", pEntity->getLabel(), entityId);
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   network_client.send_event(bioRemoveEntityEvent);
 }
 
 void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode)
 {
-  log_event("Events  ", "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
+  log_event(labelClient, "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
   m_biotopSpeed = newBiotopSpeed;
   m_bManualMode = isManualMode;
   NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
@@ -538,7 +538,7 @@ void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bo
 
 void Client::send_event_force_entity_action(const entityIdType entityId, const int actionIndex)
 {
-  log_event("Events  ", "Force entity action: Id %1 reaction: %2", (int)entityId, actionIndex);
+  log_event(labelClient, "Force entity action: Id %1 reaction: %2", (int)entityId, actionIndex);
   NetGameEvent bioForceActionEvent{ event_manager::buildEventForceEntityAction(entityId, actionIndex) };
   network_client.send_event(bioForceActionEvent);
 }
@@ -547,11 +547,11 @@ void Client::send_event_create_measure(CMeasure* pMeasure)
 {
   if (pMeasure == NULL)
   {
-    log_event("Events  ", "Create measure: NULL measure");
+    log_event(labelClient, "Create measure: NULL measure");
     return;
   }
 
-  log_event("Events  ", "Create measure: %1", pMeasure->GetLabel());
+  log_event(labelClient, "Create measure: %1", pMeasure->GetLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsCreateMeasure(pMeasure, eventVector))
   {
@@ -562,13 +562,13 @@ void Client::send_event_create_measure(CMeasure* pMeasure)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_create_measure: Event not sent");
+    log_event(labelError, "send_event_create_measure: Event not sent");
   }
 }
 
 void Client::send_event_request_entity_refresh(CBasicEntity* pEntity)
 {
-  log_event("Events  ", "Request entity refresh: label %1", pEntity->getLabel());
+  log_event(labelClient, "Request entity refresh: label %1", pEntity->getLabel());
   NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
   network_client.send_event(bioReqActionRefresh);
 }
@@ -577,11 +577,11 @@ void Client::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
 {
   if (generator.pModelEntity == NULL)
   {
-    log_event("Events  ", "Add entity spwaner: NULL entity");
+    log_event(labelClient, "Add entity spwaner: NULL entity");
     return;
   }
 
-  log_event("Events  ", "Add entity spwaner: %1", generator.pModelEntity->getLabel());
+  log_event(labelClient, "Add entity spwaner: %1", generator.pModelEntity->getLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntitySpawner(index, generator, eventVector))
   {
@@ -592,7 +592,7 @@ void Client::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
   }
   else
   {
-    log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
+    log_event(labelError, "send_event_add_entity_spawner: Event not sent");
   }
 }
 
@@ -600,11 +600,11 @@ void Client::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie)
 {
   if (pGeoMapSpecie == NULL)
   {
-    log_event("Events  ", "Create specie Map : NULL map");
+    log_event(labelClient, "Create specie Map : NULL map");
     return;
   }
 
-  log_event("Events  ", "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
+  log_event(labelClient, "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsCreateGeoMapSpecie(pGeoMapSpecie, eventVector))
   {
@@ -615,7 +615,7 @@ void Client::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
+    log_event(labelError, "send_event_create_specie_map: Event not sent");
   }
 }
 

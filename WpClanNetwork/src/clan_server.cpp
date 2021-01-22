@@ -57,7 +57,7 @@ Server::~Server()
 void Server::startServer()
 {
   network_server.start(serverPortStr);
-  log_event("System  ", "SERVER started on port " + serverPortStr);
+  log_event(labelServer, "SERVER started on port " + serverPortStr);
 }
 
 void Server::processBiotopEvents()
@@ -104,7 +104,7 @@ void Server::exec()
 
 	network_server.start(serverPortStr);
 
-	log_event("System  ", "SERVER started on port " + serverPortStr);
+	log_event(labelServer, "SERVER started on port " + serverPortStr);
 	while (true)
 	{
 		// Lets not worry about exiting this function!
@@ -134,7 +134,7 @@ void Server::exec()
       bool resu = log_get_console_input(inputcommand);
       if (resu)
       {
-        log_event("User cmd", inputcommand);
+        log_event(labelInput, inputcommand);
         process_cmd_line(inputcommand);
       }
     }
@@ -154,7 +154,7 @@ bool Server::checkAllCoprocessorCompleteSecond()
   {
     if (coprocess.checkNextSecondComplete() == false)
     {
-      //log_event("network ", "Latency: waiting for coprocessor");
+      //log_event(labelServer, "Latency: waiting for coprocessor");
       return false;
     }
   }
@@ -162,7 +162,7 @@ bool Server::checkAllCoprocessorCompleteSecond()
   for (auto coprocess : m_tCoprocessors)
   {
     coprocess.forceNextSecondComplete(false);
-    //log_event("network ", "Latency: coprocessor complete OK");
+    //log_event(labelServer, "Latency: coprocessor complete OK");
   }
   return true;
 }
@@ -221,12 +221,12 @@ bool Server::process_cmd_line(const std::string input_cmd_string)
       if (var1>=0)
       {
         m_biotopSpeed = (float)var1;
-        log_event("User cmd", "Biotop speed set to %1", var1);
+        log_event(labelInput, "Biotop speed set to %1", var1);
       }
     }
     else
     {
-      log_event("User cmd", "Invalid command");
+      log_event(labelInput, "Invalid command");
     }
   }
 
@@ -237,7 +237,7 @@ bool Server::process_cmd_line(const std::string input_cmd_string)
 // A new client is connecting
 void Server::on_client_connected(NetGameConnection *connection)
 {
-	log_event("Network ", "Client connected");
+	log_event(labelServer, "Client connected");
 
 	// Create user and attach it to connection
 	ServerUser *user = new ServerUser();
@@ -247,7 +247,7 @@ void Server::on_client_connected(NetGameConnection *connection)
 // A client disconnected
 void Server::on_client_disconnected(NetGameConnection *connection, const std::string &message)
 {
-	log_event("Network ", "Client disconnected");
+	log_event(labelServer, "Client disconnected");
 
 	ServerUser *user = ServerUser::get_user(connection);
   if (user)
@@ -263,7 +263,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
           break;
         }
       }
-      log_event("Events  ", "Coprocessor removed. Update control");
+      log_event(labelServer, "Coprocessor removed. Update control");
       ServerCoprocessor::reset_all_entities_control(m_pBiotop);
       for (auto coprocess : m_tCoprocessors)
       {
@@ -278,7 +278,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
 // An event was received from a client
 void Server::on_event_received(NetGameConnection *connection, const NetGameEvent &e)
 {
-	//log_event("Events  ", "Client sent event: %1", e.to_string());
+	//log_event(labelServer, "Client sent event: %1", e.to_string());
 	ServerUser *user = ServerUser::get_user(connection);
 	if(user)
 	{
@@ -298,7 +298,7 @@ void Server::on_event_received(NetGameConnection *connection, const NetGameEvent
 		if (!handled_event)
 		{
 			// We received an event which we didn't hook up
-			log_event("Events  ", "Unhandled event: %1", e.to_string());
+			log_event(labelServer, "Unhandled event: %1", e.to_string());
 		}
 	}
 }
@@ -310,7 +310,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 
 	if(user_name.length() == 0)
 	{
-    log_event("Events  ", "Client requested login error : Missing user name");
+    log_event(labelServer, "Client requested login error : Missing user name");
 		user->send_event(NetGameEvent(labelEventLoginKo,  "Missing user name"));
 	}
 	else
@@ -336,7 +336,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
       }
       else
       {
-        log_event("Server  ", "Too many coprocessors. Set user as simple client");
+        log_event(labelServer, "Too many coprocessors. Set user as simple client");
         user->isCoprocessor = false;
       }
     }
@@ -344,7 +344,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
     {
       user->isCoprocessor = false;
     }
-    log_event("Events  ", "Client requested login: " + user_name);
+    log_event(labelServer, "Client requested login: " + user_name);
 		user->send_event(NetGameEvent(labelEventLoginOk));
 	}
 }
@@ -352,7 +352,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 // "Game-RequestStartGame" event was received
 void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 {
-	log_event("Events  ", "Client requested game start");
+	log_event(labelServer, "Client requested game start");
   nb_users_connected++;
 
   // Freeze biotop time during new player configuration
@@ -423,7 +423,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     {
       //ServerCoprocessor::reset_all_entities_control(m_pBiotop);
       nextHourTimeOffsetForClient = m_tCoprocessors.size() * 10;
-      log_event("Events  ", "New coprocessor added. Update control. Time offset = %1", nextHourTimeOffsetForClient);
+      log_event(labelServer, "New coprocessor added. Update control. Time offset = %1", nextHourTimeOffsetForClient);
       for (auto coprocess : m_tCoprocessors)
       {
         coprocess.assign_all_entities_control();
@@ -538,16 +538,16 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
 {
   if (pEntity == NULL)
   {
-    log_event("Events  ", "Send event Add entity: NULL entity");
+    log_event(labelError, "Send event Add entity: NULL entity");
     return;
   }
   if (pEntity->isToBeRemoved())
   {
-    log_event("Events  ", "Send event Add removed entity: %1", pEntity->getLabel());
+    log_event(labelServer, "Send event Add removed entity: %1", pEntity->getLabel());
     return;
   }
 
-  log_event("Events  ", "Send event Add entity: %1", pEntity->getLabel());
+  log_event(labelServer, "Send event Add entity: %1", pEntity->getLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))
   {
@@ -561,7 +561,7 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_add_entity: Event not sent");
+    log_event(labelError, "send_event_add_entity: Event not sent");
   }
 
   if (pEntity && (m_tCoprocessors.size() > 0))
@@ -575,7 +575,7 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
 
 void Server::send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, ServerUser* user)
 {
-  //log_event("Events  ", "Add clone entites");
+  //log_event(labelServer, "Add clone entites");
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddCloneEntities(modelEntityId, vectPositions, eventVector))
   {
@@ -589,7 +589,7 @@ void Server::send_events_add_clone_entities(entityIdType modelEntityId, std::vec
   }
   else
   {
-    log_event("-ERROR- ", "send_events_add_clone_entities: Event not sent");
+    log_event(labelError, "send_events_add_clone_entities: Event not sent");
   }
 }
 
@@ -597,16 +597,16 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
 {
   if (pEntity == NULL)
   {
-  	log_event("Events  ", "Update entity data: NULL entity");
+  	log_event(labelServer, "Update entity data: NULL entity");
     return;
   }
   if (pEntity->isToBeRemoved())
   {
-    log_event("Events  ", "Update removed entity: %1", pEntity->getLabel());
+    log_event(labelServer, "Update removed entity: %1", pEntity->getLabel());
     return;
   }
 
-	log_event("Events  ", "Update entity data: %1", pEntity->getLabel());
+	log_event(labelServer, "Update entity data: %1", pEntity->getLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsUpdateEntityData(pEntity, eventVector))
   {
@@ -620,7 +620,7 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   }
   else
   {
-    log_event("-ERROR- ", "send_event_update_entity_data: Event not sent");
+    log_event(labelError, "send_event_update_entity_data: Event not sent");
   }
 }
 
@@ -628,7 +628,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
 {
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-  	log_event("Events  ", "Update entity position: NULL or removed");
+  	log_event(labelServer, "Update entity position: NULL or removed");
     return;
   }
 
@@ -651,7 +651,7 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
 {
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    log_event("Events  ", "Update entity physic: NULL or removed");
+    log_event(labelServer, "Update entity physic: NULL or removed");
     return;
   }
   NetGameEvent bioUpdateEntityPosEvent{ event_manager::buildEventUpdateEntityPos(pEntity, labelEventUpdateEntityPhy) };
@@ -671,7 +671,7 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
 
 void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
 {
-  log_event("Events  ", "Remove entity: %1", pEntity->getLabel());
+  log_event(labelServer, "Remove entity: %1 ID %2", pEntity->getLabel(), entityId);
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioRemoveEntityEvent);
@@ -683,11 +683,11 @@ void Server::send_event_create_measure(CMeasure* pMeasure, ServerUser* user)
 {
   if (pMeasure == NULL)
   {
-    log_event("Events  ", "Create measure: NULL measure");
+    log_event(labelServer, "Create measure: NULL measure");
     return;
   }
 
-  log_event("Events  ", "Create measure: %1", pMeasure->GetLabel());
+  log_event(labelServer, "Create measure: %1", pMeasure->GetLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsCreateMeasure(pMeasure, eventVector))
   {
@@ -701,7 +701,7 @@ void Server::send_event_create_measure(CMeasure* pMeasure, ServerUser* user)
   }
   else
   {
-    log_event("-ERROR- ", "send_event_create_measure: Event not sent");
+    log_event(labelError, "send_event_create_measure: Event not sent");
   }
 }
 
@@ -709,11 +709,11 @@ void Server::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
 {
   if (generator.pModelEntity == NULL)
   {
-    log_event("Events  ", "Add entity spwaner: NULL entity");
+    log_event(labelServer, "Add entity spwaner: NULL entity");
     return;
   }
 
-  log_event("Events  ", "Add entity spwaner: %1", generator.pModelEntity->getLabel());
+  log_event(labelServer, "Add entity spwaner: %1", generator.pModelEntity->getLabel());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntitySpawner(index, generator, eventVector))
   {
@@ -727,7 +727,7 @@ void Server::send_event_add_entity_spawner(int index, BiotopRandomEntitiyGenerat
   }
   else
   {
-    log_event("-ERROR- ", "send_event_add_entity_spawner: Event not sent");
+    log_event(labelError, "send_event_add_entity_spawner: Event not sent");
   }
 }
 
@@ -735,11 +735,11 @@ void Server::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, Serv
 {
   if (pGeoMapSpecie == NULL)
   {
-    log_event("Events  ", "Create specie Map : NULL map");
+    log_event(labelServer, "Create specie Map : NULL map");
     return;
   }
 
-  log_event("Events  ", "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
+  log_event(labelServer, "Create map specie: %1", pGeoMapSpecie->GetSpecieName());
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsCreateGeoMapSpecie(pGeoMapSpecie, eventVector))
   {
@@ -753,13 +753,13 @@ void Server::send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, Serv
   }
   else
   {
-    log_event("-ERROR- ", "send_event_create_specie_map: Event not sent");
+    log_event(labelError, "send_event_create_specie_map: Event not sent");
   }
 }
 
 void Server::send_event_change_remote_control(CBasicEntity* pEntity, bool setRemoteControl, ServerUser* user)
 {
-  //log_event("Events  ", "Change entity remote control: %1 setControl: %2", pEntity->getLabel(), setRemoteControl);
+  //log_event(labelServer, "Change entity remote control: %1 setControl: %2", pEntity->getLabel(), setRemoteControl);
   NetGameEvent bioChangeCtrlEntityEvent{ event_manager::buildEventChangeEntityRemoteControl(pEntity->getId(), setRemoteControl) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioChangeCtrlEntityEvent);
@@ -769,7 +769,7 @@ void Server::send_event_change_remote_control(CBasicEntity* pEntity, bool setRem
 
 void Server::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user)
 {
-  log_event("Events  ", "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
+  //log_event(labelServer, "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
   m_biotopSpeed = newBiotopSpeed;
   m_bManualMode = isManualMode;
   NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
@@ -801,7 +801,7 @@ void Server::send_event_new_second_end(ServerUser* user)
 
 void Server::send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user)
 {
-  log_event("Events  ", "Request entity refresh: label %1", pEntity->getLabel());
+  log_event(labelServer, "Request entity refresh: label %1", pEntity->getLabel());
   NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioReqActionRefresh);
@@ -814,7 +814,7 @@ bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* un
   int i;
   for (i=0; i<SERVER_CMD_NUMBER; i++)
   {
-    log_event("Server cmd", ServerCmdNameList[i].helpString);
+    log_event(labelInfo, ServerCmdNameList[i].helpString);
   }
   string bioCmdStr = "";
   for (i=0; i<100; i++)
@@ -822,7 +822,7 @@ bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* un
     bioCmdStr = CScenarioPlayer::GetHelpCmdString(i);
     if (bioCmdStr != "")
     {
-      log_event("Biotop cmd", bioCmdStr);
+      log_event(labelInfo, bioCmdStr);
     }
   }
   return true;

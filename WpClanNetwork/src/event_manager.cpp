@@ -34,7 +34,7 @@ namespace clan
       TiXmlDocument xmlDoc;
       xmlDoc.Parse(xmlBuffer.get_data());
       pBiotop->loadFromXmlFile(&xmlDoc, "");
-      log_event("events", "Loading biotop: %1, Size %2,%3,%4", pBiotop->getLabel(), pBiotop->getDimension().x, pBiotop->getDimension().y, pBiotop->getNbLayer());
+      log_event(labelEvent, "Loading biotop: %1, Size %2,%3,%4", pBiotop->getLabel(), pBiotop->getDimension().x, pBiotop->getDimension().y, pBiotop->getNbLayer());
     }
   }
 
@@ -104,7 +104,7 @@ namespace clan
     int modelEntityId = e.get_argument(1);
     int index = 2;
     CBasicEntity* pModelEntity = pBiotop->getEntityById(modelEntityId);
-    //log_event("events", "handleEventAddCloneEntity nbEntityPosInEvent: %1 modelId=%2", nbEntityPosInEvent, modelEntityId);
+    //log_event(labelEvent, "handleEventAddCloneEntity nbEntityPosInEvent: %1 modelId=%2", nbEntityPosInEvent, modelEntityId);
     if (pModelEntity == NULL)
     {
       return false;
@@ -190,7 +190,7 @@ namespace clan
     newEvent.add_argument((int)pEntity->getOdor());
     newEvent.add_argument((int)pEntity->getPheromone());
     newEvent.add_argument((int)pEntity->getAttributePresenceMask());
-    //log_event("events", "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
+    //log_event(labelEvent, "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
     // Add parameters
     for (int i = 0; i < pEntity->getNumParameter(); i++)
     {
@@ -211,7 +211,7 @@ namespace clan
   {
     if (e.get_argument_count() < 8)
     {
-      log_event("events", "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
+      log_event(labelEvent, "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
       return false;
     }
     int entityId = e.get_argument(0);
@@ -238,14 +238,14 @@ namespace clan
     // If entity exist, update only if remoteControlled or manual mode
     if ((pEntity != NULL) && (forceEntityUpdate || pEntity->isRemoteControlled()))
     { 
-      //log_event("events", "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
+      //log_event(labelEvent, "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
       if (pEntity->getLabel() != entityLabel)
       {
-        log_event("events", "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
+        log_event(labelEvent, "Biotop update entity position: entityID %1 label mistmatch %2 expected %3", entityId, pEntity->getLabel(), entityLabel);
       }
       if ((int)pEntity->getStatus() > status)
       {
-        log_event("events", "Biotop update entity position %1: Unexpected status transition from %2 to %3", pEntity->getLabel(), (int)pEntity->getStatus(), status);
+        log_event(labelEvent, "Biotop update entity position %1: Unexpected status transition from %2 to %3", pEntity->getLabel(), (int)pEntity->getStatus(), status);
         return pEntity;
       }
       pEntity->setStatus((StatusType_e)status);
@@ -299,13 +299,13 @@ namespace clan
 
     if ((pEntity != NULL) && (entityLabel == pEntity->getLabel()))
     {
-      log_event("events", "Biotop remove entity: entityID %1 label %2", entityId, pEntity->getLabel());
+      //log_event(labelEvent, "Biotop remove entity: entityID %1 label %2", entityId, pEntity->getLabel());
       pEntity->autoRemove();
       return true;
     }
     else
     {
-      //log_event("events", "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
+      //log_event(labelEvent, "Biotop remove entity: Error entityID %1 label expected %2", entityId, entityLabel);
       return false;
     }
   }
@@ -323,7 +323,7 @@ namespace clan
     newBiotopSpeed = e.get_argument(0);
     int manualMode = e.get_argument(1);
     isManualMode = manualMode;
-    log_event("events", "Biotop speed change: %1 isManual%2", newBiotopSpeed, isManualMode);
+    log_event(labelEvent, "Biotop speed change: %1 isManual%2", newBiotopSpeed, isManualMode);
     return true;
   }
 
@@ -339,7 +339,7 @@ namespace clan
   {
     int entityId = e.get_argument(0);
     int actionIndex = e.get_argument(1);
-    log_event("events", "ForceEntityAction: entity%1 actionIndex%2", entityId, actionIndex);
+    log_event(labelEvent, "ForceEntityAction: entity%1 actionIndex%2", entityId, actionIndex);
     return pBiotop->forceEntityAction(entityId, actionIndex);
   }
 
@@ -385,7 +385,7 @@ namespace clan
   {
     int entityId = e.get_argument(0);
     string label = e.get_argument(1);
-    log_event("events", "Reqest entity refresh: entity Id=%1 label %2", entityId, label);
+    log_event(labelEvent, "Reqest entity refresh: entity Id=%1 label %2", entityId, label);
     return (pBiotop->getEntityById(entityId));
   }
 
@@ -462,13 +462,13 @@ namespace clan
 
     if (pEntity != NULL) 
     {
-      //log_event("events", "Biotop set entity remote control: entity %1 remote:%2", pEntity->getLabel(), setRemoteCtrl);
+      //log_event(labelEvent, "Biotop set entity remote control: entity %1 remote:%2", pEntity->getLabel(), setRemoteCtrl);
       pEntity->setRemoteControlled(setRemoteCtrl);
       return true;
     }
     else
     {
-      log_event("events", "Biotop set entity remote control: Error entityID %1", entityId);
+      log_event(labelEvent, "Biotop set entity remote control: Error entityID %1", entityId);
       return false;
     }
   }
@@ -480,7 +480,7 @@ namespace clan
     int nbBlocks = data.get_size() / SENT_BUFFER_MAX_SIZE + 1;
     if (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS)
     {
-      log_event("events", "event_manager buildEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
+      log_event(labelEvent, "event_manager buildEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
       return false;
     }
 
@@ -519,7 +519,7 @@ namespace clan
   {
     if (e.get_argument_count() < 8)
     {
-      log_event("events", "handleEventsLongString: ERROR bad number of arguments: %1", e.get_argument_count());
+      log_event(labelEvent, "handleEventsLongString: ERROR bad number of arguments: %1", e.get_argument_count());
       return false;
     }
     int i;
@@ -534,7 +534,7 @@ namespace clan
 
     if ((nbBlocks == 0) || (nbBlocks > SENT_BUFFER_MAX_NB_BLOCKS))
     {
-      log_event("events", "handleEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
+      log_event(labelEvent, "handleEventsLongString: ERROR bad nbBlocks: %1", nbBlocks);
     }
     else if (nbBlocks == 1)
     {
@@ -605,11 +605,11 @@ namespace clan
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity == NULL)
     {
-      log_event("events", "ERROR Biotop add entity with NULL entity ");
+      log_event(labelEvent, "ERROR Biotop add entity with NULL entity ");
       return false;
     }
     pNewEntity->setStepDirection(stepDirection);
-    log_event("events", "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
+    log_event(labelEvent, "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
 
@@ -617,7 +617,7 @@ namespace clan
     {
       if (pBiotop->addEntityWithPresetId(entityId, pNewEntity, stepCoord, true, layer) == ENTITY_ID_INVALID)
       {
-        //log_event("events", "Biotop add entity: Error in addEntityWithPresetId");
+        //log_event(labelEvent, "Biotop add entity: Error in addEntityWithPresetId");
         delete pNewEntity;
         return NULL;
       }
@@ -626,7 +626,7 @@ namespace clan
     {
       if (pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
       {
-        log_event("events", "Biotop add entity: Error in addEntity");
+        log_event(labelEvent, "Biotop add entity: Error in addEntity");
         delete pNewEntity;
         return NULL;
       }
@@ -645,11 +645,11 @@ namespace clan
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity == NULL)
     {
-      log_event("events", "ERROR Biotop update full entity with NULL entity ID %1", (int)entityId);
+      log_event(labelEvent, "ERROR Biotop update full entity with NULL entity ID %1", (int)entityId);
       return false;
     }
 
-    log_event("events", "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), (int)entityId);
+    log_event(labelEvent, "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), (int)entityId);
     CBasicEntity* pCurEntity;
     bool bFound = false;
     int curStepDirection;
@@ -662,7 +662,7 @@ namespace clan
       // Do not update entity for pregnant animals
       if (pCurEntity->isLocalAutoControlled() && (pCurEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pCurEntity)->getGestationBabyNumber() > 0))
       {
-        log_event("Client ", "Skip update entity for pregnant animal %1", pCurEntity->getLabel());
+        log_event(labelEvent, "Skip update entity for pregnant animal %1", pCurEntity->getLabel());
         return false;
       }
       curStepDirection = pCurEntity->getStepDirection();
@@ -687,7 +687,7 @@ namespace clan
     if (pNewMeasure != NULL)
     {
       pNewMeasure->buildMeasureDataFromString(dataBuffer.get_data());
-      log_event("events", "Biotop create measure: Id%1 period=%2 label=%3", measureId, period, pNewMeasure->GetLabel());
+      log_event(labelEvent, "Biotop create measure: Id%1 period=%2 label=%3", measureId, period, pNewMeasure->GetLabel());
       pBiotop->replaceMeasure(measureId, pNewMeasure);
     }
     return true;
@@ -702,12 +702,12 @@ namespace clan
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity!=NULL)
     {
-      log_event("events", "Add entity spawn: Id%1 period=%2 label=%3", spawnerId, period, pNewEntity->getLabel());
+      log_event(labelEvent, "Add entity spawn: Id%1 period=%2 label=%3", spawnerId, period, pNewEntity->getLabel());
       return (pBiotop->addEntitySpawner(spawnerId, pNewEntity, intensity, period, isProportional));
     }
     else
     {
-      log_event("events", "Add entity spawn error: Id%1 period=%2", spawnerId, period);
+      log_event(labelEvent, "Add entity spawn error: Id%1 period=%2", spawnerId, period);
       return false;
     }
   }

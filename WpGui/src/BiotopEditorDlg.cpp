@@ -194,6 +194,7 @@ void CBiotopEditorDlg::DisplayParamSliders()
 
 void CBiotopEditorDlg::OnOK()
 {
+  bool displayWarning = false;
   for (int i = 0; i < MAX_NUMBER_RANDOM_ENTITY_GENERATOR; i++)
   {
     if (m_pRandomGeneratorButtonTable[i]->GetPathName() != "")
@@ -208,6 +209,14 @@ void CBiotopEditorDlg::OnOK()
       int intensity = atoi(param2Str);
       theApp.addEntitySpawnerInBiotop(i, entityFileName, entityPathName, intensity, avaragePeriodicity, isProportionalToFertility);
     }
+    else if (m_pRandomGeneratorButtonTable[i]->GetFileName() != "")
+    {
+      displayWarning = true;
+    }
+  }
+  if (displayWarning)
+  {
+    AfxMessageBox("Random entities were configured from remote server. Please select a file localy to update spawner on server", MB_ICONWARNING);
   }
   CDialog::OnOK();
 }

@@ -1,4 +1,5 @@
 #include "clan_server.h"
+#include "event_definitions.h"
 #include "CBiotop.h"
 
 //#ifdef WIN32
@@ -19,7 +20,7 @@ int main(int argc, char* argv[])
     if (argc == 2)
     {
       fileIni = argv[1];
-      log_event("Start ", "Open ini file " + fileIni);
+      log_event(labelServer, "Open ini file " + fileIni);
     }
     string serverPortStr;
     if (getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni) > 0)
@@ -44,7 +45,7 @@ int main(int argc, char* argv[])
         pBiotop->loadFromXmlFile(resuStr, resuDataPath);
       else
         pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
-      log_event("Biotop  ", "Biotop loaded");
+      log_event(labelServer, "Biotop loaded");
     }
     else
     {
@@ -53,7 +54,7 @@ int main(int argc, char* argv[])
       pBiotop->initGridDefaultAltitude();
       pBiotop->initGridEntity();
       pBiotop->setDefaultEntitiesForTest();
-      log_event("Biotop  ", "Default empty biotop created");
+      log_event(labelServer, "Default empty biotop created");
     }
 
 		Server server(serverPortStr, pBiotop);
