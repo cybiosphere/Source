@@ -108,7 +108,7 @@ void Server::exec()
 	while (true)
 	{
 		// Lets not worry about exiting this function!
-		System::sleep(5);
+		System::sleep(1);
 		network_server.process_events();
     processBiotopEvents();
 
@@ -128,7 +128,7 @@ void Server::exec()
       // Reset timer
       lastRunTick = std::chrono::system_clock::now();
     }
-    else
+    /*else
     {
       std::string inputcommand;
       bool resu = log_get_console_input(inputcommand);
@@ -137,7 +137,7 @@ void Server::exec()
         log_event(labelInput, inputcommand);
         process_cmd_line(inputcommand);
       }
-    }
+    }*/
 	}
 
 	network_server.stop();
@@ -671,7 +671,7 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
 
 void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
 {
-  log_event(labelServer, "Remove entity: %1 ID %2", pEntity->getLabel(), entityId);
+  log_event(labelServer, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioRemoveEntityEvent);

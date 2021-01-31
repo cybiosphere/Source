@@ -506,7 +506,7 @@ void CDialogTab4::AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComb
     pComboCur = pComboMale;
 
   dataFemale = pComboFemale->GetCurSel();
-  dataMale   = pComboMale->GetCurSel();
+  dataMale   = pComboCur->GetCurSel();
   if (sexualDimorph && (dataFemale != dataMale))
     pCurPaire = m_pGenome->getPair(m_SexualChrom_Idx);
   else

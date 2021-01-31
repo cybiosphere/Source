@@ -3281,9 +3281,12 @@ bool CAnimal::checkConsumeClass (ClassType_e eatenClass)
 //---------------------------------------------------------------------------
 void CAnimal::logDeathCause(std::string deathCauseStr)
 {
-  CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-  CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead ", getSpecieName().c_str(), getLabel().c_str());
-  CYBIOCORE_LOG(deathCauseStr.c_str());
+  if (m_pBiotop != NULL)
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead ", getSpecieName().c_str(), getLabel().c_str());
+    CYBIOCORE_LOG(deathCauseStr.c_str());
+  }
 }
 
 //---------------------------------------------------------------------------

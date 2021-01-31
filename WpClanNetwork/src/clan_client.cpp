@@ -83,13 +83,13 @@ void Client::exec()
 
 	while (!quit)
 	{
-		System::sleep(10);
+		System::sleep(1);
     if (is_biotop_config_complete())
     {
       processBiotopEvents();
     }
     process_new_events();
-    std::string inputcommand;
+    /*std::string inputcommand;
     bool resu = log_get_console_input(inputcommand);
     if (resu)
     {
@@ -97,7 +97,7 @@ void Client::exec()
       int var2 = -1;
       log_event(labelInput, inputcommand);
       CScenarioPlayer::ExecuteCmd(m_pBiotop, inputcommand, "C:\\temp", var1, var2, ClientCmdNameList, CLIENT_CMD_NUMBER);
-    }
+    }*/
 	}
 }
 
@@ -522,7 +522,7 @@ void Client::send_event_update_entity_physic(CBasicEntity* pEntity)
 
 void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId)
 {
-  log_event(labelClient, "Remove entity: %1 ID %2", pEntity->getLabel(), entityId);
+  log_event(labelClient, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   network_client.send_event(bioRemoveEntityEvent);
 }
