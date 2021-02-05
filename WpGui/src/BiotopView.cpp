@@ -450,13 +450,19 @@ void CBiotopView::OnMouseMove(UINT nFlags, CPoint point)
 void CBiotopView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
 {
 	// TODO: Add your message handler code here and/or call default
-  CScrollView::OnVScroll( nSBCode, nPos, pScrollBar);
+  if (nPos < 0x7FFF) // limitation from windows 
+  {
+    CScrollView::OnVScroll(nSBCode, nPos, pScrollBar);
+  }
 }
 
 void CBiotopView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
 {
 	// TODO: Add your message handler code here and/or call default
-  CScrollView::OnHScroll( nSBCode, nPos, pScrollBar);
+  if (nPos < 0x7FFF) // limitation from windows 
+  {
+    CScrollView::OnHScroll(nSBCode, nPos, pScrollBar);
+  }
 }
 
 void CBiotopView::OnNcMouseMove(UINT nHitTest, CPoint point) 
@@ -570,6 +576,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
     }
     p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_MONITOR_SPECIE, MF_GRAYED);
+    p_popup->EnableMenuItem(ID_APP_MONITOR_BIOMASS, MF_GRAYED);
   }
   else 
   {

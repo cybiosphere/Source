@@ -112,10 +112,14 @@ void CBiotopDisplayMFC::DisplayView()
   if (m_pView != NULL)
   {
     // Calculate the total size of this view
-    CSize sizeTotal;
+    CSize sizeTotal, sizePage, sizeLine;
     sizeTotal.cx = (m_nBitmapNumberX + 1) * m_nBitmapPixSizeX;
     sizeTotal.cy = (m_nBitmapNumberY + 1) * m_nBitmapPixSizeY;
-    m_pView->SetScrollSizes(MM_TEXT, sizeTotal);
+    sizePage.cx = m_nBitmapPixSizeX * 100;
+    sizePage.cy = m_nBitmapPixSizeY * 100;
+    sizeLine.cx = m_nBitmapPixSizeX;
+    sizeLine.cy = m_nBitmapPixSizeY;
+    m_pView->SetScrollSizes(MM_TEXT, sizeTotal, sizePage, sizeLine);
   }
 }
 

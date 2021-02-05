@@ -697,6 +697,10 @@ void CAnimMammal::autoKill()
 {
   stopCurrentSpeed();
   CBasicEntity::autoKill();
+  if (!isImmortal())
+  {
+    setCurrentLifeStages(STAGE_5);
+  }
 }
 
 //---------------------------------------------------------------------------

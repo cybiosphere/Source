@@ -1934,6 +1934,9 @@ void CBasicEntity::deleteAllLifeStages()
 //---------------------------------------------------------------------------
 bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage) 
 {
+  if (m_indCurrentLifeStage >= m_tLifeStage.size())
+    return false;
+
   if (newStage == m_tLifeStage[m_indCurrentLifeStage]->getStageType())
     return true;
 
@@ -2333,7 +2336,6 @@ void CBasicEntity::autoKill()
     {
       autoRemove();
     }
-    setCurrentLifeStages(STAGE_5);
   }
 }
 
