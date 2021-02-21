@@ -1017,7 +1017,7 @@ void CDialogTab4::AddGenesForReactions()
             {
               succes  = atoi(param1Str);
               failure = atoi(param2Str);
-              param1  = j + 10 - pView->GetTabCaractFemale()->m_Layer;
+              param1  = j - (int)pView->GetTabCaractFemale()->m_Layer;
               pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
               geneIndex = pCurPaire->getMaterChromosome()->addGene();
               pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);

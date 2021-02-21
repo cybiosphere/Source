@@ -295,6 +295,8 @@ vector<CGeneDefinitions> CGeneList::geneListSensor =
 
   { GENE_SENSOR, GENE_SENS_TASTE, "Taste", GENE_MUTE_INCREMENTAL_2, { } },
 
+  { GENE_SENSOR, GENE_SENS_COMPASS, "Compass", GENE_MUTE_INCREMENTAL_2, { } },
+
   { GENE_SENSOR, GENE_SENS_FEAR, "Fear", GENE_MUTE_INCREMENTAL_2, { } },
 
   { GENE_SENSOR, GENE_SENS_TEMPERATURE, "Temperature", GENE_MUTE_INCREMENTAL_2, { } },
