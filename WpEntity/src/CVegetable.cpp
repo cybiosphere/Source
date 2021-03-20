@@ -76,8 +76,8 @@ CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* p
   m_id_ReproductionRate = invalidIndex; 
   m_id_Health           = invalidIndex;
   m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange= invalidIndex;
-
+  m_id_ReproductionRange = invalidIndex;
+  m_id_ResistanceToConsumption = invalidIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -111,8 +111,8 @@ CVegetable::CVegetable(string label, CVegetable& model)
   m_id_ReproductionRate = invalidIndex; 
   m_id_Health           = invalidIndex;
   m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange= invalidIndex;
-
+  m_id_ReproductionRange = invalidIndex;
+  m_id_ResistanceToConsumption = invalidIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -146,8 +146,8 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
   m_id_ReproductionRate = invalidIndex; 
   m_id_Health           = invalidIndex;
   m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange= invalidIndex;
-
+  m_id_ReproductionRange = invalidIndex;
+  m_id_ResistanceToConsumption = invalidIndex;
 }  
 
 
@@ -234,6 +234,13 @@ bool CVegetable::setParamFromGene (CGene* pGen)
       resu = true;
       break;
     }
+  case GENE_PARAM_RESISTANCE_TO_CONSUMPTION:
+  {
+    if (m_id_ResistanceToConsumption != invalidIndex) delete(getParameter(m_id_ResistanceToConsumption)); // delete if already set
+    m_id_ResistanceToConsumption = addParameterFromGene(pGen, PARAM_PHYSIC);
+    resu = true;
+    break;
+  }
   default:
     {
       // Unknown
@@ -296,6 +303,12 @@ bool CVegetable::completeParamsWithDefault()
     CGenericParam* pParam = new CGenericParam(0,2,2,10,"Reproduction Range",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RANGE);
     m_id_ReproductionRange = addParameter(pParam);
   } 
+
+  if (m_id_ResistanceToConsumption == invalidIndex)
+  {
+    CGenericParam* pParam = new CGenericParam(0, 60, 60, 100, "Resistance to consumption", PARAM_PHYSIC, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
+    m_id_ResistanceToConsumption = addParameter(pParam);
+  }
 
   return (true);
 }
@@ -652,7 +665,7 @@ double CVegetable::changeWeight(double variation)
     minVal  = pParam->getMin();
     remaining = curVal-minVal;
 
-    if ((-variation > remaining) && testChance(80)) // Todo: change according to specie: higher chance to survive for trees
+    if ((-variation > remaining) && testChance(getParameter(m_id_ResistanceToConsumption)->getVal()))
     {
       // Vegetal is totaly eaten but will survive
       // change temporaly color and protection

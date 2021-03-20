@@ -65,6 +65,7 @@ private:
   size_t m_id_Health;
   size_t m_id_GrowthSpeed;
   size_t m_id_ReproductionRange;
+  size_t m_id_ResistanceToConsumption;
   COLORREF   m_OriginalColorRgb;           // Color in RGB when vegetal is healthy (could be in basicEntity)
   double     m_OriginalProtection;         // Protection when vegetal is healthy
   OdorType_e m_OriginalOdor;               // Odor when vegetal is healthy
