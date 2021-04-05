@@ -47,8 +47,10 @@ public:
 	enum { IDD = IDD_DLG_ENTITY_FIND };
 	CListCtrl	m_EntityList;
 	BOOL	m_bSelect;
+	CString	m_FilterString;
 	//}}AFX_DATA
 
+	void fileEntityList(CString filterStr);
   int GetSelectionId(void);
   bool IsForceSelection(void);
 
@@ -70,6 +72,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnClickListEntity(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDblclkListEntity(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnFilterString();
+
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -44,6 +44,7 @@ CEntityFindDlg::CEntityFindDlg(CBiotop* pBiotop, CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CEntityFindDlg)
 	m_bSelect = TRUE;
+	m_FilterString = _T("");
 	//}}AFX_DATA_INIT
 
   m_pBiotop = pBiotop;
@@ -57,6 +58,7 @@ void CEntityFindDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CEntityFindDlg)
 	DDX_Control(pDX, IDC_LIST_ENTITY, m_EntityList);
 	DDX_Check(pDX, IDC_CHECK1, m_bSelect);
+	DDX_Text(pDX, IDC_FILTER_STRING, m_FilterString);
 	//}}AFX_DATA_MAP
 }
 
@@ -65,6 +67,7 @@ BEGIN_MESSAGE_MAP(CEntityFindDlg, CDialog)
 	//{{AFX_MSG_MAP(CEntityFindDlg)
 	ON_NOTIFY(NM_CLICK, IDC_LIST_ENTITY, OnClickListEntity)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_ENTITY, OnDblclkListEntity)
+	ON_EN_CHANGE(IDC_FILTER_STRING, OnFilterString)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -74,27 +77,41 @@ END_MESSAGE_MAP()
 BOOL CEntityFindDlg::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	CBasicEntity* pCurEnt= NULL;
-  CString tempStr;
+	m_EntityList.InsertColumn(0, LPCTSTR("Name"), LVCFMT_LEFT, 280);
+	m_EntityList.InsertColumn(1, LPCTSTR("Id"), LVCFMT_LEFT, 60);
+	fileEntityList("");
+	return TRUE;  // return TRUE unless you set the focus to a control
+}
 
-  m_EntityList.InsertColumn(0, LPCTSTR("Name"), LVCFMT_LEFT, 200);
-  m_EntityList.InsertColumn(1, LPCTSTR("Id"),   LVCFMT_LEFT, 54);
-  // Limit search to 10000 entities
+void CEntityFindDlg::fileEntityList(CString filterStr)
+{
+	CBasicEntity* pCurEnt = NULL;
+	CString tempStr;
+	static const size_t nbMaxEntitiesDisplayed = 10000;
+	static const size_t nbMaxEntitiesSearch = 50000;
+
+	m_EntityList.DeleteAllItems();
+
 	int index = 0;
-  for (int i=0; i<min(m_pBiotop->getNbOfEntities(), 10000); i++)
-  {
-    pCurEnt = m_pBiotop->getEntityByIndex(i);
+	for (int i = 0; i < min(m_pBiotop->getNbOfEntities(), nbMaxEntitiesSearch); i++)
+	{
+		pCurEnt = m_pBiotop->getEntityByIndex(i);
 		if (!(pCurEnt->isToBeRemoved()))
 		{
-			m_EntityList.InsertItem(index, LPCTSTR(pCurEnt->getLabel().c_str()));
-			tempStr.Format(LPCTSTR("%d"), pCurEnt->getId());
-			m_EntityList.SetItemText(index, 1, tempStr);
-			index++;
+			tempStr = LPCTSTR(pCurEnt->getLabel().c_str());	
+			if ((filterStr == "") || (tempStr.Find(filterStr) == 0))
+			{
+				if (pCurEnt->isDead())
+					tempStr += " +";
+				m_EntityList.InsertItem(index, tempStr);
+				tempStr.Format(LPCTSTR("%d"), pCurEnt->getId());
+				m_EntityList.SetItemText(index, 1, tempStr);
+				index++;
+				if (index > nbMaxEntitiesDisplayed)
+					break;
+			}
 		}
-  }
-  
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	}
 }
 
 int CEntityFindDlg::GetSelectionId(void)
@@ -119,4 +136,10 @@ void CEntityFindDlg::OnDblclkListEntity(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnClickListEntity(pNMHDR, pResult);
   OnOK();
+}
+
+void CEntityFindDlg::OnFilterString()
+{
+	UpdateData(true);
+	fileEntityList(m_FilterString);
 }

@@ -13,4 +13,9 @@
   <PropertyGroup>
     <RESOURCE_FILE>ProjectWizard.rc</RESOURCE_FILE>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommand>C:\Frederic\Perso\Cybiosphere\Source\Exec\ProjectWizard.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>C:\Frederic\Perso\Cybiosphere\Source\Exec</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>
