@@ -54,7 +54,6 @@ distribution.
 CChromosome::CChromosome(size_t number)
 {
   m_IdNumber = number;
-  m_Label = FormatString("%2d",m_IdNumber); // Default label is number, but X,Y... can be given later
   m_tGene.resize(0);
   m_ChromosomeType = CHROMOSOME_NEUTRAL;
 }
@@ -73,7 +72,6 @@ CChromosome::CChromosome(size_t number)
 CChromosome::CChromosome(CChromosome& model)
 {
   m_IdNumber       = model.m_IdNumber;
-  m_Label          = model.m_Label;
   m_ChromosomeType = model.m_ChromosomeType;
   CGene* tempGen   = NULL;
   for (size_t i=0; i<model.m_tGene.size(); i++)
@@ -222,24 +220,25 @@ size_t CChromosome::getIdNumber(void)
 
 string CChromosome::getLabel(void)
 {
-  return m_Label;
+  string label;
+  switch (m_ChromosomeType)
+  {
+  case CHROMOSOME_SEX_MALE:
+    label = FormatString("%2d Y", m_IdNumber); // TBD: rq may be W/Z for birds
+    break;
+  case CHROMOSOME_SEX_FEMALE:
+    label = FormatString("%2d X", m_IdNumber); // TBD: rq may be W/Z for birds
+    break;
+  default:
+    label = FormatString("%2d", m_IdNumber);
+    break;
+  }
+  return label;
 }
 
 void CChromosome::setChromosomeType(ChromosomeType_e newType)
 {
   m_ChromosomeType = newType;
-
-  switch(m_ChromosomeType)
-  {
-  case CHROMOSOME_SEX_MALE:
-    m_Label = FormatString("%2d Y",m_IdNumber); // TBD: rq may be W/Z for birds
-    break;
-  case CHROMOSOME_SEX_FEMALE:
-    m_Label = FormatString("%2d X",m_IdNumber); // TBD: rq may be W/Z for birds
-    break;
-  default:
-    break;
-  }
 }
 
 ChromosomeType_e CChromosome::getChromosomeType()

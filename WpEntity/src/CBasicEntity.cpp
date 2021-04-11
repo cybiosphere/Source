@@ -169,7 +169,7 @@ const char* PhyAttributeTypeNameList[PHY_ATTRIBUTE_NUMBER_TYPE] =
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CBasicEntity::CBasicEntity() 
+CBasicEntity::CBasicEntity()
 {
   // system initialisation
   m_pBiotop         = NULL;
@@ -192,6 +192,10 @@ CBasicEntity::CBasicEntity()
   m_GridCoord.y = invalidCoord;
   m_StepCoord.x = invalidCoord;
   m_StepCoord.y = invalidCoord;
+  m_GuiGridCoord.x = invalidCoord;
+  m_GuiGridCoord.y = invalidCoord;
+  m_GuiStepCoord.x = invalidCoord;
+  m_GuiStepCoord.y = invalidCoord;
   m_PrevGridCoord.x = invalidCoord;
   m_PrevGridCoord.y = invalidCoord;
   m_PrevStepCoord.x = invalidCoord;
@@ -213,8 +217,6 @@ CBasicEntity::CBasicEntity()
   m_ConsumeClass        = CONSUM_UNSET;
   m_MoveType            = MOVE_UNSET;
   m_Pheromone           = PHEROMONE_UNSET;
-
-  m_pPhyAttribute = new CGenericCaract("Attribute");
 
   // Parameter id pre-init
   m_id_Weight     = invalidIndex; 
@@ -256,9 +258,6 @@ CBasicEntity::~CBasicEntity()
 
   if (m_pPhysicWelfare != NULL)
     delete m_pPhysicWelfare;
-  
-  if (m_pPhyAttribute!= NULL)
-    delete m_pPhyAttribute;
 }
 
 
@@ -2532,7 +2531,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   newCaract.SetAttribute(XML_ATTR_VALUE, (int)pEntity->m_Texture);
   pNodeEntity->InsertEndChild(newCaract);
   newCaract.SetAttribute(XML_ATTR_NAME, "Attribute");
-  newCaract.SetAttribute(XML_ATTR_VALUE, pEntity->m_pPhyAttribute->getPresenceMask());
+  newCaract.SetAttribute(XML_ATTR_VALUE, pEntity->m_PhyAttribute.getPresenceMask());
   pNodeEntity->InsertEndChild(newCaract);
 
   // Gestation
@@ -2823,7 +2822,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
           else if (caractName == "Texture")
             m_Texture = (TextureType_e)atoi(caractVal.c_str());
           else if (caractName == "Attribute")
-            m_pPhyAttribute->setPresenceMask((DWORD)atoi(caractVal.c_str())); 
+            m_PhyAttribute.setPresenceMask((DWORD)atoi(caractVal.c_str())); 
         }
       }
       pNode = pNode->NextSibling();
@@ -3673,14 +3672,14 @@ ColorCaracterType_e CBasicEntity::getColorType()
 
 bool CBasicEntity::isPhyAttributePresent(PhyAttributeType_e type)
 {
-  return(m_pPhyAttribute->isCaractPresent(type-PHY_ATTRIBUTE_FIRST_TYPE));
+  return(m_PhyAttribute.isCaractPresent(type-PHY_ATTRIBUTE_FIRST_TYPE));
 }
 
 void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)
 {
-  if ((newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && !(m_pPhyAttribute->isCaractPresent(newAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
+  if ((newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && !(m_PhyAttribute.isCaractPresent(newAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
   {
-    m_pPhyAttribute->setCaractPresent(newAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
+    m_PhyAttribute.setCaractPresent(newAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
     computeEntitySignature();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
@@ -3688,9 +3687,9 @@ void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)
 
 void CBasicEntity::removeAttribute(PhyAttributeType_e delAttrib)
 {
-  if ((delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && (m_pPhyAttribute->isCaractPresent(delAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
+  if ((delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && (m_PhyAttribute.isCaractPresent(delAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
   {
-    m_pPhyAttribute->setCaractAbsent(delAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
+    m_PhyAttribute.setCaractAbsent(delAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
     computeEntitySignature();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
@@ -3708,12 +3707,12 @@ PhyAttributeType_e  CBasicEntity::getMainPhyAttribute()
 
 DWORD CBasicEntity::getAttributePresenceMask()
 {
-  return m_pPhyAttribute->getPresenceMask();
+  return m_PhyAttribute.getPresenceMask();
 }
 
 void CBasicEntity::setAttributePresenceMask(DWORD mask)
 {
-  m_pPhyAttribute->setPresenceMask(mask);
+  m_PhyAttribute.setPresenceMask(mask);
 }
 
 Point_t CBasicEntity::getGridCoordFromStepCoord(Point_t stepCoord)

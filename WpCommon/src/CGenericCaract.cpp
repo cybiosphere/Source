@@ -40,10 +40,9 @@ distribution.
 // Constructors / Destructors
 //===========================================================================
 
-CGenericCaract::CGenericCaract(string label, DWORD initPresenceMask)
+CGenericCaract::CGenericCaract()
 {
-  m_Label = label;
-  m_PresenceMask = initPresenceMask;
+  m_PresenceMask = CARACT_PRESENCE_MASK_EMPTY;
 }
 
 CGenericCaract::~CGenericCaract()

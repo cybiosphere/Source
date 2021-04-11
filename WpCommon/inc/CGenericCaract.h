@@ -67,9 +67,7 @@ class DLL_CYBIOCORE_API CGenericCaract
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-  string m_Label;        // User defined name
   DWORD  m_PresenceMask;
-
 
 //===========================================================================
 // Methods 
@@ -79,7 +77,7 @@ protected:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGenericCaract(string label, DWORD initPresenceMask = CARACT_PRESENCE_MASK_EMPTY);
+	CGenericCaract();
 	virtual ~CGenericCaract();
 
 //---------------------------------------------------------------------------

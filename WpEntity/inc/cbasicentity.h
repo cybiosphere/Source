@@ -171,8 +171,7 @@ private:
   HabitatType_e       m_Habitat;            // earth/water
   ConsumeType_e       m_ConsumeClass;       // 
   MoveType_e          m_MoveType;           // Moving capabilities
-
-  CGenericCaract*     m_pPhyAttribute;      // Physical attribut 
+  CGenericCaract      m_PhyAttribute;      // Physical attribut 
 
 
 //---------------------------------------------------------------------------

@@ -276,9 +276,9 @@ class DLL_CYBIOCORE_API CGeneDefinitions
 // internal data:
 //---------------------------------------------------------------------------
 public:
-  GeneType_e     geneType;
-  int            geneSubType;
-  string         label;
+  GeneType_e geneType;
+  int geneSubType;
+  string label;
   GeneMuteType_e muteType;
   std::vector<GeneParamDefinition_t> elements;
 

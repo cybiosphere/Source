@@ -74,7 +74,6 @@ class DLL_CYBIOCORE_API CChromosome
 //---------------------------------------------------------------------------
 private:
   size_t m_IdNumber;
-  string m_Label;
   ChromosomeType_e m_ChromosomeType;
   std::vector<CGene*> m_tGene;
 

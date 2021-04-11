@@ -68,9 +68,9 @@ class DLL_CYBIOCORE_API CGene
 // internal data:
 //---------------------------------------------------------------------------
 private:
-  GeneType_e     m_GeneType;
-  int            m_GeneSubType;
-  BYTE           m_MuteRate;
+  GeneType_e m_GeneType;
+  int m_GeneSubType;
+  BYTE m_MuteRate;
   GeneMuteType_e m_MuteType;
   std::vector<BYTE> m_RawData;
   const CGeneDefinitions* m_pDefinitions;
@@ -166,8 +166,8 @@ public:
 public:
   std::vector<BYTE>& getData();
   size_t getDataLen();
-  GeneType_e     getGeneType();
-  int  getGeneSubType();
+  GeneType_e getGeneType();
+  int getGeneSubType();
   GeneMuteType_e getMuteType();
   BYTE getMuteRate();
 
