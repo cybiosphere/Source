@@ -8,7 +8,7 @@ damages arising from the use of this software.
 
 Permission is granted to anyone to use this software for any
 purpose, including commercial applications, and to alter it and
-redistribute it freely, subject to the following restrictions:
+redistribute it freely, subject to the following restrictions
 
 1. The origin of this software must not be misrepresented; you must
 not claim that you wrote the original software. If you use this
@@ -62,7 +62,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_tParam.push_back(m_pFertilityRate);
   m_pSunlightRate = new CCyclicParam(0,100,24,"Sunlight",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
-  m_pRadioactivity = new CGenericParam(0,1,1,100,"Radioactivity",PARAM_ENVIRONMENT);
+  m_pRadioactivity = new CCustomParam(0,1,1,100,"Radioactivity",PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pRadioactivity);
   m_pTemperature = new CCyclicParam(20,26,864,"Avarage Temperature",PARAM_ENVIRONMENT); // TBD use global min/max temperature
   m_tParam.push_back(m_pTemperature);

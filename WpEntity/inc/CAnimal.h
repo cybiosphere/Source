@@ -108,6 +108,7 @@ private:
   size_t m_id_CurrentSpeed;
   size_t m_id_Fear;
   size_t m_id_Vigilance;
+  size_t m_id_ResistanceToPoison;
 
 //===========================================================================
 // methods 
@@ -264,6 +265,7 @@ public:
   void setFatWeight(double fatWeight);
   void setFearRate(double rate);
   void setStomachFillingRate(double rate);
+  double getResistanceToPoison();
 
 }; // end ClAnimal
 

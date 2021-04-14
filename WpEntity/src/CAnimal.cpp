@@ -102,6 +102,7 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
   m_id_CurrentSpeed     = invalidIndex;
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
+  m_id_ResistanceToPoison = invalidIndex;
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -158,6 +159,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_id_CurrentSpeed     = invalidIndex;
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
+  m_id_ResistanceToPoison = invalidIndex;
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -214,6 +216,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_id_CurrentSpeed     = invalidIndex;
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
+  m_id_ResistanceToPoison = invalidIndex;
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -259,7 +262,7 @@ CAnimal::~CAnimal()
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CAnimal::setParamFromGene (CGene* pGen)
+bool CAnimal::setParamFromGene(CGene* pGen)
 {
   if (CBasicEntity::setParamFromGene (pGen) == true)
   {
@@ -305,10 +308,10 @@ bool CAnimal::setParamFromGene (CGene* pGen)
       resu = true;
       break;
     }
-  case GENE_PARAM_HEALTH:
+  case GENE_PARAM_RESISTANCE_TO_POISON:
     {
-      if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
-      m_id_Health = addParameterFromGene(pGen, PARAM_FEELING);
+      if (m_id_ResistanceToPoison != invalidIndex) delete(getParameter(m_id_ResistanceToPoison)); // delete if already set
+      m_id_ResistanceToPoison = addParameterFromGene(pGen, PARAM_FEELING);
       resu = true;
       break;
     }
@@ -385,8 +388,7 @@ bool CAnimal::completeParamsWithDefault()
   // CAnimal specific
   if (m_id_Protection == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Protection factor",PARAM_PHYSIC,GENE_PARAM_PROTECTION);
-    m_id_Protection       = addParameter(pParam);
+    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_PROTECTION);
   }
 
   // In base class
@@ -395,102 +397,79 @@ bool CAnimal::completeParamsWithDefault()
   // CAnimal specific
   if (m_id_Age == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Age",PARAM_DURATION,GENE_PARAM_AGE);
-    m_id_Age              = addParameter(pParam);
+    m_id_Age = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_AGE);
   }
   if (m_id_Decomposition == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,5,"Decomposition",PARAM_DURATION,GENE_PARAM_DECOMPOSITION);
-    m_id_Decomposition    = addParameter(pParam);
+    m_id_Decomposition = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_DECOMPOSITION);
   }
   if (m_id_ReproductionRate == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Reproduction rate",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RATE);
-    m_id_ReproductionRate = addParameter(pParam);
-  } 
+    m_id_ReproductionRate = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RATE);
+  }
   if (m_id_Health == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,100,100,100,"Health rate",PARAM_FEELING,GENE_PARAM_HEALTH);
-    m_id_Health = addParameter(pParam);
-  } 
+    m_id_Health = addParameterCustom(0, 100, 100, 100, "Health rate", PARAM_FEELING);
+  }
   if (m_id_GrowthSpeed == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,100,100,1000,"Growth speed rate",PARAM_PHYSIC,GENE_PARAM_GROWTH_SPEED);
-    m_id_GrowthSpeed = addParameter(pParam);
+    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_GROWTH_SPEED);
   } 
   if (m_id_Hunger == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Hunger rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Hunger = addParameter(pParam);
+    m_id_Hunger = addParameterCustom(0, 20, 0, 100, "Hunger rate", PARAM_FEELING);
   } 
   if (m_id_Thirst == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Thirst rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Thirst = addParameter(pParam);
+    m_id_Thirst = addParameterCustom(0, 20, 0, 100, "Thirst rate", PARAM_FEELING);
   } 
   if (m_id_StomachFilling == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,20,0,100,"Stomach filling",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_StomachFilling = addParameter(pParam);
+    m_id_StomachFilling = addParameterCustom(0, 0, 0, 100, "Stomach filling", PARAM_FEELING);
   } 
   if (m_id_Libido == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Libido rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Libido = addParameter(pParam);
+    m_id_Libido = addParameterCustom(0, 0, 0, 100, "Libido rate", PARAM_FEELING);
   } 
   if (m_id_Suffering == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Suffering rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Suffering = addParameter(pParam);
+    m_id_Suffering = addParameterCustom(0, 0, 0, 100, "Suffering rate", PARAM_FEELING);
   }
   if (m_id_Pleasure == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,50,50,100,"Pleasure rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Pleasure = addParameter(pParam);
+    m_id_Pleasure = addParameterCustom(0, 50, 50, 100, "Pleasure rate", PARAM_FEELING);
   }
   if (m_id_Tiredness == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Tiredness rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Tiredness = addParameter(pParam);
+    m_id_Tiredness = addParameterCustom(0, 10, 10, 100, "Tiredness rate", PARAM_FEELING);
   }
   if (m_id_CurrentSpeed == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,10,200,"Speed",PARAM_PHYSIC,GENE_PARAM_SPEED);
-    m_id_CurrentSpeed = addParameter(pParam);
+    m_id_CurrentSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_SPEED);
   }
   if (m_id_FatWeight == invalidIndex)
   {
-    double fatWeight = getWeight()/10;
-    double fatMax = getMaxWeight()*0.9; // fat is max 90 of total weight
-    CGenericParam* pParam = new CGenericParam(0,fatWeight,fatWeight,fatMax,"Fat weight",PARAM_PHYSIC,GENE_PARAM_FAT_WEIGHT);
-    m_id_FatWeight = addParameter(pParam);
+    m_id_FatWeight = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_FAT_WEIGHT);
   } 
   if (m_id_AttackFactor == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Attack factor",PARAM_PHYSIC,GENE_PARAM_ATTACK_FACTOR);
-    m_id_AttackFactor = addParameter(pParam);
+    m_id_AttackFactor = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_ATTACK_FACTOR);
   } 
   if (m_id_Curiosity == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Curiosity rate",PARAM_BEHAVIOR,GENE_PARAM_CURIOSITY);
-    m_id_Curiosity = addParameter(pParam);
+    m_id_Curiosity = addParameterFromGeneDefinition(PARAM_BEHAVIOR, GENE_PARAM_CURIOSITY);
   }
   if (m_id_Learning == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,100,100,100,"Learning rate",PARAM_BEHAVIOR,GENE_PARAM_LEARNING);
-    m_id_Learning = addParameter(pParam);
+    m_id_Learning = addParameterFromGeneDefinition(PARAM_BEHAVIOR, GENE_PARAM_LEARNING);
   } 
-
   if (m_id_Fear == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Fear rate",PARAM_FEELING, GENE_PARAM_UNKNOWN);
-    m_id_Fear = addParameter(pParam);
+    m_id_Fear = addParameterCustom(0, 0, 0, 100, "Fear rate", PARAM_FEELING);
   } 
-
   if (m_id_Vigilance == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR, GENE_PARAM_UNKNOWN);
-    m_id_Vigilance = addParameter(pParam);
+    m_id_Vigilance = addParameterCustom(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR);
   }
 
   return (true);
@@ -1708,7 +1687,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CAnimal::setBrainInstinctInGenes(void) // Idee FRED: Deplacer dans CGenome...
+bool CAnimal::setBrainInstinctInGenes(void)
 {
   getGenome()->setBrainIdentifyInGenes(getBrain());
   getGenome()->setBrainInstinctInGenes(getBrain());
@@ -3338,7 +3317,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
 
       double toxicityRate = pEatenEntity->getToxicity();
 
-      if (toxicityRate>0.01)
+      if (toxicityRate > (getResistanceToPoison() + 0.01))
       {
         // If toxic, be injured
         if (changeHealthRate(-toxicityRate) == false)
@@ -3888,4 +3867,12 @@ void CAnimal::setFearRate(double rate)
 void CAnimal::setStomachFillingRate(double rate)
 {
   getParameter(m_id_StomachFilling)->setVal(rate);
+}
+
+double CAnimal::getResistanceToPoison()
+{
+  if (m_id_GrowthSpeed == invalidIndex)
+    return 0;
+  else
+    return (getParameter(m_id_ResistanceToPoison)->getVal());
 }

@@ -50,9 +50,11 @@ distribution.
 #include "Definitions.h"
 #include "CaracterDefinitions.h"
 #include "CBrain.h"
-#include "CGenericParam.h"
+#include "CCustomParam.h"
+#include "CGeneticParam.h"
 #include "CGenericCaract.h"
 #include "CGenome.h"
+#include "CGeneDefinitions.h"
 #include "CLifeStage.h"
 #include "CybioXmlDef.h"
 
@@ -291,8 +293,12 @@ public:
 // Parameters management
 //---------------------------------------------------------------------------
 protected:
-  int addParameter(CGenericParam* pParam);
   int addParameterFromGene(CGene* pGen, GenericParamType_e type);
+  int addParameterFromGeneDefinition(GenericParamType_e paramType, GeneSubTypeParam_e geneSubTypeParam);
+  int addParameterCustom(double valMin, double valInit, double valNominal, double valMax, string label, GenericParamType_e type);
+private:
+  int addParameter(CGenericParam* pParam);
+
 public:
   size_t getNumParameter();
   CGenericParam* getParameter(size_t id);
@@ -427,6 +433,7 @@ public:
   PheromoneType_e getPheromone();
   void            setPheromone(PheromoneType_e pheroType);
   int             getGeneration();
+  void            setGeneration(int newGeneration);
   ReproType_e     getTypeOfReproduction();
   SexType_e       getSex();
   CGenome*        getGenome();

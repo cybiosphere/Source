@@ -131,7 +131,7 @@ typedef enum
   GENE_PARAM_AGE,
   GENE_PARAM_DECOMPOSITION,
   GENE_PARAM_REPRO_RATE,
-  GENE_PARAM_HEALTH,
+  GENE_PARAM_RESISTANCE_TO_POISON,
   GENE_PARAM_GROWTH_SPEED,
   GENE_PARAM_REPRO_RANGE,
   GENE_PARAM_FAT_WEIGHT,
@@ -289,6 +289,8 @@ public:
   CGeneDefinitions(GeneType_e type, int subType, string name, GeneMuteType_e muteType, std::vector<GeneParamDefinition_t> paramList);
   virtual ~CGeneDefinitions();
 
+  double getElementDefaultValue(size_t index) const;
+
 }; // end CGeneDefinitions
 
 //===========================================================================
@@ -325,6 +327,7 @@ public:
   static const CGeneDefinitions* getDefinitionsByIndex(GeneType_e type, size_t subTypeIndex);
   static string getGeneTypeStrName(GeneType_e type);
   static string getGeneMuteTypeStrName(GeneMuteType_e muteType);
+
 };
 
 #endif // !defined(CGENE_DEFINITIONS_INCLUDED_)

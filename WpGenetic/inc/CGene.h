@@ -143,6 +143,7 @@ private:
 // Use Gene definition 
 //---------------------------------------------------------------------------
 public:
+  const CGeneDefinitions* getDefinitions();
   size_t getNumElements();
   double getElementValue(size_t index);
   bool setElementValue(size_t index, double value);

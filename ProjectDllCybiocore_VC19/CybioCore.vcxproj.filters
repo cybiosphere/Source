@@ -375,6 +375,12 @@
     <ClInclude Include="..\WpEntity\inc\CEntityFactory.h">
       <Filter>WpEntity\IncEntity</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\CCustomParam.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGenetic\inc\CGeneticParam.h">
+      <Filter>WpGenetic\IncGenetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
@@ -637,6 +643,12 @@
     </ClCompile>
     <ClCompile Include="..\WpEntity\src\CEntityFactory.cpp">
       <Filter>WpEntity\SrcEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpCommon\src\CCustomParam.cpp">
+      <Filter>WpCommon\SrcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGenetic\src\CGeneticParam.cpp">
+      <Filter>WpGenetic\SrcGenetic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

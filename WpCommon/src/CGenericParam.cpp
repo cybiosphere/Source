@@ -40,16 +40,13 @@ distribution.
 // Constructors / Destructors
 //===========================================================================
 
-CGenericParam::CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,GenericParamType_e type, GeneSubTypeParam_e codingGeneSubType)
+CGenericParam::CGenericParam(double valMin, double valInit, double valNominal, double valMax, GenericParamType_e type)
 {
   m_ValMin     = valMin;
   m_ValCurrent = valInit;
   m_ValNominal = valNominal;
   m_ValMax     = valMax;
-  m_Label      = label;
   m_Type       = type;
-
-  m_CodingGeneSubType = codingGeneSubType;
 
   // Corrections
   if (m_ValMax<m_ValMin)
@@ -216,7 +213,7 @@ double CGenericParam::getMax(void)
 
 string CGenericParam::getLabel(void)
 {
-  return (m_Label);
+  return ("Unset");
 }
 
 bool CGenericParam::changeVal(double variation)
@@ -261,5 +258,5 @@ GenericParamType_e CGenericParam::getType()
 
 GeneSubTypeParam_e CGenericParam::getCodingGeneSubtype()
 {
-  return m_CodingGeneSubType;
+  return GENE_PARAM_UNKNOWN;
 }

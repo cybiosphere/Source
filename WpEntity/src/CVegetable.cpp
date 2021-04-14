@@ -213,17 +213,10 @@ bool CVegetable::setParamFromGene (CGene* pGen)
       resu = true;
       break;
     }
-  case GENE_PARAM_HEALTH:
-    {
-      if (m_id_Health != invalidIndex) delete(getParameter(m_id_Health)); // delete if already set
-      m_id_Health = addParameterFromGene(pGen, PARAM_FEELING);
-      resu = true;
-      break;
-    }
   case GENE_PARAM_GROWTH_SPEED:
     {
       if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
-      m_id_Health = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
       resu = true;
       break;
     }
@@ -275,39 +268,31 @@ bool CVegetable::completeParamsWithDefault()
   // CVegetable specific
   if (m_id_Age == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Age",PARAM_DURATION,GENE_PARAM_AGE);
-    m_id_Age              = addParameter(pParam);
+    m_id_Age = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_AGE);
   }
   if (m_id_Decomposition == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,2,"Decomposition",PARAM_DURATION,GENE_PARAM_DECOMPOSITION);
-    m_id_Decomposition    = addParameter(pParam);
+    m_id_Decomposition = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_DECOMPOSITION);
   }
   if (m_id_ReproductionRate == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,10,10,100,"Reproduction rate",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RATE);
-    m_id_ReproductionRate = addParameter(pParam);
-  } 
+    m_id_ReproductionRate = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RATE);
+  }
   if (m_id_Health == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,50,50,100,"Health rate",PARAM_FEELING,GENE_PARAM_HEALTH);
-    m_id_Health = addParameter(pParam);
-  } 
+    m_id_Health = addParameterCustom(0, 100, 100, 100, "Health rate", PARAM_FEELING);
+  }
   if (m_id_GrowthSpeed == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,100,100,1000,"Growth speed rate",PARAM_PHYSIC,GENE_PARAM_GROWTH_SPEED);
-    m_id_GrowthSpeed = addParameter(pParam);
-  } 
+    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_GROWTH_SPEED);
+  }
   if (m_id_ReproductionRange == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,2,2,10,"Reproduction Range",PARAM_REPRODUCTION,GENE_PARAM_REPRO_RANGE);
-    m_id_ReproductionRange = addParameter(pParam);
-  } 
-
+    m_id_ReproductionRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RANGE);
+  }
   if (m_id_ResistanceToConsumption == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0, 60, 60, 100, "Resistance to consumption", PARAM_PHYSIC, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
-    m_id_ResistanceToConsumption = addParameter(pParam);
+    m_id_ResistanceToConsumption = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
   }
 
   return (true);
@@ -619,6 +604,11 @@ bool CVegetable::changeHealthRate(double variation)
     return false;
   }
   return true;
+}
+
+void CVegetable::setHealthRate(double rate)
+{
+  getParameter(m_id_Health)->setVal(rate);
 }
 
 //===========================================================================

@@ -672,6 +672,10 @@ bool CGene::setAsBrainConfigUsingDefinition(GeneSubTypeBrainBehavior_e subType, 
 //===========================================================================
 // Use Gene definition  
 //===========================================================================
+const CGeneDefinitions* CGene::getDefinitions()
+{
+  return m_pDefinitions;
+}
 
 size_t CGene::getNumElements()
 {
@@ -831,12 +835,7 @@ bool CGene::getElementIsConfigurable(size_t index)
 
 double CGene::getElementDefaultValue(size_t index)
 {
-  double defaultVal = 0;
-  if (index < getNumElements())
-  {
-    defaultVal = m_pDefinitions->elements[index].defaultValue;
-  }
-  return defaultVal;
+  return m_pDefinitions->getElementDefaultValue(index);
 }
 
 bool CGene::setRawDataSizeWithDefinition()

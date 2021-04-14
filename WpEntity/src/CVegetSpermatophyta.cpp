@@ -192,8 +192,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
   // CVegetable specific
   if (m_id_PollenRange == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,2,2,100,"Pollen Range",PARAM_REPRODUCTION, GENE_PARAM_POLLEN_RANGE);
-    m_id_PollenRange      = addParameter(pParam);
+    m_id_PollenRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_POLLEN_RANGE);
   }
 
   return (true);

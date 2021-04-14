@@ -41,8 +41,9 @@ distribution.
 //===========================================================================
 
 CCyclicParam::CCyclicParam(double valMin, double valMax, int nbStepPerCycle, string label, GenericParamType_e type)
-:CGenericParam(valMin, valMax, valMax, valMax, label, type)
+:CGenericParam(valMin, valMax, valMax, valMax, type)
 {
+  m_Label = label;
   m_nbStepPerCycle = nbStepPerCycle;
   m_CurPhase = 0;
   m_PhaseStep = 2*CYBIO_PI/nbStepPerCycle;
@@ -120,4 +121,13 @@ double CCyclicParam::getCurrentPhase()
 void CCyclicParam::setCurrentPhase(double phase)
 {
   m_CurPhase = phase;
+}
+
+//===========================================================================
+// Get / Set for attributes
+//===========================================================================
+
+string CCyclicParam::getLabel(void)
+{
+  return m_Label;
 }

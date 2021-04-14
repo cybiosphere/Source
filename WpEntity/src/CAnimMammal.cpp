@@ -218,14 +218,12 @@ bool CAnimMammal::completeParamsWithDefault()
   // CAnimMammal specific
   if (m_id_GestationTime == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,200,"Gestation time",PARAM_REPRODUCTION,GENE_PARAM_GESTA_TIME);
-    m_id_GestationTime    = addParameter(pParam);
+    m_id_GestationTime    = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_TIME);
   }
   if (m_id_GestationNumberRange == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,3,10,"Gestation size",PARAM_REPRODUCTION,GENE_PARAM_GESTA_NB);
-    pParam->forceVal(0);
-    m_id_GestationNumberRange = addParameter(pParam);
+    m_id_GestationNumberRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_NB);
+    setGestationBabyNumber(0);
   }
   
   return (true);

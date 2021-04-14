@@ -110,9 +110,9 @@ vector<CGeneDefinitions> CGeneList::geneListCaracter =
 vector<CGeneDefinitions> CGeneList::geneListParameter =
 {
   { GENE_PARAMETER, GENE_PARAM_WEIGHT, "Weight", GENE_MUTE_INCREMENTAL_2,
-    { { "Min", 2, 0, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Init", 2, 2, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Max", 2, 4, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Min", 2, 0, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 1 },
+      { "Init", 2, 2, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 2 },
+      { "Max", 2, 4, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 10 } } },
 
   { GENE_PARAMETER, GENE_PARAM_TOXICITY, "Toxicity", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -121,12 +121,12 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
 
   { GENE_PARAMETER, GENE_PARAM_PROTECTION, "Protection", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 5 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_CAMOUFLAGE, "Camouflage", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 1 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_AGE, "Age", GENE_MUTE_INCREMENTAL_2,
@@ -141,63 +141,63 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
 
   { GENE_PARAMETER, GENE_PARAM_REPRO_RATE, "Reproduction rate", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 10 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
-  { GENE_PARAMETER, GENE_PARAM_HEALTH, "Health", GENE_MUTE_INCREMENTAL_2,
+  { GENE_PARAMETER, GENE_PARAM_RESISTANCE_TO_POISON, "Resistance to poison", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Start", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_GROWTH_SPEED, "Growth speed", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "mU day", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "mU day", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 1 },
       { "Max", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 1000 } } },
 
   { GENE_PARAMETER, GENE_PARAM_REPRO_RANGE, "Reproduction range", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 10, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Range", 2, 2, 0, 10, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Range", 2, 2, 0, 10, GENE_DOMINANCE_HIGHEST, true, 2 },
       { "Max", 2, 4, 0, 10, GENE_DOMINANCE_HIGHEST, false, 10 } } },
 
   { GENE_PARAMETER, GENE_PARAM_FAT_WEIGHT, "Fat weight", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Init", 2, 2, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Max", 2, 4, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+      { "Max", 2, 4, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 1 } } },
 
   { GENE_PARAMETER, GENE_PARAM_ATTACK_FACTOR, "Attack", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 10 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_SPEED, "Speed", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 200, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Speed", 2, 2, 0, 200, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Steps sec", 2, 4, 0, 200, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+      { "Steps sec", 2, 4, 0, 200, GENE_DOMINANCE_HIGHEST, true, 10 } } },
 
   { GENE_PARAMETER, GENE_PARAM_CURIOSITY, "Curiosity rate", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 10 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_LEARNING, "Learning rate", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 100 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_POLLEN_RANGE, "Pollen range", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Range", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
+      { "Range", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 2 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_GESTA_TIME, "Gestation time", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Start", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Duration", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+      { "Duration", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 2 } } },
 
   { GENE_PARAMETER, GENE_PARAM_GESTA_NB, "Gestation size", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Usual", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+      { "Usual", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 1 },
+      { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true, 2 } } },
 
   { GENE_PARAMETER, GENE_PARAM_RESISTANCE_TO_CONSUMPTION, "Resistance to consumption", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -500,6 +500,16 @@ CGeneDefinitions::CGeneDefinitions(GeneType_e type, int subType, string name, Ge
 
 CGeneDefinitions::~CGeneDefinitions()
 {
+}
+
+double CGeneDefinitions::getElementDefaultValue(size_t index) const
+{
+  double defaultVal = 0;
+  if (index < elements.size())
+  {
+    defaultVal = elements[index].defaultValue;
+  }
+  return defaultVal;
 }
 
 

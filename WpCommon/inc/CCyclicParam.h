@@ -62,6 +62,7 @@ class DLL_CYBIOCORE_API CCyclicParam : public CGenericParam
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
+  string m_Label;
   int    m_nbStepPerCycle;
   double m_CurPhase;
   double m_PhaseStep;
@@ -91,6 +92,13 @@ public:
   void NextStep(void);  
   double getCurrentPhase();
   void setCurrentPhase(double phase);
+
+//--------------------------------------------------------------------------- 
+// Get / Set for attributes
+//---------------------------------------------------------------------------
+public:
+  string getLabel(void);
+
 };
 
 #endif // !defined(CCYCLICPARAM_INCLUDED_)

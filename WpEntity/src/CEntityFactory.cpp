@@ -204,8 +204,9 @@ CBasicEntity* CEntityFactory::createCloneEntity(CBasicEntity* pModelEntity)
   for (size_t i = 0; i < pNewEntity->getNumParameter(); i++)
     pNewEntity->getParameter(i)->forceVal(pModelEntity->getParameter(i)->getVal());
 
-  // Copie Status
+  // Copie other infos
   pNewEntity->setStatus(pModelEntity->getStatus());
+  pNewEntity->setGeneration(pModelEntity->getGeneration());
 
   return pNewEntity;
 }

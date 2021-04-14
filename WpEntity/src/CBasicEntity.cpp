@@ -667,28 +667,23 @@ bool CBasicEntity::completeParamsWithDefault(void)
   // If not, use default value
   if (m_id_Weight == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(1,2,2,20,"Weight",PARAM_PHYSIC,GENE_PARAM_WEIGHT);
-    m_id_Weight           = addParameter(pParam);
+    m_id_Weight = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_WEIGHT);
   }
   if (m_id_Toxicity == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"Toxicity rate",PARAM_PHYSIC,GENE_PARAM_TOXICITY);
-    m_id_Toxicity         = addParameter(pParam);
+    m_id_Toxicity = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_TOXICITY);
   }
   if (m_id_Protection == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,5,5,100,"Protection factor",PARAM_PHYSIC,GENE_PARAM_PROTECTION);
-    m_id_Protection       = addParameter(pParam);
+    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_PROTECTION);
   }
   if (m_id_Camouflage == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,1,1,100,"Camouflage factor",PARAM_PHYSIC,GENE_PARAM_CAMOUFLAGE);
-    m_id_Camouflage       = addParameter(pParam);
+    m_id_Camouflage = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_CAMOUFLAGE);
   }
   if (m_id_Noise == invalidIndex)
   {
-    CGenericParam* pParam = new CGenericParam(0,0,0,100,"NoiseRate",PARAM_ENVIRONMENT, GENE_PARAM_UNKNOWN);
-    m_id_Noise       = addParameter(pParam);
+    m_id_Noise = addParameterCustom(0, 0, 0, 100, "NoiseRate", PARAM_ENVIRONMENT);
   }
   
   return (true);
@@ -1648,9 +1643,27 @@ int CBasicEntity::addParameterFromGene(CGene* pGen, GenericParamType_e paramType
   pGen->getElementIsConfigurable(0) ? minVal = pGen->getElementValue(0) : minVal = pGen->getElementDefaultValue(0);
   pGen->getElementIsConfigurable(1) ? initVal = pGen->getElementValue(1) : initVal = pGen->getElementDefaultValue(1);
   pGen->getElementIsConfigurable(2) ? maxVal = pGen->getElementValue(2) : maxVal = pGen->getElementDefaultValue(2);
-  CGenericParam* pParam = new CGenericParam(minVal, initVal, initVal, maxVal, pGen->getLabel(), paramType, (GeneSubTypeParam_e)pGen->getGeneSubType());
+  CGenericParam* pParam = new CGeneticParam(minVal, initVal, initVal, maxVal,  paramType, pGen->getDefinitions());
   return addParameter(pParam);
 }
+
+int CBasicEntity::addParameterFromGeneDefinition(GenericParamType_e paramType, GeneSubTypeParam_e geneSubTypeParam)
+{
+  const CGeneDefinitions* pGenDefinition = CGeneList::getDefinitions(GENE_PARAMETER, geneSubTypeParam);
+  double minVal, initVal, maxVal;
+  minVal = pGenDefinition->getElementDefaultValue(0);
+  initVal = pGenDefinition->getElementDefaultValue(1);
+  maxVal = pGenDefinition->getElementDefaultValue(2);
+  CGenericParam* pParam = new CGeneticParam(minVal, initVal, initVal, maxVal, paramType, pGenDefinition);
+  return addParameter(pParam);
+}
+
+int CBasicEntity::addParameterCustom(double valMin, double valInit, double valNominal, double valMax, string label, GenericParamType_e type)
+{
+  CGenericParam* pParam = new CCustomParam(valMin, valInit, valNominal, valMax, label, type);
+  return addParameter(pParam);
+}
+
 
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::getNumParameter
@@ -3312,6 +3325,11 @@ void CBasicEntity::setPheromone(PheromoneType_e pheroType)
 int CBasicEntity::getGeneration() 
 {
   return (m_Generation);
+}
+
+void CBasicEntity::setGeneration(int newGeneration)
+{
+  m_Generation = newGeneration;
 }
 
 ReproType_e CBasicEntity::getTypeOfReproduction()

@@ -331,11 +331,13 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentify.h" />
     <ClInclude Include="..\WpBehavior\inc\CSensorViewIdentifyFar.h" />
     <ClInclude Include="..\WpCommon\inc\CaracterDefinitions.h" />
+    <ClInclude Include="..\WpCommon\inc\CCustomParam.h" />
     <ClInclude Include="..\WpEntity\inc\CEntityFactory.h" />
     <ClInclude Include="..\WpEntity\inc\CRock.h" />
     <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpGenetic\inc\CGeneDefinitions.h" />
+    <ClInclude Include="..\WpGenetic\inc\CGeneticParam.h" />
     <ClInclude Include="..\WpMeasure\inc\CGeoMapPopulation.h" />
     <ClInclude Include="..\WpMeasure\inc\CMeasureFactory.h" />
     <ClInclude Include="Resource.h" />
@@ -469,6 +471,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpBehavior\src\CSensorViewFar.cpp" />
     <ClCompile Include="..\WpBehavior\src\CSensorViewIdentify.cpp" />
     <ClCompile Include="..\WpBehavior\src\CSensorViewIdentifyFar.cpp" />
+    <ClCompile Include="..\WpCommon\src\CCustomParam.cpp" />
     <ClCompile Include="..\WpEntity\src\CAnimal.cpp" />
     <ClCompile Include="..\WpEntity\src\CAnimMammal.cpp" />
     <ClCompile Include="..\WpEntity\src\CBasicEntity.cpp" />
@@ -492,6 +495,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpGenetic\src\CChromosome.cpp" />
     <ClCompile Include="..\WpGenetic\src\CGene.cpp" />
     <ClCompile Include="..\WpGenetic\src\CGeneDefinitions.cpp" />
+    <ClCompile Include="..\WpGenetic\src\CGeneticParam.cpp" />
     <ClCompile Include="..\WpGenetic\src\CGenome.cpp" />
     <ClCompile Include="..\WpGenetic\src\CPairOfChromosome.cpp" />
     <ClCompile Include="..\WpMeasure\src\CGeoMapPopulation.cpp" />

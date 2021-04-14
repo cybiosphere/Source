@@ -81,9 +81,7 @@ protected:
   double m_ValNominal;
   double m_ValMin;
   double m_ValMax;
-  string m_Label;        // User defined name
   GenericParamType_e m_Type;
-  GeneSubTypeParam_e m_CodingGeneSubType;
 
 //===========================================================================
 // Methods 
@@ -93,8 +91,7 @@ protected:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGenericParam(double valMin,double valInit,double valNominal,double valMax,string label,
-                  GenericParamType_e type, GeneSubTypeParam_e codingGeneSubType = GENE_PARAM_UNKNOWN);
+	CGenericParam(double valMin, double valInit, double valNominal, double valMax, GenericParamType_e type);
 	virtual ~CGenericParam();
 
  //---------------------------------------------------------------------------
@@ -116,12 +113,13 @@ public:
   bool setValMin(double newVal);
   double getMin(void);
   double getMax(void);
-  string getLabel(void);
   bool changeVal(double variation);
   bool isMaxReached(void);
   bool isMinReached(void);
   GenericParamType_e getType();
-  GeneSubTypeParam_e getCodingGeneSubtype();
+  
+  virtual string getLabel(void);
+  virtual GeneSubTypeParam_e getCodingGeneSubtype();
   virtual double getCurrentPhase() { return 0; };
   virtual void setCurrentPhase(double phase) { };
 };

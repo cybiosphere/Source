@@ -112,6 +112,7 @@ public:
 
 protected:
   bool changeHealthRate(double variation);
+  void setHealthRate(double rate);
 
 //---------------------------------------------------------------------------
 // Behavior  
