@@ -115,9 +115,11 @@ typedef struct
   CBasicEntity* pEntity;
 } BiotopCube_t;
 
+#define MAX_ODOR_TRACE_VAL    100
+
 typedef struct 
 {
-  double   odorTrace[ODOR_NUMBER_TYPE];
+  BYTE     odorTrace[ODOR_NUMBER_TYPE];
   COLORREF customColor;                 // Value that can be used by GUI to display user defined colors on the map
   WORD     mapId;                       // Value that can be used by GUI to display paterns on the map
   WORD     altitude;

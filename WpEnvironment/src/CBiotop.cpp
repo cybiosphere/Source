@@ -1618,10 +1618,10 @@ void CBiotop::decreaseOdorMap()
     {
       for (size_t odor = 0; odor < ODOR_NUMBER_TYPE; odor++)
       {
-        if (m_tBioSquare[i][j].odorTrace[odor] < 0.01)
+        if (m_tBioSquare[i][j].odorTrace[odor] < 2)
           m_tBioSquare[i][j].odorTrace[odor] = 0;
         else
-          m_tBioSquare[i][j].odorTrace[odor] = m_tBioSquare[i][j].odorTrace[odor] / 2.0;
+          m_tBioSquare[i][j].odorTrace[odor] = m_tBioSquare[i][j].odorTrace[odor] / 2;
       }
     }
   }
@@ -1842,7 +1842,7 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
     if ( isCoordValid(tmpCoord,tmpLayer) )
     {
       // memorize odor trace
-      m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[pCurEntity->getOdor()] = MAX_SENSOR_VAL/10;
+      m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[pCurEntity->getOdor()] = MAX_ODOR_TRACE_VAL;
       m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity = NULL;
     }
     tmpCoord = pCurEntity->getGridCoord();
@@ -2717,7 +2717,7 @@ CGenericParam* CBiotop::getParameterByName(string& paramName)
 double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor)
 {
   // coord may be used later
-  return (m_tBioSquare[coord.x][coord.y].odorTrace[odor]);
+  return ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odor] / MAX_ODOR_TRACE_VAL);
 }
 
 bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
