@@ -3871,7 +3871,7 @@ void CAnimal::setStomachFillingRate(double rate)
 
 double CAnimal::getResistanceToPoison()
 {
-  if (m_id_GrowthSpeed == invalidIndex)
+  if (m_id_ResistanceToPoison == invalidIndex)
     return 0;
   else
     return (getParameter(m_id_ResistanceToPoison)->getVal());

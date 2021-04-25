@@ -525,7 +525,7 @@ CLogServerView* CCybiosphereApp::GetLogServerViewPtr()
 }
 
 #ifdef USE_CLAN_CLIENT
-void CCybiosphereApp::WaitForEventRefreshEntity(entityIdType entityId)
+void CCybiosphereApp::WaitForEventRefreshEntity()
 {
   for (int retry = 0; retry < 1000; retry++)
   {
@@ -534,8 +534,10 @@ void CCybiosphereApp::WaitForEventRefreshEntity(entityIdType entityId)
     BiotopEventPair eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
     if (eventPair.first != ENTITY_ID_INVALID)
     {
-      if (eventPair.second.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED))
-        return; 
+      if (eventPair.second.eventList.test(BIOTOP_EVENT_ENTITY_MODIFIED) || eventPair.second.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
+      {
+        return;
+      }
     }
   }
 }
@@ -550,7 +552,7 @@ bool CCybiosphereApp::setSelectedEntity(CBasicEntity* pEntity)
     entityIdType entityId = pEntity->getId();
     m_pClient->send_event_request_entity_refresh(pEntity);
     // Wait for entity update from server (TODO: confirm reception)
-    WaitForEventRefreshEntity(entityId);
+    WaitForEventRefreshEntity();
     m_pSelectedEntity = m_pBiotop->getEntityById(entityId);
   }
 #endif
@@ -567,7 +569,7 @@ bool CCybiosphereApp::updateSelectedEntity(CBasicEntity* pEntity)
     entityIdType entityId = pEntity->getId();
     m_pClient->send_event_update_entity_data(pEntity);
     // Wait for entity update from server (TODO: confirm reception)
-    WaitForEventRefreshEntity(entityId);
+    WaitForEventRefreshEntity();
     m_pSelectedEntity = m_pBiotop->getEntityById(entityId);
   }
 #endif
@@ -724,6 +726,8 @@ void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName
   {
     pEntity->jumpToGridCoord(coord, false);
     m_pClient->send_event_add_entity(pEntity);
+    // Wait for creation by server
+    WaitForEventRefreshEntity();
   }
 #else
   m_pBiotop->createAndAddEntity(fileName, pathName, coord);

@@ -1696,6 +1696,7 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
 {
   if (id > m_tParam.size())
   {
+    CYBIOCORE_LOG("ENTITY - ERROR Cannot getParameter entity %s index %d\n", m_Label.c_str(), id);
     return (NULL);
   }
   else
@@ -2433,7 +2434,7 @@ bool CBasicEntity::saveInXmlFile(string fileName, string newLabel)
 
   if (fileName == ".xml")
   {
-    CYBIOCORE_LOG("ENTITY - Warning: Trying to save entity %s in empty file name .xml\n", getLabel().c_str());
+    CYBIOCORE_LOG("ENTITY - WARNING Trying to save entity %s in empty file name .xml\n", getLabel().c_str());
   }
 
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileName);
@@ -3359,7 +3360,16 @@ CGenome* CBasicEntity::getGenome()
 
 double CBasicEntity::getNoise()
 {
-  return (getParameter(m_id_Noise)->getVal());
+  CGenericParam* pParam = getParameter(m_id_Noise);
+  if (pParam != NULL)
+  {
+    return (pParam->getVal());
+  }
+  else
+  {
+    CYBIOCORE_LOG("ENTITY - ERROR getNoise entity %s return default value\n", m_Label.c_str());
+    return (0.0);
+  }
 }
 
 void CBasicEntity::setNoise(int rate)
@@ -3369,7 +3379,16 @@ void CBasicEntity::setNoise(int rate)
 
 double CBasicEntity::getWeight()
 {
-  return (getParameter(m_id_Weight)->getVal());
+  CGenericParam* pParam = getParameter(m_id_Weight);
+  if (pParam != NULL)
+  {
+    return (pParam->getVal());
+  }
+  else
+  {
+    CYBIOCORE_LOG("ENTITY - ERROR getWeight entity %s return default value\n", m_Label.c_str());
+    return (1.0);
+  }
 }
 
 double CBasicEntity::getMaxWeight()

@@ -169,7 +169,7 @@ private:
 #endif
 #ifdef USE_CLAN_CLIENT
   Client* m_pClient;
-  void WaitForEventRefreshEntity(entityIdType entityId);
+  void WaitForEventRefreshEntity();
 #endif
   BOOL m_bModeManual;
   BOOL m_bModeStopOnEvent;
