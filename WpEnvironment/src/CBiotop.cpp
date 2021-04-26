@@ -354,7 +354,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
-  size_t prevIndex = deleteEntity(oldId, false);
+  size_t prevIndex = deleteEntity(pOldEntity, false);
 
   // Create new entity
   CBasicEntity* pNewEntity = CEntityFactory::createEntity(oldLabel,pNewEntityGenome);
@@ -412,13 +412,17 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
 }
 
 
-size_t CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
+size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
 {
-  CBasicEntity* pEntity = NULL;
+  if (pEntity == NULL)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR Try to remove NULL entity\n");
+    return (invalidIndex);
+  }
   for (size_t i = 0; i < getNbOfEntities(); i++)
   {
-    pEntity = m_tEntity[i];
-    if (pEntity->getId() == idEntity)
+    if (m_tEntity[i] == pEntity)
     {
       if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
       {
@@ -435,6 +439,8 @@ size_t CBiotop::deleteEntity(entityIdType idEntity, bool displayLog)
     }
   }
   // If not found
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - ERROR Try to remove entity not found\n");
   return (invalidIndex);
 }
 
@@ -1584,7 +1590,7 @@ void CBiotop::nextHourForAllEntities(void)
     {
       if (pEntity->isToBeRemoved())
       {
-        deleteEntity(pEntity->getId());
+        deleteEntity(pEntity, true);
       }
       else
       {

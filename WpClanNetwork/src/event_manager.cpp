@@ -672,6 +672,7 @@ namespace clan
       if (!pBiotop->replaceEntityByAnother(pCurEntity->getId(), pNewEntity))
       {
         delete pNewEntity;
+        return false;
       }
       pNewEntity->loadPurposeMapFromXmlFile(&xmlDoc);
       bFound = true;

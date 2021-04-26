@@ -278,6 +278,10 @@ public:
 //---------------------------------------------------------------------------
 // Entities management
 //---------------------------------------------------------------------------
+private:
+  size_t deleteEntity(CBasicEntity* pEntity, bool displayLog = true);
+  void deleteAllParameters(void);
+
 public:
   entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
   entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
@@ -292,10 +296,8 @@ public:
   void displayEntities(void);
   void setDefaultEntitiesForTest(void);
 
-  size_t deleteEntity(entityIdType idEntity, bool displayLog = true);
   void deleteAllEntities(void);
   void deleteAllMeasures(void);
-  void deleteAllParameters(void);
 
   size_t getNbOfEntities(void);
   size_t getNbOfAnimals(void);

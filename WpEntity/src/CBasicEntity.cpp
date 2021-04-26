@@ -1696,6 +1696,7 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
 {
   if (id > m_tParam.size())
   {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("ENTITY - ERROR Cannot getParameter entity %s index %d\n", m_Label.c_str(), id);
     return (NULL);
   }
@@ -2434,6 +2435,7 @@ bool CBasicEntity::saveInXmlFile(string fileName, string newLabel)
 
   if (fileName == ".xml")
   {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("ENTITY - WARNING Trying to save entity %s in empty file name .xml\n", getLabel().c_str());
   }
 
@@ -3367,6 +3369,7 @@ double CBasicEntity::getNoise()
   }
   else
   {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("ENTITY - ERROR getNoise entity %s return default value\n", m_Label.c_str());
     return (0.0);
   }
@@ -3386,6 +3389,7 @@ double CBasicEntity::getWeight()
   }
   else
   {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("ENTITY - ERROR getWeight entity %s return default value\n", m_Label.c_str());
     return (1.0);
   }
