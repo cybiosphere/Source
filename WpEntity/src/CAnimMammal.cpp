@@ -972,7 +972,7 @@ bool CAnimMammal::checkCoherenceAndAdjustBabyNumberParam()
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("MAMMAL - Reproduction : %s gestation baby number forced to fit to gestation table\n", getLabel().c_str());
-    setGestationBabyNumber(m_tGestationChilds.size());
+    setGestationBabyNumber((int)m_tGestationChilds.size());
     return false;
   }
   return true;

@@ -269,15 +269,16 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
   const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
-  // get focused entity
-  BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
-
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     distanceWeight = 0;
 
-    if (pCurEntity != pBrainFocused->pPreviousEntity)
+    if (pCurEntity == NULL)
+    {
+      viewChance = 0;
+    }
+    else if (pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId())
     {
       // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = 100.0 - 2*pCurEntity->getCamouflage(); 
@@ -415,14 +416,8 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
       break;
 
     // 3 Update global brain focused entity if weight over previous
-    if (maxComputedWeight > pBrainFocused->computedWeight)
-    {
-      pBrainFocused->pNewEntity      = m_pEntityViewFarTab[maxWeightViewTabIndex].pEntity;
-      pBrainFocused->computedWeight  = maxComputedWeight;
-      pBrainFocused->captorUid       = GetUniqueId();
-      pBrainFocused->subcaptorIndex  = offset;
-      pBrainFocused->subcaptorsSize  = VIEW_SIZE_PER_FOCUS;
-    }
+    m_pBrain->proposeNewFocusedEntityCandidate(m_pEntityViewFarTab[maxWeightViewTabIndex].pEntity, maxComputedWeight, 0,
+                                               GetUniqueId(), offset, VIEW_SIZE_PER_FOCUS);
 
     // 4 Fill m_tStimulationValues
     for (i=0; i<VIEW_SIZE_PER_FOCUS; i++)

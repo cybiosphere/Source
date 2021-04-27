@@ -202,6 +202,7 @@ namespace clan
       CAnimal* pAnimal = (CAnimal*)pEntity;
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentReactionIndex());
       newEvent.add_argument((int)pAnimal->getBrain()->GetCurrentPurposeIndex());
+      newEvent.add_argument((int)pAnimal->getBrain()->getBrainFocusedEntityId());
       newEvent.add_argument((int)pEntity->getCurrentLifeStage()->getStageType());
     }
     return (std::move(newEvent));
@@ -274,9 +275,12 @@ namespace clan
         index++;
         int purposeIndex = e.get_argument(index);
         index++;
+        int focusedEntityId = e.get_argument(index);
+        index++;
         int lifeStage = e.get_argument(index);
         pAnimal->SetCurrentReactionIndex(reactIndex);
         pAnimal->getBrain()->ForceCurrentPurpose(purposeIndex);
+        pAnimal->getBrain()->ForceBrainFocusedEntityId(focusedEntityId);
         pAnimal->setCurrentLifeStages((LifeStage_e)lifeStage);
       }
     }

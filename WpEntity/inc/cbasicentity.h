@@ -71,8 +71,6 @@ class CPhysicalWelfare;
 #define STRING_GENE_UNUSED "Unused gene"
 #define NB_STEPS_PER_GRID_SQUARE 10
 
-typedef long int entityIdType;
-
 typedef enum
 {
   STATUS_STATIC = 0,

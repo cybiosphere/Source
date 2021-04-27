@@ -1697,7 +1697,7 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
   if (id > m_tParam.size())
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ENTITY - ERROR Cannot getParameter entity %s index %d\n", m_Label.c_str(), id);
+    CYBIOCORE_LOG("ENTITY - ERROR Cannot getParameter index %d\n", id);
     return (NULL);
   }
   else
@@ -2880,6 +2880,7 @@ bool CBasicEntity::loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc)
     }
     pNodeEntity = pNodeEntity->NextSibling(XML_NODE_FETUS_ENTITY);
   }
+  return true;
 }
 
 //---------------------------------------------------------------------------

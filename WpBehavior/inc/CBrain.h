@@ -71,12 +71,12 @@ class CSensorSmell;
 
 typedef struct 
 {
-  CBasicEntity*        pPreviousEntity;
-  CBasicEntity*        pNewEntity;
-  double               computedWeight;
-  DWORD                captorUid;
-  size_t         subcaptorIndex;
-  size_t         subcaptorsSize;
+  entityIdType previousEntityId;
+  entityIdType newEntityId;
+  double       computedWeight;
+  DWORD        captorUid;
+  size_t       subcaptorIndex;
+  size_t       subcaptorsSize;
 } BrainFocusedEntityView_t;
 
 
@@ -260,7 +260,11 @@ public:
   bool PollAllSensors (void);
   bool AddFeelingWelfareSensitivity(CSensor* pSens, size_t tableSensiSize, double* pTableSensi);
 
-  BrainFocusedEntityView_t* getpBrainFocusedEntityInfo(void);
+  
+  entityIdType getBrainFocusedEntityId(void);
+  void proposeNewFocusedEntityCandidate(CBasicEntity* pEntity, double computedWeight, double specialWeightBonus,
+                                        DWORD captorUid, size_t subcaptorIndex, size_t subcaptorsSize);
+  void ForceBrainFocusedEntityId(entityIdType focusedEntityId);
   void clearBrainFocusedEntityInfo(void);
 
   void ResetReactionsFailureSuccessFactor();

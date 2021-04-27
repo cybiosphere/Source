@@ -275,15 +275,16 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
   const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
 
-  // get focused entity
-  BrainFocusedEntityView_t* pBrainFocused = m_pBrain->getpBrainFocusedEntityInfo();
-
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
 
-    if ((pCurEntity != pBrainFocused->pPreviousEntity) && (m_nRange>1)) // keep seeing focused and just in front entities
+    if (pCurEntity == NULL)
+    {
+      viewChance = 0;
+    }
+    else if ((pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId()) && (m_nRange>1)) // keep seeing focused and just in front entities
     {
       // view chance depends on vigliance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - pCurEntity->getCamouflage();
@@ -414,14 +415,17 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
     maxWeightViewTabIndex = invalidIndex;
     for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
     {
-      // Give 10% bonus to previousely selected entity
-      if (m_pEntityViewIdentifyTab[i].pEntity == pBrainFocused->pPreviousEntity)
-        m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].computedWeight/10;
-
-      if (m_pEntityViewIdentifyTab[i].computedWeight>maxComputedWeight)
+      if (m_pEntityViewIdentifyTab[i].pEntity != NULL)
       {
-        maxComputedWeight = m_pEntityViewIdentifyTab[i].computedWeight;
-        maxWeightViewTabIndex = i;
+        // Give 10% bonus to previousely selected entity
+        if (m_pEntityViewIdentifyTab[i].pEntity->getId() == m_pBrain->getBrainFocusedEntityId())
+          m_pEntityViewIdentifyTab[i].computedWeight += m_pEntityViewIdentifyTab[i].computedWeight / 10;
+
+        if (m_pEntityViewIdentifyTab[i].computedWeight > maxComputedWeight)
+        {
+          maxComputedWeight = m_pEntityViewIdentifyTab[i].computedWeight;
+          maxWeightViewTabIndex = i;
+        }
       }
     }
 
@@ -430,17 +434,9 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
       break;
 
     // 3 Update global brain focused entity if weight over previous
-    if (maxComputedWeight > pBrainFocused->computedWeight)
-    {
-      pBrainFocused->pNewEntity       = m_pEntityViewIdentifyTab[maxWeightViewTabIndex].pEntity;
-      if (pAnimal->getHeadDirection() == direction)
-        pBrainFocused->computedWeight  = maxComputedWeight + 2; // Add 2 to give advantage to front entity
-      else
-        pBrainFocused->computedWeight  = maxComputedWeight + 1; // Add 1 to give advantage to first found entity
-      pBrainFocused->captorUid       = GetUniqueId();
-      pBrainFocused->subcaptorIndex  = offset;
-      pBrainFocused->subcaptorsSize  = VIEW_IDENTIFY_SIZE_PER_FOCUS;
-    }
+    double weightBonus = (pAnimal->getHeadDirection() == direction) ? 1 : 0;
+    m_pBrain->proposeNewFocusedEntityCandidate(m_pEntityViewIdentifyTab[maxWeightViewTabIndex].pEntity, maxComputedWeight, weightBonus,
+                                                GetUniqueId(), offset, VIEW_IDENTIFY_SIZE_PER_FOCUS);
 
     // 4 Fill m_tStimulationValues
     for (i=0; i<VIEW_IDENTIFY_SIZE_PER_FOCUS; i++)

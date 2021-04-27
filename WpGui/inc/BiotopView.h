@@ -73,7 +73,7 @@ protected:
   LARGE_INTEGER m_SysTicksPrevSecEnd;
   bool m_IdleDisplayMode;
 
-  CBasicEntity* m_pFocusedEntity; // focused entity change often
+	entityIdType m_focusedEntityId; // focused entity change often
 
 // Overrides
 	// ClassWizard generated virtual function overrides

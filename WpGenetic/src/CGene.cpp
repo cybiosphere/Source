@@ -724,7 +724,7 @@ bool CGene::setElementValue(size_t index, double value)
     }
     else
     {
-      resu = setElementRawValue(index, value);
+      resu = setElementRawValue(index, (DWORD)value);
     }
   }
   return resu;

@@ -119,8 +119,8 @@ CBrain::CBrain()
 
 void CBrain::clearBrainFocusedEntityInfo(void)
 {
-  m_FocusedEntityInfo.pPreviousEntity = NULL;
-  m_FocusedEntityInfo.pNewEntity = NULL;
+  m_FocusedEntityInfo.previousEntityId = ENTITY_ID_INVALID;
+  m_FocusedEntityInfo.newEntityId = ENTITY_ID_INVALID;
   m_FocusedEntityInfo.computedWeight = 0;
   m_FocusedEntityInfo.captorUid = UID_UNSET;
   m_FocusedEntityInfo.subcaptorIndex = invalidIndex;
@@ -520,22 +520,19 @@ bool CBrain::PollAllSensors (void)
     }
   }
 
-  if (m_FocusedEntityInfo.pNewEntity != NULL)
+  if (m_FocusedEntityInfo.newEntityId != ENTITY_ID_INVALID)
   {
-    if (m_FocusedEntityInfo.pNewEntity->isToBeRemoved())
-    {
-      //CYBIOCORE_LOG("BRAIN - WARNING PollAllSensors : FocusedEntity is NULL\n");
-      m_FocusedEntityInfo.pNewEntity = NULL;
-    }
-    else
+    CBasicEntity* pFocusedEntity = GetEntity()->getBiotop()->getEntityById(m_FocusedEntityInfo.newEntityId);
+    if (pFocusedEntity != NULL)
     {
       // Update Identification on focused entity for GUI 
-      ComputeAndGetIdentification(m_FocusedEntityInfo.pNewEntity);
+      ComputeAndGetIdentification(pFocusedEntity);
     }
   }
 
   // reset m_FocusedEntityInfo
-  m_FocusedEntityInfo.pPreviousEntity = m_FocusedEntityInfo.pNewEntity;
+  m_FocusedEntityInfo.previousEntityId = m_FocusedEntityInfo.newEntityId;
+  m_FocusedEntityInfo.newEntityId = ENTITY_ID_INVALID;
   m_FocusedEntityInfo.computedWeight = 0;
   m_FocusedEntityInfo.captorUid = UID_UNSET;
   m_FocusedEntityInfo.subcaptorIndex = invalidIndex;
@@ -543,11 +540,28 @@ bool CBrain::PollAllSensors (void)
   return true;
 }
 
-BrainFocusedEntityView_t* CBrain::getpBrainFocusedEntityInfo(void)
+entityIdType CBrain::getBrainFocusedEntityId(void)
 {
-  return(&m_FocusedEntityInfo);
+  return(m_FocusedEntityInfo.previousEntityId);
 }
 
+void CBrain::proposeNewFocusedEntityCandidate(CBasicEntity* pEntity, double computedWeight, double specialWeightBonus,
+                                              DWORD captorUid, size_t subcaptorIndex, size_t subcaptorsSize)
+{
+  if ((pEntity != NULL) && (computedWeight > m_FocusedEntityInfo.computedWeight))
+  {
+    m_FocusedEntityInfo.newEntityId = pEntity->getId();
+    m_FocusedEntityInfo.computedWeight = computedWeight + 1 + specialWeightBonus; // Add 1 to give advantage to first found entity
+    m_FocusedEntityInfo.captorUid = captorUid;
+    m_FocusedEntityInfo.subcaptorIndex = subcaptorIndex;
+    m_FocusedEntityInfo.subcaptorsSize = subcaptorsSize;
+  }
+}
+
+void CBrain::ForceBrainFocusedEntityId(entityIdType focusedEntityId)
+{
+  m_FocusedEntityInfo.previousEntityId = focusedEntityId;
+}
 
 void CBrain::ResetReactionsFailureSuccessFactor()
 {

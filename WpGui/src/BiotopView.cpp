@@ -112,7 +112,7 @@ CBiotopView::CBiotopView()
   m_MenuSelCoord.y = 1;
   m_IdleDisplayMode = false;
   m_zoomFactor = 100;
-  m_pFocusedEntity = NULL;
+  m_focusedEntityId = ENTITY_ID_INVALID;
   m_SpeedRate = 1.0;
 }
 
@@ -338,7 +338,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
       theApp.NextSecondRefreshAllViewsLowCPU();
       if (m_IdleDisplayMode)
       {
-        m_pFocusedEntity = NULL;
+        m_focusedEntityId = ENTITY_ID_INVALID;
         m_IdleDisplayMode = false;
         m_pBioDisplay->RefreshSceneIdleNoCPU();
         m_pBioDisplay->RedrawScene();
@@ -351,12 +351,12 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
       CBasicEntity* pEntity = theApp.GetpSelectedEntity();
       if ((pEntity) && (pEntity->getBrain() != NULL))
       {
-        if (m_pFocusedEntity != pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity)
+        if (m_focusedEntityId != pEntity->getBrain()->getBrainFocusedEntityId())
         {
-          m_pFocusedEntity = pEntity->getBrain()->getpBrainFocusedEntityInfo()->pPreviousEntity;
-          if (m_pFocusedEntity != NULL)        
+          m_focusedEntityId = pEntity->getBrain()->getBrainFocusedEntityId();
+          if (m_focusedEntityId != ENTITY_ID_INVALID)
           {
-            m_pBioDisplay->SetFocusedEntityId (m_pFocusedEntity->getId());
+            m_pBioDisplay->SetFocusedEntityId (m_focusedEntityId);
           }
         }
       }
@@ -391,7 +391,7 @@ bool CBiotopView::SetSelectedEntity(CBasicEntity* pEntity)
   m_pBioDisplay3D->SetFocusedEntityId(ENTITY_ID_INVALID);
   m_pBioDisplay2D->SetFocusedEntityId(ENTITY_ID_INVALID);
   m_pBioDisplay2DSat->SetFocusedEntityId(ENTITY_ID_INVALID);
-  m_pFocusedEntity = NULL;
+  m_focusedEntityId = ENTITY_ID_INVALID;
 
   if (pEntity != NULL)
   {

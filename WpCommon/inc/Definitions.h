@@ -72,6 +72,7 @@ typedef uint8_t BYTE;     // BYTE = unsigned 8 bit value
 #endif
 
 typedef unsigned int entitySignatureType;
+typedef long int entityIdType;
 
 #define CYBIO_PI 3.1415926535
 
