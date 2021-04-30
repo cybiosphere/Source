@@ -81,7 +81,6 @@ private:
 //---------------------------------------------------------------------------
 private:
   CBrain*       m_pBrain;
-  //short***      m_pMemoryMap;
   std::vector<DWORD> m_tPurposeUniqueId;
 
 

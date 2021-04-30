@@ -388,7 +388,7 @@ int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 {
   // If pose out of teritory map, give negative weight -100
   int weight = -100;
-  if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y))
+  if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
   {
     weight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
   }

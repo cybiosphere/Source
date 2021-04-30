@@ -78,7 +78,7 @@ CBrain::CBrain()
   // Historical used to compute experience 
   m_nExperienceHistory = 1;
   // Size of geomap for purpose memory 
-  size_t m_GeoMapSize = 800;
+  m_GeoMapSize = 800;
 
   m_historyWeight = 0.6;
 

@@ -158,7 +158,7 @@ string CGeoMap::buildStringDataFromGeoMapRecord(size_t recordIndex)
     {
       for (size_t j = 0; j < m_GeoMapSize.y; j++)
       {
-        tmpStr = FormatString("%04X", m_pMemoryMap[i][j][recordIndex]);
+        tmpStr = FormatString("%04X", (WORD)m_pMemoryMap[i][j][recordIndex]);
         rawDataRsp += tmpStr;
       }
     }
