@@ -709,7 +709,10 @@ CString CCybiosphereApp::GetOpenedBiotopPath()
 void CCybiosphereApp::removeEntityFromBiotop(CBasicEntity* pEntity)
 {
 #ifdef USE_CLAN_CLIENT
-  m_pClient->send_event_remove_entity(pEntity, pEntity->getId());
+  if ((pEntity != NULL) && (pEntity->getId() > 0))
+  {
+    m_pClient->send_event_remove_entity(pEntity, pEntity->getId());
+  }
 #else
   if ((pEntity != NULL) && (pEntity->getId() > 0))
   {

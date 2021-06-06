@@ -63,7 +63,6 @@ CBiotopDisplayMFC::CBiotopDisplayMFC(bool isSatelliteVew)
   m_curViewSizeX = 0;
   m_curViewSizeY = 0;
 
-
   m_pView = NULL;
 }
 
@@ -294,46 +293,51 @@ void CBiotopDisplayMFC::RedrawScene()
   
 }
 
- void CBiotopDisplayMFC::RedrawSceneSatelliteView()
- {
-   if ((m_nBitmapNumberX != m_pBiotop->getDimension().x / NB_GRID_PER_GEOMAP_SQUARE) 
-     || (m_nBitmapNumberY != m_pBiotop->getDimension().y / NB_GRID_PER_GEOMAP_SQUARE))
-   {
-     // Update m_nBitmapNumberX if biotop has changed
-     m_nBitmapNumberX = m_pBiotop->getDimension().x / NB_GRID_PER_GEOMAP_SQUARE;
-     m_nBitmapNumberY = m_pBiotop->getDimension().y / NB_GRID_PER_GEOMAP_SQUARE;
-     DisplayView();
-   }
+void CBiotopDisplayMFC::RedrawSceneSatelliteView()
+{
+  if ((m_nBitmapNumberX != m_pBiotop->getDimension().x / NB_GRID_PER_GEOMAP_SQUARE) 
+    || (m_nBitmapNumberY != m_pBiotop->getDimension().y / NB_GRID_PER_GEOMAP_SQUARE))
+  {
+    // Update m_nBitmapNumberX if biotop has changed
+    m_nBitmapNumberX = m_pBiotop->getDimension().x / NB_GRID_PER_GEOMAP_SQUARE;
+    m_nBitmapNumberY = m_pBiotop->getDimension().y / NB_GRID_PER_GEOMAP_SQUARE;
+    DisplayView();
+  }
 
-   int visibleCoordX = m_pView->GetScrollPos(SB_HORZ);
-   int visibleCoordY = m_pView->GetScrollPos(SB_VERT);
+  int visibleCoordX = m_pView->GetScrollPos(SB_HORZ);
+  int visibleCoordY = m_pView->GetScrollPos(SB_VERT);
 
-   CPaintDC dc(m_pView);
-   CPaintDC* pDc = &dc;
+  CPaintDC dc(m_pView);
+  CPaintDC* pDc = &dc;
 
-   size_t i, j;
-   int coordX, coordY;
-   Point_t bioCoord;
-   LayerType_e curLayer;
-   COLORREF custColor;
+  size_t i, j;
+  int coordX, coordY;
+  Point_t bioCoord;
+  LayerType_e curLayer;
+  COLORREF custColor;
 
-   for (i = 0; i < m_nBitmapNumberX; i++)
-   {
-     for (j = 0; j < m_nBitmapNumberY; j++)
-     {
-       bioCoord.x = i * NB_GRID_PER_GEOMAP_SQUARE + 1;
-       bioCoord.y = j * NB_GRID_PER_GEOMAP_SQUARE + 1;
-       coordX = m_nBitmapPixSizeX * i - visibleCoordX;
-       coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 2) - visibleCoordY;
+  // Display square around biotop
+  pDc->Draw3dRect(-visibleCoordX, -visibleCoordY, 
+                  m_nBitmapNumberX * m_nBitmapPixSizeX,
+                  m_nBitmapNumberY * m_nBitmapPixSizeY, 0x001E1EEF, 0x000E0ECF);
 
-       custColor = m_pBiotop->getCustomColor(bioCoord);
-       if (custColor != 0x00FFFFFF)
-       {
-         pDc->FillSolidRect(coordX + 1, coordY + 1, m_nBitmapPixSizeX - 2, m_nBitmapPixSizeY - 2, custColor);
-       }
-     }
-   }
- }
+  for (i = 0; i < m_nBitmapNumberX; i++)
+  {
+    for (j = 0; j < m_nBitmapNumberY; j++)
+    {
+      bioCoord.x = i * NB_GRID_PER_GEOMAP_SQUARE + 1;
+      bioCoord.y = j * NB_GRID_PER_GEOMAP_SQUARE + 1;
+      coordX = m_nBitmapPixSizeX * i - visibleCoordX;
+      coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (j + 2) - visibleCoordY;
+
+      custColor = m_pBiotop->getCustomColor(bioCoord);
+      if (custColor != 0x00FFFFFF)
+      {
+        pDc->FillSolidRect(coordX + 1, coordY + 1, m_nBitmapPixSizeX - 2, m_nBitmapPixSizeY - 2, custColor);
+      }
+    }
+  }
+}
 
 void CBiotopDisplayMFC::RedrawSceneIdleNoCPU()
 {
