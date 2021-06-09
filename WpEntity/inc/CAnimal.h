@@ -170,10 +170,15 @@ public:
   void nextDay(bool forceGrowth = false);
   int  getAge();
   int  getDecompositionTime();
+
+//---------------------------------------------------------------------------
+// Heatlth management
+//---------------------------------------------------------------------------
   bool checkVitalNeedsOk();
 
 protected:
   void balanceWeightAndMetabolism(bool forceGrowth);
+  std::string getDeathCauseString();
 
 //---------------------------------------------------------------------------
 // Parameters management

@@ -2377,14 +2377,7 @@ void CAnimal::nextSecond()
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
     if ((healthVar!=0) && (getParameter(m_id_Health)->getVal()>0) && (changeHealthRate(healthVar) == false))
     {
-      if (checkVitalNeedsOk())
-      {
-        logDeathCause(FormatString("due to bad physical welfare (coordx %d coordy %d)\n", getGridCoord().x, getGridCoord().y));
-      }
-      else
-      {
-        logDeathCause(FormatString("due to vital needs (coordx %d coordy %d)\n", getGridCoord().x, getGridCoord().y));
-      }
+      logDeathCause(getDeathCauseString());
     }
 
     // Decraese slowly Pleasure, suffer, Tiredness
@@ -2512,7 +2505,7 @@ int CAnimal::getDecompositionTime()
 //   
 // RETURN VALUE: true : OK, false Ko
 //  
-// REMARKS:      Called every second by Physical Welfare
+// REMARKS:      Called every second by Physical Welfare   
 //---------------------------------------------------------------------------
 bool CAnimal::checkVitalNeedsOk()
 {
@@ -2525,6 +2518,43 @@ bool CAnimal::checkVitalNeedsOk()
     resu = false;
 
   return (resu);
+}
+
+//---------------------------------------------------------------------------
+// METHOD:       CAnimal::getDeathCauseString
+//  
+// DESCRIPTION:  Format a string with death cause explanation 
+// 
+// ARGUMENTS:    None
+//   
+// RETURN VALUE: string
+//  
+// REMARKS:      
+//---------------------------------------------------------------------------
+std::string CAnimal::getDeathCauseString()
+{
+  string deathCause{"due to "};
+
+  if (getThirstRate() > 99.8)
+    deathCause += "dehydration ";
+
+  if (getFatWeight() < 0.02)
+    deathCause += "hunger ";
+
+  if (m_pPhysicWelfare->GetInjuryMalus() > 0.01)
+    deathCause += "injury ";
+
+  if (m_pPhysicWelfare->GetDiseaseMalus() > 0.01)
+    deathCause += "disease ";
+
+  if (m_pPhysicWelfare->ComputeTemperatureHealthVariation() < -0.01)
+    deathCause += "bad temperature ";
+
+  if (m_pPhysicWelfare->ComputeHabitatHealthVariation() < -0.01)
+    deathCause += "water ";
+
+  deathCause += "\n";
+  return (deathCause);
 }
 
 //---------------------------------------------------------------------------
@@ -2958,14 +2988,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
     if (changeHealthRate(healthVar) == false)
     {
-      if (checkVitalNeedsOk())
-      {
-        logDeathCause("due to bad physical welfare\n");
-      }
-      else
-      {
-        logDeathCause("due to vital needs\n");
-      }
+      logDeathCause(getDeathCauseString());
     }
 
     // Decraese slowly suffer, center slowly pleasure
@@ -3513,8 +3536,14 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
         {
           ((CAnimal*)pAttackedEntity)->logDeathCause(FormatString("killed by %s\n", getLabel().c_str()));
         }
+        else
+        {
+          CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+          CYBIOCORE_LOG("ANIMAL - Attack : %s was injured by %s \n", ((CAnimal*)pAttackedEntity)->getLabel().c_str(), getLabel().c_str());
+        }
         // Animal is hurt and can loose health for a duration
-        pAttackedEntity->getpPhysicalWelfare()->SetInjuryMalus((double)getRandInt(attackScore-defenseScore)/10.0);
+        pAttackedEntity->getpPhysicalWelfare()->SetInjuryMalus((double)getRandInt(diffScore)/10.0);
+
         // Attacked animal is slow down
         ((CAnimal*)pAttackedEntity)->changeCurrentSpeed(-diffScore);
 
