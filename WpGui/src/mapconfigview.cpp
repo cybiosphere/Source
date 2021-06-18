@@ -813,12 +813,17 @@ void CMapConfigView::OnButtonLoadSpecieMap()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    m_pBiotop->addGeoMapSpeciePopulation("Unset");
-    CGeoMapPopulation* pGeoMapPopu = m_pBiotop->getGeoMapSpecieByIndex(m_pBiotop->getNbOfGeoMapSpecie()-1);
-    if (pGeoMapPopu != NULL)
+    size_t nbSpecieMap = CGeoMapPopulation::getNumberSpeciesStoredInFile(fileName.GetBuffer(0));
+    for (int indexRecord = 0; indexRecord < nbSpecieMap; indexRecord++)
     {
-      pGeoMapPopu->loadFromXmlFile(fileName.GetBuffer(0), 0);
+      m_pBiotop->addGeoMapSpeciePopulation("Unset");
+      CGeoMapPopulation* pGeoMapPopu = m_pBiotop->getGeoMapSpecieByIndex(m_pBiotop->getNbOfGeoMapSpecie() - 1);
+      if (pGeoMapPopu != NULL)
+      {
+        pGeoMapPopu->loadFromXmlFile(fileName.GetBuffer(0), indexRecord);
+      }
     }
+    OnCheck5();
   }
 }
 
@@ -832,7 +837,9 @@ void CMapConfigView::OnButtonSaveSpecieMap()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    if (m_pBiotop->getNbOfGeoMapSpecie() > 0)
-      m_pBiotop->getGeoMapSpecieByIndex(0)->saveInXmlFile(fileName.GetBuffer(0));
+    for (int indexRecord = 0; indexRecord < m_pBiotop->getNbOfGeoMapSpecie(); indexRecord++)
+    {
+      m_pBiotop->getGeoMapSpecieByIndex(indexRecord)->saveInXmlFile(fileName.GetBuffer(0));
+    }
   }
 }

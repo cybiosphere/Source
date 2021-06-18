@@ -91,5 +91,6 @@
 #define XML_ATTR_SIZE_LAYER   "SizeLayer"
 #define XML_ATTR_BIO_TIME     "BioTime"
 #define XML_ATTR_BIO_DAY      "BioDay"
+#define XML_ATTR_NB_SPECIES   "NbSpecies"
 
 #endif // !defined(CYBIO_XML_DEF_INCLUDED_)

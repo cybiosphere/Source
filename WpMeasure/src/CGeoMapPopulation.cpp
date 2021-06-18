@@ -123,6 +123,7 @@ bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
   size_t index;
   CBasicEntity* pCurEntity = NULL;
   string previousFileName = "";
+  int nbSpeciesInFile = 0;
 
   pNodeBiotop = pXmlDoc->FirstChild(XML_NODE_BIOTOP);
   if (pNodeBiotop == NULL)
@@ -133,13 +134,17 @@ bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
 
   if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
-    // Set attributes
     pElement = (TiXmlElement*)pNodeBiotop;
+    // Get previous number of species in file
+    pElement->QueryIntAttribute(XML_ATTR_NB_SPECIES, &nbSpeciesInFile);
+    // Set attributes
     pElement->SetAttribute(XML_ATTR_LABEL, m_pBiotop->getLabel());
     pElement->SetAttribute(XML_ATTR_SIZE_X, (int)m_pBiotop->getDimension().x);
     pElement->SetAttribute(XML_ATTR_SIZE_Y, (int)m_pBiotop->getDimension().y);
     pElement->SetAttribute(XML_ATTR_SIZE_LAYER, (int)m_pBiotop->getNbLayer());
     pElement->SetAttribute(XML_ATTR_BIO_TIME, convertBioTimeToCount(m_pBiotop->getBiotopTime()));
+    nbSpeciesInFile++;
+    pElement->SetAttribute(XML_ATTR_NB_SPECIES, (int)nbSpeciesInFile);
   }
 
   // Create new Records node
@@ -165,6 +170,23 @@ bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
     }
   }
   return true;
+}
+
+size_t CGeoMapPopulation::getNumberSpeciesStoredInFile(string fileNameWithPath)
+{
+  int nbSpecies = 0;
+  TiXmlDocument xmlDoc(fileNameWithPath);
+  bool resu = xmlDoc.LoadFile();
+  TiXmlElement* pElement;
+
+  TiXmlNode* pNodeBiotop = xmlDoc.FirstChild(XML_NODE_BIOTOP);
+  if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
+  {
+    pElement = (TiXmlElement*)pNodeBiotop;
+    pElement->QueryIntAttribute(XML_ATTR_NB_SPECIES, &nbSpecies);
+  }
+
+  return (size_t)nbSpecies;
 }
 
 bool CGeoMapPopulation::loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile)

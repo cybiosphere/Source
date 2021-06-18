@@ -90,6 +90,7 @@ public:
   //---------------------------------------------------------------------------
   bool saveInXmlFile(string fileNameWithPath);
   bool saveInXmlFile(TiXmlDocument* pXmlDoc);
+  static size_t getNumberSpeciesStoredInFile(string fileNameWithPath);
   bool loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile);
   bool loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRecordInFile);
 
