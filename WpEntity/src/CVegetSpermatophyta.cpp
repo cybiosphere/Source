@@ -126,7 +126,7 @@ CVegetable(label, mother, father)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
+bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
 {
   if (CVegetable::setParamFromGene (pGen) == true)
   {
@@ -141,7 +141,6 @@ bool CVegetSpermatophyta::setParamFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {

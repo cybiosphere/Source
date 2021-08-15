@@ -91,8 +91,6 @@ const std::vector<sensorValType>& CSensorTemperature::UpdateAndGetStimulationTab
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CPhysicalWelfare* pPhyWelfare = pAnimal->getpPhysicalWelfare();
   double biotopTemperature = pAnimal->getBiotop()->getTemperature(pAnimal->getGridCoord(), pAnimal->getLayer());
-  double perfectTemperature = (pPhyWelfare->GetTemperatureMin()+pPhyWelfare->GetTemperatureMax())/2; 
-  double deltaTemperature= fabs(biotopTemperature - perfectTemperature);
 
   if(biotopTemperature > pPhyWelfare->GetTemperatureMax())
     m_tStimulationValues[TEMPERATURE_TOO_HOT]  = (biotopTemperature - pPhyWelfare->GetTemperatureMax()) * MAX_SENSOR_VAL/5;

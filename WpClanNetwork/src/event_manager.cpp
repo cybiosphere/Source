@@ -98,7 +98,6 @@ namespace clan
   
   bool event_manager::handleEventAddCloneEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
   {
-    bool resu = false;
     Point_t stepCoord;
     int nbEntityPosInEvent = e.get_argument(0);
     int modelEntityId = e.get_argument(1);
@@ -141,6 +140,8 @@ namespace clan
       }
       pClonedNewEntity->setRemoteControlled(setAsRemoteControl);
     }
+
+    return true;
   }
 
    bool event_manager::buildEventsUpdateEntityData(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector)
@@ -610,7 +611,7 @@ namespace clan
     if (pNewEntity == NULL)
     {
       log_event(labelEvent, "ERROR Biotop add entity with NULL entity ");
-      return false;
+      return NULL;
     }
     pNewEntity->setStepDirection(stepDirection);
     log_event(labelEvent, "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);

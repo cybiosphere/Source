@@ -167,7 +167,7 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::setParamFromGene (CGene* pGen)
+bool CVegetable::setParamFromGene(CGene* pGen)
 {
   if (CBasicEntity::setParamFromGene (pGen) == true)
   {
@@ -182,7 +182,6 @@ bool CVegetable::setParamFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
@@ -310,7 +309,7 @@ bool CVegetable::completeParamsWithDefault()
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
+bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
   {
@@ -319,7 +318,6 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
@@ -329,7 +327,6 @@ bool CVegetable::setPhysicWelfareFromGene (CGene* pGen)
 
   double sensitivity = pGen->getElementValue(0);
   double min = pGen->getElementValue(1);
-  double nominal = pGen->getElementValue(2);
   double max = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
@@ -437,7 +434,6 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {

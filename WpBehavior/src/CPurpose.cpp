@@ -148,8 +148,8 @@ CPurpose::~CPurpose()
 //---------------------------------------------------------------------------
 bool CPurpose::CheckSucces(void)
 {
-  if ( (m_TriggerType == PURPOSE_TRIG_UP)   && (GetSensorLevel()<(m_StopRateThreshold*MAX_SENSOR_VAL/100.0))
-    || (m_TriggerType == PURPOSE_TRIG_DOWN) && (GetSensorLevel()>(m_StopRateThreshold*MAX_SENSOR_VAL/100.0)) )
+  if (((m_TriggerType == PURPOSE_TRIG_UP)   && (GetSensorLevel()<(m_StopRateThreshold*MAX_SENSOR_VAL/100.0)))
+   || ((m_TriggerType == PURPOSE_TRIG_DOWN) && (GetSensorLevel()>(m_StopRateThreshold*MAX_SENSOR_VAL/100.0))))
   {
     return (true);
   }
@@ -304,8 +304,8 @@ sensorValType CPurpose::GetSensorLevel()
 bool CPurpose::IsStartThresholdReached()
 {
   sensorValType  resu = GetSensorLevel();
-  if ( (m_TriggerType == PURPOSE_TRIG_UP)   && (resu > (m_StartRateThreshold*MAX_SENSOR_VAL/100.0) )
-    || (m_TriggerType == PURPOSE_TRIG_DOWN) && (resu < (m_StartRateThreshold*MAX_SENSOR_VAL/100.0) ) )
+  if (((m_TriggerType == PURPOSE_TRIG_UP)   && (resu > (m_StartRateThreshold*MAX_SENSOR_VAL/100.0)))
+   || ((m_TriggerType == PURPOSE_TRIG_DOWN) && (resu < (m_StartRateThreshold*MAX_SENSOR_VAL/100.0))))
     return (true);
   else
     return (false);

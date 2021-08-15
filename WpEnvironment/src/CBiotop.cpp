@@ -1869,12 +1869,11 @@ void CBiotop::updateGridAllEntities(void)
 {
   Point_t tmpCoord;
   size_t tmpLayer;
-  bool hasMoved = false;
 
   // Clear previous positions
   for (CBasicEntity* pCurEntity : m_tEntity)
   {
-    hasMoved = pCurEntity->checkIfhasMovedAndClear();
+    pCurEntity->checkIfhasMovedAndClear();
     if ( (pCurEntity) && (pCurEntity->checkIfhasMoved()) )
     {
       tmpCoord = pCurEntity->getPrevGridCoord();
@@ -2203,7 +2202,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
   TiXmlNode* pNodeBiotop = NULL;
   TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeChild = NULL;
-  int i;
+  size_t i;
   CBasicEntity* pCurEntity = NULL;
   string previousFileName = "";
 

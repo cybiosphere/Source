@@ -305,9 +305,7 @@ bool CGeoMapPurpose::saveInXmlFile(TiXmlDocument* pXmlDoc)
 
 bool CGeoMapPurpose::loadFromXmlFile(TiXmlDocument* pXmlDoc)
 {
-  bool recordFound = false;
   TiXmlElement* pElement;
-  TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeMaps = NULL;
   TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
   if (pNodeEntity != NULL)

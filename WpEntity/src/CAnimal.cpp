@@ -277,7 +277,6 @@ bool CAnimal::setParamFromGene(CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
@@ -496,7 +495,6 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
@@ -506,7 +504,6 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
 
   double sensitivity = pGen->getElementValue(0);
   double min = pGen->getElementValue(1);
-  double nominal = pGen->getElementValue(2);
   double max = pGen->getElementValue(3);
 
   switch(pGen->getGeneSubType())
@@ -996,7 +993,6 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
   }
 
   // We are sure Gene is a sensor
-  bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
@@ -1641,7 +1637,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
 
       size_t  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
       std::vector<int> bonusTable(bonusTableSize);
-      for (int index=0; index<bonusTableSize; index++)
+      for (size_t index = 0; index < bonusTableSize; index++)
       {
         bonusTable[index] = pGen->computeBonusFromData(pData[4+index]);
       }
@@ -1726,7 +1722,6 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
@@ -1798,7 +1793,6 @@ string CAnimal::buildSensorString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<4*sizeof(WORD))
   {
@@ -2154,7 +2148,6 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {

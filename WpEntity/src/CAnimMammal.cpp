@@ -159,7 +159,6 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<3*sizeof(WORD))
   {
@@ -251,7 +250,6 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   // We are sure Gene is a parameter
   bool resu = false;
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
@@ -457,7 +455,6 @@ string CAnimMammal::buildLifeStageString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if (len<sizeof(WORD))
   {
@@ -960,7 +957,7 @@ bool CAnimMammal::deliverAllBabies()
 //---------------------------------------------------------------------------
 bool CAnimMammal::checkCoherenceAndAdjustBabyNumberParam()
 {
-  int nbBabies = getGestationBabyNumber();
+  size_t nbBabies = getGestationBabyNumber();
   if ((nbBabies == 0) && (m_tGestationChilds.size() > 0))
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());

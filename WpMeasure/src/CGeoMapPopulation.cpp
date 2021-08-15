@@ -121,7 +121,6 @@ bool CGeoMapPopulation::saveInXmlFile(TiXmlDocument* pXmlDoc)
   TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeChild = NULL;
   size_t index;
-  CBasicEntity* pCurEntity = NULL;
   string previousFileName = "";
   int nbSpeciesInFile = 0;
 
@@ -176,7 +175,7 @@ size_t CGeoMapPopulation::getNumberSpeciesStoredInFile(string fileNameWithPath)
 {
   int nbSpecies = 0;
   TiXmlDocument xmlDoc(fileNameWithPath);
-  bool resu = xmlDoc.LoadFile();
+  xmlDoc.LoadFile();
   TiXmlElement* pElement;
 
   TiXmlNode* pNodeBiotop = xmlDoc.FirstChild(XML_NODE_BIOTOP);

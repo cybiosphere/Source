@@ -96,7 +96,7 @@ const std::vector<sensorValType>& CSensorTactile::UpdateAndGetStimulationTable()
   CBasicEntity* pTouchedEntity;
 
   // Process level
-  for (size_t layer=0; layer<(m_relTopLayer-m_relBottomLayer+1); layer++)
+  for (size_t layer = 0; layer < (size_t)(m_relTopLayer - m_relBottomLayer + 1); layer++)
   {
     pTouchedEntity = pAnimal->getBiotop()->findEntity(relCoord,pAnimal->getLayer()+m_relBottomLayer+layer);
     if (pTouchedEntity != NULL)

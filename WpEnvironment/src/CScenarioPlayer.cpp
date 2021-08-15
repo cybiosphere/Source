@@ -322,8 +322,6 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
 bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
   entityIdType entityId = ENTITY_ID_INVALID;
-  CBasicEntity* pEntity;
-
   string firstParam = GetParamFromString(commandParam, 0);
 
   if (firstParam.find(".xml",0) < 0)
@@ -348,8 +346,6 @@ bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string command
     entityId = pBiotop->createAndAddEntity(firstParam, path, coord);
   }
 
-  pEntity = pBiotop->getEntityById(entityId);
-
   return (true);
 }
 
@@ -367,7 +363,6 @@ bool CScenarioPlayer::CmdRunBiotop(CBiotop* pBiotop, string path, string command
 
 bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string paramName  = GetParamFromString(commandParam, 0);
   double paramValue = atof(GetParamFromString(commandParam,1).c_str());
 
@@ -375,7 +370,6 @@ bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string
   if (pParam!=NULL)
   {
       pParam->forceVal(paramValue);
-      resu = true;
   }
 
   return (true); // return always true for not stopping scenario
@@ -384,7 +378,6 @@ bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string
 
 bool CScenarioPlayer::CmdChangeParam(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
   string paramName  = GetParamFromString(commandParam, 1);
   double paramValue = atof(GetParamFromString(commandParam,2).c_str());
@@ -397,7 +390,6 @@ bool CScenarioPlayer::CmdChangeParam(CBiotop* pBiotop, string path, string comma
     if (pParam != NULL)
     {
       pParam->forceVal(paramValue);
-      resu = true;
     }
   }
 
@@ -423,7 +415,6 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
   {
     size_t sizeNameNoExt = firstParam.size() - indexName - 5;
     string entityName = firstParam.substr(indexName + 1, sizeNameNoExt);
-    CBasicEntity *pEnt = pBiotop->getEntityByName(entityName);
     nameWithPath = firstParam;
   }
   else // No path
@@ -436,7 +427,6 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
 
   if (pEnt != NULL)
   {
-    size_t sizeName = firstParam.size() - indexName - 1;
     pEnt->saveInXmlFile(nameWithPath.c_str(), firstParam.substr(0,indexName+1));
   }
 
@@ -474,7 +464,6 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
 
   if (pEnt != NULL)
   {
-    size_t sizeName = firstParam.size() - indexName - 1;
     pEnt->getBrain()->saveInXmlFile(nameWithPath.c_str());
   }
 
@@ -512,7 +501,6 @@ bool CScenarioPlayer::CmdQuickAgeing(CBiotop* pBiotop, string path, string comma
 
 bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
   Point_t coord;
   coord.x = atoi(GetParamFromString(commandParam,1).c_str());
@@ -524,7 +512,6 @@ bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string comman
   if (pEntity != NULL)
   {
     pEntity->jumpToGridCoord(coord, false);
-    resu = true;
     if ( (direction>=0) && (direction<=7) )
       pEntity->setDirection(direction);
 
@@ -610,7 +597,6 @@ bool CScenarioPlayer::CmdCheckParamUnder(CBiotop* pBiotop, string path, string c
 
 bool CScenarioPlayer::CmdSetImmortal(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
 
   CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
@@ -618,7 +604,6 @@ bool CScenarioPlayer::CmdSetImmortal(CBiotop* pBiotop, string path, string comma
   if (pEntity != NULL)
   {
     pEntity->setImmortal(true);
-    resu = true;
   }
 
   return (true); // return always true for not stopping scenario
@@ -626,18 +611,12 @@ bool CScenarioPlayer::CmdSetImmortal(CBiotop* pBiotop, string path, string comma
 
 bool CScenarioPlayer::CmdDeleteEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
-  Point_t coord;
-  coord.x = atoi(GetParamFromString(commandParam,1).c_str());
-  coord.y = atoi(GetParamFromString(commandParam,2).c_str());
-
   CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
 
   if (pEntity != NULL)
   {
     pEntity->autoRemove();
-    resu = true;
   }
 
   return (true); // return always true for not stopping scenario
@@ -646,7 +625,6 @@ bool CScenarioPlayer::CmdDeleteEntity(CBiotop* pBiotop, string path, string comm
 
 bool CScenarioPlayer::CmdSetForbidenAction   (CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  bool resu = false;
   string entityName = GetParamFromString(commandParam, 0);
   string actionName = GetParamFromString(commandParam, 1);
   CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
@@ -655,7 +633,6 @@ bool CScenarioPlayer::CmdSetForbidenAction   (CBiotop* pBiotop, string path, str
   {
     size_t actionInd = pEntity->getBrain()->GetReactionIndexByLabel(actionName);
     ((CAnimal*)pEntity)->setForbidenActionInd(actionInd);
-    resu = true;
   }
 
   return (true); // return always true for not stopping scenario

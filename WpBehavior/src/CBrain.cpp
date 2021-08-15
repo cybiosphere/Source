@@ -1146,7 +1146,7 @@ bool CBrain::GetVectorChoiceThresholds (double curiosityRate, neuroneValType &ma
 
 choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
 {
-  int i,j;
+  int i, j;
   neuroneValType maxVal = -100;
   neuroneValType curVal = -100;
   neuroneValType thresholdVal = 0;
@@ -1438,8 +1438,8 @@ size_t CBrain::GetBrainMatrixRowIndex(DWORD sensorUidbase, size_t sensorUidRange
                                             size_t timeHistory, size_t foundIndex)
 {
   size_t pos = 0;
-  int foundCount = 0;
-  for (int sensId=0; sensId<GetNumberSensor(); sensId++)
+  size_t foundCount = 0;
+  for (size_t sensId = 0; sensId<GetNumberSensor(); sensId++)
   {
     CSensor* pSens = GetSensorByIndex(sensId);
     if ( ( pSens->GetUniqueId() >= sensorUidbase) && (pSens->GetUniqueId() < (sensorUidbase + sensorUidRange)) )

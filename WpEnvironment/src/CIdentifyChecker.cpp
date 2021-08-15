@@ -158,7 +158,6 @@ bool CIdentifyChecker::NextCheck()
     return false;
 
   string curLine;
-  bool resu = true;
   size_t startInd;
 
   getline(m_curCheckerFile, curLine);

@@ -265,7 +265,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
   double maxComputedWeight;
   size_t maxWeightViewTabIndex;
   int identityIdx;
-  CMatrix* pFoundIdentitiesMatrix;
+  CMatrix* pFoundIdentitiesMatrix = NULL;
   int relativeSpeed;
   int relativeAngle;
   double curWeight;

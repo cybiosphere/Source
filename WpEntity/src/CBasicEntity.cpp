@@ -1245,7 +1245,6 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
-  WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
   if ((len<3*sizeof(WORD)) || (pGen->getNumElements() < 3))
   {
@@ -2455,7 +2454,7 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument* pXmlDoc, string newLabel)
   pXmlDoc->Clear();
   bool resu = addEntityInXmlFile(pXmlDoc, newLabel, this, false);
 
-  for (int i = 0; i < m_tGestationChilds.size(); i++)
+  for (size_t i = 0; i < m_tGestationChilds.size(); i++)
   {
     CBasicEntity* pFetus = m_tGestationChilds[i];
     addEntityInXmlFile(pXmlDoc, "", pFetus, true);
