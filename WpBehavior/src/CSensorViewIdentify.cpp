@@ -42,12 +42,6 @@ distribution.
 #include "CBiotop.h"
 
 //===========================================================================
-// Global
-//===========================================================================
-// Buffer used to store focused entity. Always init before use so that it can be shared between all.
-static EntityViewIdentifyWeight_t m_pEntityViewIdentifyTab[MAX_FOUND_ENTITIES];
-
-//===========================================================================
 // Construction/Destruction
 //===========================================================================
 
@@ -273,7 +267,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
 
   // Find entities according to angle, distance and layer:
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
-  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+  const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {

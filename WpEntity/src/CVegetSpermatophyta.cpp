@@ -224,7 +224,7 @@ void CVegetSpermatophyta::nextHour()
       {
         CBasicEntity *pFoundEntity = NULL;
         const BiotopFoundIds_t & biotopFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
-        const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+        const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
  
         for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
         {

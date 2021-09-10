@@ -73,14 +73,14 @@ bool CNeuronMatrix::NormalizeNeuronMatrix()
     {
       norm += pow(m_mNeuronTable(i,j),2.0);
     }
-    norm = sqrt(norm);
-
+    
     if (norm == 0)
     {
       resu = false;
     }
     else
     {
+      norm = sqrt(norm);
       // divide vector by its norm
       for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
       {

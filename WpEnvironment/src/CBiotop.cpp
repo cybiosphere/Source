@@ -35,7 +35,7 @@ distribution.
 //===========================================================================
 
 #include "CBiotop.h"
-
+#include <omp.h>
 #include "CEntityFactory.h"
 
 RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
@@ -88,8 +88,10 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_IdLastEntity = ENTITY_ID_FIRST_USER_ENTITY;
   m_tMeasures.resize(0);
   m_tGeoMapSpecies.resize(0);
-  m_BiotopFoundIds.tFoundIds.resize(MAX_FOUND_ENTITIES);
-  m_BiotopFoundIds.nbFoundIds = 0;
+  for (size_t i = 0; i < m_BiotopFoundIdsArray.size(); i++)
+  {
+    m_BiotopFoundIdsArray[i].nbFoundIds = 0;
+  }
 
   resetCpuMarker();
 
@@ -772,7 +774,9 @@ const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, s
   Point_t curCoord;
   size_t i,j;
   size_t layer;
-  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
+  int threadNum = omp_get_thread_num();
+  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
+
   curCoord.x = bottomLeftCoord.x;
   curCoord.y = bottomLeftCoord.y;
 
@@ -796,8 +800,8 @@ const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, s
     curCoord.x++;
   }
 
-  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIds);
+  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIdsArray[threadNum]);
 }
 
 
@@ -808,7 +812,8 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
   Point_t curCoord;
   int k, i, segment;
   size_t layer;
-  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
+  int threadNum = omp_get_thread_num();
+  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
 
   // Entities in center pos
   for (layer = 0; layer < m_nbLayer; layer++)
@@ -864,8 +869,8 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
       }
     }
   }
-  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIds);
+  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIdsArray[threadNum]);
 }
 
 
@@ -878,7 +883,8 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
-  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
+  int threadNum = omp_get_thread_num();
+  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -1104,8 +1110,8 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
         endy = startCoordy - distance;
     }
   }
-  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIds);
+  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIdsArray[threadNum]);
 }
 
 //  find all entities betwen 2 range, on any layer except layer0 (under ground)
@@ -1118,7 +1124,8 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
-  std::vector<FoundEntity_t>& tFoundIds = m_BiotopFoundIds.tFoundIds;
+  int threadNum = omp_get_thread_num();
+  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -1402,8 +1409,8 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         endy = startCoordy - rangeMax;
     }
   }
-  m_BiotopFoundIds.nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIds);
+  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
+  return (m_BiotopFoundIdsArray[threadNum]);
 }
 
 bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
@@ -1602,10 +1609,24 @@ void CBiotop::nextHourForAllEntities(void)
 
 void CBiotop::nextSecondForAllAnimals(void)
 {
-  CBasicEntity* pEntity = NULL;
   // Loop on all animals for basic action
   logCpuMarkerStart(BIOTOP_CPUMARKER_ANIMALS);
-  for (size_t i = 0; i < getNbOfAnimals(); i++)
+  if (getNbOfAnimals() < 4)
+  {
+    nextSecondForAllAnimalsSingleProcess();
+  }
+  else
+  {
+    nextSecondForAllAnimalsMultiProcess();
+  }
+  logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
+}
+
+void CBiotop::nextSecondForAllAnimalsSingleProcess(void)
+{
+  CBasicEntity* pEntity = NULL;
+  size_t i;
+  for (i = 0; i < getNbOfAnimals(); i++)
   {
     pEntity = m_tEntity[i];
     if (pEntity != NULL)
@@ -1613,7 +1634,22 @@ void CBiotop::nextSecondForAllAnimals(void)
       pEntity->nextSecond();
     }
   }
-  logCpuMarkerEnd(BIOTOP_CPUMARKER_ANIMALS);
+}
+
+void CBiotop::nextSecondForAllAnimalsMultiProcess(void)
+{
+  CBasicEntity* pEntity = NULL;
+  int i;
+#pragma omp parallel for ordered private(i) num_threads(MAX_NUMBER_OMP_THREADS)
+  for (i = 0; i < getNbOfAnimals(); i++)
+  {
+    pEntity = m_tEntity[i];
+    if (pEntity != NULL)
+    {
+      pEntity->nextSecond();
+    }
+  }
+#pragma omp barrier
 }
 
 void CBiotop::decreaseOdorMap()
@@ -1837,15 +1873,16 @@ void CBiotop::initGridEntity(void)
 
 void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
 {
-  ASSERT (pCurEntity!=NULL);
+  ASSERT(pCurEntity != NULL);
   Point_t tmpCoord;
   size_t tmpLayer;
 
-  if ( pCurEntity->checkIfhasMovedAndClear() )
+  if (pCurEntity->checkIfhasMovedAndClear())
+#pragma omp critical
   {
     tmpCoord = pCurEntity->getPrevGridCoord();
     tmpLayer = pCurEntity->getPrevLayer();
-    if ( isCoordValid(tmpCoord,tmpLayer) )
+    if (isCoordValid(tmpCoord, tmpLayer))
     {
       // memorize odor trace
       m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[pCurEntity->getOdor()] = MAX_ODOR_TRACE_VAL;
@@ -1853,9 +1890,9 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
     }
     tmpCoord = pCurEntity->getGridCoord();
     tmpLayer = pCurEntity->getLayer();
-    if ( isCoordValid(tmpCoord,tmpLayer) )
+    if (isCoordValid(tmpCoord, tmpLayer))
     {
-      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity;
+      m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity = pCurEntity;
     }
   }
 }
@@ -2074,28 +2111,33 @@ bool CBiotop::addBiotopEvent(EntityEventList_e entityEventList, CBasicEntity* pE
 {
   if ((pEntity == NULL) || (pEntity->getId() == ENTITY_ID_INVALID))
     return false;
-  std::map<entityIdType, BiotopEvent_t>* tEventMap{ &getBiotopEventMapCurrent() };
-  auto search = tEventMap->find(pEntity->getId());
-  if (search != tEventMap->end())
-  {
-    search->second.eventList.set(entityEventList);
-    search->second.pEntity = pEntity;
-    search->second.markAsReadByGui = false;
-    search->second.markAsReadByNetwork = false;
-  }
-  else
-  {
-    BiotopEvent_t newEvent;
-    newEvent.eventList.set(entityEventList);
-    newEvent.pEntity = pEntity;
-    newEvent.markAsReadByGui = false;
-    newEvent.markAsReadByNetwork = false;
-    tEventMap->insert({ pEntity->getId(), newEvent });
 
-    // Avoid overload by cleaning oldest events
-    if (tEventMap->size() > 100000)
+  std::map<entityIdType, BiotopEvent_t>* tEventMap{ &getBiotopEventMapCurrent() };
+
+#pragma omp critical
+  {
+    auto search = tEventMap->find(pEntity->getId());
+    if (search != tEventMap->end())
     {
-      tEventMap->erase(tEventMap->begin());
+      search->second.eventList.set(entityEventList);
+      search->second.pEntity = pEntity;
+      search->second.markAsReadByGui = false;
+      search->second.markAsReadByNetwork = false;
+    }
+    else
+    {
+      BiotopEvent_t newEvent;
+      newEvent.eventList.set(entityEventList);
+      newEvent.pEntity = pEntity;
+      newEvent.markAsReadByGui = false;
+      newEvent.markAsReadByNetwork = false;
+      tEventMap->insert({ pEntity->getId(), newEvent });
+
+      // Avoid overload by cleaning oldest events
+      if (tEventMap->size() > 100000)
+      {
+        tEventMap->erase(tEventMap->begin());
+      }
     }
   }
   return true;
@@ -2629,7 +2671,7 @@ double CBiotop::getTemperature(Point_t coord, size_t layer)
   double computedTemperature = m_pTemperature->getVal();
   CBasicEntity* pCurEntity = NULL;
   const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
-  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+  const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   // Give bonus malus on temperature according to entities around
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
@@ -2747,7 +2789,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   CBasicEntity* pCurEntity = NULL;
 
   const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, range);
-  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+  const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {

@@ -68,8 +68,9 @@ distribution.
 class CBasicEntity;
 class CGeoMapPopulation;
 
+#define MAX_NUMBER_OMP_THREADS 4
+
 #define MAXIMUM_NB_ENTITIES 1000000
-#define MAX_FOUND_ENTITIES 1000
 #define MAX_NUMBER_RANDOM_ENTITIES 3
 
 // Sectors arround entity X:
@@ -199,11 +200,15 @@ typedef struct
 
 } BiotopEntityPosition_t;
 
+
+using BiotopFoundIdsList = std::array<FoundEntity_t, MAX_FOUND_ENTITIES>;
+
 typedef struct
 {
   size_t nbFoundIds;
-  std::vector<FoundEntity_t> tFoundIds;
+  BiotopFoundIdsList tFoundIds;
 } BiotopFoundIds_t;
+
 
 //===========================================================================
 //                                    CLASS            
@@ -233,7 +238,7 @@ private:
   BiotopCube_t***  m_tBioGrid;    // Contain the info for all volumes in biotop
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
 
-  BiotopFoundIds_t m_BiotopFoundIds;  // structure to store temporarily found entities 
+  std::array<BiotopFoundIds_t, MAX_NUMBER_OMP_THREADS>  m_BiotopFoundIdsArray;  // structure to store temporarily found entities 
 
   //        3   2   1    
   //          \ | /          
@@ -340,6 +345,8 @@ private:
   void nextHour(void);
   void nextHourForAllEntities(void);
   void nextSecondForAllAnimals(void);
+  void nextSecondForAllAnimalsSingleProcess(void);
+  void nextSecondForAllAnimalsMultiProcess(void);
 
 //---------------------------------------------------------------------------
 // Grid management

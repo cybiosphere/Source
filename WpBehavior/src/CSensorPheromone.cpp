@@ -96,7 +96,7 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
   // Process level
   RelativePos_t relPos = {1,0};
   const BiotopFoundIds_t& biotopFoundIds = pAnimal->getBiotop()->findEntities(pAnimal->getGridCoordRelative(relPos), m_nRange);
-  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+  const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {

@@ -217,17 +217,23 @@ int main(int argc, char* argv[])
       }
       break;
     case 7:
-      for (i=0;i<31;i++)
+    {
+      auto start = std::chrono::system_clock::now();
+      for (i = 0; i < 31; i++)
       {
-		    printf("Start day %d\n", i);
-        pBiotop->displayEntities();
-        printf ("\n");
-		    for (j=0;j<3600*24;j++)
-		    {
+        printf("Start day %d\n", i);
+        //pBiotop->displayEntities();
+        printf("\n");
+        for (j = 0; j < 3600 * 24; j++)
+        {
           pBiotop->nextSecond();
-		    }
+        }
       }
+      auto end = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed_seconds = end - start;
+      printf("Process duration: %.1f sec\n", elapsed_seconds.count());
       break;
+    }
     case 8:
       {
         if (pBiotop!=NULL)

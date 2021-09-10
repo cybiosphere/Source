@@ -54,7 +54,7 @@ distribution.
 //===========================================================================
 typedef double sensorValType;  // from -MAX_SENSOR_VAL to MAX_SENSOR_VAL 
 #define MAX_SENSOR_VAL    10.0
-
+#define MAX_FOUND_ENTITIES 1000
 
 //===========================================================================
 //                                    CLASS            

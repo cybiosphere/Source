@@ -160,7 +160,7 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   {
     // Find entities according to angle, distance and layer:
     const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, i, true);
-    const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+    const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
     for (size_t j = 0; j < biotopFoundIds.nbFoundIds; j++)
     {

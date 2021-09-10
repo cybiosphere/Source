@@ -102,6 +102,7 @@ private:
   size_t          m_nFocusObjectsSect6;
   size_t          m_nFocusObjectsSect7;
   size_t          m_nFocusObjectsSect8;
+  EntityViewFarWeight_t m_pEntityViewFarTab[MAX_FOUND_ENTITIES];
 
 //---------------------------------------------------------------------------
 // associations

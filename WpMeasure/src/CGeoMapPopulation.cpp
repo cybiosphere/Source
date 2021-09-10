@@ -291,7 +291,7 @@ size_t CGeoMapPopulation::CountEntitiesInMapSquare(std::string specieName, size_
   gridCoord.x = geoMapPosX * NB_GRID_PER_GEOMAP_SQUARE;
   gridCoord.y = geoMapPosY * NB_GRID_PER_GEOMAP_SQUARE;
   const BiotopFoundIds_t& biotopFoundIds = m_pBiotop->findEntitiesInSquare(gridCoord, NB_GRID_PER_GEOMAP_SQUARE, true);
-  const std::vector<FoundEntity_t>& tFoundIds = biotopFoundIds.tFoundIds;
+  const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
   for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     if (tFoundIds[i].pEntity->getSpecieName() == specieName)
