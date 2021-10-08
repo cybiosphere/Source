@@ -55,7 +55,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_NextHourTimeOffset = 0;
   m_WindDirection = 1;
   m_WindStrenght  = 1; // 0,1 or 2
-  m_DefaultFilePath = "";
+  m_DefaultFilePath = get_working_path();
 
   m_tParam.resize(0);
   m_pFertilityRate = new CCyclicParam(10,50,864,"Avarage fertility",PARAM_ENVIRONMENT);
@@ -1560,31 +1560,42 @@ void CBiotop::nextHour(void)
   m_pSunlightRate->NextStep();
   m_pFertilityRate->NextStep();
   m_pTemperature->NextStep();
-
   if (m_BioTime.hours >= 24)
   {
-    CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - nextDay CPU total=%f animals=%f custom1=%f custom2=%f for %d animals\n",
-      m_CpuMonitoring[BIOTOP_CPUMARKER_TOTAL].cpuTimeCumulated,
-      m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated,
-      m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM1].cpuTimeCumulated,
-      m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM2].cpuTimeCumulated,
-      getNbOfAnimals());
-    if (getNbOfAnimals() > 0)
-    {
-      CYBIOCORE_LOG_TIME(m_BioTime);
-      CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfAnimals());
-    }
-
-    m_BioTime.hours = 0;
-    m_BioTime.days++;
-    if (m_BioTime.days >= 365)
-    {
-      m_BioTime.days = 0;
-      m_BioTime.years++;
-    }
+    nextDay();
   }
 }
+
+void CBiotop::nextDay(void)
+{
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP - nextDay CPU total=%f animals=%f custom1=%f custom2=%f for %d animals\n",
+    m_CpuMonitoring[BIOTOP_CPUMARKER_TOTAL].cpuTimeCumulated,
+    m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated,
+    m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM1].cpuTimeCumulated,
+    m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM2].cpuTimeCumulated,
+    getNbOfAnimals());
+  if (getNbOfAnimals() > 0)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfAnimals());
+  }
+
+  m_BioTime.hours = 0;
+  m_BioTime.days++;
+  if (m_BioTime.days >= 365)
+  {
+    m_BioTime.days = 0;
+    m_BioTime.years++;
+  }
+
+  // Automatic metric record in files every 2 days
+  if ((m_BioTime.days % 2) == 1)
+  {
+    saveAllRecordsInFiles();
+  }
+}
+
 
 void CBiotop::nextHourForAllEntities(void)
 {
@@ -2103,6 +2114,25 @@ CGeoMapPopulation* CBiotop::getGeoMapSpecieByIndex(size_t index)
   return (pGeoMap);
 }
 
+void CBiotop::saveAllGeoMapsInFile(string fileNameWithPath)
+{
+  for (int indexRecord = 0; indexRecord < getNbOfGeoMapSpecie(); indexRecord++)
+  {
+    getGeoMapSpecieByIndex(indexRecord)->saveInXmlFile(fileNameWithPath);
+  }
+}
+
+void CBiotop::saveAllRecordsInFiles()
+{
+  string measureFileName{ m_DefaultFilePath + "/Measures.csv" };
+  string geomapFileName{ m_DefaultFilePath + "/GeoMaps.xml" };
+
+  std::remove(measureFileName.c_str());
+  std::remove(geomapFileName.c_str());
+
+  saveAllMeasuresInFile(measureFileName);
+  saveAllGeoMapsInFile(geomapFileName);
+}
 
 //===========================================================================
 // Event management
@@ -2414,7 +2444,6 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     m_Dimension.y = sizeY;
     m_nbLayer = nbLayer;
     m_BioTime = convertCountToBioTime(atoi(timeCountStr.c_str()));
-    m_DefaultFilePath = pathNameForEntities;
 
     buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
 

@@ -326,3 +326,9 @@ bool DLL_CYBIOCORE_API copy_file(char *src_filename, char  *new_filename)
   fclose(ptr_old);
   return  true;
 }
+
+std::string get_working_path()
+{
+  char temp[1024];
+  return (getcwd(temp, sizeof(temp)) ? std::string(temp) : std::string(""));
+}

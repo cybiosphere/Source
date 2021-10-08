@@ -343,6 +343,7 @@ public:
 
 private:
   void nextHour(void);
+  void nextDay(void);
   void nextHourForAllEntities(void);
   void nextSecondForAllAnimals(void);
   void nextSecondForAllAnimalsSingleProcess(void);
@@ -382,6 +383,8 @@ public:
   bool      addGeoMapSpeciePopulation(std::string specieName);
   size_t    getNbOfGeoMapSpecie(void);
   CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
+  void      saveAllGeoMapsInFile(string fileNameWithPath);
+  void      saveAllRecordsInFiles();
 
 //---------------------------------------------------------------------------
 // Event management

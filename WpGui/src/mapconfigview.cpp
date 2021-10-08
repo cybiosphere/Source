@@ -837,9 +837,6 @@ void CMapConfigView::OnButtonSaveSpecieMap()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    for (int indexRecord = 0; indexRecord < m_pBiotop->getNbOfGeoMapSpecie(); indexRecord++)
-    {
-      m_pBiotop->getGeoMapSpecieByIndex(indexRecord)->saveInXmlFile(fileName.GetBuffer(0));
-    }
+    m_pBiotop->saveAllGeoMapsInFile(fileName.GetBuffer(0));
   }
 }
