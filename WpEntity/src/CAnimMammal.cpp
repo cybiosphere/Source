@@ -735,21 +735,26 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
     {
       // Check that suckling entity is a mother female of the same specie 
       if ( (m_pGenome->checkSpecieCompatibility(pEatenEntity->getGenome()) == true)
-        &&(pEatenEntity->isAlive()) && (pEatenEntity->getPheromone() == PHEROMONE_MATERNAL) )
+        && (pEatenEntity->isAlive()) && (pEatenEntity->getPheromone() == PHEROMONE_MATERNAL) )
       {
+        CAnimMammal* pMotherEntity = (CAnimMammal*)pEatenEntity;
         eatenWeight = getWeight()/1000;
-        // Remove fat from mother (milk generation)
-        ((CAnimMammal*)pEatenEntity)->changeFatWeight(eatenWeight);
-        ((CAnimMammal*)pEatenEntity)->changeLibidoRate(-1); // Prevent mother to have other babies
-        // Enjoy the lunch
-        pleasureRate = getHungerRate() * successSatisfactionFactor / 100.0; 
-        // 25% of milk is digested:
-        changeFatWeight(eatenWeight/4.0);
-        changeHungerRate(-0.2);
-        changeThirstRate(-0.2);
-        changeStomachFillingRate(0.5);
-        // Reenforce mother recognition
-        getBrain()->MemorizeIdentificationExperience(pleasureRate, getLearningRate(), pEatenEntity, IDENTIFICATION_MOTHER);
+        // Check if mother is fat enough to provide milk
+        if (pMotherEntity->getFatWeight() > eatenWeight)
+        {
+          // Remove fat from mother (milk generation)
+          pMotherEntity->consumeFatWeight(eatenWeight / 4.0);
+          pMotherEntity->changeLibidoRate(-1); // Prevent mother to have other babies
+          // Enjoy the lunch
+          pleasureRate = getHungerRate() * successSatisfactionFactor / 100.0;
+          // 25% of milk is digested:
+          increaseFatWeight(eatenWeight / 4.0);
+          changeHungerRate(-0.2);
+          changeThirstRate(-0.2);
+          changeStomachFillingRate(0.5);
+          // Reenforce mother recognition
+          getBrain()->MemorizeIdentificationExperience(pleasureRate, getLearningRate(), pEatenEntity, IDENTIFICATION_MOTHER);
+        }
       }
       else
       {
@@ -785,6 +790,7 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
   double pleasureRate = 0;
   RelativePos_t relPos = {1,0};
   Point_t newCoord = getGridCoordRelative(relPos);
+  consumeEnergy(6);
   
   moveToGridEdgePos();
   
@@ -905,6 +911,7 @@ bool CAnimMammal::deliverAllBabies()
   {
     for (size_t i = 0; i < m_tGestationChilds.size(); i++)
     {
+      consumeEnergy(10);
       pGestationChild = m_tGestationChilds[i];
       if (pGestationChild != NULL)
       {
@@ -929,6 +936,8 @@ bool CAnimMammal::deliverAllBabies()
     CYBIOCORE_LOG("MAMMAL - Reproduction : %d babies %s born alive from mother %s\n", 
                   nbChildsAlive, getSpecieName().c_str(), getLabel().c_str());
   }
+  stopCurrentSpeed();
+  forceTirednessRate(80.0);
   setGestationBabyNumber(0);
   getParameter(m_id_GestationTime)->forceVal(0);
   // Set maternal pheromon reset libido

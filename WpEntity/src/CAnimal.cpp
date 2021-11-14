@@ -81,6 +81,7 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
   m_Generation	= 0;
   m_TotalChildNumber = 0;
   m_HeadDirection = 0;
+  m_ConsumedEnergy = 0;
 
   // Parameter id pre-init
   m_id_Age              = invalidIndex; 
@@ -2457,7 +2458,7 @@ void CAnimal::nextDay(bool forceGrowth)
       if (isDead())
       {
         getParameter(m_id_Decomposition)->changeVal(1);
-        changeFatWeight(-0.2);
+        consumeFatWeight(0.2);
         if (getParameter(m_id_Decomposition)->isMaxReached())
         {
           autoRemove();
@@ -2563,22 +2564,29 @@ std::string CAnimal::getDeathCauseString()
 //---------------------------------------------------------------------------
 void CAnimal::balanceWeightAndMetabolism(bool forceGrowth)
 {
+  constexpr double maximumConsumedEnergyPerDay = 1000000.0;
   // Transfer mass from fat to body according to growth speed
-  double growthWeight = getParameter(m_id_GrowthSpeed)->getVal()/1000;
+  double growthWeight = getParameter(m_id_GrowthSpeed)->getVal() / 100;
 
   if (forceGrowth)
   {
     changeWeight(growthWeight);
-    changeFatWeight(growthWeight/10); // give 10% fat weight
+    increaseFatWeight(growthWeight/10);
   }
   else
   {
-    // Use Fat for growth
-    getParameter(m_id_FatWeight)->changeVal(-growthWeight);
-    // Use Fat for basal metabolism: consume 1% of weight per day
-    changeFatWeight(-getWeight()/100);
-  }
+    // Use Fat for energy and growth 
+    double ConsumedEnergyRate{ m_ConsumedEnergy / maximumConsumedEnergyPerDay + 1 };
+    double ConsumedFatWeight{ getWeight() * ConsumedEnergyRate / 100.0 };
+    useFatWeightToGrow(growthWeight);
+    consumeFatWeight(ConsumedFatWeight);
 
+
+    //CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    //CYBIOCORE_LOG("ANIMAL - Metabolism : specie %s name %s ConsumedEnergyRate %f fat weight %f growth weight %f\n",
+    //   getSpecieName().c_str(), getLabel().c_str(), ConsumedEnergyRate, ConsumedFatWeight, growthWeight);
+  }
+  m_ConsumedEnergy = 0;
 }
 
 //===========================================================================
@@ -2801,25 +2809,80 @@ void CAnimal::changeTirednessRate(double variation)
   return;
 }
 
+void CAnimal::forceTirednessRate(double newRate)
+{
+  getParameter(m_id_Tiredness)->forceVal(newRate);
+  return;
+}
+
+
 //---------------------------------------------------------------------------
-// METHOD:       CAnimal::changeFatWeight
+// METHOD:       CAnimal::increaseFatWeight
 //  
 // DESCRIPTION:  Increase both weight and fat weight in authorized range
 // 
-// ARGUMENTS:    double variation : mass change
+// ARGUMENTS:    double variation : mass to increase
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-void CAnimal::changeFatWeight(double variation)
+void CAnimal::increaseFatWeight(double weightToAdd)
 {
+  CGenericParam* pParamFatWeight = getParameter(m_id_FatWeight);
+  if ((weightToAdd < 0) || (pParamFatWeight->isMaxReached()))
+  {
+    return;
+  }
   // Change total weight in autorized range
-  double realVariation = changeWeight(variation);
-
+  double realVariation = changeWeight(weightToAdd);
   // Change fat rate
-  CGenericParam* pParam = getParameter(m_id_FatWeight);
-  pParam->changeVal(realVariation);
+  pParamFatWeight->changeVal(realVariation);
+}
+
+void CAnimal::consumeFatWeight(double weightToRemove)
+{
+  CGenericParam* pParamFatWeight = getParameter(m_id_FatWeight);
+  if (weightToRemove < 0)
+  {
+    return;
+  }
+  // Change total weight in autorized range
+  double realVariation = changeWeight(-weightToRemove);
+  if (isToBeRemoved())
+  {
+    logDeathCause("due to weight under minimum value\n");
+  }
+  else
+  {
+    // Change fat rate
+    pParamFatWeight->changeVal(-weightToRemove);
+    if (isAlive())
+    {
+      changeHungerRate(0.1);
+      if (pParamFatWeight->isMinReached())
+      {
+        autoKill();
+        logDeathCause("due to starvation\n");
+      }
+    }
+  }
+}
+
+void CAnimal::useFatWeightToGrow(double weightToTransfer)
+{
+  CGenericParam* pParamFatWeight = getParameter(m_id_FatWeight);
+  if (weightToTransfer < 0)
+  {
+    return;
+  }
+  // Change fat rate
+  pParamFatWeight->changeVal(-weightToTransfer);
+  if (pParamFatWeight->isMinReached())
+  {
+    autoKill();
+    logDeathCause("due to starvation to grow\n");
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -3101,6 +3164,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
 
   if (CBasicEntity::moveLinear(nbSteps))
   {
+    consumeEnergy(nbSteps);
     // Stop speed in water
     LayerType_e layerType = m_pBiotop->getLayerType(getGridCoord(), 1);
     if ((layerType == LAYER_OVER_WET_GROUND) || (layerType == LAYER_OVER_WATER))
@@ -3279,7 +3343,7 @@ void CAnimal::logDeathCause(std::string deathCauseStr)
   if (m_pBiotop != NULL)
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s is dead ", getSpecieName().c_str(), getLabel().c_str());
+    CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s age %ddays is dead ", getSpecieName().c_str(), getLabel().c_str(), getAge());
     CYBIOCORE_LOG(deathCauseStr.c_str());
   }
 }
@@ -3303,6 +3367,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
   double eatenWeight = 0;
   double initialWeight = 0;
   ClassType_e eatenClass;
+  consumeEnergy(1);
 
   moveToGridEdgePos();
   Point_t newCoord = getGridCoordRelative(relPos);
@@ -3354,7 +3419,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         if ( (eatenClass >= CLASS_VEGETAL_FIRST) && (eatenClass <= CLASS_VEGETAL_LAST) )
         {
           // 10% of this eaten food is digested:
-          changeFatWeight(eatenWeight/10.0);
+          increaseFatWeight(eatenWeight/10.0);
           changeHungerRate(-0.4);
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
@@ -3363,7 +3428,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         {
           // Meat contains more calories
           // 50% of this eaten food is digested:
-          changeFatWeight(eatenWeight/2.0);
+          increaseFatWeight(eatenWeight/2.0);
           changeHungerRate(-0.5);
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
@@ -3418,6 +3483,7 @@ bool CAnimal::ExecuteDrinkAction(double successSatisfactionFactor, double failur
 {
   double pleasureRate = 0;
   RelativePos_t relPos = {1,0};
+  consumeEnergy(1);
 
   moveToGridEdgePos();
   Point_t newCoord = getGridCoordRelative(relPos);
@@ -3483,6 +3549,7 @@ bool CAnimal::ExecuteCopulateAction(double successSatisfactionFactor, double fai
 bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSatisfactionFactor, double failureFrustrationFactor, ReactionIntensityType_e intensity)
 {
   double pleasureRate = 0;
+  consumeEnergy(5);
 
   // Jump before attack
   CBasicEntity::moveLinear(stepRange);
@@ -3897,4 +3964,9 @@ double CAnimal::getResistanceToPoison()
     return 0;
   else
     return (getParameter(m_id_ResistanceToPoison)->getVal());
+}
+
+void CAnimal::consumeEnergy(double unit)
+{
+  m_ConsumedEnergy += unit;
 }

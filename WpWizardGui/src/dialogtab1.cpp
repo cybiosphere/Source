@@ -429,7 +429,7 @@ void CDialogTab1::OnPaint()
   
   CBrush brush(0x00FFFFFF);
   CBrush brushgrey(0x00888888);
-  CRect frameRect(MulDiv(12, iDpi, 96), MulDiv(380, iDpi, 96), MulDiv(734, iDpi, 96), MulDiv(520, iDpi, 96));// 14, 465, 980, 630);
+  CRect frameRect(MulDiv(12, iDpi, 96), MulDiv(376, iDpi, 96), MulDiv(734, iDpi, 96), MulDiv(516, iDpi, 96));// 14, 465, 980, 630);
   COLORREF black = 0x00000000;
   
   dc.FillRect(frameRect,&brush);
@@ -647,7 +647,7 @@ void CDialogTab1::DisplayParamSliders()
         m_WeightMin = cybio_round(pEntity->getParameter(i)->getMin());
         UpdateData(false);
       }
-      else if (label == "Growth speed rate")
+      else if (label == "Growth speed")
       {
         m_growthSpeedParamId = i;
       }

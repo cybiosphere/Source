@@ -1696,7 +1696,7 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
   if (id > m_tParam.size())
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ENTITY - ERROR Cannot getParameter index %d\n", id);
+    CYBIOCORE_LOG("ENTITY - ERROR entity name %s Cannot getParameter index %d\n", getLabel().c_str(), id);
     return (NULL);
   }
   else

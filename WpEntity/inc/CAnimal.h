@@ -79,6 +79,7 @@ private:
   int  m_BusySecondCounter;
   bool m_bIsSleeping;
   int  m_tTasteLevel[TASTE_NUMBER_TYPE];
+  double m_ConsumedEnergy;
   CFeelingFear* m_pFeelingFear;
 
   // Forbiden action can be used to punish an action sytematically, whatever is the evoluton of feeling welfare.
@@ -181,8 +182,17 @@ protected:
   std::string getDeathCauseString();
 
 //---------------------------------------------------------------------------
+// Weight management
+//---------------------------------------------------------------------------
+protected:
+  void increaseFatWeight(double weightToAdd);
+  void consumeFatWeight(double weightToRemove);
+  void useFatWeightToGrow(double weightToTransfer);
+
+//---------------------------------------------------------------------------
 // Parameters management
 //---------------------------------------------------------------------------
+protected:
   void changeHungerRate(double variation);
   void changeThirstRate(double variation);
   void changeLibidoRate(double variation);
@@ -191,7 +201,7 @@ protected:
   void changePleasureRate(double variation);
   void convergePleasureRateToNeutral(double variation);
   void changeTirednessRate(double variation);
-  void changeFatWeight(double variation);
+  void forceTirednessRate(double newRate);
   void changeFearRate(double variation);
 public:
   void changeCurrentSpeed(double variation);
@@ -271,7 +281,7 @@ public:
   void setFearRate(double rate);
   void setStomachFillingRate(double rate);
   double getResistanceToPoison();
-
+  void consumeEnergy(double unit);
 }; // end ClAnimal
 
 #endif // !defined(CANIMAL_INCLUDED_)

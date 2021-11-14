@@ -534,7 +534,7 @@ void CVegetable::nextDay(bool forceGrowth)
       setProtection(m_OriginalProtection);
       setOdor(m_OriginalOdor);
 
-      double growthWeight = getParameter(m_id_GrowthSpeed)->getVal() / 1000;
+      double growthWeight = getParameter(m_id_GrowthSpeed)->getVal() / 100;
       changeWeight(growthWeight);
 
       getParameter(m_id_Age)->changeVal(1);
