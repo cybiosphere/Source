@@ -218,7 +218,7 @@ void CVegetSpermatophyta::nextHour()
   {
     // reproduction
     // TBD: Check also if reproduction age is reached
-    if (testChance(getReproductionRate(),m_pBiotop->getFertility(getGridCoord()) / 24.0))
+    if (testChance(getReproductionRate(),m_pBiotop->getFertility(getGridCoord()) / NUMBER_HOURS_PER_DAY))
     {
       if ((getTypeOfReproduction() == REPRODUCT_SEXUAL) && (getSex() == SEX_FEMALE))
       {

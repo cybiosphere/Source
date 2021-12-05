@@ -311,8 +311,8 @@ private:
 //---------------------------------------------------------------------------
 public:
   virtual void nextSecond();  // Called by biotop every time unit
-  virtual void nextHour();    // Called by biotop every 3600 time units  
-  virtual void nextDay(bool forceGrowth = false);     // Called every 24h at birth hour  
+  virtual void nextHour();    // Called by biotop every hour  
+  virtual void nextDay(bool forceGrowth = false);     // Called every day at birth hour  
   virtual int  getAge();
   virtual int  getDecompositionTime();
   virtual bool checkVitalNeedsOk(); // Called by biotop every time unit

@@ -103,6 +103,14 @@ typedef long int entityIdType;
   #endif // DLL_DEFLATOR_CLIENT
 #endif // DLL_DEFLATOR_DLL
 
+
+#define NUMBER_SECONDS_PER_MINUTE 60
+#define NUMBER_SECONDS_PER_HOUR 3600
+#define NUMBER_HOURS_PER_DAY 24
+#define NUMBER_DAYS_PER_YEAR 365
+#define NUMBER_SECONDS_PER_DAY (NUMBER_SECONDS_PER_HOUR * NUMBER_HOURS_PER_DAY)
+#define SEASON_PERIODICITY_IN_DAYS 36
+
 typedef struct 
 {
   int seconds;
@@ -189,14 +197,16 @@ std::string get_working_path();
   #define CYBIOCORE_LOG_CLOSE  gLogFile.close();  
   #define CYBIOCORE_LOG(...) gLogFile << FormatString(__VA_ARGS__); gLogFile.flush();
   #define CYBIOCORE_LOG_TIME(bioTime) \
-  gLogFile << FormatString("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, bioTime.seconds/60, bioTime.seconds%60);
+  gLogFile << FormatString("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, \
+                           bioTime.seconds / NUMBER_SECONDS_PER_MINUTE, bioTime.seconds % NUMBER_SECONDS_PER_MINUTE);
 #else
 #ifdef _DEBUG
   #define CYBIOCORE_LOG_INIT(ignore)
   #define CYBIOCORE_LOG_CLOSE
   #define CYBIOCORE_LOG printf
   #define CYBIOCORE_LOG_TIME(bioTime) \
-  printf ("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, bioTime.seconds%60, bioTime.seconds/60);
+  printf ("Y%d-D%03d %02d:%02d:%02d ", bioTime.years, bioTime.days, bioTime.hours, \
+          bioTime.seconds % NUMBER_SECONDS_PER_MINUTE, bioTime.seconds / NUMBER_SECONDS_PER_MINUTE);
 #else
   #define CYBIOCORE_LOG_INIT(ignore)
   #define CYBIOCORE_LOG_CLOSE

@@ -1771,7 +1771,7 @@ void CBasicEntity::nextSecond()
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::nextHour
 //  
-// DESCRIPTION:  Secondary action trigger called by biotop every 3600 time units
+// DESCRIPTION:  Secondary action trigger called by biotop every hour
 // 
 // ARGUMENTS:    None
 //   
@@ -1782,7 +1782,7 @@ void CBasicEntity::nextSecond()
 void CBasicEntity::nextHour()
 {
   m_HourCounter ++;
-  if (m_HourCounter > 24)
+  if (m_HourCounter > NUMBER_HOURS_PER_DAY)
   {
     nextDay();
     m_HourCounter = 0;
@@ -1792,7 +1792,7 @@ void CBasicEntity::nextHour()
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::nextDay
 //  
-// DESCRIPTION:  Living day trigger called by CBasicEntity every 24 hours
+// DESCRIPTION:  Living day trigger called by CBasicEntity every day
 // 
 // ARGUMENTS:    None
 //   

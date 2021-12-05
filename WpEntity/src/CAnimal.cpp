@@ -2428,7 +2428,7 @@ void CAnimal::nextHour()
 //---------------------------------------------------------------------------
 // METHOD:       CAnimal::nextDay
 //  
-// DESCRIPTION:  Living day trigger called by CBasicEntity every 24 hours
+// DESCRIPTION:  Living day trigger called by CBasicEntity every day
 // 
 // ARGUMENTS:    forceGrowth : can be use to force growth without using ressource (fat)
 //   
@@ -2575,16 +2575,17 @@ void CAnimal::balanceWeightAndMetabolism(bool forceGrowth)
   }
   else
   {
-    // Use Fat for energy and growth 
-    double ConsumedEnergyRate{ m_ConsumedEnergy / maximumConsumedEnergyPerDay + 1 };
-    double ConsumedFatWeight{ getWeight() * ConsumedEnergyRate / 100.0 };
+    // Use Fat for energy and growth
+    constexpr double basalMetabolism{ 1.0 };
+    double abilitiesEnergyCost{ (getProtection() + getAttackFactor()) / 100.0 };
+    double consumedEnergyRate{ m_ConsumedEnergy / maximumConsumedEnergyPerDay + abilitiesEnergyCost + basalMetabolism };
+    double consumedFatWeight{ getWeight() * consumedEnergyRate / 100.0 };
     useFatWeightToGrow(growthWeight);
-    consumeFatWeight(ConsumedFatWeight);
-
+    consumeFatWeight(consumedFatWeight);
 
     //CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     //CYBIOCORE_LOG("ANIMAL - Metabolism : specie %s name %s ConsumedEnergyRate %f fat weight %f growth weight %f\n",
-    //   getSpecieName().c_str(), getLabel().c_str(), ConsumedEnergyRate, ConsumedFatWeight, growthWeight);
+    //   getSpecieName().c_str(), getLabel().c_str(), consumedEnergyRate, consumedFatWeight, growthWeight);
   }
   m_ConsumedEnergy = 0;
 }
@@ -2849,7 +2850,7 @@ void CAnimal::consumeFatWeight(double weightToRemove)
   }
   // Change total weight in autorized range
   double realVariation = changeWeight(-weightToRemove);
-  if (isToBeRemoved())
+  if (isAlive() && isToBeRemoved())
   {
     logDeathCause("due to weight under minimum value\n");
   }

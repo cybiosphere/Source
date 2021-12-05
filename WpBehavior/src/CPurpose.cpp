@@ -62,7 +62,7 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
 {
   int i;
   m_Label           = label;
-  m_SecondDuration  = minuteDuration * 60;
+  m_SecondDuration  = minuteDuration * NUMBER_SECONDS_PER_MINUTE;
   m_SecondCounter   = 0;
 
   m_pSensor         = pSens;

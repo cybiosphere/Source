@@ -58,13 +58,13 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_DefaultFilePath = get_working_path();
 
   m_tParam.resize(0);
-  m_pFertilityRate = new CCyclicParam(10,50,864,"Avarage fertility",PARAM_ENVIRONMENT);
+  m_pFertilityRate = new CCyclicParam(10, 50, SEASON_PERIODICITY_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage fertility", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pFertilityRate);
-  m_pSunlightRate = new CCyclicParam(0,100,24,"Sunlight",PARAM_ENVIRONMENT);
+  m_pSunlightRate = new CCyclicParam(0, 100, NUMBER_HOURS_PER_DAY, "Sunlight", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
-  m_pRadioactivity = new CCustomParam(0,1,1,100,"Radioactivity",PARAM_ENVIRONMENT);
+  m_pRadioactivity = new CCustomParam(0, 1, 1, 100, "Radioactivity", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pRadioactivity);
-  m_pTemperature = new CCyclicParam(20,26,864,"Avarage Temperature",PARAM_ENVIRONMENT); // TBD use global min/max temperature
+  m_pTemperature = new CCyclicParam(20, 26, SEASON_PERIODICITY_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage Temperature", PARAM_ENVIRONMENT); // TBD use global min/max temperature
   m_tParam.push_back(m_pTemperature);
 
   // Build 3D dynamic table
@@ -603,7 +603,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
 
   addMeasurePopulation(14400,7,MEASURE_POPULATION_VEGETAL,1000);
 
-  addMeasureBiotopParam(BIO_PARAM_SUNLIGHT,3600,9);
+  addMeasureBiotopParam(BIO_PARAM_SUNLIGHT, NUMBER_SECONDS_PER_HOUR, 9);
 
   delete pGenome1;
   delete pGenome2;
@@ -828,7 +828,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
   }
 
   // Do circles around center
-  for (k=0; k<distance; k++)
+  for (k=1; k<distance; k++)
   {
     for (i=-k; i<k; i++)
     {
@@ -1510,7 +1510,7 @@ void CBiotop::nextSecond(bool doIncreaseTime)
   {
     m_BioTime.seconds++;
     resetBiotopEventsMapCurrent();
-    if (m_BioTime.seconds >= 3600)
+    if (m_BioTime.seconds >= NUMBER_SECONDS_PER_HOUR)
     {
       // Next hour for biotop
       nextHour();
@@ -1560,7 +1560,7 @@ void CBiotop::nextHour(void)
   m_pSunlightRate->NextStep();
   m_pFertilityRate->NextStep();
   m_pTemperature->NextStep();
-  if (m_BioTime.hours >= 24)
+  if (m_BioTime.hours >= NUMBER_HOURS_PER_DAY)
   {
     nextDay();
   }
@@ -1583,7 +1583,7 @@ void CBiotop::nextDay(void)
 
   m_BioTime.hours = 0;
   m_BioTime.days++;
-  if (m_BioTime.days >= 365)
+  if (m_BioTime.days >= NUMBER_DAYS_PER_YEAR)
   {
     m_BioTime.days = 0;
     m_BioTime.years++;
@@ -1705,7 +1705,7 @@ void CBiotop::generateRandomEntities()
       }
       if (randomEntity.avaragePeriodicity > 0)
       {
-        periodicityFactor = 100.0 / ((double)(randomEntity.avaragePeriodicity) * 24.0);
+        periodicityFactor = 100.0 / ((double)(randomEntity.avaragePeriodicity) * NUMBER_HOURS_PER_DAY);
       }
       if (testChance(periodicityFactor, fertilityFactor))
       {
@@ -2698,26 +2698,26 @@ double CBiotop::getRadioactivityRate()
 double CBiotop::getTemperature(Point_t coord, size_t layer)
 {
   double computedTemperature = m_pTemperature->getVal();
-  CBasicEntity* pCurEntity = NULL;
+  ClassType_e entityClass{CLASS_UNSET};
   const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   // Give bonus malus on temperature according to entities around
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
-    pCurEntity = tFoundIds[ind].pEntity;
-    if (pCurEntity->getClass() >= CLASS_ANIMAL_FIRST)
+    entityClass = tFoundIds[ind].pEntity->getClass();
+    if (entityClass >= CLASS_ANIMAL_FIRST)
       computedTemperature += 2.0;
-    else if (pCurEntity->getClass() >= CLASS_VEGETAL_FIRST)
-      computedTemperature -= 0.4;
-    else if (pCurEntity->getClass() == CLASS_WATER)
-      computedTemperature -= 0.6;
+    else if (entityClass >= CLASS_VEGETAL_FIRST)
+      computedTemperature -= 1.0;
+    else if (entityClass == CLASS_WATER)
+      computedTemperature -= 2.0;
   }
 
   // Check if shadow
   Point_t southPos = coord;
   southPos.y -= 1;
-  pCurEntity = findTopLevelEntity(southPos);
+  CBasicEntity* pCurEntity = findTopLevelEntity(southPos);
   if ((pCurEntity != NULL) && (pCurEntity->getLayer() >= layer))
     computedTemperature += m_pSunlightRate->getVal()/20.0 - 5.0;
   else

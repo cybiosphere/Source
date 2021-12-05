@@ -453,6 +453,7 @@ bool  CMapConfigView::BuildSensorsMap(int index)
       pSensor->UpdateAndGetStimulationTable();
   }
   m_pBiotop->SetColorizeSearchMode(false);
+  return true;
 }
 
 bool CMapConfigView::BuildPopulationMap(int index)

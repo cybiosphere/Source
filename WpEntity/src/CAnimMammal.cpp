@@ -533,7 +533,7 @@ void CAnimMammal::nextHour()
 //---------------------------------------------------------------------------
 // METHOD:       CAnimMammal::nextDay
 //  
-// DESCRIPTION:  Living day trigger called by CBasicEntity every 24 hours
+// DESCRIPTION:  Living day trigger called by CBasicEntity every day
 // 
 // ARGUMENTS:    None
 //   

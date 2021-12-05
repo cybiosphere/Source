@@ -93,19 +93,19 @@ bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2)
 
 timeCountType DLL_CYBIOCORE_API convertBioTimeToCount(BiotopTime_t bioTime)
 {
-  return ((timeCountType)bioTime.seconds + (timeCountType)bioTime.hours*(timeCountType)3600 
-        + (timeCountType)bioTime.days*(timeCountType)86400 + (timeCountType)bioTime.years*(timeCountType)86400*(timeCountType)365);
+  return ((timeCountType)bioTime.seconds + (timeCountType)bioTime.hours * (timeCountType)NUMBER_SECONDS_PER_HOUR
+    + (timeCountType)(bioTime.days + bioTime.years * NUMBER_DAYS_PER_YEAR) * (timeCountType)NUMBER_SECONDS_PER_DAY);
 }
 
 BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count)
 {
   BiotopTime_t bioTime;
-  bioTime.years = count/86400/365;
-  count -= bioTime.years*86400*365; 
-  bioTime.days = count/86400;
-  count -= bioTime.days*86400; 
-  bioTime.hours = count/3600;
-  count -= bioTime.hours*3600; 
+  bioTime.years = count / NUMBER_SECONDS_PER_DAY / NUMBER_DAYS_PER_YEAR;
+  count -= bioTime.years * NUMBER_SECONDS_PER_DAY * NUMBER_DAYS_PER_YEAR;
+  bioTime.days = count / NUMBER_SECONDS_PER_DAY;
+  count -= bioTime.days * NUMBER_SECONDS_PER_DAY;
+  bioTime.hours = count / NUMBER_SECONDS_PER_HOUR;
+  count -= bioTime.hours* NUMBER_SECONDS_PER_HOUR;
   bioTime.seconds = count;
 
   return(bioTime);
