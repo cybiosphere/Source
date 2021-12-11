@@ -128,11 +128,22 @@ CBiotop::~CBiotop()
 
 entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
 {
-  if ((pEntity == NULL) || (getNbOfEntities() > MAXIMUM_NB_ENTITIES))
-    return (ENTITY_ID_INVALID);
-
-  if ( !isCoordValidAndFree(coord,layer) )
+  if ((pEntity == NULL) || !isCoordValidAndFree(coord,layer))
      return (ENTITY_ID_INVALID);
+
+  if (pEntity->isAnimal())
+  {
+    if (getNbOfAnimals() >= MAX_NUMBER_ANIMALS)
+    {
+      CYBIOCORE_LOG_TIME(m_BioTime);
+      CYBIOCORE_LOG("ERROR  - Too many animals. Cannot add entity name %s\n", pEntity->getLabel().c_str());
+      return (ENTITY_ID_INVALID);
+    }
+  }
+  else if (getNbOfEntities() >= MAX_NUMBER_NON_ANIMAL_ENTITIES)
+  {
+    return (ENTITY_ID_INVALID);
+  }
 
   // Set new id
   m_IdLastEntity++;
@@ -142,7 +153,7 @@ entityIdType CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t lay
   // Attach it to biotop
   pEntity->attachToBiotop(this);
 
-  if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+  if (pEntity->isAnimal())
   {
     // Add it to list at the begining
     m_tEntity.insert(m_tEntity.begin(), pEntity);
@@ -177,7 +188,7 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
   else
     layer = pEntity->getLayer();
 
-  if (getNbOfEntities()>MAXIMUM_NB_ENTITIES)
+  if (getNbOfEntities() > MAX_NUMBER_ENTITIES)
     return ENTITY_ID_INVALID;
 
   if ( !isCoordValidAndFree(CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) )
@@ -194,7 +205,7 @@ entityIdType CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity*
   // Attach it to biotop
   pEntity->attachToBiotop(this);
 
-  if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+  if (pEntity->isAnimal())
   {
     // Add it to list at the begining
     m_tEntity.insert(m_tEntity.begin(), pEntity);
@@ -237,7 +248,7 @@ entityIdType CBiotop::createAndAddEntity(string name, Point_t coord, size_t laye
   if (pNewEntity==NULL)
     return (ENTITY_ID_INVALID);
 
-  if (pGenome->getClass() > CLASS_MINERAL_LAST)
+  if (pNewEntity->isLiving())
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - New entity : specie %s name %s\n", pGenome->getSpecieName().c_str(), name.c_str());
@@ -301,7 +312,6 @@ entityIdType CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord)
   }
   else
   {
-    delete pTempGenome;
     return ENTITY_ID_INVALID;
   }
 
@@ -372,7 +382,7 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   pNewEntity->attachToBiotop(this);
   // Add it to list
   m_tEntity.insert(m_tEntity.begin() + prevIndex, 1, pNewEntity);
-  if (pNewEntity->getClass() >= CLASS_ANIMAL_FIRST)
+  if (pNewEntity->isAnimal())
   {
     m_IndexLastAnimal++;
   }
@@ -426,7 +436,7 @@ size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
   {
     if (m_tEntity[i] == pEntity)
     {
-      if (pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+      if (pEntity->isAnimal())
       {
         m_IndexLastAnimal--;
       }
@@ -625,12 +635,9 @@ size_t CBiotop::getNbOfAnimals()
 size_t CBiotop::getNbOfVegetals()
 {
   size_t tempCount = 0;
-  ClassType_e curClass;
-
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    curClass = pEntity->getClass();
-    if ( (curClass >= CLASS_VEGETAL_FIRST) && (curClass <= CLASS_VEGETAL_LAST) && (pEntity->getId()>0) )
+    if (pEntity->isVegetal() && (pEntity->getId() > 0))
       tempCount++;
   }
 
@@ -640,12 +647,10 @@ size_t CBiotop::getNbOfVegetals()
 size_t CBiotop::getNbOfMinerals()
 {
   size_t tempCount = 0;
-  ClassType_e curClass;
 
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    curClass = pEntity->getClass();
-    if ( (curClass >= CLASS_MINERAL_FIRST) && (curClass <= CLASS_MINERAL_LAST) && (pEntity->getId()>0) )
+    if (pEntity->isMineral() && (pEntity->getId() > 0))
       tempCount++;
   }
 
@@ -754,7 +759,6 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
 CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
 {
   CBasicEntity* pFoundEntity = NULL;
-
   if ( isCoordValid(searchCoord,layer) )
   {
     pFoundEntity = m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity;
@@ -763,8 +767,12 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
       m_tBioSquare[searchCoord.x][searchCoord.y].customColor -= 0x00001010; //blue
     }
   }
-
   return (pFoundEntity);
+}
+
+CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer)
+{
+  return (m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity);
 }
 
 const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater)
@@ -1415,36 +1423,24 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
 
 bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
 {
-  if ( (coord.x >= m_Dimension.x) || (coord.y >= m_Dimension.y) || (layer >= m_nbLayer)
-     || (findEntity(coord, layer) != NULL) ) // water is consider as not free
-  {
-    return (false);
-  }
-  else
-  {
-    return (true);
-  }
+  return (isCoordValid(coord, layer) && (findEntityNoCheckCoord(coord, layer) == NULL));
 }
 
 bool CBiotop::isCoordValid(Point_t coord, size_t layer)
 {
-  if ( (coord.x < m_Dimension.x) && (coord.y < m_Dimension.y) && (layer < m_nbLayer) )
-  {
-    return (true);
-  }
-  else
-  {
-    return (false);
-  }
+  return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y) && (layer < m_nbLayer));
 }
 
 CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord)
 {
   CBasicEntity* pFoundEntity = NULL;
 
+  if (!isCoordValid(searchCoord, 0))
+    return (NULL);
+
   for (int layer = (int)m_nbLayer - 1; layer >= 0; layer--)
   {
-    pFoundEntity = findEntity(searchCoord, layer);
+    pFoundEntity = findEntityNoCheckCoord(searchCoord, layer);
     if (pFoundEntity!=NULL)
     {
       return (pFoundEntity);
@@ -2698,6 +2694,8 @@ double CBiotop::getRadioactivityRate()
 double CBiotop::getTemperature(Point_t coord, size_t layer)
 {
   double computedTemperature = m_pTemperature->getVal();
+
+#ifdef NON_OPTIMIZED_CPU_MODE
   ClassType_e entityClass{CLASS_UNSET};
   const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
@@ -2713,6 +2711,7 @@ double CBiotop::getTemperature(Point_t coord, size_t layer)
     else if (entityClass == CLASS_WATER)
       computedTemperature -= 2.0;
   }
+#endif
 
   // Check if shadow
   Point_t southPos = coord;

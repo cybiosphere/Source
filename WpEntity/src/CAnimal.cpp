@@ -3231,7 +3231,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
         // Hurt hit entity
         if (getAttackFactor() > pHitEntity->getProtection())
         {
-          if ((pHitEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pHitEntity->isAlive()))
+          if (pHitEntity->isAnimal() && (pHitEntity->isAlive()))
           {
             injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(getAttackFactor() - pHitEntity->getProtection()) / 100.0;
             if (((CAnimal*)pHitEntity)->changeHealthRate(-injuryLevel, this) == false)
@@ -3385,7 +3385,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
     {
       eatenClass = pEatenEntity->getClass();
       // If pEatenEntity was still alive, it will not survive...
-      if ( (eatenClass >= CLASS_ANIMAL_FIRST) && (eatenClass <= CLASS_ANIMAL_LAST) )
+      if (pEatenEntity->isAnimal())
       {
         pEatenEntity->autoKill();
       }
@@ -3417,7 +3417,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         getBrain()->MemorizeIdentificationExperience(pleasureRate, getLearningRate(), pEatenEntity, IDENTIFICATION_FOOD);
       
 
-        if ( (eatenClass >= CLASS_VEGETAL_FIRST) && (eatenClass <= CLASS_VEGETAL_LAST) )
+        if (pEatenEntity->isVegetal())
         {
           // 10% of this eaten food is digested:
           increaseFatWeight(eatenWeight/10.0);
@@ -3425,7 +3425,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
         }
-        else if (eatenClass >= CLASS_ANIMAL_FIRST)
+        else if (pEatenEntity->isAnimal())
         {
           // Meat contains more calories
           // 50% of this eaten food is digested:
@@ -3581,11 +3581,8 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
     if (diffScore > 0)
     {
       // Attack success 
-      ClassType_e attackedClass = pAttackedEntity->getClass();
       // If pAttackedEntity is  alive, it will be hurt
-      if ( (attackedClass >= CLASS_ANIMAL_FIRST) 
-        && (attackedClass <= CLASS_ANIMAL_LAST)
-        && pAttackedEntity->isAlive() )
+      if (pAttackedEntity->isAnimal() && pAttackedEntity->isAlive() )
       {
         // For adults allow critical attack
         if ( (diffScore>10) && (getCurrentLifeStage()->getStageType()==STAGE_3) && (getRandInt(4)==1) && (intensity > REACTION_INTENSITY_LOW) )

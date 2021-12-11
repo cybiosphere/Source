@@ -3768,3 +3768,23 @@ size_t CBasicEntity::getGridPosFromStepPos(size_t stepCoord)
 {
   return (stepCoord / NB_STEPS_PER_GRID_SQUARE);
 }
+
+bool CBasicEntity::isAnimal()
+{
+  return (getClass() >= CLASS_ANIMAL_FIRST);
+}
+
+bool CBasicEntity::isVegetal()
+{
+  return ((getClass() >= CLASS_VEGETAL_FIRST) && (getClass() <= CLASS_VEGETAL_LAST));
+}
+
+bool CBasicEntity::isMineral()
+{
+  return (getClass() <= CLASS_MINERAL_LAST);
+}
+
+bool CBasicEntity::isLiving()
+{
+  return (getClass() > CLASS_MINERAL_LAST);
+}

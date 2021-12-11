@@ -70,7 +70,10 @@ class CGeoMapPopulation;
 
 #define MAX_NUMBER_OMP_THREADS 4
 
-#define MAXIMUM_NB_ENTITIES 1000000
+#define MAX_NUMBER_ANIMALS    2000
+#define MAX_NUMBER_NON_ANIMAL_ENTITIES 500000
+#define MAX_NUMBER_ENTITIES (MAX_NUMBER_ANIMALS + MAX_NUMBER_NON_ANIMAL_ENTITIES)
+
 #define MAX_NUMBER_RANDOM_ENTITIES 3
 
 // Sectors arround entity X:
@@ -320,6 +323,7 @@ public:
   CBasicEntity* getEntityByName(string& entityName);
   size_t        getEntityTableIndex(CBasicEntity* pEntity);
   CBasicEntity* findEntity(Point_t searchCoord, size_t Layer);
+  CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer);
   const BiotopFoundIds_t& findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater = false);
   const BiotopFoundIds_t& findEntities(Point_t startCoord, size_t distance, bool includeWater = false);
   const BiotopFoundIds_t& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);

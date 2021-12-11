@@ -297,7 +297,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyTab[i].signature = pCurEntity->getEntitySignature();
 
       offset = 0;
-      if ((pCurEntity->getClass() > CLASS_MINERAL_LAST) || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
+      if (pCurEntity->isLiving() || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
       {
         pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity);
         previousEntitySignature = pCurEntity->getEntitySignature();

@@ -473,6 +473,11 @@ public:
   virtual int    getCurrentSpeed();
   int            getRelativeSpeed(CBasicEntity* pReference);
 
+  bool isAnimal();
+  bool isVegetal();
+  bool isMineral();
+  bool isLiving();
+
   static string  getColorStrName(ColorCaracterType_e type);
   static string  getOdorStrName(OdorType_e type);
   static string  getPheromoneStrName(PheromoneType_e type);
