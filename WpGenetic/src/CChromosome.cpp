@@ -103,13 +103,25 @@ size_t CChromosome::addGene()
     return (invalidIndex);
 }
 
-bool CChromosome::removeGene(size_t index)
+bool CChromosome::removeGeneFromIndex(size_t index)
 {
   if (index>(m_tGene.size()-1))
     return false;
 
   m_tGene.erase(m_tGene.begin()+index);
   return true;
+}
+
+bool CChromosome::removeGene(CGene* pGene)
+{
+  for (size_t i = 0; i < m_tGene.size(); i++)
+  {
+    if (pGene == m_tGene[i])
+    {
+      return removeGeneFromIndex(i);
+    }
+  }
+  return false;
 }
 
 size_t CChromosome::getNumGene(void)

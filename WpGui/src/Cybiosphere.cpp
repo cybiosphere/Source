@@ -245,10 +245,13 @@ BOOL CCybiosphereApp::InitInstance()
   // Connect to server and wait for biotop init from server
   m_pClient->connect_to_server();
   BeginWaitCursor();
+
   for (int i = 0; i < 2000; i++)
   {
     System::sleep(10);
     m_pClient->process_new_events();
+    if (m_pClient->is_logged_in())
+      break;
   }
   if (m_pClient->is_logged_in() != true)
   {

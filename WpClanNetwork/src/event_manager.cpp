@@ -71,7 +71,7 @@ namespace clan
 
   bool event_manager::buildEventsAddCloneEntities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, std::vector<NetGameEvent>& eventVector)
   {
-    static constexpr int maxNumEntitiesPerEvent = 500;
+    static constexpr int maxNumEntitiesPerEvent = 800;
     int nbEvents = vectPositions.size() / maxNumEntitiesPerEvent + 1;
     int nbRemainingEntityPos = vectPositions.size();
     int index = 0;

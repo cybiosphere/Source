@@ -100,13 +100,25 @@ size_t CGenome::addPair()
     return (invalidIndex);
 }
 
-bool CGenome::removePair(size_t index)
+bool CGenome::removePairFromIndex(size_t index)
 {
   if (index > (m_tPair.size() - 1) )
     return false;
 
   m_tPair.erase(m_tPair.begin()+index);
   return true;
+}
+
+bool CGenome::removePair(CPairOfChromosome* pPaire)
+{
+  for (size_t i = 0; i < m_tPair.size(); i++)
+  {
+    if (pPaire == m_tPair[i])
+    {
+      return removePairFromIndex(i);
+    }
+  }
+  return false;
 }
 
 size_t CGenome::getNumPair()
@@ -604,8 +616,8 @@ bool CGenome::setBrainInstinctInGenes(CBrain* pBrain)
     {
       if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_LINE)
       {
-        pCurChromoM->removeGene(geneId);
-        pCurChromoP->removeGene(geneId);
+        pCurChromoM->removeGeneFromIndex(geneId);
+        pCurChromoP->removeGeneFromIndex(geneId);
       }
     }
   }
@@ -682,8 +694,8 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
     {
       if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_IDENTIFY_LINE)
       {
-        pCurChromoM->removeGene(geneId);
-        pCurChromoP->removeGene(geneId);
+        pCurChromoM->removeGeneFromIndex(geneId);
+        pCurChromoP->removeGeneFromIndex(geneId);
       }
     }
   }

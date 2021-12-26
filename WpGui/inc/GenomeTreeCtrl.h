@@ -69,6 +69,7 @@ public:
 
   CGene* GetCurrentMotherAllele();
   CGene* GetCurrentFatherAllele();
+  CPairOfChromosome* GetCurrentPairOfChromosome();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

@@ -105,11 +105,14 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
   case UID_BASE_SENS_STOMACH_FULL:
       m_Priority = 5;
       break;
-  case UID_BASE_SENS_THIRST: 
-  case UID_BASE_SENS_HUNGER:
+  case UID_BASE_SENS_THIRST:
       m_Priority = 4;
       m_bMemorizeSuccess = true;
       break;
+  case UID_BASE_SENS_HUNGER:
+      m_Priority = 3;
+      m_bMemorizeSuccess = true;
+    break;
   case UID_BASE_SENS_LIBIDO:    // For Reproduction
   case UID_BASE_SENS_PHEROMONE:
       m_Priority = 2;

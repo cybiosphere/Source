@@ -116,7 +116,8 @@ private:
 
 public:
   size_t addPair();
-  bool removePair(size_t index);
+  bool removePairFromIndex(size_t index);
+  bool removePair(CPairOfChromosome* pPaire);
   size_t getNumPair();
   string getOwnClassStrName();
   static string getClassStrName(ClassType_e classType);

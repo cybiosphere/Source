@@ -168,6 +168,9 @@ protected:
   CGene*             m_pCurrentEditGeneP;
 
   bool               m_bIsWeightChanging; // Use to avoid weight change after sel change
+public:
+
+	afx_msg void OnKeydownTreeGenome(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 //{{AFX_INSERT_LOCATION}}

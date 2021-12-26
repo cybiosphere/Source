@@ -146,6 +146,7 @@ BEGIN_MESSAGE_MAP(CGenomeEditorDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_LABEL, OnChangeEditLabel)
 	ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_WEIGHT_M, OnItemchangingListWeightM)
 	ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_WEIGHT_P, OnItemchangingListWeightP)
+  ON_NOTIFY(TVN_KEYDOWN, IDC_TREE_GENOME, &CGenomeEditorDlg::OnKeydownTreeGenome)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1574,4 +1575,35 @@ void CGenomeEditorDlg::OnItemchangingListWeightP(NMHDR* pNMHDR, LRESULT* pResult
 	// TODO: Add your control notification handler code here
 	m_bIsWeightChanging = true;	
 	*pResult = 0;
+}
+
+void CGenomeEditorDlg::OnKeydownTreeGenome(NMHDR* pNMHDR, LRESULT* pResult)
+{
+  LPNMTVKEYDOWN pTVKeyDown = reinterpret_cast<LPNMTVKEYDOWN>(pNMHDR);
+  // TODO: Add your control notification handler code here
+  if (pTVKeyDown->wVKey == VK_DELETE)
+  {
+    if (m_GenomeTreeEdit.GetSelectionTreeLevel() == TREE_LEVEL_GENE)
+    {
+      int answer = AfxMessageBox("Do you realy want to remove gene from genome", MB_YESNO);
+      if (answer == IDYES)
+      {
+        CPairOfChromosome* pCurrentPair = m_GenomeTreeEdit.GetCurrentPairOfChromosome();
+        pCurrentPair->getMaterChromosome()->removeGene(m_pCurrentEditGeneM);
+        pCurrentPair->getPaterChromosome()->removeGene(m_pCurrentEditGeneP);
+        m_GenomeTreeEdit.SetGenome(m_pNewGenome, true, true);
+      }
+    }
+    else if ((m_GenomeTreeEdit.GetSelectionTreeLevel() == TREE_LEVEL_PAIRE) || (m_GenomeTreeEdit.GetSelectionTreeLevel() == TREE_LEVEL_CHROMOSOME))
+    {
+      int answer = AfxMessageBox("Do you realy want to remove full chromosome from genome", MB_YESNO | MB_ICONEXCLAMATION);
+      if (answer == IDYES)
+      {
+        CPairOfChromosome* pCurrentPair = m_GenomeTreeEdit.GetCurrentPairOfChromosome();
+        m_pNewGenome->removePair(pCurrentPair);
+        m_GenomeTreeEdit.SetGenome(m_pNewGenome, true);
+      }
+    }
+  }
+  *pResult = 0;
 }

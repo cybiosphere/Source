@@ -2415,7 +2415,7 @@ void CAnimal::nextHour()
       {
         changeHungerRate(2);
       }
-      changeThirstRate(2);
+      changeThirstRate(1.5);
     }
     changeStomachFillingRate(-25);
     // reset injury malus: entity has survived

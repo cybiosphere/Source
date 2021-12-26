@@ -279,3 +279,25 @@ CGene* CGenomeTreeCtrl::GetCurrentFatherAllele()
 
   return (foundGene);
 }
+
+CPairOfChromosome* CGenomeTreeCtrl::GetCurrentPairOfChromosome()
+{
+  CPairOfChromosome* pFoundPair = NULL;
+
+  if (GetSelectionTreeLevel() == TREE_LEVEL_GENOME)
+    return (pFoundPair);
+
+  HTREEITEM pSelectedItem = GetSelectedItem();
+  HTREEITEM pTmpItem = pSelectedItem;
+  if (GetSelectionTreeLevel() == TREE_LEVEL_GENE)
+  {
+    pTmpItem = GetParentItem(pTmpItem);
+    pTmpItem = GetParentItem(pTmpItem);
+  }
+  else if (GetSelectionTreeLevel() == TREE_LEVEL_CHROMOSOME)
+  {
+    pTmpItem = GetParentItem(pTmpItem);
+  }
+  pFoundPair = (CPairOfChromosome*)GetItemData(pTmpItem);
+  return (pFoundPair);
+}

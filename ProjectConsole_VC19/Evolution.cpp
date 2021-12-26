@@ -54,15 +54,19 @@ int main(int argc, char* argv[])
 
   if (resuStr != "")
   {
+
     string resuDataPath;
     pBiotop = new CBiotop(0,0,0);
     bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    auto start = std::chrono::system_clock::now();
     resuDataPath = resuBuffer;
     if (resuDataPath != "")
       pBiotop->loadFromXmlFile(resuStr, resuDataPath);
     else
       pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
-    printf ("Biotop loaded OK");
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    printf("Biotop loaded OK. duration: %.1f sec\n", elapsed_seconds.count());
   }
   else
   {

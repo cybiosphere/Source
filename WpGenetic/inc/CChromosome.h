@@ -94,7 +94,8 @@ public:
 //---------------------------------------------------------------------------
 public:
   size_t addGene();
-  bool removeGene(size_t index);
+  bool removeGeneFromIndex(size_t index);
+  bool removeGene(CGene* pGene);
   size_t getNumGene(void);
   CGene* getGene(size_t index);
   void deleteAllGenes(void);
