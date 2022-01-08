@@ -137,7 +137,8 @@ typedef struct
 
 typedef DWORD   COLORREF;
 typedef unsigned char UCHAR;
-typedef unsigned long  timeCountType; 
+typedef unsigned long  timeCountType;
+#define MAX_TIMECOUNT_VALUE 0xFFFFFFFF
 
 template<typename A, typename B> inline A cybio_min(A a, B b) { return a < b ? a : b; }
 template<typename A, typename B> inline A cybio_max(A a, B b) { return a > b ? a : b; }

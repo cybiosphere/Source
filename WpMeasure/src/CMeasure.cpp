@@ -288,6 +288,37 @@ bool CMeasure::saveInFile(string fileNameWithPath)
 }
 
 //===========================================================================
+// data access
+//===========================================================================
+timeCountType CMeasure::getNextSmallestTimeCount(timeCountType previousSmallestTimeCount)
+{
+  timeCountType nextMinTimeCount = MAX_TIMECOUNT_VALUE;
+  timeCountType tempTimeCount = 0;
+  size_t numData = cybio_min(m_TotalMeasNbFromStart, MAX_MEASUREMENT_DATA_SIZE);
+  for (int i = 0; i < numData; i++)
+  {
+    tempTimeCount = m_tCurValTable[i].timeCount;
+    if ((tempTimeCount > previousSmallestTimeCount) && (tempTimeCount < nextMinTimeCount))
+      nextMinTimeCount = tempTimeCount;
+  }
+  return nextMinTimeCount;
+}
+
+MeasureData_t& CMeasure::getMeasureFromTimeStamp(timeCountType timeCount)
+{
+  MeasureData_t invalidTimCount;
+  invalidTimCount.value = 0;
+  invalidTimCount.timeCount = MAX_TIMECOUNT_VALUE;
+  size_t numData = cybio_min(m_TotalMeasNbFromStart, MAX_MEASUREMENT_DATA_SIZE);
+  for (int i = 0; i < numData; i++)
+  {
+    if (m_tCurValTable[i].timeCount == timeCount)
+      return m_tCurValTable[i];
+  }
+  return invalidTimCount;
+}
+
+//===========================================================================
 // Get / Set for attributes
 //===========================================================================
 int CMeasure::GetId()

@@ -2080,12 +2080,72 @@ bool CBiotop::checkMeasureEvents()
   return (resu);
 }
 
-void CBiotop::saveAllMeasuresInFile(string fileNameWithPath)
+void CBiotop::saveAllMeasuresInDataFile(string fileNameWithPath)
 {
   for (size_t i = 0; i<m_tMeasures.size(); i++)
   {
     m_tMeasures[i]->saveInFile(fileNameWithPath);
   }
+}
+
+timeCountType CBiotop::getNextSmallestTimeCountInAllMeasures(timeCountType previousSmallestTimeCount)
+{
+  if (m_tMeasures.size() == 0)
+    return MAX_TIMECOUNT_VALUE;
+
+  timeCountType curentMinCount = m_tMeasures[0]->getNextSmallestTimeCount(previousSmallestTimeCount);
+  timeCountType nextMinCount;
+  for (size_t i = 1; i < m_tMeasures.size(); i++)
+  {
+    nextMinCount = m_tMeasures[i]->getNextSmallestTimeCount(previousSmallestTimeCount);
+    curentMinCount = cybio_min(nextMinCount, curentMinCount);
+  }
+  // Check if end of measure is reached
+  if (curentMinCount == previousSmallestTimeCount)
+    curentMinCount = MAX_TIMECOUNT_VALUE;
+
+  return curentMinCount;
+}
+
+
+void CBiotop::saveAllMeasuresInCsvFile(string fileNameWithPath)
+{
+  // First line
+  string savedMeasureString = "Time";
+  for (size_t i = 0; i < m_tMeasures.size(); i++)
+  {
+    savedMeasureString += "," + m_tMeasures[i]->GetLabel();
+  }
+  savedMeasureString += "\n";
+
+  // Loop on data
+  size_t maxIterations = m_tMeasures.size() * MAX_MEASUREMENT_DATA_SIZE;
+  size_t numberIterations = 0;
+  timeCountType currentTimeCount = getNextSmallestTimeCountInAllMeasures(0);
+  while ((currentTimeCount != MAX_TIMECOUNT_VALUE) && (numberIterations < maxIterations))
+  {
+    savedMeasureString += FormatString("%u", currentTimeCount);
+    for (size_t i = 0; i < m_tMeasures.size(); i++)
+    {
+      MeasureData_t& curentData = m_tMeasures[i]->getMeasureFromTimeStamp(currentTimeCount);
+      if (curentData.timeCount != MAX_TIMECOUNT_VALUE)
+      {
+        savedMeasureString += "," + FormatString("%f", curentData.value);
+      }
+      else
+      {
+        savedMeasureString += ",";
+      }
+    }
+    currentTimeCount = getNextSmallestTimeCountInAllMeasures(currentTimeCount);
+    savedMeasureString += "\n";
+    numberIterations++;
+  }
+
+  ofstream f1;
+  f1.open(fileNameWithPath.c_str(), std::ofstream::out | std::ofstream::app);
+  f1.write(savedMeasureString.c_str(), savedMeasureString.length());
+  f1.close();
 }
 
 bool CBiotop::addGeoMapSpeciePopulation(std::string specieName)
@@ -2126,7 +2186,7 @@ void CBiotop::saveAllRecordsInFiles()
   std::remove(measureFileName.c_str());
   std::remove(geomapFileName.c_str());
 
-  saveAllMeasuresInFile(measureFileName);
+  saveAllMeasuresInCsvFile(measureFileName);
   saveAllGeoMapsInFile(geomapFileName);
 }
 
@@ -2802,10 +2862,6 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   for (i=0; i<NUMBER_ODORS; i++)
     odorLevel[i]=0;
 
-  // Check input coord
-  if (!isCoordValid(coord,1))
-    return false;
-
   Point_t coordWind = coord;
   if (m_WindStrenght>0)
   {
@@ -2816,7 +2872,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   // Find entities
   CBasicEntity* pCurEntity = NULL;
 
-  const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, range);
+  const BiotopFoundIds_t& biotopFoundIds = findEntities(coordWind, range);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)

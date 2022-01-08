@@ -116,7 +116,7 @@ void CMeasureEditorDlg::OnButtonSave()
   {
     fileName = fileDlg.GetPathName();
     if (m_pBiotop!=NULL)
-      m_pBiotop->saveAllMeasuresInFile((char*)fileName.GetBuffer(0));
+      m_pBiotop->saveAllMeasuresInCsvFile((char*)fileName.GetBuffer(0));
   }
 }
 

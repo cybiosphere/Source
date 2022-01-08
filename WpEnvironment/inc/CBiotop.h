@@ -383,12 +383,16 @@ public:
   int       getUnusedMeasureId(int maxMeasureId);
   void      replaceMeasure(int id, CMeasure* pMeasure);
   bool      checkMeasureEvents();
-  void      saveAllMeasuresInFile(string fileNameWithPath);
+  void      saveAllMeasuresInDataFile(string fileNameWithPath);
+  void      saveAllMeasuresInCsvFile(string fileNameWithPath);
   bool      addGeoMapSpeciePopulation(std::string specieName);
   size_t    getNbOfGeoMapSpecie(void);
   CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
   void      saveAllGeoMapsInFile(string fileNameWithPath);
   void      saveAllRecordsInFiles();
+
+  private:
+  timeCountType getNextSmallestTimeCountInAllMeasures(timeCountType previousSmallestTimeCount);
 
 //---------------------------------------------------------------------------
 // Event management
