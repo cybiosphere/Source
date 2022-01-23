@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+ <!-- http://t.co/dKP3o1e -->
+ <meta name="HandheldFriendly" content="True">
+ <meta name="MobileOptimized" content="320">
+
+ <title>Google Graph and CSV</title>
+ <meta name="description" content="test">
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+ <script src="jquery.csv.min.js"></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript"> // load the visualisation API
+  google.load('visualization', '1', { packages: ['corechart', 'controls'] });
+</script>
+
+<script type="text/javascript">
+function drawVisualization() {
+   $.get("http://localhost:8000/Measures.csv", function(csvString) {
+      // transform the CSV string into a 2-dimensional array
+      var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+
+      // this new DataTable object holds all the data
+      var data = new google.visualization.arrayToDataTable(arrayData);
+	  
+	  if (data.getNumberOfColumns() > 1)
+	  {
+	      if (data.getNumberOfColumns() == 2)
+		  {
+	        var cols = {columns:[0,1]};
+		  }
+		  else
+		  {
+	        var cols = {columns:[0,1,2]};
+		  }	
+		  var chart1 = new google.visualization.ChartWrapper({
+			 chartType: 'LineChart',
+			 containerId: 'chart1',
+			 dataTable: data,
+			 view: {columns:[0,1,2]},
+			 options:{
+				width: 1200, height: 200,
+				title: 'Cybiosphere measures',
+				titleTextStyle : {color: 'grey', fontSize: 20},
+				chartArea: {left: 80, top: 50, width: 800},
+			 }
+		  });
+		  chart1.draw();
+	  }
+	  
+	  if (data.getNumberOfColumns() > 3)
+	  {
+	      if (data.getNumberOfColumns() == 4)
+		  {
+	        var cols = {columns:[0,3]};
+		  }
+		  else
+		  {
+	        var cols = {columns:[0,3,4]};
+		  }	
+		  var chart2 = new google.visualization.ChartWrapper({
+			 chartType: 'LineChart',
+			 containerId: 'chart2',
+			 dataTable: data,
+			 view: cols,
+			 options:{
+				width: 1200, height: 200,
+				chartArea: {left: 80, top: 25, width: 800},
+			 }
+		  });
+		  chart2.draw();
+      }
+	  
+	  if (data.getNumberOfColumns() > 5)
+	  {
+	      if (data.getNumberOfColumns() == 6)
+		  {
+	        var cols = {columns:[0,5]};
+		  }
+		  else
+		  {
+	        var cols = {columns:[0,5,6]};
+		  }		  
+		  var chart3 = new google.visualization.ChartWrapper({
+			 chartType: 'LineChart',
+			 containerId: 'chart3',
+			 dataTable: data,
+			 view: cols,
+			 options:{
+				width: 1200, height: 200,
+				chartArea: {left: 80, top: 10, width: 800},
+			 }
+		  });
+		  chart3.draw();
+	  }
+	  
+   });
+}
+google.setOnLoadCallback(drawVisualization)
+</script>
+
+<div id="chart1"></div>
+<div id="chart2"></div>
+<div id="chart3"></div>

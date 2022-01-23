@@ -115,8 +115,11 @@ void CMeasureEditorDlg::OnButtonSave()
   if (nResp == IDOK)
   {
     fileName = fileDlg.GetPathName();
-    if (m_pBiotop!=NULL)
+    if (m_pBiotop != NULL)
+    {
+      std::remove((char*)fileName.GetBuffer(0));
       m_pBiotop->saveAllMeasuresInCsvFile((char*)fileName.GetBuffer(0));
+    }
   }
 }
 

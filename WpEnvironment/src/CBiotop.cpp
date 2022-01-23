@@ -2122,13 +2122,14 @@ void CBiotop::saveAllMeasuresInCsvFile(string fileNameWithPath)
   size_t maxIterations = m_tMeasures.size() * MAX_MEASUREMENT_DATA_SIZE;
   size_t numberIterations = 0;
   timeCountType currentTimeCount = getNextSmallestTimeCountInAllMeasures(0);
+  MeasureData_t invalidMeasure{ 0.0, MAX_TIMECOUNT_VALUE };
   while ((currentTimeCount != MAX_TIMECOUNT_VALUE) && (numberIterations < maxIterations))
   {
     savedMeasureString += FormatString("%u", currentTimeCount);
     for (size_t i = 0; i < m_tMeasures.size(); i++)
     {
-      MeasureData_t& curentData = m_tMeasures[i]->getMeasureFromTimeStamp(currentTimeCount);
-      if (curentData.timeCount != MAX_TIMECOUNT_VALUE)
+      MeasureData_t& curentData = invalidMeasure;
+      if (m_tMeasures[i]->getMeasureFromTimeStamp(currentTimeCount, curentData))
       {
         savedMeasureString += "," + FormatString("%f", curentData.value);
       }

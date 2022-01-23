@@ -304,18 +304,18 @@ timeCountType CMeasure::getNextSmallestTimeCount(timeCountType previousSmallestT
   return nextMinTimeCount;
 }
 
-MeasureData_t& CMeasure::getMeasureFromTimeStamp(timeCountType timeCount)
+bool CMeasure::getMeasureFromTimeStamp(timeCountType timeCount, MeasureData_t& measureData)
 {
-  MeasureData_t invalidTimCount;
-  invalidTimCount.value = 0;
-  invalidTimCount.timeCount = MAX_TIMECOUNT_VALUE;
   size_t numData = cybio_min(m_TotalMeasNbFromStart, MAX_MEASUREMENT_DATA_SIZE);
   for (int i = 0; i < numData; i++)
   {
     if (m_tCurValTable[i].timeCount == timeCount)
-      return m_tCurValTable[i];
+    {
+      measureData = m_tCurValTable[i];
+      return true;
+    }
   }
-  return invalidTimCount;
+  return false;
 }
 
 //===========================================================================

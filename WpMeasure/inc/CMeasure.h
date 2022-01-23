@@ -171,7 +171,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   timeCountType getNextSmallestTimeCount(timeCountType previousSmallestTimeCount);
-  MeasureData_t& getMeasureFromTimeStamp(timeCountType timeCount);
+  bool getMeasureFromTimeStamp(timeCountType timeCount, MeasureData_t& measureData);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
