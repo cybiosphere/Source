@@ -434,7 +434,7 @@ bool CMapConfigView::BuildPurposeMap(int index)
 bool  CMapConfigView::BuildSensorsMap(int index)
 {
   ClearMap();
-  if ((m_pSelectedEntity == NULL) || (m_pSelectedEntity->getBrain() == NULL))
+  if ((m_pSelectedEntity == NULL) || (m_pSelectedEntity->isToBeRemoved()) || (m_pSelectedEntity->getBrain() == NULL))
   {
     return true;
   }

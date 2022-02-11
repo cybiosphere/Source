@@ -314,6 +314,9 @@ public:
   size_t getNbOfSpecieEntities(string& SpecieName);
   double getSpecieBiomass(string& SpecieName);
 
+  feedbackValType forceEntityAction(entityIdType idEntity, choiceIndType myChoice);
+  choiceIndType predictEntityAction(entityIdType idEntity);
+
 //---------------------------------------------------------------------------
 // Entities access
 //---------------------------------------------------------------------------
@@ -332,8 +335,11 @@ public:
   bool isCoordValidAndFree(Point_t coord, size_t layer);
   inline bool isCoordValid(Point_t coord, size_t layer);
 
-  feedbackValType forceEntityAction(entityIdType idEntity,choiceIndType myChoice);
-  choiceIndType predictEntityAction(entityIdType idEntity);
+private:
+  void colorizeSearch(size_t coordX, size_t coordY);
+  void findEntitiesInLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater);
+  void findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater = false);
+  void findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater = false);
 
 //---------------------------------------------------------------------------
 // Time management

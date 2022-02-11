@@ -54,7 +54,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   setBiotopTime(0, 12, 0, 0);
   m_NextHourTimeOffset = 0;
   m_WindDirection = 1;
-  m_WindStrenght  = 1; // 0,1 or 2
+  m_WindStrenght  = 0; // 0,1 or 2
   m_DefaultFilePath = get_working_path();
 
   m_tParam.resize(0);
@@ -756,16 +756,21 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
   return (invalidIndex);
 }
 
+void CBiotop::colorizeSearch(size_t coordX, size_t coordY)
+{
+  if (m_bColorizeSearch)
+  {
+    m_tBioSquare[coordX][coordY].customColor -= 0x00001010; //blue
+  }
+}
+
 CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
 {
   CBasicEntity* pFoundEntity = NULL;
   if ( isCoordValid(searchCoord,layer) )
   {
     pFoundEntity = m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity;
-    if (m_bColorizeSearch)
-    {
-      m_tBioSquare[searchCoord.x][searchCoord.y].customColor -= 0x00001010; //blue
-    }
+    colorizeSearch(searchCoord.x, searchCoord.y);
   }
   return (pFoundEntity);
 }
@@ -775,112 +780,124 @@ CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer)
   return (m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity);
 }
 
+void CBiotop::findEntitiesInLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater)
+{
+  CBasicEntity* pFoundEntity = NULL;
+  BiotopCube_t* pBiotopCube = m_tBioGrid[searchCoord.x][searchCoord.y];
+  for (size_t z = 0; z < m_nbLayer; z++)
+  {
+    pFoundEntity = pBiotopCube->pEntity;
+    if ((pFoundEntity != NULL) && (includeWater || (pFoundEntity->getId() != ENTITY_ID_WATER)))
+    {
+      if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
+        return;
+      foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pFoundEntity;
+      foundIds.tFoundIds[foundIds.nbFoundIds].distance = distanceToSet;
+      foundIds.nbFoundIds++;
+    }
+    pBiotopCube++;
+  }
+  colorizeSearch(searchCoord.x, searchCoord.y);
+}
+
+void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
+{
+  size_t startCoordX = startCoord.x;
+  size_t endCoordX = startCoordX + lenght;
+  if (startCoord.y < m_Dimension.y)
+  {
+    if (startCoordX >= m_Dimension.x)
+    {
+      startCoordX = 0;
+    }
+    if (endCoordX >= m_Dimension.x)
+    {
+      endCoordX = m_Dimension.x;
+    }
+    for (size_t i = startCoordX; i < endCoordX; i++)
+    {
+      findEntitiesInLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
+    }
+  }
+  return;
+}
+
+void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
+{
+  size_t startCoordY = startCoord.y;
+  size_t endCoordY = startCoordY + lenght;
+  if (startCoord.x < m_Dimension.x)
+  {
+    if (startCoordY >= m_Dimension.y)
+    {
+      startCoordY = 0;
+    }
+    if (endCoordY >= m_Dimension.y)
+    {
+      endCoordY = m_Dimension.y;
+    }
+    for (size_t j = startCoordY; j < endCoordY; j++)
+    {
+      findEntitiesInLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);
+    }
+  }
+  return;
+}
+
 const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater)
 {
-  int nbFoundIds = 0;
-  CBasicEntity* pCurEntity = NULL;
   Point_t curCoord;
-  size_t i,j;
-  size_t layer;
+  size_t i;
   int threadNum = omp_get_thread_num();
-  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
+  BiotopFoundIds_t& foundIds = m_BiotopFoundIdsArray[threadNum];
+  foundIds.nbFoundIds = 0;
 
   curCoord.x = bottomLeftCoord.x;
   curCoord.y = bottomLeftCoord.y;
 
   for (i = 0; i < squareSize; i++)
   {
-    for (j = 0; j < squareSize; j++)
-    {
-      for (layer = 0; layer < m_nbLayer; layer++)
-      {
-        pCurEntity = findEntity(curCoord, layer);
-        if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = i + j;
-          nbFoundIds++;
-        }
-      }
-      curCoord.y++;
-    }
-    curCoord.y = bottomLeftCoord.y;
+    findEntitiesInColumn(foundIds, i, curCoord, squareSize, includeWater);
     curCoord.x++;
   }
 
-  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
   return (m_BiotopFoundIdsArray[threadNum]);
 }
-
 
 const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distance, bool includeWater)
 {
-  int nbFoundIds = 0;
-  CBasicEntity*  pCurEntity = NULL;
   Point_t curCoord;
-  int k, i, segment;
-  size_t layer;
   int threadNum = omp_get_thread_num();
-  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
+  BiotopFoundIds_t& foundIds = m_BiotopFoundIdsArray[threadNum];
+  foundIds.nbFoundIds = 0;
 
-  // Entities in center pos
-  for (layer = 0; layer < m_nbLayer; layer++)
-  {
-    pCurEntity = findEntity(startCoord,layer);
-    if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-    {
-      tFoundIds[nbFoundIds].pEntity = pCurEntity;
-      tFoundIds[nbFoundIds].distance = 0;
-      nbFoundIds++;
-    }
-  }
+  findEntitiesInColumn(foundIds, 0, startCoord, 1, includeWater);
 
   // Do circles around center
-  for (k=1; k<distance; k++)
+  for (size_t k = 1; k < distance; k++)
   {
-    for (i=-k; i<k; i++)
-    {
-      for (segment=0;segment<4;segment++)
-      {
-        switch(segment)
-        {
-        case 0:
-          curCoord.x = startCoord.x+i;
-          curCoord.y = startCoord.y-k;
-          break;
-        case 1:
-          curCoord.x = startCoord.x+i+1;
-          curCoord.y = startCoord.y+k;
-          break;
-        case 2:
-          curCoord.x = startCoord.x-k;
-          curCoord.y = startCoord.y+i+1;
-          break;
-        case 3:
-          curCoord.x = startCoord.x+k;
-          curCoord.y = startCoord.y+i;
-          break;
-        }
+    curCoord.x = startCoord.x - k;
+    curCoord.y = startCoord.y - k;
+    findEntitiesInColumn(foundIds, k, curCoord, 2 * k + 1, includeWater);
 
-        for (layer = 0; layer < m_nbLayer; layer++)
-        {
-          if (nbFoundIds >= MAX_FOUND_ENTITIES)
-            break;
-          pCurEntity = findEntity(curCoord,layer);
-          if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-          {
-            tFoundIds[nbFoundIds].pEntity = pCurEntity;
-            tFoundIds[nbFoundIds].distance = k;
-            nbFoundIds++;
-          }
-        }
-      }
-    }
+    curCoord.x = startCoord.x - k + 1;
+    curCoord.y = startCoord.y - k;
+    findEntitiesInRow(foundIds, k, curCoord, 2 * k - 1, includeWater);
+
+    curCoord.x = startCoord.x + k;
+    curCoord.y = startCoord.y - k;
+    findEntitiesInColumn(foundIds, k, curCoord, 2 * k + 1, includeWater);
+
+    curCoord.x = startCoord.x - k + 1;
+    curCoord.y = startCoord.y + k;
+    findEntitiesInRow(foundIds, k, curCoord, 2 * k - 1, includeWater);
+
+    if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
+      break;
   }
-  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
+
   return (m_BiotopFoundIdsArray[threadNum]);
 }
-
 
 //  startCoord entity not include
 const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
