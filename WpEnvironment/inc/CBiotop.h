@@ -330,14 +330,15 @@ public:
   const BiotopFoundIds_t& findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater = false);
   const BiotopFoundIds_t& findEntities(Point_t startCoord, size_t distance, bool includeWater = false);
   const BiotopFoundIds_t& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
-  const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax);
+  const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, size_t layer);
   inline bool isCoordValid(Point_t coord, size_t layer);
 
 private:
   void colorizeSearch(size_t coordX, size_t coordY);
-  void findEntitiesInLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater);
+  void putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater);
+  void putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater);
   void findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater = false);
   void findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater = false);
 

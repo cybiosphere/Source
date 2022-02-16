@@ -260,7 +260,7 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
   double viewChance;
 
   // Find entities according to angle, distance and layer:
-  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax);
+  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)

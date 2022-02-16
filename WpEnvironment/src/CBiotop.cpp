@@ -780,11 +780,25 @@ CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer)
   return (m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity);
 }
 
-void CBiotop::findEntitiesInLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater)
+void CBiotop::putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater)
 {
+  CBasicEntity* pCurEntity = findEntity(searchCoord, layer);
+  if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
+  {
+    if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
+      return;
+    foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pCurEntity;
+    foundIds.tFoundIds[foundIds.nbFoundIds].distance = distanceToSet;
+    foundIds.nbFoundIds++;
+  }
+}
+
+void CBiotop::putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater)
+{
+  constexpr size_t startlayer{ 1 }; // CPU optim: start at layer 1 (layer 0 is underground not detected by default)
   CBasicEntity* pFoundEntity = NULL;
-  BiotopCube_t* pBiotopCube = m_tBioGrid[searchCoord.x][searchCoord.y];
-  for (size_t z = 0; z < m_nbLayer; z++)
+  BiotopCube_t* pBiotopCube = &m_tBioGrid[searchCoord.x][searchCoord.y][startlayer];
+  for (size_t z = startlayer; z < m_nbLayer; z++)
   {
     pFoundEntity = pBiotopCube->pEntity;
     if ((pFoundEntity != NULL) && (includeWater || (pFoundEntity->getId() != ENTITY_ID_WATER)))
@@ -816,7 +830,7 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
     }
     for (size_t i = startCoordX; i < endCoordX; i++)
     {
-      findEntitiesInLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
+      putEntitiesInListAllLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
     }
   }
   return;
@@ -838,7 +852,7 @@ void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceTo
     }
     for (size_t j = startCoordY; j < endCoordY; j++)
     {
-      findEntitiesInLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);
+      putEntitiesInListAllLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);
     }
   }
   return;
@@ -861,7 +875,7 @@ const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, s
     curCoord.x++;
   }
 
-  return (m_BiotopFoundIdsArray[threadNum]);
+  return (foundIds);
 }
 
 const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distance, bool includeWater)
@@ -896,20 +910,19 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
       break;
   }
 
-  return (m_BiotopFoundIdsArray[threadNum]);
+  return (foundIds);
 }
 
 //  startCoord entity not include
 const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
 {
-  int nbFoundIds = 0;
-  CBasicEntity*  pCurEntity = NULL;
   Point_t curCoord;
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
   int threadNum = omp_get_thread_num();
-  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
+  BiotopFoundIds_t& foundIds = m_BiotopFoundIdsArray[threadNum];
+  foundIds.nbFoundIds = 0;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -920,17 +933,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j <= endy; j++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = i - startCoordx;
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, i - startCoordx, curCoord, layer, includeWater);
       }
       // Enlarge y range 1 time over 2
       offset = (offset+1)%2;
@@ -947,17 +952,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j <= endy; j++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, j - startCoordy);
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, cybio_max(i - startCoordx, j - startCoordy), curCoord, layer, includeWater);
       }
       // Enlarge y range
       offset = (offset+1)%2;
@@ -976,17 +973,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (i = startx; i <= endx; i++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = j - startCoordy;
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, j - startCoordy, curCoord, layer, includeWater);
       }
       // Enlarge y range 1 time over 2
       offset = (offset+1)%2;
@@ -1003,17 +992,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j <= endy; j++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, j - startCoordy);
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, cybio_max(startCoordx - i, j - startCoordy), curCoord, layer, includeWater);
       }
       // Enlarge y range
       offset = (offset+1)%2;
@@ -1032,17 +1013,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j <= endy; j++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = startCoordx - i;
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, startCoordx - i, curCoord, layer, includeWater);
       }
       // Enlarge y range 1 time over 2
       offset = (offset+1)%2;
@@ -1059,17 +1032,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j >= endy; j--)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = cybio_max(startCoordx - i, startCoordy - j);
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, cybio_max(startCoordx - i, startCoordy - j), curCoord, layer, includeWater);
       }
       // Enlarge y range
       offset = (offset+1)%2;
@@ -1088,17 +1053,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (i = startx; i <= endx; i++)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = startCoordy - j;
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, startCoordy - j, curCoord, layer, includeWater);
       }
       // Enlarge y range 1 time over 2
       offset = (offset+1)%2;
@@ -1115,17 +1072,9 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
     {
       for (j = starty; j >= endy; j--)
       {
-        if (nbFoundIds>=MAX_FOUND_ENTITIES)
-          break;
         curCoord.x = i;
         curCoord.y = j;
-        pCurEntity = findEntity(curCoord,layer);
-        if ( (pCurEntity!=NULL) && (includeWater||(pCurEntity->getId() != ENTITY_ID_WATER)) )
-        {
-          tFoundIds[nbFoundIds].pEntity = pCurEntity;
-          tFoundIds[nbFoundIds].distance = cybio_max(i - startCoordx, startCoordy - j);
-          nbFoundIds++;
-        }
+        putEntityInList(foundIds, cybio_max(i - startCoordx, startCoordy - j), curCoord, layer, includeWater);
       }
       // Enlarge y range
       offset = (offset+1)%2;
@@ -1135,22 +1084,20 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
         endy = startCoordy - distance;
     }
   }
-  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIdsArray[threadNum]);
+  return (foundIds);
 }
 
 //  find all entities betwen 2 range, on any layer except layer0 (under ground)
-const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax)
+const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater)
 {
-  int nbFoundIds = 0;
-  CBasicEntity*  pCurEntity = NULL;
   Point_t curCoord;
   int entityDist;
   int i, j;
   int startCoordx = (int)centerCoord.x;
   int startCoordy = (int)centerCoord.y;
   int threadNum = omp_get_thread_num();
-  BiotopFoundIdsList& tFoundIds = m_BiotopFoundIdsArray[threadNum].tFoundIds;
+  BiotopFoundIds_t& foundIds = m_BiotopFoundIdsArray[threadNum];
+  foundIds.nbFoundIds = 0;
 
   if ( (sectorBmp & SECTOR_EE_BIT_MASK) !=0 )
   {
@@ -1166,19 +1113,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            {
-              if ( pCurEntity!=NULL )
-              {
-                tFoundIds[nbFoundIds].pEntity = pCurEntity;
-                tFoundIds[nbFoundIds].distance = entityDist;
-                nbFoundIds++;
-              }
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1202,17 +1139,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(i - startCoordx, j - startCoordy);
         if (entityDist>=rangeMin)
         {
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1238,17 +1167,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1272,17 +1193,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(startCoordx - i, j - startCoordy);
         if (entityDist>=rangeMin)
         {
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1308,17 +1221,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1342,17 +1247,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(startCoordx - i, startCoordy - j);
         if (entityDist>=rangeMin)
         {
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1378,17 +1275,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1412,17 +1301,9 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(i - startCoordx, startCoordy - j);
         if (entityDist>=rangeMin)
         {
-          for (size_t layer = 1; layer < m_nbLayer; layer++)
+          if (isCoordValid(curCoord, 0))
           {
-            if (nbFoundIds>=MAX_FOUND_ENTITIES)
-              break;
-            pCurEntity = findEntity(curCoord,layer);
-            if ( pCurEntity!=NULL )
-            {
-              tFoundIds[nbFoundIds].pEntity = pCurEntity;
-              tFoundIds[nbFoundIds].distance = entityDist;
-              nbFoundIds++;
-            }
+            putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
         }
       }
@@ -1434,8 +1315,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         endy = startCoordy - rangeMax;
     }
   }
-  m_BiotopFoundIdsArray[threadNum].nbFoundIds = nbFoundIds;
-  return (m_BiotopFoundIdsArray[threadNum]);
+  return (foundIds);
 }
 
 bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
