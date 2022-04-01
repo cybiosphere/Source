@@ -59,7 +59,7 @@ CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosom
   m_IdNumber = mother.m_IdNumber;
 
   // inherite 1 chromosome from mother
-  if (testChance(crossoverRate))
+  if ((mother.m_pMaterChromosome->getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
   {
     string crossedStr;
     m_pMaterChromosome = new CChromosome(m_IdNumber);
@@ -76,7 +76,7 @@ CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosom
   }
 
   // inherite 1 chromosome from father
-  if (testChance(crossoverRate))
+  if ((father.m_pMaterChromosome->getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
   {
     string crossedStr;
     m_pPaterChromosome = new CChromosome(m_IdNumber);

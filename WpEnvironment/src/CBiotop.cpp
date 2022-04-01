@@ -756,11 +756,11 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
   return (invalidIndex);
 }
 
-void CBiotop::colorizeSearch(size_t coordX, size_t coordY)
+void CBiotop::colorizeSearch(Point_t coord)
 {
-  if (m_bColorizeSearch)
+  if (m_bColorizeSearch && isCoordValid(coord, 0))
   {
-    m_tBioSquare[coordX][coordY].customColor -= 0x00001010; //blue
+    m_tBioSquare[coord.x][coord.y].customColor -= 0x00001010; //blue
   }
 }
 
@@ -770,7 +770,7 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
   if ( isCoordValid(searchCoord,layer) )
   {
     pFoundEntity = m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity;
-    colorizeSearch(searchCoord.x, searchCoord.y);
+    colorizeSearch(searchCoord);
   }
   return (pFoundEntity);
 }
@@ -811,7 +811,7 @@ void CBiotop::putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t dist
     }
     pBiotopCube++;
   }
-  colorizeSearch(searchCoord.x, searchCoord.y);
+  colorizeSearch(searchCoord);
 }
 
 void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
@@ -2749,8 +2749,7 @@ CGenericParam* CBiotop::getParameterByName(string& paramName)
 
 double CBiotop::getOdorTrace(Point_t coord, OdorType_e odor)
 {
-  // coord may be used later
-  return ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odor] / MAX_ODOR_TRACE_VAL);
+  return isCoordValid(coord, 0) ? ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odor] / MAX_ODOR_TRACE_VAL) : 0;
 }
 
 bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
@@ -2806,7 +2805,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
 COLORREF CBiotop::getCustomColor(Point_t coord)
 {
   // coord may be used later
-  return (m_tBioSquare[coord.x][coord.y].customColor);
+  return isCoordValid(coord, 0) ? (m_tBioSquare[coord.x][coord.y].customColor) : 0;
 }
 
 BiotopSquare_t** CBiotop::getpBioSquare()

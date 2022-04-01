@@ -336,7 +336,7 @@ public:
   inline bool isCoordValid(Point_t coord, size_t layer);
 
 private:
-  void colorizeSearch(size_t coordX, size_t coordY);
+  void colorizeSearch(Point_t coord);
   void putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater);
   void putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater);
   void findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater = false);
