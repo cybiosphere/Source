@@ -104,7 +104,7 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
   m_id_ResistanceToPoison = invalidIndex;
-
+  m_id_AmphibianAbility = invalidIndex;
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
@@ -161,6 +161,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
   m_id_ResistanceToPoison = invalidIndex;
+  m_id_AmphibianAbility = invalidIndex;
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -218,6 +219,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_id_Fear             = invalidIndex;
   m_id_Vigilance        = invalidIndex;
   m_id_ResistanceToPoison = invalidIndex;
+  m_id_AmphibianAbility = invalidIndex;
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -311,35 +313,35 @@ bool CAnimal::setParamFromGene(CGene* pGen)
   case GENE_PARAM_RESISTANCE_TO_POISON:
     {
       if (m_id_ResistanceToPoison != invalidIndex) delete(getParameter(m_id_ResistanceToPoison)); // delete if already set
-      m_id_ResistanceToPoison = addParameterFromGene(pGen, PARAM_FEELING);
+      m_id_ResistanceToPoison = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_GROWTH_SPEED:
     {
       if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
-      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_FAT_WEIGHT:
     {
       if (m_id_FatWeight != invalidIndex) delete(getParameter(m_id_FatWeight)); // delete if already set
-      m_id_FatWeight = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_FatWeight = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_ATTACK_FACTOR:
     {
       if (m_id_AttackFactor != invalidIndex) delete(getParameter(m_id_AttackFactor)); // delete if already set
-      m_id_AttackFactor = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_AttackFactor = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_SPEED:
     {
       if (m_id_CurrentSpeed != invalidIndex) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
-      m_id_CurrentSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_CurrentSpeed = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
@@ -357,6 +359,13 @@ bool CAnimal::setParamFromGene(CGene* pGen)
       resu = true;
       break;
     }
+  case GENE_PARAM_AMPHIBIAN_ABILITY:
+  {
+    if (m_id_AmphibianAbility != invalidIndex) delete(getParameter(m_id_AmphibianAbility)); // delete if already set
+    m_id_AmphibianAbility = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
+    resu = true;
+    break;
+  }
   default:
     {
       // Unknown
@@ -388,7 +397,7 @@ bool CAnimal::completeParamsWithDefault()
   // CAnimal specific
   if (m_id_Protection == invalidIndex)
   {
-    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_PROTECTION);
+    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_PROTECTION);
   }
 
   // In base class
@@ -413,7 +422,7 @@ bool CAnimal::completeParamsWithDefault()
   }
   if (m_id_GrowthSpeed == invalidIndex)
   {
-    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_GROWTH_SPEED);
+    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_GROWTH_SPEED);
   } 
   if (m_id_Hunger == invalidIndex)
   {
@@ -445,15 +454,15 @@ bool CAnimal::completeParamsWithDefault()
   }
   if (m_id_CurrentSpeed == invalidIndex)
   {
-    m_id_CurrentSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_SPEED);
+    m_id_CurrentSpeed = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_SPEED);
   }
   if (m_id_FatWeight == invalidIndex)
   {
-    m_id_FatWeight = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_FAT_WEIGHT);
+    m_id_FatWeight = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_FAT_WEIGHT);
   } 
   if (m_id_AttackFactor == invalidIndex)
   {
-    m_id_AttackFactor = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_ATTACK_FACTOR);
+    m_id_AttackFactor = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_ATTACK_FACTOR);
   } 
   if (m_id_Curiosity == invalidIndex)
   {
@@ -590,7 +599,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
     return (NULL);
   }
   // We are sure Gene is a sensor
-  bool resu = false;
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
@@ -624,12 +632,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight == (size_t)(scaledVal2 - scaledVal1 + 1))
       {
         pSensor = new CSensorTactile((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -638,12 +640,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight == (size_t)(scaledVal4 * VIEW_SIZE_PER_FOCUS))
       {
         pSensor = new CSensorView((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -652,12 +648,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight == NUMBER_ODORS )
       {
         pSensor = new CSensorSmell((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -666,12 +656,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight == NUMBER_PHEROMONES )
       {
         pSensor = new CSensorPheromone((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -680,12 +664,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight == NUMBER_HORMONES )
       {
         pSensor = new CSensorHormone((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -694,12 +672,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight==8 )
       {
         pSensor = new CSensorEar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -708,12 +680,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorHunger((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -722,12 +688,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorThirst((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -736,12 +696,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorStomachOverload((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }  
@@ -750,12 +704,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorPleasure((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -764,12 +712,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorSuffering((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -778,12 +720,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorTiredness((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     } 
@@ -792,12 +728,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorLibido((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -806,12 +736,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==NUMBER_SPEED_SUB_CAPTORS)
       {
         pSensor = new CSensorSpeed((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -820,12 +744,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorObscurity((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -834,7 +752,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewFar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
-        resu = true;
       }
       break;
     }
@@ -843,12 +760,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight==8 )
       {
         pSensor = new CSensorCompass((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -857,12 +768,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight == NUMBER_TASTES )
       {
         pSensor = new CSensorTaste((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -871,12 +776,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==1)
       {
         pSensor = new CSensorFear((CBrainAnimal*)m_pBrain, tWeight[0]);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -885,12 +784,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==NUMBER_TEMPERATURE_SUB_CAPTORS)
       {
         pSensor = new CSensorTemperature((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -900,12 +793,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       {
         DWORD sensUid = (DWORD)scaledVal1 * 65536 + (DWORD)scaledVal2; //TODO : should use getElementRawValue but need to swap rawData first
         pSensor = new CSensorComposite((CBrainAnimal*)m_pBrain, tWeight, nbWeight, sensUid, scaledVal3);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -914,12 +801,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if (nbWeight==NUMBER_ORIENTATION_SUB_CAPTORS)
       {
         pSensor = new CSensorOrientation((CBrainAnimal*)m_pBrain, tWeight);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -929,12 +810,6 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewIdentify((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
@@ -943,19 +818,12 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
       if ( nbWeight==(cybio_round(scaledVal4)*VIEW_IDENTIFY_SIZE_PER_FOCUS) )
       {
         pSensor = new CSensorViewIdentifyFar((CBrainAnimal*)m_pBrain, tWeight, scaledVal1, scaledVal2, (ViewAngleType_e)scaledVal3, scaledVal4);
-        resu = true;
-      }
-      else
-      {
-        // Format error
-        resu = false;
       }
       break;
     }
   default:
     {
       // Unknown
-      resu = false;
       break;
     }
   }
@@ -2369,9 +2237,10 @@ void CAnimal::nextSecond()
 
     // Compute health according to physical welfare
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
-    if ((healthVar!=0) && (getParameter(m_id_Health)->getVal()>0) && (changeHealthRate(healthVar) == false))
+    if ((healthVar != 0) && isAlive())
     {
-      logDeathCause(getDeathCauseString());
+      if (changeHealthRate(healthVar) == false)
+        logDeathCause(getDeathCauseString());
     }
 
     // Decraese slowly Pleasure, suffer, Tiredness
@@ -2534,9 +2403,9 @@ std::string CAnimal::getDeathCauseString()
 
   if (getFatWeight() < 0.02)
     deathCause += "hunger ";
-
   if (m_pPhysicWelfare->GetInjuryMalus() > 0.01)
     deathCause += "injury ";
+
 
   if (m_pPhysicWelfare->GetDiseaseMalus() > 0.01)
     deathCause += "disease ";
@@ -2849,7 +2718,7 @@ void CAnimal::consumeFatWeight(double weightToRemove)
     return;
   }
   // Change total weight in autorized range
-  double realVariation = changeWeight(-weightToRemove);
+  changeWeight(-weightToRemove);
   if (isAlive() && isToBeRemoved())
   {
     logDeathCause("due to weight under minimum value\n");
@@ -3043,9 +2912,10 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
 
     // Compute health according to physical welfare
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
-    if (changeHealthRate(healthVar) == false)
+    if ((healthVar != 0) && isAlive())
     {
-      logDeathCause(getDeathCauseString());
+      if (changeHealthRate(healthVar) == false)
+        logDeathCause(getDeathCauseString());
     }
 
     // Decraese slowly suffer, center slowly pleasure
@@ -3178,12 +3048,12 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
     {
       pleasureRate = successSatisfactionFactor;
     }
-    else
+    else if (!testChance(getAmphibianAbility()))
     {
       pleasureRate = -failureFrustrationFactor;
       if (changeHealthRate(-2.0, pWater) == false)
       {
-        logDeathCause("due to water\n");
+        logDeathCause("due to water1\n");
       }
     }
   }
@@ -3197,7 +3067,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
       {
         pleasureRate = successSatisfactionFactor;
       }
-      else
+      else if (!testChance(getAmphibianAbility()))
       {
         pleasureRate = -failureFrustrationFactor;
         if (changeHealthRate(-2.0, pWater) == false)
@@ -3967,4 +3837,12 @@ double CAnimal::getResistanceToPoison()
 void CAnimal::consumeEnergy(double unit)
 {
   m_ConsumedEnergy += unit;
+}
+
+double CAnimal::getAmphibianAbility()
+{
+  if (m_id_AmphibianAbility == invalidIndex)
+    return 0;
+  else
+    return (getParameter(m_id_AmphibianAbility)->getVal());
 }

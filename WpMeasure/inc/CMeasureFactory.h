@@ -100,6 +100,8 @@ public:
         pNewMeasure = new CMeasurePopulation(pBiotop, period, id, (MeasurePopulationType_e)subtype, 100, "tobedefined");
       }
       break;
+    default:
+      break;
     }
     return pNewMeasure;
   };

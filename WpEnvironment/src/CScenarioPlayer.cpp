@@ -321,7 +321,6 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
 
 bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
 {
-  entityIdType entityId = ENTITY_ID_INVALID;
   string firstParam = GetParamFromString(commandParam, 0);
 
   if (firstParam.find(".xml",0) < 0)
@@ -339,11 +338,11 @@ bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string command
   if (indexName != std::string::npos)
   {
     size_t sizeName = firstParam.size() - indexName - 1;
-    entityId = pBiotop->createAndAddEntity(firstParam.substr(indexName+1, sizeName), firstParam.substr(0,indexName+1), coord);
+    pBiotop->createAndAddEntity(firstParam.substr(indexName+1, sizeName), firstParam.substr(0,indexName+1), coord);
   }
   else //No path
   {
-    entityId = pBiotop->createAndAddEntity(firstParam, path, coord);
+    pBiotop->createAndAddEntity(firstParam, path, coord);
   }
 
   return (true);

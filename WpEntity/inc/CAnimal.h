@@ -110,6 +110,7 @@ private:
   size_t m_id_Fear;
   size_t m_id_Vigilance;
   size_t m_id_ResistanceToPoison;
+  size_t m_id_AmphibianAbility;
 
 //===========================================================================
 // methods 
@@ -281,6 +282,7 @@ public:
   void setFearRate(double rate);
   void setStomachFillingRate(double rate);
   double getResistanceToPoison();
+  double getAmphibianAbility();
   void consumeEnergy(double unit);
 }; // end ClAnimal
 

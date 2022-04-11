@@ -294,8 +294,8 @@ timeCountType CMeasure::getNextSmallestTimeCount(timeCountType previousSmallestT
 {
   timeCountType nextMinTimeCount = MAX_TIMECOUNT_VALUE;
   timeCountType tempTimeCount = 0;
-  size_t numData = cybio_min(m_TotalMeasNbFromStart, MAX_MEASUREMENT_DATA_SIZE);
-  for (int i = 0; i < numData; i++)
+  size_t numData = cybio_min(m_TotalMeasNbFromStart, (timeCountType)MAX_MEASUREMENT_DATA_SIZE);
+  for (size_t i = 0; i < numData; i++)
   {
     tempTimeCount = m_tCurValTable[i].timeCount;
     if ((tempTimeCount > previousSmallestTimeCount) && (tempTimeCount < nextMinTimeCount))
@@ -306,8 +306,8 @@ timeCountType CMeasure::getNextSmallestTimeCount(timeCountType previousSmallestT
 
 bool CMeasure::getMeasureFromTimeStamp(timeCountType timeCount, MeasureData_t& measureData)
 {
-  size_t numData = cybio_min(m_TotalMeasNbFromStart, MAX_MEASUREMENT_DATA_SIZE);
-  for (int i = 0; i < numData; i++)
+  size_t numData = cybio_min(m_TotalMeasNbFromStart, (timeCountType)MAX_MEASUREMENT_DATA_SIZE);
+  for (size_t i = 0; i < numData; i++)
   {
     if (m_tCurValTable[i].timeCount == timeCount)
     {

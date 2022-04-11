@@ -202,6 +202,11 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_RESISTANCE_TO_CONSUMPTION, "Resistance to consumption", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 60 },
+      { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } },
+
+  { GENE_PARAMETER, GENE_PARAM_AMPHIBIAN_ABILITY, "Ability to swim", GENE_MUTE_INCREMENTAL_2,
+    { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
+      { "Rate", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
       { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, false, 100 } } }
 };
 

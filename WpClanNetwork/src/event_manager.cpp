@@ -214,7 +214,7 @@ namespace clan
     if (e.get_argument_count() < 8)
     {
       log_event(labelEvent, "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
-      return false;
+      return NULL;
     }
     int entityId = e.get_argument(0);
     std::string  entityLabel = e.get_argument(1);

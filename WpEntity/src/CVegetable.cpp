@@ -215,7 +215,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   case GENE_PARAM_GROWTH_SPEED:
     {
       if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
-      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
@@ -229,7 +229,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   case GENE_PARAM_RESISTANCE_TO_CONSUMPTION:
   {
     if (m_id_ResistanceToConsumption != invalidIndex) delete(getParameter(m_id_ResistanceToConsumption)); // delete if already set
-    m_id_ResistanceToConsumption = addParameterFromGene(pGen, PARAM_PHYSIC);
+    m_id_ResistanceToConsumption = addParameterFromGene(pGen, PARAM_PHYSICAL);
     resu = true;
     break;
   }
@@ -283,7 +283,7 @@ bool CVegetable::completeParamsWithDefault()
   }
   if (m_id_GrowthSpeed == invalidIndex)
   {
-    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_GROWTH_SPEED);
+    m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_GROWTH_SPEED);
   }
   if (m_id_ReproductionRange == invalidIndex)
   {
@@ -291,7 +291,7 @@ bool CVegetable::completeParamsWithDefault()
   }
   if (m_id_ResistanceToConsumption == invalidIndex)
   {
-    m_id_ResistanceToConsumption = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
+    m_id_ResistanceToConsumption = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
   }
 
   return (true);

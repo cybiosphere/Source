@@ -612,28 +612,28 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   case GENE_PARAM_WEIGHT:
     {
       if (m_id_Weight != invalidIndex) delete(getParameter(m_id_Weight)); // delete if already set
-      m_id_Weight = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_Weight = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_TOXICITY:
     {
       if (m_id_Toxicity != invalidIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
-      m_id_Toxicity = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_Toxicity = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_PROTECTION:
     {
       if (m_id_Protection != invalidIndex) delete(getParameter(m_id_Protection)); // delete if already set
-      m_id_Protection = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_Protection = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_CAMOUFLAGE:
     {
       if (m_id_Camouflage != invalidIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
-      m_id_Camouflage = addParameterFromGene(pGen, PARAM_PHYSIC);
+      m_id_Camouflage = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
@@ -667,19 +667,19 @@ bool CBasicEntity::completeParamsWithDefault(void)
   // If not, use default value
   if (m_id_Weight == invalidIndex)
   {
-    m_id_Weight = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_WEIGHT);
+    m_id_Weight = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_WEIGHT);
   }
   if (m_id_Toxicity == invalidIndex)
   {
-    m_id_Toxicity = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_TOXICITY);
+    m_id_Toxicity = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_TOXICITY);
   }
   if (m_id_Protection == invalidIndex)
   {
-    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_PROTECTION);
+    m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_PROTECTION);
   }
   if (m_id_Camouflage == invalidIndex)
   {
-    m_id_Camouflage = addParameterFromGeneDefinition(PARAM_PHYSIC, GENE_PARAM_CAMOUFLAGE);
+    m_id_Camouflage = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_CAMOUFLAGE);
   }
   if (m_id_Noise == invalidIndex)
   {
