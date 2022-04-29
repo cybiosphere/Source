@@ -79,7 +79,7 @@ material GIRAFE
 
 			texture_unit
 			{
-				texture GIRATEXT.JPG
+				texture GIRATEXT.jpg
 				filtering point point point
 			}
 		}

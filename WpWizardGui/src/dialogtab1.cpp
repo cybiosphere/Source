@@ -625,7 +625,7 @@ void CDialogTab1::DisplayParamSliders()
     for (i=0;(count<MAX_NUMBER_PARAMETER_DISPLAY)&&(i<pEntity->getNumParameter());i++)
     {
       label = pEntity->getParameter(i)->getLabel().c_str();
-      if ( (pEntity->getParameter(i)->getType() == PARAM_PHYSIC) && (label.Find("eight") == -1) )
+      if ( (pEntity->getParameter(i)->getType() == PARAM_PHYSICAL) && (label.Find("eight") == -1) )
       {
         if (count == MAX_NUMBER_PARAMETER_DISPLAY/3)
         {
@@ -640,7 +640,7 @@ void CDialogTab1::DisplayParamSliders()
         count ++;
       }
       
-      if ( (pEntity->getParameter(i)->getType() == PARAM_PHYSIC) && (label == "Weight") )
+      if ( (pEntity->getParameter(i)->getType() == PARAM_PHYSICAL) && (label == "Weight") )
       {
         m_weightParamId = i;
         m_Weight    = cybio_round(pEntity->getParameter(i)->getMax());

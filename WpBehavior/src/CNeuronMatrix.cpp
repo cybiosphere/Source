@@ -138,7 +138,10 @@ bool CNeuronMatrix::MemorizeExperience (neuroneValType coefFeedback, CMatrix* pM
   {
     for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
     {
-        m_mNeuronTable(i,j) += coefFeedback * expMatrix(i,j); 
+      if (expMatrix(i, j) != 0.0) // CPU optim. expMatrix is often 0
+      {
+        m_mNeuronTable(i, j) += coefFeedback * expMatrix(i, j);
+      }
     }
   }
 

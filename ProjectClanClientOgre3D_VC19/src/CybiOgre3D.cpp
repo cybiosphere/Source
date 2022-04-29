@@ -148,7 +148,16 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
     updateMeshEntityPosition(i, inc);
     if (m_tMesh[i]->pAnimState == NULL)
       continue;
-    m_tMesh[i]->pAnimState->addTime(inc);
+
+    if (m_tMesh[i]->isMoving)
+    {
+      double squareLenAndRot = m_tMesh[i]->translateVect3.squaredLength() + (Real)m_tMesh[i]->curRotation / 10.0;
+      m_tMesh[i]->pAnimState->addTime((cybio_min(squareLenAndRot, 9.0) / 10.0 + 0.1) * inc);
+    }
+    else
+    {
+      m_tMesh[i]->pAnimState->addTime(inc);
+    }
   }
   
   m_secCnt += evt.timeSinceLastFrame * m_pClient->get_biotop_speed();
@@ -271,20 +280,21 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
     int labelIndex = pBasicEntity->getBrain()->GetCurrentReactionIndex();
     string labelAction = pBasicEntity->getBrain()->GetReactionByIndex(labelIndex)->GetLabel();
 
+    if ((labelAction == "Walk") && !(m_tMesh[meshIndex]->isMoving))
+    {
+      labelAction = "Idle";
+    }
+
     if ( (labelAction == "Turn_Right") || (labelAction == "Turn_Left") || (labelAction == "StepBack") )
     {
       labelAction = "Walk";
-    }
-    else if ( (labelAction == "Nothing") || (labelAction == "Idle") || (labelAction == "Stop"))
-    {
-      labelAction = "Idle";
     }
 
     if ( (squareLen>400) && (labelAction != "Attack") )
     {
       labelAction = "Run";
     }
-    else if ( (squareLen>5) && (labelAction != "Attack") )
+    else if ((m_tMesh[meshIndex]->isMoving) && (labelAction != "Attack") )
     {
       labelAction = "Walk";
     }

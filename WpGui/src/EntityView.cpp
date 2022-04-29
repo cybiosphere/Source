@@ -322,6 +322,7 @@ void CEntityView::SelectAndDisplayEntity (CBasicEntity* pEntity)
   }
 
   // Update windows
+  RefreshParameters();
   UpdateData(false);
   RedrawWindow();
 
