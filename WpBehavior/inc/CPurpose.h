@@ -107,6 +107,7 @@ private:
   
   DWORD                 m_UniqueId;            // Global identifier
   int                   m_Priority;            // Used to select active purpose (from 0:low to 5:max)
+  double                m_LevelBonus;          // Bonus on SubCaptor level to select purpose
   bool                  m_bMemorizeSuccess;    // Used to specify that success geographic position can be memorized
 
   size_t m_nbSensorBonus;
@@ -148,6 +149,7 @@ public:
   string GetLabel(void);
   DWORD GetUniqueId();
   int GetPriority();
+  double GetLevelBonus();
   static DWORD ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorIndex);
   bool IsMemorizeSuccess();
 

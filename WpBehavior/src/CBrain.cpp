@@ -200,7 +200,7 @@ void CBrain::NextSecond()
   {
     // Select new purpose according to highest sensor level
     if ( (m_tPurposes[i]->GetPriority() > curPriority) && (m_tPurposes[i]->IsStartThresholdReached()) )
-      curlevel = m_tPurposes[i]->GetSensorLevel() + MAX_SENSOR_VAL * m_tPurposes[i]->GetPriority();
+      curlevel = m_tPurposes[i]->GetSensorLevel() + m_tPurposes[i]->GetLevelBonus() + MAX_SENSOR_VAL * m_tPurposes[i]->GetPriority();
     else 
       curlevel = 0;
 

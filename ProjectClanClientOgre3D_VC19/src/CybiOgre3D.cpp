@@ -89,9 +89,17 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
 
     if (pBasicEntity->getBrain() != NULL)
     {
-      pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
+      if (pBasicEntity->getStatus() == STATUS_DEAD)
+      {
+        pNewMesh->pAnimState = meshEnt->getAnimationState("Dead");
+        pNewMesh->pAnimState->setLoop(false);
+      }
+      else
+      {
+        pNewMesh->pAnimState = meshEnt->getAnimationState("Idle");
+        pNewMesh->pAnimState->setLoop(true);
+      }
       pNewMesh->pAnimState->setEnabled(true);
-      pNewMesh->pAnimState->setLoop(true); 
     }
     else
     {

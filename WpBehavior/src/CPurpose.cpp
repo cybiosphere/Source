@@ -73,7 +73,7 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
   m_TriggerType         = type;
 
   m_bMemorizeSuccess = false;
-
+  m_LevelBonus = 0;
   m_nbSensorBonus = 0;
   for (i=0; i<SENSOR_TABLE_SIZE; i++)
   {
@@ -111,6 +111,7 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
       break;
   case UID_BASE_SENS_HUNGER:
       m_Priority = 3;
+      m_LevelBonus = 2.5;
       m_bMemorizeSuccess = true;
     break;
   case UID_BASE_SENS_LIBIDO:    // For Reproduction
@@ -332,6 +333,11 @@ DWORD CPurpose::ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorInd
 int CPurpose::GetPriority()
 {
   return (m_Priority);
+}
+
+double CPurpose::GetLevelBonus()
+{
+  return (m_LevelBonus);
 }
 
 bool CPurpose::IsMemorizeSuccess()

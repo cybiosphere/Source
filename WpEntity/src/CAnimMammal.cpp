@@ -802,7 +802,7 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
   }
   else
   {
-    if ( (m_pGenome->checkSpecieCompatibility(pPartnerEntity->getGenome()) == true)
+    if ( (m_pGenome->checkSpecieCompatibility(pPartnerEntity->getGenome()) == true) && (getPheromone() == PHEROMONE_SEXUAL_MALE)
       && pPartnerEntity->isAlive() && (pPartnerEntity->getSex() == SEX_FEMALE) && pPartnerEntity->isLocalAutoControlled() )
     {
       if ( ((CAnimMammal*)pPartnerEntity)->reproductWith(this) )
@@ -938,6 +938,7 @@ bool CAnimMammal::deliverAllBabies()
   }
   stopCurrentSpeed();
   forceTirednessRate(80.0);
+  changeHungerRate(-20.0); // Reduce hunger to focus on baby care
   setGestationBabyNumber(0);
   getParameter(m_id_GestationTime)->forceVal(0);
   // Set maternal pheromon reset libido
