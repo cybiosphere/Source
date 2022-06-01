@@ -1979,14 +1979,32 @@ bool CBrain::SetHomePurposePositionInGeoMap()
   if (m_bBabyStayHome==false)
     return false;
 
-  // Delete memory map if exist
-  if (m_pGeoMap == NULL)
+  // Delete memory map if exist and current position is outside
+  Point_t geoMapPos;
+  if ((m_pGeoMap != NULL) && (m_pGeoMap->GridCoordToGeoMapCoord(m_pEntity->getGridCoord(), geoMapPos) == false))
   {
     delete m_pGeoMap;
     m_pGeoMap = NULL;
   }
-  // Create new geo map centered on baby
-  CreateGeoMapArroudCurrentPosition();
+
+  if (m_pGeoMap == NULL)
+  {
+    CreateGeoMapArroudCurrentPosition();
+  }
+  else
+  {
+    // Clear previous home positions
+    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_BABY - PHEROMONE_FIRST_TYPE);
+    if (pPurpose != NULL)
+    {
+      m_pGeoMap->ClearPurposeSuccessOnFullMap(pPurpose->GetUniqueId());
+    }
+    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_MATERNAL - PHEROMONE_FIRST_TYPE);
+    if (pPurpose != NULL)
+    {
+      m_pGeoMap->ClearPurposeSuccessOnFullMap(pPurpose->GetUniqueId());
+    }
+  }
 
   // Memorize home position
   if (m_pGeoMap!=NULL)
