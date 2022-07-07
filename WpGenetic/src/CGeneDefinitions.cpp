@@ -112,7 +112,7 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_WEIGHT, "Weight", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 1 },
       { "Init", 2, 2, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 2 },
-      { "Max", 2, 4, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 10 } } },
+      { "Max", 2, 4, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, MAX_VAL_WEIGHT } } },
 
   { GENE_PARAMETER, GENE_PARAM_TOXICITY, "Toxicity", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -137,7 +137,7 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_DECOMPOSITION, "Decomposition", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Start", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Max", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 10000 } } },
+      { "Max", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 1000 } } },
 
   { GENE_PARAMETER, GENE_PARAM_REPRO_RATE, "Reproduction rate", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -162,7 +162,7 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_FAT_WEIGHT, "Fat weight", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Init", 2, 2, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 0 },
-      { "Max", 2, 4, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, 1 } } },
+      { "Max", 2, 4, 0.1, MAX_VAL_WEIGHT, GENE_DOMINANCE_HIGHEST, true, MAX_VAL_WEIGHT } } },
 
   { GENE_PARAMETER, GENE_PARAM_ATTACK_FACTOR, "Attack", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -172,7 +172,7 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_SPEED, "Speed", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 200, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Speed", 2, 2, 0, 200, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Steps sec", 2, 4, 0, 200, GENE_DOMINANCE_HIGHEST, true, 10 } } },
+      { "Steps sec", 2, 4, 0, 200, GENE_DOMINANCE_HIGHEST, true, 200 } } },
 
   { GENE_PARAMETER, GENE_PARAM_CURIOSITY, "Curiosity rate", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },
@@ -192,12 +192,12 @@ vector<CGeneDefinitions> CGeneList::geneListParameter =
   { GENE_PARAMETER, GENE_PARAM_GESTA_TIME, "Gestation time", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
       { "Start", 2, 2, 0, 1000, GENE_DOMINANCE_HIGHEST, false, 0 },
-      { "Duration", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 2 } } },
+      { "Duration", 2, 4, 0, 1000, GENE_DOMINANCE_HIGHEST, true, 1000 } } },
 
   { GENE_PARAMETER, GENE_PARAM_GESTA_NB, "Gestation size", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 },
       { "Usual", 2, 2, 0, 100, GENE_DOMINANCE_HIGHEST, true, 1 },
-      { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true, 2 } } },
+      { "Max", 2, 4, 0, 100, GENE_DOMINANCE_HIGHEST, true, 100 } } },
 
   { GENE_PARAMETER, GENE_PARAM_RESISTANCE_TO_CONSUMPTION, "Resistance to consumption", GENE_MUTE_INCREMENTAL_2,
     { { "Min", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, false, 0 },

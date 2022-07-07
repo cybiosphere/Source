@@ -3207,7 +3207,7 @@ bool CBasicEntity::isComestible()
   bool resu;
   // Entity with protection < 10 % can be eaten anyway, even if still alive
   // Otherwise, entity must be killed before with attack action
-  if (getProtection()<10)
+  if (getProtection()<9.9)
   {
     resu = true;
   }
@@ -3696,11 +3696,20 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
   int relativeSpeed = 0;
   if (m_pBiotop != NULL)
   {
-    int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
-    RelativePos_t relPos{ (int)getGridPosFromStepPos(getCurrentSpeed()), 0 };
-    RelativePos_t relPosRef{ (int)getGridPosFromStepPos(pReference->getCurrentSpeed()), 0 };
-    int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
-    relativeSpeed = distInitial - distFuture;
+    if (m_pBiotop->isCoordValid(pReference->getGridCoord(), pReference->getLayer()))
+    {
+      int distInitial = m_pBiotop->getGridDistance(this->getGridCoord(), pReference->getGridCoord());
+      RelativePos_t relPos{ (int)getGridPosFromStepPos(getCurrentSpeed()), 0 };
+      RelativePos_t relPosRef{ (int)getGridPosFromStepPos(pReference->getCurrentSpeed()), 0 };
+      int distFuture = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), pReference->getGridCoordRelative(relPosRef));
+      relativeSpeed = distInitial - distFuture;
+    }
+    else
+    {
+      // In case of global entity or bad reference, just return own speed
+      RelativePos_t relPos{ (int)getGridPosFromStepPos(getCurrentSpeed()), 0 };
+      relativeSpeed = m_pBiotop->getGridDistance(getGridCoordRelative(relPos), getGridCoord());
+    }
   }
   return relativeSpeed;
 }

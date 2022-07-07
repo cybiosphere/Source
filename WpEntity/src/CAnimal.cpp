@@ -3255,9 +3255,10 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
     {
       eatenClass = pEatenEntity->getClass();
       // If pEatenEntity was still alive, it will not survive...
-      if (pEatenEntity->isAnimal())
+      if (pEatenEntity->isAnimal() && pEatenEntity->isAlive())
       {
         pEatenEntity->autoKill();
+        ((CAnimal*)pEatenEntity)->logDeathCause(FormatString("eaten by animal %s\n", getLabel().c_str()));
       }
 
       // Taste

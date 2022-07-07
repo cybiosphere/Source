@@ -333,7 +333,7 @@ public:
   const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, size_t layer);
-  inline bool isCoordValid(Point_t coord, size_t layer);
+  bool isCoordValid(Point_t coord, size_t layer);
 
 private:
   void colorizeSearch(Point_t coord);
