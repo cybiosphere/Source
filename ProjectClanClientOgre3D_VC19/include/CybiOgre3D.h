@@ -87,6 +87,7 @@ private:
   bool          m_bPlayerActionTurnLeftOnGoing;
   bool          m_bPlayerActionTurnRightOnGoing;
   bool          m_bPlayerActionAttacktOnGoing;
+  std::vector<CBasicEntity*> m_tNewEntitiesList;
 
   /*
   CEGUI::OgreCEGUIRenderer*    mGUIRenderer;

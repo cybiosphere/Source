@@ -640,6 +640,9 @@ void CBiotopView::OnAppAddGroup()
   long nResp = fileDlg.DoModal(); 
   if (nResp == IDOK)
   {
+    bool initialMode = theApp.IsModeManual();
+    int numberEntities = 0;
+    theApp.SetModeManual(true); 
     POSITION pos = fileDlg.GetStartPosition();
     while (pos!=NULL)
     {
@@ -657,9 +660,10 @@ void CBiotopView::OnAppAddGroup()
       }
 
       theApp.addEntityFromFileInBiotop(fileName.GetBuffer(0), pathName.GetBuffer(0), m_MenuSelCoord);
+      numberEntities++;
       ForceRefreshDisplay();
       theApp.NextSecondRefreshAllViews();
-
+      
       for (int i = 2; i < 7; i++)
       {
         randoffsetx = getRandInt(i) - i / 2;
@@ -670,6 +674,11 @@ void CBiotopView::OnAppAddGroup()
           break;
       }
     }
+    if (numberEntities > 1)
+    {
+      Sleep(1000); // allow Gui refresh
+    }
+    theApp.SetModeManual(initialMode);
   }
 	m_MenuSelCoord.x = 1;
 	m_MenuSelCoord.y = 1;

@@ -251,7 +251,7 @@ namespace clan
         return pEntity;
       }
       pEntity->setStatus((StatusType_e)status);
-      pEntity->jumpToStepCoord(position, true, layer);
+      pEntity->jumpToStepCoord(position, true, layer, true);
       pEntity->setStepDirection(direction, true);
       pEntity->setImmortal(isImmortal);
       pEntity->setColor((COLORREF)color);

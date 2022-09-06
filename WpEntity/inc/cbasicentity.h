@@ -344,7 +344,7 @@ public:
   virtual void doNothing();
 
   bool jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
-  bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
   bool moveToGridEdgePos();
   bool moveToGridCenterPos();
   bool turnToCenterDir();

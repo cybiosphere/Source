@@ -171,11 +171,11 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
   m_secCnt += evt.timeSinceLastFrame * m_pClient->get_biotop_speed();
   m_pClient->process_new_events();
 
-  if ((m_secCnt >= 1) /*&& (m_pClient->check_if_event_next_second_end_and_clean())*/)
+  if (m_secCnt >= 1.0)
   {
     proceedBiotopEvents();
     forcePlayerAction();
-    m_secCnt = 0;
+    m_secCnt -= 1.0;
     updateInfoParamTime();
     updateInfoPopulation();
     // reset player to idle
@@ -188,7 +188,7 @@ bool CybiOgre3DFrameListener::frameStarted(const FrameEvent& evt)
 void CybiOgre3DFrameListener::proceedBiotopEvents()
 {
   BiotopEvent_t bioEvent;
-  CBasicEntity* pEntity;
+  CBasicEntity* pNewEntity;
   BiotopEventPair eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   while (eventPair.first != ENTITY_ID_INVALID)
   {
@@ -208,8 +208,8 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
     }
     else if (bioEvent.eventList.test(BIOTOP_EVENT_ENTITY_ADDED))
     {
-      pEntity = m_pBiotop->getEntityById(entityId);
-      createMeshEntity(mSceneMgr, pEntity);
+      pNewEntity = m_pBiotop->getEntityById(entityId);
+      m_tNewEntitiesList.push_back(pNewEntity);
     }
     else
     {
@@ -221,6 +221,17 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
       }
     }
     eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
+  }
+
+  size_t loopSize = cybio_min(m_tNewEntitiesList.size(), 5);
+  for (int i = 0; i < loopSize; i++)
+  {
+    pNewEntity = m_tNewEntitiesList.back();
+    if (pNewEntity != NULL && !pNewEntity->isToBeRemoved())
+    {
+      createMeshEntity(mSceneMgr, pNewEntity);
+    }
+    m_tNewEntitiesList.pop_back();
   }
 }
 

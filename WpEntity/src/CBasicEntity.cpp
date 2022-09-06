@@ -2151,15 +2151,14 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
 //  
 // REMARKS:      coord -1,-1 can be used to move entity out of the game
 //---------------------------------------------------------------------------
-bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer)
+bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
 {
-  // Update prev step coord
-  m_PrevStepCoord = m_StepCoord;
-  if ((m_PrevStepCoord.x != m_StepCoord.x) || (m_PrevStepCoord.y != m_StepCoord.y))
+  if (addMoveEvent && ((m_PrevStepCoord.x != m_StepCoord.x) || (m_PrevStepCoord.y != m_StepCoord.y)))
   {
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
   }
 
+  m_PrevStepCoord = m_StepCoord;
   // Update grid coord if needed
   Point_t newGridCoord;
   newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
