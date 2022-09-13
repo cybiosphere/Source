@@ -53,6 +53,19 @@ void removeMeshEntity(SceneManager* pSceneMgr, CBasicEntity* pEntity )
   return;
 }
 
+double getYOffsetForWater(CBasicEntity* pBasicEntity)
+{
+  if ((pBasicEntity != NULL) && (pBasicEntity->getBiotop() != NULL))
+  {
+    LayerType_e curLayer = pBasicEntity->getBiotop()->getLayerType(pBasicEntity->getGridCoord(), 1);
+    if (curLayer == LAYER_OVER_WATER)
+    {
+      return -2.0;
+    }
+  }
+  return 0;
+}
+
 bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
 {
   if ((pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()))
@@ -82,7 +95,7 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
     pNewMesh->yPos = scale-1.0;
     pNewMesh->pMeshNode = pSceneMgr->getRootSceneNode()->createChildSceneNode();
     pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, pNewMesh->yPos, (int)coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, pNewMesh->yPos + getYOffsetForWater(pBasicEntity), (int)coord.x-OFFSET_COORD_X) );
     pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
     pNewMesh->pMeshNode->setScale(scale,scale,scale);
     pNewMesh->strCurACtion = "";
@@ -211,7 +224,7 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
       pNewEntity = m_pBiotop->getEntityById(entityId);
       m_tNewEntitiesList.push_back(pNewEntity);
     }
-    else
+    /*else
     {
       int meshIndex = getMeshEntityIndex(entityId);
       if (meshIndex >= 0)
@@ -219,7 +232,7 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
         setMeshEntityPreviousPosition(meshIndex);
         updateMeshEntityNewSecond(meshIndex);
       }
-    }
+    }*/
     eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
 
@@ -233,6 +246,8 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
     }
     m_tNewEntitiesList.pop_back();
   }
+
+  updateAllMeshEntityNewSecond();
 }
 
 
@@ -240,6 +255,7 @@ void CybiOgre3DFrameListener::updateAllMeshEntityNewSecond()
 {
   for (int i = 0; i < m_tMesh.size(); i++)
   {
+    setMeshEntityPreviousPosition(i);
     updateMeshEntityNewSecond(i);
   }
 }
@@ -255,7 +271,7 @@ void CybiOgre3DFrameListener::updateMeshEntityNewSecond(int meshIndex)
       Point_t coord = pBasicEntity->getStepCoord();
       m_tMesh[meshIndex]->pAnimState->setEnabled(false);
       m_tMesh[meshIndex]->pAnimState = m_tMesh[meshIndex]->pMeshEnt->getAnimationState("Dead");
-      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, (int)coord.x-OFFSET_COORD_X) );
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos + getYOffsetForWater(pBasicEntity), (int)coord.x-OFFSET_COORD_X) );
       m_tMesh[meshIndex]->pAnimState->setLoop(false);
       m_tMesh[meshIndex]->strCurACtion = "Dead";
       m_tMesh[meshIndex]->pAnimState->setEnabled(true);
@@ -351,7 +367,7 @@ void CybiOgre3DFrameListener::setMeshEntityPreviousPosition(int meshIndex)
   {  
     Point_t coord = pBasicEntity->getAndUpdateGuiStepCoord();
     if (coord.x != -1)
-      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos, (int)coord.x-OFFSET_COORD_X) );
+      m_tMesh[meshIndex]->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, m_tMesh[meshIndex]->yPos + getYOffsetForWater(pBasicEntity), (int)coord.x-OFFSET_COORD_X) );
     Quaternion q;
     q.FromAngleAxis(Degree(pBasicEntity->getPrevStepDirection()), Vector3::UNIT_Y);
     m_tMesh[meshIndex]->pMeshNode->setOrientation(q); 
@@ -569,8 +585,8 @@ bool CybiOgre3DApp::configure(void)
 void CybiOgre3DApp::createScene(void)
 {
   mSceneMgr->setShadowTechnique(SHADOWTYPE_TEXTURE_MODULATIVE);
-  mSceneMgr->setShadowTextureSize(512);
-  mSceneMgr->setShadowColour(ColourValue(0.4, 0.4, 0.4));
+  mSceneMgr->setShadowTextureSize(1024);
+  mSceneMgr->setShadowColour(ColourValue(0.75, 0.75, 0.75));
 
   // Setup animation default
   Animation::setDefaultInterpolationMode(Animation::IM_LINEAR);

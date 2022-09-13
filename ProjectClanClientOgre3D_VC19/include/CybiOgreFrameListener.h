@@ -322,6 +322,13 @@ public:
 		mCamera->yaw(mRotX);
 		mCamera->pitch(mRotY);
 		mCamera->moveRelative(mTranslateVector);
+
+		Vector3 camPos = mCamera->getPosition();
+		if (camPos.y < 5)
+		{
+			camPos.y = 5;
+			mCamera->setPosition(camPos);
+		}
 	}
 
 	virtual void showDebugOverlay(bool show)
