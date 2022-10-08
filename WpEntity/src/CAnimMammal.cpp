@@ -261,7 +261,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   int duration;
   double lifeDuration = getLifeExpectation();
   double deathDuration = getRotenTimeExpectation();
-  double scaledRate = pGen->getElementValue(0);
+  double scaledRate = pGen->getElementValue(0) / 100.0;
 
   switch(pGen->getGeneSubType())
   {
@@ -426,67 +426,6 @@ bool CAnimMammal::completeLifeStagesWithDefault(void)
   }
   
   return (true);
-}
-
-
-//===========================================================================
-// Genetic description
-//===========================================================================
-
-//---------------------------------------------------------------------------
-// METHOD:       CAnimMammal::buildLifeStageString 
-//  
-// DESCRIPTION:  Give info string on Life Stage interpretation.
-// 
-// ARGUMENTS:    CGene* pGen: gene reference
-//   
-// RETURN VALUE: string : description string.
-//  
-// REMARKS:      Should be called by all derived method but not elsewhere 
-//---------------------------------------------------------------------------
-string CAnimMammal::buildLifeStageString(CGene* pGen)
-{
-  string paramStr = STRING_GENE_UNUSED;
-  string tempStr;
-  
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_LIFESTAGE))
-  {
-    return (paramStr);
-  }
-  // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
-  size_t len = rawData.size();
-  if (len<sizeof(WORD))
-  {
-    // not enought data to config param
-    return (paramStr);
-  }
- 
-  double scaledVal1 = pGen->getElementValue(0);
-  
-  switch(pGen->getGeneSubType())
-  {
-  case GENE_STAGE_0:
-  case GENE_STAGE_1:
-  case GENE_STAGE_2:
-  case GENE_STAGE_3:
-  case GENE_STAGE_4:
-  case GENE_STAGE_5:
-  case GENE_STAGE_6:
-    {
-      paramStr = pGen->getLabel() + " : ";
-      tempStr = FormatString("=%6.2f%%", scaledVal1);
-      paramStr += pGen->getElementStrName(0) + tempStr;
-      break;
-    }
-  default:
-    {
-      // keep STRING_GENE_UNUSED
-      break;
-    }
-  }
-  
-  return (paramStr);
 }
 
 

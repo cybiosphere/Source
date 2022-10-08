@@ -358,7 +358,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
   // Freeze biotop time during new player configuration
   double biotopSpeed = m_biotopSpeed;
   m_biotopSpeed = 0;
-  int i;
+  size_t i;
 
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsCreateBiotop(m_pBiotop, eventVector))
@@ -409,7 +409,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
 
     for (i = 0; i < m_pBiotop->getNumberOfRandomEntitiyGeneration(); i++)
     {
-      send_event_add_entity_spawner(i, m_pBiotop->getRandomEntitiyGeneration(i), user);
+      send_event_add_entity_spawner((int)i, m_pBiotop->getRandomEntitiyGeneration(i), user);
     }
 
     for (i = 0; i < m_pBiotop->getNbOfGeoMapSpecie(); i++)

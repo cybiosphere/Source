@@ -92,3 +92,9 @@ CMineral::CMineral(string label, CMineral& model)
   m_Generation  = 0;
   m_TotalChildNumber = 0;
 }
+
+string CMineral::buildLifeStageString(CGene* pGen)
+{
+  string defStr = STRING_GENE_UNUSED;
+  return(defStr);
+}

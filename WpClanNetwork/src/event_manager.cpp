@@ -84,9 +84,9 @@ namespace clan
       for (int i = 0; i < nbEntityPosInEvent;  i++)
       {
         newEvent.add_argument((int)(vectPositions[index].entityId));
-        newEvent.add_argument(vectPositions[index].layer);
-        newEvent.add_argument(vectPositions[index].stepCoordX);
-        newEvent.add_argument(vectPositions[index].stepCoordY);
+        newEvent.add_argument((int)(vectPositions[index].layer));
+        newEvent.add_argument((int)(vectPositions[index].stepCoordX));
+        newEvent.add_argument((int)(vectPositions[index].stepCoordY));
         newEvent.add_argument(vectPositions[index].stepDirection);
         nbRemainingEntityPos--;
         index++;
@@ -193,7 +193,7 @@ namespace clan
     newEvent.add_argument((int)pEntity->getAttributePresenceMask());
     //log_event(labelEvent, "Send event update entity position: entityID %1 label %2", pEntity->getId(), pEntity->getLabel());
     // Add parameters
-    for (int i = 0; i < pEntity->getNumParameter(); i++)
+    for (size_t i = 0; i < pEntity->getNumParameter(); i++)
     {
       newEvent.add_argument((float)pEntity->getParameter(i)->getVal());
     }
@@ -262,7 +262,7 @@ namespace clan
       pEntity->setAttributePresenceMask((DWORD)AttributeMask); 
       // Update parameters
       float paramValue = 0;
-      for (int i = 0; i < pEntity->getNumParameter(); i++)
+      for (size_t i = 0; i < pEntity->getNumParameter(); i++)
       {
         paramValue = e.get_argument(index);
         pEntity->getParameter(i)->forceVal(paramValue);

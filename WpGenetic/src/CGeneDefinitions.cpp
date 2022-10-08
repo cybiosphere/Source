@@ -217,22 +217,22 @@ vector<CGeneDefinitions> CGeneList::geneListLifeStage =
     { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_1, "Life stage 1", GENE_MUTE_INCREMENTAL_2,
-    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 5 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_2, "Life stage 2", GENE_MUTE_INCREMENTAL_2,
-    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 15 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_3, "Life stage 3", GENE_MUTE_INCREMENTAL_2,
-    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 60 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_4, "Life stage 4", GENE_MUTE_INCREMENTAL_2,
-    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Life time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 20 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_5, "Dead stage 5", GENE_MUTE_INCREMENTAL_2,
-    { { "Dead time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 0 } } },
+    { { "Dead time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true, 35 } } },
 
   { GENE_LIFESTAGE, GENE_STAGE_6, "Dead stage 6", GENE_MUTE_INCREMENTAL_2,
-    { { "Dead time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true , 0} } }
+    { { "Dead time", 2, 0, 0, 100, GENE_DOMINANCE_HIGHEST, true , 65 } } }
 };
 
 vector<CGeneDefinitions> CGeneList::geneListPhyWellfare =

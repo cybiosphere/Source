@@ -197,6 +197,123 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
   return (true);
 }
 
+//---------------------------------------------------------------------------
+// METHOD:       CVegetSpermatophyta::setLifeStageFromGene 
+//  
+// DESCRIPTION:  Set a Life stage according to genome.
+//               Automatically called by setEntityFromGenome for each genes
+// 
+// ARGUMENTS:    CGene* pGen : 1 gene from genome
+//   
+// RETURN VALUE: bool : false if gene not a CAnimMammal life stage
+//  
+// REMARKS:      Should NOT be called by derived method. 
+//               All stages must be supported at the same inheritage level
+//---------------------------------------------------------------------------
+bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
+{
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
+  {
+    return (false);
+  }
+  // We are sure Gene is a parameter
+  bool resu = false;
+  auto rawData = pGen->getData();
+  size_t len = rawData.size();
+  if (len < sizeof(WORD))
+  {
+    // not enought data to config param
+    return (false);
+  }
+
+  CLifeStage* pLifeStage = NULL;
+  int duration;
+  double lifeDuration = getLifeExpectation();
+  double deathDuration = getRotenTimeExpectation();
+  double scaledRate = pGen->getElementValue(0) / 100.0;
+
+  switch (pGen->getGeneSubType())
+  {
+  case GENE_STAGE_0:
+  {
+    duration = 0; // Age during gestation is not counted.
+    pLifeStage = new CLifeStage("Seed", STAGE_0, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_1:
+  {
+    duration = (int)(scaledRate * lifeDuration);
+    pLifeStage = new CLifeStage("juvenile", STAGE_1, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_2:
+  {
+    duration = (int)(scaledRate * lifeDuration);
+    pLifeStage = new CLifeStage("Adult", STAGE_2, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_3:
+  {
+    duration = (int)(scaledRate * lifeDuration);
+    pLifeStage = new CLifeStage("Adult", STAGE_3, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_4:
+  {
+    duration = (int)(scaledRate * lifeDuration);
+    pLifeStage = new CLifeStage("Old", STAGE_4, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_5:
+  {
+    duration = (int)(scaledRate * deathDuration);
+    pLifeStage = new CLifeStage("Dead", STAGE_5, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  case GENE_STAGE_6:
+  {
+    duration = (int)(scaledRate * deathDuration);
+    pLifeStage = new CLifeStage("Roten", STAGE_6, duration);
+    if (!addLifeStage(pLifeStage))
+      delete pLifeStage;
+    else
+      resu = true;
+    break;
+  }
+  default:
+  {
+    // Unknown
+    resu = false;
+    break;
+  }
+  }
+  return (resu);
+}
+
 //===========================================================================
 // Time management
 //===========================================================================
@@ -248,7 +365,79 @@ void CVegetSpermatophyta::nextHour()
 
   CVegetable::nextHour();
 }
-        
+
+//===========================================================================
+// Life stages management
+//===========================================================================
+
+//---------------------------------------------------------------------------
+// METHOD:       CAnimMammal::enterInNewLifeStage
+//  
+// DESCRIPTION:  Change parameters according to new stage
+// 
+// ARGUMENTS:    CLifeStage* pLifeStage : new life stage
+//   
+// RETURN VALUE: None
+//  
+// REMARKS:       
+//---------------------------------------------------------------------------
+void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
+{
+  switch (pLifeStage->getStageType())
+  {
+    case STAGE_0:
+    {
+      m_Status = STATUS_STATIC;
+      break;
+    }
+    case STAGE_1:
+    {
+      m_Status = STATUS_ALIVE;
+      setResistanceToConsumptionToNominalRatio(10);
+      setReproductionRateToNominalRatio(0);
+      if (!moveToLayerIfPossible(1))
+      {
+        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+        CYBIOCORE_LOG("VEGETAL - Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
+        autoRemove();
+      }
+      break;
+    }
+    case STAGE_2:
+    {
+      setResistanceToConsumptionToNominalRatio(100);
+      setReproductionRateToNominalRatio(100);
+      if (!moveToLayerIfPossible(getDefaultLayer()))
+      {
+        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+        CYBIOCORE_LOG("VEGETAL - Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
+        autoRemove();
+      }
+      break;
+    }
+    case STAGE_3:
+    {
+      break;
+    }
+    case STAGE_4:
+    {
+      break;
+    }
+    case STAGE_5:
+    {
+      break;
+    }
+    case STAGE_6:
+    {
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+}
+
 //===========================================================================
 // Behavior  
 //===========================================================================

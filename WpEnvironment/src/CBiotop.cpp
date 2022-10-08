@@ -511,7 +511,7 @@ void CBiotop::displayEntities(void)
   {
     printf("x=%2d, y=%2d ", (int)pEntity->getGridCoord().x, (int)pEntity->getGridCoord().y);
     printf("%-12s", pEntity->getLabel().c_str());
-    printf("ID=%3d Direction=%3d \n", pEntity->getId(), pEntity->getDirection());
+    printf("ID=%3u Direction=%3u \n", pEntity->getId(), pEntity->getDirection());
   }
 }
 
@@ -2070,7 +2070,7 @@ CGeoMapPopulation* CBiotop::getGeoMapSpecieByIndex(size_t index)
 
 void CBiotop::saveAllGeoMapsInFile(string fileNameWithPath)
 {
-  for (int indexRecord = 0; indexRecord < getNbOfGeoMapSpecie(); indexRecord++)
+  for (size_t indexRecord = 0; indexRecord < getNbOfGeoMapSpecie(); indexRecord++)
   {
     getGeoMapSpecieByIndex(indexRecord)->saveInXmlFile(fileNameWithPath);
   }
@@ -2838,7 +2838,7 @@ void CBiotop::setWindStrenght(int strenght)
   m_WindStrenght = strenght;
 }
 
-BiotopRandomEntitiyGeneration_t& CBiotop::getRandomEntitiyGeneration(int index)
+BiotopRandomEntitiyGeneration_t& CBiotop::getRandomEntitiyGeneration(size_t index)
 {
   return (m_tRandomEntitiesGeneration[index]);
 }

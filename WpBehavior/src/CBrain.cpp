@@ -932,8 +932,8 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     avarageValInBrain = pBrainNeuronMatrix->GetNeuronTableData(0,0);
 
     // Column mapping in case of actions from file don't match brain
-    int i, j;
-    std::vector<int> columnMaping;
+    size_t i, j;
+    std::vector<size_t> columnMaping;
     columnMaping.resize(GetNumberReaction());
     for (i = 0; i < columnMaping.size(); i++)
     {
@@ -1052,7 +1052,7 @@ bool CBrain::InitializeNeuronTableNeutral()
   m_vCurrentDecisionChoice.SetSize(nOutputReactions,1);
   if (m_pChoiceDecisionBuffer!=NULL)
     delete [] m_pChoiceDecisionBuffer;
-  m_pChoiceDecisionBuffer = new int[MAX_CHOICE_BUFFER_SIZE_PER_CHOICE*nOutputReactions];
+  m_pChoiceDecisionBuffer = new size_t[MAX_CHOICE_BUFFER_SIZE_PER_CHOICE*nOutputReactions];
   m_mDecisionHistory.SetSize(nOutputReactions,m_nExperienceHistory);
 
   // Initialize identification table
@@ -1146,14 +1146,14 @@ bool CBrain::GetVectorChoiceThresholds (double curiosityRate, neuroneValType &ma
 
 choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
 {
-  int i, j;
+  size_t i, j;
   neuroneValType maxVal = -100;
   neuroneValType curVal = -100;
   neuroneValType thresholdVal = 0;
   neuroneValType thresholdMidVal = 0;
   neuroneValType avarageVal = 0;
   choiceIndType  resuIndex = invalidIndex;
-  int cptMaxVal=0;
+  size_t cptMaxVal = 0;
   size_t nOutputReactions = m_tReactions.size();
 
   m_mDecisionNeuronTable.ComputeVectorChoice(&m_vCurrentDecisionInput, &m_vCurrentDecisionChoice);
@@ -1197,7 +1197,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
   if (cptMaxVal>0) // check if no error
   {
     // Select an index with value over threshold
-    int randomInd = getRandInt(cptMaxVal-1);
+    size_t randomInd = getRandInt(cptMaxVal-1);
     resuIndex = m_pChoiceDecisionBuffer[randomInd];
 
     // Compute intensity

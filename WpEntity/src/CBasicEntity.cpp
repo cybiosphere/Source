@@ -179,7 +179,6 @@ CBasicEntity::CBasicEntity()
   m_tParam.resize(0);
   m_tGestationChilds.resize(0);
   m_tLifeStage.resize(0);
-  m_IsAttached  = false;
   m_bHasMoved   = true;
   m_indCurrentLifeStage = invalidIndex;
   m_HourCounter = 0;
@@ -1290,8 +1289,53 @@ string CBasicEntity::buildParameterString(CGene* pGen)
 //---------------------------------------------------------------------------
 string CBasicEntity::buildLifeStageString(CGene* pGen)
 {
-  string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  string paramStr = STRING_GENE_UNUSED;
+  string tempStr;
+
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
+  {
+    return (paramStr);
+  }
+  // We are sure Gene is a parameter
+  auto rawData = pGen->getData();
+  size_t len = rawData.size();
+  if (len < sizeof(WORD))
+  {
+    // not enought data to config param
+    return (paramStr);
+  }
+
+  double scaledVal1 = pGen->getElementValue(0);
+
+  switch (pGen->getGeneSubType())
+  {
+    case GENE_STAGE_0:
+    case GENE_STAGE_1:
+    case GENE_STAGE_2:
+    case GENE_STAGE_3:
+    case GENE_STAGE_4:
+    {
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%6.1f%% of life duration", scaledVal1);
+      paramStr += pGen->getElementStrName(0) + tempStr;
+      break;
+    }
+    case GENE_STAGE_5:
+    case GENE_STAGE_6:
+    {
+      paramStr = pGen->getLabel() + " : ";
+      tempStr = FormatString("=%6.1f%% of death duration", scaledVal1);
+      paramStr += pGen->getElementStrName(0) + tempStr;
+      break;
+    }
+    default:
+    {
+      // keep STRING_GENE_UNUSED
+      break;
+    }
+  }
+
+  return (paramStr);
 }
 
 //---------------------------------------------------------------------------
@@ -1451,12 +1495,12 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
 
   if (m_pBiotop != NULL)
   {
-    m_IsAttached = true;
     m_pBiotop->updateGridEntity(this);
     getAndUpdateGuiGridCoord();
     getAndUpdateGuiStepCoord();
     turnToCenterDir();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
+    m_DefaultLayer = m_Layer;
   }
 }
 
@@ -1474,7 +1518,6 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
 void CBasicEntity::detachFromBiotop() 
 {
   m_pBiotop = NULL;
-  m_IsAttached = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1509,7 +1552,16 @@ bool CBasicEntity::isToBeRemoved()
 //---------------------------------------------------------------------------
 bool CBasicEntity::isAttachedToBiotop()
 {
-  return (m_IsAttached);
+  return (m_pBiotop != NULL);
+}
+
+bool CBasicEntity::moveToLayerIfPossible(size_t newLayer)
+{
+  if (newLayer != m_Layer)
+  {
+    return jumpToStepCoord(m_StepCoord, true, newLayer, true);
+  }
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2094,6 +2146,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
 bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer)
 {
   bool resu;
+  size_t nextLayer = chooseLayer ? newLayer : m_Layer;
 
   if (m_pBiotop==NULL)
   {
@@ -2112,9 +2165,8 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
     }
     resu = true;
   }
-  else if ( m_pBiotop->isCoordValidAndFree(newGridCoord,m_Layer)  // valid
-         || ( (newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord) )  // or out
-         || (m_Layer == invalidCoord) )
+  else if ( m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid
+         || ( (newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord) ) )  // or out
   {
     // newCoord valid ... Move
     m_PrevGridCoord = m_GridCoord;
@@ -2124,10 +2176,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_PrevLayer = m_Layer; 
-    if (chooseLayer)
-    { 
-      m_Layer = newLayer;
-    }    
+    m_Layer = nextLayer;
     resu = true;
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MOVED, this);
     m_pBiotop->updateGridEntity(this);
@@ -2163,7 +2212,7 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_
   Point_t newGridCoord;
   newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
   newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE;
-  if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) )
+  if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) || chooseLayer)
   {
     if (!jumpToGridCoord(newGridCoord, chooseLayer, newLayer))
       return (false);
@@ -2492,7 +2541,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
     pElement->SetAttribute( XML_ATTR_LABEL, tempLabel);
     pElement->SetAttribute( XML_ATTR_GENERATION, pEntity->m_Generation);
     pElement->SetAttribute( XML_ATTR_STATUS, pEntity->m_Status);
-    pElement->SetAttribute( XML_ATTR_LAYER, (int)pEntity->m_Layer);
+    pElement->SetAttribute( XML_ATTR_LAYER, (int)pEntity->m_DefaultLayer);
     pElement->SetAttribute( XML_ATTR_DIRECTION, pEntity->m_Direction);
     pElement->SetAttribute( XML_ATTR_HOUR_COUNT, pEntity->m_HourCounter);
     pElement->SetAttribute( XML_ATTR_IMMORTAL, (int)pEntity->m_bIsImmortal);
@@ -2726,7 +2775,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
   if ((pNodeEntity != NULL) && (pNodeEntity->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     pElement = (TiXmlElement*)pNodeEntity;
-    int direction, status, immortal;
+    int direction, defLayer, status, immortal;
 
     if ( pElement->QueryStringAttribute(XML_ATTR_LABEL,  &m_Label) == TIXML_NO_ATTRIBUTE)
       m_Label = "Unset";
@@ -2741,6 +2790,10 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
     if ( pElement->QueryIntAttribute(XML_ATTR_DIRECTION,  &direction) == TIXML_NO_ATTRIBUTE)
       direction = 0;
     setDirection(direction);
+
+    if (pElement->QueryIntAttribute(XML_ATTR_LAYER, &defLayer) == TIXML_NO_ATTRIBUTE)
+      defLayer = 1;
+    m_DefaultLayer = defLayer;
 
     if ( pElement->QueryIntAttribute(XML_ATTR_HOUR_COUNT,  &m_HourCounter) == TIXML_NO_ATTRIBUTE)
       m_HourCounter = 0;
@@ -3094,6 +3147,11 @@ size_t CBasicEntity::getLayer()
 size_t CBasicEntity::getPrevLayer()
 {
   return (m_PrevLayer);
+}
+
+size_t CBasicEntity::getDefaultLayer()
+{
+  return (m_DefaultLayer);
 }
 
 int CBasicEntity::getDirection()

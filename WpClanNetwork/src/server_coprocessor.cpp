@@ -18,7 +18,7 @@ void ServerCoprocessor::reset_all_entities_control(CBiotop* pBiotop)
 void ServerCoprocessor::assign_all_entities_control()
 {
   CBasicEntity* pCurEntity = nullptr;
-  for (int i = 0; i < m_pBiotop->getNbOfEntities(); i++)
+  for (size_t i = 0; i < m_pBiotop->getNbOfEntities(); i++)
   {
     pCurEntity = m_pBiotop->getEntityByIndex(i);
     assign_entity_control(pCurEntity);

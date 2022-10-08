@@ -123,13 +123,14 @@ private:
   int m_PrevStepDirection;  // [0..360] Detailed direction in the Biotop
 
   //
-  //        /______/ 2   First layer for entities
+  //        /______/ 2   First layer for animals
   //        /______/ 1   Ground/Grass/Water
   //        /______/ 0   Under Ground/Water
   //         m_Layer
 
-  size_t m_Layer;     // Layer in the biotop
-  size_t m_PrevLayer;	// Previous layer in the biotop  
+  size_t m_Layer;         // Layer in the biotop at current time
+  size_t m_PrevLayer;   	// Previous layer in the biotop
+  size_t m_DefaultLayer;  // Default layer in the biotop
 
   //                  
   // m_StepCoord.y m_GridCoord.y ^
@@ -149,7 +150,6 @@ private:
   Point_t m_GuiGridCoord;   // Coordinate in the Biotop that can be used by GUI
   Point_t m_GuiStepCoord;   // Coordinate in the Biotop that can be used by GUI
 
-  bool         m_IsAttached;  // Is attached to the biotop ?
   entityIdType m_Id;          // Unique ID (Set by Biotop)
 
   int       m_HourCounter;    // internal Day Counter
@@ -281,6 +281,7 @@ public:
   bool isToBeRemoved();
   void autoRemove(bool addRemoveEvent = true);
   bool isAttachedToBiotop();
+  bool moveToLayerIfPossible(size_t newLayer);
 
 //---------------------------------------------------------------------------
 // Caracter management
@@ -399,6 +400,7 @@ public:
   Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
   size_t          getLayer();
   size_t          getPrevLayer();
+  size_t          getDefaultLayer();
   int             getDirection();
   void            setDirection(int direction);
   int             getStepDirection();

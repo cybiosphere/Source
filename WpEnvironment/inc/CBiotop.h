@@ -196,11 +196,10 @@ typedef struct
 typedef struct
 {
   entityIdType entityId;
-  int layer;
-  int stepCoordX;
-  int stepCoordY;
+  size_t layer;
+  size_t stepCoordX;
+  size_t stepCoordY;
   int stepDirection;
-
 } BiotopEntityPosition_t;
 
 
@@ -469,7 +468,7 @@ public:
   void setWindDirection(int direction);
   int  getWindStrenght(); 
   void setWindStrenght(int strenght);
-  BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(int index);
+  BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(size_t index);
   size_t getNumberOfRandomEntitiyGeneration();
   void SetColorizeSearchMode(bool bColorizeSearch);
 

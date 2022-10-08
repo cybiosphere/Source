@@ -80,12 +80,19 @@ public:
 protected:
   bool setParamFromGene (CGene* pGen);
   bool completeParamsWithDefault();
+  bool setLifeStageFromGene(CGene* pGen);
 
 //---------------------------------------------------------------------------
 // Time management
 //---------------------------------------------------------------------------
 public:
   void nextHour(); 
+
+//---------------------------------------------------------------------------
+// Life stages management
+//---------------------------------------------------------------------------
+protected:
+  void enterInNewLifeStage(CLifeStage* pLifeStage);
 
 //---------------------------------------------------------------------------
 // Behavior  

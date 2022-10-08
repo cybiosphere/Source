@@ -127,7 +127,9 @@ public:
   double getLifeExpectation();
   double getRotenTimeExpectation();
   double getReproductionRange();
-  
+  void setResistanceToConsumptionToNominalRatio(double ratio);
+  void setReproductionRateToNominalRatio(double ratio);
+
 }; // end CVegetable
 
 #endif // !defined(CVEGETABLE_INCLUDED_)

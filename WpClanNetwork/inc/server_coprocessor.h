@@ -13,7 +13,7 @@ constexpr int spatialHisteresisSize = 20;
 class ServerCoprocessor
 {
 	public:
-		ServerCoprocessor(Server* pServer, ServerUser* pUser, CBiotop* pBiotop, unsigned int startCoordX, unsigned int endCoordX) :
+		ServerCoprocessor(Server* pServer, ServerUser* pUser, CBiotop* pBiotop, size_t startCoordX, size_t endCoordX) :
 			m_pServer(pServer),
 			m_pUser(pUser),
 			m_pBiotop(pBiotop),
@@ -39,6 +39,6 @@ class ServerCoprocessor
 		Server* m_pServer;
 		ServerUser* m_pUser;
 		CBiotop* m_pBiotop;
-		unsigned int m_startCoordX;
-		unsigned int m_endCoordX;
+		size_t m_startCoordX;
+		size_t m_endCoordX;
 	};

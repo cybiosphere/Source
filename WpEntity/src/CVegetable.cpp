@@ -666,3 +666,15 @@ double CVegetable::changeWeight(double variation)
     }
   }
 }
+
+void CVegetable::setResistanceToConsumptionToNominalRatio(double ratio)
+{
+  double newResistance = getParameter(m_id_ResistanceToConsumption)->getValNominal() * ratio / 100.0;
+  getParameter(m_id_ResistanceToConsumption)->setVal(newResistance);
+}
+
+void CVegetable::setReproductionRateToNominalRatio(double ratio)
+{
+  double newReproRate = getParameter(m_id_ReproductionRate)->getValNominal() * ratio / 100.0;
+  getParameter(m_id_ReproductionRate)->setVal(newReproRate);
+}

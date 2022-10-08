@@ -170,7 +170,7 @@ private:
   // Current choice vector
   CMatrix m_vCurrentDecisionChoice;
   // buffer used to store different choice according to 
-  int* m_pChoiceDecisionBuffer; 
+  size_t* m_pChoiceDecisionBuffer; 
 
   // Neuronal matrix table for decision
   CNeuronMatrix m_mDecisionNeuronTable;
