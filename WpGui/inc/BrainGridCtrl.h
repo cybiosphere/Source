@@ -101,6 +101,9 @@ public:
   bool SetIdentifyBrain(CBrain* pBrain);
   void RefreshIdentifyBrainData();
 
+  //Search methodes
+  void SelectRowFromString(CString findStr);
+
 // Implementation
 public:
 	virtual ~CBrainGridCtrl();

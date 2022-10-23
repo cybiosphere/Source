@@ -313,5 +313,31 @@ void CBrainGridCtrl::RefreshIdentifyBrainData()
   }
 }
 
+void CBrainGridCtrl::SelectRowFromString(CString findStr)
+{
+  int position = 0;
+  int startSearch = GetFocusCell().IsValid() ? GetFocusCell().row + 1 : 0;
+
+  for (int i = 0; i < startSearch; i++)
+  {
+    position += GetRowHeight(i);
+  }
+
+  for (int i = startSearch; i < GetRowCount(); i++)
+  {
+    position += GetRowHeight(i);
+    CString strCurrentText = GetItemText(i, 0);
+    if (strCurrentText.MakeLower().Find(findStr.MakeLower()) >= 0)
+    {
+      int scrollPosition = min(GetScrollLimit(SB_VERT) - 1, position - 6 * GetRowHeight(i));
+      SetScrollPos32(SB_VERT, scrollPosition);
+      OnVScroll(SB_LINEDOWN, 0, NULL);
+      SetFocusCell(i, 0);
+      break;
+    }
+  }
+}
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CBrainGridCtrl message handlers

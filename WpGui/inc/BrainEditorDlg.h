@@ -49,6 +49,7 @@ protected:
 	CButton	m_ButtonSave;
 	CButton	m_ButtonMore;
 	CButton	m_ButtonLess;
+	CButton	m_ButtonFind;
   CBrainGridCtrl m_BrainGrid;
 	BOOL m_bColorizeDeltaFromBirth;
 	BOOL m_bColorizeDeltaWithOther;
@@ -81,6 +82,7 @@ protected:
 	afx_msg void OnButtonSave();
 	afx_msg void OnButtonMore();
 	afx_msg void OnButtonLess();
+	afx_msg void OnButtonFind();
 	virtual void OnCancel();
 	virtual void OnOK();
 	afx_msg void OnButtonExport();

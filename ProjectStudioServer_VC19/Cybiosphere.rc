@@ -179,12 +179,13 @@ BEGIN
     PUSHBUTTON      "ButtonSave",IDC_BUTTON_SAVE,28,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
     PUSHBUTTON      "ButtonOpen",IDC_BUTTON_LOAD,7,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
     CONTROL         "Custom1",IDC_BRAIN_EDIT_GRID,"MFCGridCtrl",WS_TABSTOP,7,30,486,263
-    PUSHBUTTON      "ButtonMore",IDC_BUTTON_MORE,160,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
-    PUSHBUTTON      "ButtonLess",IDC_BUTTON_LESS,179,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonMore",IDC_BUTTON_MORE,180,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
+    PUSHBUTTON      "ButtonLess",IDC_BUTTON_LESS,197,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
     PUSHBUTTON      "Export csv",IDC_BUTTON_EXPORT,49,7,43,14
     PUSHBUTTON      "Import csv",IDC_BUTTON_IMPORT,98,7,43,14
     CONTROL         "Delta from birth",IDC_DELTA_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,225,7,64,12
     CONTROL         "Delta with other",IDC_DELTA_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,293,7,64,12
+    PUSHBUTTON      "ButtonMore",IDC_BUTTON_FINDB,155,7,15,15,BS_ICON | BS_CENTER | BS_VCENTER
 END
 
 IDD_STATISTIC_FORMVIEW DIALOGEX 0, 0, 290, 148
@@ -354,6 +355,30 @@ BEGIN
     EDITTEXT        IDC_EDIT_LOG,7,7,276,126,ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL
 END
 
+IDD_DIALOG_TRAIN DIALOG 0, 0, 186, 93
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Train and grade"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,72,50,14
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,7,47,172,13
+    EDITTEXT        IDC_EDIT1,7,22,36,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Number of iteration",IDC_STATIC,7,7,73,11
+    EDITTEXT        IDC_EDIT2,106,22,36,13,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Estimated time",IDC_STATIC,106,7,73,11
+END
+
+IDD_DIALOG_FINDSTR DIALOGEX 0, 0, 310, 47
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find string"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,199,26,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,253,26,50,14
+    EDITTEXT        IDC_FILTER_STRING,7,7,296,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -481,6 +506,22 @@ BEGIN
         RIGHTMARGIN, 283
         TOPMARGIN, 7
         BOTTOMMARGIN, 133
+    END
+
+    IDD_DIALOG_TRAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+
+    IDD_DIALOG_FINDSTR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 40
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -645,6 +686,11 @@ BEGIN
     0
 END
 
+IDD_DIALOG_FINDSTR AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -671,45 +717,6 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 #pragma code_page(1252)
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_DIALOG_TRAIN DIALOG 0, 0, 186, 93
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Train and grade"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,7,72,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,129,72,50,14
-    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,7,47,172,13
-    EDITTEXT        IDC_EDIT1,7,22,36,13,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Number of iteration",IDC_STATIC,7,7,73,11
-    EDITTEXT        IDC_EDIT2,106,22,36,13,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
-    LTEXT           "Estimated time",IDC_STATIC,106,7,73,11
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_DIALOG_TRAIN, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 86
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -782,6 +789,8 @@ IDR_STATISTIC_TYPE      ICON                    "..\\wpgui\\res\\ico00001.ico"
 IDR_MAPCONFIG_TYPE      ICON                    "..\\wpgui\\res\\ico00003.ico"
 
 IDR_LOGSERVER_TYPE      ICON                    "..\\wpgui\\res\\idr_logs.ico"
+
+IDI_ICON_FIND           ICON                    "..\\wpgui\\res\\iconFind.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////

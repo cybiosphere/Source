@@ -79,6 +79,20 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
   string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
   string nameFile = pBasicEntity->getSpecieName() + ".mesh";
   double scale = pBasicEntity->getSizeRate();
+  if (pBasicEntity->getCurrentLifeStage() != NULL)
+  {
+    if (pBasicEntity->getCurrentLifeStage()->getStageType() == STAGE_1)
+    {
+      if (pBasicEntity->getForm() == FORM_VEGET_TREE)
+      {
+        scale = scale * 0.20; // Reduce Mesh size for juvenile trees
+      }
+      else if (pBasicEntity->isAnimal())
+      {
+        scale = scale * 0.8; // Reduce Mesh size for babies
+      }
+    }
+  }
   meshEnt = pSceneMgr->createEntity(nameEnt, nameFile);
 
   MeshEntity_t* pNewMesh = new MeshEntity_t;

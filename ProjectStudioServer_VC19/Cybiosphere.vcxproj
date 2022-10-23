@@ -429,7 +429,9 @@
     <Image Include="..\WpGui\res\icon2.ico" />
     <Image Include="..\WpGui\res\icon3.ico" />
     <Image Include="..\WpGui\res\icon4.ico" />
+    <Image Include="..\wpgui\res\iconFind.ico" />
     <Image Include="..\WpGui\res\icon_col.ico" />
+    <Image Include="..\wpgui\res\icon_mor.ico" />
     <Image Include="..\WpGui\res\icon_red.ico" />
     <Image Include="..\WpGui\res\icoOpen.ico" />
     <Image Include="..\WpGui\res\icoSave.ico" />
@@ -578,6 +580,7 @@
     <ClInclude Include="..\WpGui\inc\EntityFindDlg.h" />
     <ClInclude Include="..\WpGui\inc\EntityView.h" />
     <ClInclude Include="..\WpGui\inc\FileSelectButton.h" />
+    <ClInclude Include="..\WpGui\inc\FindStrDlg.h" />
     <ClInclude Include="..\WpGui\inc\GeneticDoc.h" />
     <ClInclude Include="..\WpGui\inc\GeneticView.h" />
     <ClInclude Include="..\WpGui\inc\GenomeEditorDlg.h" />
@@ -687,6 +690,7 @@
     <ClCompile Include="..\WpGui\src\EntityFindDlg.cpp" />
     <ClCompile Include="..\WpGui\src\EntityView.cpp" />
     <ClCompile Include="..\WpGui\src\FileSelectButton.cpp" />
+    <ClCompile Include="..\WpGui\src\FindStrDlg.cpp" />
     <ClCompile Include="..\WpGui\src\GeneticDoc.cpp" />
     <ClCompile Include="..\WpGui\src\GeneticView.cpp" />
     <ClCompile Include="..\WpGui\src\GenomeEditorDlg.cpp" />

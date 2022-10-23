@@ -32,7 +32,6 @@
 #define IDB_MINERAL                     167
 #define IDB_BITMAP2                     168
 #define IDB_ODOR_ICONS                  169
-#define IDD_DLG_                        172
 #define IDD_DLG_ENTITY_EDITOR           172
 #define IDB_PHEROMON_ICONS              174
 #define IDB_TASTE_ICONS                 175
@@ -56,6 +55,8 @@
 #define IDP_FAILED_OPEN_DATABASE        203
 #define IDR_MAPCONFIG_TYPE              210
 #define IDR_LOGSERVER_TYPE              211
+#define IDI_ICON_FIND                   212
+#define IDD_DIALOG_FINDSTR              213
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -227,6 +228,7 @@
 #define IDC_DELTA_CHECK1                1137
 #define IDC_DELTA_CHECK2                1138
 #define IDC_FILTER_STRING               1140
+#define IDC_BUTTON_FINDB                1141
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -269,9 +271,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        210
+#define _APS_NEXT_RESOURCE_VALUE        213
 #define _APS_NEXT_COMMAND_VALUE         32814
-#define _APS_NEXT_CONTROL_VALUE         1141
+#define _APS_NEXT_CONTROL_VALUE         1142
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

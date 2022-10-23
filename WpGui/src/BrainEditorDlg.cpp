@@ -29,7 +29,7 @@ distribution.
 #include "cybiosphere.h"
 #include "BrainEditorDlg.h"
 #include "CEntityFactory.h"
-
+#include "FindStrDlg.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -40,7 +40,6 @@ extern CCybiosphereApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CBrainEditorDlg dialog
-
 
 CBrainEditorDlg::CBrainEditorDlg(CBrain* pBrain, bool identifyBrain, CString userTitle, CWnd* pParent /*=NULL*/)
 	: CDialog(CBrainEditorDlg::IDD, pParent)
@@ -74,6 +73,7 @@ void CBrainEditorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON_SAVE, m_ButtonSave);
 	DDX_Control(pDX, IDC_BUTTON_MORE, m_ButtonMore);
 	DDX_Control(pDX, IDC_BUTTON_LESS, m_ButtonLess);
+  DDX_Control(pDX, IDC_BUTTON_FINDB, m_ButtonFind);
 	DDX_GridControl(pDX, IDC_BRAIN_EDIT_GRID, m_BrainGrid);
   DDX_Check(pDX, IDC_DELTA_CHECK1, m_bColorizeDeltaFromBirth);
   DDX_Check(pDX, IDC_DELTA_CHECK2, m_bColorizeDeltaWithOther);
@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CBrainEditorDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnButtonSave)
 	ON_BN_CLICKED(IDC_BUTTON_MORE, OnButtonMore)
 	ON_BN_CLICKED(IDC_BUTTON_LESS, OnButtonLess)
+  ON_BN_CLICKED(IDC_BUTTON_FINDB, OnButtonFind)
 	ON_BN_CLICKED(IDC_BUTTON_EXPORT, OnButtonExport)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT, OnButtonImport)
   ON_BN_CLICKED(IDC_DELTA_CHECK1, OnCheckColorizeDeltaFromBirth)
@@ -105,11 +106,13 @@ BOOL CBrainEditorDlg::OnInitDialog()
   HICON saveIco = theApp.LoadIcon(IDI_ICON_SAVE); 
   HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN); 
   HICON moreIco = theApp.LoadIcon(IDI_ICON_MORE); 
-  HICON lessIco = theApp.LoadIcon(IDI_ICON_LESS); 
+  HICON lessIco = theApp.LoadIcon(IDI_ICON_LESS);
+  HICON findIco = theApp.LoadIcon(IDI_ICON_FIND);
   m_ButtonSave.SetIcon(saveIco);
   m_ButtonLoad.SetIcon(loadIco);
   m_ButtonMore.SetIcon(moreIco);
   m_ButtonLess.SetIcon(lessIco);
+  m_ButtonFind.SetIcon(findIco);
 
   if (m_bIdentifyBrain == true)
   {
@@ -253,6 +256,16 @@ void CBrainEditorDlg::OnButtonLess()
     m_BrainGrid.RefreshBrainData();
 
   ColorizeDeltaFromReference();
+}
+
+void CBrainEditorDlg::OnButtonFind()
+{
+  CFindStrDlg strDlg;
+  long nResp = strDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    m_BrainGrid.SelectRowFromString(strDlg.GetString());
+  }
 }
 
 void CBrainEditorDlg::OnCancel() 
