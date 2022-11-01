@@ -582,6 +582,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
   {
     if (pEntity->getClass() < CLASS_ANIMAL_FIRST)
     {
+      p_popup->EnableMenuItem(ID_APP_EDIT_BRAIN, MF_GRAYED);
       p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED);
       p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
     }

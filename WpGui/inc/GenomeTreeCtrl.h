@@ -66,10 +66,13 @@ public:
   bool UpdateAnyGeneFromItsPointer(CGene* pItem);
   
   GenomeTreeLevelType_e GetSelectionTreeLevel();
+  GenomeTreeLevelType_e GetItemTreeLevel(HTREEITEM pItem);
 
   CGene* GetCurrentMotherAllele();
   CGene* GetCurrentFatherAllele();
   CPairOfChromosome* GetCurrentPairOfChromosome();
+
+  void SelectItemFromString(CString findStr);
 
 // Overrides
 	// ClassWizard generated virtual function overrides

@@ -149,6 +149,8 @@
 #define IDC_BUTTON_MORE                 1067
 #define IDC_COMBO5                      1067
 #define IDC_BUTTON_LESS                 1068
+#define IDC_BUTTON_SAVE2                1068
+#define IDC_BUTTON_FINDGENE             1068
 #define IDC_SET_BRAIN                   1069
 #define IDC_EDIT_MUTE_RATE              1070
 #define IDC_LIST_WEIGHT_M               1071

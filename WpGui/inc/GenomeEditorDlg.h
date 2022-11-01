@@ -65,6 +65,7 @@ public:
 	CComboBox	m_ComboLeft;
 	CButton	m_ButtonSave;
 	CButton	m_ButtonLoad;
+	CButton	m_ButtonFind;
 	CSliderCtrl	m_SliderP4;
 	CSliderCtrl	m_SliderP3;
 	CSliderCtrl	m_SliderP2;
@@ -126,6 +127,7 @@ protected:
 	afx_msg void OnReleasedcaptureSliderP4(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnButtonLoad();
 	afx_msg void OnButtonSave();
+	afx_msg void OnButtonFind();
 	afx_msg void OnSetBrainInGenes();
 	afx_msg void OnSelchangeComboLeft();
 	afx_msg void OnSelchangeComboRight();

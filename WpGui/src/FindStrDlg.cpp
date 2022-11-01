@@ -59,6 +59,14 @@ BEGIN_MESSAGE_MAP(CFindStrDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+BOOL CFindStrDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	// Set the input focus to your control
+	GotoDlgCtrl(GetDlgItem(IDC_FILTER_STRING));
+	return FALSE;  
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CFindStrDlg message handlers
 

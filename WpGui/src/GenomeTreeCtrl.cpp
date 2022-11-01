@@ -207,6 +207,17 @@ GenomeTreeLevelType_e CGenomeTreeCtrl::GetSelectionTreeLevel()
   return ((GenomeTreeLevelType_e)level);
 }
 
+GenomeTreeLevelType_e CGenomeTreeCtrl::GetItemTreeLevel(HTREEITEM pItem)
+{
+  HTREEITEM pTmpItem = pItem;
+  int level = -1;
+  while (pTmpItem != NULL)
+  {
+    pTmpItem = GetParentItem(pTmpItem);
+    level++;
+  }
+  return ((GenomeTreeLevelType_e)level);
+}
 
 CGene* CGenomeTreeCtrl::GetCurrentMotherAllele()
 {
@@ -300,4 +311,38 @@ CPairOfChromosome* CGenomeTreeCtrl::GetCurrentPairOfChromosome()
   }
   pFoundPair = (CPairOfChromosome*)GetItemData(pTmpItem);
   return (pFoundPair);
+}
+
+void CGenomeTreeCtrl::SelectItemFromString(CString findStr)
+{
+  HTREEITEM curItem = GetSelectedItem();
+  (curItem == NULL) ? curItem = GetRootItem() : curItem = GetNextItem(curItem, TVGN_NEXT);
+
+  for (UINT i = 0; i < GetCount(); i++)
+  {
+    if (GetItemTreeLevel(curItem) == TREE_LEVEL_GENE)
+    {
+      CGene* pCurGene = (CGene*)GetItemData(curItem);
+      if (pCurGene->getLabel().find(findStr.GetBuffer(0)) != std::string::npos)
+      {
+        SelectItem(curItem);
+        break;
+      }
+      if (GetNextItem(curItem, TVGN_NEXT) != NULL)
+      {
+        curItem = GetNextItem(curItem, TVGN_NEXT);
+      }
+      else
+      {
+        // Go back to Paire level and move next paire
+        curItem = GetNextItem(curItem, TVGN_PARENT);
+        curItem = GetNextItem(curItem, TVGN_PARENT);
+        curItem = GetNextItem(curItem, TVGN_NEXT);
+      }
+    }
+    else
+    {
+      curItem = GetNextItem(curItem, TVGN_CHILD);
+    }
+  }
 }

@@ -29,6 +29,7 @@ distribution.
 #include "cybiosphere.h"
 #include "GenomeEditorDlg.h"
 #include "CGeneDefinitions.h"
+#include "FindStrDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -89,6 +90,7 @@ void CGenomeEditorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO3, m_ComboLeft);
 	DDX_Control(pDX, IDC_BUTTON_SAVE, m_ButtonSave);
 	DDX_Control(pDX, IDC_BUTTON_LOAD, m_ButtonLoad);
+  DDX_Control(pDX, IDC_BUTTON_FINDGENE, m_ButtonFind);
 	DDX_Control(pDX, IDC_SLIDER_P4, m_SliderP4);
 	DDX_Control(pDX, IDC_SLIDER_P3, m_SliderP3);
 	DDX_Control(pDX, IDC_SLIDER_P2, m_SliderP2);
@@ -136,6 +138,7 @@ BEGIN_MESSAGE_MAP(CGenomeEditorDlg, CDialog)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_P4, OnReleasedcaptureSliderP4)
 	ON_BN_CLICKED(IDC_BUTTON_LOAD, OnButtonLoad)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnButtonSave)
+  ON_BN_CLICKED(IDC_BUTTON_FINDGENE, OnButtonFind)
 	ON_BN_CLICKED(IDC_SET_BRAIN, OnSetBrainInGenes)
 	ON_CBN_SELCHANGE(IDC_COMBO3, OnSelchangeComboLeft)
 	ON_CBN_SELCHANGE(IDC_COMBO4, OnSelchangeComboRight)
@@ -170,9 +173,11 @@ BOOL CGenomeEditorDlg::OnInitDialog()
   m_GenomeTreeEdit.SelectAnyItemFromItsPointer((void*)m_pNewGenome);
   
   HICON saveIco = theApp.LoadIcon(IDI_ICON_SAVE); 
-  HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN); 
+  HICON loadIco = theApp.LoadIcon(IDI_ICON_OPEN);
+  HICON findIco = theApp.LoadIcon(IDI_ICON_FIND);
   m_ButtonSave.SetIcon(saveIco);
   m_ButtonLoad.SetIcon(loadIco);
+  m_ButtonFind.SetIcon(findIco);
 
   m_WeightListCtrl_M.SetSensor(NULL);
   m_WeightListCtrl_P.SetSensor(NULL);
@@ -1467,6 +1472,16 @@ void CGenomeEditorDlg::OnButtonSave()
     {
       AfxMessageBox(LPCTSTR("Impossible to save file ") + fileName);
     }
+  }
+}
+
+void CGenomeEditorDlg::OnButtonFind()
+{
+  CFindStrDlg strDlg;
+  long nResp = strDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    m_GenomeTreeEdit.SelectItemFromString(strDlg.GetString());
   }
 }
 
