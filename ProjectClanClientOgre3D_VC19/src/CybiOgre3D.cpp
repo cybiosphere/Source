@@ -238,19 +238,14 @@ void CybiOgre3DFrameListener::proceedBiotopEvents()
       pNewEntity = m_pBiotop->getEntityById(entityId);
       m_tNewEntitiesList.push_back(pNewEntity);
     }
-    /*else
-    {
-      int meshIndex = getMeshEntityIndex(entityId);
-      if (meshIndex >= 0)
-      {
-        setMeshEntityPreviousPosition(meshIndex);
-        updateMeshEntityNewSecond(meshIndex);
-      }
-    }*/
     eventPair = m_pBiotop->getNextUnreadGuiBiotopEvent();
   }
 
   size_t loopSize = cybio_min(m_tNewEntitiesList.size(), 5);
+  if (loopSize > 0)
+  {
+    m_pBiotop->resetBiotopEventsMapCurrent(); // avoid issue due to long mesh creation time
+  }
   for (int i = 0; i < loopSize; i++)
   {
     pNewEntity = m_tNewEntitiesList.back();

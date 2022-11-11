@@ -267,7 +267,7 @@ void CBrainGridCtrl::RefreshBrainData()
   {
     double maxVal,midThreshold,lowThreshold;
     double curiosity = ((CBrainAnimal*)m_pBrain)->getAnimal()->getCuriosityRate();
-    m_pBrain->GetVectorChoiceThresholds(curiosity, maxVal, midThreshold, lowThreshold);
+    m_pBrain->SetBonusAndGetVectorChoiceThresholds(curiosity, maxVal, midThreshold, lowThreshold);
     RefreshInputOutputVectAndThresholds(m_pBrain->GetInputVect(), m_pBrain->GetChoiceVect(), maxVal,midThreshold,lowThreshold);
 
     RefreshNeuronMatrixData();

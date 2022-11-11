@@ -133,28 +133,10 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
       {
         for(size_t i=0; i<(2*range); i++)
         {
-          currentMapCoord.x = centerMapCoord.x - range + i + 1;
-          currentMapCoord.y = centerMapCoord.y - range;
-          curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
-          if ((curWeight>maxWeight) && (currentMapCoord.x>=0) && (currentMapCoord.y>=0))
-          {
-            foundMapPos.x = currentMapCoord.x;
-            foundMapPos.y = currentMapCoord.y;
-            maxWeight = curWeight;
-          }
-          currentMapCoord.x = centerMapCoord.x - range;
-          currentMapCoord.y = centerMapCoord.y - range + i;
-          curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
-          if ((curWeight>maxWeight) && (currentMapCoord.x>=0) && (currentMapCoord.y>=0))
-          {
-            foundMapPos.x = currentMapCoord.x;
-            foundMapPos.y = currentMapCoord.y;
-            maxWeight = curWeight;
-          }
           currentMapCoord.x = centerMapCoord.x + range;
           currentMapCoord.y = centerMapCoord.y - range + i + 1;
           curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
-          if ((curWeight>maxWeight) && (currentMapCoord.y>=0))
+          if (curWeight > maxWeight)
           {
             foundMapPos.x = currentMapCoord.x;
             foundMapPos.y = currentMapCoord.y;
@@ -163,7 +145,25 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
           currentMapCoord.x = centerMapCoord.x - range + i;
           currentMapCoord.y = centerMapCoord.y + range;
           curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
-          if ((curWeight>maxWeight) && (currentMapCoord.x>=0))
+          if (curWeight > maxWeight)
+          {
+            foundMapPos.x = currentMapCoord.x;
+            foundMapPos.y = currentMapCoord.y;
+            maxWeight = curWeight;
+          }
+          currentMapCoord.x = centerMapCoord.x - range + i + 1;
+          currentMapCoord.y = centerMapCoord.y - range;
+          curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
+          if (curWeight>maxWeight)
+          {
+            foundMapPos.x = currentMapCoord.x;
+            foundMapPos.y = currentMapCoord.y;
+            maxWeight = curWeight;
+          }
+          currentMapCoord.x = centerMapCoord.x - range;
+          currentMapCoord.y = centerMapCoord.y - range + i;
+          curWeight = GetSuccessWeight(UidIdx, currentMapCoord);
+          if (curWeight>maxWeight)
           {
             foundMapPos.x = currentMapCoord.x;
             foundMapPos.y = currentMapCoord.y;
@@ -384,13 +384,11 @@ DWORD CGeoMapPurpose::GettPurposeUniqueId (size_t index)
 
 int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 {
-  // If pose out of teritory map, give negative weight -100
-  int weight = -100;
   if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
   {
-    weight = m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
+    return m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
   }
-  return weight;
+  return -100; // If pose out of teritory map, give negative weight -100
 }
 
 

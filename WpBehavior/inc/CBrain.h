@@ -301,7 +301,7 @@ public:
  
   bool InitializeNeuronTableNeutral();
   bool HistorizeInput (void);
-  bool GetVectorChoiceThresholds (double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold);
+  bool SetBonusAndGetVectorChoiceThresholds (double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold);
   choiceIndType ComputeAndGetDecision(double curiosityRate, ReactionIntensityType_e &intensity);
   bool HistorizeDecision (choiceIndType index);
   feedbackValType ComputeFeedback (choiceIndType myChoice, ReactionIntensityType_e myIntensity);

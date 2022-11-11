@@ -506,11 +506,11 @@ bool CBrain::PollAllSensors (void)
       for (i=0; i<m_FocusedEntityInfo.subcaptorsSize;i++)
       {
         curSensorVal = m_vCurrentDecisionInput(cpt,0) * 1.2;
-        if (curSensorVal>MAX_SENSOR_VAL)
+        if (curSensorVal > MAX_SENSOR_VAL)
         {
           curSensorVal = MAX_SENSOR_VAL;  
         }
-        if (curSensorVal<-MAX_SENSOR_VAL)
+        if (curSensorVal < -MAX_SENSOR_VAL)
         {
           curSensorVal = -MAX_SENSOR_VAL;  
         }
@@ -1087,7 +1087,7 @@ bool CBrain::HistorizeInput (void)
 
 
 //---------------------------------------------------------------------------
-// METHOD:       CBrain::GetVectorChoiceThresholds
+// METHOD:       CBrain::SetBonusAndGetVectorChoiceThresholds
 //  
 // DESCRIPTION:  compute decision thresholds 
 //
@@ -1104,7 +1104,7 @@ bool CBrain::HistorizeInput (void)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------  
-bool CBrain::GetVectorChoiceThresholds (double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold)
+bool CBrain::SetBonusAndGetVectorChoiceThresholds(double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold)
 {
   size_t i;
   size_t nOutputReactions = m_tReactions.size();
@@ -1158,7 +1158,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
 
   m_mDecisionNeuronTable.ComputeVectorChoice(&m_vCurrentDecisionInput, &m_vCurrentDecisionChoice);
 
-  GetVectorChoiceThresholds(curiosityRate, maxVal, thresholdMidVal, thresholdVal);
+  SetBonusAndGetVectorChoiceThresholds(curiosityRate, maxVal, thresholdMidVal, thresholdVal);
 
   // Count values over threshold
   for (i=0; i<nOutputReactions; i++)
