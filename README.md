@@ -18,7 +18,8 @@ Cybiosphere is an open-source project that aims to develop virtual ecosystems fo
 
 Cybiosphere is a kind of Metavers dedicated to ecology and eco-evolution.
 An infinite number of vegetal and animal species interacting with each other can be created and inserted in the virtual world without restarting the system.
-The ecosytem can be explored in 3D and time can be accelerated (up to x100) to monitor ecological and evolutive mechanisms on long durations.
+The ecosytem can be explored in 3D and time can be accelerated (up to x100) to monitor its evolution on long durations.
+The software solution provides a complete multi agent system that support for each individual entity: genetic, reproduction, neuronal networks for animal behavior, innate instinct and acquired experience, energy balance, individual fitness, predation, symbiosis… This covers a large part of the structuring factors of ecosystems and simulates spatial and temporal mechanisms that affect their evolution. 
 
 ## <a name="modules"></a>Modules
 
@@ -39,7 +40,7 @@ Server console is the core of the system. It is running under Linux or windows. 
 Many different kind of clients can connect to the server using IP-port link: studio, 3D explorer, client console for coprocessing.
 In current version 2 clients coprocessors can connect so that 12 CPU cores will be used to process entity actions
 
-### <a name="cybiosphere-client"></a>Cybiosphere server client
+### <a name="cybiosphere-client"></a>Cybiosphere client console
 
 Client console is mainly used for coprocessing. It is running under Linux or windows. Each coprocessor will support entity actions in a specific location of the biotope
 
