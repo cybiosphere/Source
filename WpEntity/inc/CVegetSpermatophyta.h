@@ -100,6 +100,7 @@ protected:
 protected:
   bool reproductWith(CVegetSpermatophyta* partner);
   bool autoClone();
+  void tryToReproduceOnceADay();
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes

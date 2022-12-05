@@ -205,7 +205,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CAnimMammal life stage
+// RETURN VALUE: bool : false if gene not a life stage
 //  
 // REMARKS:      Should NOT be called by derived method. 
 //               All stages must be supported at the same inheritage level
@@ -331,39 +331,45 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //---------------------------------------------------------------------------
 void CVegetSpermatophyta::nextHour() 
 {
-  if (isAlive() && isLocalAutoControlled())
+  if (isLocalAutoControlled() && isAlive())
   {
-    // reproduction
-    // TBD: Check also if reproduction age is reached
-    if (testChance(getReproductionRate(),m_pBiotop->getFertility(getGridCoord()) / NUMBER_HOURS_PER_DAY))
+    // Distribute processing on each hour
+    if ((getId() % NUMBER_HOURS_PER_DAY) == m_pBiotop->getBiotopTime().hours)
     {
-      if ((getTypeOfReproduction() == REPRODUCT_SEXUAL) && (getSex() == SEX_FEMALE))
+      tryToReproduceOnceADay();
+    }
+  }
+  CVegetable::nextHour();
+}
+
+void CVegetSpermatophyta::tryToReproduceOnceADay()
+{
+  // TBD: Check also if reproduction age is reached
+  if (testChance(getReproductionRate(), m_pBiotop->getFertility(getGridCoord())))
+  {
+    if (getTypeOfReproduction() == REPRODUCT_CLONAGE)
+    {
+      autoClone();
+    }
+    else if ((getTypeOfReproduction() == REPRODUCT_SEXUAL) && (getSex() == SEX_FEMALE))
+    {
+      CBasicEntity* pFoundEntity = NULL;
+      const BiotopFoundIds_t& biotopFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
+      const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
+
+      for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
       {
-        CBasicEntity *pFoundEntity = NULL;
-        const BiotopFoundIds_t & biotopFoundIds = getBiotop()->findEntities(getGridCoord(), (int)getReproductionRange());
-        const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
- 
-        for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
+        pFoundEntity = tFoundIds[i].pEntity;
+        ASSERT(pFoundEntity != NULL);
+        if ((pFoundEntity->getSex() == SEX_MALE) && (m_pGenome->checkSpecieCompatibility(pFoundEntity->getGenome()) == true))
         {
-          pFoundEntity = tFoundIds[i].pEntity;
-          ASSERT (pFoundEntity!=NULL);
-          if ( (m_pGenome->checkSpecieCompatibility(pFoundEntity->getGenome()) == true) 
-             &&(pFoundEntity->getSex() == SEX_MALE) )
-          {
-            // TBD: Select 1 random compatible male among different parters
-            reproductWith((CVegetSpermatophyta*)tFoundIds[i].pEntity);
-            break;
-          }
+          // TBD: Select 1 random compatible male among different parters
+          reproductWith((CVegetSpermatophyta*)tFoundIds[i].pEntity);
+          break;
         }
-      }
-      else if (getTypeOfReproduction() == REPRODUCT_CLONAGE)
-      {
-        autoClone();
       }
     }
   }
-
-  CVegetable::nextHour();
 }
 
 //===========================================================================
@@ -371,7 +377,7 @@ void CVegetSpermatophyta::nextHour()
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CAnimMammal::enterInNewLifeStage
+// METHOD:       CVegetSpermatophyta::enterInNewLifeStage
 //  
 // DESCRIPTION:  Change parameters according to new stage
 // 

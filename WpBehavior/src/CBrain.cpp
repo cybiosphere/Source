@@ -355,13 +355,12 @@ CSensor* CBrain::GetSensorByIndex (size_t index)
 
 CSensor* CBrain::GetSensorByUniqueId(DWORD uniqueId)
 {
-  CSensor* pSens = NULL;
   for (size_t i=0; i<m_tSensors.size(); i++) 
   {
     if (m_tSensors[i]->GetUniqueId() == uniqueId)
-      pSens = m_tSensors[i];
+      return m_tSensors[i];
   }
-  return (pSens);
+  return NULL;
 }
 
 CReaction* CBrain::GetReactionByIndex (size_t index)
@@ -371,13 +370,12 @@ CReaction* CBrain::GetReactionByIndex (size_t index)
 
 CReaction* CBrain::GetReactionByUniqueId(DWORD uniqueId)
 {
-  CReaction* pReac = NULL;
   for (size_t i=0; i<m_tReactions.size(); i++) 
   {
     if (m_tReactions[i]->GetUniqueId() == uniqueId)
-      pReac = m_tReactions[i];
+      return m_tReactions[i];
   }
-  return (pReac);
+  return NULL;
 }
 
 CPurpose* CBrain::GetPurposeByIndex (size_t index)
@@ -387,24 +385,22 @@ CPurpose* CBrain::GetPurposeByIndex (size_t index)
 
 CPurpose* CBrain::GetPurposeByUniqueId(DWORD uniqueId)
 {
-  CPurpose* pPurp = NULL;
   for (size_t i=0; i<m_tPurposes.size(); i++) 
   {
     if (m_tPurposes[i]->GetUniqueId() == uniqueId)
-      pPurp = m_tPurposes[i];
+      return m_tPurposes[i];
   }
-  return (pPurp);
+  return NULL;
 }
 
 CPurpose* CBrain::GetPurposeByLabel(string label)
 {
-  CPurpose* pPurp = NULL;
   for (size_t i = 0; i < m_tPurposes.size(); i++)
   {
     if (m_tPurposes[i]->GetLabel() == label)
-      pPurp = m_tPurposes[i];
+      return m_tPurposes[i];
   }
-  return (pPurp);
+  return NULL;
 }
 
 CPurpose* CBrain::GetCurrentPurpose (void)
@@ -460,14 +456,14 @@ bool CBrain::PollAllSensors (void)
   sensorValType curSensorVal = 0;
   int bonusRate;
   size_t cpt = 0;
-  size_t i,j;
+  size_t i;
 
   for (auto pSensor : m_tSensors)
   {
     const std::vector<sensorValType>& vectSensorVal{ pSensor->UpdateAndGetStimulationTable()};
-    for (j = 0; j < vectSensorVal.size(); j++)
+    for (i = 0; i < vectSensorVal.size(); i++)
     {
-      bonusRate = pSensor->GetBonusRate(j);
+      bonusRate = pSensor->GetBonusRate(i);
 
       // Fill pass input (shift all InputSensors blocks down, and *m_historyWeight to give less weight to pass)
       for (int hist=(int)m_nInputHistory-1; hist>0; hist--)
@@ -476,7 +472,7 @@ bool CBrain::PollAllSensors (void)
       }
 
       // Fill new InputSensors and add purpose bonus
-      curSensorVal = vectSensorVal[j];
+      curSensorVal = vectSensorVal[i];
       if (curSensorVal != 0) // CPU optim: curSensorVal is often 0
       {
         if (bonusRate != 100)
@@ -505,16 +501,20 @@ bool CBrain::PollAllSensors (void)
     {
       for (i=0; i<m_FocusedEntityInfo.subcaptorsSize;i++)
       {
-        curSensorVal = m_vCurrentDecisionInput(cpt,0) * 1.2;
-        if (curSensorVal > MAX_SENSOR_VAL)
+        curSensorVal = m_vCurrentDecisionInput(cpt, 0);
+        if (curSensorVal != 0) // CPU optim: curSensorVal is often 0
         {
-          curSensorVal = MAX_SENSOR_VAL;  
+          curSensorVal = curSensorVal * 1.2;
+          if (curSensorVal > MAX_SENSOR_VAL)
+          {
+            curSensorVal = MAX_SENSOR_VAL;
+          }
+          if (curSensorVal < -MAX_SENSOR_VAL)
+          {
+            curSensorVal = -MAX_SENSOR_VAL;
+          }
+          m_vCurrentDecisionInput(cpt, 0) = curSensorVal;
         }
-        if (curSensorVal < -MAX_SENSOR_VAL)
-        {
-          curSensorVal = -MAX_SENSOR_VAL;  
-        }
-        m_vCurrentDecisionInput(cpt,0) = curSensorVal;
         cpt++;
       }
     }
