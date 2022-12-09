@@ -685,9 +685,10 @@ void CybiOgre3DApp::createScene(void)
   plane.d = 100;
   int groundWidth = m_pBiotop->getDimension().y * 10 + 1000;
   int groundHeight = m_pBiotop->getDimension().x * 10 + 1000;
+  int tileSize = (m_pBiotop->getDimension().y + m_pBiotop->getDimension().x) / 6;
   MeshManager::getSingleton().createPlane("Myplane",
     ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-    groundWidth, groundHeight, 60, 60, true, 1, 60, 60, Vector3::UNIT_Z);
+    groundWidth, groundHeight, 60, 60, true, 1, tileSize, tileSize, Vector3::UNIT_Z);
   Entity* pPlaneEnt = mSceneMgr->createEntity( "plane", "Myplane" );
   pPlaneEnt->setMaterialName("Cybios/Ground");
   pPlaneEnt->setCastShadows(false);

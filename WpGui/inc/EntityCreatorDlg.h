@@ -56,7 +56,7 @@ public:
 	UINT	m_StartCoordY;
 	int 	m_StartLayer;
 	//}}AFX_DATA
-  entityIdType GetNewEntityId(void);
+	CBasicEntity* GetTempNewEntity(void);
   bool IsGenomeEditRequired();
 
 // Overrides
@@ -87,7 +87,7 @@ protected:
 
   bool CheckSpecieDataRssource();
 
-  entityIdType m_NewEntityId; // This entity will be used for gene setting but not inserted in 
+	CBasicEntity* m_pTempNewEntity; // This entity will be used for gene setting but not inserted in biotop
   bool         m_GenomeEditRequired;
   CString      m_OpenedFileName;
   CString      m_OpenedDirectoryName;

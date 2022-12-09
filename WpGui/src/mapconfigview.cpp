@@ -251,7 +251,7 @@ bool CMapConfigView::BuildOdorMap(OdorType_e odorType)
     { 
       coord.x = i;
       coord.y = j;
-      m_pBiotop->getOdorLevels(coord,5, odorLevel);
+      m_pBiotop->getOdorLevels(coord, 6, odorLevel);
       tBioSquare[i][j].customColor = 0x00FFFFFF - (DWORD)(floor(25.0*odorLevel[odorType-ODOR_FIRST_TYPE])*257);  
     }
   }

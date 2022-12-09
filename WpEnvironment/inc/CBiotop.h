@@ -123,7 +123,7 @@ typedef struct
 
 typedef struct 
 {
-  BYTE     odorTrace[ODOR_NUMBER_TYPE];
+  BYTE     odorTrace[NUMBER_ODORS];
   COLORREF customColor;                 // Value that can be used by GUI to display user defined colors on the map
   WORD     mapId;                       // Value that can be used by GUI to display paterns on the map
   WORD     altitude;
@@ -290,12 +290,12 @@ private:
   void deleteAllParameters(void);
 
 public:
-  entityIdType addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
-  entityIdType addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
-  entityIdType createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
-  entityIdType createAndAddEntity(string fileNameWithPath, string pathName, Point_t coord);
-  entityIdType createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord);
-  entityIdType createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName = "");
+  bool addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
+  bool addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
+  CBasicEntity* createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
+  CBasicEntity* createAndAddEntity(string fileNameWithPath, string pathName, Point_t coord);
+  CBasicEntity* createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord);
+  CBasicEntity* createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName = "");
 
   bool resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome);
   bool replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity);
@@ -459,7 +459,7 @@ public:
   CGenericParam* getParamTemperature(); 
   CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string& label);
-  double getOdorTrace(Point_t coord, OdorType_e odor);
+  double getOdorTrace(Point_t coord, size_t odorIndex);
   bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
   COLORREF getCustomColor(Point_t coord);
   BiotopSquare_t** getpBioSquare();

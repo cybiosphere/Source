@@ -611,10 +611,9 @@ void CBiotopView::OnAppAddNewEntity()
 
   if (dlgCreate.DoModal() == IDOK)
   {
-    newEntityId = dlgCreate.GetNewEntityId();
-    if ( (newEntityId > 0) && (dlgCreate.IsGenomeEditRequired()) )
+    pNewEntity = dlgCreate.GetTempNewEntity();
+    if ( (pNewEntity != NULL) && (dlgCreate.IsGenomeEditRequired()) )
     {
-      pNewEntity = theApp.GetBiotop()->getEntityById(newEntityId);
 	    CGenomeEditorDlg dlgEdit(pNewEntity);
       dlgEdit.DoModal();
     }

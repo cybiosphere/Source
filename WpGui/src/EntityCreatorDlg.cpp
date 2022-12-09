@@ -53,7 +53,7 @@ CEntityCreatorDlg::CEntityCreatorDlg(CWnd* pParent, int coordX, int coordY, int 
   m_StartCoordY = coordY;
   m_StartLayer  = layer;
 
-  m_NewEntityId = ENTITY_ID_INVALID;
+  m_pTempNewEntity = NULL;
 
   m_GenomeEditRequired = true;
   m_OpenedFileName = "";
@@ -200,24 +200,23 @@ void CEntityCreatorDlg::OnOK()
       m_pTempGenome = new CGenome(selectedClass,(char*)m_EditBoxSpecieName.GetBuffer(0));
     }
 
-    m_NewEntityId = theApp.GetBiotop()->createAndAddEntity((char*)m_EditBoxName.GetBuffer(0),coord,m_StartLayer,m_pTempGenome);
+    m_pTempNewEntity = theApp.GetBiotop()->createAndAddEntity((char*)m_EditBoxName.GetBuffer(0),coord,m_StartLayer,m_pTempGenome);
     m_pTempGenome = NULL;
 
-    if ( (m_GenomeEditRequired==false) && (m_NewEntityId>0) )
+    if ( (m_GenomeEditRequired==false) && (m_pTempNewEntity != NULL) )
     {
       CString filenameWithPath = m_OpenedDirectoryName + m_OpenedFileName;
-      CBasicEntity* pEntity = theApp.GetBiotop()->getEntityById(m_NewEntityId);
-      pEntity->loadDataFromXmlFile((char*)filenameWithPath.GetBuffer(0));
-      pEntity->loadBrainFromXmlFile((char*)filenameWithPath.GetBuffer(0));
+      m_pTempNewEntity->loadDataFromXmlFile((char*)filenameWithPath.GetBuffer(0));
+      m_pTempNewEntity->loadBrainFromXmlFile((char*)filenameWithPath.GetBuffer(0));
     } 
   }
 
 	CDialog::OnOK();
 }
 
-entityIdType CEntityCreatorDlg::GetNewEntityId(void)
+CBasicEntity* CEntityCreatorDlg::GetTempNewEntity(void)
 {
-  return (m_NewEntityId);
+  return (m_pTempNewEntity);
 }
 
 void CEntityCreatorDlg::OnButtonLoad() 
