@@ -116,7 +116,7 @@ CChromosome* CPairOfChromosome::getMaterChromosome ()
   return (m_pMaterChromosome);
 }
 
-size_t CPairOfChromosome::getNumAllele()
+size_t CPairOfChromosome::getNumGenes()
 {
   size_t materNumGen = 0;
   size_t paterNumGen = 0;
@@ -162,8 +162,8 @@ CGene* CPairOfChromosome::getDominantAllele(size_t index)
   else
   {
     // Rq: No check on Gene compatibility.
-    //     No codominance supported => on equal factor, pater is taken
-    if (pPaterGene->getDominanceFactor() < pMaterGene->getDominanceFactor())
+    //     No codominance supported. Dominant allele has the smallest factor
+    if (pPaterGene->getRecessiveFactor() < pMaterGene->getRecessiveFactor())
       pResu = pPaterGene;
     else
       pResu = pMaterGene;

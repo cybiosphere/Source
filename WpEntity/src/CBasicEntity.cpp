@@ -301,7 +301,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   CGene* pGen = NULL;
   for (i=0; i<m_pGenome->getNumPair();i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumAllele();j++)
+    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -326,7 +326,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   // As initialisation of parameter must be finished, don't handle them in prev loop!
   for (i=0; i<m_pGenome->getNumPair();i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumAllele();j++)
+    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -356,7 +356,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   // 4- Set Brain Reactions and Sensors and size according to genome
   for (i=0; i<m_pGenome->getNumPair();i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumAllele();j++)
+    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -390,7 +390,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   resu = false;
   for (i=0; i<m_pGenome->getNumPair();i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumAllele();j++)
+    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())

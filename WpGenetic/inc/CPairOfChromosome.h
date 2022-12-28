@@ -72,7 +72,7 @@ public:
   CChromosome* getPaterChromosome ();
   CChromosome* getMaterChromosome ();
 
-  size_t getNumAllele ();
+  size_t getNumGenes();
   CGene* getDominantAllele (size_t index);
   bool tryMutation(int rate);
 

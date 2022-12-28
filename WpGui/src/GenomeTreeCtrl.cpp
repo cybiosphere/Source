@@ -93,7 +93,14 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
       tmpLabel +=  " ";
       tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
-      hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
+      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == pChromo->getGene(nGene))
+      {
+        hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
+      }
+      else
+      {
+        hGeneNode = InsertItem(tmpLabel, 8, 9, hChromoNode);
+      }
       if (showGenes)
         EnsureVisible(hGeneNode);
       SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
@@ -107,7 +114,14 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
       tmpLabel += " ";
       tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
-      hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
+      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == pChromo->getGene(nGene))
+      {
+        hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
+      }
+      else
+      {
+        hGeneNode = InsertItem(tmpLabel, 8, 9, hChromoNode);
+      }
       if (showGenes)
         EnsureVisible(hGeneNode);
       SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
@@ -241,7 +255,7 @@ CGene* CGenomeTreeCtrl::GetCurrentMotherAllele()
   CGene* pMotherGene = NULL;
   CGene* pFatherGene = NULL;
 
-  for (int i=0; i<pCurPair->getNumAllele(); i++)
+  for (int i=0; i<pCurPair->getNumGenes(); i++)
   {
     pMotherGene = pMotherChromo->getGene(i);
     pFatherGene = pFatherChromo->getGene(i);
@@ -277,7 +291,7 @@ CGene* CGenomeTreeCtrl::GetCurrentFatherAllele()
   CGene* pMotherGene = NULL;
   CGene* pFatherGene = NULL;
 
-  for (int i=0; i<pCurPair->getNumAllele(); i++)
+  for (int i=0; i<pCurPair->getNumGenes(); i++)
   {
     pMotherGene = pMotherChromo->getGene(i);
     pFatherGene = pFatherChromo->getGene(i);

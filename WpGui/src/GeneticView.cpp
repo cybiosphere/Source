@@ -349,14 +349,14 @@ void CGeneticView::DisplayGene(CGene* pGene)
 
   m_strLabel1 = "Gene name";
   m_strLabel2 = "mutation";
-  m_strLabel3 = "dominance";
-  m_strLabel4 = "Raw data";
+  m_strLabel3 = "recessivity";
+  m_strLabel4 = "raw data";
 
   m_strData1 = pGene->getLabel().c_str();
   m_strData1 += FormatString(" (size=%d)", pGene->getDataLen()).c_str();
   tmpStr.Format(LPCTSTR("type:%d rate:%d"),pGene->getMuteType(),pGene->getMuteRate());
   m_strData2 = tmpStr;
-  tmpStr.Format(LPCTSTR("%d"),pGene->getDominanceFactor());
+  tmpStr.Format(LPCTSTR("%d"),pGene->getRecessiveFactor());
   m_strData3 = tmpStr;
   m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str();
   m_strData5 = pGene->buildStringDataFromGene().c_str();

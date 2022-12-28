@@ -948,9 +948,9 @@ bool CGene::buildGeneFromStringData(string rawData)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CGene::getDominanceFactor()
+// METHOD:       CGene::getRecessiveFactor()
 //  
-// DESCRIPTION:  Return a Dominance factor to determine the dominant gene
+// DESCRIPTION:  Return a Recessive factor to determine the dominant allele
 // 
 // ARGUMENTS:    None 
 //   
@@ -958,7 +958,7 @@ bool CGene::buildGeneFromStringData(string rawData)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-int CGene::getDominanceFactor(void)
+int CGene::getRecessiveFactor(void)
 {
   int resu=0;
   
