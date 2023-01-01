@@ -145,6 +145,8 @@ public:
   bool setBrainInstinctInGenes(CBrain* pBrain);
   bool setBrainIdentifyInGenes(CBrain* pBrain);
 
+  std::pair<size_t, size_t> findGeneInGenome(CGene& modelGene, bool findDominantAlleleOnly);
+
 private:
   void deleteAllPairs(void);
 

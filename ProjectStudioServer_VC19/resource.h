@@ -105,12 +105,16 @@
 #define IDC_ENTITY_NAME                 1033
 #define IDC_DATA5                       1033
 #define IDC_RADIO1                      1034
+#define IDC_GENOTYPE                    1034
 #define IDC_LABEL4                      1035
 #define IDC_RADIO2                      1035
 #define IDC_RADIO3                      1036
+#define IDC_PHENOTYPE                   1036
 #define IDC_BUTTON_CREATE               1037
 #define IDC_RADIO4                      1037
 #define IDC_RADIO_NONE                  1037
+#define IDC_EDIT5                       1037
+#define IDC_CLEAR                       1037
 #define IDC_TREE_GENOME                 1038
 #define IDC_RADIO5                      1038
 #define IDC_SPECIE_NAME                 1039
@@ -149,7 +153,6 @@
 #define IDC_BUTTON_MORE                 1067
 #define IDC_COMBO5                      1067
 #define IDC_BUTTON_LESS                 1068
-#define IDC_BUTTON_SAVE2                1068
 #define IDC_BUTTON_FINDGENE             1068
 #define IDC_SET_BRAIN                   1069
 #define IDC_EDIT_MUTE_RATE              1070

@@ -273,6 +273,12 @@ void CBiotopDisplayMFC::RedrawScene()
           }
         }
 
+        // Draw frame around marked entity
+        if (pEntity->isMarked())
+        {
+          pDc->Draw3dRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00BB66FF, 0x00AA55FF);
+        }
+
         // Draw frame around selected entity
         if (pEntity->getId() == m_nSelectedEntityId)
         {

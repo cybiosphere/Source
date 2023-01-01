@@ -202,6 +202,7 @@ CBasicEntity::CBasicEntity()
   m_PrevStepDirection = -1;
   m_bIsImmortal = false;
   m_bIsDrinkable = false;
+  m_bIsMarked = false;
 
   // Caracter pre-init
   m_ColorRgb            = COLOR_UNSET;
@@ -3723,6 +3724,16 @@ void CBasicEntity::setStatus(StatusType_e newStatus)
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
     m_Status = newStatus;
   }
+}
+
+void CBasicEntity::setMarked(bool marked)
+{
+  m_bIsMarked = marked;
+}
+
+bool CBasicEntity::isMarked()
+{
+  return m_bIsMarked;
 }
 
 CPhysicalWelfare* CBasicEntity::getpPhysicalWelfare()

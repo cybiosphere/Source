@@ -316,6 +316,9 @@ public:
   feedbackValType forceEntityAction(entityIdType idEntity, choiceIndType myChoice);
   choiceIndType predictEntityAction(entityIdType idEntity);
 
+  void markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly);
+  void clearMarksOnAllEntities();
+
 //---------------------------------------------------------------------------
 // Entities access
 //---------------------------------------------------------------------------

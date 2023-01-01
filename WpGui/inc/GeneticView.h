@@ -115,6 +115,9 @@ protected:
 	afx_msg void OnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnButtonEdit();
+	afx_msg void OnButtonMarkGenotype();
+	afx_msg void OnButtonMarkPhenotype();
+	afx_msg void OnButtonClear();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

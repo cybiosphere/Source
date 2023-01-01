@@ -736,3 +736,31 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
 
   return true;
 }
+
+std::pair<size_t, size_t> CGenome::findGeneInGenome(CGene& modelGene, bool findDominantAlleleOnly)
+{
+  std::string modelGeneString = modelGene.buildStringDataFromGene();
+  CPairOfChromosome* pPaire = NULL;
+
+  for (size_t paireIndex = 0; paireIndex < m_tPair.size(); paireIndex++)
+  {
+    pPaire = m_tPair[paireIndex];
+    for (int geneIndex = 0; geneIndex < pPaire->getNumGenes(); geneIndex++)
+    {
+      if (findDominantAlleleOnly)
+      {
+        if (pPaire->getDominantAllele(geneIndex)->buildStringDataFromGene() == modelGeneString)
+          return { paireIndex , geneIndex };
+      }
+      else
+      {
+        if (pPaire->getMaterChromosome()->getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
+          return { paireIndex , geneIndex };
+        else if (pPaire->getPaterChromosome()->getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
+          return { paireIndex , geneIndex };
+      }
+    }
+  }
+
+  return { invalidIndex , invalidIndex };
+}

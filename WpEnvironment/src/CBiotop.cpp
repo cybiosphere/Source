@@ -1390,6 +1390,25 @@ choiceIndType CBiotop::predictEntityAction(entityIdType idEntity)
   return (resu);
 }
 
+void CBiotop::markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly)
+{
+  for (CBasicEntity* pCurEntity : m_tEntity)
+  {
+    if (pCurEntity->getGenome()->findGeneInGenome(modelGene, markDominantAlleleOnly).second != invalidIndex)
+      pCurEntity->setMarked(true);
+    else
+      pCurEntity->setMarked(false);
+  }
+}
+
+void CBiotop::clearMarksOnAllEntities()
+{
+  for (CBasicEntity* pCurEntity : m_tEntity)
+  {
+    pCurEntity->setMarked(false);
+  }
+}
+
 //===========================================================================
 // Time management
 //===========================================================================

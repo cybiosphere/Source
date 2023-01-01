@@ -103,6 +103,8 @@ void CEntityFindDlg::fileEntityList(CString filterStr)
 			{
 				if (pCurEnt->isDead())
 					tempStr += " +";
+				if (pCurEnt->isMarked())
+					tempStr += " *";
 				m_EntityList.InsertItem(index, tempStr);
 				tempStr.Format(LPCTSTR("%d"), pCurEnt->getId());
 				m_EntityList.SetItemText(index, 1, tempStr);

@@ -104,7 +104,8 @@ protected:
   bool                m_bIsDrinkable;
   int                 m_Generation;	   // Generation
   int                 m_TotalChildNumber; // Number of descendants
-  entitySignatureType m_EntitySignature; // Entity signature used for identification 
+  entitySignatureType m_EntitySignature; // Entity signature used for identification
+  bool                m_bIsMarked; // Mark can be used to trace specific entities
 
 //---------------------------------------------------------------------------
 // internal proprieties:
@@ -460,6 +461,8 @@ public:
   bool            isImmortal();
   StatusType_e    getStatus();
   void            setStatus(StatusType_e newStatus);
+  void            setMarked(bool marked);
+  bool            isMarked();
 
   ColorCaracterType_e getColorType();
   bool                isPhyAttributePresent(PhyAttributeType_e type);

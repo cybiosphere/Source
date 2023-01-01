@@ -300,7 +300,7 @@ void CDialogTab4::DisplayGene(CGene* pGene)
   m_strData1 = pGene->getLabel().c_str();
   tmpStr.Format("type:%d rate:%d",pGene->getMuteType(),pGene->getMuteRate());
   m_strData2 = tmpStr;
-  tmpStr.Format("%d",pGene->getDominanceFactor());
+  tmpStr.Format("%d",pGene->getRecessiveFactor());
   m_strData3 = tmpStr;
   m_strData4 = m_pEntity->getGeneDescriptionString(pGene).c_str(); 
   m_strData5 = pGene->buildStringDataFromGene().c_str();

@@ -50,6 +50,9 @@ BEGIN_MESSAGE_MAP(CGeneticView, CFormView)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnSelchangedTree1)
 	ON_WM_RBUTTONDOWN()
 	ON_BN_CLICKED(IDC_EDIT, OnButtonEdit)
+  ON_BN_CLICKED(IDC_GENOTYPE, OnButtonMarkGenotype)
+  ON_BN_CLICKED(IDC_PHENOTYPE, OnButtonMarkPhenotype)
+  ON_BN_CLICKED(IDC_CLEAR, OnButtonClear)
 	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 	// Standard printing commands
@@ -380,6 +383,30 @@ void CGeneticView::OnButtonEdit()
 	  dlgEdit.DoModal();
     if (!isAppFrozen) theApp.SetModeManual(false);
   }
+}
+
+void CGeneticView::OnButtonMarkGenotype()
+{
+  if (m_pCurrentGene != NULL)
+  {
+    m_pEntity->getBiotop()->markAllEntitiesWithGene(*m_pCurrentGene, false);
+    theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+  }
+}
+
+void CGeneticView::OnButtonMarkPhenotype()
+{
+  if (m_pCurrentGene != NULL)
+  {
+    m_pEntity->getBiotop()->markAllEntitiesWithGene(*m_pCurrentGene, true);
+    theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+  }
+}
+
+void CGeneticView::OnButtonClear()
+{
+  m_pEntity->getBiotop()->clearMarksOnAllEntities();
+  theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
 }
 
 void CGeneticView::OnSize(UINT nType, int cx, int cy) 
