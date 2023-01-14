@@ -51,6 +51,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CBiotopEditorDlg)
 	enum { IDD = IDD_DLG_BIOTOP_EDITOR };
+	int	m_SeasonPeriodInDays;
 	//}}AFX_DATA
 
 
@@ -68,6 +69,12 @@ protected:
 	//{{AFX_MSG(CBiotopEditorDlg)
 	virtual BOOL OnInitDialog();
   virtual void OnOK();
+	afx_msg void OnRadioClimate1();
+	afx_msg void OnRadioClimate2();
+	afx_msg void OnRadioClimate3();
+	afx_msg void OnRadioClimate4();
+	afx_msg void OnRadioClimate5();
+	afx_msg void OnRadioClimate6();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

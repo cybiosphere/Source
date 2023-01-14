@@ -89,8 +89,13 @@ public:
 // Cycle management
 //---------------------------------------------------------------------------
 public:
-  void NextStep(void);  
+  void nextStep(void);
+  void reconfigure(double valMin, double valMax, int nbStepPerCycle);
+  double getPeriod();
   double getCurrentPhase();
+
+private:
+  void setPeriod(double period);
   void setCurrentPhase(double phase);
 
 //--------------------------------------------------------------------------- 

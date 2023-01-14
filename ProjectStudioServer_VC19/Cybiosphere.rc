@@ -228,6 +228,15 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,274,309,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,343,309,50,14
     GROUPBOX        "Disseminate random entities (rain + custom)",IDC_STATIC,7,200,386,102
+    GROUPBOX        "Climate type",IDC_STATIC,292,7,102,187
+    CONTROL         "Tropical",IDC_CLIMATE1,"Button",BS_AUTORADIOBUTTON,305,72,82,14
+    CONTROL         "Semiarid",IDC_CLIMATE2,"Button",BS_AUTORADIOBUTTON,305,89,82,14
+    CONTROL         "Arid",IDC_CLIMATE3,"Button",BS_AUTORADIOBUTTON,305,106,82,14
+    CONTROL         "Continental",IDC_CLIMATE5,"Button",BS_AUTORADIOBUTTON,305,140,82,14
+    CONTROL         "Temperate",IDC_CLIMATE4,"Button",BS_AUTORADIOBUTTON,305,123,82,14
+    CONTROL         "Polar",IDC_CLIMATE6,"Button",BS_AUTORADIOBUTTON,305,157,82,14
+    EDITTEXT        IDC_EDIT_PERIOD,305,47,38,15,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Season period in days",IDC_STATIC,305,34,79,11
 END
 
 IDD_DLG_MEASURE_EDITOR DIALOG 0, 0, 400, 330
@@ -673,7 +682,19 @@ END
 
 IDD_DLG_BIOTOP_EDITOR AFX_DIALOG_LAYOUT
 BEGIN
-    0
+    0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0
 END
 
 IDD_ABOUTBOX AFX_DIALOG_LAYOUT

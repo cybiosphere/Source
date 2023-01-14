@@ -63,6 +63,7 @@
 #define XML_ATTR_DAY_COUNT    "DayCount"
 #define XML_ATTR_NAME         "Name"
 #define XML_ATTR_VALUE        "Value"
+#define XML_ATTR_PERIOD       "Period"
 #define XML_ATTR_PHASE        "Phase"
 #define XML_ATTR_RANGE_MIN    "Min"
 #define XML_ATTR_RANGE_MAX    "Max"

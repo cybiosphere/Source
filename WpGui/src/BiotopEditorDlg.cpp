@@ -56,6 +56,8 @@ CBiotopEditorDlg::CBiotopEditorDlg(CBiotop* pBiotop,CWnd* pParent /*=NULL*/)
     m_pRandomGeneratorButtonTable[i] = NULL;
     m_pRandomGeneratorParamsTable[i] = NULL;
   }
+
+  m_SeasonPeriodInDays = m_pBiotop->getParamTemperature()->getPeriod() / NUMBER_HOURS_PER_DAY;
 }
 
 CBiotopEditorDlg::~CBiotopEditorDlg()
@@ -88,12 +90,20 @@ void CBiotopEditorDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CBiotopEditorDlg)
+  DDX_Text(pDX, IDC_EDIT_PERIOD, m_SeasonPeriodInDays);
+  DDV_MinMaxInt(pDX, m_SeasonPeriodInDays, 0, 1000);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CBiotopEditorDlg, CDialog)
 	//{{AFX_MSG_MAP(CBiotopEditorDlg)
+  ON_BN_CLICKED(IDC_CLIMATE1, OnRadioClimate1)
+  ON_BN_CLICKED(IDC_CLIMATE2, OnRadioClimate2)
+  ON_BN_CLICKED(IDC_CLIMATE3, OnRadioClimate3)
+  ON_BN_CLICKED(IDC_CLIMATE4, OnRadioClimate4)
+  ON_BN_CLICKED(IDC_CLIMATE5, OnRadioClimate5)
+  ON_BN_CLICKED(IDC_CLIMATE6, OnRadioClimate6)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -176,18 +186,18 @@ void CBiotopEditorDlg::DisplayParamSliders()
     m_pParamSlider[0]->CreateNewParam(m_pBiotop->getParamFertility(),rect,this,1004);
 
     m_pParamSlider[1] = new CParameterSlider();
-    rect.top += 32;
-    rect.bottom += 32;
+    rect.top += 48;
+    rect.bottom += 48;
     m_pParamSlider[1]->CreateNewParam(m_pBiotop->getParamSunlight(),rect,this,1004);
 
     m_pParamSlider[2] = new CParameterSlider();
-    rect.top += 32;
-    rect.bottom += 32;
+    rect.top += 48;
+    rect.bottom += 48;
     m_pParamSlider[2]->CreateNewParam(m_pBiotop->getParamRadioactivity(),rect,this,1004);
 
     m_pParamSlider[3] = new CParameterSlider(true,true);
-    rect.top += 32;
-    rect.bottom += 32;
+    rect.top += 48;
+    rect.bottom += 48;
     m_pParamSlider[3]->CreateNewParam(m_pBiotop->getParamTemperature(),rect,this,1004);
   }
 }
@@ -219,4 +229,52 @@ void CBiotopEditorDlg::OnOK()
     AfxMessageBox("Random entities were configured from remote server. Please select a file localy to update spawner on server", MB_ICONWARNING);
   }
   CDialog::OnOK();
+}
+
+void CBiotopEditorDlg::OnRadioClimate1()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(60, 100, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(20, 28, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
+}
+
+void CBiotopEditorDlg::OnRadioClimate2()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(10, 50, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(20, 26, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
+}
+
+void CBiotopEditorDlg::OnRadioClimate3()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(0, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(20, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
+}
+
+void CBiotopEditorDlg::OnRadioClimate4()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(30, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(5, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
+}
+
+void CBiotopEditorDlg::OnRadioClimate5()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(20, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(10, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
+}
+
+void CBiotopEditorDlg::OnRadioClimate6()
+{
+  UpdateData(true);
+  m_pBiotop->getParamFertility()->reconfigure(10, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  m_pBiotop->getParamTemperature()->reconfigure(-10, 10, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  DisplayParamSliders();
 }

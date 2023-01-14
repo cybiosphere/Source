@@ -58,13 +58,13 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_DefaultFilePath = get_working_path();
 
   m_tParam.resize(0);
-  m_pFertilityRate = new CCyclicParam(10, 50, SEASON_PERIODICITY_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage fertility", PARAM_ENVIRONMENT);
+  m_pFertilityRate = new CCyclicParam(10, 50, DEFAULT_SEASON_PERIOD_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage fertility", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pFertilityRate);
   m_pSunlightRate = new CCyclicParam(0, 100, NUMBER_HOURS_PER_DAY, "Sunlight", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pSunlightRate);
   m_pRadioactivity = new CCustomParam(0, 1, 1, 100, "Radioactivity", PARAM_ENVIRONMENT);
   m_tParam.push_back(m_pRadioactivity);
-  m_pTemperature = new CCyclicParam(20, 26, SEASON_PERIODICITY_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage Temperature", PARAM_ENVIRONMENT); // TBD use global min/max temperature
+  m_pTemperature = new CCyclicParam(20, 26, DEFAULT_SEASON_PERIOD_IN_DAYS * NUMBER_HOURS_PER_DAY, "Avarage Temperature", PARAM_ENVIRONMENT); // TBD use global min/max temperature
   m_tParam.push_back(m_pTemperature);
 
   // Build 3D dynamic table
@@ -1468,9 +1468,9 @@ void CBiotop::nextHour(void)
   m_BioTime.seconds = 0;
   m_BioTime.hours++;
   // Cyclic parameters updates
-  m_pSunlightRate->NextStep();
-  m_pFertilityRate->NextStep();
-  m_pTemperature->NextStep();
+  m_pSunlightRate->nextStep();
+  m_pFertilityRate->nextStep();
+  m_pTemperature->nextStep();
   if (m_BioTime.hours >= NUMBER_HOURS_PER_DAY)
   {
     nextDay();
@@ -2716,11 +2716,11 @@ size_t CBiotop::getNbLayer(void)
   return(m_nbLayer);
 }
 
-CGenericParam* CBiotop::getParamFertility()
+CCyclicParam* CBiotop::getParamFertility()
 {
   return (m_pFertilityRate);
 }
-CGenericParam* CBiotop::getParamSunlight()
+CCyclicParam* CBiotop::getParamSunlight()
 {
   return (m_pSunlightRate);
 }
@@ -2728,7 +2728,7 @@ CGenericParam* CBiotop::getParamRadioactivity()
 {
   return (m_pRadioactivity);
 }
-CGenericParam* CBiotop::getParamTemperature()
+CCyclicParam* CBiotop::getParamTemperature()
 {
   return (m_pTemperature);
 }

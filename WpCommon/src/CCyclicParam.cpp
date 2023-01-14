@@ -44,9 +44,8 @@ CCyclicParam::CCyclicParam(double valMin, double valMax, int nbStepPerCycle, str
 :CGenericParam(valMin, valMax, valMax, valMax, type)
 {
   m_Label = label;
-  m_nbStepPerCycle = nbStepPerCycle;
+  setPeriod(nbStepPerCycle);
   m_CurPhase = 0;
-  m_PhaseStep = 2*CYBIO_PI/nbStepPerCycle;
 }
 
 CCyclicParam::~CCyclicParam()
@@ -67,6 +66,7 @@ bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode)
     TiXmlElement* pElement = (TiXmlElement*)pNodeChild;
     pElement->SetAttribute(XML_ATTR_NAME, getLabel());
     pElement->SetDoubleAttribute(XML_ATTR_VALUE, getVal());
+    pElement->SetDoubleAttribute(XML_ATTR_PERIOD, getPeriod());
     pElement->SetDoubleAttribute(XML_ATTR_PHASE, getCurrentPhase());
     pElement->SetDoubleAttribute(XML_ATTR_RANGE_MIN, getMin());
     pElement->SetDoubleAttribute(XML_ATTR_RANGE_MAX, getMax());
@@ -78,11 +78,15 @@ bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode)
 bool CCyclicParam::loadFromXmlFile(TiXmlNode* pNode)
 {
   TiXmlElement* pElement = (TiXmlElement*)pNode;
-  double paramVal, paramPhase, paramMin, paramMax;
+  double paramVal, paramPeriod, paramPhase, paramMin, paramMax;
 
   if (pElement->QueryDoubleAttribute(XML_ATTR_VALUE, &paramVal) != TIXML_NO_ATTRIBUTE)
   {
     setVal(paramVal);
+  }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_PERIOD, &paramPeriod) != TIXML_NO_ATTRIBUTE)
+  {
+    setPeriod(paramPeriod);
   }
   if (pElement->QueryDoubleAttribute(XML_ATTR_PHASE, &paramPhase) != TIXML_NO_ATTRIBUTE)
   {
@@ -103,7 +107,7 @@ bool CCyclicParam::loadFromXmlFile(TiXmlNode* pNode)
 //===========================================================================
 // Cycle management
 //===========================================================================
-void CCyclicParam::NextStep(void)
+void CCyclicParam::nextStep(void)
 {
   m_CurPhase += m_PhaseStep;
   if (m_CurPhase>2*CYBIO_PI)
@@ -111,6 +115,31 @@ void CCyclicParam::NextStep(void)
     m_CurPhase = 0;
   }
   setVal( (getMax()-getMin()) * (cos(m_CurPhase)+1) / 2 + getMin() );
+}
+
+void CCyclicParam::reconfigure(double valMin, double valMax, int nbStepPerCycle)
+{
+  setValMin(valMin);
+  setValMax(valMax);
+  setVal(valMax);
+  int nbStep = (m_PhaseStep > 0) ? (m_CurPhase / m_PhaseStep) : 0;
+  setPeriod(nbStepPerCycle);
+  m_CurPhase = 0;
+  for (int i = 0; i < m_PhaseStep; i++)
+  {
+    nextStep();
+  }
+}
+
+double CCyclicParam::getPeriod()
+{
+  return m_nbStepPerCycle;
+}
+
+void CCyclicParam::setPeriod(double period)
+{
+  m_nbStepPerCycle = period;
+  m_PhaseStep = (m_nbStepPerCycle > 0) ? (2 * CYBIO_PI / m_nbStepPerCycle) : 0;
 }
 
 double CCyclicParam::getCurrentPhase()

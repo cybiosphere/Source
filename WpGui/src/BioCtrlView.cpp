@@ -307,14 +307,18 @@ void CBioCtrlView::UpdateTimerDisplay(BiotopTime_t* pNewTime)
 {
   m_StrTime.Format(LPCTSTR("Y%d D%d %02d:%02d:%02d"), pNewTime->years, pNewTime->days,
                    pNewTime->hours, pNewTime->seconds/60, pNewTime->seconds%60); 
+  UpdateData(false);
+  UpdateParametersDisplay(false);
+}
 
+void CBioCtrlView::UpdateParametersDisplay(bool resetMinMax)
+{
   // Update also parameter bars
-  for (int i=0;(i<MAX_NUMBER_BIOCTRL_DISPLAY);i++)
+  for (int i = 0; (i < MAX_NUMBER_BIOCTRL_DISPLAY); i++)
   {
     if (m_pParamCtrl[i] != NULL)
-      m_pParamCtrl[i]->RefreshDisplayParam();
+      m_pParamCtrl[i]->RefreshDisplayParam(resetMinMax);
   }
-
   UpdateData(false);
 }
 
@@ -326,6 +330,7 @@ void CBioCtrlView::OnEdit()
   m_pParamCtrl[3]->RefreshDisplayParam(true);
 
   // Redraw biotop View
+  UpdateParametersDisplay(true);
   theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
 }
 

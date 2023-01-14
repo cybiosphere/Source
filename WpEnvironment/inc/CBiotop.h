@@ -456,10 +456,10 @@ public:
   double getSunlight(); 
   LayerType_e getLayerType(Point_t coord, size_t layer);
   size_t getNbLayer(void);
-  CGenericParam* getParamFertility();
-  CGenericParam* getParamSunlight();
+  CCyclicParam* getParamFertility();
+  CCyclicParam* getParamSunlight();
   CGenericParam* getParamRadioactivity(); 
-  CGenericParam* getParamTemperature(); 
+  CCyclicParam* getParamTemperature();
   CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string& label);
   double getOdorTrace(Point_t coord, size_t odorIndex);
