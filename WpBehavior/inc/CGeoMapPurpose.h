@@ -101,7 +101,7 @@ public:
 public:
 
   bool MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight);
-  GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection);
+  GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection, int hourCount);
   void ClearPurposeSuccessOnFullMap(DWORD purposeUid);
   void NextDay();
 
@@ -110,6 +110,10 @@ public:
 
   bool saveInXmlFile(TiXmlDocument* pXmlDoc);
   bool loadFromXmlFile(TiXmlDocument* pXmlDoc);
+
+private:
+  void GetSuccessWeightAndCheckMax(const size_t purposeIdx, const Point_t currentMapCoord, const int initialWeight, 
+                                   int& maxWeight, Point_t& foundMapPos, int& rotationCount);
 
 //---------------------------------------------------------------------------
 // private methods

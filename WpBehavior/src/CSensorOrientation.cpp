@@ -38,6 +38,7 @@ distribution.
 #include "CBrainAnimal.h"
 #include "CAnimal.h"
 #include "CGeoMapPurpose.h"
+#include "CBiotop.h"
 
 //===========================================================================
 // Construction/Destruction
@@ -94,7 +95,8 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
   {
     int targetDirection;
     int curDirection = m_pBrain->getAnimal()->getDirection();
-    GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGridCoord(), targetDirection);
+    int hours = m_pBrain->getAnimal()->getBiotop()->getBiotopTime().hours;
+    GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGridCoord(), targetDirection, hours);
     if (intensity > GeoMapIntensityType_e::FOUND_INTENSITY_NULL)
     {
       if (targetDirection == curDirection)
