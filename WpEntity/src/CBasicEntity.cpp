@@ -2151,19 +2151,14 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
 
   if (m_pBiotop==NULL)
   {
-    m_PrevGridCoord.x = invalidCoord;
-    m_PrevGridCoord.y = invalidCoord;
-    m_PrevStepCoord.x = invalidCoord;
-    m_PrevStepCoord.y = invalidCoord;
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
     m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
     m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_PrevLayer = invalidCoord;
-    if (chooseLayer)
-    {    
-      m_Layer = newLayer;
-    }
+    m_PrevGridCoord = m_GridCoord;
+    m_PrevStepCoord = m_StepCoord;
+    m_Layer = nextLayer;
+    m_PrevLayer = m_Layer;
     resu = true;
   }
   else if ( m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid

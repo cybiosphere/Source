@@ -457,7 +457,11 @@ void CAnimMammal::nextHour()
       else if (getSex() == SEX_FEMALE)
       {
         changeLibidoRate(1.0);
-        if (getLibidoRate()>50)
+        if (getGestationBabyNumber() > 0)
+        {
+          consumeEnergy(100 * (10 + getGestationTime()) * getGestationBabyNumber());
+        }
+        else if (getLibidoRate() > 50)
         {
           setPheromone(PHEROMONE_SEXUAL_FEMALE);
           removeAttribute(PHY_ATTRIBUTE_UDDER);
@@ -954,4 +958,8 @@ void CAnimMammal::setGestationBabyNumber(int nbBaby)
   getParameter(m_id_GestationNumberRange)->forceVal(nbBaby);
 }
 
+int CAnimMammal::getGestationTime()
+{
+  return ((int)getParameter(m_id_GestationTime)->getVal());
+}
 

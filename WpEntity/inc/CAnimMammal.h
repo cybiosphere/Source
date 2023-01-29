@@ -123,6 +123,7 @@ public:
   int getGestationNominalNumber();
   int getGestationBabyNumber();
   void setGestationBabyNumber(int nbBaby);
+  int getGestationTime();
 }; // end CAnimMammal
 
 #endif // !defined(CANIMMAMMAL_INCLUDED_)

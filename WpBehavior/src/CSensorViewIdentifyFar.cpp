@@ -275,7 +275,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
 
-    if (pCurEntity == NULL)
+    if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))
     {
       viewChance = 0;
     }
@@ -294,7 +294,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
     if (pBiotop->getSunlight() < 10)
         viewChance = viewChance/2;
 
-    if ((pCurEntity!=NULL)&&(testChance(viewChance)))
+    if (testChance(viewChance))
     {
       m_pEntityViewIdentifyFarTab[i].index = i;
       m_pEntityViewIdentifyFarTab[i].pEntity = pCurEntity;

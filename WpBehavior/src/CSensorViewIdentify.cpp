@@ -274,7 +274,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
 
-    if (pCurEntity == NULL)
+    if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))
     {
       viewChance = 0;
     }
@@ -290,7 +290,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
       viewChance = 100;
     }
 
-    if ((pCurEntity!=NULL)&&(testChance(viewChance)))
+    if (testChance(viewChance))
     {
       m_pEntityViewIdentifyTab[i].index = i;
       m_pEntityViewIdentifyTab[i].pEntity = pCurEntity;

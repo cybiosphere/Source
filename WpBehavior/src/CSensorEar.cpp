@@ -161,7 +161,7 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   for (size_t j = 0; j < biotopFoundIds.nbFoundIds; j++)
   {
     pCurEntity = tFoundIds[j].pEntity;
-    if (pCurEntity != NULL)
+    if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved())
     {
       noiseRate += pCurEntity->getNoise() / (tFoundIds[j].distance);
     }

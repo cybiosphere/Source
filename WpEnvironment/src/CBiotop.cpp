@@ -2784,7 +2784,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
-    if ((pCurEntity!=NULL) && (pCurEntity->getId() != excludedEntityId))
+    if ((pCurEntity!=NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getId() != excludedEntityId))
     {
       for (size_t odor=0; odor<NUMBER_ODORS; odor++)
       {
