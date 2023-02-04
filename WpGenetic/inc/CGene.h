@@ -91,6 +91,7 @@ public:
 // Configuration
 //---------------------------------------------------------------------------
 public:
+  bool setAsNeutral(void);
   bool setAsCaracter (GeneSubTypeCaracter_e subType, int muteRate, GeneMuteType_e muteType,int dataLen, BYTE* pRawData);
   bool setAsCaracterUsingDefinition(GeneSubTypeCaracter_e subType, int muteRate, DWORD value);
   bool setAsParameter(GeneSubTypeParam_e subType, int muteRate, long min, long nominalVal, long max);

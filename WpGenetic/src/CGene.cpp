@@ -95,6 +95,18 @@ CGene::~CGene()
 // Configuration
 //===========================================================================
 
+bool CGene::setAsNeutral(void)
+{
+  // Clean previous config
+  m_RawData.clear();
+  m_GeneType = GENE_GENERIC;
+  m_GeneSubType = GENE_GENERIC_UNKNOWN;
+  m_MuteRate = 0;
+  m_MuteType = GENE_MUTE_RANDOM_BIT;
+  m_pDefinitions = CGeneList::getDefinitions(GENE_GENERIC, GENE_GENERIC_UNKNOWN);
+  return (true);
+}
+
 //---------------------------------------------------------------------------
 // METHOD:       CGene::setAsCaracter()
 //  

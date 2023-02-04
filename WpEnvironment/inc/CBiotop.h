@@ -255,6 +255,8 @@ private:
 
   BiotopCpuMonitoring_t m_CpuMonitoring[BIOTOP_CPUMARKER_LAST];
   bool m_bColorizeSearch; 
+  CGene m_GeneToMark{ CGene() };
+  bool m_bMarkDominantAlleleOnly{ false };
 
 //---------------------------------------------------------------------------
 // associations
@@ -312,6 +314,7 @@ public:
   size_t getNbOfMinerals(void);
   size_t getNbOfSpecieEntities(string& SpecieName);
   double getSpecieBiomass(string& SpecieName);
+  size_t getNbOfMarkedEntities(void);
 
   feedbackValType forceEntityAction(entityIdType idEntity, choiceIndType myChoice);
   choiceIndType predictEntityAction(entityIdType idEntity);

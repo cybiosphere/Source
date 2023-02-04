@@ -63,7 +63,8 @@ typedef enum
   MEASURE_POPULATION_MINERAL          = 3,
   MEASURE_POPULATION_SPECIFIC         = 4,
   MEASURE_POPULATION_SPECIFIC_BIOMASS = 5,
-  MEASURE_POPULATION_NUMBER_TYPE      = 6
+  MEASURE_POPULATION_MARKED_ENTITIES  = 6,
+  MEASURE_POPULATION_NUMBER_TYPE      = 7
 } MeasurePopulationType_e;
 
 //===========================================================================

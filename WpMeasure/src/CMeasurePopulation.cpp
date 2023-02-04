@@ -48,7 +48,8 @@ const char* MeasurePopulationTypeNameList[MEASURE_POPULATION_NUMBER_TYPE] =
   "Vegetals",
   "Minerals",
   "Specific",
-  "Specific biomass"
+  "Specific biomass",
+  "Marked entities"
 };
 
 //===========================================================================
@@ -81,6 +82,9 @@ CMeasurePopulation::CMeasurePopulation(CBiotop* pBiotop, int period, int id, Mea
     break;
   case  MEASURE_POPULATION_SPECIFIC_BIOMASS:
     m_Label = "Population biomass : " + m_SpecieName;
+    break;
+  case  MEASURE_POPULATION_MARKED_ENTITIES:
+    m_Label = "Population marked entities";
     break;
   default:
     m_Label = "error";
@@ -123,6 +127,9 @@ double CMeasurePopulation::GetCurrentValue()
     break;
   case  MEASURE_POPULATION_SPECIFIC_BIOMASS:
     val = cybio_round(m_pBiotop->getSpecieBiomass(m_SpecieName));
+    break;
+  case  MEASURE_POPULATION_MARKED_ENTITIES:
+    val = m_pBiotop->getNbOfMarkedEntities();
     break;
   default:
     val = 0;

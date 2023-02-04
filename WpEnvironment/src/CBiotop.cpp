@@ -177,6 +177,12 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
     pEntity->getBrain()->SetHomePurposePositionInGeoMap();
   }
 
+  if (m_GeneToMark.getGeneType() != GENE_GENERIC)
+  {
+    if (pEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
+      pEntity->setMarked(true);
+  }
+
   return true;
 }
 
@@ -232,6 +238,12 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   // Update m_IdLastEntity
   if (m_IdLastEntity <= idEntity)
     m_IdLastEntity = idEntity + 1;
+
+  if (m_GeneToMark.getGeneType() != GENE_GENERIC)
+  {
+    if (pEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
+      pEntity->setMarked(true);
+  }
 
   return true;
 }
@@ -639,20 +651,17 @@ size_t CBiotop::getNbOfVegetals()
     if (pEntity->isVegetal() && (pEntity->getId() > 0))
       tempCount++;
   }
-
   return (tempCount);
 }
 
 size_t CBiotop::getNbOfMinerals()
 {
   size_t tempCount = 0;
-
   for (CBasicEntity* pEntity : m_tEntity)
   {
     if (pEntity->isMineral() && (pEntity->getId() > 0))
       tempCount++;
   }
-
   return (tempCount);
 }
 
@@ -683,6 +692,17 @@ double CBiotop::getSpecieBiomass(string& SpecieName)
       tempCount += pEntity->getWeight();
   }
 
+  return (tempCount);
+}
+
+size_t CBiotop::getNbOfMarkedEntities(void)
+{
+  size_t tempCount = 0;
+  for (CBasicEntity* pEntity : m_tEntity)
+  {
+    if (pEntity->isMarked())
+      tempCount++;
+  }
   return (tempCount);
 }
 
@@ -1392,9 +1412,11 @@ choiceIndType CBiotop::predictEntityAction(entityIdType idEntity)
 
 void CBiotop::markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly)
 {
+  m_GeneToMark = modelGene;
+  m_bMarkDominantAlleleOnly = markDominantAlleleOnly;
   for (CBasicEntity* pCurEntity : m_tEntity)
   {
-    if (pCurEntity->getGenome()->findGeneInGenome(modelGene, markDominantAlleleOnly).second != invalidIndex)
+    if (pCurEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
       pCurEntity->setMarked(true);
     else
       pCurEntity->setMarked(false);
@@ -1403,6 +1425,8 @@ void CBiotop::markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleO
 
 void CBiotop::clearMarksOnAllEntities()
 {
+  m_GeneToMark.setAsNeutral();
+  m_bMarkDominantAlleleOnly = false;
   for (CBasicEntity* pCurEntity : m_tEntity)
   {
     pCurEntity->setMarked(false);
