@@ -322,6 +322,9 @@ public:
   void markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly);
   void clearMarksOnAllEntities();
 
+private:
+  void markEntityWithGene(CBasicEntity* pEntity);
+
 //---------------------------------------------------------------------------
 // Entities access
 //---------------------------------------------------------------------------
@@ -477,6 +480,8 @@ public:
   BiotopRandomEntitiyGeneration_t& getRandomEntitiyGeneration(size_t index);
   size_t getNumberOfRandomEntitiyGeneration();
   void SetColorizeSearchMode(bool bColorizeSearch);
+  CGene& getGeneToMark();
+  bool getMarkDominantAlleleOnly();
 
 }; // end CBiotop
 

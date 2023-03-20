@@ -177,11 +177,7 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
     pEntity->getBrain()->SetHomePurposePositionInGeoMap();
   }
 
-  if (m_GeneToMark.getGeneType() != GENE_GENERIC)
-  {
-    if (pEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
-      pEntity->setMarked(true);
-  }
+  markEntityWithGene(pEntity);
 
   return true;
 }
@@ -239,11 +235,7 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   if (m_IdLastEntity <= idEntity)
     m_IdLastEntity = idEntity + 1;
 
-  if (m_GeneToMark.getGeneType() != GENE_GENERIC)
-  {
-    if (pEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
-      pEntity->setMarked(true);
-  }
+  markEntityWithGene(pEntity);
 
   return true;
 }
@@ -1416,10 +1408,18 @@ void CBiotop::markAllEntitiesWithGene(CGene& modelGene, bool markDominantAlleleO
   m_bMarkDominantAlleleOnly = markDominantAlleleOnly;
   for (CBasicEntity* pCurEntity : m_tEntity)
   {
-    if (pCurEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
-      pCurEntity->setMarked(true);
+    markEntityWithGene(pCurEntity);
+  }
+}
+
+void CBiotop::markEntityWithGene(CBasicEntity* pEntity)
+{
+  if (m_GeneToMark.getGeneType() != GENE_GENERIC)
+  {
+    if (pEntity->getGenome()->findGeneInGenome(m_GeneToMark, m_bMarkDominantAlleleOnly).second != invalidIndex)
+      pEntity->setMarked(true);
     else
-      pCurEntity->setMarked(false);
+      pEntity->setMarked(false);
   }
 }
 
@@ -2884,4 +2884,14 @@ size_t CBiotop::getNumberOfRandomEntitiyGeneration()
 void CBiotop::SetColorizeSearchMode(bool bColorizeSearch)
 {
   m_bColorizeSearch = bColorizeSearch;
+}
+
+CGene& CBiotop::getGeneToMark()
+{
+  return m_GeneToMark;
+}
+
+bool CBiotop::getMarkDominantAlleleOnly()
+{
+  return m_bMarkDominantAlleleOnly;
 }

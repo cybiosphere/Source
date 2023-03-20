@@ -60,6 +60,7 @@ private:
 	void on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* user);
+	void on_event_biotop_markEntitiesWithGene(const NetGameEvent& e, ServerUser* user);
 	void on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user);
 
 public:
@@ -77,6 +78,7 @@ public:
 	void send_event_new_second_start(ServerUser* user = NULL);
 	void send_event_new_second_end(ServerUser* user = NULL);
 	void send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user = NULL);
+	void send_event_mark_entities_with_gene(CGene& modelGene, bool markDominantAlleleOnly, ServerUser* user = NULL);
 
 private:
   bool process_cmd_line(const std::string input_cmd_string);

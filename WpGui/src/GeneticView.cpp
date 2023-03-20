@@ -389,8 +389,7 @@ void CGeneticView::OnButtonMarkGenotype()
 {
   if (m_pCurrentGene != NULL)
   {
-    m_pEntity->getBiotop()->markAllEntitiesWithGene(*m_pCurrentGene, false);
-    theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+    theApp.addGeneticMarker(*m_pCurrentGene, false);
   }
 }
 
@@ -398,15 +397,13 @@ void CGeneticView::OnButtonMarkPhenotype()
 {
   if (m_pCurrentGene != NULL)
   {
-    m_pEntity->getBiotop()->markAllEntitiesWithGene(*m_pCurrentGene, true);
-    theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+    theApp.addGeneticMarker(*m_pCurrentGene, true);
   }
 }
 
 void CGeneticView::OnButtonClear()
 {
-  m_pEntity->getBiotop()->clearMarksOnAllEntities();
-  theApp.GetBiotopViewPtr()->ForceRefreshDisplay(true);
+  theApp.clearGeneticMarker();
 }
 
 void CGeneticView::OnSize(UINT nType, int cx, int cy) 

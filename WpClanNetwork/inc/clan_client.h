@@ -44,6 +44,7 @@ public:
   void send_event_request_entity_refresh(CBasicEntity* pEntity);
   void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator);
   void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie);
+  void send_event_mark_entities_with_gene(CGene& modelGene, bool markDominantAlleleOnly);
   void send_event_new_second_end();
 
 private:
@@ -67,6 +68,7 @@ private:
   void on_event_biotop_createmeasure(const NetGameEvent& e);
   void on_event_biotop_addEntitySpawner(const NetGameEvent& e);
   void on_event_biotop_createspeciemap(const NetGameEvent& e);
+  void on_event_biotop_markEntitiesWithGene(const NetGameEvent& e);
   void on_event_biotop_changeentitycontrol(const NetGameEvent& e);
   void on_event_biotop_changespeed(const NetGameEvent& e);
   void on_event_biotop_requestentityrefresh(const NetGameEvent& e);

@@ -121,6 +121,10 @@ public:
   void proceedBiotopNextSecond();
   void addGeomapSpecieInBiotop(std::string specieName);
   void proceedBiotopEvents();
+  void addGeneticMarker(CGene& modelGene, bool markDominantAlleleOnly);
+  void clearGeneticMarker();
+  void updateBiotopClimate(double fertilityMin, double fertilityMax, int fertilityPeriod,
+                           double temperatureMin, double temperatureMax, int temperaturePeriod);
 
 // Overrides
 	// ClassWizard generated virtual function overrides

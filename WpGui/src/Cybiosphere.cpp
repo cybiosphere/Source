@@ -818,3 +818,43 @@ void CCybiosphereApp::addGeomapSpecieInBiotop(std::string specieName)
   m_pServer->send_event_create_specie_map(pGeoMapPopu);
 #endif // USE_CLAN_SERVER
 }
+
+void CCybiosphereApp::addGeneticMarker(CGene& modelGene, bool markDominantAlleleOnly)
+{
+  m_pBiotop->markAllEntitiesWithGene(modelGene, markDominantAlleleOnly);
+  GetBiotopViewPtr()->ForceRefreshDisplay(true);
+
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_mark_entities_with_gene(modelGene, markDominantAlleleOnly);
+#endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_mark_entities_with_gene(modelGene, markDominantAlleleOnly);
+#endif // USE_CLAN_SERVER
+}
+
+void CCybiosphereApp::clearGeneticMarker()
+{
+  m_pBiotop->clearMarksOnAllEntities();
+  GetBiotopViewPtr()->ForceRefreshDisplay(true);
+
+#ifdef USE_CLAN_CLIENT
+  m_pClient->send_event_mark_entities_with_gene(CGene{}, false);
+#endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+  m_pServer->send_event_mark_entities_with_gene(CGene{}, false);
+#endif // USE_CLAN_SERVER
+}
+
+void CCybiosphereApp::updateBiotopClimate(double fertilityMin, double fertilityMax, int fertilityPeriod,
+                                          double temperatureMin, double temperatureMax, int temperaturePeriod)
+{
+  m_pBiotop->getParamFertility()->reconfigure(fertilityMin, fertilityMax, fertilityPeriod);
+  m_pBiotop->getParamTemperature()->reconfigure(temperatureMin, temperatureMax, temperaturePeriod);
+
+#ifdef USE_CLAN_CLIENT
+  //m_pClient->send_event_create_specie_map(pGeoMapPopu);
+#endif // USE_CLAN_CLIENT
+#ifdef USE_CLAN_SERVER
+  //m_pServer->send_event_create_specie_map(pGeoMapPopu);
+#endif // USE_CLAN_SERVER
+}

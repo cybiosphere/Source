@@ -234,47 +234,41 @@ void CBiotopEditorDlg::OnOK()
 void CBiotopEditorDlg::OnRadioClimate1()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(60, 100, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(20, 28, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(60, 100, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 28, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate2()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(10, 50, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(20, 26, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(10, 50, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 26, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate3()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(0, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(20, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(0, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate4()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(30, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(5, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(30, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 5, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate5()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(20, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(10, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(20, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 10, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate6()
 {
   UpdateData(true);
-  m_pBiotop->getParamFertility()->reconfigure(10, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
-  m_pBiotop->getParamTemperature()->reconfigure(-10, 10, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(10, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, -10, 10, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }

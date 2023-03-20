@@ -451,6 +451,30 @@ namespace clan
     }
   }
 
+  NetGameEvent event_manager::buildEventMarkEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly)
+  {
+    NetGameEvent newEvent(labelEventMarkEntities);
+    newEvent.add_argument(modelGene.buildStringDataFromGene());
+    newEvent.add_argument((int)markDominantAlleleOnly);
+    return (std::move(newEvent));
+  }
+
+  bool event_manager::handleEventMarkEntitiesWithGene(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    std::string geneString = e.get_argument(0);
+    int markDominantAlleleOnly = e.get_argument(1);
+    CGene geneToMark{};
+    geneToMark.buildGeneFromStringData(geneString);
+    if (geneToMark.getGeneType() != GENE_GENERIC)
+    {
+      pBiotop->markAllEntitiesWithGene(geneToMark, markDominantAlleleOnly);
+    }
+    else
+    {
+      pBiotop->clearMarksOnAllEntities();
+    }
+  }
+
   NetGameEvent event_manager::buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl)
   {
     NetGameEvent newEvent(labelEventChangeRemoteControl);

@@ -47,6 +47,7 @@ m_bManualMode(false)
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Server::on_event_biotop_requestentityrefresh);
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Server::on_event_biotop_createspeciemap);
+  game_events.func_event(labelEventMarkEntities) = clan::bind_member(this, &Server::on_event_biotop_markEntitiesWithGene);
   game_events.func_event(labelEventNextSecEnd) = clan::bind_member(this, &Server::on_event_biotop_nextsecond_end);
 }
 
@@ -431,6 +432,11 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     }
 
 	  user->send_event(NetGameEvent(labelEventStart, nextHourTimeOffsetForClient));
+
+    if (m_pBiotop->getGeneToMark().getGeneType() != GENE_GENERIC)
+    {
+      send_event_mark_entities_with_gene(m_pBiotop->getGeneToMark(), m_pBiotop->getMarkDominantAlleleOnly());
+    }
   }
 
   // Restore biotop time
@@ -528,6 +534,10 @@ void Server::on_event_biotop_createspeciemap(const NetGameEvent& e, ServerUser* 
   m_EventManager.handleEventCreateGeoMapSpecie(e, m_pBiotop);
 }
 
+void Server::on_event_biotop_markEntitiesWithGene(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventMarkEntitiesWithGene(e, m_pBiotop);
+}
 
 void Server::on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user)
 {
@@ -807,6 +817,16 @@ void Server::send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser
     network_server.send_event(bioReqActionRefresh);
   else
     user->send_event(bioReqActionRefresh);
+}
+
+void Server::send_event_mark_entities_with_gene(CGene& modelGene, bool markDominantAlleleOnly, ServerUser* user)
+{
+  log_event(labelServer, "Mark entities with gene");
+  NetGameEvent bioMarkEntities{ event_manager::buildEventMarkEntitiesWithGene(modelGene, markDominantAlleleOnly) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioMarkEntities);
+  else
+    user->send_event(bioMarkEntities);
 }
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)

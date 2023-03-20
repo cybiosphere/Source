@@ -27,6 +27,7 @@ namespace clan
   const std::string labelEventCreateMeasure    { "Biotop-Create measure" };
   const std::string labelEventAddEntitySpawner { "Biotop-Add entity spawner" };
   const std::string labelEventCreateSpecieMap  { "Biotop-Create specie map" };
+  const std::string labelEventMarkEntities     { "Biotop-Mark entities" };
   const std::string labelEventChangeBiotopSpeed{ "Biotop-Change speed" };
   const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
   const std::string labelEventReqEntityRefresh { "Biotop-Req entity refresh" };
