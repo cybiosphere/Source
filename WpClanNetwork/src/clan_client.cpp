@@ -44,6 +44,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Client::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Client::on_event_biotop_createspeciemap);
   game_events.func_event(labelEventMarkEntities) = clan::bind_member(this, &Client::on_event_biotop_markEntitiesWithGene);
+  game_events.func_event(labelEventUpdateClimate) = clan::bind_member(this, &Client::on_event_biotop_updateClimate);
   game_events.func_event(labelEventChangeRemoteControl) = clan::bind_member(this, &Client::on_event_biotop_changeentitycontrol);
   game_events.func_event(labelEventChangeBiotopSpeed) = clan::bind_member(this, &Client::on_event_biotop_changespeed);
   game_events.func_event(labelEventReqEntityRefresh) = clan::bind_member(this, &Client::on_event_biotop_requestentityrefresh);
@@ -374,6 +375,11 @@ void Client::on_event_biotop_markEntitiesWithGene(const NetGameEvent& e)
   m_EventManager.handleEventMarkEntitiesWithGene(e, m_pBiotop);
 }
 
+void Client::on_event_biotop_updateClimate(const NetGameEvent& e)
+{
+  m_EventManager.handleEventUpdateClimate(e, m_pBiotop);
+}
+
 void Client::on_event_biotop_changeentitycontrol(const NetGameEvent& e)
 {
   event_manager::handleEventChangeEntityRemoteControl(e, m_pBiotop);
@@ -630,6 +636,13 @@ void Client::send_event_mark_entities_with_gene(CGene& modelGene, bool markDomin
   log_event(labelClient, "Mark entities with gene");
   NetGameEvent bioMarkEntities{ event_manager::buildEventMarkEntitiesWithGene(modelGene, markDominantAlleleOnly) };
   network_client.send_event(bioMarkEntities);
+}
+
+void Client::send_event_update_biotop_climate(CCyclicParam& fertility, CCyclicParam& temperature)
+{
+  log_event(labelClient, "Update biotop climate");
+  NetGameEvent bioUpdateClimate{ event_manager::buildEventUpdateClimate(fertility, temperature) };
+  network_client.send_event(bioUpdateClimate);
 }
 
 void Client::send_event_new_second_end()

@@ -31,6 +31,7 @@ namespace clan
   const std::string labelEventChangeBiotopSpeed{ "Biotop-Change speed" };
   const std::string labelEventNextSecEnd       { "Biotop-Next second end" };
   const std::string labelEventReqEntityRefresh { "Biotop-Req entity refresh" };
+  const std::string labelEventUpdateClimate    { "Biotop-Update climate" };
 
   // Label logs
   const std::string labelAttach{ "Attach" };

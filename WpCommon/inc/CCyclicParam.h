@@ -81,8 +81,8 @@ public:
  //---------------------------------------------------------------------------
  // Save/Load in xml file
  //---------------------------------------------------------------------------
-  virtual bool saveInXmlFile(TiXmlNode* pNode);
-  virtual bool loadFromXmlFile(TiXmlNode* pNode);
+  bool saveInXmlFile(TiXmlNode* pNode);
+  bool loadFromXmlFile(TiXmlNode* pNode);
 
 
 //---------------------------------------------------------------------------

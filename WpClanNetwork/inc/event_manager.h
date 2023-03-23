@@ -58,6 +58,9 @@ namespace clan
     static NetGameEvent event_manager::buildEventMarkEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly);
     static bool handleEventMarkEntitiesWithGene(const NetGameEvent& e, CBiotop* pBiotop);
 
+    static NetGameEvent event_manager::buildEventUpdateClimate(CCyclicParam& fertility, CCyclicParam& temperature);
+    static bool handleEventUpdateClimate(const NetGameEvent& e, CBiotop* pBiotop);
+
     static NetGameEvent buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl);
     static bool handleEventChangeEntityRemoteControl(const NetGameEvent& e, CBiotop* pBiotop);
 

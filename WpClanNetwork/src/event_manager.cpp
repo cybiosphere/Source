@@ -475,6 +475,30 @@ namespace clan
     }
   }
 
+  NetGameEvent event_manager::buildEventUpdateClimate(CCyclicParam& fertility, CCyclicParam& temperature)
+  {
+    NetGameEvent newEvent(labelEventUpdateClimate);
+    newEvent.add_argument((float)fertility.getMin());
+    newEvent.add_argument((float)fertility.getMax());
+    newEvent.add_argument((float)fertility.getPeriod());
+    newEvent.add_argument((float)temperature.getMin());
+    newEvent.add_argument((float)temperature.getMax());
+    newEvent.add_argument((float)temperature.getPeriod());
+    return (std::move(newEvent));
+  }
+
+  bool event_manager::handleEventUpdateClimate(const NetGameEvent& e, CBiotop* pBiotop)
+  {
+    float fertilityMin = e.get_argument(0);
+    float fertilityMax = e.get_argument(1);
+    float fertilityPeriod = e.get_argument(2);
+    float temperatureMin = e.get_argument(3);
+    float temperatureMax = e.get_argument(4);
+    float temperaturePeriod = e.get_argument(5);
+    pBiotop->getParamFertility()->reconfigure(fertilityMin, fertilityMax, fertilityPeriod);
+    pBiotop->getParamTemperature()->reconfigure(temperatureMin, temperatureMax, temperaturePeriod);
+  }
+
   NetGameEvent event_manager::buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl)
   {
     NetGameEvent newEvent(labelEventChangeRemoteControl);

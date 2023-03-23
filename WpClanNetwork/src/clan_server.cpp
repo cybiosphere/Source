@@ -48,6 +48,7 @@ m_bManualMode(false)
   game_events.func_event(labelEventAddEntitySpawner) = clan::bind_member(this, &Server::on_event_biotop_addEntitySpawner);
   game_events.func_event(labelEventCreateSpecieMap) = clan::bind_member(this, &Server::on_event_biotop_createspeciemap);
   game_events.func_event(labelEventMarkEntities) = clan::bind_member(this, &Server::on_event_biotop_markEntitiesWithGene);
+  game_events.func_event(labelEventUpdateClimate) = clan::bind_member(this, &Server::on_event_biotop_updateClimate);
   game_events.func_event(labelEventNextSecEnd) = clan::bind_member(this, &Server::on_event_biotop_nextsecond_end);
 }
 
@@ -539,6 +540,11 @@ void Server::on_event_biotop_markEntitiesWithGene(const NetGameEvent& e, ServerU
   m_EventManager.handleEventMarkEntitiesWithGene(e, m_pBiotop);
 }
 
+void Server::on_event_biotop_updateClimate(const NetGameEvent& e, ServerUser* user)
+{
+  m_EventManager.handleEventUpdateClimate(e, m_pBiotop);
+}
+
 void Server::on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user)
 {
   user->isNextSecondCompleted = true;
@@ -827,6 +833,16 @@ void Server::send_event_mark_entities_with_gene(CGene& modelGene, bool markDomin
     network_server.send_event(bioMarkEntities);
   else
     user->send_event(bioMarkEntities);
+}
+
+void Server::send_event_update_biotop_climate(CCyclicParam& fertility, CCyclicParam& temperature, ServerUser* user)
+{
+  log_event(labelServer, "Update biotop climate");
+  NetGameEvent bioUpdateClimate{ event_manager::buildEventUpdateClimate(fertility, temperature) };
+  if (user == NULL) // If user not define, broadcast info to all
+    network_server.send_event(bioUpdateClimate);
+  else
+    user->send_event(bioUpdateClimate);
 }
 
 bool Server::CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
