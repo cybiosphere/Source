@@ -852,9 +852,9 @@ void CCybiosphereApp::updateBiotopClimate(double fertilityMin, double fertilityM
   m_pBiotop->getParamTemperature()->reconfigure(temperatureMin, temperatureMax, temperaturePeriod);
 
 #ifdef USE_CLAN_CLIENT
-  //m_pClient->send_event_create_specie_map(pGeoMapPopu);
+  m_pClient->send_event_update_biotop_climate(*m_pBiotop->getParamFertility(), *m_pBiotop->getParamTemperature());
 #endif // USE_CLAN_CLIENT
 #ifdef USE_CLAN_SERVER
-  //m_pServer->send_event_create_specie_map(pGeoMapPopu);
+  m_pServer->send_event_update_biotop_climate(*m_pBiotop->getParamFertility(), *m_pBiotop->getParamTemperature());
 #endif // USE_CLAN_SERVER
 }
