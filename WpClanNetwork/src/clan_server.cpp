@@ -543,6 +543,8 @@ void Server::on_event_biotop_markEntitiesWithGene(const NetGameEvent& e, ServerU
 void Server::on_event_biotop_updateClimate(const NetGameEvent& e, ServerUser* user)
 {
   m_EventManager.handleEventUpdateClimate(e, m_pBiotop);
+  // Forward new climate parameters to all clients
+  send_event_update_biotop_climate(*m_pBiotop->getParamFertility(), *m_pBiotop->getParamTemperature());
 }
 
 void Server::on_event_biotop_nextsecond_end(const NetGameEvent& e, ServerUser* user)

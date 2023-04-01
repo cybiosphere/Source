@@ -55,10 +55,10 @@ namespace clan
     static bool buildEventsCreateGeoMapSpecie(CGeoMapPopulation* pGeoMap, std::vector<NetGameEvent>& eventVector);
     void handleEventCreateGeoMapSpecie(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent event_manager::buildEventMarkEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly);
+    static NetGameEvent buildEventMarkEntitiesWithGene(CGene& modelGene, bool markDominantAlleleOnly);
     static bool handleEventMarkEntitiesWithGene(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent event_manager::buildEventUpdateClimate(CCyclicParam& fertility, CCyclicParam& temperature);
+    static NetGameEvent buildEventUpdateClimate(CCyclicParam& fertility, CCyclicParam& temperature);
     static bool handleEventUpdateClimate(const NetGameEvent& e, CBiotop* pBiotop);
 
     static NetGameEvent buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl);
