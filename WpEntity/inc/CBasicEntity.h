@@ -340,10 +340,12 @@ public:
   virtual choiceIndType   predictNextAction();
 
   virtual void autoKill();
-  virtual bool moveLinear(int nbSteps);
-  virtual bool turnRight(size_t nDegree);
-  virtual bool turnLeft(size_t nDegree);
-  virtual void doNothing();
+  virtual void setDirection(int direction);
+  bool moveLinear(int nbSteps);
+  bool turnRight(size_t nDegree);
+  bool turnLeft(size_t nDegree);
+  void doNothing();
+
 
   bool jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
   bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
@@ -403,7 +405,6 @@ public:
   size_t          getPrevLayer();
   size_t          getDefaultLayer();
   int             getDirection();
-  void            setDirection(int direction);
   int             getStepDirection();
   void            setStepDirection(int stepDirection, bool addMoveEvent = false);
   int             getPrevStepDirection();

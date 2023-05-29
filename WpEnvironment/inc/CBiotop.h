@@ -255,7 +255,7 @@ private:
 
   BiotopCpuMonitoring_t m_CpuMonitoring[BIOTOP_CPUMARKER_LAST];
   bool m_bColorizeSearch; 
-  CGene m_GeneToMark{ CGene() };
+  CGene m_GeneToMark{};
   bool m_bMarkDominantAlleleOnly{ false };
 
 //---------------------------------------------------------------------------

@@ -227,6 +227,7 @@ public:
   virtual bool ExecuteAttackAction(int relLayer, int stepRange, double successSatisfactionFactor, double failureFrustrationFactor, ReactionIntensityType_e intensity);
   virtual bool ExecuteSleepAction(void);
 
+  void setDirection(int direction);
   void wakeUp(void);
   void lookForward(void);
   void turnHeadLeft(void);

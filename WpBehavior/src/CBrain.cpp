@@ -1329,7 +1329,7 @@ CFeelingWelfare* CBrain::GetpFeelingWelfare()
 
 size_t CBrain::GetCurrentReactionIndex(void)
 {
-  return ((int)m_CurrentReactionChoice);
+  return ((size_t)m_CurrentReactionChoice);
 }
 
 bool CBrain::SetCurrentReactionIndex(size_t index)

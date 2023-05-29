@@ -2189,8 +2189,7 @@ void CAnimal::nextSecond()
     feedbackValType myFeedback;
     size_t prevReactIndex = m_pBrain->GetCurrentReactionIndex();
 
-    resu = m_pBrain->PollAllSensors();	
-    if (resu && !isUserControlled())
+    if (m_pBrain->PollAllSensors())
     {
       // Fear
       getParameter(m_id_Fear)->setVal(m_pFeelingFear->ComputeAndGetFeelingFear());
@@ -3523,6 +3522,13 @@ bool CAnimal::ExecuteSleepAction()
   // bonus
   changeTirednessRate(-0.2);
   return (true);
+}
+
+
+void CAnimal::setDirection(int direction)
+{
+  CBasicEntity::setDirection(direction);
+  lookForward();
 }
 
 //---------------------------------------------------------------------------

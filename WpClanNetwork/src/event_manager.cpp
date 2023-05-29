@@ -473,6 +473,7 @@ namespace clan
     {
       pBiotop->clearMarksOnAllEntities();
     }
+    return true;
   }
 
   NetGameEvent event_manager::buildEventUpdateClimate(CCyclicParam& fertility, CCyclicParam& temperature)
@@ -497,6 +498,7 @@ namespace clan
     float temperaturePeriod = e.get_argument(5);
     pBiotop->getParamFertility()->reconfigure(fertilityMin, fertilityMax, fertilityPeriod);
     pBiotop->getParamTemperature()->reconfigure(temperatureMin, temperatureMax, temperaturePeriod);
+    return true;
   }
 
   NetGameEvent event_manager::buildEventChangeEntityRemoteControl(entityIdType entityId, bool setRemoteControl)
