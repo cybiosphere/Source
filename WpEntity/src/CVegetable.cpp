@@ -540,7 +540,6 @@ void CVegetable::nextDay(bool forceGrowth)
       getParameter(m_id_Age)->changeVal(1);
       if (getParameter(m_id_Age)->isMaxReached())
       {
-        setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
         autoKill();
       }
     }
@@ -595,7 +594,6 @@ bool CVegetable::changeHealthRate(double variation)
 
   if (getParameter(m_id_Health)->isMinReached())
   {
-    setColor(0x0020A0A0);  // Color in RGB when vegetal is dead
     autoKill();
     return false;
   }
@@ -610,7 +608,11 @@ void CVegetable::setHealthRate(double rate)
 //===========================================================================
 // Behavior  
 //===========================================================================
-
+void CVegetable::autoKill()
+{
+  setColor(0x0082B4F0);  // Color in Beige when vegetal is dead
+  CBasicEntity::autoKill();
+}
 
 //===========================================================================
 // Get / Set for attributes
@@ -655,7 +657,7 @@ double CVegetable::changeWeight(double variation)
     {
       // Vegetal is totaly eaten but will survive
       // change temporaly color and protection
-      setColor(0x00008080);  // Color in RGB when vegetal has no more leafs
+      setColor(0x00008080);  // Color Brown when vegetal has no more leafs
       setProtection(50.0);   // Protection when vegetal has no more leafs 
       setOdor(ODOR_NONE);    // Odor when vegetal has no more leafs 
       return CBasicEntity::changeWeight(-remaining + 0.01);

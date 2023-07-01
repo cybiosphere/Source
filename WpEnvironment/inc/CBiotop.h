@@ -124,6 +124,7 @@ typedef struct
 typedef struct 
 {
   BYTE     odorTrace[NUMBER_ODORS];
+  char     fertilityBonus;
   COLORREF customColor;                 // Value that can be used by GUI to display user defined colors on the map
   WORD     mapId;                       // Value that can be used by GUI to display paterns on the map
   WORD     altitude;
@@ -375,6 +376,7 @@ public:
   void initGridDefaultLayerType(void);
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
+  void updateGridFertilityBonus(void);
   void updateGridEntity(CBasicEntity* pEntity);
   int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
 

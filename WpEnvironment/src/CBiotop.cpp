@@ -1815,6 +1815,34 @@ void CBiotop::initGridEntity(void)
   }
 
   updateGridAllEntities();
+  updateGridFertilityBonus();
+}
+
+void CBiotop::updateGridFertilityBonus(void)
+{
+  CBasicEntity* pCurEntity = NULL;
+  int currentBonus;
+  for (size_t i = 0; i < m_Dimension.x; i++)
+  {
+    for (size_t j = 0; j < m_Dimension.y; j++)
+    {
+      m_tBioSquare[i][j].fertilityBonus = 0;
+      const BiotopFoundIds_t& biotopFoundIds = findEntities({ i, j }, 10, true);
+      const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
+      for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
+      {
+        pCurEntity = tFoundIds[ind].pEntity;
+        if (pCurEntity->isDrinkable())
+        {
+          currentBonus = 16 - tFoundIds[ind].distance;
+          if (currentBonus > m_tBioSquare[i][j].fertilityBonus)
+          {
+            m_tBioSquare[i][j].fertilityBonus = currentBonus;
+          }
+        }
+      }  
+    }
+  }
 }
 
 void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
@@ -2667,7 +2695,10 @@ Point_t CBiotop::getDimension()
 
 double CBiotop::getFertility(Point_t coord)
 {
-  // coord may be used later
+  if (isCoordValid(coord, 1))
+  {
+    return m_pFertilityRate->getVal() + m_tBioSquare[coord.x][coord.y].fertilityBonus;
+  }
   return m_pFertilityRate->getVal();
 }
 
