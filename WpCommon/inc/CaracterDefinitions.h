@@ -177,6 +177,20 @@ enum MoveType_e
   MOVE_NUMBER_TYPE  
 };
 
+// CPU optim: use Macro
+#define indexToColorType(index)  (ColorCaracterType_e)(index + COLOR_CARACTER_FIRST_TYPE)
+#define indexToTextureType(index) (TextureType_e)(index + TEXTURE_FIRST_TYPE)
+#define indexToFormType(index) (FormType_e)(index + FORM_FIRST_TYPE)
+#define indexToAttributeType(index) (PhyAttributeType_e)(index + PHY_ATTRIBUTE_FIRST_TYPE)
+#define indexToOdorType(index) (OdorType_e)(index + ODOR_FIRST_TYPE)
+
+#define PheromoneTypeToIndex(type) (type - PHEROMONE_FIRST_TYPE)
+#define TextureTypeToIndex(type) (type - TEXTURE_FIRST_TYPE)
+#define OdorTypeToIndex(type) (type - ODOR_FIRST_TYPE)
+#define ColorTypeToIndex(type) (type - COLOR_CARACTER_FIRST_TYPE)
+#define FormTypeToIndex(type) (type - FORM_FIRST_TYPE)
+#define AttributeTypeToIndex(type) (type - PHY_ATTRIBUTE_FIRST_TYPE)
+
 #endif // !defined(CARACTERDEF_INCLUDED_)
 
 

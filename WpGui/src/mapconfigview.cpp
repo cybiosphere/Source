@@ -320,9 +320,9 @@ bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
   m_sensorTxt3 = "";
   m_sensorTxt4 = "";
 
-  if ((pEntity==NULL)||(pEntity->getBrain()==NULL)|| (pEntity->getBrain()->GetGeographicMap()==NULL))
+  if ((pEntity==NULL) || (pEntity->getBrain()==NULL))
   { 
-    if (m_CurMapType == MAP_TYPE_PURPOSE)
+    if (m_bIsPurposeMap)
       ClearMap();
     m_pSelectedEntity = NULL;
     UpdateData(FALSE);
@@ -332,49 +332,53 @@ bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
   CGeoMapPurpose* pGeoMap = pEntity->getBrain()->GetGeographicMap();
 
   // Update button label if necessary
-  if (m_pSelectedEntity != pEntity)
+  if ((m_pSelectedEntity != pEntity) && (pGeoMap != NULL))
   {
     CPurpose* pPurpose;
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(0));
-    if (pPurpose!=NULL)
+    if (pPurpose != NULL)
       m_purposeTxt1 = pPurpose->GetLabel().c_str();
-      
+
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(1));
-    if (pPurpose!=NULL)
-      m_purposeTxt2 = pPurpose->GetLabel().c_str(); 
+    if (pPurpose != NULL)
+      m_purposeTxt2 = pPurpose->GetLabel().c_str();
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(2));
-    if (pPurpose!=NULL)
-      m_purposeTxt3 = pPurpose->GetLabel().c_str(); 
+    if (pPurpose != NULL)
+      m_purposeTxt3 = pPurpose->GetLabel().c_str();
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(3));
-    if (pPurpose!=NULL)
-      m_purposeTxt4 = pPurpose->GetLabel().c_str(); 
+    if (pPurpose != NULL)
+      m_purposeTxt4 = pPurpose->GetLabel().c_str();
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(4));
-    if (pPurpose!=NULL)
-      m_purposeTxt5 = pPurpose->GetLabel().c_str(); 
+    if (pPurpose != NULL)
+      m_purposeTxt5 = pPurpose->GetLabel().c_str();
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(5));
-    if (pPurpose!=NULL)
-      m_purposeTxt6 = pPurpose->GetLabel().c_str(); 
+    if (pPurpose != NULL)
+      m_purposeTxt6 = pPurpose->GetLabel().c_str();
 
     pPurpose = pEntity->getBrain()->GetPurposeByUniqueId(pGeoMap->GettPurposeUniqueId(6));
-    if (pPurpose!=NULL)
-      m_purposeTxt7 = pPurpose->GetLabel().c_str(); 
-
-    m_sensorTxt1 = "View";
-    m_sensorTxt2 = "Ear";
-    m_sensorTxt3 = "Smell";
-    m_sensorTxt4 = "Pheromons";
-
-    m_pSelectedEntity = pEntity;
-    UpdateData(FALSE);
-
-    if((m_bIsPurposeMap) || (m_bIsSensorMap))
-      BuildMap(true);
+    if (pPurpose != NULL)
+      m_purposeTxt7 = pPurpose->GetLabel().c_str();
   }
+  else if (m_CurMapType == MAP_TYPE_PURPOSE)
+  {
+    ClearMap();
+  }
+
+  m_sensorTxt1 = "View";
+  m_sensorTxt2 = "Ear";
+  m_sensorTxt3 = "Smell";
+  m_sensorTxt4 = "Pheromons";
+
+  m_pSelectedEntity = pEntity;
+  UpdateData(FALSE);
+
+  if((m_bIsPurposeMap) || (m_bIsSensorMap))
+    BuildMap(true);
 
   return true;
 }

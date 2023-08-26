@@ -3785,14 +3785,14 @@ ColorCaracterType_e CBasicEntity::getColorType()
 
 bool CBasicEntity::isPhyAttributePresent(PhyAttributeType_e type)
 {
-  return(m_PhyAttribute.isCaractPresent(type-PHY_ATTRIBUTE_FIRST_TYPE));
+  return(m_PhyAttribute.isCaractPresent(AttributeTypeToIndex(type)));
 }
 
 void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)
 {
-  if ((newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && !(m_PhyAttribute.isCaractPresent(newAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
+  if ((newAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && !(m_PhyAttribute.isCaractPresent(AttributeTypeToIndex(newAttrib))))
   {
-    m_PhyAttribute.setCaractPresent(newAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
+    m_PhyAttribute.setCaractPresent(AttributeTypeToIndex(newAttrib));
     computeEntitySignature();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
@@ -3800,9 +3800,9 @@ void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)
 
 void CBasicEntity::removeAttribute(PhyAttributeType_e delAttrib)
 {
-  if ((delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && (m_PhyAttribute.isCaractPresent(delAttrib - PHY_ATTRIBUTE_FIRST_TYPE)))
+  if ((delAttrib>=PHY_ATTRIBUTE_FIRST_TYPE) && (m_PhyAttribute.isCaractPresent(AttributeTypeToIndex(delAttrib))))
   {
-    m_PhyAttribute.setCaractAbsent(delAttrib-PHY_ATTRIBUTE_FIRST_TYPE);
+    m_PhyAttribute.setCaractAbsent(AttributeTypeToIndex(delAttrib));
     computeEntitySignature();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }

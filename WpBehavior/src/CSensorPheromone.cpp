@@ -103,12 +103,12 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
     pCurEntity = tFoundIds[ind].pEntity;
     if ( (pCurEntity!=NULL) && (pCurEntity!=pAnimal) ) // Do not take into account my own pheromon
     {
-      for (int pheromone=0; pheromone<NUMBER_PHEROMONES; pheromone++)
+      for (int pheromone = PHEROMONE_FIRST_TYPE; pheromone < PHEROMONE_NUMBER_TYPE; pheromone++)
       {
-        if ( (pCurEntity->getPheromone() == (PHEROMONE_FIRST_TYPE+pheromone))
+        if ( (pCurEntity->getPheromone() == pheromone)
           && (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true) )
         {
-          m_tStimulationValues[pheromone] += MAX_SENSOR_VAL/(tFoundIds[ind].distance + 1)/(tFoundIds[ind].distance + 1); // 1/R2
+          m_tStimulationValues[PheromoneTypeToIndex(pheromone)] += MAX_SENSOR_VAL/(tFoundIds[ind].distance + 1)/(tFoundIds[ind].distance + 1); // 1/R2
         }
       }
     }

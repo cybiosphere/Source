@@ -92,7 +92,7 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
   switch (pSens->GetUniqueId() & UID_BASE_MASK)
   {
   case UID_BASE_SENS_HORMONE:     
-      if (subCaptorIndex == PHEROMONE_BABY-PHEROMONE_FIRST_TYPE)
+      if (subCaptorIndex == PheromoneTypeToIndex(PHEROMONE_BABY))
         m_Priority = 8; // For baby purpose
       else
         m_Priority = 3; // For mother purpose

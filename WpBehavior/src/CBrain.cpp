@@ -1579,13 +1579,13 @@ string CBrain::getIdentifyInputLabel(size_t rowIndex)
       captorStr = "no Smell captor";
   }
   else if (rowIndex>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS+VIEW_NUMBER_TEXTURES))
-    captorStr = "attr " + CBasicEntity::getPhyAttributeStrName( (PhyAttributeType_e)(rowIndex+PHY_ATTRIBUTE_NUMBER_TYPE-VIEW_SIZE_PER_FOCUS) );
+    captorStr = "attr " + CBasicEntity::getPhyAttributeStrName((PhyAttributeType_e)(rowIndex + PHY_ATTRIBUTE_NUMBER_TYPE - VIEW_SIZE_PER_FOCUS));
   else if (rowIndex>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS))
-    captorStr = "text " + CBasicEntity::getTextureStrName( (TextureType_e)(rowIndex-4-VIEW_NUMBER_COLORS-VIEW_NUMBER_FORMS+TEXTURE_FIRST_TYPE) );
+    captorStr = "text " + CBasicEntity::getTextureStrName(indexToTextureType(rowIndex - 4 - VIEW_NUMBER_COLORS - VIEW_NUMBER_FORMS));
   else if (rowIndex>(3+VIEW_NUMBER_COLORS))
-    captorStr = "form " + CBasicEntity::getFormStrName( (FormType_e)(rowIndex-4-VIEW_NUMBER_COLORS+FORM_FIRST_TYPE) );
+    captorStr = "form " + CBasicEntity::getFormStrName(indexToFormType(rowIndex - 4 - VIEW_NUMBER_COLORS));
   else if (rowIndex>3)
-    captorStr = "colr " + CBasicEntity::getColorStrName( (ColorCaracterType_e)(rowIndex-4+COLOR_CARACTER_FIRST_TYPE) );
+    captorStr = "colr " + CBasicEntity::getColorStrName(indexToColorType(rowIndex - 4));
   else if (rowIndex==3)
     captorStr = "relative speed escape";
   else if (rowIndex==2)
@@ -1776,36 +1776,36 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
     m_vCurrentIdentifyInput(offset, 0) = 0;
   offset++;
   // Color:
-  for (int colo=0; colo<VIEW_NUMBER_COLORS; colo++)
+  for (int color = COLOR_CARACTER_FIRST_TYPE; color < COLOR_CARACTER_NUMBER_TYPE; color++)
   {
-    if ( pEntity->getColorType() == (COLOR_CARACTER_FIRST_TYPE+colo) )
+    if (pEntity->getColorType() == color)
       m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL ;
     else
       m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Form:
-  for (int form=0; form<VIEW_NUMBER_FORMS; form++)
+  for (int form = FORM_FIRST_TYPE; form < FORM_NUMBER_TYPE; form++)
   {
-    if ( pEntity->getForm() == (FORM_FIRST_TYPE+form) )
+    if (pEntity->getForm() == form)
       m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
       m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Texture:
-  for (int textu=0; textu<VIEW_NUMBER_TEXTURES; textu++)
+  for (int textu = TEXTURE_FIRST_TYPE; textu < TEXTURE_NUMBER_TYPE; textu++)
   {
-    if (pEntity->getTexture() == (TEXTURE_FIRST_TYPE+textu) )
+    if (pEntity->getTexture() == textu)
       m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
       m_vCurrentIdentifyInput(offset,0) = 0;
     offset++;
   }
   // Physical attribute:
-  for (int attribu=0; attribu<VIEW_NUMBER_PHY_ATTRIBUT; attribu++)
+  for (int attribu = PHY_ATTRIBUTE_FIRST_TYPE; attribu < PHY_ATTRIBUTE_NUMBER_TYPE; attribu++)
   {
-    if (pEntity->isPhyAttributePresent((PhyAttributeType_e)(PHY_ATTRIBUTE_FIRST_TYPE+attribu)))
+    if (pEntity->isPhyAttributePresent((PhyAttributeType_e)attribu))
       m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
     else
       m_vCurrentIdentifyInput(offset,0) = 0;
@@ -1994,12 +1994,12 @@ bool CBrain::SetHomePurposePositionInGeoMap()
   else
   {
     // Clear previous home positions
-    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_BABY - PHEROMONE_FIRST_TYPE);
+    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_BABY));
     if (pPurpose != NULL)
     {
       m_pGeoMap->ClearPurposeSuccessOnFullMap(pPurpose->GetUniqueId());
     }
-    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_MATERNAL - PHEROMONE_FIRST_TYPE);
+    pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_MATERNAL));
     if (pPurpose != NULL)
     {
       m_pGeoMap->ClearPurposeSuccessOnFullMap(pPurpose->GetUniqueId());
@@ -2013,7 +2013,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     if (m_pEntity->getPheromone() == PHEROMONE_BABY)
     {
       // the place where baby were born is the new home for baby
-      pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_BABY-PHEROMONE_FIRST_TYPE);
+      pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_BABY));
       if (pPurpose != NULL)
       {
         m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 1000);
@@ -2023,7 +2023,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
     else if (m_pEntity->getPheromone() == PHEROMONE_MATERNAL)
     {
       // the place where baby were born is the new home for mother
-      pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PHEROMONE_MATERNAL-PHEROMONE_FIRST_TYPE);
+      pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_MATERNAL));
       if (pPurpose != NULL)
       {
         m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 800);

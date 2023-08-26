@@ -93,7 +93,7 @@ const std::vector<sensorValType>& CSensorHormone::UpdateAndGetStimulationTable()
 
   // Process level
   if (pAnimal->getPheromone() >= PHEROMONE_FIRST_TYPE)
-    m_tStimulationValues[pAnimal->getPheromone()-PHEROMONE_FIRST_TYPE] = MAX_SENSOR_VAL;
+    m_tStimulationValues[PheromoneTypeToIndex(pAnimal->getPheromone())] = MAX_SENSOR_VAL;
 
   applySubCaptorWeightRate();
 

@@ -1834,7 +1834,7 @@ void CBiotop::updateGridFertilityBonus(void)
         pCurEntity = tFoundIds[ind].pEntity;
         if (pCurEntity->isDrinkable())
         {
-          currentBonus = 16 - tFoundIds[ind].distance;
+          currentBonus = 16 - (int)tFoundIds[ind].distance;
           if (currentBonus > m_tBioSquare[i][j].fertilityBonus)
           {
             m_tBioSquare[i][j].fertilityBonus = currentBonus;
@@ -1861,7 +1861,7 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
       // memorize odor trace
       if (pCurEntity->getOdor() > ODOR_NONE)
       {
-        m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[pCurEntity->getOdor() - ODOR_FIRST_TYPE] = MAX_ODOR_TRACE_VAL;
+        m_tBioSquare[tmpCoord.x][tmpCoord.y].odorTrace[OdorTypeToIndex(pCurEntity->getOdor())] = MAX_ODOR_TRACE_VAL;
       }
       m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity = NULL;
     }
@@ -2841,12 +2841,12 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
     pCurEntity = tFoundIds[ind].pEntity;
     if ((pCurEntity!=NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getId() != excludedEntityId))
     {
-      for (size_t odor=0; odor<NUMBER_ODORS; odor++)
+      for (int odor = ODOR_FIRST_TYPE; odor < ODOR_NUMBER_TYPE; odor++)
       {
         // Add odor for entities
-        if (pCurEntity->getOdor() == (ODOR_FIRST_TYPE+odor))
+        if (pCurEntity->getOdor() == odor)
         {
-          odorLevel[odor] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
+          odorLevel[OdorTypeToIndex(odor)] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
         }
       }
     }

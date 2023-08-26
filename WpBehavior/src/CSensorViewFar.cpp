@@ -317,36 +317,36 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewFarTab[i].weightTab[offset] = pCurEntity->getCurrentSpeed() * MAX_SENSOR_VAL / 100.0;
       offset++;
       // Color:
-      for (int colo=0; colo<VIEW_NUMBER_COLORS; colo++)
+      for (int colo = COLOR_CARACTER_FIRST_TYPE; colo < COLOR_CARACTER_NUMBER_TYPE; colo++)
       {
-        if ( pCurEntity->getColorType() == (COLOR_CARACTER_FIRST_TYPE+colo) )
+        if (pCurEntity->getColorType() == colo)
           m_pEntityViewFarTab[i].weightTab[offset] = MAX_SENSOR_VAL ;
         else
           m_pEntityViewFarTab[i].weightTab[offset] = 0;
         offset++;
       }
       // Form:
-      for (int form=0; form<VIEW_NUMBER_FORMS; form++)
+      for (int form = FORM_FIRST_TYPE; form < FORM_NUMBER_TYPE; form++)
       {
-        if ( pCurEntity->getForm() == (FORM_FIRST_TYPE+form) )
+        if (pCurEntity->getForm() == form)
           m_pEntityViewFarTab[i].weightTab[offset] = (3*MAX_SENSOR_VAL + distanceWeight) / 4.0;
         else
           m_pEntityViewFarTab[i].weightTab[offset] = 0;
         offset++;
       }
       // Texture:
-      for (int textu=0; textu<VIEW_NUMBER_TEXTURES; textu++)
+      for (int textu = TEXTURE_FIRST_TYPE; textu < TEXTURE_NUMBER_TYPE; textu++)
       {
-        if (pCurEntity->getTexture() == (TEXTURE_FIRST_TYPE+textu) )
+        if (pCurEntity->getTexture() == textu)
           m_pEntityViewFarTab[i].weightTab[offset] = (3*MAX_SENSOR_VAL + distanceWeight) / 4.0;
         else
           m_pEntityViewFarTab[i].weightTab[offset] = 0;
         offset++;
       }
       // Physical attribute:
-      for (int attribu=0; attribu<VIEW_NUMBER_PHY_ATTRIBUT; attribu++)
+      for (int attribu = PHY_ATTRIBUTE_FIRST_TYPE; attribu < PHY_ATTRIBUTE_NUMBER_TYPE; attribu++)
       {
-        if (pCurEntity->isPhyAttributePresent((PhyAttributeType_e)(PHY_ATTRIBUTE_FIRST_TYPE+attribu)))
+        if (pCurEntity->isPhyAttributePresent((PhyAttributeType_e)(attribu)))
           m_pEntityViewFarTab[i].weightTab[offset] = (3*MAX_SENSOR_VAL + distanceWeight) / 4.0;
         else
           m_pEntityViewFarTab[i].weightTab[offset] = 0;
@@ -511,16 +511,16 @@ string CSensorViewFar::GetSubCaptorLabel(size_t index)
 
     string captorStr = ""; // according to pos
 
-    if (pos>VIEW_SIZE_PER_FOCUS)
+    if (pos > VIEW_SIZE_PER_FOCUS)
       captorStr = "captor error";
-    else if (pos>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS+VIEW_NUMBER_TEXTURES))
-      captorStr = "attr " + CBasicEntity::getPhyAttributeStrName( (PhyAttributeType_e)(pos+PHY_ATTRIBUTE_NUMBER_TYPE-VIEW_SIZE_PER_FOCUS) );
-    else if (pos>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS))
-      captorStr = "text " + CBasicEntity::getTextureStrName( (TextureType_e)(pos-4-VIEW_NUMBER_COLORS-VIEW_NUMBER_FORMS+TEXTURE_FIRST_TYPE) );
-    else if (pos>(3+VIEW_NUMBER_COLORS))
-      captorStr = "form " + CBasicEntity::getFormStrName( (FormType_e)(pos-4-VIEW_NUMBER_COLORS+FORM_FIRST_TYPE) );
-    else if (pos>3)
-      captorStr = "colr " + CBasicEntity::getColorStrName( (ColorCaracterType_e)(pos-4+COLOR_CARACTER_FIRST_TYPE) );
+    else if (pos > (3 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + VIEW_NUMBER_TEXTURES))
+      captorStr = "attr " + CBasicEntity::getPhyAttributeStrName((PhyAttributeType_e)(pos + PHY_ATTRIBUTE_NUMBER_TYPE - VIEW_SIZE_PER_FOCUS));
+    else if (pos > (3 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS))
+      captorStr = "text " + CBasicEntity::getTextureStrName(indexToTextureType(pos - 4 - VIEW_NUMBER_COLORS - VIEW_NUMBER_FORMS));
+    else if (pos > (3 + VIEW_NUMBER_COLORS))
+      captorStr = "form " + CBasicEntity::getFormStrName(indexToFormType(pos - 4 - VIEW_NUMBER_COLORS));
+    else if (pos > 3)
+      captorStr = "colr " + CBasicEntity::getColorStrName(indexToColorType(pos - 4));
     else if (pos==3)
       captorStr = "moving";
     else if (pos==2)
@@ -610,22 +610,22 @@ size_t CSensorViewFar::GetSubCaptorSubIndexForMoving()
 
 size_t CSensorViewFar::GetSubCaptorSubIndexForColor(ColorCaracterType_e color)
 {
-  return (4 + color - COLOR_CARACTER_FIRST_TYPE);
+  return ColorTypeToIndex(color) + 4;
 }
 
 size_t CSensorViewFar::GetSubCaptorSubIndexForForm(FormType_e form)
 {
-  return (4 + VIEW_NUMBER_COLORS + form - FORM_FIRST_TYPE);
+  return FormTypeToIndex(form) + 4 + VIEW_NUMBER_COLORS;
 }
 
 size_t CSensorViewFar::GetSubCaptorSubIndexForTexture(TextureType_e texture)
 {
-  return (4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + texture - TEXTURE_FIRST_TYPE);
+  return TextureTypeToIndex(texture) + 4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS;
 }
 
 size_t CSensorViewFar::GetSubCaptorSubIndexForPhyAttribute(PhyAttributeType_e attribute)
 {
-  return (4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + VIEW_NUMBER_TEXTURES + attribute - PHY_ATTRIBUTE_FIRST_TYPE);
+  return AttributeTypeToIndex(attribute) + 4 + VIEW_NUMBER_COLORS + VIEW_NUMBER_FORMS + VIEW_NUMBER_TEXTURES;
 }
 
 double CSensorViewFar::GetViewedEntityWeight(CBasicEntity* pEntity)
@@ -634,5 +634,4 @@ double CSensorViewFar::GetViewedEntityWeight(CBasicEntity* pEntity)
   UpdateAndGetStimulationTable();
   m_pFollowedEntity = NULL; // Don't follow anymore
   return (m_followedEntityWeight.computedWeight);
-
 }

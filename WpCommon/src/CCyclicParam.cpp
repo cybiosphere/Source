@@ -122,7 +122,7 @@ void CCyclicParam::reconfigure(double valMin, double valMax, int nbStepPerCycle)
   setValMin(valMin);
   setValMax(valMax);
   setVal(valMax);
-  int nbStep = (m_PhaseStep > 0) ? (m_CurPhase / m_PhaseStep) : 0;
+  int nbStep = (m_PhaseStep > 0) ? (int)std::round(m_CurPhase / m_PhaseStep) : 0;
   setPeriod(nbStepPerCycle);
   m_CurPhase = 0;
   for (int i = 0; i < m_PhaseStep; i++)
@@ -138,7 +138,7 @@ double CCyclicParam::getPeriod()
 
 void CCyclicParam::setPeriod(double period)
 {
-  m_nbStepPerCycle = period;
+  m_nbStepPerCycle = (int)std::round(period);
   m_PhaseStep = (m_nbStepPerCycle > 0) ? (2 * CYBIO_PI / m_nbStepPerCycle) : 0;
 }
 
