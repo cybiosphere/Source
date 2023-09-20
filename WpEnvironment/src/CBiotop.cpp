@@ -516,7 +516,7 @@ void CBiotop::displayEntities(void)
   {
     printf("x=%2d, y=%2d ", (int)pEntity->getGridCoord().x, (int)pEntity->getGridCoord().y);
     printf("%-12s", pEntity->getLabel().c_str());
-    printf("ID=%3u Direction=%3u \n", pEntity->getId(), pEntity->getDirection());
+    printf("ID=%3d Direction=%3u \n", pEntity->getId(), pEntity->getDirection());
   }
 }
 

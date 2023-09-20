@@ -2183,7 +2183,6 @@ void CAnimal::nextSecond()
     for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
       m_tTasteLevel[i] = m_tTasteLevel[i]/2;
 
-    bool resu;
     choiceIndType myChoice;
     ReactionIntensityType_e myIntensity;
     feedbackValType myFeedback;
@@ -2209,7 +2208,7 @@ void CAnimal::nextSecond()
             myFeedback = -MAX_FEEDBACK_VAL;
             m_forbidenActionCount++;
           }
-          resu = m_pBrain->MemorizeExperience(myFeedback,getLearningRate());
+          m_pBrain->MemorizeExperience(myFeedback,getLearningRate());
           m_BusySecondCounter = m_pBrain->GetReactionByIndex(m_pBrain->GetCurrentReactionIndex())->GetUnitTimeInSecond();
         }
       }

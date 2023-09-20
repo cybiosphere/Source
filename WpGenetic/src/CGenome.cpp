@@ -745,7 +745,7 @@ std::pair<size_t, size_t> CGenome::findGeneInGenome(CGene& modelGene, bool findD
   for (size_t paireIndex = 0; paireIndex < m_tPair.size(); paireIndex++)
   {
     pPaire = m_tPair[paireIndex];
-    for (int geneIndex = 0; geneIndex < pPaire->getNumGenes(); geneIndex++)
+    for (size_t geneIndex = 0; geneIndex < pPaire->getNumGenes(); geneIndex++)
     {
       if (findDominantAlleleOnly)
       {
