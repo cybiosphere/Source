@@ -62,8 +62,8 @@ CGeoMap::CGeoMap(Point_t gridCoordCenterPos, Point_t gridBiotopSize, Point_t gri
 {
   size_t expectedMapSizeX = (gridMapSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
   size_t expectedMapSizeY = (gridMapSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  int biotopMapSizeX = ((int)gridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  int biotopMapSizeY = ((int)gridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  size_t biotopMapSizeX = (size_t)((int)gridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  size_t biotopMapSizeY = (size_t)((int)gridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
 
   m_GeoMapSize.x = cybio_min(expectedMapSizeX, biotopMapSizeX);
   m_GeoMapSize.y = cybio_min(expectedMapSizeY, biotopMapSizeY);

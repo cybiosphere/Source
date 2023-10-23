@@ -767,9 +767,9 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
   return (invalidIndex);
 }
 
-void CBiotop::colorizeSearch(Point_t coord)
+void CBiotop::colorizeSearchNoCheckCoord(Point_t coord)
 {
-  if (m_bColorizeSearch && isCoordValid(coord, 0))
+  if (m_bColorizeSearch)
   {
     m_tBioSquare[coord.x][coord.y].customColor -= 0x00001010; //blue
   }
@@ -779,7 +779,10 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
 {
   if (isCoordValid(searchCoord,layer))
   {
-    colorizeSearch(searchCoord);
+#ifdef WIN32
+    // CPU optim: Color is only for Gui. No need in console mode
+    colorizeSearchNoCheckCoord(searchCoord);
+#endif
     return m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity;   
   }
   return NULL;
@@ -807,22 +810,23 @@ void CBiotop::putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, 
 void CBiotop::putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater)
 {
   constexpr size_t startlayer{ 1 }; // CPU optim: start at layer 1 (layer 0 is underground not detected by default)
-  CBasicEntity* pFoundEntity = NULL;
   BiotopCube_t* pBiotopCube = &m_tBioGrid[searchCoord.x][searchCoord.y][startlayer];
   for (size_t z = startlayer; z < m_nbLayer; z++)
   {
-    pFoundEntity = pBiotopCube->pEntity;
-    if ((pFoundEntity != NULL) && (includeWater || (pFoundEntity->getId() != ENTITY_ID_WATER)))
+    if ((pBiotopCube->pEntity != NULL) && (includeWater || (pBiotopCube->pEntity->getId() != ENTITY_ID_WATER)))
     {
       if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
         return;
-      foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pFoundEntity;
+      foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pBiotopCube->pEntity;
       foundIds.tFoundIds[foundIds.nbFoundIds].distance = distanceToSet;
       foundIds.nbFoundIds++;
     }
     pBiotopCube++;
   }
-  colorizeSearch(searchCoord);
+#ifdef WIN32
+  // CPU optim: Color is only for Gui. No need in console mode
+  colorizeSearchNoCheckCoord(searchCoord);
+#endif
 }
 
 void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
@@ -905,12 +909,10 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
     curCoord.y = startCoord.y - k;
     findEntitiesInColumn(foundIds, k, curCoord, 2 * k + 1, includeWater);
 
-    curCoord.x = startCoord.x - k + 1;
-    curCoord.y = startCoord.y - k;
+    curCoord.x++;
     findEntitiesInRow(foundIds, k, curCoord, 2 * k - 1, includeWater);
 
     curCoord.x = startCoord.x + k;
-    curCoord.y = startCoord.y - k;
     findEntitiesInColumn(foundIds, k, curCoord, 2 * k + 1, includeWater);
 
     curCoord.x = startCoord.x - k + 1;
@@ -2839,16 +2841,9 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
-    if ((pCurEntity!=NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getId() != excludedEntityId))
+    if ((pCurEntity!=NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getOdor() > ODOR_NONE) && (pCurEntity->getId() != excludedEntityId))
     {
-      for (int odor = ODOR_FIRST_TYPE; odor < ODOR_NUMBER_TYPE; odor++)
-      {
-        // Add odor for entities
-        if (pCurEntity->getOdor() == odor)
-        {
-          odorLevel[OdorTypeToIndex(odor)] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
-        }
-      }
+      odorLevel[OdorTypeToIndex(pCurEntity->getOdor())] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
     }
   }
 
