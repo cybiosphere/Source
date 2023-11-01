@@ -372,6 +372,56 @@ void CVegetSpermatophyta::tryToReproduceOnceADay()
   }
 }
 
+void CVegetSpermatophyta::defaultActionWhenAttachedToBiotop(void)
+{
+  if (getLayer() > 1)
+  {
+    // Decrease fertility around trees
+    Point_t tmpCoord{ getGridCoord() };
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.y--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.x++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.x++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.y++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.y++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
+  }
+}
+
+void CVegetSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
+{
+  if (getLayer() > 1)
+  {
+    // Restore fertility
+    Point_t tmpCoord{ getGridCoord() };
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.y--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.x++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.x++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.y++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.y++;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+    tmpCoord.x--;
+    m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
+  }
+}
+
 //===========================================================================
 // Life stages management
 //===========================================================================
@@ -398,27 +448,28 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
     }
     case STAGE_1:
     {
-      m_Status = STATUS_ALIVE;
-      setResistanceToConsumptionToNominalRatio(10);
-      setReproductionRateToNominalRatio(0);
       if (!moveToLayerIfPossible(1))
       {
         CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
         CYBIOCORE_LOG("VEGETAL - Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
         autoRemove();
       }
+      m_Status = STATUS_ALIVE;
+      setResistanceToConsumptionToNominalRatio(10);
+      setReproductionRateToNominalRatio(0);
       break;
     }
     case STAGE_2:
     {
-      setResistanceToConsumptionToNominalRatio(100);
-      setReproductionRateToNominalRatio(100);
       if (!moveToLayerIfPossible(getDefaultLayer()))
       {
         CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
         CYBIOCORE_LOG("VEGETAL - Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
         autoRemove();
       }
+      setResistanceToConsumptionToNominalRatio(100);
+      setReproductionRateToNominalRatio(100);
+      defaultActionWhenAttachedToBiotop();
       break;
     }
     case STAGE_3:

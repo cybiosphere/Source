@@ -1126,7 +1126,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1152,7 +1152,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(i - startCoordx, j - startCoordy);
         if (entityDist>=rangeMin)
         {
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1180,7 +1180,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1206,7 +1206,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(startCoordx - i, j - startCoordy);
         if (entityDist>=rangeMin)
         {
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1234,7 +1234,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1260,7 +1260,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(startCoordx - i, startCoordy - j);
         if (entityDist>=rangeMin)
         {
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1288,7 +1288,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         {
           curCoord.x = i;
           curCoord.y = j;
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1314,7 +1314,7 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
         entityDist = cybio_max(i - startCoordx, startCoordy - j);
         if (entityDist>=rangeMin)
         {
-          if (isCoordValid(curCoord, 0))
+          if (isCoordValid(curCoord))
           {
             putEntitiesInListAllLayers(foundIds, entityDist, curCoord, includeWater);
           }
@@ -1341,11 +1341,16 @@ bool CBiotop::isCoordValid(Point_t coord, size_t layer)
   return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y) && (layer < m_nbLayer));
 }
 
+bool CBiotop::isCoordValid(Point_t coord)
+{
+  return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y));
+}
+
 CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord)
 {
   CBasicEntity* pFoundEntity = NULL;
 
-  if (!isCoordValid(searchCoord, 0))
+  if (!isCoordValid(searchCoord))
     return (NULL);
 
   for (int layer = (int)m_nbLayer - 1; layer >= 0; layer--)
@@ -1844,6 +1849,14 @@ void CBiotop::updateGridFertilityBonus(void)
         }
       }  
     }
+  }
+}
+
+void CBiotop::ModifyGridFertilityBonus(Point_t coord, char bonusToAdd)
+{
+  if (isCoordValid(coord))
+  {
+    m_tBioSquare[coord.x][coord.y].fertilityBonus += bonusToAdd;
   }
 }
 
@@ -2697,7 +2710,7 @@ Point_t CBiotop::getDimension()
 
 double CBiotop::getFertility(Point_t coord)
 {
-  if (isCoordValid(coord, 1))
+  if (isCoordValid(coord))
   {
     return m_pFertilityRate->getVal() + m_tBioSquare[coord.x][coord.y].fertilityBonus;
   }
@@ -2815,7 +2828,7 @@ CGenericParam* CBiotop::getParameterByName(string& paramName)
 
 double CBiotop::getOdorTrace(Point_t coord, size_t odorIndex)
 {
-  return isCoordValid(coord, 0) ? ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odorIndex] / MAX_ODOR_TRACE_VAL) : 0;
+  return isCoordValid(coord) ? ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odorIndex] / MAX_ODOR_TRACE_VAL) : 0;
 }
 
 bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
@@ -2864,7 +2877,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
 COLORREF CBiotop::getCustomColor(Point_t coord)
 {
   // coord may be used later
-  return isCoordValid(coord, 0) ? (m_tBioSquare[coord.x][coord.y].customColor) : 0;
+  return isCoordValid(coord) ? (m_tBioSquare[coord.x][coord.y].customColor) : 0;
 }
 
 BiotopSquare_t** CBiotop::getpBioSquare()

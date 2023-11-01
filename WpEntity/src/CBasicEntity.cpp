@@ -1502,6 +1502,7 @@ void CBasicEntity::attachToBiotop(CBiotop* pBiotop)
     turnToCenterDir();
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
     m_DefaultLayer = m_Layer;
+    defaultActionWhenAttachedToBiotop();
   }
 }
 
@@ -1578,6 +1579,7 @@ bool CBasicEntity::moveToLayerIfPossible(size_t newLayer)
 //---------------------------------------------------------------------------
 void CBasicEntity::autoRemove(bool addRemoveEvent)
 {
+  defaultActionWhenRemovedFromBiotop();
   m_Status = STATUS_TOBEREMOVED;
   Point_t coord = { invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);

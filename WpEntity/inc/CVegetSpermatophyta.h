@@ -102,6 +102,9 @@ protected:
   bool autoClone();
   void tryToReproduceOnceADay();
 
+  void defaultActionWhenAttachedToBiotop(void);
+  void defaultActionWhenRemovedFromBiotop(void);
+
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------

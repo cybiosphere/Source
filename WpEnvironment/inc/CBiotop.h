@@ -343,6 +343,7 @@ public:
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, size_t layer);
   bool isCoordValid(Point_t coord, size_t layer);
+  bool isCoordValid(Point_t coord);
 
 private:
   void colorizeSearchNoCheckCoord(Point_t coord);
@@ -377,6 +378,7 @@ public:
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
   void updateGridFertilityBonus(void);
+  void ModifyGridFertilityBonus(Point_t coord, char bonusToAdd);
   void updateGridEntity(CBasicEntity* pEntity);
   int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
 

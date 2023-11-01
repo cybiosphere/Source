@@ -355,6 +355,10 @@ public:
 
   bool checkHabitat(void);
 
+protected:
+  virtual void defaultActionWhenAttachedToBiotop(void) {};
+  virtual void defaultActionWhenRemovedFromBiotop(void) {};
+
 //---------------------------------------------------------------------------
 // Gestation childs management management
 //---------------------------------------------------------------------------
