@@ -374,11 +374,12 @@ void CVegetSpermatophyta::tryToReproduceOnceADay()
 
 void CVegetSpermatophyta::defaultActionWhenAttachedToBiotop(void)
 {
-  if (getLayer() > 1)
+  if (m_pBiotop && (getLayer() > 1))
   {
     // Decrease fertility around trees
-    Point_t tmpCoord{ getGridCoord() };
-    tmpCoord.x--;
+    Point_t tmpCoord;
+    tmpCoord.x = getGridCoord().x - 1;
+    tmpCoord.y = getGridCoord().y;
     m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
     tmpCoord.y--;
     m_pBiotop->ModifyGridFertilityBonus(tmpCoord, -10);
@@ -399,11 +400,12 @@ void CVegetSpermatophyta::defaultActionWhenAttachedToBiotop(void)
 
 void CVegetSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
 {
-  if (getLayer() > 1)
+  if (m_pBiotop && (getLayer() > 1))
   {
     // Restore fertility
-    Point_t tmpCoord{ getGridCoord() };
-    tmpCoord.x--;
+    Point_t tmpCoord;
+    tmpCoord.x = getGridCoord().x - 1;
+    tmpCoord.y = getGridCoord().y;
     m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
     tmpCoord.y--;
     m_pBiotop->ModifyGridFertilityBonus(tmpCoord, 10);
