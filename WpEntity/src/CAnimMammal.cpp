@@ -681,9 +681,9 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
         && (pEatenEntity->isAlive()) && (pEatenEntity->getPheromone() == PHEROMONE_MATERNAL) )
       {
         CAnimMammal* pMotherEntity = (CAnimMammal*)pEatenEntity;
-        eatenWeight = getWeight()/1000;
+        eatenWeight = getWeight() / 1000.0;
         // Check if mother is fat enough to provide milk
-        if (pMotherEntity->getFatWeight() > (eatenWeight + 0.4))
+        if (pMotherEntity->getFatWeight() > (pMotherEntity->getMaxFatWeight() / 10.0))
         {
           // Remove fat from mother (milk generation)
           pMotherEntity->consumeFatWeight(eatenWeight / 4.0);

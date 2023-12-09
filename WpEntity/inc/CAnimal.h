@@ -266,6 +266,7 @@ public:
   double getAttackFactor();
   bool   isSleeping();
   double getFatWeight();
+  double getMaxFatWeight();
   int    getCurrentSpeed();
   int    getHeadDirection();
   int*   getpTasteLevelTable();

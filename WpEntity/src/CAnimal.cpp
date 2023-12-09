@@ -2175,9 +2175,9 @@ void CAnimal::nextSecond()
 
     // Speed management step1 (inertia on initial speed)
     if (currentSpeed>0)
-      ExecuteMoveForwardAction(0,0,currentSpeed/4);
+      ExecuteMoveForwardAction(0,0,currentSpeed/10);
     else if (currentSpeed<0)
-      ExecuteMoveBackwardAction(0,0,currentSpeed/4);
+      ExecuteMoveBackwardAction(0,0,currentSpeed/10);
 
     // Taste
     for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
@@ -2227,9 +2227,9 @@ void CAnimal::nextSecond()
     // Speed management step2 (new speed)
     currentSpeed = getCurrentSpeed();
     if (currentSpeed>0)
-      ExecuteMoveForwardAction(0,0,3*currentSpeed/4);
+      ExecuteMoveForwardAction(0,0,9*currentSpeed/10);
     else if (currentSpeed<0)
-      ExecuteMoveBackwardAction(0,0,3*currentSpeed/4);
+      ExecuteMoveBackwardAction(0,0,9*currentSpeed/10);
 
     m_BusySecondCounter--;
 
@@ -2870,9 +2870,9 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     int currentSpeed = getCurrentSpeed();
     // Speed management step1
     if (currentSpeed>0)
-      ExecuteMoveForwardAction(0,0,currentSpeed/4);
+      ExecuteMoveForwardAction(0,0,currentSpeed/10);
     else if (currentSpeed<0)
-      ExecuteMoveBackwardAction(0,0,currentSpeed/4);
+      ExecuteMoveBackwardAction(0,0,currentSpeed/10);
 
     // Taste
     for (size_t i=0; i<TASTE_NUMBER_TYPE; i++)
@@ -2904,9 +2904,9 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
     // Speed management step2
     currentSpeed = getCurrentSpeed();
     if (currentSpeed>0)
-      ExecuteMoveForwardAction(0,0,3*currentSpeed/4);
+      ExecuteMoveForwardAction(0,0,9*currentSpeed/10);
     else if (currentSpeed<0)
-      ExecuteMoveBackwardAction(0,0,3*currentSpeed/4);
+      ExecuteMoveBackwardAction(0,0,9*currentSpeed/10);
 
     // Compute health according to physical welfare
     double healthVar = m_pPhysicWelfare->ComputeAndGetHealthVariation();
@@ -3716,6 +3716,11 @@ double CAnimal::getLearningRate()
 double CAnimal::getFatWeight()
 {
   return (getParameter(m_id_FatWeight)->getVal());
+}
+
+double CAnimal::getMaxFatWeight()
+{
+  return (getParameter(m_id_FatWeight)->getMax());
 }
 
 void CAnimal::setCuriosityToNominalRatio(double ratio)
