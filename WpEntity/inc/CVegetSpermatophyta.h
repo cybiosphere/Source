@@ -86,7 +86,7 @@ protected:
 // Time management
 //---------------------------------------------------------------------------
 public:
-  void nextHour(); 
+  void nextDay(bool forceGrowth = false);
 
 //---------------------------------------------------------------------------
 // Life stages management

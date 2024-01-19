@@ -77,7 +77,7 @@ CPhysicalWelfare::CPhysicalWelfare(CBasicEntity* pEntity)
   m_SunlightSensSet = false;
   m_DiseaseMalus = 0;
   m_InjuryMalus = 0;
-  m_RecoveryBonus = 0;
+  m_RecoveryBonus = 1;
 }
 
 //---------------------------------------------------------------------------
@@ -132,15 +132,12 @@ double CPhysicalWelfare::ComputeTemperatureHealthVariation()
 
 double CPhysicalWelfare::ComputeHabitatHealthVariation()
 {
-  double variation = 0;
   if (m_HabitatSensitivity != 0)
   {
-    bool compliant = m_pEntity->checkHabitat();
-
-    if (compliant == false)
-      variation = - m_HabitatSensitivity;
+    if (m_pEntity->checkHabitat() == false)
+     return (- m_HabitatSensitivity);
   }
-  return variation;
+  return 0;
 }
 
 double CPhysicalWelfare::ComputeFertilityHealthVariation()

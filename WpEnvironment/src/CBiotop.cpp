@@ -353,6 +353,9 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
     return NULL;
   }
 
+  // Desynchronize clone from model using Id
+  pNewEntity->setHourCounter(pNewEntity->getId() % NUMBER_HOURS_PER_DAY);
+
   return pNewEntity;
 }
 

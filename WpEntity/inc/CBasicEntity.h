@@ -468,6 +468,7 @@ public:
   void            setStatus(StatusType_e newStatus);
   void            setMarked(bool marked);
   bool            isMarked();
+  void            setHourCounter(int newHour);
 
   ColorCaracterType_e getColorType();
   bool                isPhyAttributePresent(PhyAttributeType_e type);

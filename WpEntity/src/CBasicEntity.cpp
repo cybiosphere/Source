@@ -2782,8 +2782,8 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
       m_Generation = 0;
 
     if ( pElement->QueryIntAttribute(XML_ATTR_STATUS,  &status) == TIXML_NO_ATTRIBUTE)
-      status = 0;
-    m_Status = (StatusType_e)status;
+      status = STATUS_STATIC;
+    m_Status = (status < STATUS_TOBEREMOVED) ? (StatusType_e)status : STATUS_DEAD;
 
     if ( pElement->QueryIntAttribute(XML_ATTR_DIRECTION,  &direction) == TIXML_NO_ATTRIBUTE)
       direction = 0;
@@ -3731,6 +3731,11 @@ void CBasicEntity::setMarked(bool marked)
 bool CBasicEntity::isMarked()
 {
   return m_bIsMarked;
+}
+
+void CBasicEntity::setHourCounter(int newHour)
+{
+  m_HourCounter = newHour;
 }
 
 CPhysicalWelfare* CBasicEntity::getpPhysicalWelfare()
