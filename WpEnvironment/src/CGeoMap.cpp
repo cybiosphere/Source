@@ -73,9 +73,9 @@ CGeoMap::CGeoMap(Point_t gridCoordCenterPos, Point_t gridBiotopSize, Point_t gri
 
   // shift to fit in biotop
   if ((m_GeoCoordStart.x + m_GeoMapSize.x) > biotopMapSizeX)
-    m_GeoCoordStart.x = biotopMapSizeX - (int)m_GeoMapSize.x;
+    m_GeoCoordStart.x = (int)biotopMapSizeX - (int)m_GeoMapSize.x;
   if ((m_GeoCoordStart.y + m_GeoMapSize.y) > biotopMapSizeY)
-    m_GeoCoordStart.y = biotopMapSizeY - (int)m_GeoMapSize.y;
+    m_GeoCoordStart.y = (int)biotopMapSizeY - (int)m_GeoMapSize.y;
   if (m_GeoCoordStart.x < 0)
     m_GeoCoordStart.x = 0;
   if (m_GeoCoordStart.y < 0)

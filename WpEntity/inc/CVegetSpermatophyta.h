@@ -60,7 +60,7 @@ class DLL_CYBIOCORE_API CVegetSpermatophyta : public CVegetable
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  size_t m_id_PollenRange;
+  char m_id_PollenRange;
 
 //===========================================================================
 // methods 

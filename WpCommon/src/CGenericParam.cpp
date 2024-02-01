@@ -71,7 +71,7 @@ CGenericParam::~CGenericParam()
 //===========================================================================
 // Save/Load in xml file
 //===========================================================================
-bool CGenericParam::saveInXmlFile(TiXmlNode* pNode)
+bool CGenericParam::saveInXmlFile(TiXmlNode* pNode, bool doSaveMinMax)
 {
   bool resu = false;
   TiXmlElement newParam(XML_NODE_PARAMETER);
@@ -81,6 +81,11 @@ bool CGenericParam::saveInXmlFile(TiXmlNode* pNode)
     TiXmlElement* pElement = (TiXmlElement*)pNodeChild;
     pElement->SetAttribute(XML_ATTR_NAME, getLabel());
     pElement->SetDoubleAttribute(XML_ATTR_VALUE, getVal());
+    if (doSaveMinMax)
+    {
+      pElement->SetDoubleAttribute(XML_ATTR_RANGE_MIN, getMin());
+      pElement->SetDoubleAttribute(XML_ATTR_RANGE_MAX, getMax());
+    }
     resu = true;
   }
   return resu;
@@ -94,6 +99,15 @@ bool CGenericParam::loadFromXmlFile(TiXmlNode* pNode)
   {
     setVal(paramVal);
   }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_RANGE_MIN, &paramVal) != TIXML_NO_ATTRIBUTE)
+  {
+    setValMin(paramVal);
+  }
+  if (pElement->QueryDoubleAttribute(XML_ATTR_RANGE_MAX, &paramVal) != TIXML_NO_ATTRIBUTE)
+  {
+    setValMax(paramVal);
+  }
+
   return true;
 }
 

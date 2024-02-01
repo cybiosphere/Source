@@ -128,6 +128,7 @@ typedef struct
 
 constexpr size_t invalidCoord{ std::string::npos };
 constexpr size_t invalidIndex{ std::string::npos };
+constexpr char invalidCharIndex{ -1 };
 
 typedef struct
 {

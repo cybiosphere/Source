@@ -101,7 +101,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   CRect rectMin = rect;
   rectMin.top += 9;
   rectMin.bottom += 14;
-  rectMin.right = rect.left + 30;
+  rectMin.right = rect.left + 40;
   tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMin());
   m_pMinStatic->Create(tmpStr,SS_LEFT,rectMin,pParentWnd);
 	m_pMinStatic->SetFont(m_pFont);
@@ -111,8 +111,8 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   CRect rectVal = rect;
   rectVal.top += 9;
   rectVal.bottom += 14;
-  rectVal.left = rect.left + 26;
-  rectVal.right = rect.right - 26;
+  rectVal.left = rect.left + 40;
+  rectVal.right = rect.right - 40;
   tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getVal());
   m_pValStatic->Create(/*tmpStr,*/SS_CENTER|WS_DISABLED,rectVal,pParentWnd, nID+100);
 	m_pValStatic->SetFont(m_pFont);
@@ -122,7 +122,7 @@ bool CParameterCrtl::CreateNewParam(CGenericParam* pParam,const RECT &rect, CWnd
   CRect rectMax = rect;
   rectMax.top += 9;
   rectMax.bottom += 14;
-  rectMax.left = rect.right - 30;
+  rectMax.left = rect.right - 40;
   tmpStr.Format(LPCTSTR("%.1f"),m_pParam->getMax());
   m_pMaxStatic->Create(tmpStr,SS_RIGHT,rectMax,pParentWnd);
 	m_pMaxStatic->SetFont(m_pFont);

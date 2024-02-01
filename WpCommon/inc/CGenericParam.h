@@ -98,7 +98,7 @@ public:
  //---------------------------------------------------------------------------
 // Save/Load in xml file
 //---------------------------------------------------------------------------
-  virtual bool saveInXmlFile(TiXmlNode* pNode);
+  virtual bool saveInXmlFile(TiXmlNode* pNode, bool doSaveMinMax = false);
   virtual bool loadFromXmlFile(TiXmlNode* pNode);
 
 //---------------------------------------------------------------------------

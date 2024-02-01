@@ -191,11 +191,11 @@ protected:
   std::vector<CGenericParam*> m_tParam;
 
   // Parameters Id
-  size_t m_id_Weight;
-  size_t m_id_Toxicity;
-  size_t m_id_Protection;
-  size_t m_id_Camouflage;
-  size_t m_id_Noise;
+  char m_id_Weight;
+  char m_id_Toxicity;
+  char m_id_Protection;
+  char m_id_Camouflage;
+  char m_id_Noise;
 
 //---------------------------------------------------------------------------
 // Life Stages
@@ -434,13 +434,15 @@ public:
   double          getToxicity();
   void            setToxicity(double newRate);
   OdorType_e      getOdor();
-  TasteType_e     getTaste();
   void            setOdor(OdorType_e newOdor);
+  TasteType_e     getTaste();
+  void            setTaste(TasteType_e newTaste);
   PheromoneType_e getPheromone();
   void            setPheromone(PheromoneType_e pheroType);
   int             getGeneration();
   void            setGeneration(int newGeneration);
   ReproType_e     getTypeOfReproduction();
+  void            setTypeOfReproduction(ReproType_e newType);
   SexType_e       getSex();
   CGenome*        getGenome();
   double          getNoise();

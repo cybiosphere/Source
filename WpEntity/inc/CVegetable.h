@@ -59,13 +59,13 @@ class DLL_CYBIOCORE_API CVegetable : public CBasicEntity
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  size_t m_id_Age;
-  size_t m_id_Decomposition;
-  size_t m_id_ReproductionRate;
-  size_t m_id_Health;
-  size_t m_id_GrowthSpeed;
-  size_t m_id_ReproductionRange;
-  size_t m_id_ResistanceToConsumption;
+  char m_id_Age;
+  char m_id_Decomposition;
+  char m_id_ReproductionRate;
+  char m_id_Health;
+  char m_id_GrowthSpeed;
+  char m_id_ReproductionRange;
+  char m_id_ResistanceToConsumption;
   COLORREF   m_OriginalColorRgb;           // Color in RGB when vegetal is healthy (could be in basicEntity)
   double     m_OriginalProtection;         // Protection when vegetal is healthy
   OdorType_e m_OriginalOdor;               // Odor when vegetal is healthy
@@ -81,6 +81,9 @@ public:
   CVegetable(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
   CVegetable(string label, CVegetable& model);
   CVegetable(string label, CVegetable& mother,CVegetable& father);  
+
+private:
+  void initVegetableParamIds();
 
 //---------------------------------------------------------------------------
 // Genetic settings

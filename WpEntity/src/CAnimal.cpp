@@ -84,27 +84,8 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
   m_ConsumedEnergy = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_Hunger           = invalidIndex;
-  m_id_Thirst           = invalidIndex;
-  m_id_StomachFilling   = invalidIndex;
-  m_id_Libido           = invalidIndex;
-  m_id_Suffering        = invalidIndex;
-  m_id_Pleasure         = invalidIndex;
-  m_id_Tiredness        = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_FatWeight        = invalidIndex;
-  m_id_AttackFactor     = invalidIndex;
-  m_id_Curiosity        = invalidIndex;
-  m_id_Learning         = invalidIndex;
-  m_id_CurrentSpeed     = invalidIndex;
-  m_id_Fear             = invalidIndex;
-  m_id_Vigilance        = invalidIndex;
-  m_id_ResistanceToPoison = invalidIndex;
-  m_id_AmphibianAbility = invalidIndex;
+  initAnimalParamIds();
+
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
   m_pFeelingFear = new CFeelingFear(this);
@@ -141,27 +122,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
   m_HeadDirection = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_Hunger           = invalidIndex;
-  m_id_Thirst           = invalidIndex;
-  m_id_StomachFilling   = invalidIndex;
-  m_id_Libido           = invalidIndex;
-  m_id_Suffering        = invalidIndex;
-  m_id_Pleasure         = invalidIndex;
-  m_id_Tiredness        = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_FatWeight        = invalidIndex;
-  m_id_AttackFactor     = invalidIndex;
-  m_id_Curiosity        = invalidIndex;
-  m_id_Learning         = invalidIndex;
-  m_id_CurrentSpeed     = invalidIndex;
-  m_id_Fear             = invalidIndex;
-  m_id_Vigilance        = invalidIndex;
-  m_id_ResistanceToPoison = invalidIndex;
-  m_id_AmphibianAbility = invalidIndex;
+  initAnimalParamIds();
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -184,7 +145,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
 //  
 // REMARKS:      None
 //--------------------------------------------------------------------------- 
-CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
+CAnimal::CAnimal(string label, CAnimal& mother, CAnimal& father)
 { 
   m_Label         = label;
   // inherited
@@ -199,27 +160,7 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
   m_HeadDirection = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_Hunger           = invalidIndex;
-  m_id_Thirst           = invalidIndex;
-  m_id_StomachFilling   = invalidIndex;
-  m_id_Libido           = invalidIndex;
-  m_id_Suffering        = invalidIndex;
-  m_id_Pleasure         = invalidIndex;
-  m_id_Tiredness        = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_FatWeight        = invalidIndex;
-  m_id_AttackFactor     = invalidIndex;
-  m_id_Curiosity        = invalidIndex;
-  m_id_Learning         = invalidIndex;
-  m_id_CurrentSpeed     = invalidIndex;
-  m_id_Fear             = invalidIndex;
-  m_id_Vigilance        = invalidIndex;
-  m_id_ResistanceToPoison = invalidIndex;
-  m_id_AmphibianAbility = invalidIndex;
+  initAnimalParamIds();
 
   m_BusySecondCounter = 2;
   m_bIsSleeping = false;
@@ -229,6 +170,31 @@ CAnimal::CAnimal(string label, CAnimal& mother,CAnimal& father)
 
   m_forbidenActionInd = invalidIndex;
   m_forbidenActionCount = 0;
+}
+
+void CAnimal::initAnimalParamIds()
+{
+  m_id_Age = invalidCharIndex;
+  m_id_Decomposition = invalidCharIndex;
+  m_id_ReproductionRate = invalidCharIndex;
+  m_id_Health = invalidCharIndex;
+  m_id_Hunger = invalidCharIndex;
+  m_id_Thirst = invalidCharIndex;
+  m_id_StomachFilling = invalidCharIndex;
+  m_id_Libido = invalidCharIndex;
+  m_id_Suffering = invalidCharIndex;
+  m_id_Pleasure = invalidCharIndex;
+  m_id_Tiredness = invalidCharIndex;
+  m_id_GrowthSpeed = invalidCharIndex;
+  m_id_FatWeight = invalidCharIndex;
+  m_id_AttackFactor = invalidCharIndex;
+  m_id_Curiosity = invalidCharIndex;
+  m_id_Learning = invalidCharIndex;
+  m_id_CurrentSpeed = invalidCharIndex;
+  m_id_Fear = invalidCharIndex;
+  m_id_Vigilance = invalidCharIndex;
+  m_id_ResistanceToPoison = invalidCharIndex;
+  m_id_AmphibianAbility = invalidCharIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -291,77 +257,77 @@ bool CAnimal::setParamFromGene(CGene* pGen)
   {
   case GENE_PARAM_AGE:
     {
-      if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
+      if (m_id_Age != invalidCharIndex) delete(getParameter(m_id_Age)); // delete if already set
       m_id_Age = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_DECOMPOSITION:
     {
-      if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
+      if (m_id_Decomposition != invalidCharIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
       m_id_Decomposition = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RATE:
     {
-      if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
+      if (m_id_ReproductionRate != invalidCharIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
       m_id_ReproductionRate = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_RESISTANCE_TO_POISON:
     {
-      if (m_id_ResistanceToPoison != invalidIndex) delete(getParameter(m_id_ResistanceToPoison)); // delete if already set
+      if (m_id_ResistanceToPoison != invalidCharIndex) delete(getParameter(m_id_ResistanceToPoison)); // delete if already set
       m_id_ResistanceToPoison = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_GROWTH_SPEED:
     {
-      if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
+      if (m_id_GrowthSpeed != invalidCharIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
       m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_FAT_WEIGHT:
     {
-      if (m_id_FatWeight != invalidIndex) delete(getParameter(m_id_FatWeight)); // delete if already set
+      if (m_id_FatWeight != invalidCharIndex) delete(getParameter(m_id_FatWeight)); // delete if already set
       m_id_FatWeight = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_ATTACK_FACTOR:
     {
-      if (m_id_AttackFactor != invalidIndex) delete(getParameter(m_id_AttackFactor)); // delete if already set
+      if (m_id_AttackFactor != invalidCharIndex) delete(getParameter(m_id_AttackFactor)); // delete if already set
       m_id_AttackFactor = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_SPEED:
     {
-      if (m_id_CurrentSpeed != invalidIndex) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
+      if (m_id_CurrentSpeed != invalidCharIndex) delete(getParameter(m_id_CurrentSpeed)); // delete if already set
       m_id_CurrentSpeed = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_CURIOSITY:
     {
-      if (m_id_Curiosity != invalidIndex) delete(getParameter(m_id_Curiosity)); // delete if already set
+      if (m_id_Curiosity != invalidCharIndex) delete(getParameter(m_id_Curiosity)); // delete if already set
       m_id_Curiosity = addParameterFromGene(pGen, PARAM_BEHAVIOR);
       resu = true;
       break;
     }    
   case GENE_PARAM_LEARNING:
     {
-      if (m_id_Learning != invalidIndex) delete(getParameter(m_id_Learning)); // delete if already set
+      if (m_id_Learning != invalidCharIndex) delete(getParameter(m_id_Learning)); // delete if already set
       m_id_Learning = addParameterFromGene(pGen, PARAM_BEHAVIOR);
       resu = true;
       break;
     }
   case GENE_PARAM_AMPHIBIAN_ABILITY:
   {
-    if (m_id_AmphibianAbility != invalidIndex) delete(getParameter(m_id_AmphibianAbility)); // delete if already set
+    if (m_id_AmphibianAbility != invalidCharIndex) delete(getParameter(m_id_AmphibianAbility)); // delete if already set
     m_id_AmphibianAbility = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
     resu = true;
     break;
@@ -395,7 +361,7 @@ bool CAnimal::completeParamsWithDefault()
   // If not, use default value
 
   // CAnimal specific
-  if (m_id_Protection == invalidIndex)
+  if (m_id_Protection == invalidCharIndex)
   {
     m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_PROTECTION);
   }
@@ -404,79 +370,79 @@ bool CAnimal::completeParamsWithDefault()
   CBasicEntity::completeParamsWithDefault();
 
   // CAnimal specific
-  if (m_id_Age == invalidIndex)
+  if (m_id_Age == invalidCharIndex)
   {
     m_id_Age = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_AGE);
   }
-  if (m_id_Decomposition == invalidIndex)
+  if (m_id_Decomposition == invalidCharIndex)
   {
     m_id_Decomposition = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_DECOMPOSITION);
   }
-  if (m_id_ReproductionRate == invalidIndex)
+  if (m_id_ReproductionRate == invalidCharIndex)
   {
     m_id_ReproductionRate = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RATE);
   }
-  if (m_id_Health == invalidIndex)
+  if (m_id_Health == invalidCharIndex)
   {
     m_id_Health = addParameterCustom(0, 100, 100, 100, "Health rate", PARAM_FEELING);
   }
-  if (m_id_GrowthSpeed == invalidIndex)
+  if (m_id_GrowthSpeed == invalidCharIndex)
   {
     m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_GROWTH_SPEED);
   } 
-  if (m_id_Hunger == invalidIndex)
+  if (m_id_Hunger == invalidCharIndex)
   {
     m_id_Hunger = addParameterCustom(0, 20, 0, 100, "Hunger rate", PARAM_FEELING);
   } 
-  if (m_id_Thirst == invalidIndex)
+  if (m_id_Thirst == invalidCharIndex)
   {
     m_id_Thirst = addParameterCustom(0, 20, 0, 100, "Thirst rate", PARAM_FEELING);
   } 
-  if (m_id_StomachFilling == invalidIndex)
+  if (m_id_StomachFilling == invalidCharIndex)
   {
     m_id_StomachFilling = addParameterCustom(0, 0, 0, 100, "Stomach filling", PARAM_FEELING);
   } 
-  if (m_id_Libido == invalidIndex)
+  if (m_id_Libido == invalidCharIndex)
   {
     m_id_Libido = addParameterCustom(0, 0, 0, 100, "Libido rate", PARAM_FEELING);
   } 
-  if (m_id_Suffering == invalidIndex)
+  if (m_id_Suffering == invalidCharIndex)
   {
     m_id_Suffering = addParameterCustom(0, 0, 0, 100, "Suffering rate", PARAM_FEELING);
   }
-  if (m_id_Pleasure == invalidIndex)
+  if (m_id_Pleasure == invalidCharIndex)
   {
     m_id_Pleasure = addParameterCustom(0, 50, 50, 100, "Pleasure rate", PARAM_FEELING);
   }
-  if (m_id_Tiredness == invalidIndex)
+  if (m_id_Tiredness == invalidCharIndex)
   {
     m_id_Tiredness = addParameterCustom(0, 10, 10, 100, "Tiredness rate", PARAM_FEELING);
   }
-  if (m_id_CurrentSpeed == invalidIndex)
+  if (m_id_CurrentSpeed == invalidCharIndex)
   {
     m_id_CurrentSpeed = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_SPEED);
   }
-  if (m_id_FatWeight == invalidIndex)
+  if (m_id_FatWeight == invalidCharIndex)
   {
     m_id_FatWeight = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_FAT_WEIGHT);
   } 
-  if (m_id_AttackFactor == invalidIndex)
+  if (m_id_AttackFactor == invalidCharIndex)
   {
     m_id_AttackFactor = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_ATTACK_FACTOR);
   } 
-  if (m_id_Curiosity == invalidIndex)
+  if (m_id_Curiosity == invalidCharIndex)
   {
     m_id_Curiosity = addParameterFromGeneDefinition(PARAM_BEHAVIOR, GENE_PARAM_CURIOSITY);
   }
-  if (m_id_Learning == invalidIndex)
+  if (m_id_Learning == invalidCharIndex)
   {
     m_id_Learning = addParameterFromGeneDefinition(PARAM_BEHAVIOR, GENE_PARAM_LEARNING);
   } 
-  if (m_id_Fear == invalidIndex)
+  if (m_id_Fear == invalidCharIndex)
   {
     m_id_Fear = addParameterCustom(0, 0, 0, 100, "Fear rate", PARAM_FEELING);
   } 
-  if (m_id_Vigilance == invalidIndex)
+  if (m_id_Vigilance == invalidCharIndex)
   {
     m_id_Vigilance = addParameterCustom(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR);
   }
@@ -3839,7 +3805,7 @@ void CAnimal::setStomachFillingRate(double rate)
 
 double CAnimal::getResistanceToPoison()
 {
-  if (m_id_ResistanceToPoison == invalidIndex)
+  if (m_id_ResistanceToPoison == invalidCharIndex)
     return 0;
   else
     return (getParameter(m_id_ResistanceToPoison)->getVal());
@@ -3852,7 +3818,7 @@ void CAnimal::consumeEnergy(double unit)
 
 double CAnimal::getAmphibianAbility()
 {
-  if (m_id_AmphibianAbility == invalidIndex)
+  if (m_id_AmphibianAbility == invalidCharIndex)
     return 0;
   else
     return (getParameter(m_id_AmphibianAbility)->getVal());

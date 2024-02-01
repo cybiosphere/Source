@@ -59,8 +59,8 @@ class DLL_CYBIOCORE_API CAnimMammal : public CAnimal
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  size_t m_id_GestationTime;
-  size_t m_id_GestationNumberRange;
+  char m_id_GestationTime;
+  char m_id_GestationNumberRange;
 
 //===========================================================================
 // methods 
@@ -75,6 +75,9 @@ public:
   CAnimMammal(string label, CAnimMammal& mother,CAnimMammal& father);
 
   virtual ~CAnimMammal();
+
+private:
+  void initMammalParamIds();
 
 //---------------------------------------------------------------------------
 // Genetic settings

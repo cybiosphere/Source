@@ -490,12 +490,14 @@ bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
   TiXmlNode* pNodeGenome = NULL;
   TiXmlNode* pNodePair = NULL;
   TiXmlNode* pNodeGene = NULL;
+  bool resu = false;
 
   if (pNodeEntity!=NULL)
     pNodeGenome = pNodeEntity->FirstChild(XML_NODE_GENOME);
 
   if ((pNodeGenome != NULL) && (pNodeGenome->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
+    resu = true;
     pElement = (TiXmlElement*)pNodeGenome;
     int classType, dimorphism;
     string specieName;
@@ -578,7 +580,7 @@ bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
     }
   }
 
-  return true;
+  return resu;
 }
 
 //---------------------------------------------------------------------------

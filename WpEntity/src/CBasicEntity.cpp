@@ -219,11 +219,11 @@ CBasicEntity::CBasicEntity()
   m_Pheromone           = PHEROMONE_UNSET;
 
   // Parameter id pre-init
-  m_id_Weight     = invalidIndex; 
-  m_id_Toxicity   = invalidIndex;
-  m_id_Protection = invalidIndex;   
-  m_id_Camouflage = invalidIndex;
-  m_id_Noise      = invalidIndex;
+  m_id_Weight     = invalidCharIndex;
+  m_id_Toxicity   = invalidCharIndex;
+  m_id_Protection = invalidCharIndex;
+  m_id_Camouflage = invalidCharIndex;
+  m_id_Noise      = invalidCharIndex;
 
   m_EntitySignature = 0;
   m_Control = CONTROL_LOCAL_AUTO;
@@ -611,28 +611,28 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_WEIGHT:
     {
-      if (m_id_Weight != invalidIndex) delete(getParameter(m_id_Weight)); // delete if already set
+      if (m_id_Weight != invalidCharIndex) delete(getParameter(m_id_Weight)); // delete if already set
       m_id_Weight = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_TOXICITY:
     {
-      if (m_id_Toxicity != invalidIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
+      if (m_id_Toxicity != invalidCharIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
       m_id_Toxicity = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_PROTECTION:
     {
-      if (m_id_Protection != invalidIndex) delete(getParameter(m_id_Protection)); // delete if already set
+      if (m_id_Protection != invalidCharIndex) delete(getParameter(m_id_Protection)); // delete if already set
       m_id_Protection = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_CAMOUFLAGE:
     {
-      if (m_id_Camouflage != invalidIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
+      if (m_id_Camouflage != invalidCharIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
       m_id_Camouflage = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
@@ -665,23 +665,23 @@ bool CBasicEntity::completeParamsWithDefault(void)
 {
   // Check if all mandatory parameters were set by genome
   // If not, use default value
-  if (m_id_Weight == invalidIndex)
+  if (m_id_Weight == invalidCharIndex)
   {
     m_id_Weight = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_WEIGHT);
   }
-  if (m_id_Toxicity == invalidIndex)
+  if (m_id_Toxicity == invalidCharIndex)
   {
     m_id_Toxicity = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_TOXICITY);
   }
-  if (m_id_Protection == invalidIndex)
+  if (m_id_Protection == invalidCharIndex)
   {
     m_id_Protection = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_PROTECTION);
   }
-  if (m_id_Camouflage == invalidIndex)
+  if (m_id_Camouflage == invalidCharIndex)
   {
     m_id_Camouflage = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_CAMOUFLAGE);
   }
-  if (m_id_Noise == invalidIndex)
+  if (m_id_Noise == invalidCharIndex)
   {
     m_id_Noise = addParameterCustom(0, 0, 0, 100, "NoiseRate", PARAM_ENVIRONMENT);
   }
@@ -2518,7 +2518,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   TiXmlNode* pNodeChild = NULL;
   string tempLabel;
   string labelEntityNode;
-  int i;
+  size_t i;
 
   if ((pXmlDoc==NULL) || (pEntity==NULL))
     return false;
@@ -2562,7 +2562,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
       if (pNodeChild != NULL) 
       {
         pElement = (TiXmlElement*)pNodeChild;
-        pElement->SetAttribute(XML_ATTR_INDEX, i);
+        pElement->SetAttribute(XML_ATTR_INDEX, (int)i);
         pElement->SetAttribute(XML_ATTR_DAY_COUNT, pEntity->getLifeStage(i)->getCurDayCount());
       }
     }
@@ -2571,7 +2571,9 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   // Save parameters
   for (i=0; i<pEntity->getNumParameter(); i++)
   {
-    pEntity->getParameter(i)->saveInXmlFile(pNodeEntity);
+    // Save Min, Max for entities without genome definitions
+    bool doSaveMinMax = ((pEntity->getGenome() == NULL) || (pEntity->getGenome()->getNumPair() == 0)) ? true : false;
+    pEntity->getParameter(i)->saveInXmlFile(pNodeEntity, doSaveMinMax);
   }
 
   // Set caracters
@@ -3350,11 +3352,6 @@ OdorType_e CBasicEntity::getOdor()
   return (m_Odor);
 }
 
-TasteType_e CBasicEntity::getTaste() 
-{
-  return (m_Taste);
-}
-
 void CBasicEntity::setOdor(OdorType_e newOdor)
 {
   if (newOdor != m_Odor)
@@ -3364,6 +3361,17 @@ void CBasicEntity::setOdor(OdorType_e newOdor)
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
   }
 }
+
+TasteType_e CBasicEntity::getTaste() 
+{
+  return (m_Taste);
+}
+
+void CBasicEntity::setTaste(TasteType_e newTaste)
+{
+  m_Taste = newTaste;
+}
+
 
 PheromoneType_e CBasicEntity::getPheromone()
 {
@@ -3393,6 +3401,11 @@ void CBasicEntity::setGeneration(int newGeneration)
 ReproType_e CBasicEntity::getTypeOfReproduction()
 {
   return (m_TypeOfReproduction);
+}
+
+void CBasicEntity::setTypeOfReproduction(ReproType_e newType)
+{
+  m_TypeOfReproduction = newType;
 }
 
 SexType_e CBasicEntity::getSex()

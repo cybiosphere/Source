@@ -71,13 +71,7 @@ CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* p
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange = invalidIndex;
-  m_id_ResistanceToConsumption = invalidIndex;
+  initVegetableParamIds();
 }
 
 //---------------------------------------------------------------------------
@@ -106,13 +100,7 @@ CVegetable::CVegetable(string label, CVegetable& model)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange = invalidIndex;
-  m_id_ResistanceToConsumption = invalidIndex;
+  initVegetableParamIds();
 }
 
 //---------------------------------------------------------------------------
@@ -141,15 +129,25 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  m_id_Age              = invalidIndex; 
-  m_id_Decomposition    = invalidIndex; 
-  m_id_ReproductionRate = invalidIndex; 
-  m_id_Health           = invalidIndex;
-  m_id_GrowthSpeed      = invalidIndex;
-  m_id_ReproductionRange = invalidIndex;
-  m_id_ResistanceToConsumption = invalidIndex;
+  initVegetableParamIds();
 }  
 
+void CVegetable::initVegetableParamIds()
+{
+  m_id_Age = invalidCharIndex;
+  m_id_Decomposition = invalidCharIndex;
+  m_id_ReproductionRate = invalidCharIndex;
+  m_id_Health = invalidCharIndex;
+  m_id_GrowthSpeed = invalidCharIndex;
+  m_id_ReproductionRange = invalidCharIndex;
+  m_id_ResistanceToConsumption = invalidCharIndex;
+
+  // Give default values for attributes
+  setColor(0x00A6E0F9);
+  setTaste(TASTE_SWEET);
+  setOdor(ODOR_FRAGRANT);
+  setTypeOfReproduction(REPRODUCT_CLONAGE);
+}
 
 //===========================================================================
 // Genetic settings
@@ -193,42 +191,42 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   {
   case GENE_PARAM_AGE:
     {
-      if (m_id_Age != invalidIndex) delete(getParameter(m_id_Age)); // delete if already set
+      if (m_id_Age != invalidCharIndex) delete(getParameter(m_id_Age)); // delete if already set
       m_id_Age = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_DECOMPOSITION:
     {
-      if (m_id_Decomposition != invalidIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
+      if (m_id_Decomposition != invalidCharIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
       m_id_Decomposition = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RATE:
     {
-      if (m_id_ReproductionRate != invalidIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
+      if (m_id_ReproductionRate != invalidCharIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
       m_id_ReproductionRate = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_GROWTH_SPEED:
     {
-      if (m_id_GrowthSpeed != invalidIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
+      if (m_id_GrowthSpeed != invalidCharIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
       m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RANGE:
     {
-      if (m_id_ReproductionRange != invalidIndex) delete(getParameter(m_id_ReproductionRange)); // delete if already set
+      if (m_id_ReproductionRange != invalidCharIndex) delete(getParameter(m_id_ReproductionRange)); // delete if already set
       m_id_ReproductionRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_RESISTANCE_TO_CONSUMPTION:
   {
-    if (m_id_ResistanceToConsumption != invalidIndex) delete(getParameter(m_id_ResistanceToConsumption)); // delete if already set
+    if (m_id_ResistanceToConsumption != invalidCharIndex) delete(getParameter(m_id_ResistanceToConsumption)); // delete if already set
     m_id_ResistanceToConsumption = addParameterFromGene(pGen, PARAM_PHYSICAL);
     resu = true;
     break;
@@ -265,34 +263,39 @@ bool CVegetable::completeParamsWithDefault()
   CBasicEntity::completeParamsWithDefault();
 
   // CVegetable specific
-  if (m_id_Age == invalidIndex)
+  if (m_id_Age == invalidCharIndex)
   {
     m_id_Age = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_AGE);
   }
-  if (m_id_Decomposition == invalidIndex)
+  if (m_id_Decomposition == invalidCharIndex)
   {
     m_id_Decomposition = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_DECOMPOSITION);
   }
-  if (m_id_ReproductionRate == invalidIndex)
+  if (m_id_ReproductionRate == invalidCharIndex)
   {
     m_id_ReproductionRate = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RATE);
   }
-  if (m_id_Health == invalidIndex)
+  if (m_id_Health == invalidCharIndex)
   {
     m_id_Health = addParameterCustom(0, 100, 100, 100, "Health rate", PARAM_FEELING);
   }
-  if (m_id_GrowthSpeed == invalidIndex)
+  if (m_id_GrowthSpeed == invalidCharIndex)
   {
     m_id_GrowthSpeed = addParameterFromGeneDefinition(PARAM_BIOLOGICAL, GENE_PARAM_GROWTH_SPEED);
   }
-  if (m_id_ReproductionRange == invalidIndex)
+  if (m_id_ReproductionRange == invalidCharIndex)
   {
     m_id_ReproductionRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RANGE);
   }
-  if (m_id_ResistanceToConsumption == invalidIndex)
+  if (m_id_ResistanceToConsumption == invalidCharIndex)
   {
     m_id_ResistanceToConsumption = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
   }
+
+  // keep info to restore when vegetable is healthy
+  m_OriginalColorRgb = getColorRgb();
+  m_OriginalProtection = getProtection();
+  m_OriginalOdor = getOdor();
 
   return (true);
 }
@@ -394,11 +397,6 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
 
   // TBD: temporary. must be confirmed
   m_pPhysicWelfare->SetRecoveryBonus(1.0);
-
-  // keep info to restore when vegetable is healthy
-  m_OriginalColorRgb = getColorRgb();
-  m_OriginalProtection = getProtection();
-  m_OriginalOdor = getOdor();
 
   return (true);
 }

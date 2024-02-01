@@ -39,9 +39,6 @@ distribution.
 
 CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
 {
-  if (pGenome == NULL)
-    return (NULL);
-
   CBasicEntity* pNewEntity = NULL;
 
   // Set defaut coord
@@ -49,7 +46,8 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   size_t layer = invalidCoord;
 
   // Create the BasicEntity derived object
-  switch (pGenome->getClass())
+  ClassType_e entityClass = (pGenome != NULL) ? pGenome->getClass() : CLASS_SOLID;
+  switch (entityClass)
   {
     // Vegetable classs
   case CLASS_PHYCOPHYTA:
@@ -113,8 +111,13 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
   CGenome* pTempGenome = new CGenome(CLASS_NONE, "");
   int startLayer;
   CBasicEntity::getDefaultLayerFromXmlFile(pXmlDoc, startLayer);
-  CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
   CBasicEntity::getEntityNameFromXmlFile(pXmlDoc, name);
+
+  if (CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome) == false)
+  {
+    delete pTempGenome;
+    pTempGenome = NULL;
+  }
 
   CBasicEntity* pNewEntity = createEntity(name, pTempGenome);
   pNewEntity->jumpToGridCoord({ invalidCoord, invalidCoord }, true, startLayer);
@@ -124,7 +127,7 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
     pNewEntity->loadDataFromXmlFile(pXmlDoc);
     pNewEntity->loadBrainFromXmlFile(pXmlDoc);
   }
-  else
+  else if (pTempGenome != NULL)
   {
     delete pTempGenome;
   }
@@ -135,76 +138,56 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
 
 CBasicEntity* CEntityFactory::createCloneEntity(CBasicEntity* pModelEntity)
 {
-  CBasicEntity* pNewEntity = NULL;
-  string name = pModelEntity->getLabel();
+  if (pModelEntity == NULL)
+    return (NULL);
 
-  if (pModelEntity->getGenome() == NULL)
+  CGenome* pGenome = NULL;
+  if (pModelEntity->getGenome() != NULL)
+    pGenome = new CGenome(*pModelEntity->getGenome());
+
+  CBasicEntity* pNewEntity = createEntity(pModelEntity->getLabel(), pGenome);
+
+  if (pNewEntity == NULL)
   {
-    pNewEntity = new CBasicEntity(); // FRED Should use constructor with copy caracters
-    if (pNewEntity == NULL)
-      return (NULL);
-    pNewEntity->setLabel(name);
-  }
-  else
-  {
-    // Create the BasicEntity derived object
-    switch (pModelEntity->getGenome()->getClass())
-    {
-      // Vegetable classs
-    case CLASS_PHYCOPHYTA:
-    case CLASS_MYCOPHYTA:
-    case CLASS_BRYOPHYTA:
-    case CLASS_PTERIDOPHYTA:
-      pNewEntity = new CVegetable(name, *(CVegetable*)pModelEntity);
-      break;
+    if (pGenome != NULL)
+      delete pGenome;
 
-    case CLASS_SPERMATOPHYTA:
-      pNewEntity = new CVegetSpermatophyta(name, *(CVegetSpermatophyta*)pModelEntity);
-      break;
-
-      // Animal classs
-    case CLASS_MAMMAL:
-      pNewEntity = new CAnimMammal(name, *(CAnimMammal*)pModelEntity);
-      break;
-
-    case CLASS_REPTILE:
-    case CLASS_ARTHROPOD:
-    case CLASS_AVE:
-      pNewEntity = new CAnimal(name, *(CAnimal*)pModelEntity);
-      break;
-
-    case CLASS_WATER:
-      pNewEntity = new CWater(name, *(CWater*)pModelEntity);
-      break;
-
-    default:
-      pNewEntity = new CMineral(name, *(CMineral*)pModelEntity);
-
-    }
-
-    if (pNewEntity == NULL)
-      return (NULL);
-
-    // Set parameters
-    pNewEntity->setEntityFromGenome(0);
-
-    // quick aging
-    pNewEntity->quickAgeing(pModelEntity->getAge());
-
-    // If dead quick aging in dead mode
-    if (pModelEntity->getStatus() == STATUS_DEAD)
-    {
-      pNewEntity->autoKill();
-      pNewEntity->quickAgeing(pModelEntity->getDecompositionTime());
-    }
-
+    return (NULL);
   }
 
-  // Copie parameters
+  // quick aging
+  pNewEntity->quickAgeing(pModelEntity->getAge());
+
+  // If dead quick aging in dead mode
+  if (pModelEntity->getStatus() == STATUS_DEAD)
+  {
+    pNewEntity->autoKill();
+    pNewEntity->quickAgeing(pModelEntity->getDecompositionTime());
+  }
+
+  // Copy caracters
+  pNewEntity->setOdor(pModelEntity->getOdor());
+  pNewEntity->setForm(pModelEntity->getForm());
+  pNewEntity->setTaste(pModelEntity->getTaste());
+  pNewEntity->setTypeOfReproduction(pModelEntity->getTypeOfReproduction());
+  pNewEntity->setPheromone(pModelEntity->getPheromone());
+  pNewEntity->setColor(pModelEntity->getColorRgb());
+  pNewEntity->setTexture(pModelEntity->getTexture());
+  
+  // Copy parameters
+  CGenericParam* pParam;
+  CGenericParam* pModelParam;
   for (size_t i = 0; i < pNewEntity->getNumParameter(); i++)
-    pNewEntity->getParameter(i)->forceVal(pModelEntity->getParameter(i)->getVal());
+  {
+    pParam = pNewEntity->getParameter(i);
+    pModelParam = pModelEntity->getParameter(i);
+    pParam->setValMin(pModelParam->getMin());
+    pParam->setValMax(pModelParam->getMax());
+    pParam->setValNominal(pModelParam->getValNominal());
+    pParam->forceVal(pModelParam->getVal());
+  }
 
-  // Copie other infos
+  // Copy other infos
   pNewEntity->setStatus(pModelEntity->getStatus());
   pNewEntity->setGeneration(pModelEntity->getGeneration());
 

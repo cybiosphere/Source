@@ -255,7 +255,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
   if (pNewEntity->isLiving())
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - New entity : specie %s name %s\n", pGenome->getSpecieName().c_str(), name.c_str());
+    CYBIOCORE_LOG("BIOTOP - New entity from genome : specie %s name %s\n", pGenome->getSpecieName().c_str(), name.c_str());
   }
 
   // Put it in the biotop (with check coord);
@@ -269,7 +269,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
 }
 
 
-CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Point_t coord)
+CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Point_t coord, size_t layer)
 {
   string fileNameWithPath = pathName + fileName;
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileNameWithPath);
@@ -280,41 +280,41 @@ CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Poin
     delete pXmlDoc;
     return NULL;
   }
-  CBasicEntity* pNewEntity = createAndAddEntity(pXmlDoc, coord);
+  CBasicEntity* pNewEntity = createAndAddEntity(pXmlDoc, coord, layer);
   delete pXmlDoc;
   return pNewEntity;
 }
 
 
-CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord)
+CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord, size_t layer)
 {
-  int startLayer;
-  string name;
 
-  CBasicEntity::getDefaultLayerFromXmlFile(pXmlDoc, startLayer);
+
+  // Create entity
+  CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc);
+  if (pNewEntity == NULL)
+    return NULL;
 
   // Check coords
-  if ( !isCoordValidAndFree(coord,startLayer) )
-     return NULL;
+  if (layer == invalidCoord)
+    layer = pNewEntity->getDefaultLayer();
 
-  CGenome* pTempGenome = new CGenome(CLASS_NONE,"");
-  CBasicEntity::getGenomeFromXmlFile(pXmlDoc, *pTempGenome);
-  CBasicEntity::getEntityNameFromXmlFile(pXmlDoc, name);
-
-  CBasicEntity* pNewEntity = createAndAddEntity(name, coord, startLayer, pTempGenome);
-  if (pNewEntity !=NULL)
+  if (!isCoordValidAndFree(coord, layer))
   {
-    pNewEntity->loadDataFromXmlFile(pXmlDoc);
-    pNewEntity->loadBrainFromXmlFile(pXmlDoc);
-
-    // Set home position if needed
-    if (pNewEntity->getBrain() != NULL)
-    {
-      pNewEntity->getBrain()->SetHomePurposePositionInGeoMap();
-    }
+    delete pNewEntity;
+    return NULL;
   }
-  else
+  
+  if (pNewEntity->isLiving())
   {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - New entity: specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
+  }
+
+  // Put it in the biotop (with check coord);
+  if (addEntity(pNewEntity, coord, layer) == false)
+  {
+    delete pNewEntity;
     return NULL;
   }
 
@@ -2600,7 +2600,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
           }
           else
           {
-            pEntity = createAndAddEntity(entityFileName, pathNameForEntities, gridCoord);
+            pEntity = createAndAddEntity(entityFileName, pathNameForEntities, gridCoord, layer);
             if (pEntity)
             {
               pEntity->setDirection(direction);

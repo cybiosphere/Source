@@ -180,14 +180,14 @@ bool CGeneticView::SetEntity(CBasicEntity* pEntity)
 {
   m_pEntity = pEntity;
 
-  if (pEntity!=NULL)
+  if ((pEntity != NULL) && (pEntity->getGenome() != NULL))
   {
     m_GenomeTree.SetGenome(m_pEntity->getGenome());
     DisplayGenome(m_pEntity->getGenome());
   }
   else
   {
-    m_strData1 = "";
+    m_strData1 = (pEntity != NULL) ? pEntity->getSpecieName().c_str() : "";
     m_strData2 = "";
     m_strData3 = "";
     m_strData4 = "";

@@ -90,27 +90,27 @@ private:
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  size_t m_id_Age;
-  size_t m_id_Decomposition;
-  size_t m_id_ReproductionRate;
-  size_t m_id_Health;
-  size_t m_id_Hunger;
-  size_t m_id_Thirst;
-  size_t m_id_StomachFilling;
-  size_t m_id_Libido;
-  size_t m_id_Suffering;
-  size_t m_id_Pleasure;
-  size_t m_id_Tiredness;
-  size_t m_id_GrowthSpeed;
-  size_t m_id_FatWeight;
-  size_t m_id_AttackFactor;
-  size_t m_id_Curiosity;
-  size_t m_id_Learning;
-  size_t m_id_CurrentSpeed;
-  size_t m_id_Fear;
-  size_t m_id_Vigilance;
-  size_t m_id_ResistanceToPoison;
-  size_t m_id_AmphibianAbility;
+  char m_id_Age;
+  char m_id_Decomposition;
+  char m_id_ReproductionRate;
+  char m_id_Health;
+  char m_id_Hunger;
+  char m_id_Thirst;
+  char m_id_StomachFilling;
+  char m_id_Libido;
+  char m_id_Suffering;
+  char m_id_Pleasure;
+  char m_id_Tiredness;
+  char m_id_GrowthSpeed;
+  char m_id_FatWeight;
+  char m_id_AttackFactor;
+  char m_id_Curiosity;
+  char m_id_Learning;
+  char m_id_CurrentSpeed;
+  char m_id_Fear;
+  char m_id_Vigilance;
+  char m_id_ResistanceToPoison;
+  char m_id_AmphibianAbility;
 
 //===========================================================================
 // methods 
@@ -124,6 +124,8 @@ public:
   CAnimal(string label, CAnimal& model);
   CAnimal(string label, CAnimal& mother,CAnimal& father);
   ~CAnimal();
+private:
+  void initAnimalParamIds();
 
 //---------------------------------------------------------------------------
 // Genetic settings

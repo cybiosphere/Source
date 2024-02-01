@@ -63,8 +63,7 @@ CAnimal(label, initCoord, layer, pGenome)
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = invalidIndex;
-  m_id_GestationNumberRange = invalidIndex;
+  initMammalParamIds();
 }
 
 //---------------------------------------------------------------------------
@@ -85,8 +84,7 @@ CAnimal(label, model)
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = invalidIndex;
-  m_id_GestationNumberRange = invalidIndex;
+  initMammalParamIds();
 }
 
 //---------------------------------------------------------------------------
@@ -107,8 +105,7 @@ CAnimal(label, mother, father)
   m_Status      = STATUS_ALIVE; 
   
   // Parameter id pre-init
-  m_id_GestationTime        = invalidIndex;
-  m_id_GestationNumberRange = invalidIndex;
+  initMammalParamIds();
 }
 
 //---------------------------------------------------------------------------
@@ -125,7 +122,12 @@ CAnimal(label, mother, father)
 //---------------------------------------------------------------------------  
 CAnimMammal::~CAnimMammal()
 {
-  
+}
+
+void CAnimMammal::initMammalParamIds()
+{
+  m_id_GestationTime = invalidCharIndex;
+  m_id_GestationNumberRange = invalidCharIndex;
 }
 
 //===========================================================================
@@ -170,14 +172,14 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_GESTA_TIME:
     {
-      if (m_id_GestationTime != invalidIndex) delete(getParameter(m_id_GestationTime)); // delete if already set
+      if (m_id_GestationTime != invalidCharIndex) delete(getParameter(m_id_GestationTime)); // delete if already set
       m_id_GestationTime = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_GESTA_NB:
     {
-      if (m_id_GestationNumberRange != invalidIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
+      if (m_id_GestationNumberRange != invalidCharIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
       m_id_GestationNumberRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       setGestationBabyNumber(0);
       resu = true;
@@ -215,11 +217,11 @@ bool CAnimMammal::completeParamsWithDefault()
   CAnimal::completeParamsWithDefault();
   
   // CAnimMammal specific
-  if (m_id_GestationTime == invalidIndex)
+  if (m_id_GestationTime == invalidCharIndex)
   {
     m_id_GestationTime    = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_TIME);
   }
-  if (m_id_GestationNumberRange == invalidIndex)
+  if (m_id_GestationNumberRange == invalidCharIndex)
   {
     m_id_GestationNumberRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_NB);
     setGestationBabyNumber(0);
