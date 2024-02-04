@@ -88,7 +88,7 @@ void CReactionTurnRight::ExecuteAction(ReactionIntensityType_e intensity)
 
   // reduce speed
   double curSpeed = m_pBrain->getAnimal()->getCurrentSpeed();
-  if (curSpeed<2)
+  if (curSpeed < 5)
   {
     m_pBrain->getAnimal()->stopCurrentSpeed();
   }

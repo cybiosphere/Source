@@ -163,7 +163,7 @@ BOOL CMeasureEditorDlg::OnInitDialog()
   CString specieName;
   for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
   {
-    specieName = LPCTSTR(m_pBiotop->getEntityByIndex(i)->getGenome()->getSpecieName().c_str());
+    specieName = LPCTSTR(m_pBiotop->getEntityByIndex(i)->getSpecieName().c_str());
     index = m_ComboSpecie.FindStringExact(0,specieName);
     if (index==CB_ERR)
     {  

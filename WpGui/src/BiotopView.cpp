@@ -1016,9 +1016,9 @@ void CBiotopView::OnAppMonitorSpecie()
   // Do not take into account global water and grass
   if ((pEntity != NULL) && (pEntity->getId() < ENTITY_ID_FIRST_USER_ENTITY))
     pEntity = NULL;
-  if ((pEntity != NULL) && (pEntity->getGenome() != NULL))
+  if (pEntity != NULL)
   {
-    std::string specieName = pEntity->getGenome()->getSpecieName();
+    std::string specieName = pEntity->getSpecieName();
     m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC,
       10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
     theApp.addGeomapSpecieInBiotop(specieName);
@@ -1035,9 +1035,9 @@ void CBiotopView::OnAppMonitorSpecieBiomass()
   // Do not take into account global water and grass
   if ((pEntity != NULL) && (pEntity->getId() < ENTITY_ID_FIRST_USER_ENTITY))
     pEntity = NULL;
-  if ((pEntity != NULL) && (pEntity->getGenome() != NULL))
+  if (pEntity != NULL)
   {
-    std::string specieName = pEntity->getGenome()->getSpecieName();
+    std::string specieName = pEntity->getSpecieName();
     m_pBiotop->addMeasurePopulation(43200, m_pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC_BIOMASS,
       10 * (m_pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
     theApp.addGeomapSpecieInBiotop(specieName);

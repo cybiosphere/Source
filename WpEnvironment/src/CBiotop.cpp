@@ -255,7 +255,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
   if (pNewEntity->isLiving())
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - New entity from genome : specie %s name %s\n", pGenome->getSpecieName().c_str(), name.c_str());
+    CYBIOCORE_LOG("BIOTOP - New entity from genome : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), name.c_str());
   }
 
   // Put it in the biotop (with check coord);
@@ -663,30 +663,22 @@ size_t CBiotop::getNbOfMinerals()
 size_t CBiotop::getNbOfSpecieEntities(string& SpecieName)
 {
   size_t tempCount = 0;
-  CGenome* pCurGenome;
-
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    pCurGenome = pEntity->getGenome();
-    if ((pCurGenome!=NULL) && (pCurGenome->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
+    if ((pEntity->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
       tempCount++;
   }
-
   return (tempCount);
 }
 
 double CBiotop::getSpecieBiomass(string& SpecieName)
 {
   double tempCount = 0;
-  CGenome* pCurGenome;
-
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    pCurGenome = pEntity->getGenome();
-    if ((pCurGenome != NULL) && (pCurGenome->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
+    if ((pEntity->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
       tempCount += pEntity->getWeight();
   }
-
   return (tempCount);
 }
 

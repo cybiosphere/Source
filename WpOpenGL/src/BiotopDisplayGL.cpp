@@ -725,7 +725,7 @@ CAnimatedSprite* CBiotopDisplayGL::GetAnimatedSprite(CBasicEntity* pEntity)
   // Check if data already loaded
   for (int i=0; i<m_tAnimatedSprite.GetSize(); i++)
   { 
-    if ( ( pEntity->getGenome()->getSpecieName().c_str() == m_tAnimatedSprite.GetAt(i)->GetSpriteName() ) 
+    if ( ( pEntity->getSpecieName().c_str() == m_tAnimatedSprite.GetAt(i)->GetSpriteName() ) 
        &&( nActions == m_tAnimatedSprite.GetAt(i)->GetNbActions() ) )
     {
       // Sprite already exist
@@ -734,7 +734,7 @@ CAnimatedSprite* CBiotopDisplayGL::GetAnimatedSprite(CBasicEntity* pEntity)
   }
 
   // Create new sprite
-  CAnimatedSprite* pNewSprite = new CAnimatedSprite(pEntity->getGenome()->getSpecieName().c_str(),
+  CAnimatedSprite* pNewSprite = new CAnimatedSprite(pEntity->getSpecieName().c_str(),
                                                     nDirection,nPosition,nLifeStages,nActions,
                                                     m_appBindTexArray[SELECT_ID]);
   
@@ -756,7 +756,7 @@ CAnimatedSprite* CBiotopDisplayGL::GetAnimatedSprite(CBasicEntity* pEntity)
     }
     else
     {
-      //dataDirName = pEntity->getGenome()->getSpecieName().c_str() + ageString + "Data";
+      //dataDirName = pEntity->getSpecieName().c_str() + ageString + "Data";
       dataDirName = pEntity->getFormStrName(pEntity->getForm()).c_str() + ageString + "Data";
     }
 
