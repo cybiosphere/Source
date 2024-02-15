@@ -563,11 +563,27 @@ bool CVegetSpermatophyta::autoClone()
   // Caracter from genetic after mutation:
   pChildEntity->setEntityFromGenome(m_pBiotop->getRadioactivityRate());
 
+  // Copy parameters
+  CGenericParam* pParam;
+  CGenericParam* pModelParam;
+  for (size_t i = 0; i < pChildEntity->getNumParameter(); i++)
+  {
+    pParam = pChildEntity->getParameter(i);
+    pModelParam = getParameter(i);
+    pParam->setValMin(pModelParam->getMin());
+    pParam->setValMax(pModelParam->getMax());
+    pParam->setValNominal(pModelParam->getValNominal());
+    pParam->forceVal(pModelParam->getVal());
+  }
+
+  // Reset some paramters
+  pChildEntity->forceAgeValue(0);
+  pChildEntity->forceWeight(pChildEntity->getMinWeight() + 0.1); // ensure weight is more than min
+
   int range = (int)getReproductionRange();
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  pChildEntity->changeWeight(0.1); // ensure weight is more than min
   entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
 
   if (resuId == ENTITY_ID_INVALID)

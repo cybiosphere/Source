@@ -67,32 +67,6 @@ CMineral::CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseu
 
 }
 
-//---------------------------------------------------------------------------
-// METHOD:       CMineral::CMineral
-//  
-// DESCRIPTION:  Constructor 
-// 
-// ARGUMENTS:    CMineral& model : Single parent constructor for cloning
-//   
-// RETURN VALUE: None
-//  
-// REMARKS:      None
-//---------------------------------------------------------------------------     
-CMineral::CMineral(string label, CMineral& model) 
-{ 
-  m_Label         = label;
-  // inherited
-  jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
-  m_Generation		= model.m_Generation + 1;
-  m_pGenome       = new CGenome(*model.m_pGenome);
-
-  // reset
-  m_pBrain          = NULL;
-  m_Status      = STATUS_STATIC;
-  m_Generation  = 0;
-  m_TotalChildNumber = 0;
-}
-
 string CMineral::buildLifeStageString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;

@@ -3556,8 +3556,7 @@ double CBasicEntity::changeWeight(double variation)
 
 void CBasicEntity::forceWeight(double newWeight)
 {
-  CGenericParam* pParam = getParameter(m_id_Weight);
-  pParam->forceVal(newWeight);
+  getParameter(m_id_Weight)->forceVal(newWeight);
 }
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 

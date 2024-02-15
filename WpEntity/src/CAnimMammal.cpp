@@ -883,7 +883,7 @@ bool CAnimMammal::deliverAllBabies()
   }
   stopCurrentSpeed();
   forceTirednessRate(80.0);
-  changeHungerRate(-20.0); // Reduce hunger to focus on baby care
+  changeHungerRate(-80.0); // Reduce hunger to focus on baby care
   setGestationBabyNumber(0);
   getParameter(m_id_GestationTime)->forceVal(0);
   // Set maternal pheromon reset libido

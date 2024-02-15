@@ -72,6 +72,12 @@ CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* p
 
   // Parameter id pre-init
   initVegetableParamIds();
+
+  // Give default values for attributes
+  setColor(0x00A6E0F9);
+  setTaste(TASTE_SWEET);
+  setOdor(ODOR_FRAGRANT);
+  setTypeOfReproduction(REPRODUCT_CLONAGE);
 }
 
 //---------------------------------------------------------------------------
@@ -101,6 +107,15 @@ CVegetable::CVegetable(string label, CVegetable& model)
 
   // Parameter id pre-init
   initVegetableParamIds();
+
+  // Give default values for attributes
+  setOdor(model.getOdor());
+  setForm(model.getForm());
+  setTaste(model.getTaste());
+  setTypeOfReproduction(model.getTypeOfReproduction());
+  setPheromone(model.getPheromone());
+  setColor(model.getColorRgb());
+  setTexture(model.getTexture());
 }
 
 //---------------------------------------------------------------------------
@@ -141,12 +156,6 @@ void CVegetable::initVegetableParamIds()
   m_id_GrowthSpeed = invalidCharIndex;
   m_id_ReproductionRange = invalidCharIndex;
   m_id_ResistanceToConsumption = invalidCharIndex;
-
-  // Give default values for attributes
-  setColor(0x00A6E0F9);
-  setTaste(TASTE_SWEET);
-  setOdor(ODOR_FRAGRANT);
-  setTypeOfReproduction(REPRODUCT_CLONAGE);
 }
 
 //===========================================================================
@@ -308,7 +317,7 @@ bool CVegetable::completeParamsWithDefault()
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CBasicEntity life stage
+// RETURN VALUE: bool : false if gene not a CBasicEntity Physic Welfare
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
@@ -570,6 +579,12 @@ int CVegetable::getAge()
   return ((int)getParameter(m_id_Age)->getVal());
 }
 
+void CVegetable::forceAgeValue(int newAge)
+{
+  getParameter(m_id_Age)->forceVal(newAge);
+}
+
+
 int CVegetable::getDecompositionTime()
 {
   return ((int)getParameter(m_id_Decomposition)->getVal());
@@ -608,7 +623,7 @@ void CVegetable::setHealthRate(double rate)
 //===========================================================================
 void CVegetable::autoKill()
 {
-  setColor(0x0082B4F0);  // Color in Beige when vegetal is dead
+  setColor(0x00008080);  // Color Brown when vegetal is dead
   CBasicEntity::autoKill();
 }
 
@@ -653,11 +668,12 @@ double CVegetable::changeWeight(double variation)
 
     if ((-variation > remaining) && testChance(getParameter(m_id_ResistanceToConsumption)->getVal()))
     {
-      // Vegetal is totaly eaten but will survive
+      // Vegetal is totaly eaten but can survive
       // change temporaly color and protection
       setColor(0x00008080);  // Color Brown when vegetal has no more leafs
       setProtection(50.0);   // Protection when vegetal has no more leafs 
-      setOdor(ODOR_NONE);    // Odor when vegetal has no more leafs 
+      setOdor(ODOR_NONE);    // Odor when vegetal has no more leafs
+      changeHealthRate(-10);
       return CBasicEntity::changeWeight(-remaining + 0.01);
     }
     else

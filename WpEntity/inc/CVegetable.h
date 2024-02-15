@@ -116,6 +116,7 @@ public:
 protected:
   bool changeHealthRate(double variation);
   void setHealthRate(double rate);
+  void forceAgeValue(int newAge);
 
 //---------------------------------------------------------------------------
 // Behavior  

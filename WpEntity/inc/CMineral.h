@@ -62,7 +62,6 @@ class DLL_CYBIOCORE_API CMineral : public CBasicEntity
 //---------------------------------------------------------------------------  
 public:
   CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseudoGenome);
-  CMineral(string label, CMineral& model);
   string buildLifeStageString(CGene* pGen);
 };// end CMineral
 

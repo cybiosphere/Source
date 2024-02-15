@@ -71,7 +71,10 @@ public:
       if (pBiotop != NULL)
       {
         CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-        pNewMeasure = new CMeasureEntityParam(pEntity, paramId, period, id);
+        if (pEntity != NULL)
+        {
+          pNewMeasure = new CMeasureEntityParam(pEntity, paramId, period, id);
+        }
       }
       break;
     case MEASURE_TYPE_PARAMETER_BIOTOP:
@@ -84,14 +87,20 @@ public:
       if (pBiotop != NULL)
       {
         CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-        pNewMeasure = new CMeasureFeeling(pEntity, period, id, (MeasureFeelingType_e)subtype);
+        if (pEntity != NULL)
+        {
+          pNewMeasure = new CMeasureFeeling(pEntity, period, id, (MeasureFeelingType_e)subtype);
+        }
       }
       break;
     case MEASURE_TYPE_REACTION:
       if (pBiotop != NULL)
       {
         CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-        pNewMeasure = new CMeasureReaction(pEntity, paramId, period, id, (MeasureReactionType_e)subtype);
+        if (pEntity != NULL)
+        {
+          pNewMeasure = new CMeasureReaction(pEntity, paramId, period, id, (MeasureReactionType_e)subtype);
+        }
       }
       break;
     case MEASURE_TYPE_POPULATION:
