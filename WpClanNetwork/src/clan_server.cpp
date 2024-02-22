@@ -817,8 +817,6 @@ void Server::send_event_change_biotop_speed(const float newBiotopSpeed, const bo
 void Server::send_event_new_second_start(ServerUser* user)
 {
   NetGameEvent bioNextSecEventStart(labelEventNextSecStart);
-  CustomType biotopTime(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
-  bioNextSecEventStart.add_argument(biotopTime);
   bioNextSecEventStart.add_argument(m_biotopSpeed);
   bioNextSecEventStart.add_argument((float)m_pBiotop->getSunlight());
   bioNextSecEventStart.add_argument((float)m_pBiotop->getParamFertility()->getVal());
@@ -831,6 +829,7 @@ void Server::send_event_new_second_end(ServerUser* user)
   NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
   CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
   bioNextSecEventEnd.add_argument(biotopTimeEnd);
+  bioNextSecEventEnd.add_argument(m_pBiotop->getBiotopTime().years);
   network_server.send_event(bioNextSecEventEnd);
 }
 

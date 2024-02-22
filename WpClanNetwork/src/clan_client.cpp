@@ -296,11 +296,10 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   // Process event of previous second
   processBiotopEvents();
 
-  CustomType biotopTime = e.get_argument(0);
-  m_biotopSpeed = e.get_argument(1);
-  float sunlight = e.get_argument(2);
-  float fertility = e.get_argument(3);
-  float temperature = e.get_argument(4);
+  m_biotopSpeed = e.get_argument(0);
+  float sunlight = e.get_argument(1);
+  float fertility = e.get_argument(2);
+  float temperature = e.get_argument(3);
   m_bEventNextSecondStart = true;
   m_bEventNextSecondEnd = false;
   m_pBiotop->getParamSunlight()->forceVal(sunlight);
@@ -308,16 +307,16 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   m_pBiotop->getParamTemperature()->forceVal(temperature);
   m_pBiotop->nextSecond(false);
   send_event_new_second_end();
-	//log_event(labelClient, "Biotop next second start. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
 }
 
 // "Biotop-Next second" event was received
 void Client::on_event_biotop_nextsecond_end(const NetGameEvent &e)
 {
   CustomType biotopTime = e.get_argument(0);
+  int years = e.get_argument(1);
   m_lastEventTimeStamp = biotopTime.get_x();
 	//log_event(labelClient, "Biotop next second end. Time: %1:%2:%3 day%4", biotopTime.get_y(), biotopTime.get_x()/60, biotopTime.get_x()%60 , biotopTime.get_z());
-  m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), 0);  //TODO: missing year
+  m_pBiotop->setBiotopTime(biotopTime.get_x(), biotopTime.get_y(), biotopTime.get_z(), years);
   m_bEventNextSecondEnd = true;
   m_pBiotop->triggerMeasuresNextSecond();
 }
