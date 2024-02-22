@@ -94,6 +94,7 @@ public:
   void SetModeManual(BOOL isManual);
   BOOL IsModeStopOnEvent();
   void SetModeStopOnEvent(BOOL isStop);
+  void SetModeMaxSpeed(BOOL isMaxSpeed);
 
   CBiotop* GetBiotop();
   CString GetAppliPath();
@@ -118,7 +119,7 @@ public:
   feedbackValType forceEntityAction(const entityIdType entityId, const int actionIndex);
   void updateAllBiotopNewMeasures();
   void addEntitySpawnerInBiotop(int index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
-  void proceedBiotopNextSecond();
+  void proceedBiotopNextStep();
   void addGeomapSpecieInBiotop(std::string specieName);
   void proceedBiotopEvents();
   void addGeneticMarker(CGene& modelGene, bool markDominantAlleleOnly);
@@ -177,6 +178,8 @@ private:
 #endif
   BOOL m_bModeManual;
   BOOL m_bModeStopOnEvent;
+  BOOL m_bModeMaxSpeed;
+  size_t m_MaxSpeedStepfactor;
   CString m_AppliPath;
   CBasicEntity* m_pSelectedEntity;
   CScenarioPlayer* m_pScenarioPlayer;

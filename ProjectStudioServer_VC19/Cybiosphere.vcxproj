@@ -537,6 +537,7 @@
     <ClInclude Include="..\WpCommon\inc\CGenericCaract.h" />
     <ClInclude Include="..\WpCommon\inc\CGenericParam.h" />
     <ClInclude Include="..\WpCommon\inc\Definitions.h" />
+    <ClInclude Include="..\WpCommon\inc\Helpers.h" />
     <ClInclude Include="..\WpCommon\inc\Matrix.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />

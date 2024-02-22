@@ -32,7 +32,7 @@ distribution.
 #include "ChildFrm.h"
 #include "BiotopDoc.h"
 #include "BiotopView.h"
-
+#include "Helpers.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,7 +64,9 @@ CCybiosphereApp::CCybiosphereApp()
   m_pBioCtrlDoc  = NULL;
   m_pBioCtrlView = NULL;
   m_bModeManual = false;
+  m_bModeMaxSpeed = false;
   m_bModeStopOnEvent = false;
+  m_MaxSpeedStepfactor = 1;
   m_pSelectedEntity = NULL;
   m_pScenarioPlayer = NULL;
   m_OpenedBiotopPath = "";
@@ -440,6 +442,22 @@ void CCybiosphereApp::SetModeStopOnEvent(BOOL isStop)
   m_bModeStopOnEvent = isStop;
 }
 
+void CCybiosphereApp::SetModeMaxSpeed(BOOL isMaxSpeed)
+{
+  if (m_bModeMaxSpeed != isMaxSpeed)
+  {
+    m_bModeMaxSpeed = isMaxSpeed;
+#ifdef USE_CLAN_CLIENT
+    m_pClient->set_maxSpeed_mode(isMaxSpeed);
+#else
+    m_MaxSpeedStepfactor = computeMaxSpeedStepfactor(m_pBiotop, m_bModeMaxSpeed);
+#if USE_CLAN_SERVER
+    m_pServer->set_maxSpeed_mode(isMaxSpeed);
+#endif // USE_CLAN_SERVER
+#endif // USE_CLAN_CLIENT
+  }
+}
+
 void CCybiosphereApp::CreateBrainView()
 {
   CDocTemplate* pDocTempl;
@@ -622,6 +640,7 @@ void CCybiosphereApp::NextSecondStart()
     GetBiotopViewPtr()->SetSpeedRate(m_pClient->get_biotop_speed());
   }
   SetModeManual(m_pClient->get_manual_mode());
+  SetModeMaxSpeed(m_pClient->get_maxSpeed_mode());
   GetLogServerViewPtr()->AddLog(Logger::getOnGoingString().c_str());
 #endif
 }
@@ -643,6 +662,7 @@ void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 
 #ifdef USE_CLAN_SERVER
   SetModeManual(m_pServer->get_manual_mode());
+  SetModeMaxSpeed(m_pServer->get_maxSpeed_mode());
   if (fabs(m_pServer->get_biotop_speed() - GetBiotopViewPtr()->GetSpeedRate()) > 0.01)
   {
     GetBioCtrlViewPtr()->ForceSetSpeed(m_pServer->get_biotop_speed());
@@ -743,10 +763,10 @@ void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName
 void CCybiosphereApp::modifyBiotopSpeed(const float newBiotopSpeed)
 {
 #ifdef USE_CLAN_CLIENT
-  m_pClient->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual);
+  m_pClient->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual, m_bModeMaxSpeed);
 #else
 #ifdef USE_CLAN_SERVER
-  m_pServer->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual);
+  m_pServer->send_event_change_biotop_speed(newBiotopSpeed, m_bModeManual, m_bModeMaxSpeed);
 #endif
   GetBiotopViewPtr()->SetSpeedRate(newBiotopSpeed);
 #endif
@@ -791,7 +811,7 @@ void CCybiosphereApp::addEntitySpawnerInBiotop(int index, string entityFileName,
 #endif // USE_CLAN_SERVER
 }
 
-void CCybiosphereApp::proceedBiotopNextSecond()
+void CCybiosphereApp::proceedBiotopNextStep()
 {
 #ifndef USE_CLAN_CLIENT
 #ifdef USE_CLAN_SERVER
@@ -800,10 +820,13 @@ void CCybiosphereApp::proceedBiotopNextSecond()
   proceedBiotopEvents();
   m_pServer->send_event_new_second_start();
 #endif
-  m_pBiotop->nextSecond(true);
+  for (int i = 0; i < m_MaxSpeedStepfactor; i++)
+  {
+    m_pBiotop->nextSecond(true);
 #ifdef USE_CLAN_SERVER
-  m_pServer->send_event_new_second_end();
+    m_pServer->send_event_new_second_end();
 #endif
+  }
 #endif // !USE_CLAN_CLIENT
 }
 

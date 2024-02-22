@@ -193,6 +193,7 @@
 #define IDC_RADIO_PURPOSE2              1103
 #define IDC_EDIT_BIOTOP2                1103
 #define IDC_RADIO_PURPOSE3              1104
+#define IDC_EDIT_BIOTOP3                1104
 #define IDC_RADIO_PURPOSE4              1105
 #define IDC_RADIO_PURPOSE5              1106
 #define IDC_RADIO_PURPOSE6              1107

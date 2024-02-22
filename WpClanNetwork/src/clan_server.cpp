@@ -6,6 +6,7 @@
 #include "API/Core/Zip/zlib_compression.h"
 #include <chrono>
 #include "CScenarioPlayer.h"
+#include "Helpers.h"
 
 #define SERVER_CMD_NUMBER 4
 
@@ -25,7 +26,8 @@ m_pBiotop{ pBiotop },
 next_user_id(1),
 nb_users_connected(0),
 m_biotopSpeed(1.0),
-m_bManualMode(false)
+m_bManualMode(false),
+m_bMaxSpeedMode(false)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_server.sig_client_connected(), clan::bind_member(this, &Server::on_client_connected));
@@ -122,10 +124,13 @@ void Server::exec()
     {
       if (!m_bManualMode)
       {
-        send_event_new_second_start();
-        // Next second in biotop
-        m_pBiotop->nextSecond();
-        send_event_new_second_end();
+        for (int i = 0; i < m_MaxSpeedStepfactor; i++)
+        {
+          send_event_new_second_start();
+          // Next second in biotop
+          m_pBiotop->nextSecond();
+          send_event_new_second_end();
+        }
       }
       // Reset timer
       lastRunTick = std::chrono::system_clock::now();
@@ -200,6 +205,16 @@ void Server::set_manual_mode(bool newManualMode)
     send_event_new_second_end();
   }
   m_bManualMode = newManualMode;
+}
+
+void Server::set_maxSpeed_mode(bool newMaxSpeedMode)
+{
+  m_bMaxSpeedMode = newMaxSpeedMode;
+}
+
+bool Server::get_maxSpeed_mode()
+{
+  return m_bMaxSpeedMode;
 }
 
 bool Server::process_cmd_line(const std::string input_cmd_string)
@@ -491,9 +506,10 @@ void Server::on_event_biotop_removeentity(const NetGameEvent& e, ServerUser* use
 
 void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user)
 {
-  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
+  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode, m_bMaxSpeedMode);
+  m_MaxSpeedStepfactor = computeMaxSpeedStepfactor(m_pBiotop, m_bMaxSpeedMode);
   // Broadcast to all client new speed
-  send_event_change_biotop_speed(m_biotopSpeed, m_bManualMode);
+  send_event_change_biotop_speed(m_biotopSpeed, m_bManualMode, m_bMaxSpeedMode);
   // Reset coprocess synchro
   for (auto coprocess : m_tCoprocessors)
   {
@@ -785,12 +801,13 @@ void Server::send_event_change_remote_control(CBasicEntity* pEntity, bool setRem
     user->send_event(bioChangeCtrlEntityEvent);
 }
 
-void Server::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user)
+void Server::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode, ServerUser* user)
 {
-  //log_event(labelServer, "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
+  //log_event(labelServer, "Change biotop speed: %1 manualMode: %2 isMaxSpeedMode: %3", newBiotopSpeed, isManualMode, isMaxSpeedMode);
   m_biotopSpeed = newBiotopSpeed;
   m_bManualMode = isManualMode;
-  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
+  m_bMaxSpeedMode = isMaxSpeedMode;
+  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode, isMaxSpeedMode) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioChangeSpeedEvent);
   else

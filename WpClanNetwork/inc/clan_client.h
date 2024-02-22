@@ -28,6 +28,8 @@ public:
   void processBiotopEvents();
   bool get_manual_mode();
   void set_manual_mode(bool newManualMode);
+  bool get_maxSpeed_mode();
+  void set_maxSpeed_mode(bool newMaxSpeedMode);
 
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
@@ -38,7 +40,7 @@ public:
   void send_event_update_entity_position(CBasicEntity* pEntity);
   void send_event_update_entity_physic(CBasicEntity* pEntity);
   void send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId);
-  void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode);
+  void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode);
   void send_event_force_entity_action(const entityIdType entityId, const int actionIndex);
   void send_event_create_measure(CMeasure* pMeasure);
   void send_event_request_entity_refresh(CBasicEntity* pEntity);
@@ -100,6 +102,7 @@ private:
   int m_lastEventTimeStamp;
   float m_biotopSpeed; // Controled by server. 1.0 is real time speed. Biotp update every 1sec
   bool m_bManualMode;
+  bool m_bMaxSpeedMode;
 };
 
 #endif // #ifndef __ClanClient_h_

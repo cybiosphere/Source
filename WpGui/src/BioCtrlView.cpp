@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CBioCtrlView, CFormView)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_ZOOM, OnReleasedcaptureSliderZoom)
 	ON_BN_CLICKED(IDC_EDIT_BIOTOP, OnEdit)
   ON_BN_CLICKED(IDC_EDIT_BIOTOP2, OnDefaultSpeed)
+  ON_BN_CLICKED(IDC_EDIT_BIOTOP3, OnMaxSpeed)
 	ON_BN_CLICKED(IDC_CHECK2, OnCheckStopOnEv)
 	ON_CBN_SELCHANGE(IDC_COMBO_WIND, OnSelchangeComboWind)
 	//}}AFX_MSG_MAP
@@ -238,6 +239,7 @@ void CBioCtrlView::ForceModeManual(BOOL newMode)
 void CBioCtrlView::OnReleasedcaptureSliderSpeed(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	// TODO: Add your control notification handler code here
+  theApp.SetModeMaxSpeed(false);
 	theApp.modifyBiotopSpeed(m_SliderSpeed.GetPos());
   m_UserSpeed = m_SliderSpeed.GetPos();
 	*pResult = 0;
@@ -268,6 +270,7 @@ bool CBioCtrlView::ForceChangeSpeed(int rate)
   }
   m_SliderSpeed.SetPos(newPos);
   RedrawWindow();
+  theApp.SetModeMaxSpeed(false);
   theApp.modifyBiotopSpeed(m_SliderSpeed.GetPos());
   return (resu);
 }
@@ -336,12 +339,21 @@ void CBioCtrlView::OnEdit()
 
 void CBioCtrlView::OnDefaultSpeed()
 {
+  theApp.SetModeMaxSpeed(false);
   theApp.modifyBiotopSpeed(1.2);
   m_SliderSpeed.SetPos(1);
   m_UserSpeed = m_SliderSpeed.GetPos();
   RedrawWindow();
 }
 
+void CBioCtrlView::OnMaxSpeed()
+{
+  theApp.modifyBiotopSpeed(100);
+  theApp.SetModeMaxSpeed(true);
+  m_SliderSpeed.SetPos(100);
+  m_UserSpeed = m_SliderSpeed.GetPos();
+  RedrawWindow();
+}
 
 void CBioCtrlView::OnCheckStopOnEv() 
 {

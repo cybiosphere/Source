@@ -2339,7 +2339,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
   // Save parameters
   for (i=0; i<m_tParam.size(); i++)
   {
-    getParameter(i)->saveInXmlFile(pNodeBiotop);
+    getParameter(i)->saveInXmlFile(pNodeBiotop, true);
   }
 
   // Grid

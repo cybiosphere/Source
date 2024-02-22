@@ -57,6 +57,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   m_bEventNextSecondEnd = false;
   m_biotopSpeed = 1.0;
   m_bManualMode = true;
+  m_bMaxSpeedMode = false;
 }
 
 Client::~Client()
@@ -177,6 +178,16 @@ bool Client::get_manual_mode()
 void Client::set_manual_mode(bool newManualMode)
 {
   m_bManualMode = newManualMode;
+}
+
+bool Client::get_maxSpeed_mode()
+{
+  return m_bMaxSpeedMode;
+}
+
+void Client::set_maxSpeed_mode(bool newMaxSpeedMode)
+{
+  m_bMaxSpeedMode = newMaxSpeedMode;
 }
 
 void Client::process_new_events()
@@ -387,7 +398,7 @@ void Client::on_event_biotop_changeentitycontrol(const NetGameEvent& e)
 
 void Client::on_event_biotop_changespeed(const NetGameEvent& e)
 {
-  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode);
+  event_manager::handleEventChangeBiotopSpeed(e, m_biotopSpeed, m_bManualMode, m_bMaxSpeedMode);
 }
 
 void Client::on_event_biotop_requestentityrefresh(const NetGameEvent& e)
@@ -539,12 +550,13 @@ void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entity
   network_client.send_event(bioRemoveEntityEvent);
 }
 
-void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode)
+void Client::send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode)
 {
-  log_event(labelClient, "Change biotop speed: %1 manualMode: %2", newBiotopSpeed, isManualMode);
+  log_event(labelClient, "Change biotop speed: %1 manualMode: %2 maxSpeedMode: %3", newBiotopSpeed, isManualMode, isMaxSpeedMode);
   m_biotopSpeed = newBiotopSpeed;
   m_bManualMode = isManualMode;
-  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode) };
+  m_bMaxSpeedMode = isMaxSpeedMode;
+  NetGameEvent bioChangeSpeedEvent{ event_manager::buildEventChangeBiotopSpeed(newBiotopSpeed, isManualMode, isMaxSpeedMode) };
   network_client.send_event(bioChangeSpeedEvent);
 }
 

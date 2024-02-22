@@ -57,7 +57,7 @@ CCyclicParam::~CCyclicParam()
 //===========================================================================
 // Save/Load in xml file
 //===========================================================================
-bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode)
+bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode, bool doSaveMinMax)
 {
   bool resu = false;
   TiXmlElement newParam(XML_NODE_PARAMETER);
@@ -67,10 +67,13 @@ bool CCyclicParam::saveInXmlFile(TiXmlNode* pNode)
     TiXmlElement* pElement = (TiXmlElement*)pNodeChild;
     pElement->SetAttribute(XML_ATTR_NAME, getLabel());
     pElement->SetDoubleAttribute(XML_ATTR_VALUE, getVal());
-    pElement->SetDoubleAttribute(XML_ATTR_PERIOD, getPeriod());
-    pElement->SetDoubleAttribute(XML_ATTR_PHASE, getCurrentPhase());
-    pElement->SetDoubleAttribute(XML_ATTR_RANGE_MIN, getMin());
-    pElement->SetDoubleAttribute(XML_ATTR_RANGE_MAX, getMax());
+    if (doSaveMinMax)
+    {
+      pElement->SetDoubleAttribute(XML_ATTR_PERIOD, getPeriod());
+      pElement->SetDoubleAttribute(XML_ATTR_PHASE, getCurrentPhase());
+      pElement->SetDoubleAttribute(XML_ATTR_RANGE_MIN, getMin());
+      pElement->SetDoubleAttribute(XML_ATTR_RANGE_MAX, getMax());
+    }
     resu = true;
   }
   return resu;

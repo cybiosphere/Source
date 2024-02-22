@@ -35,6 +35,8 @@ public:
 	float get_biotop_speed();
 	bool get_manual_mode();
 	void set_manual_mode(bool newManualMode);
+	bool get_maxSpeed_mode();
+	void set_maxSpeed_mode(bool newMaxSpeedMode);
 	void process_new_events();
 	bool checkAllCoprocessorCompleteSecond();
 private:
@@ -75,7 +77,7 @@ public:
 	void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator, ServerUser* user = NULL);
 	void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie, ServerUser* user = NULL);
 	void send_event_change_remote_control(CBasicEntity* pEntity, bool setRemoteControl, ServerUser* user = NULL);
-	void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, ServerUser* user = NULL);
+	void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode, ServerUser* user = NULL);
 	void send_event_new_second_start(ServerUser* user = NULL);
 	void send_event_new_second_end(ServerUser* user = NULL);
 	void send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user = NULL);
@@ -98,6 +100,8 @@ private:
 	int  nb_users_connected;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
 	bool m_bManualMode;
+	bool m_bMaxSpeedMode;
+	size_t m_MaxSpeedStepfactor;
 	static const size_t MaxNumberCoprocessor = 2;
 	std::vector<ServerCoprocessor> m_tCoprocessors;
 	event_manager m_EventManager;

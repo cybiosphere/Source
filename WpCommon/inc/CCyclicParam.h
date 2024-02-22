@@ -81,7 +81,7 @@ public:
  //---------------------------------------------------------------------------
  // Save/Load in xml file
  //---------------------------------------------------------------------------
-  bool saveInXmlFile(TiXmlNode* pNode);
+  bool saveInXmlFile(TiXmlNode* pNode, bool doSaveMinMax = false);
   bool loadFromXmlFile(TiXmlNode* pNode);
 
 

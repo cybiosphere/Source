@@ -37,8 +37,8 @@ namespace clan
 	  static NetGameEvent buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId);
     static bool handleEventRemoveEntity(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent buildEventChangeBiotopSpeed(const float newBiotopSpeed, const bool isManualMode);
-    static bool handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed, bool& isManualMode);
+    static NetGameEvent buildEventChangeBiotopSpeed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode);
+    static bool handleEventChangeBiotopSpeed(const NetGameEvent& e, float& newBiotopSpeed, bool& isManualMode, bool& isMaxSpeedMode);
 
     static NetGameEvent buildEventForceEntityAction(const entityIdType entityId, const int actionIndex);
     static bool handleEventForceEntityAction(const NetGameEvent& e, CBiotop* pBiotop);
