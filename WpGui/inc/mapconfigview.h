@@ -49,6 +49,7 @@ typedef enum
   MAP_TYPE_PURPOSE,
   MAP_TYPE_SENSORS,
 	MAP_TYPE_POPULATION,
+	MAP_TYPE_FERTILITY,
   MAP_NUMBER_TYPE 
 } MapConfigType_e;
 
@@ -68,6 +69,7 @@ public:
 	BOOL	m_bIsPurposeMap;
   BOOL	m_bIsSensorMap;
 	BOOL	m_bIsPopulationMap;
+	BOOL  m_bIsFertilityMap;
 	CString	m_purposeTxt1;
 	CString	m_purposeTxt2;
 	CString	m_purposeTxt3;
@@ -106,6 +108,7 @@ public:
     bool BuildMap (bool forceRefresh = true);
     bool BuildOdorMap(OdorType_e odorType);
     bool BuildTemperatureMap();
+		bool BuildFertilityMap();
     bool BuildPurposeMap(int index);
     bool BuildSensorsMap(int index);
 		bool BuildPopulationMap(int index);
@@ -141,6 +144,7 @@ protected:
 	afx_msg void OnCheck3();
   afx_msg void OnCheck4();
 	afx_msg void OnCheck5();
+	afx_msg void OnCheck6();
 	afx_msg void OnRadioPurpose1();
 	afx_msg void OnRadioPurpose2();
 	afx_msg void OnRadioPurpose3();

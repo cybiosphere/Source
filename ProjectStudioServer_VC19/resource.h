@@ -76,6 +76,7 @@
 #define IDC_CHECK3                      1007
 #define IDC_CHECK4                      1008
 #define IDC_CHECK5                      1009
+#define IDC_CHECK6                      1010
 #define IDC_BUTTON_EXEC                 1012
 #define IDC_FEEDBACK                    1013
 #define IDC_CUR_ACTION                  1014

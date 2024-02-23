@@ -56,6 +56,10 @@ CMapConfigView::CMapConfigView()
 	m_bIsOdorMap = FALSE;
   m_bIsTemperatureMap = FALSE;
   m_bIsPurposeMap = FALSE;
+  m_bIsSensorMap = FALSE;
+  m_bIsPopulationMap = FALSE;
+  m_bIsFertilityMap = FALSE;
+
 	m_purposeTxt1 = _T("");
 	m_purposeTxt2 = _T("");
 	m_purposeTxt3 = _T("");
@@ -90,6 +94,7 @@ void CMapConfigView::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_CHECK3, m_bIsPurposeMap);
   DDX_Check(pDX, IDC_CHECK4, m_bIsSensorMap);
   DDX_Check(pDX, IDC_CHECK5, m_bIsPopulationMap);
+  DDX_Check(pDX, IDC_CHECK6, m_bIsFertilityMap);
 	DDX_Text(pDX, IDC_PURPOSE_TXT1, m_purposeTxt1);
 	DDX_Text(pDX, IDC_PURPOSE_TXT2, m_purposeTxt2);
 	DDX_Text(pDX, IDC_PURPOSE_TXT3, m_purposeTxt3);
@@ -129,6 +134,7 @@ BEGIN_MESSAGE_MAP(CMapConfigView, CFormView)
 	ON_BN_CLICKED(IDC_CHECK3, OnCheck3)
   ON_BN_CLICKED(IDC_CHECK4, OnCheck4)
   ON_BN_CLICKED(IDC_CHECK5, OnCheck5)
+  ON_BN_CLICKED(IDC_CHECK6, OnCheck6)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE1, OnRadioPurpose1)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE2, OnRadioPurpose2)
 	ON_BN_CLICKED(IDC_RADIO_PURPOSE3, OnRadioPurpose3)
@@ -228,6 +234,11 @@ bool CMapConfigView::BuildMap(bool forceRefresh)
         theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
       }
       break;
+    case MAP_TYPE_FERTILITY:
+      resu = BuildFertilityMap();
+      if (forceRefresh)
+        theApp.GetBiotopViewPtr()->ForceRefreshDisplay();
+      break;
     default:
       resu = false;
       break;
@@ -305,6 +316,49 @@ bool CMapConfigView::BuildTemperatureMap()
   return (true);
 }
 
+bool CMapConfigView::BuildFertilityMap()
+{
+  int i, j;
+  double fertility;
+  DWORD r, g, b;
+  BiotopSquare_t** tBioSquare;
+  tBioSquare = m_pBiotop->getpBioSquare();
+
+  Point_t curCoord;
+  Point_t startCoord = theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetGridCoordFromScreenPos(CPoint(1, 1));
+
+  int rangeDisplay = 2 * (theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->GetCurrentGridCenterPos().x - startCoord.x);
+
+  // Trace temperature map
+  for (i = 0; i < rangeDisplay; i++)
+  {
+    for (j = 0; j < rangeDisplay; j++)
+    {
+      curCoord.x = startCoord.x + i;
+      curCoord.y = startCoord.y - j;
+      if (m_pBiotop->isCoordValid(curCoord, 2))
+      {
+        fertility = m_pBiotop->getFertility(curCoord);
+        if (fertility < 15)
+        {
+          r = 250; g = 80 + fertility * 10; b = 10;
+        }
+        else if (fertility < 30)
+        {
+          r = 300 - 5 * fertility; g = 200 + fertility; b = 10;
+        }
+        else
+        {
+          r = 10; g = 300 - 2 * fertility; b = 10 + 2 * fertility;
+        }
+
+        tBioSquare[curCoord.x][curCoord.y].customColor = (b << 0x10) + (g << 0x08) + r;
+      }
+    }
+  }
+
+  return (true);
+}
 
 bool CMapConfigView::UpdateSelectedEntity(CBasicEntity* pEntity)
 {
@@ -592,6 +646,7 @@ void CMapConfigView::OnCheck1()
   m_bIsPurposeMap = FALSE;
   m_bIsSensorMap = FALSE;
   m_bIsPopulationMap = FALSE;
+  m_bIsFertilityMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -612,6 +667,7 @@ void CMapConfigView::OnCheck2()
   m_bIsPurposeMap = FALSE;
   m_bIsSensorMap = FALSE;
   m_bIsPopulationMap = FALSE;
+  m_bIsFertilityMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -633,6 +689,7 @@ void CMapConfigView::OnCheck3()
   m_bIsTemperatureMap = FALSE;
   m_bIsSensorMap = FALSE;
   m_bIsPopulationMap = FALSE;
+  m_bIsFertilityMap = FALSE;
   UpdateData(FALSE);	
 }
 
@@ -654,6 +711,7 @@ void CMapConfigView::OnCheck4()
   m_bIsTemperatureMap = FALSE;
   m_bIsPurposeMap = FALSE;
   m_bIsPopulationMap = FALSE;
+  m_bIsFertilityMap = FALSE;
   UpdateData(FALSE);
 }
 
@@ -694,6 +752,28 @@ void CMapConfigView::OnCheck5()
   m_bIsTemperatureMap = FALSE;
   m_bIsPurposeMap = FALSE;
   m_bIsSensorMap = FALSE;
+  m_bIsFertilityMap = FALSE;
+  UpdateData(FALSE);
+}
+
+void CMapConfigView::OnCheck6()
+{
+  UpdateData(TRUE);
+  if (m_bIsFertilityMap)
+  {
+    m_CurMapType = MAP_TYPE_FERTILITY;
+    BuildMap();
+  }
+  else
+  {
+    m_CurMapType = MAP_TYPE_NONE;
+    ClearMap();
+  }
+  m_bIsOdorMap = FALSE;
+  m_bIsPurposeMap = FALSE;
+  m_bIsSensorMap = FALSE;
+  m_bIsPopulationMap = FALSE;
+  m_bIsTemperatureMap = FALSE;
   UpdateData(FALSE);
 }
 

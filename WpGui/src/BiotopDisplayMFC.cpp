@@ -246,7 +246,7 @@ void CBiotopDisplayMFC::RedrawScene()
       CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(bioCoord);
       if ( (pEntity!=NULL) && (pEntity->getId()>=ENTITY_ID_FIRST_USER_ENTITY) )
       {
-        pos = (int)(m_nBitmapPixSizeX * pEntity->getDirection());
+        pos = (int)((m_nBitmapPixSizeX - 4) * pEntity->getDirection());
 
         // Display bitmap when zoom is max or squares with smaller zoom
         if (m_nBitmapPixSizeX == 16)
@@ -259,7 +259,7 @@ void CBiotopDisplayMFC::RedrawScene()
             MemDCEnt.SelectObject(&m_bmpMineral);
 
           // Copy the bits from the memory DC into the current dc
-          pDc->BitBlt(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, &MemDCEnt, pos, 0, SRCCOPY);
+          pDc->BitBlt(coordX + 2, coordY + 2, m_nBitmapPixSizeX - 4, m_nBitmapPixSizeY - 4, &MemDCEnt, pos, 0, SRCCOPY);
           // Draw a little color square with real color
           pDc->FillSolidRect(coordX + 6, coordY + 6, 4, 4, pEntity->getColorRgb());
         }
