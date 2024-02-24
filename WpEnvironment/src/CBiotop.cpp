@@ -2707,7 +2707,10 @@ double CBiotop::getFertility(Point_t coord)
 {
   if (isCoordValid(coord))
   {
-    return m_pFertilityRate->getVal() + m_tBioSquare[coord.x][coord.y].fertilityBonus;
+    double fertility = m_pFertilityRate->getVal() + m_tBioSquare[coord.x][coord.y].fertilityBonus;
+    fertility = (fertility > 100) ? 100 : fertility;
+    fertility = (fertility < 0) ? 0 : fertility;
+    return fertility;
   }
   return m_pFertilityRate->getVal();
 }
