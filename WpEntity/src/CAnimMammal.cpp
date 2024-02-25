@@ -496,7 +496,7 @@ void CAnimMammal::nextDay(bool forceGrowth)
       increaseGestationTime(1); 
     }
   }
-  
+  tryParthenogenesis();
   CAnimal::nextDay(forceGrowth);
 }
 
@@ -811,8 +811,16 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   setGestationBabyNumber(childNb);
 
   CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-  CYBIOCORE_LOG("MAMMAL - Reproduction : %d babies %s expected by %s with %s\n", 
-                 childNb, getSpecieName().c_str(), getLabel().c_str(), partner->getLabel().c_str());
+  if (this == partner)
+  {
+    CYBIOCORE_LOG("MAMMAL - Reproduction : %d babies %s expected by %s by parthenogenesis\n",
+      childNb, getSpecieName().c_str(), getLabel().c_str());
+  }
+  else
+  {
+    CYBIOCORE_LOG("MAMMAL - Reproduction : %d babies %s expected by %s with %s\n",
+      childNb, getSpecieName().c_str(), getLabel().c_str(), partner->getLabel().c_str());
+  }
 
   CBasicEntity* pGestationChild = NULL;
   deleteAllGestationChilds();
@@ -928,6 +936,19 @@ bool CAnimMammal::checkCoherenceAndAdjustBabyNumberParam()
     return false;
   }
   return true;
+}
+
+
+void CAnimMammal::tryParthenogenesis()
+{
+  // Allow Parthenogenesis for mammals to study sex paradox 
+  if ((getTypeOfReproduction() == REPRODUCT_CLONAGE) && isAlive() && !isRemoteControlled())
+  {
+    if ((getSex() == SEX_FEMALE) && (getLibidoRate() > 50) && testChance(getReproductionRate()))
+    {
+      reproductWith(this);
+    }
+  }
 }
 
 

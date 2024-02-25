@@ -112,6 +112,7 @@ public:
   bool ExecuteCopulateAction(double successSatisfactionFactor, double failureFrustrationFactor);
   bool deliverAllBabies();
   bool checkCoherenceAndAdjustBabyNumberParam();
+  void tryParthenogenesis();
 
 protected:
   bool reproductWith(CAnimMammal* partner);
