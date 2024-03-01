@@ -27,7 +27,8 @@ next_user_id(1),
 nb_users_connected(0),
 m_biotopSpeed(1.0),
 m_bManualMode(false),
-m_bMaxSpeedMode(false)
+m_bMaxSpeedMode(false),
+m_MaxSpeedStepfactor(1)
 {
 	// Connect essential signals - connecting, disconnecting and receiving events
 	cc.connect(network_server.sig_client_connected(), clan::bind_member(this, &Server::on_client_connected));

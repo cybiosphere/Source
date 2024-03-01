@@ -1545,7 +1545,7 @@ void CBiotop::nextHourForAllEntities(void)
     {
       if (pEntity->isToBeRemoved())
       {
-        deleteEntity(pEntity, true);
+        deleteEntity(pEntity, false);
       }
       else
       {
@@ -2288,7 +2288,7 @@ std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMapPrevious()
 //===========================================================================
 // Save/Load in file
 //===========================================================================
-bool CBiotop::saveInXmlFile(string fileName, string pathName)
+bool CBiotop::saveInXmlFile(string fileName, string pathName, bool saveEntities)
 {
   bool resu = false;
   TiXmlDocument *pXmlDoc = new TiXmlDocument(pathName + fileName);
@@ -2296,7 +2296,7 @@ bool CBiotop::saveInXmlFile(string fileName, string pathName)
   if (pXmlDoc==NULL)
     return false;
 
-  saveInXmlFile(pXmlDoc, pathName, true);
+  saveInXmlFile(pXmlDoc, pathName, true, saveEntities);
 
   resu = pXmlDoc->SaveFile();
   delete pXmlDoc;
@@ -2304,7 +2304,7 @@ bool CBiotop::saveInXmlFile(string fileName, string pathName)
 
 }
 
-bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntities)
+bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntityList, bool saveEntities)
 {
   TiXmlElement* pElement;
   TiXmlNode* pNodeBiotop = NULL;
@@ -2396,7 +2396,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
       pNode->RemoveChild(pNode->FirstChild());
   }
 
-  if (saveEntities && (pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+  if (saveEntityList && (pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     // Save childs
     for (i=0; i<getNbOfEntities(); i++)
@@ -2415,7 +2415,7 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
         pElement->SetAttribute(XML_ATTR_DIRECTION, pCurEntity->getDirection());
         pElement->SetAttribute(XML_ATTR_FILE_NAME, entityFileName);
 
-        if (entityFileName != previousFileName)
+        if (saveEntities && (entityFileName != previousFileName))
         {
           // Don't save twice the same file
           pCurEntity->saveInXmlFile(pathNameForEntities + entityFileName);

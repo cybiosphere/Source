@@ -429,8 +429,8 @@ private:
 // Save/Load in file
 //---------------------------------------------------------------------------
 public:
-  bool saveInXmlFile(string fileName, string pathName);
-  bool saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntities=true);
+  bool saveInXmlFile(string fileName, string pathName, bool saveEntities = true);
+  bool saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntityList = true, bool saveEntities = false);
   bool loadFromXmlFile(string fileName, string pathName);
   bool loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities);
 

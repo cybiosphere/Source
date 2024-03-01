@@ -232,7 +232,9 @@ void CMainFrame::OnAppSaveBiotop()
 
   if ( (fileName != "") && (pathName != ""))
   {
-    theApp.GetBiotop()->saveInXmlFile(fileName.GetBuffer(0), pathName.GetBuffer(0));
+    int iAnswer = AfxMessageBox("Do you want to save all entities in files ?", MB_YESNO);
+    bool doSaveEntities = (iAnswer == IDYES) ? true : false;
+    theApp.GetBiotop()->saveInXmlFile(fileName.GetBuffer(0), pathName.GetBuffer(0), doSaveEntities);
   }
   else
   {

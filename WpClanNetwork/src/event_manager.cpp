@@ -179,7 +179,7 @@ namespace clan
     NetGameEvent newEvent(eventLabel);
     newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
-    newEvent.add_argument(pEntity->getStatus());
+    newEvent.add_argument((int)pEntity->getStatus());
     newEvent.add_argument((int)pEntity->getStepCoord().x);
     newEvent.add_argument((int)pEntity->getStepCoord().y);
     newEvent.add_argument((int)pEntity->getLayer());

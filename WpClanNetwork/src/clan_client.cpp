@@ -661,5 +661,6 @@ void Client::send_event_new_second_end()
   NetGameEvent bioNextSecEventEnd(labelEventNextSecEnd);
   CustomType biotopTimeEnd(m_pBiotop->getBiotopTime().seconds, m_pBiotop->getBiotopTime().hours, m_pBiotop->getBiotopTime().days);
   bioNextSecEventEnd.add_argument(biotopTimeEnd);
+  bioNextSecEventEnd.add_argument(m_pBiotop->getBiotopTime().years);
   network_client.send_event(bioNextSecEventEnd);
 }
