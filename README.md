@@ -1,4 +1,4 @@
-<img src="https://github.com/cybiosphere/source/blob/master/LogoBand.jpg?raw=true" alt="Cybiosphere logo" width="900" height="144" align="middle">
+<img src="https://github.com/cybiosphere/source/blob/master/LogoBand.jpg?raw=true" alt="Cybiosphere logo" width="800" height="126" align="middle">
 
 Cybiosphere is an open-source project that aims to develop virtual ecosystems for both education and research.
 
@@ -16,10 +16,10 @@ Cybiosphere is an open-source project that aims to develop virtual ecosystems fo
 
 ## <a name="introduction"></a>Introduction
 
-Cybiosphere is a kind of Metavers dedicated to ecology and eco-evolution.
+Cybiosphere is a Metavers dedicated to ecology and eco-evolution study.
 An infinite number of vegetal and animal species interacting with each other can be created and inserted in the virtual world without restarting the system.
-The ecosytem can be explored in 3D and time can be accelerated (up to x100) to monitor its evolution on long durations.
-The software solution provides a complete multi agent system that support for each individual entity: genetic, reproduction, neuronal networks for animal behavior, innate instinct and acquired experience, energy balance, individual fitness, predation, symbiosis… This covers a large part of the structuring factors of ecosystems and simulates spatial and temporal mechanisms that affect their evolution. 
+The ecosytem can be explored in 3D and time can be accelerated (up to x1000) to monitor its evolution on long durations.
+The software solution provides a complete multi agent system that supports for each individual entity: genetic, reproduction, neuronal networks for animal behavior, innate instinct and acquired experience, energy balance, individual fitness, predation, symbiosis… This covers a large part of the structuring factors of ecosystems and simulates spatial and temporal mechanisms that affect their evolution. 
 
 ## <a name="modules"></a>Modules
 
@@ -46,7 +46,7 @@ Client console is mainly used for coprocessing. It is running under Linux or win
 
 ### <a name="cybiosphere-3d"></a>Cybiosphere 3D explorer
 
-3D explorer is a client that allow to visit the biotope. For the moment camera does not interact with animals. It is only a way to visualize the ecosystem. It is mostly useful to check the realism of animal behavior
+3D explorer is a client that allows to visit the biotope. For the moment camera does not interact with animals. It is only a way to visualize the ecosystem. It is mostly useful to check the realism of animal behavior
 
 ## <a name="contact"></a>Contact
 
