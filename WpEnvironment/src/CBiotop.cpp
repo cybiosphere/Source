@@ -2285,6 +2285,12 @@ std::map<entityIdType, BiotopEvent_t>& CBiotop::getBiotopEventMapPrevious()
   }
 }
 
+void CBiotop::clearEventMaps()
+{
+  m_tEventsOdd.clear();
+  m_tEventsEven.clear();
+}
+
 //===========================================================================
 // Save/Load in file
 //===========================================================================
@@ -2431,7 +2437,6 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
 
 bool CBiotop::loadFromXmlFile(string fileName, string pathName)
 {
-
   TiXmlDocument xmlDoc(pathName + fileName);
   if (xmlDoc.LoadFile() == false)
   {
@@ -2445,6 +2450,8 @@ bool CBiotop::loadFromXmlFile(string fileName, string pathName)
   loadFromXmlFile(&xmlDoc, pathName);
   CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - File load complete\n");
+
+  m_Label = fileName;
   return true;
 }
 
@@ -2475,6 +2482,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     deleteAllEntities();
     deleteAllMeasures();
     deleteGrid();
+    clearEventMaps();
 
     m_Dimension.x = sizeX;
     m_Dimension.y = sizeY;

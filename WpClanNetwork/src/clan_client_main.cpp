@@ -3,6 +3,7 @@
 using namespace clan;
 
 #include "clan_client.h"
+#include "Helpers.h"
 
 //FRED #ifdef WIN32
 //FRED int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -10,42 +11,35 @@ using namespace clan;
 int main(int argc, char* argv[])
 //FRED #endif
 {
-	try
-	{
-		ConsoleWindow console("Client Console", 160, 1000);
-		ConsoleLogger logger;
-
-    // Get Server info in ini file
-    string ServerAddrStr;
-    string ServerPortStr;
-    string LogInStr;
-    char resuBuffer[512];
+  try
+  {
+    ConsoleWindow console("Client Console", 160, 1000);
+    ConsoleLogger logger;
     string fileIni = "Cybiosphere.ini";
+
     if (argc == 2)
     {
       fileIni = argv[1];
       log_event("Start ", "Use specific ini file " + fileIni);
     }
-    int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
-    ServerAddrStr = resuBuffer;
-    resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni);
-    ServerPortStr = resuBuffer;
-    resu = getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", resuBuffer, 512, fileIni);
-    LogInStr = resuBuffer;
 
-		Client client(ServerAddrStr, ServerPortStr, LogInStr);
-		client.exec();
+    string serverAddrStr = getIpServerAddrFromIniFile(fileIni);
+    string serverPortStr = getIpPortStrFromIniFile(fileIni);
+    string logInStr = getIpServerLoginFromIniFile(fileIni);
 
-		return 0;
-	}
-	catch (Exception e)
-	{
+    Client client(serverAddrStr, serverPortStr, logInStr);
+    client.exec();
+
+    return 0;
+  }
+  catch (Exception e)
+  {
 #ifdef WIN32
 //FRED		MessageBox(0, e.get_message_and_stack_trace().c_str(), TEXT("Unhandled Exception"), MB_OK);	
 #else
-		Console::write_line("Unhandled exception: %1", e.get_message_and_stack_trace());
+    Console::write_line("Unhandled exception: %1", e.get_message_and_stack_trace());
 #endif
 
-		return 1;
-	}
+    return 1;
+  }
 }

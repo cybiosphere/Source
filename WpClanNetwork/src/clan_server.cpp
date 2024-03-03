@@ -20,9 +20,10 @@ CommandHandler_t ServerCmdNameList[SERVER_CMD_NUMBER] =
 };
 
 
-Server::Server(std::string portStr, CBiotop* pBiotop)
+Server::Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer)
 : serverPortStr{ portStr },
 m_pBiotop{ pBiotop },
+m_pScenarioPlayer{ pScenarioPlayer },
 next_user_id(1),
 nb_users_connected(0),
 m_biotopSpeed(1.0),
@@ -106,6 +107,7 @@ void Server::exec()
 {
   std::chrono::time_point<std::chrono::system_clock> curTick;
   std::chrono::time_point<std::chrono::system_clock> lastRunTick = std::chrono::system_clock::now();
+  int currentScenarioScore = 0;
 
 	network_server.start(serverPortStr);
 
@@ -129,7 +131,18 @@ void Server::exec()
         {
           send_event_new_second_start();
           // Next second in biotop
-          m_pBiotop->nextSecond();
+          if ((m_pScenarioPlayer != nullptr) && m_pScenarioPlayer->NextCmdNextSecond())
+          {
+            if (m_pScenarioPlayer->m_totalScore > currentScenarioScore)
+            {
+              currentScenarioScore = m_pScenarioPlayer->m_totalScore;
+              log_event(labelServer, "Scenario score success: %1 / %2", m_pScenarioPlayer->m_successScore, m_pScenarioPlayer->m_totalScore);
+            }
+          }
+          else
+          {
+            m_pBiotop->nextSecond();
+          }
           send_event_new_second_end();
         }
       }

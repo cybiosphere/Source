@@ -39,6 +39,90 @@ distribution.
 // Functions            
 //===========================================================================
 
+inline string getIpServerAddrFromIniFile(const string& fileIni)
+{
+  string ServerAddrStr;
+  char resuBuffer[512];
+  getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", resuBuffer, 512, fileIni);
+  ServerAddrStr = resuBuffer;
+  return ServerAddrStr;
+}
+
+inline string getIpServerLoginFromIniFile(const string& fileIni)
+{
+  string LogInStr;
+  char resuBuffer[512];
+  getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", resuBuffer, 512, fileIni);
+  LogInStr = resuBuffer;
+  return LogInStr;
+}
+
+inline string getIpPortStrFromIniFile(const string& fileIni)
+{
+  string serverPortStr;
+  char resuBuffer[512];
+  if (getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni) > 0)
+  {
+    serverPortStr = resuBuffer;
+  }
+  else
+  {
+    serverPortStr = "4556";
+  }
+  return serverPortStr;
+}
+
+inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** pNewBiotop, CScenarioPlayer** pNewScenarioPlayer)
+{
+  CBiotop* pBiotop{ nullptr };
+  CScenarioPlayer* pScenarioPlayer{ nullptr };
+  char resuBuffer[512];
+  string resuStr;
+
+  int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
+  resuStr = resuBuffer;
+  if (resuStr != "")
+  {
+    string resuDataPath;
+    pBiotop = new CBiotop(0, 0, 0);
+    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    resuDataPath = resuBuffer;
+    if (resuDataPath != "")
+      pBiotop->loadFromXmlFile(resuStr, resuDataPath);
+    else
+      pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
+  }
+  else
+  {
+    pBiotop = new CBiotop(50, 50, 3);
+    pBiotop->initGridDefaultLayerType();
+    pBiotop->initGridDefaultAltitude();
+    pBiotop->initGridEntity();
+    pBiotop->setDefaultEntitiesForTest();
+  }
+
+  resu = getStringSectionFromFile("CYBIOSPHERE", "Scenario", "", resuBuffer, 512, fileIni);
+  resuStr = resuBuffer;
+  if (resuStr != "")
+  {
+    string resuDataPath;
+    pScenarioPlayer = new CScenarioPlayer(pBiotop);
+    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    resuDataPath = resuBuffer;
+    if (resuDataPath != "")
+      pScenarioPlayer->ReadScenarioFile(resuStr, resuDataPath);
+    else
+      pScenarioPlayer->ReadScenarioFile(resuStr, "..\\dataXml\\");
+
+    // Start reading scenario twice to update biotop
+    pScenarioPlayer->NextCmdNextSecond();
+    pScenarioPlayer->NextCmdNextSecond();
+  }
+
+  *pNewBiotop = pBiotop;
+  *pNewScenarioPlayer = pScenarioPlayer;
+}
+
 inline size_t computeMaxSpeedStepfactor(CBiotop* pBiotop, bool isMaxSpeed)
 {
   if (pBiotop == NULL)

@@ -1,6 +1,8 @@
 #include "clan_server.h"
 #include "event_definitions.h"
 #include "CBiotop.h"
+#include "CScenarioPlayer.h"
+#include "Helpers.h"
 
 //#ifdef WIN32
 //int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -12,55 +14,28 @@ int main(int argc, char* argv[])
 	{
 		ConsoleWindow console("Server Console", 160, 1000);
 		ConsoleLogger logger;
-
-    CBiotop* pBiotop;
-    char resuBuffer[512];
-    string resuStr;
+    CBiotop* pBiotop{nullptr};
+    CScenarioPlayer* pScenarioPlayer{nullptr};
     string fileIni = "Cybiosphere.ini";
+
     if (argc == 2)
     {
       fileIni = argv[1];
       log_event(labelServer, "Open ini file " + fileIni);
     }
-    string serverPortStr;
-    if (getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", resuBuffer, 512, fileIni) > 0)
-    {
-      serverPortStr = resuBuffer;
-    }
-    else
-    {
-      serverPortStr = "4556";
-    }
+    string serverPortStr = getIpPortStrFromIniFile(fileIni);
+    createBiotopAndScenarioFromIniFile(fileIni, &pBiotop, &pScenarioPlayer);
 
-    int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
-    resuStr = resuBuffer;
+    if (pBiotop != nullptr)
+      log_event(labelServer, "Biotop loaded: %1", pBiotop->getLabel());
+    if (pScenarioPlayer != nullptr)
+      log_event(labelServer, "Scenario loaded");
 
-    if (resuStr != "")
-    {
-      string resuDataPath;
-      pBiotop = new CBiotop(0,0,0);
-      bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
-      resuDataPath = resuBuffer;
-      if (resuDataPath != "")
-        pBiotop->loadFromXmlFile(resuStr, resuDataPath);
-      else
-        pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
-      log_event(labelServer, "Biotop loaded");
-    }
-    else
-    {
-      pBiotop = new CBiotop(80,40,3);
-      pBiotop->initGridDefaultLayerType();
-      pBiotop->initGridDefaultAltitude();
-      pBiotop->initGridEntity();
-      pBiotop->setDefaultEntitiesForTest();
-      log_event(labelServer, "Default empty biotop created");
-    }
-
-		Server server(serverPortStr, pBiotop);
+		Server server(serverPortStr, pBiotop, pScenarioPlayer);
 		server.exec();
 
     delete pBiotop;
+    delete pScenarioPlayer;
 		return 0;
 	}
 	catch (Exception e)

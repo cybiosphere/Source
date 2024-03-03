@@ -424,6 +424,7 @@ public:
 private:
   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapCurrent();
   std::map<entityIdType, BiotopEvent_t>& getBiotopEventMapPrevious();
+  void clearEventMaps();
 
 //---------------------------------------------------------------------------
 // Save/Load in file

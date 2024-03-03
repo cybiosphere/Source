@@ -1,18 +1,9 @@
 #pragma once
 
-//FRED #include <ClanLib/core.h>
-//FRED #include <ClanLib/network.h>
-
-//#include "Network/precomp.h"
-//#include "API/Network/NetGame/event.h"
-//#include "API/Core/Text/string_format.h"
-//#include "API/Network/NetGame/event_dispatcher.h"
-//#include "API/Network/NetGame/server.h"
-//#include "Network/NetGame/connection_impl.h"
-
 #include "API/core.h"
 #include "API/network.h"
 #include "CBiotop.h"
+#include "CScenarioPlayer.h"
 #include "event_manager.h"
 
 using namespace clan;
@@ -23,7 +14,7 @@ class ServerCoprocessor;
 class Server
 {
 public:
-	Server(std::string portStr, CBiotop* pBiotop);
+	Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer);
 	~Server();
 
 	// start only
@@ -96,6 +87,7 @@ private:
 
 	std::string serverPortStr;
 	CBiotop* m_pBiotop;
+	CScenarioPlayer* m_pScenarioPlayer;
 	int next_user_id;
 	int  nb_users_connected;
   float m_biotopSpeed; // set 1.0 for real time speed. Biotp update every 1sec
