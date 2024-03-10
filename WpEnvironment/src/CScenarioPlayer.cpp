@@ -37,6 +37,7 @@ distribution.
 #include "CScenarioPlayer.h"
 #include "CAnimal.h"
 #include "CGeoMapPurpose.h"
+#include "CEntityFactory.h"
 
 //===========================================================================
 // Definitions            
@@ -61,7 +62,9 @@ CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
   {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction,     "SET_FORBIDEN_ACTION <entity name> <action name>"}, 
   {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder,  "CHECK_FORBID_ACT_CNT_UNDER <entity name> <max forbiden action>"},
   {"SET_BIOTOP_WIND_SPEED",     CScenarioPlayer::CmdSetBiotopWindSpeed,     "SET_BIOTOP_WIND_SPEED <speed int>"},
-  {"SET_BIOTOP_WIND_DIRECTION", CScenarioPlayer::CmdSetBiotopWindDirection, "SET_BIOTOP_WIND_DIRECTION <direction 0..7>"}
+  {"SET_BIOTOP_WIND_DIRECTION", CScenarioPlayer::CmdSetBiotopWindDirection, "SET_BIOTOP_WIND_DIRECTION <direction 0..7>"},
+  {"ADD_MEASURE_POPULATION",    CScenarioPlayer::CmdAddMeasurePopulation,   "ADD_MEASURE_POPULATION <specie name>"},
+  {"ADD_SPAWNER_ENTITY",        CScenarioPlayer::CmdAddEntitySpawner,       "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"}
 };
 
 //===========================================================================
@@ -673,15 +676,33 @@ bool CScenarioPlayer::IsScenarioFileOpened()
 
 bool CScenarioPlayer::CmdSetBiotopWindSpeed(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
-  int newSpeed = atoi(CScenarioPlayer::GetParamFromString(commandParam,0).c_str());
+  int newSpeed = atoi(GetParamFromString(commandParam,0).c_str());
   pBiotop->setWindStrenght(newSpeed);
   return true;
 }
 
 bool CScenarioPlayer::CmdSetBiotopWindDirection(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
-  int newDirection = atoi(CScenarioPlayer::GetParamFromString(commandParam,0).c_str());
+  int newDirection = atoi(GetParamFromString(commandParam,0).c_str());
   pBiotop->setWindDirection(newDirection);
   return true;
 }
 
+bool CScenarioPlayer::CmdAddMeasurePopulation(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  string specieName = GetParamFromString(commandParam, 0);
+  pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 10 * (pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+}
+
+
+bool CScenarioPlayer::CmdAddEntitySpawner(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  string entityName = GetParamFromString(commandParam, 0);
+  int intensity = atoi(GetParamFromString(commandParam, 1).c_str());
+  int period = atoi(GetParamFromString(commandParam, 2).c_str());
+
+  if (entityName.find(".xml", 0) < 0)
+    return (false);
+
+  pBiotop->addEntitySpawner(1, entityName, path, intensity, period, true);
+}

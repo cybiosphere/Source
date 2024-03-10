@@ -2627,8 +2627,11 @@ bool CBiotop::addEntitySpawner(size_t index, string entityFileName, string pathN
   {
     m_tRandomEntitiesGeneration[index].entityFileName = entityFileName;
     m_tRandomEntitiesGeneration[index].entityPathName = pathName;
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - Add entity spawner : %s index%d \n", entityFileName.c_str(), index);
     return true;
   }
+  CYBIOCORE_LOG("BIOTOP - FAILURE entity spawner : %s index%d \n", entityFileName.c_str(), index);
   return false;
 }
 

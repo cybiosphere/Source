@@ -3,7 +3,7 @@
 using namespace clan;
 
 #include "clan_client.h"
-#include "Helpers.h"
+#include "StartupHelpers.h"
 
 //FRED #ifdef WIN32
 //FRED int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)

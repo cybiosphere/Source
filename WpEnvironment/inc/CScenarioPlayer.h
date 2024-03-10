@@ -48,7 +48,7 @@ distribution.
 #include "CBiotop.h"
 #include <fstream>
 
-#define SCENARIO_CMD_NUMBER 17
+#define SCENARIO_CMD_NUMBER 19
 
 typedef struct 
 {
@@ -118,6 +118,8 @@ public:
   static bool CmdChkForbidActCntUnder(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore);
   static bool CmdSetBiotopWindSpeed  (CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdSetBiotopWindDirection(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
+  static bool CmdAddMeasurePopulation(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
+  static bool CmdAddEntitySpawner    (CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
 
   int GetSuccessScore()  {return m_successScore;};
   int GetTotalScore()    {return m_totalScore;};

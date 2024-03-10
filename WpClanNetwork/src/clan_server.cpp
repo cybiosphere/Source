@@ -6,7 +6,7 @@
 #include "API/Core/Zip/zlib_compression.h"
 #include <chrono>
 #include "CScenarioPlayer.h"
-#include "Helpers.h"
+#include "StartupHelpers.h"
 
 #define SERVER_CMD_NUMBER 4
 
@@ -20,13 +20,13 @@ CommandHandler_t ServerCmdNameList[SERVER_CMD_NUMBER] =
 };
 
 
-Server::Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer)
+Server::Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer, double defaultSpeed)
 : serverPortStr{ portStr },
 m_pBiotop{ pBiotop },
 m_pScenarioPlayer{ pScenarioPlayer },
 next_user_id(1),
 nb_users_connected(0),
-m_biotopSpeed(1.0),
+m_biotopSpeed(defaultSpeed),
 m_bManualMode(false),
 m_bMaxSpeedMode(false),
 m_MaxSpeedStepfactor(1)

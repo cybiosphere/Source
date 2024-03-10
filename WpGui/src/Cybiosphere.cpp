@@ -32,7 +32,7 @@ distribution.
 #include "ChildFrm.h"
 #include "BiotopDoc.h"
 #include "BiotopView.h"
-#include "Helpers.h"
+#include "StartupHelpers.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -205,42 +205,16 @@ BOOL CCybiosphereApp::InitInstance()
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 
-  char bufferStr[512];
   string fileIni = m_AppliPath + "\\Cybiosphere.ini";
-  string ServerPortStr;
+  string ServerPortStr{ getIpPortStrFromIniFile(fileIni) };
 
 #ifndef USE_CLAN_CLIENT
-  string resuStr = "";
-  getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", bufferStr, 512, fileIni);
-  ServerPortStr = bufferStr;
-  BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", bufferStr, 512, fileIni);
-  resuStr= bufferStr;
-  if (resuStr != "")
-  {
-    string resuDataPath = "";
-    m_pBiotop = new CBiotop(0 ,0, 0);
-    BOOL resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", bufferStr, 512, fileIni);
-    resuDataPath= bufferStr;
-    if (resuDataPath != "")
-      m_pBiotop->loadFromXmlFile(resuStr, resuDataPath);
-    else
-      m_pBiotop->loadFromXmlFile(resuStr, (char*)m_AppliPath.GetBuffer(0));
-  }
-  else
-  {
-    m_pBiotop = new CBiotop(2000, 2000, 3);
-    SetDefaultBiotop();
-  }
+  // Init biotop and startup scenario if set
+  createBiotopAndScenarioFromIniFile(fileIni, &m_pBiotop, &m_pScenarioPlayer);
 #else
   // Get Server info in ini file
-  string ServerAddrStr;
-  string LogInStr;
-  int resu = getStringSectionFromFile("CYBIOSPHERE", "ServerAddr", "localhost", bufferStr, 512, fileIni);
-  ServerAddrStr = bufferStr;
-  resu = getStringSectionFromFile("CYBIOSPHERE", "ServerPort", "4556", bufferStr, 512, fileIni);
-  ServerPortStr = bufferStr;
-  resu = getStringSectionFromFile("CYBIOSPHERE", "Login", "Player", bufferStr, 512, fileIni);
-  LogInStr = bufferStr;
+  string ServerAddrStr{ getIpServerAddrFromIniFile(fileIni) };
+  string LogInStr{ getIpServerLoginFromIniFile(fileIni) };
 
   m_pClient = new Client(ServerAddrStr, ServerPortStr, LogInStr);
 
@@ -268,15 +242,11 @@ BOOL CCybiosphereApp::InitInstance()
   }
   EndWaitCursor();
   m_pBiotop = m_pClient->get_pBiotop();
-
+  m_pScenarioPlayer = new CScenarioPlayer(m_pBiotop);
 #endif
 
-  m_pScenarioPlayer = new CScenarioPlayer(m_pBiotop);
-
 #ifdef USE_CLAN_SERVER
-  //ConsoleWindow console("Server Console", 160, 1000);
-  //ConsoleLogger logger;
-  m_pServer = new Server(ServerPortStr, m_pBiotop);
+  m_pServer = new Server(ServerPortStr, m_pBiotop, m_pScenarioPlayer);
   m_pServer->startServer();
 #endif
 

@@ -281,6 +281,7 @@
     <ClInclude Include="..\WpClanNetwork\inc\clan_server_user.h" />
     <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h" />
     <ClInclude Include="..\WpClanNetwork\inc\server_impl.h" />
+    <ClInclude Include="..\WpCommon\inc\StartupHelpers.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimal.h" />
     <ClInclude Include="..\WpEntity\inc\CAnimMammal.h" />
     <ClInclude Include="..\WpEntity\inc\CBasicEntity.h" />

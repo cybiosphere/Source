@@ -2,7 +2,7 @@
 #include "event_definitions.h"
 #include "CBiotop.h"
 #include "CScenarioPlayer.h"
-#include "Helpers.h"
+#include "StartupHelpers.h"
 
 //#ifdef WIN32
 //int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -31,17 +31,20 @@ int main(int argc, char* argv[])
     if (pScenarioPlayer != nullptr)
       log_event(labelServer, "Scenario loaded");
 
-		Server server(serverPortStr, pBiotop, pScenarioPlayer);
-		server.exec();
+    double startupSpeed = getStartupSpeedFromIniFile(fileIni);
+    log_event(labelServer, "Starup speed %1", startupSpeed);
+ 
+    Server server(serverPortStr, pBiotop, pScenarioPlayer, startupSpeed);
+    server.exec();
 
     delete pBiotop;
     delete pScenarioPlayer;
-		return 0;
+    return 0;
 	}
 	catch (Exception e)
 	{
 #ifdef WIN32
-		//FRED MessageBox(0, e.get_message_and_stack_trace().c_str(), TEXT("Unhandled Exception"), MB_OK);	
+		// MessageBox(0, e.get_message_and_stack_trace().c_str(), TEXT("Unhandled Exception"), MB_OK);	
 #else
 		Console::write_line("Unhandled exception: %1", e.get_message_and_stack_trace());
 #endif

@@ -14,7 +14,7 @@ class ServerCoprocessor;
 class Server
 {
 public:
-	Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer);
+	Server(std::string portStr, CBiotop* pBiotop, CScenarioPlayer* pScenarioPlayer, double defaultSpeed = 1.0);
 	~Server();
 
 	// start only

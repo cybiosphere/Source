@@ -101,12 +101,12 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
     pBiotop->setDefaultEntitiesForTest();
   }
 
+  pScenarioPlayer = new CScenarioPlayer(pBiotop);
   resu = getStringSectionFromFile("CYBIOSPHERE", "Scenario", "", resuBuffer, 512, fileIni);
   resuStr = resuBuffer;
   if (resuStr != "")
   {
     string resuDataPath;
-    pScenarioPlayer = new CScenarioPlayer(pBiotop);
     bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
     if (resuDataPath != "")
@@ -121,6 +121,13 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
 
   *pNewBiotop = pBiotop;
   *pNewScenarioPlayer = pScenarioPlayer;
+}
+
+inline double getStartupSpeedFromIniFile(const string& fileIni)
+{
+  char resuBuffer[512];
+  getStringSectionFromFile("CYBIOSPHERE", "StartupSpeed", "1", resuBuffer, 512, fileIni);
+  return atoi(resuBuffer);
 }
 
 inline size_t computeMaxSpeedStepfactor(CBiotop* pBiotop, bool isMaxSpeed)
