@@ -252,11 +252,11 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
   if (pNewEntity == NULL)
     return NULL;
 
-  if (pNewEntity->isLiving())
+  /*if (pNewEntity->isLiving())
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - New entity from genome : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), name.c_str());
-  }
+  }*/
 
   // Put it in the biotop (with check coord);
   if (addEntity(pNewEntity, coord, layer) == false)
@@ -616,10 +616,6 @@ void CBiotop::setDefaultEntitiesForTest(void)
   	coord.y = getRandInt(m_Dimension.y) + 1;
     createAndAddEntity("grassDry",coord,1,pGenome);
   }
-
-  addMeasurePopulation(14400,7,MEASURE_POPULATION_VEGETAL,1000);
-
-  addMeasureBiotopParam(BIO_PARAM_SUNLIGHT, NUMBER_SECONDS_PER_HOUR, 9);
 
   delete pGenome1;
   delete pGenome2;

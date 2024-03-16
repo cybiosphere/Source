@@ -77,20 +77,22 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   CBiotop* pBiotop{ nullptr };
   CScenarioPlayer* pScenarioPlayer{ nullptr };
   char resuBuffer[512];
-  string resuStr;
 
   int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
-  resuStr = resuBuffer;
-  if (resuStr != "")
+  string biotopName = resuBuffer;
+  clearWindowsEolIfNeeded(biotopName);
+
+  if (biotopName != "")
   {
     string resuDataPath;
     pBiotop = new CBiotop(0, 0, 0);
     bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
+    clearWindowsEolIfNeeded(resuDataPath);
     if (resuDataPath != "")
-      pBiotop->loadFromXmlFile(resuStr, resuDataPath);
+      pBiotop->loadFromXmlFile(biotopName, resuDataPath);
     else
-      pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
+      pBiotop->loadFromXmlFile(biotopName, "..\\dataXml\\");
   }
   else
   {
@@ -103,16 +105,19 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
 
   pScenarioPlayer = new CScenarioPlayer(pBiotop);
   resu = getStringSectionFromFile("CYBIOSPHERE", "Scenario", "", resuBuffer, 512, fileIni);
-  resuStr = resuBuffer;
-  if (resuStr != "")
+  string scenarioName = resuBuffer;
+  clearWindowsEolIfNeeded(scenarioName);
+
+  if (scenarioName != "")
   {
     string resuDataPath;
     bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
+    clearWindowsEolIfNeeded(resuDataPath);
     if (resuDataPath != "")
-      pScenarioPlayer->ReadScenarioFile(resuStr, resuDataPath);
+      pScenarioPlayer->ReadScenarioFile(scenarioName, resuDataPath);
     else
-      pScenarioPlayer->ReadScenarioFile(resuStr, "..\\dataXml\\");
+      pScenarioPlayer->ReadScenarioFile(scenarioName, "..\\dataXml\\");
 
     // Start reading scenario twice to update biotop
     pScenarioPlayer->NextCmdNextSecond();

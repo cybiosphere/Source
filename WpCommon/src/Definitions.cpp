@@ -111,6 +111,15 @@ BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count)
   return(bioTime);
 }
 
+void DLL_CYBIOCORE_API clearWindowsEolIfNeeded(std::string& textToClean)
+{
+  auto const pos = textToClean.find_last_of('\r');
+  if (pos != std::string::npos)
+  {
+    textToClean.erase(pos);
+  }
+}
+
 size_t DLL_CYBIOCORE_API getStringSectionFromFile(
                         string lpAppName,
                         string lpKeyName,

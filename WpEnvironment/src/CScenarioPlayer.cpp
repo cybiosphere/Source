@@ -250,6 +250,8 @@ string CScenarioPlayer::GetParamFromString(string commandParam, size_t paramInde
   size_t indexStart=0;
   bool bracketFound = false;
 
+  clearWindowsEolIfNeeded(commandParam);
+
   if (commandParam.c_str()[0] == '\"')
     bracketFound = true;
 
@@ -692,6 +694,7 @@ bool CScenarioPlayer::CmdAddMeasurePopulation(CBiotop* pBiotop, string path, str
 {
   string specieName = GetParamFromString(commandParam, 0);
   pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 10 * (pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+  pBiotop->addGeoMapSpeciePopulation(specieName);
 }
 
 

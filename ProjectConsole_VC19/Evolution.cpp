@@ -38,8 +38,10 @@ distribution.
 #include <ctime>
 #include "CScenarioPlayer.h"
 #include "CybioXmlDef.h"
+#include "StartupHelpers.h"
 
 CBiotop* pBiotop;
+CScenarioPlayer* pScenarioPlayer;
 
 int main(int argc, char* argv[])
 {
@@ -49,35 +51,9 @@ int main(int argc, char* argv[])
   char resuBuffer[512];
   string resuStr;
   string fileIni = "Cybiosphere.ini";
-  size_t resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
-  resuStr = resuBuffer;
 
-  if (resuStr != "")
-  {
+  createBiotopAndScenarioFromIniFile(fileIni, &pBiotop, &pScenarioPlayer);
 
-    string resuDataPath;
-    pBiotop = new CBiotop(0,0,0);
-    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
-    auto start = std::chrono::system_clock::now();
-    resuDataPath = resuBuffer;
-    if (resuDataPath != "")
-      pBiotop->loadFromXmlFile(resuStr, resuDataPath);
-    else
-      pBiotop->loadFromXmlFile(resuStr, "..\\dataXml\\");
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end - start;
-    printf("Biotop loaded OK. duration: %.1f sec\n", elapsed_seconds.count());
-  }
-  else
-  {
-    pBiotop = new CBiotop(80,40,3);
-    pBiotop->initGridDefaultLayerType();
-    pBiotop->initGridDefaultAltitude();
-    pBiotop->initGridEntity();
-    pBiotop->setDefaultEntitiesForTest();
-  }
-
- 
   int i,j;
   int score;
   int scoreHistory[10];

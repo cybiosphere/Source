@@ -154,6 +154,8 @@ bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2);
 timeCountType DLL_CYBIOCORE_API convertBioTimeToCount(BiotopTime_t bioTime);
 BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count);
 
+void DLL_CYBIOCORE_API clearWindowsEolIfNeeded(std::string& textToClean);
+
 size_t DLL_CYBIOCORE_API getStringSectionFromFile(
                         string lpAppName,
                         string lpKeyName,
