@@ -212,6 +212,15 @@ typedef struct
   BiotopFoundIdsList tFoundIds;
 } BiotopFoundIds_t;
 
+typedef enum
+{
+  CLIMATE_TROPICAL = 0,
+  CLIMATE_SEMI_ARID,
+  CLIMATE_ARID,
+  CLIMATE_TEMPERATE,
+  CLIMATE_CONTINENTAL,
+  CLIMATE_POLAR
+} ClimateType_e;
 
 //===========================================================================
 //                                    CLASS            
@@ -446,6 +455,12 @@ private:
   void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
   void decreaseOdorMap();
   void memorizeAllPopulationMaps();
+
+//---------------------------------------------------------------------------
+// Climate management
+//---------------------------------------------------------------------------
+public:
+  void setClimateModel(const ClimateType_e newClimateType, const int newPeriod = 0);
 
 //---------------------------------------------------------------------------
 // CPU Marker

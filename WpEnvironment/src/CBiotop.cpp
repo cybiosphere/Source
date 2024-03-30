@@ -2555,6 +2555,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     int direction;
     string entityFileName,previousFileName = "";
     CBasicEntity* pEntity = NULL;
+    CBasicEntity* pCloneEntity = NULL;
     pNode = pNodeBiotop->FirstChild(XML_NODE_ENTITIES);
     if (pNode!=NULL)
       pNode = pNode->FirstChild(XML_NODE_ENTITY);
@@ -2587,11 +2588,13 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
           gridCoord.y  = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
           if ( (entityFileName == previousFileName) && (pEntity) )
           {
-            pEntity = createAndAddCloneEntity(pEntity->getId(), gridCoord, layer);
-            if (pEntity)
+            pCloneEntity = createAndAddCloneEntity(pEntity->getId(), gridCoord, layer);
+            if (pCloneEntity)
             {
-              pEntity->setDirection(direction);
-              pEntity->jumpToStepCoord(stepCoord, false);
+              pCloneEntity->setDirection(direction);
+              pCloneEntity->jumpToStepCoord(stepCoord, false);
+              // randomize age to prevent threshold effect
+              pCloneEntity->quickAgeing(getRandInt((int)(pCloneEntity->getLifeExpectation() * 0.8)));
             }
           }
           else
@@ -2674,6 +2677,59 @@ void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - ERROR: cannot spread entities\n");
+  }
+}
+
+//===========================================================================
+// Climate management
+//===========================================================================
+
+void CBiotop::setClimateModel(const ClimateType_e newClimateType, const int newPeriod)
+{
+  int seasonPeriod = (newPeriod > 0) ? newPeriod : getParamFertility()->getPeriod();
+
+  switch (newClimateType)
+  {
+  case CLIMATE_TROPICAL:
+    {
+      getParamFertility()->reconfigure(60, 100, seasonPeriod);
+      getParamTemperature()->reconfigure(20, 28, seasonPeriod);
+      break;
+    }
+  case CLIMATE_SEMI_ARID:
+  {
+    getParamFertility()->reconfigure(10, 50, seasonPeriod);
+    getParamTemperature()->reconfigure(20, 26, seasonPeriod);
+    break;
+  }
+  case CLIMATE_ARID:
+  {
+    getParamFertility()->reconfigure(0, 30, seasonPeriod);
+    getParamTemperature()->reconfigure(20, 30, seasonPeriod);
+    break;
+  }
+  case CLIMATE_TEMPERATE:
+  {
+    getParamFertility()->reconfigure(30, 80, seasonPeriod);
+    getParamTemperature()->reconfigure(5, 25, seasonPeriod);
+    break;
+  }
+  case CLIMATE_CONTINENTAL:
+  {
+    getParamFertility()->reconfigure(20, 80, seasonPeriod);
+    getParamTemperature()->reconfigure(10, 25, seasonPeriod);
+    break;
+  }
+  case CLIMATE_POLAR:
+  {
+    getParamFertility()->reconfigure(10, 30, seasonPeriod);
+    getParamTemperature()->reconfigure(-10, 10, seasonPeriod);
+    break;
+  }
+  default:
+    {
+      break;
+    }
   }
 }
 

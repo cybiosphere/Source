@@ -549,17 +549,17 @@ bool CMapConfigView::BuildPopulationMap(int index)
 
       if (populationSize > 0)
       {
-        if (populationSize < 10)
+        if (populationSize < 20)
         {
-          r = 200 - populationSize * 20;
-          g = 240;
-          b = 200 - populationSize * 20;
+          r = 230 - populationSize * 10;
+          g = 250;
+          b = 230 - populationSize * 10;
         }
         else
         {
-          r = 0;
-          g = 240;
-          b = 0;
+          r = 180 - populationSize / 4;
+          g = 230;
+          b = 180 - populationSize / 4;
         }
         tBioSquare[curCoord.x][curCoord.y].customColor = (b << 0x10) + (g << 0x08) + r;
       }

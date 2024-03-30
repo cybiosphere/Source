@@ -1889,6 +1889,11 @@ int CBasicEntity::getAge()
   return (0);
 }
 
+double CBasicEntity::getLifeExpectation()
+{
+  return (0);
+}
+
 int CBasicEntity::getDecompositionTime()
 {
   return (0);

@@ -316,6 +316,7 @@ public:
   virtual void nextHour();    // Called by biotop every hour  
   virtual void nextDay(bool forceGrowth = false);     // Called every day at birth hour  
   virtual int  getAge();
+  virtual double getLifeExpectation();
   virtual int  getDecompositionTime();
   virtual bool checkVitalNeedsOk(); // Called by biotop every time unit
 

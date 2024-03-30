@@ -64,7 +64,8 @@ CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
   {"SET_BIOTOP_WIND_SPEED",     CScenarioPlayer::CmdSetBiotopWindSpeed,     "SET_BIOTOP_WIND_SPEED <speed int>"},
   {"SET_BIOTOP_WIND_DIRECTION", CScenarioPlayer::CmdSetBiotopWindDirection, "SET_BIOTOP_WIND_DIRECTION <direction 0..7>"},
   {"ADD_MEASURE_POPULATION",    CScenarioPlayer::CmdAddMeasurePopulation,   "ADD_MEASURE_POPULATION <specie name>"},
-  {"ADD_SPAWNER_ENTITY",        CScenarioPlayer::CmdAddEntitySpawner,       "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"}
+  {"ADD_SPAWNER_ENTITY",        CScenarioPlayer::CmdAddEntitySpawner,       "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"},
+  {"CHANGE_BIOTOP_CLIMATE",     CScenarioPlayer::CmdChangeBiotopClimate,    "CHANGE_BIOTOP_CLIMATE <int climateType>"},
 };
 
 //===========================================================================
@@ -708,4 +709,10 @@ bool CScenarioPlayer::CmdAddEntitySpawner(CBiotop* pBiotop, string path, string 
     return (false);
 
   pBiotop->addEntitySpawner(1, entityName, path, intensity, period, true);
+}
+
+bool CScenarioPlayer::CmdChangeBiotopClimate(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  ClimateType_e climateType = (ClimateType_e)atoi(GetParamFromString(commandParam, 0).c_str());
+  pBiotop->setClimateModel(climateType);
 }

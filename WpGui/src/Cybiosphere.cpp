@@ -838,11 +838,9 @@ void CCybiosphereApp::clearGeneticMarker()
 #endif // USE_CLAN_SERVER
 }
 
-void CCybiosphereApp::updateBiotopClimate(double fertilityMin, double fertilityMax, int fertilityPeriod,
-                                          double temperatureMin, double temperatureMax, int temperaturePeriod)
+void CCybiosphereApp::updateBiotopClimate(const ClimateType_e newClimateType, const int newPeriod)
 {
-  m_pBiotop->getParamFertility()->reconfigure(fertilityMin, fertilityMax, fertilityPeriod);
-  m_pBiotop->getParamTemperature()->reconfigure(temperatureMin, temperatureMax, temperaturePeriod);
+  m_pBiotop->setClimateModel(newClimateType, newPeriod);
 
 #ifdef USE_CLAN_CLIENT
   m_pClient->send_event_update_biotop_climate(*m_pBiotop->getParamFertility(), *m_pBiotop->getParamTemperature());

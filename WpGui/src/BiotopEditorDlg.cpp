@@ -234,41 +234,41 @@ void CBiotopEditorDlg::OnOK()
 void CBiotopEditorDlg::OnRadioClimate1()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(60, 100, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 28, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_TROPICAL, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate2()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(10, 50, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 26, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_SEMI_ARID, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate3()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(0, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 20, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_ARID, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate4()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(30, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 5, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_TEMPERATE, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate5()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(20, 80, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, 10, 25, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_CONTINENTAL, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
 
 void CBiotopEditorDlg::OnRadioClimate6()
 {
   UpdateData(true);
-  theApp.updateBiotopClimate(10, 30, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY, -10, 10, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
+  theApp.updateBiotopClimate(CLIMATE_POLAR, m_SeasonPeriodInDays * NUMBER_HOURS_PER_DAY);
   DisplayParamSliders();
 }
