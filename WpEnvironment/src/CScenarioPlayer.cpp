@@ -694,7 +694,7 @@ bool CScenarioPlayer::CmdSetBiotopWindDirection(CBiotop* pBiotop, string path, s
 bool CScenarioPlayer::CmdAddMeasurePopulation(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
   string specieName = GetParamFromString(commandParam, 0);
-  pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 10 * (pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+  pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 10 * (int)(pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
   pBiotop->addGeoMapSpeciePopulation(specieName);
 }
 
