@@ -696,6 +696,7 @@ bool CScenarioPlayer::CmdAddMeasurePopulation(CBiotop* pBiotop, string path, str
   string specieName = GetParamFromString(commandParam, 0);
   pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC, 10 * (int)(pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
   pBiotop->addGeoMapSpeciePopulation(specieName);
+  return true;
 }
 
 
@@ -709,10 +710,12 @@ bool CScenarioPlayer::CmdAddEntitySpawner(CBiotop* pBiotop, string path, string 
     return (false);
 
   pBiotop->addEntitySpawner(1, entityName, path, intensity, period, true);
+  return true;
 }
 
 bool CScenarioPlayer::CmdChangeBiotopClimate(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
   ClimateType_e climateType = (ClimateType_e)atoi(GetParamFromString(commandParam, 0).c_str());
   pBiotop->setClimateModel(climateType);
+  return true;
 }

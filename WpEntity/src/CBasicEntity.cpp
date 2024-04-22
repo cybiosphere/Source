@@ -1535,10 +1535,7 @@ void CBasicEntity::detachFromBiotop()
 //---------------------------------------------------------------------------
 bool CBasicEntity::isToBeRemoved()
 {
-  if (m_Status == STATUS_TOBEREMOVED)
-    return (true);
-  else 
-    return (false);
+  return (m_Status == STATUS_TOBEREMOVED);
 }  
 
 //---------------------------------------------------------------------------
@@ -3266,18 +3263,9 @@ bool CBasicEntity::setLabel(string newname)
 
 bool CBasicEntity::isComestible() 
 {
-  bool resu;
   // Entity with protection < 10 % can be eaten anyway, even if still alive
   // Otherwise, entity must be killed before with attack action
-  if (getProtection()<9.9)
-  {
-    resu = true;
-  }
-  else
-  {
-    resu = false;
-  }
-  return (resu);
+  return (getProtection() < 9.9);
 }  
 
 bool CBasicEntity::isDrinkable()
@@ -3287,18 +3275,12 @@ bool CBasicEntity::isDrinkable()
 
 bool CBasicEntity::isAlive()
 {
-  if (m_Status == STATUS_ALIVE)
-    return (true);
-  else 
-    return (false);
+  return (m_Status == STATUS_ALIVE);
 }  
 
 bool CBasicEntity::isDead()
 {
-  if (m_Status == STATUS_DEAD)
-    return (true);
-  else
-    return (false);
+  return (m_Status == STATUS_DEAD);
 }
 
 void CBasicEntity::setUserControlled(bool active)
@@ -3311,26 +3293,17 @@ void CBasicEntity::setUserControlled(bool active)
 
 bool CBasicEntity::isUserControlled()
 {
-  if (m_Control == CONTROL_LOCAL_USER)
-    return (true);
-  else 
-    return (false);
+  return (m_Control == CONTROL_LOCAL_USER);
 }
 
 bool CBasicEntity::isLocalAutoControlled()
 {
-  if (m_Control == CONTROL_LOCAL_AUTO)
-    return (true);
-  else 
-    return (false);
+  return (m_Control == CONTROL_LOCAL_AUTO);
 }
 
 bool CBasicEntity::isRemoteControlled()
 {
-  if (m_Control == CONTROL_REMOTE_AUTO)
-    return (true);
-  else
-    return (false);
+  return (m_Control == CONTROL_REMOTE_AUTO);
 }
 
 void CBasicEntity::setRemoteControlled(bool active)

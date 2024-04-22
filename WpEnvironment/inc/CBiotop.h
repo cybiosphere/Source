@@ -320,6 +320,7 @@ public:
 
   size_t getNbOfEntities(void);
   size_t getNbOfAnimals(void);
+  size_t getNbOfLivingAnimals(void);
   size_t getNbOfVegetals(void);
   size_t getNbOfMinerals(void);
   size_t getNbOfSpecieEntities(string& SpecieName);

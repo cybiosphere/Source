@@ -634,6 +634,22 @@ size_t CBiotop::getNbOfAnimals()
   return (m_IndexLastAnimal);
 }
 
+size_t CBiotop::getNbOfLivingAnimals()
+{
+  CBasicEntity* pEntity;
+  size_t i;
+  size_t nbLivingAnimals = 0;
+  for (i = 0; i < getNbOfAnimals(); i++)
+  {
+    pEntity = m_tEntity[i];
+    if ((pEntity != NULL) && pEntity->isAlive())
+    {
+      nbLivingAnimals++;
+    }
+  }
+  return nbLivingAnimals;
+}
+
 size_t CBiotop::getNbOfVegetals()
 {
   size_t tempCount = 0;
@@ -1511,7 +1527,7 @@ void CBiotop::nextDay(void)
   if (getNbOfAnimals() > 0)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfAnimals());
+    CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per living animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfLivingAnimals());
   }
 
   m_BioTime.hours = 0;
