@@ -349,7 +349,7 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 		// Assign name and id to User object (created when user connected earlier)
 		user->user_name = user_name;
 		user->id = next_user_id++;
-    if (user->user_name == "Coprocessor")
+    if ((user->user_name.find("Coprocess") != std::string::npos) || (user->user_name.find("coprocess") != std::string::npos))
     {
       if (m_tCoprocessors.size() < MaxNumberCoprocessor)
       {

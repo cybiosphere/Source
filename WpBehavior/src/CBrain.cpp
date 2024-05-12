@@ -1156,7 +1156,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
   size_t cptMaxVal = 0;
   size_t nOutputReactions = m_tReactions.size();
 
-  m_mDecisionNeuronTable.ComputeVectorChoice(&m_vCurrentDecisionInput, &m_vCurrentDecisionChoice);
+  m_mDecisionNeuronTable.ComputeVectorChoice(m_vCurrentDecisionInput, m_vCurrentDecisionChoice);
 
   SetBonusAndGetVectorChoiceThresholds(curiosityRate, maxVal, thresholdMidVal, thresholdVal);
 
@@ -1698,7 +1698,7 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   }
 
   UpdateIdentifyInputVector(pEntity, useOdors);
-  m_mIdentifyNeuronTable.ComputeVectorChoice(&m_vCurrentIdentifyInput, &m_vCurrentIdentifyOutput);
+  m_mIdentifyNeuronTable.ComputeVectorChoice(m_vCurrentIdentifyInput, m_vCurrentIdentifyOutput);
   GetVectorIdentifyThresholds(highThreshold, midThreshold, lowThreshold);
   
   // If vector is flat, just raise NEUTRAL

@@ -172,14 +172,14 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_GESTA_TIME:
     {
-      if (m_id_GestationTime != invalidCharIndex) delete(getParameter(m_id_GestationTime)); // delete if already set
+      if (m_id_GestationTime != invalidCharIndex) delete(getParameterNoCheck(m_id_GestationTime)); // delete if already set
       m_id_GestationTime = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_GESTA_NB:
     {
-      if (m_id_GestationNumberRange != invalidCharIndex) delete(getParameter(m_id_GestationNumberRange)); // delete if already set
+      if (m_id_GestationNumberRange != invalidCharIndex) delete(getParameterNoCheck(m_id_GestationNumberRange)); // delete if already set
       m_id_GestationNumberRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       setGestationBabyNumber(0);
       resu = true;
@@ -515,8 +515,8 @@ void CAnimMammal::increaseGestationTime(int variation)
 {
   if (isAlive())
   {
-    getParameter(m_id_GestationTime)->changeVal(1);
-    if (getParameter(m_id_GestationTime)->isMaxReached())
+    getParameterNoCheck(m_id_GestationTime)->changeVal(1);
+    if (getParameterNoCheck(m_id_GestationTime)->isMaxReached())
     {
       deliverAllBabies();
     }
@@ -893,7 +893,7 @@ bool CAnimMammal::deliverAllBabies()
   forceTirednessRate(80.0);
   changeHungerRate(-80.0); // Reduce hunger to focus on baby care
   setGestationBabyNumber(0);
-  getParameter(m_id_GestationTime)->forceVal(0);
+  getParameterNoCheck(m_id_GestationTime)->forceVal(0);
   // Set maternal pheromon reset libido
   changeLibidoRate(-100.0);
   setPheromone(PHEROMONE_MATERNAL);
@@ -958,31 +958,31 @@ void CAnimMammal::tryParthenogenesis()
 
 int CAnimMammal::getGestationMaxNumber()
 {
-  return ((int)getParameter(m_id_GestationNumberRange)->getMax());
+  return ((int)getParameterNoCheck(m_id_GestationNumberRange)->getMax());
 }
 
 int CAnimMammal::getGestationMinNumber()
 {
-  return ((int)getParameter(m_id_GestationNumberRange)->getMin());
+  return ((int)getParameterNoCheck(m_id_GestationNumberRange)->getMin());
 }
 
 int CAnimMammal::getGestationNominalNumber()
 {
-  return (max((int)getParameter(m_id_GestationNumberRange)->getValNominal(), 1));
+  return (max((int)getParameterNoCheck(m_id_GestationNumberRange)->getValNominal(), 1));
 }
 
 int CAnimMammal::getGestationBabyNumber()
 {
-  return ((int)getParameter(m_id_GestationNumberRange)->getVal());
+  return ((int)getParameterNoCheck(m_id_GestationNumberRange)->getVal());
 }
 
 void CAnimMammal::setGestationBabyNumber(int nbBaby)
 {
-  getParameter(m_id_GestationNumberRange)->forceVal(nbBaby);
+  getParameterNoCheck(m_id_GestationNumberRange)->forceVal(nbBaby);
 }
 
 int CAnimMammal::getGestationTime()
 {
-  return ((int)getParameter(m_id_GestationTime)->getVal());
+  return ((int)getParameterNoCheck(m_id_GestationTime)->getVal());
 }
 

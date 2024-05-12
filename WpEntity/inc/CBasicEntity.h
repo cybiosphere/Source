@@ -302,6 +302,7 @@ private:
 public:
   size_t getNumParameter();
   CGenericParam* getParameter(size_t id);
+  CGenericParam* getParameterNoCheck(size_t id);
   CGenericParam* getParameterByName(string paramName);
   size_t getParamIdByName(string paramName);
 

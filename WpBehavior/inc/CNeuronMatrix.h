@@ -82,7 +82,7 @@ public:
   bool NormalizeNeuronMatrix();
   bool InitializeNeuronMatrixNeutral(string xmlFileLabel, size_t sizeInput, size_t sizeOutput);
   bool ResetNeuronMatrixNeutral();
-  bool ComputeVectorChoice(CMatrix* pVectorInput, CMatrix* pVectorChoice);
+  void ComputeVectorChoice(CMatrix& pVectorInput, CMatrix& pVectorChoice);
   bool MemorizeExperience(neuroneValType coefFeedback, CMatrix* pMatrixInputHistory, CMatrix* pVectorDecisionHistory);
 
   string buildStringDataFromNeuronTable();

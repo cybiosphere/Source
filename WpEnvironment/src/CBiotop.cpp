@@ -2702,7 +2702,7 @@ void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
 
 void CBiotop::setClimateModel(const ClimateType_e newClimateType, const int newPeriod)
 {
-  int seasonPeriod = (newPeriod > 0) ? newPeriod : getParamFertility()->getPeriod();
+  int seasonPeriod = (newPeriod > 0) ? newPeriod : (int)getParamFertility()->getPeriod();
 
   switch (newClimateType)
   {

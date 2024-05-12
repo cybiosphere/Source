@@ -152,7 +152,7 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
   {
   case GENE_PARAM_POLLEN_RANGE:
     {
-      if (m_id_PollenRange != invalidCharIndex) delete(getParameter(m_id_PollenRange)); // delete if already set
+      if (m_id_PollenRange != invalidCharIndex) delete(getParameterNoCheck(m_id_PollenRange)); // delete if already set
       m_id_PollenRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
@@ -613,7 +613,7 @@ bool CVegetSpermatophyta::autoClone()
 
 double CVegetSpermatophyta::getPollenRange()
 {
-  return (getParameter(m_id_PollenRange)->getVal());
+  return (getParameterNoCheck(m_id_PollenRange)->getVal());
 }
 
 

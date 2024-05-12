@@ -200,42 +200,42 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   {
   case GENE_PARAM_AGE:
     {
-      if (m_id_Age != invalidCharIndex) delete(getParameter(m_id_Age)); // delete if already set
+      if (m_id_Age != invalidCharIndex) delete(getParameterNoCheck(m_id_Age)); // delete if already set
       m_id_Age = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_DECOMPOSITION:
     {
-      if (m_id_Decomposition != invalidCharIndex) delete(getParameter(m_id_Decomposition)); // delete if already set
+      if (m_id_Decomposition != invalidCharIndex) delete(getParameterNoCheck(m_id_Decomposition)); // delete if already set
       m_id_Decomposition = addParameterFromGene(pGen, PARAM_DURATION);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RATE:
     {
-      if (m_id_ReproductionRate != invalidCharIndex) delete(getParameter(m_id_ReproductionRate)); // delete if already set
+      if (m_id_ReproductionRate != invalidCharIndex) delete(getParameterNoCheck(m_id_ReproductionRate)); // delete if already set
       m_id_ReproductionRate = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_GROWTH_SPEED:
     {
-      if (m_id_GrowthSpeed != invalidCharIndex) delete(getParameter(m_id_GrowthSpeed)); // delete if already set
+      if (m_id_GrowthSpeed != invalidCharIndex) delete(getParameterNoCheck(m_id_GrowthSpeed)); // delete if already set
       m_id_GrowthSpeed = addParameterFromGene(pGen, PARAM_BIOLOGICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_REPRO_RANGE:
     {
-      if (m_id_ReproductionRange != invalidCharIndex) delete(getParameter(m_id_ReproductionRange)); // delete if already set
+      if (m_id_ReproductionRange != invalidCharIndex) delete(getParameterNoCheck(m_id_ReproductionRange)); // delete if already set
       m_id_ReproductionRange = addParameterFromGene(pGen, PARAM_REPRODUCTION);
       resu = true;
       break;
     }
   case GENE_PARAM_RESISTANCE_TO_CONSUMPTION:
   {
-    if (m_id_ResistanceToConsumption != invalidCharIndex) delete(getParameter(m_id_ResistanceToConsumption)); // delete if already set
+    if (m_id_ResistanceToConsumption != invalidCharIndex) delete(getParameterNoCheck(m_id_ResistanceToConsumption)); // delete if already set
     m_id_ResistanceToConsumption = addParameterFromGene(pGen, PARAM_PHYSICAL);
     resu = true;
     break;
@@ -541,20 +541,20 @@ void CVegetable::nextDay(bool forceGrowth)
       setProtection(m_OriginalProtection);
       setOdor(m_OriginalOdor);
 
-      double growthWeight = getParameter(m_id_GrowthSpeed)->getVal() / 100;
+      double growthWeight = getParameterNoCheck(m_id_GrowthSpeed)->getVal() / 100;
       changeWeight(growthWeight);
 
-      getParameter(m_id_Age)->changeVal(1);
-      if (getParameter(m_id_Age)->isMaxReached())
+      getParameterNoCheck(m_id_Age)->changeVal(1);
+      if (getParameterNoCheck(m_id_Age)->isMaxReached())
       {
         autoKill();
       }
     }
     else
     {
-      getParameter(m_id_Decomposition)->changeVal(1);
+      getParameterNoCheck(m_id_Decomposition)->changeVal(1);
       changeWeight(-0.2);
-      if (getParameter(m_id_Decomposition)->isMaxReached())
+      if (getParameterNoCheck(m_id_Decomposition)->isMaxReached())
       {
         autoRemove();
       }
@@ -576,18 +576,18 @@ void CVegetable::nextDay(bool forceGrowth)
 //---------------------------------------------------------------------------
 int CVegetable::getAge()
 {
-  return ((int)getParameter(m_id_Age)->getVal());
+  return ((int)getParameterNoCheck(m_id_Age)->getVal());
 }
 
 void CVegetable::forceAgeValue(int newAge)
 {
-  getParameter(m_id_Age)->forceVal(newAge);
+  getParameterNoCheck(m_id_Age)->forceVal(newAge);
 }
 
 
 int CVegetable::getDecompositionTime()
 {
-  return ((int)getParameter(m_id_Decomposition)->getVal());
+  return ((int)getParameterNoCheck(m_id_Decomposition)->getVal());
 }
 
 //---------------------------------------------------------------------------
@@ -603,9 +603,9 @@ int CVegetable::getDecompositionTime()
 //---------------------------------------------------------------------------
 bool CVegetable::changeHealthRate(double variation)
 {
-  getParameter(m_id_Health)->changeVal(variation);
+  getParameterNoCheck(m_id_Health)->changeVal(variation);
 
-  if (getParameter(m_id_Health)->isMinReached())
+  if (getParameterNoCheck(m_id_Health)->isMinReached())
   {
     autoKill();
     return false;
@@ -615,7 +615,7 @@ bool CVegetable::changeHealthRate(double variation)
 
 void CVegetable::setHealthRate(double rate)
 {
-  getParameter(m_id_Health)->setVal(rate);
+  getParameterNoCheck(m_id_Health)->setVal(rate);
 }
 
 //===========================================================================
@@ -633,22 +633,22 @@ void CVegetable::autoKill()
 
 double CVegetable::getReproductionRate() 
 {
-  return (getParameter(m_id_ReproductionRate)->getVal());
+  return (getParameterNoCheck(m_id_ReproductionRate)->getVal());
 }
     
 double CVegetable::getLifeExpectation() 
 {
-  return (getParameter(m_id_Age)->getMax());
+  return (getParameterNoCheck(m_id_Age)->getMax());
 }
 
 double CVegetable::getRotenTimeExpectation() 
 {
-  return (getParameter(m_id_Decomposition)->getMax());
+  return (getParameterNoCheck(m_id_Decomposition)->getMax());
 }
 
 double CVegetable::getReproductionRange()
 {
-  return (getParameter(m_id_ReproductionRange)->getVal());
+  return (getParameterNoCheck(m_id_ReproductionRange)->getVal());
 }
 
 
@@ -660,13 +660,13 @@ double CVegetable::changeWeight(double variation)
   }
   else // variation<0
   {
-    CGenericParam* pParam = getParameter(m_id_Weight);
+    CGenericParam* pParam = getParameterNoCheck(m_id_Weight);
     double curVal, minVal, remaining;
     curVal = pParam->getVal();
     minVal  = pParam->getMin();
     remaining = curVal-minVal;
 
-    if ((-variation > remaining) && testChance(getParameter(m_id_ResistanceToConsumption)->getVal()))
+    if ((-variation > remaining) && testChance(getParameterNoCheck(m_id_ResistanceToConsumption)->getVal()))
     {
       // Vegetal is totaly eaten but can survive
       // change temporaly color and protection
@@ -685,12 +685,12 @@ double CVegetable::changeWeight(double variation)
 
 void CVegetable::setResistanceToConsumptionToNominalRatio(double ratio)
 {
-  double newResistance = getParameter(m_id_ResistanceToConsumption)->getValNominal() * ratio / 100.0;
-  getParameter(m_id_ResistanceToConsumption)->setVal(newResistance);
+  double newResistance = getParameterNoCheck(m_id_ResistanceToConsumption)->getValNominal() * ratio / 100.0;
+  getParameterNoCheck(m_id_ResistanceToConsumption)->setVal(newResistance);
 }
 
 void CVegetable::setReproductionRateToNominalRatio(double ratio)
 {
-  double newReproRate = getParameter(m_id_ReproductionRate)->getValNominal() * ratio / 100.0;
-  getParameter(m_id_ReproductionRate)->setVal(newReproRate);
+  double newReproRate = getParameterNoCheck(m_id_ReproductionRate)->getValNominal() * ratio / 100.0;
+  getParameterNoCheck(m_id_ReproductionRate)->setVal(newReproRate);
 }

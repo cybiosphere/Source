@@ -186,6 +186,7 @@ CBasicEntity::CBasicEntity()
   m_Direction   = 0;
   m_StepDirection   = 0;
   m_Layer = invalidCoord;
+  m_DefaultLayer = invalidCoord;
   m_PrevLayer = invalidCoord;
   m_GridCoord.x = invalidCoord;
   m_GridCoord.y = invalidCoord;
@@ -611,28 +612,28 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   {
   case GENE_PARAM_WEIGHT:
     {
-      if (m_id_Weight != invalidCharIndex) delete(getParameter(m_id_Weight)); // delete if already set
+      if (m_id_Weight != invalidCharIndex) delete(getParameterNoCheck(m_id_Weight)); // delete if already set
       m_id_Weight = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_TOXICITY:
     {
-      if (m_id_Toxicity != invalidCharIndex) delete(getParameter(m_id_Toxicity)); // delete if already set
+      if (m_id_Toxicity != invalidCharIndex) delete(getParameterNoCheck(m_id_Toxicity)); // delete if already set
       m_id_Toxicity = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_PROTECTION:
     {
-      if (m_id_Protection != invalidCharIndex) delete(getParameter(m_id_Protection)); // delete if already set
+      if (m_id_Protection != invalidCharIndex) delete(getParameterNoCheck(m_id_Protection)); // delete if already set
       m_id_Protection = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
     }
   case GENE_PARAM_CAMOUFLAGE:
     {
-      if (m_id_Camouflage != invalidCharIndex) delete(getParameter(m_id_Camouflage)); // delete if already set
+      if (m_id_Camouflage != invalidCharIndex) delete(getParameterNoCheck(m_id_Camouflage)); // delete if already set
       m_id_Camouflage = addParameterFromGene(pGen, PARAM_PHYSICAL);
       resu = true;
       break;
@@ -1755,6 +1756,11 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
   {
     return (m_tParam[id]);
   }
+}
+
+CGenericParam* CBasicEntity::getParameterNoCheck(size_t id)
+{
+  return (m_tParam[id]);
 }
 
 CGenericParam* CBasicEntity::getParameterByName(string paramName)
@@ -3317,12 +3323,12 @@ void CBasicEntity::setRemoteControlled(bool active)
 
 double CBasicEntity::getToxicity() 
 {
-  return (getParameter(m_id_Toxicity)->getVal());
+  return (getParameterNoCheck(m_id_Toxicity)->getVal());
 }
 
 void CBasicEntity::setToxicity(double newRate) 
 {
-  getParameter(m_id_Toxicity)->setVal(newRate);
+  getParameterNoCheck(m_id_Toxicity)->setVal(newRate);
 }
 
 OdorType_e CBasicEntity::getOdor() 
@@ -3408,47 +3414,29 @@ CGenome* CBasicEntity::getGenome()
 
 double CBasicEntity::getNoise()
 {
-  CGenericParam* pParam = getParameter(m_id_Noise);
-  if (pParam != NULL)
-  {
-    return (pParam->getVal());
-  }
-  else
-  {
-    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ENTITY - ERROR getNoise entity %s return default value\n", m_Label.c_str());
-    return (0.0);
-  }
+  // Optim CPU no check
+  return m_tParam[m_id_Noise]->getVal();
 }
 
 void CBasicEntity::setNoise(int rate)
 {
-  getParameter(m_id_Noise)->setVal(rate);
+  getParameterNoCheck(m_id_Noise)->setVal(rate);
 }
 
 double CBasicEntity::getWeight()
 {
-  CGenericParam* pParam = getParameter(m_id_Weight);
-  if (pParam != NULL)
-  {
-    return (pParam->getVal());
-  }
-  else
-  {
-    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ENTITY - ERROR getWeight entity %s return default value\n", m_Label.c_str());
-    return (1.0);
-  }
+  // Optim CPU no check
+  return m_tParam[m_id_Weight]->getVal();
 }
 
 double CBasicEntity::getMaxWeight()
 {
-  return (getParameter(m_id_Weight)->getMax());
+  return (getParameterNoCheck(m_id_Weight)->getMax());
 }
 
 double CBasicEntity::getMinWeight()
 {
-  return (getParameter(m_id_Weight)->getMin());
+  return (getParameterNoCheck(m_id_Weight)->getMin());
 }
 
 double CBasicEntity::getSizeRate()
@@ -3463,15 +3451,15 @@ double CBasicEntity::getSizeRate()
 double CBasicEntity::getCamouflage()
 {
   if (getCurrentSpeed() == 0)
-    return (getParameter(m_id_Camouflage)->getVal());
+    return (getParameterNoCheck(m_id_Camouflage)->getVal());
   else
-    return (getParameter(m_id_Camouflage)->getVal()/2);
+    return (getParameterNoCheck(m_id_Camouflage)->getVal()/2);
 }
 
 void CBasicEntity::setCamouflageToNominalRatio(double ratio)
 {
-  double newCuriosity = getParameter(m_id_Camouflage)->getValNominal() * ratio / 100.0;
-  getParameter(m_id_Camouflage)->setVal(newCuriosity);
+  double newCuriosity = getParameterNoCheck(m_id_Camouflage)->getValNominal() * ratio / 100.0;
+  getParameterNoCheck(m_id_Camouflage)->setVal(newCuriosity);
 }
 
 bool CBasicEntity::checkIfhasMoved()
@@ -3488,12 +3476,12 @@ bool CBasicEntity::checkIfhasMovedAndClear()
 
 double CBasicEntity::getProtection() 
 {
-  return (getParameter(m_id_Protection)->getVal());
+  return (getParameterNoCheck(m_id_Protection)->getVal());
 }
 
 void CBasicEntity::setProtection(double newRate)
 {
-  getParameter(m_id_Protection)->setVal(newRate);
+  getParameterNoCheck(m_id_Protection)->setVal(newRate);
 }
 
 ConsumeType_e CBasicEntity::getConsumeClass()
@@ -3515,7 +3503,7 @@ ClassType_e CBasicEntity::getClass()
 
 double CBasicEntity::changeWeight(double variation)
 {
-  CGenericParam* pParam = getParameter(m_id_Weight);
+  CGenericParam* pParam = getParameterNoCheck(m_id_Weight);
   double initVal;
   double resuVariation;
 
@@ -3534,7 +3522,7 @@ double CBasicEntity::changeWeight(double variation)
 
 void CBasicEntity::forceWeight(double newWeight)
 {
-  getParameter(m_id_Weight)->forceVal(newWeight);
+  getParameterNoCheck(m_id_Weight)->forceVal(newWeight);
 }
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 

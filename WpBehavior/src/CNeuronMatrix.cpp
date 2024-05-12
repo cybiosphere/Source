@@ -120,14 +120,29 @@ bool CNeuronMatrix::ResetNeuronMatrixNeutral()
 // Process
 //////////////////////////////////////////////////////////////////////
 
-
-bool CNeuronMatrix::ComputeVectorChoice (CMatrix* pVectorInput, CMatrix* pVectorChoice)
+void CNeuronMatrix::ComputeVectorChoice (CMatrix& pVectorInput, CMatrix& pVectorChoice)
 {
-  *pVectorChoice = ~(~(*pVectorInput)*m_mNeuronTable);
+  // Optim CPU
+  //*pVectorChoice = ~(~(*pVectorInput)*m_mNeuronTable);
 
-  return true;
+  // Reset pVectorChoice
+  size_t i, j;
+  for (i = 0; i < pVectorChoice.RowNo(); i++)
+  {
+    pVectorChoice(i, 0) = 0;
+  }
+  // Compute pVectorChoice
+  for (i = 0; i < pVectorInput.RowNo(); i++)
+  {
+    if (pVectorInput(i, 0) != 0)
+    {
+      for (j = 0; j < pVectorChoice.RowNo(); j++)
+      {
+        pVectorChoice(j, 0) += m_mNeuronTable(i, j) * pVectorInput(i, 0);
+      }
+    }
+  }
 }
-
 
 bool CNeuronMatrix::MemorizeExperience (neuroneValType coefFeedback, CMatrix* pMatrixInputHistory, CMatrix* pVectorDecisionHistory)
 {
