@@ -48,7 +48,7 @@ distribution.
 
 #include "Definitions.h"
 #include "CybioXmlDef.h"
-#include "CGene.h"
+#include "CGeneDefinitions.h"
 
 //===========================================================================
 // Definitions            

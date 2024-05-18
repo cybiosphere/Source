@@ -288,8 +288,6 @@ CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Poin
 
 CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord, size_t layer)
 {
-
-
   // Create entity
   CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc);
   if (pNewEntity == NULL)
@@ -1545,7 +1543,6 @@ void CBiotop::nextDay(void)
   }
 }
 
-
 void CBiotop::nextHourForAllEntities(void)
 {
   CBasicEntity* pEntity = NULL;
@@ -2319,7 +2316,6 @@ bool CBiotop::saveInXmlFile(string fileName, string pathName, bool saveEntities)
   resu = pXmlDoc->SaveFile();
   delete pXmlDoc;
   return resu;
-
 }
 
 bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, bool saveEntityList, bool saveEntities)
@@ -2445,7 +2441,6 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
 
   return true;
 }
-
 
 bool CBiotop::loadFromXmlFile(string fileName, string pathName)
 {
