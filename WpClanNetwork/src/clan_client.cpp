@@ -352,12 +352,12 @@ void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
 
 void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
 }
 
 void Client::on_event_biotop_updateentityphysic(const NetGameEvent& e)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
 }
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)

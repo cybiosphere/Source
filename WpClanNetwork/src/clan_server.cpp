@@ -490,7 +490,7 @@ void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser*
 
 void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
   if (pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
@@ -502,7 +502,7 @@ void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerU
 
 void Server::on_event_biotop_updateentityphysic(const NetGameEvent& e, ServerUser* user)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, true);
+  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
   if (pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)

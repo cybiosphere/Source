@@ -3697,6 +3697,11 @@ void CBasicEntity::setStatus(StatusType_e newStatus)
   if (m_Status != newStatus)
   {
     m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE, this);
+    if (newStatus < m_Status)
+    {
+      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+      CYBIOCORE_LOG("ENTITY - WARNING entity name %s unexpected status change from %d to %d\n", getLabel().c_str(), m_Status, newStatus);
+    }
     m_Status = newStatus;
   }
 }

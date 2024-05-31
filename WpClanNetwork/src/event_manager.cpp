@@ -209,7 +209,7 @@ namespace clan
     return (std::move(newEvent));
   }
 
-  CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate)
+  CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic)
   {
     if (e.get_argument_count() < 8)
     {
@@ -217,6 +217,14 @@ namespace clan
       return NULL;
     }
     int entityId = e.get_argument(0);
+
+    CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
+    if (pEntity == NULL)
+    {
+      log_event(labelEvent, "handleEventUpdateEntityPosition: ERROR pEntity is NULL for ID%1", entityId);
+      return NULL;
+    }
+
     std::string  entityLabel = e.get_argument(1);
     int status = e.get_argument(2);
     Point_t position;
@@ -235,10 +243,8 @@ namespace clan
     int AttributeMask = e.get_argument(13);
     int index = 14;
 
-    // Check if entity exists
-    CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-    // If entity exist, update only if remoteControlled or manual mode
-    if ((pEntity != NULL) && (forceEntityUpdate || pEntity->isRemoteControlled()))
+    // If entity exist, update only if remoteControlled or force change or update physic for non living animals
+    if (pEntity->isRemoteControlled() || forceEntityUpdate || (updatePhysic && !(pEntity->isAnimal() && (status == STATUS_ALIVE))))
     { 
       //log_event(labelEvent, "Biotop update entity position: entityID %1 label %2", (int)entityId, entityLabel);
       if (pEntity->getLabel() != entityLabel)

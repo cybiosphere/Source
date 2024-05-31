@@ -32,7 +32,7 @@ namespace clan
     void handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop);
 
 	  static NetGameEvent buildEventUpdateEntityPos(CBasicEntity* pEntity, std::string eventLabel);
-	  static CBasicEntity* handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate);
+	  static CBasicEntity* handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic);
 
 	  static NetGameEvent buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId);
     static bool handleEventRemoveEntity(const NetGameEvent& e, CBiotop* pBiotop);
