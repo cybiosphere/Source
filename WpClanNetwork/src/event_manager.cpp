@@ -673,7 +673,12 @@ namespace clan
       return NULL;
     }
     pNewEntity->setStepDirection(stepDirection);
-    log_event(labelEvent, "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6", pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
+
+    if (pNewEntity->isAnimal())
+    {
+      log_event(labelEvent, "Biotop add entity: %1 state %2 stepCoordX %3 stepCoordY %4 layer %5 ID %6",
+        pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
+    }
 
     Point_t stepCoord{ stepCoordX , stepCoordY };
 

@@ -594,8 +594,10 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
     log_event(labelServer, "Send event Add removed entity: %1", pEntity->getLabel());
     return;
   }
-
-  log_event(labelServer, "Send event Add entity: %1", pEntity->getLabel());
+  if (pEntity->isAnimal())
+  {
+    log_event(labelServer, "Send event Add entity: %1", pEntity->getLabel());
+  }
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))
   {
@@ -719,7 +721,10 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
 
 void Server::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId, ServerUser *user)
 {
-  log_event(labelServer, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
+  if (pEntity->isAnimal())
+  {
+    log_event(labelServer, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
+  }
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioRemoveEntityEvent);

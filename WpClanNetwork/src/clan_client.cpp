@@ -459,7 +459,10 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
   {
     return;
   }
-  log_event(labelClient, "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+  if (pEntity->isAnimal())
+  {
+    log_event(labelClient, "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+  }
   std::vector<NetGameEvent> eventVector;
   if (event_manager::buildEventsAddEntity(pEntity, eventVector))
   {
@@ -544,7 +547,10 @@ void Client::send_event_update_entity_physic(CBasicEntity* pEntity)
 
 void Client::send_event_remove_entity(CBasicEntity* pEntity, entityIdType entityId)
 {
-  log_event(labelClient, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
+  if (pEntity->isAnimal())
+  {
+    log_event(labelClient, "Remove entity: %1 ID %2", pEntity->getLabel(), (int)entityId);
+  }
   NetGameEvent bioRemoveEntityEvent{ event_manager::buildEventRemoveEntity(pEntity, entityId) };
   network_client.send_event(bioRemoveEntityEvent);
 }
