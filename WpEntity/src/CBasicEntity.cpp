@@ -1839,11 +1839,14 @@ void CBasicEntity::nextSecond()
 //---------------------------------------------------------------------------
 void CBasicEntity::nextHour()
 {
-  m_HourCounter ++;
-  if (m_HourCounter > NUMBER_HOURS_PER_DAY)
+  if (!isRemoteControlled())
   {
-    nextDay();
-    m_HourCounter = 0;
+    m_HourCounter++;
+    if (m_HourCounter > NUMBER_HOURS_PER_DAY)
+    {
+      nextDay();
+      m_HourCounter = 0;
+    }
   }
 }
 

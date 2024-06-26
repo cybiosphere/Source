@@ -489,7 +489,7 @@ void CAnimMammal::nextHour()
 void CAnimMammal::nextDay(bool forceGrowth)
 {
   // get older
-  if (isAlive() && !isRemoteControlled())
+  if (isAlive())
   {
     if (getGestationBabyNumber()>0)
     {

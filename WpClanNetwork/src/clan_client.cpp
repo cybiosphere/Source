@@ -56,7 +56,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
   m_bEventNextSecondStart = false;
   m_bEventNextSecondEnd = false;
   m_biotopSpeed = 1.0;
-  m_bManualMode = true;
+  m_bManualMode = false;
   m_bMaxSpeedMode = false;
 }
 

@@ -672,6 +672,14 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
   {
     log_event(labelError, "send_event_update_entity_data: Event not sent");
   }
+
+  if (m_tCoprocessors.size() > 0)
+  {
+    for (auto coprocess : m_tCoprocessors)
+    {
+      coprocess.assign_entity_control(pEntity);
+    }
+  }
 }
 
 void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser *user)

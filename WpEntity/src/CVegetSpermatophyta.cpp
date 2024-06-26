@@ -331,7 +331,7 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //---------------------------------------------------------------------------
 void CVegetSpermatophyta::nextDay(bool forceGrowth)
 {
-  if (isLocalAutoControlled() && isAlive())
+  if (isAlive())
   {
     tryToReproduceOnceADay();
   }

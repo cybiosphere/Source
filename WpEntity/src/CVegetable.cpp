@@ -531,33 +531,30 @@ void CVegetable::nextHour()
 //---------------------------------------------------------------------------
 void CVegetable::nextDay(bool forceGrowth)
 {
-  if (!isRemoteControlled())
+  // get older
+  if (isAlive())
   {
-    // get older
-    if (isAlive())
+    // retore def values (new leafs are available)
+    setColor(m_OriginalColorRgb);
+    setProtection(m_OriginalProtection);
+    setOdor(m_OriginalOdor);
+
+    double growthWeight = getParameterNoCheck(m_id_GrowthSpeed)->getVal() / 100;
+    changeWeight(growthWeight);
+
+    getParameterNoCheck(m_id_Age)->changeVal(1);
+    if (getParameterNoCheck(m_id_Age)->isMaxReached())
     {
-      // retore def values (new leafs are available)
-      setColor(m_OriginalColorRgb);
-      setProtection(m_OriginalProtection);
-      setOdor(m_OriginalOdor);
-
-      double growthWeight = getParameterNoCheck(m_id_GrowthSpeed)->getVal() / 100;
-      changeWeight(growthWeight);
-
-      getParameterNoCheck(m_id_Age)->changeVal(1);
-      if (getParameterNoCheck(m_id_Age)->isMaxReached())
-      {
-        autoKill();
-      }
+      autoKill();
     }
-    else
+  }
+  else
+  {
+    getParameterNoCheck(m_id_Decomposition)->changeVal(1);
+    changeWeight(-0.2);
+    if (getParameterNoCheck(m_id_Decomposition)->isMaxReached())
     {
-      getParameterNoCheck(m_id_Decomposition)->changeVal(1);
-      changeWeight(-0.2);
-      if (getParameterNoCheck(m_id_Decomposition)->isMaxReached())
-      {
-        autoRemove();
-      }
+      autoRemove();
     }
   }
   CBasicEntity::nextDay(forceGrowth);

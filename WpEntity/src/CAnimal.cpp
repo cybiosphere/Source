@@ -2271,31 +2271,28 @@ void CAnimal::nextHour()
 //---------------------------------------------------------------------------
 void CAnimal::nextDay(bool forceGrowth)
 {
-  if (!isRemoteControlled())
+  // get older 
+  if (isAlive())
   {
-    // get older 
-    if (isAlive())
+    if (m_pBrain != NULL)
+      m_pBrain->NextDay();
+    getParameterNoCheck(m_id_Age)->changeVal(1);
+    balanceWeightAndMetabolism(forceGrowth);
+    if (getParameterNoCheck(m_id_Age)->isMaxReached())
     {
-      if (m_pBrain != NULL)
-        m_pBrain->NextDay();
-      getParameterNoCheck(m_id_Age)->changeVal(1);
-      balanceWeightAndMetabolism(forceGrowth);
-      if (getParameterNoCheck(m_id_Age)->isMaxReached())
-      {
-        autoKill();
-        logDeathCause("due to old age\n");
-      }
+      autoKill();
+      logDeathCause("due to old age\n");
     }
-    else
+  }
+  else
+  {
+    if (isDead())
     {
-      if (isDead())
+      getParameterNoCheck(m_id_Decomposition)->changeVal(1);
+      consumeFatWeight(0.2);
+      if (getParameterNoCheck(m_id_Decomposition)->isMaxReached())
       {
-        getParameterNoCheck(m_id_Decomposition)->changeVal(1);
-        consumeFatWeight(0.2);
-        if (getParameterNoCheck(m_id_Decomposition)->isMaxReached())
-        {
-          autoRemove();
-        }
+        autoRemove();
       }
     }
   }
