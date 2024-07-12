@@ -856,17 +856,19 @@ void CBiotop::putEntitiesInListAllLayersOptim(BiotopFoundIds_t& foundIds, size_t
 {
   constexpr size_t startlayer{ 1 }; // CPU optim: start at layer 1 (layer 0 is underground not detected by default)
   BiotopCube_t* pBiotopCube = &m_tBioGrid[searchCoord.x][searchCoord.y][startlayer];
+  CBasicEntity* pCurEntity = NULL;
   for (size_t z = startlayer; z < m_nbLayer; z++)
   {
-    if ((pBiotopCube->pEntity != NULL) && (includeWater || (pBiotopCube->pEntity->getId() != ENTITY_ID_WATER)))
+    pCurEntity = pBiotopCube->pEntity;
+    if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
     {
       if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
         return;
-      if ((foundIds.nbFoundIds < 10) || pBiotopCube->pEntity->isAnimal() ||
+      if ((foundIds.nbFoundIds < 10) || pCurEntity->isAnimal() ||
          ((foundIds.tFoundIds[foundIds.nbFoundIds - 1].pEntity != NULL) 
-          && (foundIds.tFoundIds[foundIds.nbFoundIds - 1].pEntity->getEntitySignature() != pBiotopCube->pEntity->getEntitySignature())))
+          && (foundIds.tFoundIds[foundIds.nbFoundIds - 1].pEntity->getEntitySignature() != pCurEntity->getEntitySignature())))
       {
-        foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pBiotopCube->pEntity;
+        foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pCurEntity;
         foundIds.tFoundIds[foundIds.nbFoundIds].distance = distanceToSet;
         foundIds.nbFoundIds++;
       }
@@ -2650,7 +2652,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
               pCloneEntity->setDirection(direction);
               pCloneEntity->jumpToStepCoord(stepCoord, false);
               // randomize age to prevent threshold effect
-              pCloneEntity->quickAgeing(getRandInt((int)(pCloneEntity->getLifeExpectation() * 0.8)));
+              pCloneEntity->quickAgeing(1 + getRandInt((int)(pCloneEntity->getLifeExpectation() * 0.8)));
             }
           }
           else
