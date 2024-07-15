@@ -65,6 +65,7 @@ public:
   CRock();
   ~CRock();
   
+  bool isMineral();
   double  changeWeight(double variation); // Overload
 
 };// end CRock

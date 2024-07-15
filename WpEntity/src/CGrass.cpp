@@ -88,6 +88,11 @@ double CGrass::changeWeight(double variation)
   return (variation);
 }
 
+bool CGrass::isVegetal()
+{
+  return true;
+}
+
 ClassType_e  CGrass::getClass()
 {
   return CLASS_SPERMATOPHYTA;

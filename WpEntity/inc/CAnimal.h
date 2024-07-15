@@ -248,6 +248,7 @@ protected:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:   
+  bool   isAnimal();
   double getReproductionRate();
   double getLifeExpectation();
   double getRotenTimeExpectation();

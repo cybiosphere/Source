@@ -152,6 +152,11 @@ bool CWater::completeCaractsWithDefault()
   return (true);
 }
 
+bool CWater::isMineral()
+{
+  return true;
+}
+
 double CWater::changeWeight(double variation)
 {
   if (m_bInfiniteContent)

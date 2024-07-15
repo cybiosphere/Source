@@ -82,6 +82,11 @@ CRock::~CRock()
 {
 }
 
+bool CRock::isMineral()
+{
+  return true;
+}
+
 double CRock::changeWeight(double variation)
 {
   return (0);

@@ -127,6 +127,7 @@ protected:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
+  bool isVegetal();
   double changeWeight(double variation); // Overload
   double getReproductionRate(); 
   double getLifeExpectation();

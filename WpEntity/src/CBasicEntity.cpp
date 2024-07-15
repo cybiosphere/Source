@@ -3494,14 +3494,7 @@ ConsumeType_e CBasicEntity::getConsumeClass()
 
 ClassType_e CBasicEntity::getClass()
 {
-  if (m_pGenome!=NULL)
-  {
-    return (m_pGenome->getClass());
-  }
-  else
-  {
-    return (CLASS_UNSET);
-  }
+  return (m_pGenome != NULL) ? m_pGenome->getClass() : CLASS_UNSET;
 }
 
 double CBasicEntity::changeWeight(double variation)
@@ -3836,20 +3829,20 @@ size_t CBasicEntity::getGridPosFromStepPos(size_t stepCoord)
 
 bool CBasicEntity::isAnimal()
 {
-  return (getClass() >= CLASS_ANIMAL_FIRST);
+  return false;
 }
 
 bool CBasicEntity::isVegetal()
 {
-  return ((getClass() >= CLASS_VEGETAL_FIRST) && (getClass() <= CLASS_VEGETAL_LAST));
+  return false;
 }
 
 bool CBasicEntity::isMineral()
 {
-  return (getClass() <= CLASS_MINERAL_LAST);
+  return false;
 }
 
 bool CBasicEntity::isLiving()
 {
-  return (getClass() > CLASS_MINERAL_LAST);
+  return !isMineral();
 }

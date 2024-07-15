@@ -627,6 +627,10 @@ void CVegetable::autoKill()
 //===========================================================================
 // Get / Set for attributes
 //===========================================================================
+bool CVegetable::isVegetal()
+{
+  return true;
+}
 
 double CVegetable::getReproductionRate() 
 {

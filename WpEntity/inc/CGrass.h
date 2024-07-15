@@ -66,6 +66,7 @@ public:
   ~CGrass();
   
   double  changeWeight(double variation); // Overload
+  bool isVegetal();
   ClassType_e getClass();
 
 };// end CGrass

@@ -72,3 +72,8 @@ string CMineral::buildLifeStageString(CGene* pGen)
   string defStr = STRING_GENE_UNUSED;
   return(defStr);
 }
+
+bool CMineral::isMineral()
+{
+  return true;
+}

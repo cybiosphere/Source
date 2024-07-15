@@ -488,9 +488,9 @@ public:
   virtual int    getCurrentSpeed();
   int            getRelativeSpeed(CBasicEntity* pReference);
 
-  bool isAnimal();
-  bool isVegetal();
-  bool isMineral();
+  virtual bool isAnimal();
+  virtual bool isVegetal();
+  virtual bool isMineral();
   bool isLiving();
 
   static string  getColorStrName(ColorCaracterType_e type);

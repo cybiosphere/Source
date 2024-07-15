@@ -3604,7 +3604,11 @@ bool CAnimal::SetCurrentReactionIndex(size_t reactIndex)
 //===========================================================================
 // Get / Set for attributes
 //===========================================================================
-    
+bool CAnimal::isAnimal()
+{
+  return true;
+}
+
 double CAnimal::getReproductionRate() 
 {
   return (getParameterNoCheck(m_id_ReproductionRate)->getVal());
