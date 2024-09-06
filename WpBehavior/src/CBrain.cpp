@@ -520,6 +520,8 @@ bool CBrain::PollAllSensors (void)
     }
   }
 
+#ifdef WIN32
+  // CPU optim: Update Identification on focused entity for GUI. No need in console mode
   if (m_FocusedEntityInfo.newEntityId != ENTITY_ID_INVALID)
   {
     CBasicEntity* pFocusedEntity = GetEntity()->getBiotop()->getEntityById(m_FocusedEntityInfo.newEntityId);
@@ -529,6 +531,7 @@ bool CBrain::PollAllSensors (void)
       ComputeAndGetIdentification(pFocusedEntity);
     }
   }
+#endif
 
   // reset m_FocusedEntityInfo
   m_FocusedEntityInfo.previousEntityId = m_FocusedEntityInfo.newEntityId;
@@ -1074,13 +1077,11 @@ bool CBrain::HistorizeInput (void)
     {
       m_mInputDecisionHistory(i,hist) = m_mInputDecisionHistory(i,hist-1)*m_historyWeight;
     }
-
   }
-    // Insert current input
+  // Insert current input
   for (size_t i=0; i<m_mInputDecisionHistory.RowNo(); i++)
   {
     m_mInputDecisionHistory(i,0) = m_vCurrentDecisionInput(i,0);
-
   }
   return true;
 }

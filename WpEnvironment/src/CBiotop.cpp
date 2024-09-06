@@ -891,7 +891,7 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
     {
       startCoordX = 0;
     }
-    if (endCoordX >= m_Dimension.x)
+    if (endCoordX > m_Dimension.x)
     {
       endCoordX = m_Dimension.x;
     }
@@ -913,7 +913,7 @@ void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceTo
     {
       startCoordY = 0;
     }
-    if (endCoordY >= m_Dimension.y)
+    if (endCoordY > m_Dimension.y)
     {
       endCoordY = m_Dimension.y;
     }

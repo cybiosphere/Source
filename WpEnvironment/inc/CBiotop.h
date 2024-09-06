@@ -369,7 +369,6 @@ private:
 //---------------------------------------------------------------------------
 public:
   void nextSecond(bool doIncreaseTime = true);
-  void triggerMeasuresNextSecond(void);
   BiotopTime_t getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
   void setNextHourTimeOffset(unsigned char nextHourTimeOffset);
@@ -381,6 +380,7 @@ private:
   void nextSecondForAllAnimals(void);
   void nextSecondForAllAnimalsSingleProcess(void);
   void nextSecondForAllAnimalsMultiProcess(void);
+  void triggerMeasuresNextSecond(void);
 
 //---------------------------------------------------------------------------
 // Grid management
@@ -389,7 +389,6 @@ public:
   void initGridDefaultLayerType(void);
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
-  void updateGridFertilityBonus(void);
   void ModifyGridFertilityBonus(Point_t coord, char bonusToAdd);
   void updateGridEntity(CBasicEntity* pEntity);
   int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
@@ -398,6 +397,7 @@ private:
   void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);
   void updateGridAllEntities(void);
+  void updateGridFertilityBonus(void);
 
 //---------------------------------------------------------------------------
 // Measure management

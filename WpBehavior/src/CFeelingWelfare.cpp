@@ -133,7 +133,10 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
 bool CFeelingWelfare::AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* pTableMask)
 {
   if (pSens->GetSubCaptorNumber() != tableMaskSize)
+  {
+    CYBIOCORE_LOG("ANIMAL - ERROR : %s incorect sensitivity size %d for sensor %s\n", m_pEntity->getLabel().c_str(), tableMaskSize, pSens->GetLabel().c_str());
     return false;
+  }
 
   Sensitivity_t* pSensitivity = new Sensitivity_t;
 
