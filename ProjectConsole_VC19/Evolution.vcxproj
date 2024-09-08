@@ -297,7 +297,7 @@
     <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Evolution.cpp" />
+    <ClCompile Include="..\Evolution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -122,6 +122,66 @@ CBiotop::~CBiotop()
 
   CYBIOCORE_LOG_CLOSE;
 }
+
+CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dimY)
+{
+  if ((startCoord.x > m_Dimension.x) || (startCoord.y > m_Dimension.y)
+    || ((startCoord.x + dimX) > m_Dimension.x) || ((startCoord.y + dimY) > m_Dimension.y))
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("ERROR  - Try to exctract Arean with invalid coord\n");
+    return NULL;
+  }
+
+  CBiotop* pExctactedBiotop = new CBiotop(dimX, dimY, m_nbLayer, "CybioCoreExctracted.log");
+
+  if (pExctactedBiotop == NULL)
+    return NULL;
+
+  for (size_t i = 0; i < dimX; i++)
+  {
+    for (size_t j = 0; j < dimY; j++)
+    {
+      for (size_t layerIndex = 0; layerIndex < m_nbLayer; layerIndex++)
+      {
+        pExctactedBiotop->m_tBioGrid[i][j][layerIndex].layerType = m_tBioGrid[i + startCoord.x][j + startCoord.y][layerIndex].layerType;
+      }
+    }
+  }
+
+  initGridEntity();
+
+  pExctactedBiotop->setBiotopTime(getBiotopTime().seconds, getBiotopTime().hours, getBiotopTime().days, getBiotopTime().years);
+  // TODO: copy climate, wind, measures?, spwners?....
+
+  // Copy entities
+  CBasicEntity* pCurEntity{ NULL };
+  CBasicEntity* pCloneEntity{ NULL };
+  Point_t curCoord{ invalidCoord, invalidCoord };
+  Point_t newStepCoord{ invalidCoord, invalidCoord };
+  for (size_t i = 0; i < getNbOfEntities(); i++)
+  {
+    pCurEntity = getEntityByIndex(i);
+    if (pCurEntity == NULL)
+    {
+      return NULL;
+    }
+    
+    curCoord = pCurEntity->getGridCoord();
+    if ((curCoord.x >= startCoord.x) && (curCoord.y >= startCoord.y)
+      && (curCoord.x < (startCoord.x + dimX)) && (curCoord.y < (startCoord.y + dimY)))
+    {
+      newStepCoord.x = pCurEntity->getStepCoord().x - startCoord.x * NB_STEPS_PER_GRID_SQUARE;
+      newStepCoord.y = pCurEntity->getStepCoord().y - startCoord.y * NB_STEPS_PER_GRID_SQUARE;
+      pCloneEntity = CEntityFactory::createCloneEntity(pCurEntity);
+      pExctactedBiotop->addEntityWithPresetId(pCurEntity->getId(), pCloneEntity, newStepCoord, true, pCurEntity->getLayer());
+    }
+  }
+
+  return pExctactedBiotop;
+}
+
+
 //===========================================================================
 // Entities management
 //===========================================================================
@@ -327,6 +387,9 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
 
   size_t layer = cloneLayer;
   string name = cloneName;
+
+  if (pModelEntity == NULL)
+    return NULL;
 
   if (name == "")
     name = pModelEntity->getLabel();

@@ -381,6 +381,9 @@
     <ClInclude Include="..\WpGenetic\inc\CGeneticParam.h">
       <Filter>WpGenetic\IncGenetic</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">

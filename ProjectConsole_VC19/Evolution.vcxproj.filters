@@ -39,10 +39,6 @@
     <Filter Include="ProjectConsole">
       <UniqueIdentifier>{95630125-7bd1-483c-9562-6a50b9204693}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ProjectConsole\SrcConsole">
-      <UniqueIdentifier>{fe08f281-33ee-4af9-9f39-43f92d89e239}</UniqueIdentifier>
-      <Extensions>.cpp</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WpBehavior\inc\CBrain.h">
@@ -164,9 +160,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Evolution.cpp">
-      <Filter>ProjectConsole\SrcConsole</Filter>
-    </ClCompile>
+    <ClCompile Include="..\Evolution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

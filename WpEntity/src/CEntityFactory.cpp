@@ -120,10 +120,10 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
   }
 
   CBasicEntity* pNewEntity = createEntity(name, pTempGenome);
-  pNewEntity->jumpToGridCoord({ invalidCoord, invalidCoord }, true, startLayer);
-
+  
   if (pNewEntity != NULL)
   {
+    pNewEntity->jumpToGridCoord({ invalidCoord, invalidCoord }, true, startLayer);
     pNewEntity->loadDataFromXmlFile(pXmlDoc);
     pNewEntity->loadBrainFromXmlFile(pXmlDoc);
   }

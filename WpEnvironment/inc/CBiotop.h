@@ -294,6 +294,8 @@ public:
   CBiotop(int dimX,int dimY, int dimZ, string logFileName = "CybioCore.log") ;
   virtual ~CBiotop();
 
+  CBiotop* extractNewBiotopFromArea(Point_t startCoord, int dimX, int dimY);
+
 //---------------------------------------------------------------------------
 // Entities management
 //---------------------------------------------------------------------------
@@ -369,6 +371,7 @@ private:
 //---------------------------------------------------------------------------
 public:
   void nextSecond(bool doIncreaseTime = true);
+  void triggerMeasuresNextSecond(void);
   BiotopTime_t getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
   void setNextHourTimeOffset(unsigned char nextHourTimeOffset);
@@ -380,7 +383,6 @@ private:
   void nextSecondForAllAnimals(void);
   void nextSecondForAllAnimalsSingleProcess(void);
   void nextSecondForAllAnimalsMultiProcess(void);
-  void triggerMeasuresNextSecond(void);
 
 //---------------------------------------------------------------------------
 // Grid management

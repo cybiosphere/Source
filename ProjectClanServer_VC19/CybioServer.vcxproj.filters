@@ -133,6 +133,9 @@
     <ClInclude Include="..\WpClanNetwork\inc\server_impl.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
