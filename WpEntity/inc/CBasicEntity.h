@@ -399,13 +399,15 @@ public:
   virtual double  changeWeight(double variation);
   void  forceWeight(double newWeight);
 
-  Point_t         getGridCoord();
+  const Point_t&  getGridCoord();
+  Point_t         getGlobalGridCoord();
   Point_t         getPrevGridCoord();
   Point_t         getPrevStepCoord();
   Point_t         getAndUpdateGuiGridCoord();
   Point_t         getAndUpdateGuiStepCoord();
   Point_t         getGridCoordRelative(const RelativePos_t& relativeCoord);
   Point_t         getStepCoord();
+  Point_t         getGlobalStepCoord();
   Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
   size_t          getLayer();
   size_t          getPrevLayer();

@@ -50,6 +50,7 @@ CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
   m_Dimension.x  = dimX;
   m_Dimension.y  = dimY;
   m_nbLayer      = dimZ;
+  setGlobalGridCoordOffset({ 0, 0 });
   m_IndexLastAnimal = 0;
   setBiotopTime(0, 12, 0, 0);
   m_NextHourTimeOffset = 0;
@@ -3115,4 +3116,21 @@ CGene& CBiotop::getGeneToMark()
 bool CBiotop::getMarkDominantAlleleOnly()
 {
   return m_bMarkDominantAlleleOnly;
+}
+
+const Point_t& CBiotop::getGlobalGridCoordOffset()
+{
+  return m_GlobalGridCoordOffset;
+}
+
+const Point_t& CBiotop::getGlobalStepCoordOffset()
+{
+  return m_GlobalStepCoordOffset;
+}
+
+void CBiotop::setGlobalGridCoordOffset(Point_t startingCoord)
+{
+  m_GlobalGridCoordOffset = startingCoord;
+  m_GlobalStepCoordOffset.x = startingCoord.x * NB_STEPS_PER_GRID_SQUARE;
+  m_GlobalStepCoordOffset.y = startingCoord.y * NB_STEPS_PER_GRID_SQUARE;
 }

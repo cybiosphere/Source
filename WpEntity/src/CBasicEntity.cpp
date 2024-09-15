@@ -3036,9 +3036,22 @@ bool CBasicEntity::loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc)
 // Get / Set for attributes
 //===========================================================================
     
-Point_t CBasicEntity::getGridCoord()
+const Point_t& CBasicEntity::getGridCoord()
 {
   return (m_GridCoord);
+}
+
+Point_t CBasicEntity::getGlobalGridCoord()
+{
+  if (m_pBiotop != NULL)
+  {
+    Point_t globalCoord{m_GridCoord.x + m_pBiotop->getGlobalGridCoordOffset().x, m_GridCoord.y + m_pBiotop->getGlobalGridCoordOffset().y};
+    return globalCoord;
+  }
+  else
+  {
+    return m_GridCoord;
+  }
 }
 
 Point_t CBasicEntity::getPrevGridCoord()
@@ -3126,6 +3139,19 @@ Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
 Point_t CBasicEntity::getStepCoord()
 {
   return (m_StepCoord);
+}
+
+Point_t CBasicEntity::getGlobalStepCoord()
+{
+  if (m_pBiotop != NULL)
+  {
+    Point_t globalCoord{ m_StepCoord.x + m_pBiotop->getGlobalStepCoordOffset().x, m_StepCoord.y + m_pBiotop->getGlobalStepCoordOffset().y };
+    return globalCoord;
+  }
+  else
+  {
+    return m_StepCoord;
+  }
 }
 
 Point_t CBasicEntity::getStepCoordRelative(const RelativePos_t& relativeCoord)

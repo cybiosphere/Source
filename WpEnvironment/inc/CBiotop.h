@@ -237,6 +237,8 @@ class DLL_CYBIOCORE_API CBiotop
 private:
   string         m_Label;
   Point_t        m_Dimension;
+  Point_t        m_GlobalGridCoordOffset;
+  Point_t        m_GlobalStepCoordOffset;
   size_t         m_nbLayer;
   entityIdType   m_IdLastEntity;
   int            m_IndexLastAnimal;
@@ -507,6 +509,9 @@ public:
   void SetColorizeSearchMode(bool bColorizeSearch);
   CGene& getGeneToMark();
   bool getMarkDominantAlleleOnly();
+  const Point_t& getGlobalGridCoordOffset();
+  const Point_t& getGlobalStepCoordOffset();
+  void setGlobalGridCoordOffset(Point_t startingCoord);
 
 }; // end CBiotop
 
