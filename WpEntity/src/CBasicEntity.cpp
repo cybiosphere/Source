@@ -1491,20 +1491,24 @@ string CBasicEntity::buildPurposeString(CGene* pGen)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-void CBasicEntity::attachToBiotop(CBiotop* pBiotop) 
+bool CBasicEntity::attachToBiotop(CBiotop* pBiotop, Point_t globalStepCoord, size_t layer)
 {   
-  m_pBiotop = pBiotop;
-
-  if (m_pBiotop != NULL)
+  if (pBiotop != NULL)
   {
-    m_pBiotop->updateGridEntity(this);
-    getAndUpdateGuiGridCoord();
-    getAndUpdateGuiStepCoord();
-    turnToCenterDir();
-    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
-    m_DefaultLayer = m_Layer;
-    defaultActionWhenAttachedToBiotop();
+    m_pBiotop = pBiotop;
+    if (jumpToGlobalStepCoord(globalStepCoord, true, layer))
+    {
+      m_pBiotop->updateGridEntity(this);
+      getAndUpdateGuiGridCoord();
+      getAndUpdateGuiStepCoord();
+      turnToCenterDir();
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
+      m_DefaultLayer = m_Layer;
+      defaultActionWhenAttachedToBiotop();
+      return true;
+    }
   }
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -2192,10 +2196,29 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
   }
   else
   {
-    // newCoord not valid... Don't move
+    // Move out of the local biotop: quiet auto remove (without event)
+    if (!m_pBiotop->isCoordValid(newGridCoord))
+    {
+      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+      CYBIOCORE_LOG("ENTITY - Remove entity %s moving out of local map.\n", getLabel().c_str());
+      autoRemove(false);
+    }
     resu = false;
   }
   return (resu);
+}
+
+bool CBasicEntity::jumpToGlobalGridCoord(Point_t newGlobalGridCoord, bool chooseLayer, size_t newLayer)
+{
+  if (m_pBiotop == NULL)
+  {
+    CYBIOCORE_LOG("ERROR jumpToGlobalGridCoord entity not ATTACHED");
+    return jumpToGridCoord(newGlobalGridCoord, chooseLayer, newLayer);
+  }
+  else
+  {
+    return jumpToGridCoord(m_pBiotop->getGridCoordFromGlobalGridCoord(newGlobalGridCoord), chooseLayer, newLayer);
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -2233,6 +2256,18 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_
   return (true);
 }
 
+bool CBasicEntity::jumpToGlobalStepCoord(Point_t newGlobalStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
+{
+  if (m_pBiotop == NULL)
+  {
+    CYBIOCORE_LOG("ERROR jumpToGlobalStepCoord entity not ATTACHED");
+    return jumpToStepCoord(newGlobalStepCoord, chooseLayer, newLayer, addMoveEvent);
+  }
+  else
+  {
+    return jumpToStepCoord(m_pBiotop->getStepCoordFromGlobalStepCoord(newGlobalStepCoord), chooseLayer, newLayer, addMoveEvent);
+  }
+}
 
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::moveToGridCenterPos
@@ -3045,11 +3080,11 @@ Point_t CBasicEntity::getGlobalGridCoord()
 {
   if (m_pBiotop != NULL)
   {
-    Point_t globalCoord{m_GridCoord.x + m_pBiotop->getGlobalGridCoordOffset().x, m_GridCoord.y + m_pBiotop->getGlobalGridCoordOffset().y};
-    return globalCoord;
+    return m_pBiotop->getGlobalGridCoordFromGridCoord(m_GridCoord);
   }
   else
   {
+    CYBIOCORE_LOG("ERROR getGlobalGridCoord entity not ATTACHED");
     return m_GridCoord;
   }
 }
@@ -3145,8 +3180,7 @@ Point_t CBasicEntity::getGlobalStepCoord()
 {
   if (m_pBiotop != NULL)
   {
-    Point_t globalCoord{ m_StepCoord.x + m_pBiotop->getGlobalStepCoordOffset().x, m_StepCoord.y + m_pBiotop->getGlobalStepCoordOffset().y };
-    return globalCoord;
+    return m_pBiotop->getGlobalStepCoordFromStepCoord(m_StepCoord);
   }
   else
   {
@@ -3838,14 +3872,6 @@ DWORD CBasicEntity::getAttributePresenceMask()
 void CBasicEntity::setAttributePresenceMask(DWORD mask)
 {
   m_PhyAttribute.setPresenceMask(mask);
-}
-
-Point_t CBasicEntity::getGridCoordFromStepCoord(Point_t stepCoord)
-{
-  Point_t gridCoord;
-  gridCoord.x = stepCoord.x / NB_STEPS_PER_GRID_SQUARE; 
-  gridCoord.y = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
-  return gridCoord;
 }
 
 size_t CBasicEntity::getGridPosFromStepPos(size_t stepCoord)

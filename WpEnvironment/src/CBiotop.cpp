@@ -146,6 +146,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dim
       for (size_t layerIndex = 0; layerIndex < m_nbLayer; layerIndex++)
       {
         pExctactedBiotop->m_tBioGrid[i][j][layerIndex].layerType = m_tBioGrid[i + startCoord.x][j + startCoord.y][layerIndex].layerType;
+        pExctactedBiotop->m_tBioGrid[i][j][layerIndex].pEntity = NULL;
       }
     }
   }
@@ -153,10 +154,11 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dim
   initGridEntity();
 
   pExctactedBiotop->setBiotopTime(getBiotopTime().seconds, getBiotopTime().hours, getBiotopTime().days, getBiotopTime().years);
+  pExctactedBiotop->setGlobalGridCoordOffset(startCoord);
   // TODO: copy climate, wind, measures?, spwners?....
 
   // Copy entities
-  CBasicEntity* pCurEntity{ NULL };
+  CBasicEntity* pCurEntity{NULL};
   CBasicEntity* pCloneEntity{ NULL };
   Point_t curCoord{ invalidCoord, invalidCoord };
   Point_t newStepCoord{ invalidCoord, invalidCoord };
@@ -172,8 +174,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dim
     if ((curCoord.x >= startCoord.x) && (curCoord.y >= startCoord.y)
       && (curCoord.x < (startCoord.x + dimX)) && (curCoord.y < (startCoord.y + dimY)))
     {
-      newStepCoord.x = pCurEntity->getStepCoord().x - startCoord.x * NB_STEPS_PER_GRID_SQUARE;
-      newStepCoord.y = pCurEntity->getStepCoord().y - startCoord.y * NB_STEPS_PER_GRID_SQUARE;
+      newStepCoord = pCurEntity->getGlobalStepCoord();
       pCloneEntity = CEntityFactory::createCloneEntity(pCurEntity);
       pExctactedBiotop->addEntityWithPresetId(pCurEntity->getId(), pCloneEntity, newStepCoord, true, pCurEntity->getLayer());
     }
@@ -187,10 +188,14 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dim
 // Entities management
 //===========================================================================
 
-bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
+bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t layer)
 {
-  if ((pEntity == NULL) || !isCoordValidAndFree(coord,layer))
-     return false;
+  if ((pEntity == NULL) || !isGlobalGridCoordValidAndFree(globalGridCoord, layer))
+  {
+    //CYBIOCORE_LOG_TIME(m_BioTime);
+    //CYBIOCORE_LOG("ERROR  - addEntity Failed NULL entity or coord not free\n");
+    return false;
+  }
 
   if (pEntity->isAnimal())
   {
@@ -209,10 +214,14 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
   // Set new id
   m_IdLastEntity++;
   pEntity->setId(m_IdLastEntity);
-  // Go to position
-  pEntity->jumpToGridCoord(coord, true, layer);
+
   // Attach it to biotop
-  pEntity->attachToBiotop(this);
+  if (pEntity->attachToBiotop(this, getStepCoordFromGridCoord(globalGridCoord), layer) == false)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("ERROR  - attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
+    return false;
+  }
 
   if (pEntity->isAnimal())
   {
@@ -243,7 +252,7 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t coord, size_t layer)
   return true;
 }
 
-bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer)
+bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t globalStepCoord, bool chooseLayer, size_t newLayer)
 {
   size_t layer;
   if (chooseLayer)
@@ -254,19 +263,26 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   if (getNbOfEntities() > MAX_NUMBER_ENTITIES)
     return false;
 
-  if ( !isCoordValidAndFree(CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) )
+  if ( !isGlobalGridCoordValidAndFree(getGridCoordFromStepCoord(globalStepCoord), layer) )
     return false;
 
   //check ID:
   if (getEntityById(idEntity) != NULL)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("ERROR  - getEntityById failed for entity id %lu\n", idEntity);
     return false;
+  }
 
   pEntity->setId(idEntity);
 
-  // Go to position
-  pEntity->jumpToStepCoord(stepCoord, true, layer);
   // Attach it to biotop
-  pEntity->attachToBiotop(this);
+  if (pEntity->attachToBiotop(this, globalStepCoord, layer) == false)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("ERROR  - attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
+    return false;
+  }
 
   if (pEntity->isAnimal())
   {
@@ -302,10 +318,10 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
 }
 
 
-CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome)
+CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t globalGridCoord, size_t layer, CGenome* pGenome)
 {
   // Check coords
-  if (!isCoordValidAndFree(coord,layer))
+  if (!isGlobalGridCoordValidAndFree(globalGridCoord, layer))
      return NULL;
 
   // Create entity
@@ -320,7 +336,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
   }*/
 
   // Put it in the biotop (with check coord);
-  if (addEntity(pNewEntity, coord, layer) == false)
+  if (addEntity(pNewEntity, globalGridCoord, layer) == false)
   {
     delete pNewEntity;
     return NULL;
@@ -330,7 +346,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t coord, size_t lay
 }
 
 
-CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Point_t coord, size_t layer)
+CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Point_t globalGridCoord, size_t layer)
 {
   string fileNameWithPath = pathName + fileName;
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileNameWithPath);
@@ -341,13 +357,13 @@ CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Poin
     delete pXmlDoc;
     return NULL;
   }
-  CBasicEntity* pNewEntity = createAndAddEntity(pXmlDoc, coord, layer);
+  CBasicEntity* pNewEntity = createAndAddEntity(pXmlDoc, globalGridCoord, layer);
   delete pXmlDoc;
   return pNewEntity;
 }
 
 
-CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord, size_t layer)
+CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t globalGridCoord, size_t layer)
 {
   // Create entity
   CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc);
@@ -358,7 +374,7 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord,
   if (layer == invalidCoord)
     layer = pNewEntity->getDefaultLayer();
 
-  if (!isCoordValidAndFree(coord, layer))
+  if (!isGlobalGridCoordValidAndFree(globalGridCoord, layer))
   {
     delete pNewEntity;
     return NULL;
@@ -371,7 +387,7 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord,
   }
 
   // Put it in the biotop (with check coord);
-  if (addEntity(pNewEntity, coord, layer) == false)
+  if (addEntity(pNewEntity, globalGridCoord, layer) == false)
   {
     delete pNewEntity;
     return NULL;
@@ -381,7 +397,7 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord,
 }
 
 
-CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName)
+CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneGlobalCoord, size_t cloneLayer, string cloneName)
 {
   CBasicEntity* pModelEntity = getEntityById(idModelEntity);
   CBasicEntity* pNewEntity = NULL;
@@ -396,7 +412,7 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
     name = pModelEntity->getLabel();
 
   // Check coords
-  if ( !isCoordValidAndFree(cloneCoord,layer) )
+  if (!isGlobalGridCoordValidAndFree(cloneGlobalCoord, layer))
      return NULL;
 
   pNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
@@ -409,7 +425,7 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
   }
 
   // Put it in the biotop (with check coord);
-  if (addEntity(pNewEntity, cloneCoord, layer) == false)
+  if (addEntity(pNewEntity, cloneGlobalCoord, layer) == false)
   {
     delete pNewEntity;
     return NULL;
@@ -430,9 +446,9 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
     return (false);
 
   // Keep old entity data
-  string oldLabel    = pOldEntity->getLabel();
-  Point_t oldCoord   = pOldEntity->getGridCoord();
-  size_t oldLayer     = pOldEntity->getLayer();
+  string oldLabel = pOldEntity->getLabel();
+  Point_t oldStepCoord = pOldEntity->getGlobalStepCoord();
+  size_t oldLayer = pOldEntity->getLayer();
   entityIdType oldId = pOldEntity->getId();
 
   // Destroy Old entity
@@ -443,13 +459,13 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   if (pNewEntity==NULL)
     return (false);
 
-  // Set coord
-  pNewEntity->jumpToGridCoord(oldCoord, true, oldLayer);
-
   // Set old id
   pNewEntity->setId(oldId);
+
   // Attach it to biotop
-  pNewEntity->attachToBiotop(this);
+  if (pNewEntity->attachToBiotop(this, oldStepCoord, oldLayer) == false)
+    return (false);
+
   // Add it to list
   m_tEntity.insert(m_tEntity.begin() + prevIndex, 1, pNewEntity);
   if (pNewEntity->isAnimal())
@@ -476,7 +492,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
     return (false);
 
   // Keep old entity data
-  Point_t oldCoord   = pOldEntity->getGridCoord();
+  Point_t oldCoord   = pOldEntity->getGlobalGridCoord();
   size_t oldLayer    = pOldEntity->getLayer();
   entityIdType oldId = pOldEntity->getId();
 
@@ -487,7 +503,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
   pNewEntity->setId(oldId);
 
   CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - Entity full update : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
+  CYBIOCORE_LOG("BIOTOP - Entity full update : specie %s name %s coordX %d\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str(), oldCoord.x);
   addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, pNewEntity);
 
   return true;
@@ -1452,6 +1468,11 @@ bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
   return (isCoordValid(coord, layer) && (findEntityNoCheckCoord(coord, layer) == NULL));
 }
 
+bool CBiotop::isGlobalGridCoordValidAndFree(Point_t globalCoord, size_t layer)
+{
+  return isCoordValidAndFree(getGridCoordFromGlobalGridCoord(globalCoord), layer);
+}
+
 bool CBiotop::isCoordValid(Point_t coord, size_t layer)
 {
   return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y) && (layer < m_nbLayer));
@@ -1460,6 +1481,40 @@ bool CBiotop::isCoordValid(Point_t coord, size_t layer)
 bool CBiotop::isCoordValid(Point_t coord)
 {
   return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y));
+}
+
+Point_t CBiotop::getGridCoordFromStepCoord(Point_t stepCoord)
+{
+  Point_t gridCoord;
+  gridCoord.x = stepCoord.x / NB_STEPS_PER_GRID_SQUARE;
+  gridCoord.y = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
+  return gridCoord;
+}
+
+Point_t CBiotop::getStepCoordFromGridCoord(Point_t gridCoord)
+{
+  Point_t stepCoord{ gridCoord.x * NB_STEPS_PER_GRID_SQUARE,  gridCoord.y * NB_STEPS_PER_GRID_SQUARE };
+  return stepCoord;
+}
+
+Point_t CBiotop::getGlobalGridCoordFromGridCoord(Point_t localGridCoord)
+{
+  return { localGridCoord.x + m_GlobalGridCoordOffset.x, localGridCoord.y + m_GlobalGridCoordOffset.y };
+}
+
+Point_t CBiotop::getGridCoordFromGlobalGridCoord(Point_t globalGridCoord)
+{
+  return { globalGridCoord.x - m_GlobalGridCoordOffset.x, globalGridCoord.y - m_GlobalGridCoordOffset.y };
+}
+
+Point_t CBiotop::getGlobalStepCoordFromStepCoord(Point_t localStepCoord)
+{
+  return { localStepCoord.x + m_GlobalStepCoordOffset.x, localStepCoord.y + m_GlobalStepCoordOffset.y };
+}
+
+Point_t CBiotop::getStepCoordFromGlobalStepCoord(Point_t globalStepCoord)
+{
+  return { globalStepCoord.x - m_GlobalStepCoordOffset.x, globalStepCoord.y - m_GlobalStepCoordOffset.y };
 }
 
 CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord)
@@ -2455,6 +2510,11 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
     pElement->SetAttribute( XML_ATTR_SIZE_Y,     (int)m_Dimension.y);
     pElement->SetAttribute( XML_ATTR_SIZE_LAYER, (int)m_nbLayer);
     pElement->SetAttribute( XML_ATTR_BIO_TIME  , convertBioTimeToCount(m_BioTime));
+    if ((m_GlobalGridCoordOffset.x > 0) || (m_GlobalGridCoordOffset.y > 0))
+    {
+      pElement->SetAttribute(XML_ATTR_OFFSET_X, (int)m_GlobalGridCoordOffset.x);
+      pElement->SetAttribute(XML_ATTR_OFFSET_Y, (int)m_GlobalGridCoordOffset.y);
+    }
   }
 
   // Clear previous parameters
@@ -2534,8 +2594,8 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
         string entityFileName = pCurEntity->getLabel() + ".xml";
 
         pElement = (TiXmlElement*)pNodeChild;
-        pElement->SetAttribute(XML_ATTR_COORD_X,   (int)pCurEntity->getStepCoord().x);
-        pElement->SetAttribute(XML_ATTR_COORD_Y,   (int)pCurEntity->getStepCoord().y);
+        pElement->SetAttribute(XML_ATTR_COORD_X,   (int)pCurEntity->getGlobalStepCoord().x);
+        pElement->SetAttribute(XML_ATTR_COORD_Y,   (int)pCurEntity->getGlobalStepCoord().y);
         pElement->SetAttribute(XML_ATTR_LAYER,     (int)pCurEntity->getLayer());
         pElement->SetAttribute(XML_ATTR_DIRECTION, pCurEntity->getDirection());
         pElement->SetAttribute(XML_ATTR_FILE_NAME, entityFileName);
@@ -2582,7 +2642,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
   if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     pElement = (TiXmlElement*)pNodeBiotop;
-    int sizeX, sizeY, nbLayer;
+    int sizeX, sizeY, nbLayer, offsetX, offsetY;
     string timeCountStr;
 
     if ( pElement->QueryStringAttribute(XML_ATTR_LABEL,  &m_Label) == TIXML_NO_ATTRIBUTE)
@@ -2595,6 +2655,10 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
       nbLayer = 3;
     if ( pElement->QueryStringAttribute(XML_ATTR_BIO_TIME,  &timeCountStr) == TIXML_NO_ATTRIBUTE)
       timeCountStr = "0";
+    if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_X, &offsetX) == TIXML_NO_ATTRIBUTE)
+      offsetX = 0;
+    if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_Y, &offsetY) == TIXML_NO_ATTRIBUTE)
+      offsetY = 0;
 
     // Clear Previous Biotop
     deleteAllEntities();
@@ -2606,7 +2670,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     m_Dimension.y = sizeY;
     m_nbLayer = nbLayer;
     m_BioTime = convertCountToBioTime(atoi(timeCountStr.c_str()));
-
+    setGlobalGridCoordOffset({ (size_t)offsetX , (size_t)offsetY });
     buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
 
     // Parameters management
@@ -3116,16 +3180,6 @@ CGene& CBiotop::getGeneToMark()
 bool CBiotop::getMarkDominantAlleleOnly()
 {
   return m_bMarkDominantAlleleOnly;
-}
-
-const Point_t& CBiotop::getGlobalGridCoordOffset()
-{
-  return m_GlobalGridCoordOffset;
-}
-
-const Point_t& CBiotop::getGlobalStepCoordOffset()
-{
-  return m_GlobalStepCoordOffset;
 }
 
 void CBiotop::setGlobalGridCoordOffset(Point_t startingCoord)

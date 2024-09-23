@@ -114,7 +114,7 @@ public:
   CString GetOpenedBiotopPath();
 
   void removeEntityFromBiotop(CBasicEntity* pEntity);
-  void addEntityFromFileInBiotop(string fileName, string pathName, Point_t coord);
+  void addEntityFromFileInBiotop(string fileName, string pathName, Point_t globalCoord);
   void modifyBiotopSpeed(const float newBiotopSpeed);
   feedbackValType forceEntityAction(const entityIdType entityId, const int actionIndex);
   void updateAllBiotopNewMeasures();

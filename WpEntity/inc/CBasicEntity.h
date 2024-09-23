@@ -277,7 +277,7 @@ protected:
 // Biotop Connection
 //---------------------------------------------------------------------------
 public:
-  void attachToBiotop(CBiotop* Biotop);
+  bool attachToBiotop(CBiotop* Biotop, Point_t globalStepCoord, size_t layer);
   void detachFromBiotop();
   bool isToBeRemoved();
   void autoRemove(bool addRemoveEvent = true);
@@ -350,7 +350,9 @@ public:
 
 
   bool jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool jumpToGlobalGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
   bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
+  bool jumpToGlobalStepCoord(Point_t newGlobalStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
   bool moveToGridEdgePos();
   bool moveToGridCenterPos();
   bool turnToCenterDir();
@@ -508,7 +510,6 @@ public:
   static string  getConsumeStrName(ConsumeType_e type);
   static string  getMoveStrName(MoveType_e type);
   static string  getReproStrName(ReproType_e type);
-  static Point_t getGridCoordFromStepCoord(Point_t stepCoord);
   static size_t getGridPosFromStepPos(size_t stepCoord);
 };
 

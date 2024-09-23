@@ -306,12 +306,12 @@ private:
   void deleteAllParameters(void);
 
 public:
-  bool addEntity(CBasicEntity* pEntity, Point_t coord, size_t newLayer = invalidCoord);
-  bool addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t stepCoord, bool chooseLayer, size_t newLayer);
-  CBasicEntity* createAndAddEntity(string name, Point_t coord, size_t layer, CGenome* pGenome);
-  CBasicEntity* createAndAddEntity(string fileNameWithPath, string pathName, Point_t coord, size_t layer = invalidCoord);
-  CBasicEntity* createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t coord, size_t layer);
-  CBasicEntity* createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneCoord, size_t cloneLayer, string cloneName = "");
+  bool addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t newLayer = invalidCoord);
+  bool addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity, Point_t globalStepCoord, bool chooseLayer, size_t newLayer);
+  CBasicEntity* createAndAddEntity(string name, Point_t globalGridCoord, size_t layer, CGenome* pGenome);
+  CBasicEntity* createAndAddEntity(string fileNameWithPath, string pathName, Point_t globalGridCoord, size_t layer = invalidCoord);
+  CBasicEntity* createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t globalGridCoord, size_t layer);
+  CBasicEntity* createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneGlobalCoord, size_t cloneLayer, string cloneName = "");
 
   bool resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome);
   bool replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity);
@@ -356,8 +356,16 @@ public:
   const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater);
   CBasicEntity* findTopLevelEntity(Point_t searchCoord);
   bool isCoordValidAndFree(Point_t coord, size_t layer);
+  bool isGlobalGridCoordValidAndFree(Point_t globalCoord, size_t layer);
   bool isCoordValid(Point_t coord, size_t layer);
   bool isCoordValid(Point_t coord);
+
+  static Point_t getGridCoordFromStepCoord(Point_t stepCoord);
+  static Point_t getStepCoordFromGridCoord(Point_t gridCoord);
+  Point_t getGlobalGridCoordFromGridCoord(Point_t localGridCoord);
+  Point_t getGridCoordFromGlobalGridCoord(Point_t globalGridCoord);
+  Point_t getGlobalStepCoordFromStepCoord(Point_t localStepCoord);
+  Point_t getStepCoordFromGlobalStepCoord(Point_t globalStepCoord);
 
 private:
   void colorizeSearchNoCheckCoord(Point_t coord);
@@ -509,8 +517,6 @@ public:
   void SetColorizeSearchMode(bool bColorizeSearch);
   CGene& getGeneToMark();
   bool getMarkDominantAlleleOnly();
-  const Point_t& getGlobalGridCoordOffset();
-  const Point_t& getGlobalStepCoordOffset();
   void setGlobalGridCoordOffset(Point_t startingCoord);
 
 }; // end CBiotop

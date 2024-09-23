@@ -93,5 +93,7 @@
 #define XML_ATTR_BIO_TIME     "BioTime"
 #define XML_ATTR_BIO_DAY      "BioDay"
 #define XML_ATTR_NB_SPECIES   "NbSpecies"
+#define XML_ATTR_OFFSET_X     "GlobalOffsetX"
+#define XML_ATTR_OFFSET_Y     "GlobalOffsetY"
 
 #endif // !defined(CYBIO_XML_DEF_INCLUDED_)

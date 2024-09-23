@@ -421,8 +421,8 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
         // Store in clone entity map
         BiotopEntityPosition_t entityPos{ pCurEntity->getId(),
                                           pCurEntity->getLayer(),
-                                          pCurEntity->getStepCoord().x,
-                                          pCurEntity->getStepCoord().y,
+                                          pCurEntity->getGlobalStepCoord().x,
+                                          pCurEntity->getGlobalStepCoord().y,
                                           pCurEntity->getStepDirection() };
         cloneEntitiesMap[prevEntityId].push_back(entityPos);
       }

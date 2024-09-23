@@ -51,7 +51,7 @@ namespace clan
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
     return (buildEventsLongString(labelEventAddEntity, xmlZipBuffer, pEntity->getId(),
-                                     pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
+                                     pEntity->getGlobalStepCoord().x, pEntity->getGlobalStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
                                      eventVector));
   }
 
@@ -132,7 +132,7 @@ namespace clan
       }
       else
       {
-        if (pBiotop->addEntity(pClonedNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
+        if (pBiotop->addEntity(pClonedNewEntity, CBiotop::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
         {
           delete pClonedNewEntity;
           return false;
@@ -158,7 +158,7 @@ namespace clan
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
     return (buildEventsLongString(labelEventUpdateEntityData, xmlZipBuffer, pEntity->getId(),
-      pEntity->getStepCoord().x, pEntity->getStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
+      pEntity->getGlobalStepCoord().x, pEntity->getGlobalStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
       eventVector));
   }
 
@@ -180,8 +180,8 @@ namespace clan
     newEvent.add_argument((int)pEntity->getId());
     newEvent.add_argument(pEntity->getLabel());
     newEvent.add_argument((int)pEntity->getStatus());
-    newEvent.add_argument((int)pEntity->getStepCoord().x);
-    newEvent.add_argument((int)pEntity->getStepCoord().y);
+    newEvent.add_argument((int)pEntity->getGlobalStepCoord().x);
+    newEvent.add_argument((int)pEntity->getGlobalStepCoord().y);
     newEvent.add_argument((int)pEntity->getLayer());
     newEvent.add_argument(pEntity->getStepDirection());
     newEvent.add_argument((int)pEntity->isImmortal());
@@ -257,7 +257,7 @@ namespace clan
         return pEntity;
       }
       pEntity->setStatus((StatusType_e)status);
-      pEntity->jumpToStepCoord(position, true, layer, true);
+      pEntity->jumpToGlobalStepCoord(position, true, layer, true);
       pEntity->setStepDirection(direction, true);
       pEntity->setImmortal(isImmortal);
       pEntity->setColor((COLORREF)color);
@@ -693,7 +693,7 @@ namespace clan
     }
     else
     {
-      if (pBiotop->addEntity(pNewEntity, CBasicEntity::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
+      if (pBiotop->addEntity(pNewEntity, CBiotop::getGridCoordFromStepCoord(stepCoord), layer) == ENTITY_ID_INVALID)
       {
         log_event(labelEvent, "Biotop add entity: Error in addEntity");
         delete pNewEntity;

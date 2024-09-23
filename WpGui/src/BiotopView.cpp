@@ -659,7 +659,8 @@ void CBiotopView::OnAppAddGroup()
         pathName = "";	 
       }
 
-      theApp.addEntityFromFileInBiotop(fileName.GetBuffer(0), pathName.GetBuffer(0), m_MenuSelCoord);
+      Point_t globalGridCoord{ m_pBiotop->getGlobalGridCoordFromGridCoord(m_MenuSelCoord) };
+      theApp.addEntityFromFileInBiotop(fileName.GetBuffer(0), pathName.GetBuffer(0), globalGridCoord);
       numberEntities++;
       ForceRefreshDisplay();
       theApp.NextSecondRefreshAllViews();
