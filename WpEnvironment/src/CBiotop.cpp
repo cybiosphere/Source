@@ -43,13 +43,14 @@ RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
-CBiotop::CBiotop(int dimX,int dimY, int dimZ, string logFileName)
+CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName)
 {
   // Initialisation
   m_Label = "Default biotop";
   m_Dimension.x  = dimX;
   m_Dimension.y  = dimY;
   m_nbLayer      = dimZ;
+  setGlobalGridDimension(dimX, dimY);
   setGlobalGridCoordOffset({ 0, 0 });
   m_IndexLastAnimal = 0;
   setBiotopTime(0, 12, 0, 0);
@@ -124,7 +125,7 @@ CBiotop::~CBiotop()
   CYBIOCORE_LOG_CLOSE;
 }
 
-CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dimY)
+CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, size_t dimX, size_t dimY)
 {
   if ((startCoord.x > m_Dimension.x) || (startCoord.y > m_Dimension.y)
     || ((startCoord.x + dimX) > m_Dimension.x) || ((startCoord.y + dimY) > m_Dimension.y))
@@ -154,6 +155,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, int dimX, int dim
   initGridEntity();
 
   pExctactedBiotop->setBiotopTime(getBiotopTime().seconds, getBiotopTime().hours, getBiotopTime().days, getBiotopTime().years);
+  pExctactedBiotop->setGlobalGridDimension(m_Dimension.x, m_Dimension.y);
   pExctactedBiotop->setGlobalGridCoordOffset(startCoord);
   // TODO: copy climate, wind, measures?, spwners?....
 
@@ -2510,6 +2512,11 @@ bool CBiotop::saveInXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities, 
     pElement->SetAttribute( XML_ATTR_SIZE_Y,     (int)m_Dimension.y);
     pElement->SetAttribute( XML_ATTR_SIZE_LAYER, (int)m_nbLayer);
     pElement->SetAttribute( XML_ATTR_BIO_TIME  , convertBioTimeToCount(m_BioTime));
+    if ((m_GlobalGridDimension.x != m_Dimension.x) || (m_GlobalGridDimension.y != m_Dimension.y))
+    {
+      pElement->SetAttribute(XML_ATTR_GLOBALSIZE_X, (int)m_GlobalGridDimension.x);
+      pElement->SetAttribute(XML_ATTR_GLOBALSIZE_Y, (int)m_GlobalGridDimension.y);
+    }
     if ((m_GlobalGridCoordOffset.x > 0) || (m_GlobalGridCoordOffset.y > 0))
     {
       pElement->SetAttribute(XML_ATTR_OFFSET_X, (int)m_GlobalGridCoordOffset.x);
@@ -2642,7 +2649,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
   if ((pNodeBiotop != NULL) && (pNodeBiotop->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     pElement = (TiXmlElement*)pNodeBiotop;
-    int sizeX, sizeY, nbLayer, offsetX, offsetY;
+    int sizeX, sizeY, nbLayer, offsetX, offsetY, globalSizeX, globalSizeY;
     string timeCountStr;
 
     if ( pElement->QueryStringAttribute(XML_ATTR_LABEL,  &m_Label) == TIXML_NO_ATTRIBUTE)
@@ -2655,6 +2662,10 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
       nbLayer = 3;
     if ( pElement->QueryStringAttribute(XML_ATTR_BIO_TIME,  &timeCountStr) == TIXML_NO_ATTRIBUTE)
       timeCountStr = "0";
+    if (pElement->QueryIntAttribute(XML_ATTR_GLOBALSIZE_X, &globalSizeX) == TIXML_NO_ATTRIBUTE)
+      globalSizeX = m_Dimension.x;
+    if (pElement->QueryIntAttribute(XML_ATTR_GLOBALSIZE_Y, &globalSizeY) == TIXML_NO_ATTRIBUTE)
+      globalSizeY = m_Dimension.y;
     if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_X, &offsetX) == TIXML_NO_ATTRIBUTE)
       offsetX = 0;
     if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_Y, &offsetY) == TIXML_NO_ATTRIBUTE)
@@ -2670,6 +2681,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     m_Dimension.y = sizeY;
     m_nbLayer = nbLayer;
     m_BioTime = convertCountToBioTime(atoi(timeCountStr.c_str()));
+    setGlobalGridDimension(globalSizeX, globalSizeY);
     setGlobalGridCoordOffset({ (size_t)offsetX , (size_t)offsetY });
     buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
 
@@ -3180,6 +3192,12 @@ CGene& CBiotop::getGeneToMark()
 bool CBiotop::getMarkDominantAlleleOnly()
 {
   return m_bMarkDominantAlleleOnly;
+}
+
+void CBiotop::setGlobalGridDimension(size_t dimX, size_t dimY)
+{
+  m_GlobalGridDimension.x = dimX;
+  m_GlobalGridDimension.y = dimY;
 }
 
 void CBiotop::setGlobalGridCoordOffset(Point_t startingCoord)

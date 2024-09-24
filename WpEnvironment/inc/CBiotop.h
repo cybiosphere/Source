@@ -237,6 +237,7 @@ class DLL_CYBIOCORE_API CBiotop
 private:
   string         m_Label;
   Point_t        m_Dimension;
+  Point_t        m_GlobalGridDimension;
   Point_t        m_GlobalGridCoordOffset;
   Point_t        m_GlobalStepCoordOffset;
   size_t         m_nbLayer;
@@ -293,10 +294,10 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CBiotop(int dimX,int dimY, int dimZ, string logFileName = "CybioCore.log") ;
+  CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName = "CybioCore.log") ;
   virtual ~CBiotop();
 
-  CBiotop* extractNewBiotopFromArea(Point_t startCoord, int dimX, int dimY);
+  CBiotop* extractNewBiotopFromArea(Point_t startCoord, size_t dimX, size_t dimY);
 
 //---------------------------------------------------------------------------
 // Entities management
@@ -517,6 +518,7 @@ public:
   void SetColorizeSearchMode(bool bColorizeSearch);
   CGene& getGeneToMark();
   bool getMarkDominantAlleleOnly();
+  void setGlobalGridDimension(size_t dimX, size_t dimY);
   void setGlobalGridCoordOffset(Point_t startingCoord);
 
 }; // end CBiotop
