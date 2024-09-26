@@ -467,7 +467,7 @@ bool CMapConfigView::BuildPurposeMap(int index)
     { 
       curCoord.x = i;
       curCoord.y = j;
-      pGeoMap->GridCoordToGeoMapCoord(curCoord, geoMapPos);
+      pGeoMap->GridCoordToGeoMapCoord(m_pBiotop->getGlobalGridCoordFromGridCoord(curCoord), geoMapPos);
       successWeight = pGeoMap->GetSuccessWeight(index, geoMapPos);
       if (successWeight>0)
       {
@@ -544,7 +544,7 @@ bool CMapConfigView::BuildPopulationMap(int index)
     {
       curCoord.x = i;
       curCoord.y = j;
-      pGeoMap->GridCoordToGeoMapCoord(curCoord, geoMapPos);
+      pGeoMap->GridCoordToGeoMapCoord(m_pBiotop->getGlobalGridCoordFromGridCoord(curCoord), geoMapPos);
       populationSize = pGeoMap->GetPopulationInSquareMap(day, geoMapPos);
 
       if (populationSize > 0)

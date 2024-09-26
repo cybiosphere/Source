@@ -96,7 +96,7 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
     int targetDirection;
     int curDirection = m_pBrain->getAnimal()->getDirection();
     int hours = m_pBrain->getAnimal()->getBiotop()->getBiotopTime().hours;
-    GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGridCoord(), targetDirection, hours);
+    GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGlobalGridCoord(), targetDirection, hours);
     if (intensity > GeoMapIntensityType_e::FOUND_INTENSITY_NULL)
     {
       if (targetDirection == curDirection)

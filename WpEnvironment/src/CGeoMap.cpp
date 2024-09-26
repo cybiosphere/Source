@@ -58,17 +58,17 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGeoMap::CGeoMap(Point_t gridCoordCenterPos, Point_t gridBiotopSize, Point_t gridMapSize, size_t nbRecords)
+CGeoMap::CGeoMap(Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize, Point_t gridMapSize, size_t nbRecords)
 {
   size_t expectedMapSizeX = (gridMapSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
   size_t expectedMapSizeY = (gridMapSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  size_t biotopMapSizeX = (size_t)((int)gridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
-  size_t biotopMapSizeY = (size_t)((int)gridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  size_t biotopMapSizeX = (size_t)((int)globalGridBiotopSize.x - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
+  size_t biotopMapSizeY = (size_t)((int)globalGridBiotopSize.y - 1) / NB_GRID_PER_GEOMAP_SQUARE + 1;
 
   m_GeoMapSize.x = cybio_min(expectedMapSizeX, biotopMapSizeX);
   m_GeoMapSize.y = cybio_min(expectedMapSizeY, biotopMapSizeY);
-  m_GeoCoordStart.x = (int)gridCoordCenterPos.x / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize.x/2;
-  m_GeoCoordStart.y = (int)gridCoordCenterPos.y / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize.y/2;
+  m_GeoCoordStart.x = (int)globalGridCoordCenterPos.x / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize.x/2;
+  m_GeoCoordStart.y = (int)globalGridCoordCenterPos.y / NB_GRID_PER_GEOMAP_SQUARE - (int)m_GeoMapSize.y/2;
   m_nbRecords = nbRecords;
 
   // shift to fit in biotop
@@ -196,12 +196,12 @@ bool CGeoMap::buildGeoMapRecordFromStringData(size_t recordIndex, string rawData
 // public methods
 //===========================================================================
 
-bool CGeoMap::GridCoordToGeoMapCoord(Point_t gridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut)
+bool CGeoMap::GridCoordToGeoMapCoord(Point_t globalGridPos, Point_t &geoMapPos, bool giveEdgePositionWhenOut)
 {
   bool gridPosIsInsideGeoMap = true;
   Point_t geoMapCoord;
-  geoMapCoord.x = gridPos.x / NB_GRID_PER_GEOMAP_SQUARE;
-  geoMapCoord.y = gridPos.y / NB_GRID_PER_GEOMAP_SQUARE;
+  geoMapCoord.x = globalGridPos.x / NB_GRID_PER_GEOMAP_SQUARE;
+  geoMapCoord.y = globalGridPos.y / NB_GRID_PER_GEOMAP_SQUARE;
 
   if(giveEdgePositionWhenOut)
   {

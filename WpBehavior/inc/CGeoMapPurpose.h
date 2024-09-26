@@ -92,7 +92,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGeoMapPurpose(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec);
+  CGeoMapPurpose(CBrain* pBrain, Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize, size_t gridMapSize, size_t nbPurposeRec);
   ~CGeoMapPurpose();
 
 //---------------------------------------------------------------------------
@@ -100,8 +100,8 @@ public:
 //---------------------------------------------------------------------------
 public:
 
-  bool MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight);
-  GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection, int hourCount);
+  bool MemorizePurposeSuccessPos(DWORD purposeUid, Point_t globalGridPos, int weight);
+  GeoMapIntensityType_e GetClosestSuccessPos(DWORD purposeUid, Point_t globalGridCenterPos, int &absoluteDirection, int hourCount);
   void ClearPurposeSuccessOnFullMap(DWORD purposeUid);
   void NextDay();
 

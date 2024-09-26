@@ -74,7 +74,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGeoMapPopulation(CBiotop* pBiotop, Point_t gridBiotopSize, std::string specieName, size_t maxNumberRecords = 500);
+  CGeoMapPopulation(CBiotop* pBiotop, Point_t globalGridBiotopSize, std::string specieName, size_t maxNumberRecords = 500);
   ~CGeoMapPopulation();
 
 //---------------------------------------------------------------------------

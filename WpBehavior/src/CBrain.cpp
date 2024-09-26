@@ -171,7 +171,7 @@ void CBrain::NextSecond()
       // Purpose is a success. Fill map
       if (m_pCurrentPurpose->IsMemorizeSuccess())
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 10);
+        m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 10);
       }
     }
     else
@@ -181,7 +181,7 @@ void CBrain::NextSecond()
       // Memorize failure position
       if ((purposeEnd) && (m_pGeoMap != NULL) && m_pCurrentPurpose->IsMemorizeSuccess())
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGridCoord(), -1);
+        m_pGeoMap->MemorizePurposeSuccessPos(m_pCurrentPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), -1);
       }
     }
   }
@@ -1969,7 +1969,7 @@ void CBrain::CreateGeoMapArroudCurrentPosition()
 {
   if ((m_pGeoMap == NULL) && (m_pEntity != NULL) && (m_pEntity->getBiotop() != NULL))
   {
-    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGridCoord(), m_pEntity->getBiotop()->getDimension(), m_GeoMapSize, 6);
+    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGlobalGridCoord(), m_pEntity->getBiotop()->getGlobalGridDimension(), m_GeoMapSize, 6);
   }
 }
 
@@ -1982,7 +1982,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
 
   // Delete memory map if exist and current position is outside
   Point_t geoMapPos;
-  if ((m_pGeoMap != NULL) && (m_pGeoMap->GridCoordToGeoMapCoord(m_pEntity->getGridCoord(), geoMapPos) == false))
+  if ((m_pGeoMap != NULL) && (m_pGeoMap->GridCoordToGeoMapCoord(m_pEntity->getGlobalGridCoord(), geoMapPos) == false))
   {
     delete m_pGeoMap;
     m_pGeoMap = NULL;
@@ -2017,7 +2017,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
       pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_BABY));
       if (pPurpose != NULL)
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 1000);
+        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 1000);
       }
     }
     // Check if mother
@@ -2027,7 +2027,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
       pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_HORMONE, PheromoneTypeToIndex(PHEROMONE_MATERNAL));
       if (pPurpose != NULL)
       {
-        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGridCoord(), 800);
+        m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 800);
       }
     }
   }

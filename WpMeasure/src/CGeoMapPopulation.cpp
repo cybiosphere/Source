@@ -52,8 +52,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGeoMapPopulation::CGeoMapPopulation(CBiotop* pBiotop, Point_t gridBiotopSize, std::string specieName, size_t maxNumberRecords)
-  : CGeoMap({ gridBiotopSize.x / 2, gridBiotopSize.y / 2 }, gridBiotopSize, gridBiotopSize, maxNumberRecords)
+CGeoMapPopulation::CGeoMapPopulation(CBiotop* pBiotop, Point_t globalGridBiotopSize, std::string specieName, size_t maxNumberRecords)
+  : CGeoMap({ globalGridBiotopSize.x / 2, globalGridBiotopSize.y / 2 }, globalGridBiotopSize, globalGridBiotopSize, maxNumberRecords)
 {
   m_tTimeStamps.resize(maxNumberRecords);
   m_pBiotop = pBiotop;
@@ -216,7 +216,7 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
     pElement->QueryIntAttribute(XML_ATTR_SIZE_LAYER, &nbLayer);
     pElement->QueryStringAttribute(XML_ATTR_BIO_TIME, &timeCountStr);
 
-    if ((sizeX > m_pBiotop->getDimension().x) || (sizeY > m_pBiotop->getDimension().y) || (nbLayer > m_pBiotop->getNbLayer()))
+    if ((sizeX > m_pBiotop->getGlobalGridDimension().x) || (sizeY > m_pBiotop->getGlobalGridDimension().y) || (nbLayer > m_pBiotop->getNbLayer()))
     {
       return false;
     }
@@ -287,10 +287,9 @@ size_t CGeoMapPopulation::GetTableIndex(size_t dayIndex)
 size_t CGeoMapPopulation::CountEntitiesInMapSquare(std::string specieName, size_t geoMapPosX, size_t geoMapPosY)
 {
   size_t countEntities = 0;
-  Point_t gridCoord;
-  gridCoord.x = geoMapPosX * NB_GRID_PER_GEOMAP_SQUARE;
-  gridCoord.y = geoMapPosY * NB_GRID_PER_GEOMAP_SQUARE;
-  const BiotopFoundIds_t& biotopFoundIds = m_pBiotop->findEntitiesInSquare(gridCoord, NB_GRID_PER_GEOMAP_SQUARE, true);
+  Point_t globalGridCoord{ geoMapPosX * NB_GRID_PER_GEOMAP_SQUARE, geoMapPosY * NB_GRID_PER_GEOMAP_SQUARE };
+  Point_t localGridCoord = m_pBiotop->getGridCoordFromGlobalGridCoord(globalGridCoord);
+  const BiotopFoundIds_t& biotopFoundIds = m_pBiotop->findEntitiesInSquare(localGridCoord, NB_GRID_PER_GEOMAP_SQUARE, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
   for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {

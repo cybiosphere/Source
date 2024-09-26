@@ -58,8 +58,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CGeoMapPurpose::CGeoMapPurpose(CBrain* pBrain, Point_t gridCoordCenterPos, Point_t gridBiotopSize, size_t gridMapSize, size_t nbPurposeRec)
-  : CGeoMap(gridCoordCenterPos, gridBiotopSize, { gridMapSize, gridMapSize }, nbPurposeRec)
+CGeoMapPurpose::CGeoMapPurpose(CBrain* pBrain, Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize, size_t gridMapSize, size_t nbPurposeRec)
+  : CGeoMap(globalGridCoordCenterPos, globalGridBiotopSize, { gridMapSize, gridMapSize }, nbPurposeRec)
 {
   m_pBrain = pBrain;
   m_NbPurposeRec = nbPurposeRec;
@@ -83,11 +83,10 @@ CGeoMapPurpose::~CGeoMapPurpose()
 //===========================================================================
 // public methods
 //===========================================================================
-bool CGeoMapPurpose::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t gridPos, int weight)
+bool CGeoMapPurpose::MemorizePurposeSuccessPos(DWORD purposeUid, Point_t globalGridPos, int weight)
 {
   Point_t geoMapCoord;
-
-  if (GridCoordToGeoMapCoord(gridPos, geoMapCoord) == true)
+  if (GridCoordToGeoMapCoord(globalGridPos, geoMapCoord) == true)
   {
     size_t UidIdx = GetPurposeUidTabIndex(purposeUid);
     MemorizePurposeSuccessGeoPos(UidIdx, geoMapCoord, weight);
@@ -101,7 +100,7 @@ void CGeoMapPurpose::ClearPurposeSuccessOnFullMap(DWORD purposeUid)
   ClearRecordOnFullMap(UidIdx);
 }
 
-GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Point_t gridCenterPos, int &absoluteDirection, int hourCount)
+GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Point_t globalGridCenterPos, int &absoluteDirection, int hourCount)
 {
   size_t range = 0;
   int maxWeight = 0;
@@ -122,7 +121,8 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
   if (UidIdx != invalidIndex)
   {
     Point_t currentMapCoord;
-    if (GridCoordToGeoMapCoord(gridCenterPos, centerMapCoord) == true)
+    //FRED Need globalGridCoord
+    if (GridCoordToGeoMapCoord(globalGridCenterPos, centerMapCoord) == true)
     {
       curWeight = GetSuccessWeight(UidIdx, centerMapCoord);
       if (curWeight>0)
@@ -173,7 +173,7 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
     else // Entity is out of GeoMap: Go back to territory
     {
       foundSuccess = true;
-      GridCoordToGeoMapCoord(gridCenterPos, foundMapPos, true);
+      GridCoordToGeoMapCoord(globalGridCenterPos, foundMapPos, true);
       foundIntensity = GeoMapIntensityType_e::FOUND_INTENSITY_MEDIUM;
     }
   }

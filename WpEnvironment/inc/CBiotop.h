@@ -490,7 +490,8 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  Point_t getDimension(void);   
+  Point_t getDimension(void);
+  Point_t getGlobalGridDimension(void);
   double getFertility(Point_t coord);
   void   setFertilityRate(int fertility);
   double getRadioactivityRate(); 

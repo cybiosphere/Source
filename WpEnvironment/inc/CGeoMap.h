@@ -79,14 +79,14 @@ protected: // Fred remettre en private ?
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-	CGeoMap(Point_t gridCoordCenterPos, Point_t gridBiotopSize, Point_t gridMapSize, size_t nbRecords);
+	CGeoMap(Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize, Point_t gridMapSize, size_t nbRecords);
   ~CGeoMap();
 
   //---------------------------------------------------------------------------
   // public methods
   //---------------------------------------------------------------------------
 public:
-  bool GridCoordToGeoMapCoord(Point_t gridPos, Point_t& geoMapPos, bool giveEdgePositionWhenOut = false);
+  bool GridCoordToGeoMapCoord(Point_t globalGridPos, Point_t& geoMapPos, bool giveEdgePositionWhenOut = false);
 
 //---------------------------------------------------------------------------
 // protected methods

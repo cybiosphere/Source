@@ -252,6 +252,12 @@
     <Image Include="..\wpgui\res\idr_logs.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\wpgui\res\iconFind.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\wpgui\res\icon_mor.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Cybiosphere.rc">
@@ -760,6 +766,12 @@
     <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h">
       <Filter>WpClanNetwork\IncClan</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\FindStrDlg.h">
+      <Filter>Project2D\Inc2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
+      <Filter>WpCommon\IncCommon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1046,6 +1058,9 @@
     </ClCompile>
     <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\FindStrDlg.cpp">
+      <Filter>Project2D\Src2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2307,7 +2307,7 @@ void CBiotop::saveAllMeasuresInCsvFile(string fileNameWithPath)
 
 bool CBiotop::addGeoMapSpeciePopulation(std::string specieName)
 {
-  CGeoMapPopulation* pGeoMapPopulation = new CGeoMapPopulation(this, getDimension(), specieName);
+  CGeoMapPopulation* pGeoMapPopulation = new CGeoMapPopulation(this, getGlobalGridDimension(), specieName);
   m_tGeoMapSpecies.push_back(pGeoMapPopulation);
   // Store initial population map
   pGeoMapPopulation->MemorizePopulationMap(m_BioTime.days);
@@ -2663,9 +2663,9 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
     if ( pElement->QueryStringAttribute(XML_ATTR_BIO_TIME,  &timeCountStr) == TIXML_NO_ATTRIBUTE)
       timeCountStr = "0";
     if (pElement->QueryIntAttribute(XML_ATTR_GLOBALSIZE_X, &globalSizeX) == TIXML_NO_ATTRIBUTE)
-      globalSizeX = m_Dimension.x;
+      globalSizeX = sizeX;
     if (pElement->QueryIntAttribute(XML_ATTR_GLOBALSIZE_Y, &globalSizeY) == TIXML_NO_ATTRIBUTE)
-      globalSizeY = m_Dimension.y;
+      globalSizeY = sizeY;
     if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_X, &offsetX) == TIXML_NO_ATTRIBUTE)
       offsetX = 0;
     if (pElement->QueryIntAttribute(XML_ATTR_OFFSET_Y, &offsetY) == TIXML_NO_ATTRIBUTE)
@@ -2962,6 +2962,11 @@ void CBiotop::logCpuMarkerEnd(BiotopCpuMarkerType_e markerId)
 Point_t CBiotop::getDimension()
 {
   return (m_Dimension);
+}
+
+Point_t CBiotop::getGlobalGridDimension()
+{
+  return (m_GlobalGridDimension);
 }
 
 double CBiotop::getFertility(Point_t coord)
