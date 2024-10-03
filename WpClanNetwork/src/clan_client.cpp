@@ -352,12 +352,22 @@ void Client::on_event_biotop_updatefullentity(const NetGameEvent &e)
 
 void Client::on_event_biotop_updateentityposition(const NetGameEvent &e)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
+  UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
+  if ((!updateInfo.isEntityFound) && (updateInfo.isValidCoord))
+  {
+    log_event(labelEvent, "updateentityposition: pEntity is NULL for ID%1. Request entity update", updateInfo.entityId);
+    send_event_request_entity_refresh(updateInfo.entityId, "Unset", true);
+  }
 }
 
 void Client::on_event_biotop_updateentityphysic(const NetGameEvent& e)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
+  UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
+  if ((!updateInfo.isEntityFound) && (updateInfo.isValidCoord))
+  {
+    log_event(labelEvent, "updateentityphysic: pEntity is NULL for ID%1. Request entity update", updateInfo.entityId);
+    send_event_request_entity_refresh(updateInfo.entityId, "Unset", true);
+  }
 }
 
 void Client::on_event_biotop_removeentity(const NetGameEvent &e)
@@ -402,8 +412,8 @@ void Client::on_event_biotop_changespeed(const NetGameEvent& e)
 
 void Client::on_event_biotop_requestentityrefresh(const NetGameEvent& e)
 {
-  CBasicEntity* pEntity = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
-  send_event_update_entity_data(pEntity);
+  EntityRefreshInfo_t refreshInfo = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
+  send_event_update_entity_data(refreshInfo.pEntity);
 }
 
 void Client::displayBiotopEntities()
@@ -595,10 +605,10 @@ void Client::send_event_create_measure(CMeasure* pMeasure)
   }
 }
 
-void Client::send_event_request_entity_refresh(CBasicEntity* pEntity)
+void Client::send_event_request_entity_refresh(entityIdType entityId, std::string entityLabel, bool needToAddEntity)
 {
-  log_event(labelClient, "Request entity refresh: label %1", pEntity->getLabel());
-  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
+  log_event(labelClient, "Request entity refresh: label %1", entityLabel);
+  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(entityId, entityLabel, needToAddEntity)};
   network_client.send_event(bioReqActionRefresh);
 }
 

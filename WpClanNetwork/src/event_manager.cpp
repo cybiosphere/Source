@@ -209,22 +209,17 @@ namespace clan
     return (std::move(newEvent));
   }
 
-  CBasicEntity* event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic)
+  UpdatedEntityInfo_t event_manager::handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic)
   {
+    UpdatedEntityInfo_t resultInfo{ 0, false, false, NULL };
     if (e.get_argument_count() < 8)
     {
       log_event(labelEvent, "handleEventUpdateEntityPosition: ERROR bad number of arguments: %1", e.get_argument_count());
-      return NULL;
+      return resultInfo;
     }
     int entityId = e.get_argument(0);
 
     CBasicEntity* pEntity = pBiotop->getEntityById(entityId);
-    if (pEntity == NULL)
-    {
-      log_event(labelEvent, "handleEventUpdateEntityPosition: ERROR pEntity is NULL for ID%1", entityId);
-      return NULL;
-    }
-
     std::string  entityLabel = e.get_argument(1);
     int status = e.get_argument(2);
     Point_t position;
@@ -232,6 +227,16 @@ namespace clan
     int positiony = e.get_argument(4);
     position.x = positionx;
     position.y = positiony;
+    resultInfo.entityId = entityId;
+    resultInfo.pEntity = pEntity;
+    resultInfo.isEntityFound = (pEntity != NULL);
+    resultInfo.isValidCoord = pBiotop->isCoordValid(pBiotop->getGridCoordFromGlobalGridCoord(pBiotop->getGridCoordFromStepCoord(position)));
+    
+    if (pEntity == NULL)
+    {
+      return resultInfo;
+    }
+
     int layer = e.get_argument(5);
     int direction = e.get_argument(6);
     int isImmortal = e.get_argument(7);
@@ -254,7 +259,7 @@ namespace clan
       if ((int)pEntity->getStatus() > status)
       {
         log_event(labelEvent, "Biotop update entity position %1: Unexpected status transition from %2 to %3", pEntity->getLabel(), (int)pEntity->getStatus(), status);
-        return pEntity;
+        return resultInfo;
       }
       pEntity->setStatus((StatusType_e)status);
       pEntity->jumpToGlobalStepCoord(position, true, layer, true);
@@ -291,7 +296,7 @@ namespace clan
         pAnimal->setCurrentLifeStages((LifeStage_e)lifeStage);
       }
     }
-    return pEntity;
+    return resultInfo;
   }
 
 	NetGameEvent event_manager::buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId)
@@ -387,20 +392,23 @@ namespace clan
     }
   }
 
-  NetGameEvent event_manager::buildEventReqEntityRefresh(CBasicEntity* pEntity)
+  NetGameEvent event_manager::buildEventReqEntityRefresh(entityIdType entityId, std::string entityLabel, bool needToAddEntity)
   {
     NetGameEvent newEvent(labelEventReqEntityRefresh);
-    newEvent.add_argument((int)pEntity->getId());
-    newEvent.add_argument(pEntity->getLabel());
+    newEvent.add_argument((int)entityId);
+    newEvent.add_argument(entityLabel);
+    newEvent.add_argument((int)needToAddEntity);
     return (std::move(newEvent));
   }
 
-  CBasicEntity* event_manager::handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop)
+  EntityRefreshInfo_t event_manager::handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop)
   {
     int entityId = e.get_argument(0);
     string label = e.get_argument(1);
-    log_event(labelEvent, "Reqest entity refresh: entity Id=%1 label %2", entityId, label);
-    return (pBiotop->getEntityById(entityId));
+    int needToAddEntity = e.get_argument(2);
+    log_event(labelEvent, "Reqest entity refresh: entity Id=%1 label %2 need Add %3", entityId, label, needToAddEntity);
+    EntityRefreshInfo_t refreshInfo{ needToAddEntity, pBiotop->getEntityById(entityId) };
+    return refreshInfo;
   }
 
   bool event_manager::buildEventsAddEntitySpawner(int index, BiotopRandomEntitiyGeneration_t& generator, std::vector<NetGameEvent>& eventVector)
@@ -704,49 +712,49 @@ namespace clan
     return pNewEntity;
   }
 
-
  bool event_manager::updateEntityWithZipBuffer(const DataBuffer& xmlZipBuffer, entityIdType entityId, CBiotop* pBiotop)
   {
     DataBuffer xmlBuffer = ZLibCompression::decompress(xmlZipBuffer, false);
     TiXmlDocument xmlDoc;
     xmlDoc.Parse(xmlBuffer.get_data());
 
+    // Update entity with same Id
+    CBasicEntity* pCurEntity = pBiotop->getEntityById(entityId);
+    if (pCurEntity == NULL)
+    {
+      log_event(labelEvent, "ERROR Biotop update full entity with unknow entity ID %1", (int)entityId);
+      return false;
+    }
+
     CBasicEntity* pNewEntity = CEntityFactory::createEntity(&xmlDoc);
     if (pNewEntity == NULL)
     {
-      log_event(labelEvent, "ERROR Biotop update full entity with NULL entity ID %1", (int)entityId);
+      log_event(labelEvent, "ERROR Biotop update full entity with invalid data. entity ID %1", (int)entityId);
       return false;
     }
 
     log_event(labelEvent, "Biotop update full entity: %1 ID %2", pNewEntity->getLabel(), (int)entityId);
-    CBasicEntity* pCurEntity;
-    bool bFound = false;
     int curStepDirection;
     bool curRemoteCtrl;
-    // Update entity with same Id
-    pCurEntity = pBiotop->getEntityById(entityId);
 
-    if (pCurEntity != NULL)
+    // Do not update entity for pregnant animals
+    if (pCurEntity->isLocalAutoControlled() && (pCurEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pCurEntity)->getGestationBabyNumber() > 0))
     {
-      // Do not update entity for pregnant animals
-      if (pCurEntity->isLocalAutoControlled() && (pCurEntity->getClass() == CLASS_MAMMAL) && (((CAnimMammal*)pCurEntity)->getGestationBabyNumber() > 0))
-      {
-        log_event(labelEvent, "Skip update entity for pregnant animal %1", pCurEntity->getLabel());
-        return false;
-      }
-      curStepDirection = pCurEntity->getStepDirection();
-      curRemoteCtrl = pCurEntity->isRemoteControlled();
-      pNewEntity->setRemoteControlled(curRemoteCtrl);
-      pNewEntity->setStepDirection(curStepDirection);
-      if (!pBiotop->replaceEntityByAnother(pCurEntity->getId(), pNewEntity))
-      {
-        delete pNewEntity;
-        return false;
-      }
-      pNewEntity->loadPurposeMapFromXmlFile(&xmlDoc);
-      bFound = true;
+      log_event(labelEvent, "Skip update entity for pregnant animal %1", pCurEntity->getLabel());
+      return false;
     }
-    return (bFound);
+    curStepDirection = pCurEntity->getStepDirection();
+    curRemoteCtrl = pCurEntity->isRemoteControlled();
+    pNewEntity->setRemoteControlled(curRemoteCtrl);
+    pNewEntity->setStepDirection(curStepDirection);
+    if (!pBiotop->replaceEntityByAnother(pCurEntity->getId(), pNewEntity))
+    {
+      delete pNewEntity;
+      return false;
+    }
+    pNewEntity->loadPurposeMapFromXmlFile(&xmlDoc);
+
+    return true;
   }
 
   bool event_manager::createMeasureWithZipBuffer(const DataBuffer& dataZipBuffer, CBiotop* pBiotop, const int measureId,

@@ -381,9 +381,9 @@ void Server::on_event_login(const NetGameEvent &e, ServerUser *user)
 }
 
 // "Game-RequestStartGame" event was received
-void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
+void Server::on_event_game_requeststart(const NetGameEvent& e, ServerUser* user)
 {
-	log_event(labelServer, "Client requested game start");
+  log_event(labelServer, "Client requested game start");
   nb_users_connected++;
 
   // Freeze biotop time during new player configuration
@@ -406,7 +406,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
     std::string prevEntityLabel = "";
     int prevEntityId = -1;
     cloneEntitiesMap.clear();
-    for (i=0; i<m_pBiotop->getNbOfEntities(); i++)
+    for (i = 0; i < m_pBiotop->getNbOfEntities(); i++)
     {
       pCurEntity = m_pBiotop->getEntityByIndex(i);
       if (pCurEntity->getLabel() != prevEntityLabel)
@@ -461,7 +461,7 @@ void Server::on_event_game_requeststart(const NetGameEvent &e, ServerUser *user)
       }
     }
 
-	  user->send_event(NetGameEvent(labelEventStart, nextHourTimeOffsetForClient));
+    user->send_event(NetGameEvent(labelEventStart, nextHourTimeOffsetForClient));
 
     if (m_pBiotop->getGeneToMark().getGeneType() != GENE_GENERIC)
     {
@@ -490,24 +490,24 @@ void Server::on_event_biotop_updatefullentity(const NetGameEvent& e, ServerUser*
 
 void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerUser* user)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
-  if (pEntity && (m_tCoprocessors.size() > 0))
+  UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
+  if (updateInfo.pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity);
+      coprocess.update_entity_control(updateInfo.pEntity);
     }
   }
 }
 
 void Server::on_event_biotop_updateentityphysic(const NetGameEvent& e, ServerUser* user)
 {
-  CBasicEntity* pEntity = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
-  if (pEntity && (m_tCoprocessors.size() > 0))
+  UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
+  if (updateInfo.pEntity && (m_tCoprocessors.size() > 0))
   {
     for (auto coprocess : m_tCoprocessors)
     {
-      coprocess.update_entity_control(pEntity);
+      coprocess.update_entity_control(updateInfo.pEntity);
     }
   }
 }
@@ -548,15 +548,19 @@ void Server::on_event_biotop_addEntitySpawner(const NetGameEvent& e, ServerUser*
 
 void Server::on_event_biotop_requestentityrefresh(const NetGameEvent& e, ServerUser* user)
 {
-  CBasicEntity* pEntity = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
-  ServerUser* pOwnerUser = getCoprocessorOwnerUser(pEntity);
-  if (pOwnerUser != NULL)
+  EntityRefreshInfo_t refreshInfo = event_manager::handleEventReqEntityRefresh(e, m_pBiotop);
+  ServerUser* pOwnerUser = getCoprocessorOwnerUser(refreshInfo.pEntity);
+  if (refreshInfo.needToAddEntity)
   {
-    send_event_request_entity_refresh(pEntity, pOwnerUser);
+    send_event_add_entity(refreshInfo.pEntity, user);
+  }
+  else if (pOwnerUser != NULL)
+  {
+    send_event_request_entity_refresh(refreshInfo.pEntity, pOwnerUser);
   }
   else
   {
-    send_event_update_entity_data(pEntity, user);
+    send_event_update_entity_data(refreshInfo.pEntity, user);
   }
 }
 
@@ -863,7 +867,7 @@ void Server::send_event_new_second_end(ServerUser* user)
 void Server::send_event_request_entity_refresh(CBasicEntity* pEntity, ServerUser* user)
 {
   log_event(labelServer, "Request entity refresh: label %1", pEntity->getLabel());
-  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity) };
+  NetGameEvent bioReqActionRefresh{ event_manager::buildEventReqEntityRefresh(pEntity->getId(), pEntity->getLabel(), false) };
   if (user == NULL) // If user not define, broadcast info to all
     network_server.send_event(bioReqActionRefresh);
   else

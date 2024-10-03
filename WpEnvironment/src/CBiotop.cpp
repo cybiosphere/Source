@@ -883,7 +883,7 @@ CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer)
 void CBiotop::putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater)
 {
   CBasicEntity* pCurEntity = findEntity(searchCoord, layer);
-  if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
+  if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
   {
     if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
       return;
@@ -896,7 +896,7 @@ void CBiotop::putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, 
 void CBiotop::putEntityInListOptim(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater)
 {
   CBasicEntity* pCurEntity = findEntity(searchCoord, layer);
-  if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
+  if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
   {
     if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
       return;
@@ -916,13 +916,15 @@ void CBiotop::putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t dist
 {
   constexpr size_t startlayer{ 1 }; // CPU optim: start at layer 1 (layer 0 is underground not detected by default)
   BiotopCube_t* pBiotopCube = &m_tBioGrid[searchCoord.x][searchCoord.y][startlayer];
+  CBasicEntity* pCurEntity = NULL;
   for (size_t z = startlayer; z < m_nbLayer; z++)
   {
-    if ((pBiotopCube->pEntity != NULL) && (includeWater || (pBiotopCube->pEntity->getId() != ENTITY_ID_WATER)))
+    pCurEntity = pBiotopCube->pEntity;
+    if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
     {
       if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
         return;
-      foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pBiotopCube->pEntity;
+      foundIds.tFoundIds[foundIds.nbFoundIds].pEntity = pCurEntity;
       foundIds.tFoundIds[foundIds.nbFoundIds].distance = distanceToSet;
       foundIds.nbFoundIds++;
     }
@@ -942,7 +944,7 @@ void CBiotop::putEntitiesInListAllLayersOptim(BiotopFoundIds_t& foundIds, size_t
   for (size_t z = startlayer; z < m_nbLayer; z++)
   {
     pCurEntity = pBiotopCube->pEntity;
-    if ((pCurEntity != NULL) && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
+    if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (includeWater || (pCurEntity->getId() != ENTITY_ID_WATER)))
     {
       if (foundIds.nbFoundIds >= MAX_FOUND_ENTITIES)
         return;

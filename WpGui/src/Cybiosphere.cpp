@@ -541,7 +541,7 @@ bool CCybiosphereApp::setSelectedEntity(CBasicEntity* pEntity)
   if ((pEntity != NULL) && (pEntity->isRemoteControlled()))
   {
     entityIdType entityId = pEntity->getId();
-    m_pClient->send_event_request_entity_refresh(pEntity);
+    m_pClient->send_event_request_entity_refresh(pEntity->getId(), pEntity->getLabel());
     // Wait for entity update from server (TODO: confirm reception)
     WaitForEventRefreshEntity();
     m_pSelectedEntity = m_pBiotop->getEntityById(entityId);

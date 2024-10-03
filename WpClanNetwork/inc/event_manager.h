@@ -16,6 +16,20 @@ namespace clan
 	  DataBuffer buffer[SENT_BUFFER_MAX_NB_BLOCKS];
   } LongBufferEvent_t;
 
+  typedef struct
+  {
+    int entityId;
+    bool isEntityFound;
+    bool isValidCoord;
+    CBasicEntity* pEntity;
+  } UpdatedEntityInfo_t;
+
+  typedef struct
+  {
+    bool needToAddEntity;
+    CBasicEntity* pEntity;
+  } EntityRefreshInfo_t;
+
   class event_manager
   {
   public:
@@ -32,7 +46,7 @@ namespace clan
     void handleEvenUpdateEntityData(const NetGameEvent& e, CBiotop* pBiotop);
 
 	  static NetGameEvent buildEventUpdateEntityPos(CBasicEntity* pEntity, std::string eventLabel);
-	  static CBasicEntity* handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic);
+	  static UpdatedEntityInfo_t handleEventUpdateEntityPosition(const NetGameEvent& e, CBiotop* pBiotop, bool forceEntityUpdate, bool updatePhysic);
 
 	  static NetGameEvent buildEventRemoveEntity(CBasicEntity* pEntity, entityIdType entityId);
     static bool handleEventRemoveEntity(const NetGameEvent& e, CBiotop* pBiotop);
@@ -46,8 +60,8 @@ namespace clan
     static bool buildEventsCreateMeasure(CMeasure* pMeasure, std::vector<NetGameEvent>& eventVector);
     void handleEventCreateMeasure(const NetGameEvent& e, CBiotop* pBiotop);
 
-    static NetGameEvent buildEventReqEntityRefresh(CBasicEntity* pEntity);
-    static CBasicEntity* handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop);
+    static NetGameEvent buildEventReqEntityRefresh(entityIdType entityId, std::string entityLabel, bool needToAddEntity);
+    static EntityRefreshInfo_t handleEventReqEntityRefresh(const NetGameEvent& e, CBiotop* pBiotop);
 
     static bool buildEventsAddEntitySpawner(int index, BiotopRandomEntitiyGeneration_t& generator, std::vector<NetGameEvent>& eventVector);
     void handleEventAddEntitySpawner(const NetGameEvent& e, CBiotop* pBiotop);

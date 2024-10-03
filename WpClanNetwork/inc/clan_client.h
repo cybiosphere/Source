@@ -43,7 +43,7 @@ public:
   void send_event_change_biotop_speed(const float newBiotopSpeed, const bool isManualMode, const bool isMaxSpeedMode);
   void send_event_force_entity_action(const entityIdType entityId, const int actionIndex);
   void send_event_create_measure(CMeasure* pMeasure);
-  void send_event_request_entity_refresh(CBasicEntity* pEntity);
+  void send_event_request_entity_refresh(entityIdType entityId, std::string entityLabel, bool needToAddEntity = false);
   void send_event_add_entity_spawner(int index, BiotopRandomEntitiyGeneration_t& generator);
   void send_event_create_specie_map(CGeoMapPopulation* pGeoMapSpecie);
   void send_event_mark_entities_with_gene(CGene& modelGene, bool markDominantAlleleOnly);
