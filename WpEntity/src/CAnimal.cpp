@@ -3169,7 +3169,8 @@ void CAnimal::logDeathCause(std::string deathCauseStr)
   if (m_pBiotop != NULL)
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s age %ddays is dead ", getSpecieName().c_str(), getLabel().c_str(), getAge());
+    CYBIOCORE_LOG("ANIMAL - Death : specie %s name %s age %ddays sex %s is dead ", 
+      getSpecieName().c_str(), getLabel().c_str(), getAge(), getSexString());
     CYBIOCORE_LOG(deathCauseStr.c_str());
   }
 }

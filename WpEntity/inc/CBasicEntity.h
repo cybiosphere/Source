@@ -450,6 +450,7 @@ public:
   ReproType_e     getTypeOfReproduction();
   void            setTypeOfReproduction(ReproType_e newType);
   SexType_e       getSex();
+  string          getSexString();
   CGenome*        getGenome();
   double          getNoise();
   void            setNoise(int rate);

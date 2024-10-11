@@ -3460,6 +3460,21 @@ SexType_e CBasicEntity::getSex()
   return (m_Sex);
 }
 
+string CBasicEntity::getSexString()
+{
+  switch (m_Sex)
+  {
+  case SEX_NONE:
+    return "None";
+  case SEX_MALE:
+    return "Male";
+  case SEX_FEMALE:
+    return "Female";
+  default:
+    return "Unset";
+  }
+}
+
 CBiotop* CBasicEntity::getBiotop() 
 {
   return (m_pBiotop);
