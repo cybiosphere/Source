@@ -131,7 +131,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, size_t dimX, size
     || ((startCoord.x + dimX) > m_Dimension.x) || ((startCoord.y + dimY) > m_Dimension.y))
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - Try to exctract Arean with invalid coord\n");
+    CYBIOCORE_LOG("ERROR  - Try to exctract Arean with invalid coord startX=%u sizeX=%u\n", startCoord.x, dimX);
     return NULL;
   }
 
@@ -752,12 +752,12 @@ size_t CBiotop::getNbOfMinerals()
   return (tempCount);
 }
 
-size_t CBiotop::getNbOfSpecieEntities(string& SpecieName)
+size_t CBiotop::getNbOfSpecieEntities(string& specieName)
 {
   size_t tempCount = 0;
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    if ((pEntity->getSpecieName() == SpecieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
+    if ((pEntity->getSpecieName() == specieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
       tempCount++;
   }
   return (tempCount);
@@ -1706,10 +1706,14 @@ void CBiotop::nextDay(void)
     m_BioTime.years++;
   }
 
-  // Automatic metric record in files every 2 days
+  // Automatic metric records
   if ((m_BioTime.days % 2) == 1)
   {
     saveAllRecordsInFiles();
+  }
+  if ((m_AutoSaveSpecieName != "") && ((m_BioTime.days % 100) == 0))
+  {
+    saveAllEntitiesOfSpecie(m_AutoSaveSpecieName);
   }
 }
 
@@ -2347,6 +2351,22 @@ void CBiotop::saveAllRecordsInFiles()
 
   saveAllMeasuresInCsvFile(measureFileName);
   saveAllGeoMapsInFile(geomapFileName);
+}
+
+void CBiotop::saveAllEntitiesOfSpecie(string specieName)
+{
+  string path = m_DefaultFilePath + "/AutoSave/";
+  CYBIOCORE_LOG_TIME(m_BioTime);
+  CYBIOCORE_LOG("BIOTOP  - Save all entities of specie name %s path %s\n", specieName.c_str(), path.c_str());
+
+  for (CBasicEntity* pCurEntity : m_tEntity)
+  {
+    if (pCurEntity->getSpecieName() == specieName)
+    {
+      string entityFileName{ path + pCurEntity->getLabel() + ".xml"};
+      pCurEntity->saveInXmlFile(entityFileName);
+    }
+  }
 }
 
 //===========================================================================
@@ -3213,3 +3233,9 @@ void CBiotop::setGlobalGridCoordOffset(Point_t startingCoord)
   m_GlobalStepCoordOffset.x = startingCoord.x * NB_STEPS_PER_GRID_SQUARE;
   m_GlobalStepCoordOffset.y = startingCoord.y * NB_STEPS_PER_GRID_SQUARE;
 }
+
+void CBiotop::setAutoSaveSpecieName(string specieName)
+{
+  m_AutoSaveSpecieName = specieName;
+}
+

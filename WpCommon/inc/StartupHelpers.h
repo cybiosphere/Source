@@ -78,7 +78,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   CScenarioPlayer* pScenarioPlayer{ nullptr };
   char resuBuffer[512];
 
-  int resu = getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
+  getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
   string biotopName = resuBuffer;
   clearWindowsEolIfNeeded(biotopName);
 
@@ -86,7 +86,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   {
     string resuDataPath;
     pBiotop = new CBiotop(0, 0, 0);
-    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
     clearWindowsEolIfNeeded(resuDataPath);
     if (resuDataPath != "")
@@ -104,14 +104,14 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   }
 
   pScenarioPlayer = new CScenarioPlayer(pBiotop);
-  resu = getStringSectionFromFile("CYBIOSPHERE", "Scenario", "", resuBuffer, 512, fileIni);
+  getStringSectionFromFile("CYBIOSPHERE", "Scenario", "", resuBuffer, 512, fileIni);
   string scenarioName = resuBuffer;
   clearWindowsEolIfNeeded(scenarioName);
 
   if (scenarioName != "")
   {
     string resuDataPath;
-    bool resu = getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
+    getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
     clearWindowsEolIfNeeded(resuDataPath);
     if (resuDataPath != "")
@@ -123,6 +123,12 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
     pScenarioPlayer->NextCmdNextSecond();
     pScenarioPlayer->NextCmdNextSecond();
   }
+
+  string resuSpecieName;
+  getStringSectionFromFile("CYBIOSPHERE", "AutoSaveSpecie", "", resuBuffer, 512, fileIni);
+  resuSpecieName = resuBuffer;
+  if (resuSpecieName != "")
+    pBiotop->setAutoSaveSpecieName(resuSpecieName);
 
   *pNewBiotop = pBiotop;
   *pNewScenarioPlayer = pScenarioPlayer;

@@ -270,6 +270,7 @@ private:
   bool m_bColorizeSearch; 
   CGene m_GeneToMark{};
   bool m_bMarkDominantAlleleOnly{ false };
+  string m_AutoSaveSpecieName{ "" };
 
 //---------------------------------------------------------------------------
 // associations
@@ -434,6 +435,7 @@ public:
   CGeoMapPopulation* getGeoMapSpecieByIndex(size_t index);
   void      saveAllGeoMapsInFile(string fileNameWithPath);
   void      saveAllRecordsInFiles();
+  void      saveAllEntitiesOfSpecie(string specieName);
 
   private:
   timeCountType getNextSmallestTimeCountInAllMeasures(timeCountType previousSmallestTimeCount);
@@ -521,6 +523,7 @@ public:
   bool getMarkDominantAlleleOnly();
   void setGlobalGridDimension(size_t dimX, size_t dimY);
   void setGlobalGridCoordOffset(Point_t startingCoord);
+  void setAutoSaveSpecieName(string specieName);
 
 }; // end CBiotop
 
