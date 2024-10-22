@@ -208,9 +208,10 @@ void CGenomeEditorDlg::OnOK()
     entityIdType oldId = m_pOldEntity->getId();
     theApp.GetBiotop()->resetEntityGenome(oldId, m_pNewGenome);
     CBasicEntity* pNewEntity = theApp.GetBiotop()->getEntityById(oldId);
-
-    pNewEntity->quickAgeing(m_InitAge);
-
+    if (pNewEntity)
+    {
+      pNewEntity->quickAgeing(m_InitAge);
+    }
     theApp.setSelectedEntity(NULL); // Clear all
     theApp.updateSelectedEntity(pNewEntity);
   } 

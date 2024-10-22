@@ -520,6 +520,10 @@ size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
     CYBIOCORE_LOG("BIOTOP - ERROR Try to remove NULL entity\n");
     return (invalidIndex);
   }
+  if (isCoordValid(pEntity->getGridCoord(), pEntity->getLayer()))
+  {
+    m_tBioGrid[pEntity->getGridCoord().x][pEntity->getGridCoord().y][pEntity->getLayer()].pEntity = NULL;
+  }
   for (size_t i = 0; i < getNbOfEntities(); i++)
   {
     if (m_tEntity[i] == pEntity)
