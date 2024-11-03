@@ -127,6 +127,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   string resuSpecieName;
   getStringSectionFromFile("CYBIOSPHERE", "AutoSaveSpecie", "", resuBuffer, 512, fileIni);
   resuSpecieName = resuBuffer;
+  clearWindowsEolIfNeeded(resuSpecieName);
   if (resuSpecieName != "")
     pBiotop->setAutoSaveSpecieName(resuSpecieName);
 
