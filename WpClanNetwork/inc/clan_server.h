@@ -32,6 +32,7 @@ public:
 	bool checkAllCoprocessorCompleteSecond();
 private:
 	ServerUser* getCoprocessorOwnerUser(CBasicEntity* pEntity);
+	ServerCoprocessor& getCoprocessorFromUser(ServerUser* pUser);
 
 private:
 	void on_client_connected(NetGameConnection *connection);

@@ -29,6 +29,8 @@ class ServerCoprocessor
 		void forceNextSecondComplete(bool newValue);
 		bool checkIfEntityOwner(CBasicEntity* pEntity);
 		ServerUser* getUser();
+		size_t getStartCoordX() { return m_startCoordX; };
+		size_t getEndCoordX() { return m_endCoordX; };
 
 	private:
 		bool isEntityInAssignZone(CBasicEntity* pEntity);

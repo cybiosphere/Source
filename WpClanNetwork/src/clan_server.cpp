@@ -201,6 +201,17 @@ ServerUser* Server::getCoprocessorOwnerUser(CBasicEntity* pEntity)
   return ownerUser;
 }
 
+ServerCoprocessor& Server::getCoprocessorFromUser(ServerUser* pUser)
+{
+  for (auto coprocess : m_tCoprocessors)
+  {
+    if (coprocess.getUser() == pUser)
+      return coprocess;
+  }
+  ServerCoprocessor emptyServer( NULL, NULL, NULL, 0, 0 );
+  return emptyServer;
+}
+
 float Server::get_biotop_speed()
 {
   return m_biotopSpeed;
@@ -392,7 +403,24 @@ void Server::on_event_game_requeststart(const NetGameEvent& e, ServerUser* user)
   size_t i;
 
   std::vector<NetGameEvent> eventVector;
-  if (event_manager::buildEventsCreateBiotop(m_pBiotop, eventVector))
+
+  CBiotop* pTempBiotop = m_pBiotop;
+  if (user->isCoprocessor)
+  {
+    ServerCoprocessor& coprocess = getCoprocessorFromUser(user);
+    size_t startX = coprocess.getStartCoordX();
+    size_t sizeX = coprocess.getEndCoordX() - coprocess.getStartCoordX();
+    if (startX == 0) sizeX++; // Temporary to adjust to river position
+    pTempBiotop = m_pBiotop->extractNewBiotopFromArea({ startX , 0}, sizeX, m_pBiotop->getDimension().y);
+  }
+
+  if (pTempBiotop == NULL)
+  {
+    log_event(labelServer, "ERROR biotop is NULL for client");
+    return;
+  }
+
+  if (event_manager::buildEventsCreateBiotop(pTempBiotop, eventVector))
   {
     // Send biotop file without entities
     for (NetGameEvent eventToSend : eventVector)
@@ -406,9 +434,9 @@ void Server::on_event_game_requeststart(const NetGameEvent& e, ServerUser* user)
     std::string prevEntityLabel = "";
     int prevEntityId = -1;
     cloneEntitiesMap.clear();
-    for (i = 0; i < m_pBiotop->getNbOfEntities(); i++)
+    for (i = 0; i < pTempBiotop->getNbOfEntities(); i++)
     {
-      pCurEntity = m_pBiotop->getEntityByIndex(i);
+      pCurEntity = pTempBiotop->getEntityByIndex(i);
       if (pCurEntity->getLabel() != prevEntityLabel)
       {
         // Send only to new user
@@ -467,6 +495,11 @@ void Server::on_event_game_requeststart(const NetGameEvent& e, ServerUser* user)
     {
       send_event_mark_entities_with_gene(m_pBiotop->getGeneToMark(), m_pBiotop->getMarkDominantAlleleOnly());
     }
+  }
+
+  if (user->isCoprocessor)
+  {
+    delete pTempBiotop;
   }
 
   // Restore biotop time
@@ -931,3 +964,4 @@ bool Server::CmdSetBiotopSpeed(CBiotop* pBiotop, string path, string commandPara
   *pBiotopSpeed = newSpeed;
   return true;
 }
+

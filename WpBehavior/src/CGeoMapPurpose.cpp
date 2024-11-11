@@ -121,7 +121,6 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
   if (UidIdx != invalidIndex)
   {
     Point_t currentMapCoord;
-    //FRED Need globalGridCoord
     if (GridCoordToGeoMapCoord(globalGridCenterPos, centerMapCoord) == true)
     {
       curWeight = GetSuccessWeight(UidIdx, centerMapCoord);
