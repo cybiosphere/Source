@@ -166,6 +166,7 @@ const std::vector<sensorValType>& CSensorViewIdentifyFar::UpdateAndGetStimulatio
   if (pAnimal->isSleeping())
   {
     // No stimulation when sleeping...
+    pAnimal->getBiotop()->logCpuMarkerEnd(BIOTOP_CPUMARKER_CUSTOM1);
     return m_tStimulationValues;
   }
 

@@ -1538,7 +1538,7 @@ void CBasicEntity::detachFromBiotop()
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-bool CBasicEntity::isToBeRemoved()
+bool CBasicEntity::isToBeRemoved() const
 {
   return (m_Status == STATUS_TOBEREMOVED);
 }  
