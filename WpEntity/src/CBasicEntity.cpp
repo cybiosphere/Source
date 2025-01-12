@@ -387,6 +387,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   if (m_pBrain != NULL)
   {
     m_pBrain->InitializeNeuronTableNeutral();
+    m_pBrain->UpdateDefaultTerritorySize();
   }
 
   resu = false;

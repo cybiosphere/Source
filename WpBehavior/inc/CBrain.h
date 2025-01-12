@@ -162,7 +162,7 @@ private:
   // Historical used to compute experience 
   size_t m_nExperienceHistory;
   // Size of geomap for purpose memory 
-  size_t m_GeoMapSize;
+  size_t m_TerritorySize;
 
   // VMATRIX/VECTORS for decision neuronal table (compute final action choice)
   // Current Input containing current and historized sensations
@@ -356,7 +356,8 @@ protected:
 // Brain special behaviors
 //---------------------------------------------------------------------------
 public:
-  bool SetGeoMapSize(size_t geoMapSize);
+  bool SetTerritorySize(size_t geoMapSize);
+  void UpdateDefaultTerritorySize();
   void CreateGeoMapArroudCurrentPosition();
   void SetBabyStayHome(bool stay);
   bool IsBabyStayHome();

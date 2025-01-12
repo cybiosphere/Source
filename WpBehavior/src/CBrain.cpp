@@ -46,6 +46,9 @@ distribution.
 
 #define MEMORIZATION_FEEDBACK_THRESHOLD 0.05
 #define MAX_CHOICE_BUFFER_SIZE_PER_CHOICE 6
+#define TERRITORY_SIZE_SMALL 600
+#define TERRITORY_SIZE_DEFAULT 800
+#define TERRITORY_SIZE_BIG 1000
 
 const char* IdentificationTypeNameList[IDENTIFICATION_NUMBER_TYPE] =
 {
@@ -78,7 +81,7 @@ CBrain::CBrain()
   // Historical used to compute experience 
   m_nExperienceHistory = 1;
   // Size of geomap for purpose memory 
-  m_GeoMapSize = 800;
+  m_TerritorySize = TERRITORY_SIZE_DEFAULT;
 
   m_historyWeight = 0.6;
 
@@ -1959,17 +1962,36 @@ bool CBrain::IsBabyStayHome()
   return m_bBabyStayHome;
 }
 
-bool CBrain::SetGeoMapSize(size_t geoMapSize)
+bool CBrain::SetTerritorySize(size_t geoMapSize)
 {
-  m_GeoMapSize = geoMapSize;
-  return true;
+  if (m_pGeoMap == NULL)
+  {
+    m_TerritorySize = geoMapSize;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+void CBrain::UpdateDefaultTerritorySize()
+{
+  if ((m_TerritorySize == TERRITORY_SIZE_DEFAULT) && (m_pEntity != NULL))
+  {
+    if (m_pEntity->getMaxWeight() < 5.0)
+      m_TerritorySize = TERRITORY_SIZE_SMALL;
+    else if ((m_pEntity->getMaxWeight() > 20.0) || (m_pEntity->getConsumeClass() == CONSUM_MEAT))
+      m_TerritorySize = TERRITORY_SIZE_BIG;
+  }
 }
 
 void CBrain::CreateGeoMapArroudCurrentPosition()
 {
+  constexpr size_t maxNumberMemorizedPurpose{ 6 };
   if ((m_pGeoMap == NULL) && (m_pEntity != NULL) && (m_pEntity->getBiotop() != NULL))
   {
-    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGlobalGridCoord(), m_pEntity->getBiotop()->getGlobalGridDimension(), m_GeoMapSize, 6);
+    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGlobalGridCoord(), m_pEntity->getBiotop()->getGlobalGridDimension(), m_TerritorySize, maxNumberMemorizedPurpose);
   }
 }
 

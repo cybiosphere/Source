@@ -759,10 +759,31 @@ size_t CBiotop::getNbOfMinerals()
 size_t CBiotop::getNbOfSpecieEntities(string& specieName)
 {
   size_t tempCount = 0;
+  bool femaleFound = false;
+  bool maleFound = false;
   for (CBasicEntity* pEntity : m_tEntity)
   {
     if ((pEntity->getSpecieName() == specieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
+    {
+      if (pEntity->getTypeOfReproduction() == REPRODUCT_SEXUAL)
+      {
+        if (pEntity->getSex() == SEX_MALE)
+          maleFound = true;
+        else if (pEntity->getSex() == SEX_FEMALE)
+          femaleFound = true;
+      }
       tempCount++;
+    }
+  }
+  if (maleFound && !femaleFound)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - Specie going to extinction: %s: No more female\n", specieName.c_str());
+  }
+  else if (femaleFound && !maleFound)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - Specie going to extinction: %s: No more male\n", specieName.c_str());
   }
   return (tempCount);
 }

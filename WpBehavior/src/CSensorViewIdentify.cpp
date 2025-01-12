@@ -264,6 +264,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   double curWeight;
   double viewChance;
   entitySignatureType previousEntitySignature = 0;
+  double currentSunlight{ pBiotop->getSunlight() };
 
   // Find entities according to angle, distance and layer:
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
@@ -282,7 +283,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
     {
       // view chance depends on vigliance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - pCurEntity->getCamouflage();
-      if (pBiotop->getSunlight() < 10)
+      if (currentSunlight < 10)
         viewChance = viewChance/2; 
     }
     else

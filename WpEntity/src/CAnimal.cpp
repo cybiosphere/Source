@@ -1181,7 +1181,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
   {
   case GENE_BRAIN_SIZE_TERRITORY:
     {
-      m_pBrain->SetGeoMapSize(brainSize);
+      m_pBrain->SetTerritorySize(brainSize);
       resu = true;
       break;
     }
