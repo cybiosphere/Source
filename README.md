@@ -1,4 +1,4 @@
-<img src="https://github.com/cybiosphere/source/blob/master/LogoBand.jpg?raw=true" alt="Cybiosphere logo" width="800" height="126" align="middle">
+<img src="https://github.com/cybiosphere/source/blob/master/LogoBand.jpg?raw=true" alt="Cybiosphere logo" width="800" height="120" align="middle">
 
 Cybiosphere is an open-source project that aims to develop virtual ecosystems for both education and research.
 
@@ -50,5 +50,5 @@ Client console is mainly used for coprocessing. It is running under Linux or win
 
 ## <a name="contact"></a>Contact
 
-You can contact us at this email: cybiosphere@yahoo.com
+You can contact us at this email: cybiosphere@yahoo.fr
 A facebook page is also available
