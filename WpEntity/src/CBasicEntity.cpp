@@ -1529,22 +1529,6 @@ void CBasicEntity::detachFromBiotop()
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CBasicEntity::isToBeRemoved
-//  
-// DESCRIPTION:  Check if entity is not up to be deleted 
-// 
-// ARGUMENTS:    None
-//   
-// RETURN VALUE: None
-//  
-// REMARKS:      None
-//---------------------------------------------------------------------------
-bool CBasicEntity::isToBeRemoved() const
-{
-  return (m_Status == STATUS_TOBEREMOVED);
-}  
-
-//---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::isAttachedToBiotop
 //  
 // DESCRIPTION:  Check if entity is already attached

@@ -279,7 +279,7 @@ protected:
 public:
   bool attachToBiotop(CBiotop* Biotop, Point_t globalStepCoord, size_t layer);
   void detachFromBiotop();
-  inline bool isToBeRemoved() const;
+  inline bool isToBeRemoved() { return (m_Status == STATUS_TOBEREMOVED); }
   void autoRemove(bool addRemoveEvent = true);
   bool isAttachedToBiotop();
   bool moveToLayerIfPossible(size_t newLayer);
