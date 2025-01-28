@@ -161,7 +161,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\../Exec\ProjectWizard.exe</OutputFile>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Exec\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>true</EnableDpiAwareness>

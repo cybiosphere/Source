@@ -61,6 +61,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_APP_DISPLAY_BRAIN, OnAppDisplayBrain)
 	ON_COMMAND(ID_APP_DISPLAY_GENETIC, OnAppDisplayGenetic)
 	ON_COMMAND(ID_APP_DISPLAY_STAT, OnAppDisplayStat)
+  ON_COMMAND(ID_APP_DISPLAY_MAPEDITOR, OnAppDisplayMapEditor)
 	ON_COMMAND(ID_APP_SELECT_VIEW, OnAppSelectView)
 	ON_COMMAND(ID_APP_SELECT_CREATE, OnAppSelectCreate)
 	ON_COMMAND(ID_APP_SELECT_STICK, OnAppSelectStick)
@@ -304,8 +305,19 @@ void CMainFrame::OnAppRunLearningScenario()
   }
 }
 
+void CMainFrame::unselectAllButtonTools()
+{
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, false);
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN, false);
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC, false);
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT, false);
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP, false);
+  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAPEDITOR, false);
+}
+
 void CMainFrame::OnAppDisplayLogServer()
 {
+  unselectAllButtonTools();
   if (m_DisplayMode == DISPLAY_MODE_LOGSERVER)
   {
     m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
@@ -316,12 +328,6 @@ void CMainFrame::OnAppDisplayLogServer()
     m_DisplayMode = DISPLAY_MODE_LOGSERVER;
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, true);
   }
-
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN, false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC, false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT, false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP, false);
-
   CRect wndRect;
   this->GetClientRect(wndRect);
   resizeAllChildFrames(wndRect.Width(), wndRect.Height());
@@ -329,6 +335,7 @@ void CMainFrame::OnAppDisplayLogServer()
 
 void CMainFrame::OnAppDisplayMap() 
 {
+  unselectAllButtonTools();
   if (m_DisplayMode == DISPLAY_MODE_MAP)
   {
 	  m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
@@ -338,13 +345,7 @@ void CMainFrame::OnAppDisplayMap()
   {
 	  m_DisplayMode = DISPLAY_MODE_MAP;
       m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP,true);
-  }
-
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, false);
-  
+  } 
   CRect wndRect;
   this->GetClientRect(wndRect);
   resizeAllChildFrames(wndRect.Width(),wndRect.Height());
@@ -352,6 +353,7 @@ void CMainFrame::OnAppDisplayMap()
 
 void CMainFrame::OnAppDisplayBrain() 
 {
+  unselectAllButtonTools();
   if (m_DisplayMode == DISPLAY_MODE_LAB_BRAIN)
   {
 	  m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
@@ -362,12 +364,6 @@ void CMainFrame::OnAppDisplayBrain()
 	  m_DisplayMode = DISPLAY_MODE_LAB_BRAIN;
       m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN,true);
   }
-
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, false);
-
   CRect wndRect;
   this->GetClientRect(wndRect);
   resizeAllChildFrames(wndRect.Width(),wndRect.Height());
@@ -375,6 +371,7 @@ void CMainFrame::OnAppDisplayBrain()
 
 void CMainFrame::OnAppDisplayGenetic() 
 {
+  unselectAllButtonTools();
   if (m_DisplayMode == DISPLAY_MODE_LAB_GENETIC)
   {
 	  m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
@@ -385,12 +382,6 @@ void CMainFrame::OnAppDisplayGenetic()
 	  m_DisplayMode = DISPLAY_MODE_LAB_GENETIC;
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC,true);
   }
-
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, false);
-
   CRect wndRect;
   this->GetClientRect(wndRect);
   resizeAllChildFrames(wndRect.Width(),wndRect.Height());
@@ -398,6 +389,7 @@ void CMainFrame::OnAppDisplayGenetic()
 
 void CMainFrame::OnAppDisplayStat() 
 {
+  unselectAllButtonTools();
   if (m_DisplayMode == DISPLAY_MODE_STATISTIC)
   {
 	  m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
@@ -408,15 +400,37 @@ void CMainFrame::OnAppDisplayStat()
 	  m_DisplayMode = DISPLAY_MODE_STATISTIC;
     m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_STAT,true);
   }
-
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAP,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_BRAIN,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_GENETIC,false);
-  m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_LOGSERVER, false);
-
   CRect wndRect;
   this->GetClientRect(wndRect);
   resizeAllChildFrames(wndRect.Width(),wndRect.Height());
+}
+
+void CMainFrame::OnAppDisplayMapEditor()
+{
+  unselectAllButtonTools();
+  if (m_DisplayMode == DISPLAY_MODE_MAPEDITOR)
+  {
+    m_DisplayMode = DISPLAY_MODE_FULL_SIZE;
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAPEDITOR, false);
+  }
+  else
+  {
+    m_DisplayMode = DISPLAY_MODE_MAPEDITOR;
+    m_wndToolBar.GetToolBarCtrl().PressButton(ID_APP_DISPLAY_MAPEDITOR, true);
+  }
+  CRect wndRect;
+  this->GetClientRect(wndRect);
+  resizeAllChildFrames(wndRect.Width(), wndRect.Height());
+}
+
+void CMainFrame::hideAllToolsWindows()
+{
+  theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+  theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+  theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+  theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+  theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+  theApp.GetMapEditorViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
 }
 
 void CMainFrame::resizeAllChildFrames(int cx, int cy)
@@ -436,60 +450,48 @@ void CMainFrame::resizeAllChildFrames(int cx, int cy)
   theApp.GetStatisticViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, 0, clientW - dpiScaledWidth, dpiScaledHeight, SWP_HIDEWINDOW);
   theApp.GetMapConfigViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, 0, clientW - dpiScaledWidth, dpiScaledHeight, SWP_HIDEWINDOW);
   theApp.GetLogServerViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, 0, clientW - dpiScaledWidth, dpiScaledHeight, SWP_HIDEWINDOW);
+  theApp.GetMapEditorViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, 0, clientW - dpiScaledWidth, dpiScaledHeight, SWP_HIDEWINDOW);
 
   switch (m_DisplayMode)
   {
   case DISPLAY_MODE_FULL_SIZE:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, 0, clientW - dpiScaledWidth, clientH, SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    hideAllToolsWindows();
     break;
 
   case DISPLAY_MODE_LAB_GENETIC:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    hideAllToolsWindows();
     theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
     break;
 
   case DISPLAY_MODE_LAB_BRAIN:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
+    hideAllToolsWindows();
     theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
     break;
 
   case DISPLAY_MODE_STATISTIC:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    hideAllToolsWindows();
     theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
     break;
 
   case DISPLAY_MODE_MAP:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    hideAllToolsWindows();
     theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
-    theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    break;
+
+  case DISPLAY_MODE_MAPEDITOR:
+    theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
+    hideAllToolsWindows();
+    theApp.GetMapEditorViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
     break;
 
   case DISPLAY_MODE_LOGSERVER:
     theApp.GetBiotopViewPtr()->GetParentFrame()->SetWindowPos(&wndTop, dpiScaledWidth, dpiScaledHeight, clientW - dpiScaledWidth, clientH - dpiScaledHeight, SWP_SHOWWINDOW);
-    theApp.GetBrainViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetGeneticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetStatisticViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
-    theApp.GetMapConfigViewPtr()->GetParentFrame()->ShowWindow(SW_HIDE);
+    hideAllToolsWindows();
     theApp.GetLogServerViewPtr()->GetParentFrame()->ShowWindow(SW_SHOW);
     break;
   }

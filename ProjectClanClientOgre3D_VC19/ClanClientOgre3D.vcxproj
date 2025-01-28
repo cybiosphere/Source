@@ -201,7 +201,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>OgreMain.lib;OIS.lib;..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain.lib;OIS.lib;..\Exec\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\ExecOgre\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>C:\ogre-sdk-1.10.12-vc15-x64\ois\lib\Release;C:\ogre-sdk-1.10.12-vc15-x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>

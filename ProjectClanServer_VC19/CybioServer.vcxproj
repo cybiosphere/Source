@@ -151,7 +151,7 @@
       <Culture>0x040c</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Exec\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\Exec/CybioServer.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/Evolution.pdb</ProgramDatabaseFile>

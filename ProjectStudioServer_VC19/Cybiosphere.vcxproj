@@ -254,7 +254,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\../Exec\Cybiosphere.exe</OutputFile>
-      <AdditionalDependencies>Nafxcw.lib;libcpmt.lib;Libcmt.lib;..\ExportDll_VC19\lib\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Nafxcw.lib;libcpmt.lib;Libcmt.lib;..\Exec\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>Nafxcw.lib;libcpmt.lib;Libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ShowProgress>LinkVerboseLib</ShowProgress>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -596,6 +596,8 @@
     <ClInclude Include="..\WpGui\inc\mainfrm.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigDoc.h" />
     <ClInclude Include="..\WpGui\inc\MapConfigView.h" />
+    <ClInclude Include="..\WpGui\inc\MapEditorDoc.h" />
+    <ClInclude Include="..\WpGui\inc\MapEditorView.h" />
     <ClInclude Include="..\WpGui\inc\MeasureEditorDlg.h" />
     <ClInclude Include="..\WpGui\inc\MemDC.h" />
     <ClInclude Include="..\WpGui\inc\ParameterCrtl.h" />
@@ -706,6 +708,8 @@
     <ClCompile Include="..\WpGui\src\MainFrm.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigDoc.cpp" />
     <ClCompile Include="..\WpGui\src\MapConfigView.cpp" />
+    <ClCompile Include="..\WpGui\src\MapEditorDoc.cpp" />
+    <ClCompile Include="..\WpGui\src\MapEditorView.cpp" />
     <ClCompile Include="..\WpGui\src\MeasureEditorDlg.cpp" />
     <ClCompile Include="..\WpGui\src\ParameterCrtl.cpp" />
     <ClCompile Include="..\WpGui\src\ParameterSlider.cpp" />

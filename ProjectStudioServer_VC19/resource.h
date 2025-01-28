@@ -57,6 +57,8 @@
 #define IDR_LOGSERVER_TYPE              211
 #define IDI_ICON_FIND                   212
 #define IDD_DIALOG_FINDSTR              213
+#define IDD_MAPEDITOR_FORMVIEW          214
+#define IDR_MAPEDITOR_TYPE              215
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -279,6 +281,8 @@
 #define ID_APP_DISPLAY_2DSAT            32812
 #define ID_EDIT_MONITORSPECIEBIOMASS    32812
 #define ID_APP_MONITOR_BIOMASS          32813
+#define ID_BUTTON32814                  32814
+#define ID_APP_DISPLAY_MAPEDITOR        32814
 
 // Next default values for new objects
 // 
@@ -286,7 +290,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        213
-#define _APS_NEXT_COMMAND_VALUE         32814
+#define _APS_NEXT_COMMAND_VALUE         32816
 #define _APS_NEXT_CONTROL_VALUE         1148
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

@@ -772,6 +772,12 @@
     <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
       <Filter>WpCommon\IncCommon</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MapEditorDoc.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\MapEditorView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpGui\src\ActionButton.cpp">
@@ -1061,6 +1067,12 @@
     </ClCompile>
     <ClCompile Include="..\WpGui\src\FindStrDlg.cpp">
       <Filter>Project2D\Src2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MapEditorDoc.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\MapEditorView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

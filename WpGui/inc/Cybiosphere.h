@@ -54,6 +54,8 @@ distribution.
 #include "LogServerView.h"
 #include "MapConfigDoc.h"
 #include "MapConfigView.h"
+#include "MapEditorDoc.h"
+#include "MapEditorView.h"
 #include "CScenarioPlayer.h"
 
 #ifdef USE_CLAN_SERVER
@@ -89,6 +91,7 @@ public:
   CStatisticView* GetStatisticViewPtr(void);
   CLogServerView* GetLogServerViewPtr(void);
   CMapConfigView* GetMapConfigViewPtr(void);
+  CMapEditorView* GetMapEditorViewPtr(void);
  
   BOOL IsModeManual();
   void SetModeManual(BOOL isManual);
@@ -148,6 +151,7 @@ private:
 	void CreateGeneticView();
 	void CreateStatisticView(CBiotop* pBiotop);
 	void CreateMapConfigView(CBiotop* pBiotop);
+  void CreateMapEditorView(CBiotop* pBiotop);
   void CreateLogServerView();
   bool RefreshAllWithNewEntity(CBasicEntity* pEntity);
 
@@ -168,6 +172,8 @@ private:
   CLogServerView* m_pLogServerView;
   CMapConfigDoc*  m_pMapConfigDoc;
   CMapConfigView* m_pMapConfigView;
+  CMapEditorDoc*  m_pMapEditorDoc;
+  CMapEditorView* m_pMapEditorView;
 #ifdef USE_CLAN_SERVER
   Server*         m_pServer;
 #endif

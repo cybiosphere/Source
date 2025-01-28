@@ -183,6 +183,14 @@ BOOL CCybiosphereApp::InitInstance()
     RUNTIME_CLASS(CLogServerView));
   AddDocTemplate(pDocTemplateLogServer);
 
+  CMultiDocTemplate* pDocTemplateMapEditor;
+  pDocTemplateMapEditor = new CMultiDocTemplate(
+    IDR_MAPEDITOR_TYPE,
+    RUNTIME_CLASS(CMapEditorDoc),
+    RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+    RUNTIME_CLASS(CMapEditorView));
+  AddDocTemplate(pDocTemplateMapEditor);
+
 	// create main MDI Frame window
 	CMainFrame* pMainFrame = new CMainFrame;
 	if (!pMainFrame->LoadFrame(IDR_MAINFRAME))
@@ -257,6 +265,7 @@ BOOL CCybiosphereApp::InitInstance()
   CreateGeneticView();
   CreateStatisticView(m_pBiotop);
   CreateMapConfigView(m_pBiotop);
+  CreateMapEditorView(m_pBiotop);
   CreateLogServerView();
 
   // Start timers
@@ -513,6 +522,23 @@ void CCybiosphereApp::CreateLogServerView()
 CLogServerView* CCybiosphereApp::GetLogServerViewPtr()
 {
   return (m_pLogServerView);
+}
+
+void CCybiosphereApp::CreateMapEditorView(CBiotop* pBiotop)
+{
+  CDocTemplate* pDocTempl;
+  POSITION pos = GetFirstDocTemplatePosition();
+  for (int i = 0; i < 9; i++)
+    pDocTempl = GetNextDocTemplate(pos);
+  m_pMapEditorDoc = (CMapEditorDoc*)pDocTempl->OpenDocumentFile(NULL);
+  pos = m_pMapEditorDoc->GetFirstViewPosition();
+  m_pMapEditorView = (CMapEditorView*)(m_pMapEditorDoc->GetNextView(pos));
+  m_pMapEditorView->SetBiotop(pBiotop);
+}
+
+CMapEditorView* CCybiosphereApp::GetMapEditorViewPtr()
+{
+  return (m_pMapEditorView);
 }
 
 #ifdef USE_CLAN_CLIENT

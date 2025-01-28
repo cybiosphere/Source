@@ -41,7 +41,8 @@ typedef enum
   DISPLAY_MODE_LAB_BRAIN,
   DISPLAY_MODE_STATISTIC,
   DISPLAY_MODE_MAP,
-  DISPLAY_MODE_LOGSERVER
+  DISPLAY_MODE_LOGSERVER,
+  DISPLAY_MODE_MAPEDITOR
 } AppliDisplayMode_e;
 
 typedef enum
@@ -94,6 +95,8 @@ protected:  // control bar embedded members
   AppliSelectionMode_e m_SelectionMode;
  
   void resizeAllChildFrames(int cx, int cy);
+	void unselectAllButtonTools();
+	void hideAllToolsWindows();
 
 // Generated message map functions
 protected:
@@ -110,6 +113,7 @@ protected:
 	afx_msg void OnAppDisplayBrain();
 	afx_msg void OnAppDisplayGenetic();
 	afx_msg void OnAppDisplayStat();
+	afx_msg void OnAppDisplayMapEditor();
 	afx_msg void OnAppSelectView();
 	afx_msg void OnAppSelectCreate();
 	afx_msg void OnAppSelectStick();

@@ -404,6 +404,19 @@ BEGIN
     EDITTEXT        IDC_FILTER_STRING,7,7,296,14,ES_AUTOHSCROLL
 END
 
+IDD_MAPEDITOR_FORMVIEW DIALOGEX 0, 0, 290, 148
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Spawn entities",IDC_EDIT,7,100,67,12
+    CONTROL         "None",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,24,37,8
+    CONTROL         "Ground",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,7,37,37,8
+    CONTROL         "Fence",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,7,50,37,8
+    CONTROL         "Rock",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,7,63,37,8
+    CONTROL         "RFU",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,7,76,37,8
+    COMBOBOX        IDC_COMBO1,52,36,70,43,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -548,6 +561,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 40
     END
+
+    IDD_MAPEDITOR_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 141
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -640,6 +661,21 @@ BEGIN
     0
 END
 
+IDD_MAPEDITOR_FORMVIEW DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO1, 0x403, 6, 0
+0x6157, 0x6574, 0x0072, 
+    IDC_COMBO1, 0x403, 10, 0
+0x6157, 0x6574, 0x4472, 0x6565, 0x0070, 
+    IDC_COMBO1, 0x403, 6, 0
+0x7247, 0x7361, 0x0073, 
+    IDC_COMBO1, 0x403, 5, 0
+0x6f52, 0x6b63, "\000" 
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -724,6 +760,11 @@ BEGIN
 END
 
 IDD_DIALOG_FINDSTR AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MAPEDITOR_FORMVIEW AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -823,6 +864,8 @@ IDI_ICON_MORE           ICON                    "..\\WpGui\\res\\icoMore.ico"
 
 IDR_STATISTIC_TYPE      ICON                    "..\\wpgui\\res\\ico00001.ico"
 
+IDR_MAPEDITOR_TYPE      ICON                    "..\\wpgui\\res\\ico00002.ico"
+
 IDR_MAPCONFIG_TYPE      ICON                    "..\\wpgui\\res\\ico00003.ico"
 
 IDR_LOGSERVER_TYPE      ICON                    "..\\wpgui\\res\\idr_logs.ico"
@@ -899,6 +942,7 @@ BEGIN
     BUTTON      ID_APP_DISPLAY_STAT
     BUTTON      ID_APP_DISPLAY_MAP
     BUTTON      ID_APP_DISPLAY_LOGSERVER
+    BUTTON      ID_APP_DISPLAY_MAPEDITOR
     SEPARATOR
     BUTTON      ID_APP_DISPLAY_2D
     BUTTON      ID_APP_DISPLAY_3D
