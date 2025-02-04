@@ -374,7 +374,7 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 void CBiotopView::OnLButtonDown(UINT nFlags, CPoint point) 
 {
   m_pBioDisplay->SetLButtonIsDown(true);
-
+  ManageMapEditorMode(point);
   CView::OnLButtonDown(nFlags, point);
 }
 
@@ -438,12 +438,15 @@ void CBiotopView::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CBiotopView::OnMouseMove(UINT nFlags, CPoint point) 
 {
   m_pBioDisplay->OnMouseMove(point);
-
-  if ( (nFlags & MK_LBUTTON) != 0 ) 
+  if ((nFlags & MK_LBUTTON) != 0)
+  {
     m_pBioDisplay->SetLButtonIsDown(true);
+    ManageMapEditorMode(point);
+  }
   else
+  {
     m_pBioDisplay->SetLButtonIsDown(false);
-
+  }
   CView::OnMouseMove(nFlags, point);
 }
 
@@ -1047,4 +1050,32 @@ void CBiotopView::OnAppMonitorSpecieBiomass()
   m_MenuSelCoord.x = 1;
   m_MenuSelCoord.y = 1;
   theApp.updateAllBiotopNewMeasures();
+}
+
+void CBiotopView::ManageMapEditorMode(CPoint& point)
+{
+  MapEditorModeType_e editorMode = theApp.GetMapEditorMode();
+  if (editorMode > MAP_EDITOR_MODE_NONE)
+  {
+    Point_t gridCoord{ m_pBioDisplay->GetGridCoordFromScreenPos(point) };
+    switch (editorMode)
+    {
+    case MAP_EDITOR_MODE_GROUND_NONE:
+      m_pBiotop->setGridGroundTypeEarth(gridCoord.x, gridCoord.y);
+      break;
+    case MAP_EDITOR_MODE_GROUND_WATER:
+      m_pBiotop->setGridGroundTypeWater(gridCoord.x, gridCoord.y);
+      break;
+    case MAP_EDITOR_MODE_GROUND_WATER_DEEP:
+      m_pBiotop->setGridGroundTypeDeepWater(gridCoord.x, gridCoord.y);
+      break;
+    case MAP_EDITOR_MODE_GROUND_GRASS:
+      m_pBiotop->setGridGroundTypeGrass(gridCoord.x, gridCoord.y);
+      break;
+    case MAP_EDITOR_MODE_GROUND_ROCK:
+      m_pBiotop->setGridGroundTypeRock(gridCoord.x, gridCoord.y);
+      break;
+    }
+    
+  }
 }

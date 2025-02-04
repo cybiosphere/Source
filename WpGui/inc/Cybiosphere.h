@@ -72,6 +72,17 @@ distribution.
 // CCybiosphereApp:
 // See Cybiosphere.cpp for the implementation of this class
 //
+typedef enum
+{
+  MAP_EDITOR_MODE_NONE = 0,
+  MAP_EDITOR_MODE_GROUND_NONE,
+  MAP_EDITOR_MODE_GROUND_WATER,
+  MAP_EDITOR_MODE_GROUND_WATER_DEEP,
+  MAP_EDITOR_MODE_GROUND_GRASS,
+  MAP_EDITOR_MODE_GROUND_ROCK,
+  MAP_EDITOR_MODE_FENCE,
+  MAP_EDITOR_MODE_ROCK
+} MapEditorModeType_e;
 
 class CCybiosphereApp : public CWinApp
 {
@@ -98,6 +109,8 @@ public:
   BOOL IsModeStopOnEvent();
   void SetModeStopOnEvent(BOOL isStop);
   void SetModeMaxSpeed(BOOL isMaxSpeed);
+  void SetMapEditorMode(MapEditorModeType_e editMode);
+  MapEditorModeType_e GetMapEditorMode(void);
 
   CBiotop* GetBiotop();
   CString GetAppliPath();
@@ -190,6 +203,7 @@ private:
   CScenarioPlayer* m_pScenarioPlayer;
   CString m_OpenedBiotopPath;
   CString m_OpenedBiotopFile;
+  MapEditorModeType_e m_editMode;
 };
 
 

@@ -419,8 +419,6 @@ void CBiotopDisplayMFC::RefreshSceneIdleNoCPU()
 
 void CBiotopDisplayMFC::OnMouseMove(CPoint point) 
 {
-  // TODO: Add your message handler code here and/or call default
-
 }
 
 void CBiotopDisplayMFC::ScrollToGridCoord(Point_t centerPos)

@@ -1920,37 +1920,28 @@ void CBiotop::deleteGrid(void)
 void CBiotop::initGridDefaultLayerType(void)
 {
   size_t i, j;
-
   // Put Ground Everywhere:
   for (i=0;i<m_Dimension.x;i++)
   {
     for (j=0;j<m_Dimension.y;j++)
     {
-      m_tBioGrid[i][j][0].layerType = LAYER_UNDER_GROUND;
       if (testChance(0)) // choose here de % of rocky ground
       {
-        m_tBioGrid[i][j][1].layerType = LAYER_GLOBAL_ROCK;
+        setGridGroundTypeRock(i, j);
       }
       else
       {
-        m_tBioGrid[i][j][1].layerType = LAYER_OVER_GROUND;
+        setGridGroundTypeEarth(i, j);
       }
-      m_tBioGrid[i][j][2].layerType = LAYER_OVER_GROUND;
     }
   }
 
   // Add a River in the middle
   for (j = 1; j < m_Dimension.y / 2; j++)
   {
-    m_tBioGrid[m_Dimension.x / 2][j][0].layerType = LAYER_UNDER_WATER;
-    m_tBioGrid[m_Dimension.x / 2][j][1].layerType = LAYER_OVER_WATER;
-    m_tBioGrid[m_Dimension.x / 2][j][2].layerType = LAYER_IN_AIR;
-    m_tBioGrid[m_Dimension.x / 2 + 1][j][0].layerType = LAYER_UNDER_GROUND;
-    m_tBioGrid[m_Dimension.x / 2 + 1][j][1].layerType = LAYER_OVER_WET_GROUND;
-    m_tBioGrid[m_Dimension.x / 2 + 1][j][2].layerType = LAYER_OVER_GROUND;
-    m_tBioGrid[m_Dimension.x / 2 - 1][j][0].layerType = LAYER_UNDER_GROUND;
-    m_tBioGrid[m_Dimension.x / 2 - 1][j][1].layerType = LAYER_OVER_WET_GROUND;
-    m_tBioGrid[m_Dimension.x / 2 - 1][j][2].layerType = LAYER_OVER_GROUND;
+    setGridGroundTypeWater(m_Dimension.x / 2 - 1, j);
+    setGridGroundTypeDeepWater(m_Dimension.x / 2, j);
+    setGridGroundTypeWater(m_Dimension.x / 2 + 1, j);
   }
 
   // Add lake in the center
@@ -1958,21 +1949,16 @@ void CBiotop::initGridDefaultLayerType(void)
   {
     for (j=(m_Dimension.y/2-5); j<(m_Dimension.y/2+5); j++)
     {
-      m_tBioGrid[i][j][0].layerType = LAYER_UNDER_GROUND;
-      m_tBioGrid[i][j][1].layerType = LAYER_OVER_WET_GROUND;
-      m_tBioGrid[i][j][2].layerType = LAYER_OVER_GROUND;
+      setGridGroundTypeWater(i, j);
     }
   }
   for (i=(m_Dimension.x/2-4); i<(m_Dimension.x/2+4); i++)
   {
     for (j=(m_Dimension.y/2-4); j<(m_Dimension.y/2+4); j++)
     {
-      m_tBioGrid[i][j][0].layerType = LAYER_UNDER_WATER;
-      m_tBioGrid[i][j][1].layerType = LAYER_OVER_WATER;
-      m_tBioGrid[i][j][2].layerType = LAYER_IN_AIR;
+      setGridGroundTypeDeepWater(i, j);
     }
   }
-
 }
 
 void CBiotop::initGridDefaultAltitude(void)
@@ -2026,6 +2012,81 @@ void CBiotop::initGridEntity(void)
 
   updateGridAllEntities();
   updateGridFertilityBonus();
+}
+
+void CBiotop::setGridGroundTypeEarth(size_t gridCoordX, size_t gridCoordY)
+{
+  if ((gridCoordX >= m_Dimension.x) || (gridCoordY >= m_Dimension.y))
+  return;
+
+  if (m_tBioGrid[gridCoordX][gridCoordY][1].pEntity != NULL)
+  {
+    m_tBioGrid[gridCoordX][gridCoordY][1].pEntity->autoRemove();
+  }
+  m_tBioGrid[gridCoordX][gridCoordY][0].layerType = LAYER_UNDER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].layerType = LAYER_OVER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][2].layerType = LAYER_OVER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].pEntity = NULL;
+}
+
+void CBiotop::setGridGroundTypeDeepWater(size_t gridCoordX, size_t gridCoordY)
+{
+  if ((gridCoordX >= m_Dimension.x) || (gridCoordY >= m_Dimension.y))
+    return;
+
+  if (m_tBioGrid[gridCoordX][gridCoordY][1].pEntity != NULL)
+  {
+    m_tBioGrid[gridCoordX][gridCoordY][1].pEntity->autoRemove();
+  }
+  m_tBioGrid[gridCoordX][gridCoordY][0].layerType = LAYER_UNDER_WATER;
+  m_tBioGrid[gridCoordX][gridCoordY][1].layerType = LAYER_OVER_WATER;
+  m_tBioGrid[gridCoordX][gridCoordY][2].layerType = LAYER_IN_AIR;
+  m_tBioGrid[gridCoordX][gridCoordY][1].pEntity = m_pWaterGlobalEntity;
+}
+
+void CBiotop::setGridGroundTypeWater(size_t gridCoordX, size_t gridCoordY)
+{
+  if ((gridCoordX >= m_Dimension.x) || (gridCoordY >= m_Dimension.y))
+    return;
+
+  if (m_tBioGrid[gridCoordX][gridCoordY][1].pEntity != NULL)
+  {
+    m_tBioGrid[gridCoordX][gridCoordY][1].pEntity->autoRemove();
+  }
+  m_tBioGrid[gridCoordX][gridCoordY][0].layerType = LAYER_UNDER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].layerType = LAYER_OVER_WET_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][2].layerType = LAYER_OVER_WET_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].pEntity = m_pWaterGlobalEntity;
+}
+
+void CBiotop::setGridGroundTypeGrass(size_t gridCoordX, size_t gridCoordY)
+{
+  if ((gridCoordX >= m_Dimension.x) || (gridCoordY >= m_Dimension.y))
+    return;
+
+  if (m_tBioGrid[gridCoordX][gridCoordY][1].pEntity != NULL)
+  {
+    m_tBioGrid[gridCoordX][gridCoordY][1].pEntity->autoRemove();
+  }
+  m_tBioGrid[gridCoordX][gridCoordY][0].layerType = LAYER_UNDER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].layerType = LAYER_GLOBAL_GRASS;
+  m_tBioGrid[gridCoordX][gridCoordY][2].layerType = LAYER_OVER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].pEntity = m_pGrassGlobalEntity;
+}
+
+void CBiotop::setGridGroundTypeRock(size_t gridCoordX, size_t gridCoordY)
+{
+  if ((gridCoordX >= m_Dimension.x) || (gridCoordY >= m_Dimension.y))
+    return;
+
+  if (m_tBioGrid[gridCoordX][gridCoordY][1].pEntity != NULL)
+  {
+    m_tBioGrid[gridCoordX][gridCoordY][1].pEntity->autoRemove();
+  }
+  m_tBioGrid[gridCoordX][gridCoordY][0].layerType = LAYER_UNDER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].layerType = LAYER_GLOBAL_ROCK;
+  m_tBioGrid[gridCoordX][gridCoordY][2].layerType = LAYER_OVER_GROUND;
+  m_tBioGrid[gridCoordX][gridCoordY][1].pEntity = m_pRockGlobalEntity;
 }
 
 void CBiotop::updateGridFertilityBonus(void)

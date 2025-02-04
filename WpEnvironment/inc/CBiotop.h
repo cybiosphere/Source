@@ -407,6 +407,12 @@ public:
   void updateGridEntity(CBasicEntity* pEntity);
   int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
 
+  void setGridGroundTypeEarth(size_t gridCoordX, size_t gridCoordY);
+  void setGridGroundTypeDeepWater(size_t gridCoordX, size_t gridCoordY);
+  void setGridGroundTypeWater(size_t gridCoordX, size_t gridCoordY);
+  void setGridGroundTypeGrass(size_t gridCoordX, size_t gridCoordY);
+  void setGridGroundTypeRock(size_t gridCoordX, size_t gridCoordY);
+
 private:
   void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);

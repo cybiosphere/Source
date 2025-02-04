@@ -37,18 +37,6 @@ distribution.
 #include "ParameterCrtl.h"
 #include "ColorButton.h"
 
-typedef enum
-{
-  MAP_EDITOR_MODE_NONE = 0,
-  MAP_EDITOR_MODE_GROUND_NONE,
-  MAP_EDITOR_MODE_GROUND_WATER,
-  MAP_EDITOR_MODE_GROUND_WATER_DEEP,
-  MAP_EDITOR_MODE_GROUND_GRASS,
-  MAP_EDITOR_MODE_GROUND_ROCK,
-  MAP_EDITOR_MODE_FENCE,
-  MAP_EDITOR_MODE_ROCK
-} MapEditorModeType_e;
-
 class CMapEditorView : public CFormView
 {
 protected: // create from serialization only
@@ -60,7 +48,6 @@ public:
   enum { IDD = IDD_MAPEDITOR_FORMVIEW };
   int    m_radioEditMode;
   CComboBox  m_ComboGroundType;
-  MapEditorModeType_e m_editMode;
   //}}AFX_DATA
 
 // Attributes

@@ -56,6 +56,7 @@ public:
 
 protected:
 	void UpdateDisplayZoomRate();
+	void ManageMapEditorMode(CPoint& point);
 
 //Attributes
 protected:

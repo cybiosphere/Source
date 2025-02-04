@@ -437,6 +437,16 @@ void CCybiosphereApp::SetModeMaxSpeed(BOOL isMaxSpeed)
   }
 }
 
+void CCybiosphereApp::SetMapEditorMode(MapEditorModeType_e editMode)
+{
+  m_editMode = editMode;
+}
+
+MapEditorModeType_e CCybiosphereApp::GetMapEditorMode(void)
+{
+  return m_editMode;
+}
+
 void CCybiosphereApp::CreateBrainView()
 {
   CDocTemplate* pDocTempl;

@@ -1566,6 +1566,9 @@ bool CBasicEntity::moveToLayerIfPossible(size_t newLayer)
 //---------------------------------------------------------------------------
 void CBasicEntity::autoRemove(bool addRemoveEvent)
 {
+  if (m_Id < ENTITY_ID_FIRST_USER_ENTITY)
+    return;
+
   defaultActionWhenRemovedFromBiotop();
   m_Status = STATUS_TOBEREMOVED;
   Point_t coord = { invalidCoord, invalidCoord };

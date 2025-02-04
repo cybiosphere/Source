@@ -75,7 +75,7 @@ CMapEditorView::CMapEditorView()
   m_pBiotop = NULL;
   m_pFont = new CFont; 
   m_pFont->CreatePointFont(72, LPCTSTR("Arial"));
-  m_editMode = MAP_EDITOR_MODE_NONE;
+  theApp.SetMapEditorMode(MAP_EDITOR_MODE_NONE);
 }
 
 CMapEditorView::~CMapEditorView()
@@ -177,31 +177,31 @@ void CMapEditorView::OnSize(UINT nType, int cx, int cy)
 
 void CMapEditorView::OnRadio1() 
 {
-  m_editMode = MAP_EDITOR_MODE_NONE;
+  theApp.SetMapEditorMode(MAP_EDITOR_MODE_NONE);
   UpdateData(true);
 }
 
 void CMapEditorView::OnRadio2()
 {
-  m_editMode = (MapEditorModeType_e)(MAP_EDITOR_MODE_GROUND_NONE + m_ComboGroundType.GetCurSel());
+  theApp.SetMapEditorMode((MapEditorModeType_e)(MAP_EDITOR_MODE_GROUND_NONE + m_ComboGroundType.GetCurSel()));
   UpdateData(true);
 }
 
 void CMapEditorView::OnRadio3() 
 {
-  m_editMode = MAP_EDITOR_MODE_FENCE;
+  theApp.SetMapEditorMode(MAP_EDITOR_MODE_FENCE);
   UpdateData(true);
 }
 
 void CMapEditorView::OnRadio4() 
 {
-  m_editMode = MAP_EDITOR_MODE_ROCK;
+  theApp.SetMapEditorMode(MAP_EDITOR_MODE_ROCK);
   UpdateData(true);
 }
 
 void CMapEditorView::OnRadio5() 
 {
-  m_editMode = MAP_EDITOR_MODE_NONE;
+  theApp.SetMapEditorMode(MAP_EDITOR_MODE_NONE);
   UpdateData(true);
 }
 
