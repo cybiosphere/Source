@@ -374,14 +374,17 @@ void CBiotopView::OnTimer(UINT_PTR nIDEvent)
 void CBiotopView::OnLButtonDown(UINT nFlags, CPoint point) 
 {
   m_pBioDisplay->SetLButtonIsDown(true);
-  ManageMapEditorMode(point);
+  m_ClickDownGridCoord = m_pBioDisplay->GetGridCoordFromScreenPos(point);
+  m_pBioDisplay->SetClickStartGridCoord(m_ClickDownGridCoord.x, m_ClickDownGridCoord.y);
+  ManageMapEditorModeStep1(point);
   CView::OnLButtonDown(nFlags, point);
 }
 
 void CBiotopView::OnLButtonUp(UINT nFlags, CPoint point) 
 {
 	m_pBioDisplay->SetLButtonIsDown(false);
-
+  m_pBioDisplay->SetMapEditorModeLine(false);
+  ManageMapEditorModeStep2(point);
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -441,7 +444,7 @@ void CBiotopView::OnMouseMove(UINT nFlags, CPoint point)
   if ((nFlags & MK_LBUTTON) != 0)
   {
     m_pBioDisplay->SetLButtonIsDown(true);
-    ManageMapEditorMode(point);
+    ManageMapEditorModeStep1(point);
   }
   else
   {
@@ -1052,7 +1055,7 @@ void CBiotopView::OnAppMonitorSpecieBiomass()
   theApp.updateAllBiotopNewMeasures();
 }
 
-void CBiotopView::ManageMapEditorMode(CPoint& point)
+void CBiotopView::ManageMapEditorModeStep1(CPoint& point)
 {
   MapEditorModeType_e editorMode = theApp.GetMapEditorMode();
   if (editorMode > MAP_EDITOR_MODE_NONE)
@@ -1075,7 +1078,34 @@ void CBiotopView::ManageMapEditorMode(CPoint& point)
     case MAP_EDITOR_MODE_GROUND_ROCK:
       m_pBiotop->setGridGroundTypeRock(gridCoord.x, gridCoord.y);
       break;
+    case MAP_EDITOR_MODE_FENCE:
+      m_pBioDisplay->SetMapEditorModeLine(true);
+      break;
     }
-    
   }
 }
+
+void CBiotopView::ManageMapEditorModeStep2(CPoint& point)
+{
+  MapEditorModeType_e editorMode = theApp.GetMapEditorMode();
+  if (editorMode > MAP_EDITOR_MODE_NONE)
+  {
+    Point_t gridCoord{ m_pBioDisplay->GetGridCoordFromScreenPos(point) };
+    switch (editorMode)
+    {
+    case MAP_EDITOR_MODE_FENCE:
+      BuildFenceFromStartGridCoord(gridCoord);
+      break;
+    }
+  }
+}
+
+void CBiotopView::BuildFenceFromStartGridCoord(Point_t endGridCoord)
+{
+  m_pBiotop->buildWoodenFence(m_ClickDownGridCoord, endGridCoord);
+  m_pBioDisplay->RedrawScene();
+}
+
+
+
+

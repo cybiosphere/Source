@@ -41,7 +41,6 @@ class CBiotopDisplayMFC : public CBiotopDisplay
 
 //Attributes
 protected:
-
 	int m_nBitmapNumberY;
 	int m_nBitmapNumberX;
 	int m_nBitmapPixSizeY;
@@ -52,6 +51,7 @@ protected:
 
   double m_ZoomFactor;
   bool m_SatelliteView;
+  Point_t m_MouseCoord;
 
 // Operations
 public:

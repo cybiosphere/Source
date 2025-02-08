@@ -320,6 +320,7 @@ public:
 
   void displayEntities(void);
   void setDefaultEntitiesForTest(void);
+  void buildWoodenFence(Point_t startCoord, Point_t endCoord);
 
   void deleteAllEntities(void);
   void deleteAllMeasures(void);

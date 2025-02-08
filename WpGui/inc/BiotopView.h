@@ -56,7 +56,9 @@ public:
 
 protected:
 	void UpdateDisplayZoomRate();
-	void ManageMapEditorMode(CPoint& point);
+	void ManageMapEditorModeStep1(CPoint& point);
+	void ManageMapEditorModeStep2(CPoint& point);
+	void BuildFenceFromStartGridCoord(Point_t endGridCoord);
 
 //Attributes
 protected:
@@ -70,6 +72,7 @@ protected:
   Point_t m_MenuSelCoord;
   double m_zoomFactor;
   double m_SpeedRate;
+	Point_t m_ClickDownGridCoord{ 0,0 };
 
   LARGE_INTEGER m_SysTicksPrevSecEnd;
   bool m_IdleDisplayMode;

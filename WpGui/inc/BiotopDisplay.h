@@ -67,6 +67,8 @@ public:
   void SetSelectedEntityId(entityIdType id) {m_nSelectedEntityId = id;};
   void SetLButtonIsDown(bool isDown) {m_bLButtonIsDown = isDown;}; 
   void SetNbRefreshPerStep (int nbRefresh) {m_nbRefreshPerStep = nbRefresh;};
+  void SetClickStartGridCoord(size_t x, size_t y) { m_clickStartGridCoord = { x,y }; }
+  void SetMapEditorModeLine(bool isActive) { m_bMapEditorModeLine = isActive; };
 
 //Attributes
 protected:
@@ -77,7 +79,8 @@ protected:
   entityIdType  m_nFocusedEntityId;
   bool          m_bLButtonIsDown;
   int           m_nbRefreshPerStep;
-
+  Point_t       m_clickStartGridCoord;
+  bool          m_bMapEditorModeLine{ false };
 };
 
 #endif // !defined(AFX_BIOTOPDISPLAY_INCLUDED_)

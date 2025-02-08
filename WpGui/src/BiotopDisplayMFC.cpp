@@ -294,6 +294,18 @@ void CBiotopDisplayMFC::RedrawScene()
     } 
   } 
 
+  // Draw Map Editor helpers
+  if (m_bMapEditorModeLine)
+  {
+    coordX = m_nBitmapPixSizeX * m_clickStartGridCoord.x - visibleCoordX;
+    coordY = m_pView->GetTotalSize().cy - m_nBitmapPixSizeY * (m_clickStartGridCoord.y + 2) - visibleCoordY;
+    pDc->Draw3dRect(coordX, coordY, m_nBitmapPixSizeX, m_nBitmapPixSizeY, 0x00DBD8F8, 0x000ECECF);
+    coordX += m_nBitmapPixSizeX / 2;
+    coordY += m_nBitmapPixSizeY / 2;
+    pDc->MoveTo(coordX, coordY);
+    pDc->LineTo(m_MouseCoord.x, m_MouseCoord.y);
+  }
+
   // Restore the old bitmap
   pDc->SelectObject(bmpPrevious);
   
@@ -419,6 +431,11 @@ void CBiotopDisplayMFC::RefreshSceneIdleNoCPU()
 
 void CBiotopDisplayMFC::OnMouseMove(CPoint point) 
 {
+  if (m_bLButtonIsDown)
+  {
+    m_pView->Invalidate();
+  }
+  m_MouseCoord = { (size_t)point.x, (size_t)point.y };
 }
 
 void CBiotopDisplayMFC::ScrollToGridCoord(Point_t centerPos)

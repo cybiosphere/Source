@@ -613,100 +613,69 @@ void CBiotop::setDefaultEntitiesForTest(void)
   // Seed the random generator
   // srand( (unsigned)time(NULL) );
 
-  CGenome* pGenome1 = new CGenome(CLASS_NONE,"");
-  CGenome* pGenome2 = new CGenome(CLASS_NONE,"");
-  //CGenome* pGenome3 = new CGenome(CLASS_NONE,"");
-  //CGenome* pGenome4 = new CGenome(CLASS_NONE,"");
-  //CGenome* pGenome5 = new CGenome(CLASS_NONE,"");
-  CGenome* pGenome6 = new CGenome(CLASS_NONE,"");
-  //CGenome* pGenome7 = new CGenome(CLASS_NONE,"");
-  CGenome* pGenome8 = new CGenome(CLASS_NONE,"");
+  std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
   CBasicEntity* pNewEntity = NULL;
-
-  pGenome6->loadFromXmlFile("../DataScriptMammal/rock.xml");
-  pGenome8->loadFromXmlFile("../DataScriptMammal/wooden_fence.xml");
-
-  pGenome1->loadFromXmlFile("../DataScriptMammal/grassDry.xml");
-  pGenome2->loadFromXmlFile("../DataScriptMammal/grassDry2.xml");
-
   Point_t coord = {10,10};
-  string name;
+
+  buildWoodenFence({ 1, 1 }, { 1, m_Dimension.y - 2 });
+  buildWoodenFence({ 1, 1 }, { m_Dimension.x - 2, 1 });
+  buildWoodenFence({ 1, m_Dimension.y - 2 }, { m_Dimension.x - 1, m_Dimension.y - 2 });
+  buildWoodenFence({ m_Dimension.x - 2, 1 }, { m_Dimension.x - 2, m_Dimension.y - 1 });
 
   size_t i;
-  for (i=0; i<2; i++)
+  for (i = 0; i < 2; i++)
   {
-    CGenome* pGenome = new CGenome(*pGenome6);
     coord.x = 2 + getRandInt(60);
     coord.y = 2 + getRandInt(40);
-    createAndAddEntity("rock",coord,2,pGenome);
+    createAndAddEntity("rock.xml", pathName, coord);
   }
-  for ( i=0; i<m_Dimension.y-1; i++)
-  {
-    CGenome* pGenome = new CGenome(*pGenome8);
-    coord.x = 0;
-    coord.y = i;
-    pNewEntity = createAndAddEntity("wooden_fence",coord,2,pGenome);
-    if (pNewEntity != NULL)
-    {
-      pNewEntity->setDirection(2);
-    }
-  }
-  for ( i=0; i<m_Dimension.y-1; i++)
-  {
-    CGenome* pGenome = new CGenome(*pGenome8);
-    coord.x = m_Dimension.x-3;
-    coord.y = i;
-    pNewEntity = createAndAddEntity("wooden_fence",coord,2,pGenome);
-    if (pNewEntity != NULL)
-    {
-      pNewEntity->setDirection(2);
-    }
-  }
-  for ( i=0; i<m_Dimension.x-2; i++)
-  {
-    CGenome* pGenome = new CGenome(*pGenome8);
-    coord.x = i;
-    coord.y = m_Dimension.y-2;
-    createAndAddEntity("wooden_fence",coord,2,pGenome);
-  }
-  for ( i=0; i<m_Dimension.x-2; i++)
-  {
-    CGenome* pGenome = new CGenome(*pGenome8);
-    coord.x = i;
-    coord.y = 0;
-    createAndAddEntity("wooden_fence",coord,2,pGenome);
-  }
-  for (i=1; i<m_Dimension.y/5; i++)
-  {
-    CGenome* pGenome = new CGenome(*pGenome6);
-    coord.x = getRandInt(m_Dimension.x) + 1;
-    coord.y = getRandInt(m_Dimension.y) + 1;
-    createAndAddEntity("rock",coord,2,pGenome);
-  }
-
   for (i=0; i<2*m_Dimension.y; i++)
   {
-    CGenome* pGenome = new CGenome(*pGenome1);
     coord.x = getRandInt(m_Dimension.x) + 2;
     coord.y = getRandInt(m_Dimension.y) + 2;
-    createAndAddEntity("grassDry",coord,1,pGenome);
+    createAndAddEntity("grassDry.xml", pathName, coord);
   }
   for (i=0; i<m_Dimension.x; i++)
   {
-    CGenome* pGenome = new CGenome(*pGenome2);
-	  //name.Format("grass%d",20+i);
-
     coord.x = getRandInt(m_Dimension.x) + 1;
   	coord.y = getRandInt(m_Dimension.y) + 1;
-    createAndAddEntity("grassDry",coord,1,pGenome);
+    createAndAddEntity("grassDry2.xml", pathName, coord);
   }
-
-  delete pGenome1;
-  delete pGenome2;
-  delete pGenome6;
-  delete pGenome8;
 }
 
+void CBiotop::buildWoodenFence(Point_t startCoord, Point_t endCoord)
+{
+  std::string fenceFileName = "wooden_fence.xml";
+  std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
+  Point_t coord;
+  CBasicEntity* pEntity;
+  if (startCoord.x == endCoord.x)
+  {
+    coord.x = startCoord.x;
+    for (int y = std::min(startCoord.y, endCoord.y); y < std::max(startCoord.y, endCoord.y); y++)
+    {
+      coord.y = y;
+      pEntity = createAndAddEntity(fenceFileName, pathName, coord);
+      if (pEntity)
+      {
+        pEntity->setDirection(2);
+      }
+    }
+  }
+  else if (startCoord.y == endCoord.y)
+  {
+    coord.y = startCoord.y;
+    for (int x = std::min(startCoord.x, endCoord.x); x < std::max(startCoord.x, endCoord.x); x++)
+    {
+      coord.x = x;
+      pEntity = createAndAddEntity(fenceFileName, pathName, coord);
+      if (pEntity)
+      {
+        pEntity->setDirection(0);
+      }
+    }
+  }
+}
 
 size_t CBiotop::getNbOfEntities()
 {
