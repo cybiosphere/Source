@@ -613,9 +613,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
   // Seed the random generator
   // srand( (unsigned)time(NULL) );
 
-  std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
-  CBasicEntity* pNewEntity = NULL;
-  Point_t coord = {10,10};
+  Point_t coord = {0,0};
 
   buildWoodenFence({ 1, 1 }, { 1, m_Dimension.y - 2 });
   buildWoodenFence({ 1, 1 }, { m_Dimension.x - 2, 1 });
@@ -627,19 +625,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
   {
     coord.x = 2 + getRandInt(60);
     coord.y = 2 + getRandInt(40);
-    createAndAddEntity("rock.xml", pathName, coord);
-  }
-  for (i=0; i<2*m_Dimension.y; i++)
-  {
-    coord.x = getRandInt(m_Dimension.x) + 2;
-    coord.y = getRandInt(m_Dimension.y) + 2;
-    createAndAddEntity("grassDry.xml", pathName, coord);
-  }
-  for (i=0; i<m_Dimension.x; i++)
-  {
-    coord.x = getRandInt(m_Dimension.x) + 1;
-  	coord.y = getRandInt(m_Dimension.y) + 1;
-    createAndAddEntity("grassDry2.xml", pathName, coord);
+    buildRock(coord);
   }
 }
 
@@ -675,6 +661,13 @@ void CBiotop::buildWoodenFence(Point_t startCoord, Point_t endCoord)
       }
     }
   }
+}
+
+void CBiotop::buildRock(Point_t coord)
+{
+  std::string rockFileName = "rock.xml";
+  std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
+  CBasicEntity* pEntity = createAndAddEntity(rockFileName, pathName, coord);
 }
 
 size_t CBiotop::getNbOfEntities()
@@ -1491,7 +1484,8 @@ Point_t CBiotop::getGridCoordFromStepCoord(Point_t stepCoord)
 
 Point_t CBiotop::getStepCoordFromGridCoord(Point_t gridCoord)
 {
-  Point_t stepCoord{ gridCoord.x * NB_STEPS_PER_GRID_SQUARE,  gridCoord.y * NB_STEPS_PER_GRID_SQUARE };
+  Point_t stepCoord{ gridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2, 
+                     gridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2 };
   return stepCoord;
 }
 

@@ -615,6 +615,8 @@ void CybiOgre3DApp::createScene(void)
 
   CWater* waterGlobalEntity = new CWater();
   CGrass* grassGlobalEntity = new CGrass();
+  CRock* rockGlobalEntity = new CRock();
+
   Point_t coord;
   int x,y;
   waterGlobalEntity->setLabel("water");
@@ -629,14 +631,18 @@ void CybiOgre3DApp::createScene(void)
         waterGlobalEntity->jumpToGridCoord(coord,0);
         createMeshEntity(mSceneMgr, waterGlobalEntity);
         waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
-        //i++;
       }
       else if (m_pBiotop->getLayerType(coord,1) == LAYER_GLOBAL_GRASS)
       {
         grassGlobalEntity->jumpToGridCoord(coord,0);
         createMeshEntity(mSceneMgr, grassGlobalEntity);
         grassGlobalEntity->setId(grassGlobalEntity->getId()+1);
-        //i++;
+      }
+      else if (m_pBiotop->getLayerType(coord, 1) == LAYER_GLOBAL_ROCK)
+      {
+        rockGlobalEntity->jumpToGridCoord(coord, 0);
+        createMeshEntity(mSceneMgr, rockGlobalEntity);
+        rockGlobalEntity->setId(rockGlobalEntity->getId() + 1);
       }
     }
   }
@@ -653,7 +659,6 @@ void CybiOgre3DApp::createScene(void)
         waterGlobalEntity->jumpToGridCoord(coord,0);
         createMeshEntity(mSceneMgr, waterGlobalEntity);
         waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
-        //i++;
       }
     }
   }

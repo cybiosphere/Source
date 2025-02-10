@@ -67,6 +67,7 @@ public:
   
   bool isMineral();
   double  changeWeight(double variation); // Overload
+  ClassType_e getClass();
 
 };// end CRock
 

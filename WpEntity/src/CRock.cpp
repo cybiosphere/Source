@@ -75,7 +75,7 @@ CRock::CRock()
   completeParamsWithDefault();
   CBasicEntity::changeWeight(getMaxWeight());
 
-  m_pGenome = new CGenome(CLASS_SOLID, "Rock_ground");
+  m_pGenome = new CGenome(CLASS_SOLID, "rocks_ground");
 }
 
 CRock::~CRock()
@@ -90,4 +90,9 @@ bool CRock::isMineral()
 double CRock::changeWeight(double variation)
 {
   return (0);
+}
+
+ClassType_e  CRock::getClass()
+{
+  return CLASS_SOLID;
 }

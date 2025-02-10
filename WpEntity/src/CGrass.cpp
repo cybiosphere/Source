@@ -75,7 +75,7 @@ CGrass::CGrass()
   completeParamsWithDefault();
   CBasicEntity::changeWeight(getMaxWeight());
 
-  m_pGenome = new CGenome(CLASS_SPERMATOPHYTA, "Grass_ground");
+  m_pGenome = new CGenome(CLASS_SPERMATOPHYTA, "grass_ground");
 }
 
 CGrass::~CGrass()

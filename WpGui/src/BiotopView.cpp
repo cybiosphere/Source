@@ -1081,6 +1081,9 @@ void CBiotopView::ManageMapEditorModeStep1(CPoint& point)
     case MAP_EDITOR_MODE_FENCE:
       m_pBioDisplay->SetMapEditorModeLine(true);
       break;
+    case MAP_EDITOR_MODE_ROCK:
+      m_pBiotop->buildRock(gridCoord);
+      break;
     }
   }
 }
