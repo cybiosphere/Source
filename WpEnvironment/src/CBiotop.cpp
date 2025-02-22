@@ -494,7 +494,7 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
     return (false);
 
   // Keep old entity data
-  Point_t oldCoord   = pOldEntity->getGlobalGridCoord();
+  Point_t oldCoord = pOldEntity->getGlobalGridCoord();
   size_t oldLayer    = pOldEntity->getLayer();
   entityIdType oldId = pOldEntity->getId();
 
@@ -613,7 +613,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
   // Seed the random generator
   // srand( (unsigned)time(NULL) );
 
-  Point_t coord = {0,0};
+  Point_t coord{ 0, 0 };
 
   buildWoodenFence({ 1, 1 }, { 1, m_Dimension.y - 2 });
   buildWoodenFence({ 1, 1 }, { m_Dimension.x - 2, 1 });
@@ -1823,7 +1823,7 @@ void CBiotop::generateRandomEntities()
   }
 }
 
-BiotopTime_t CBiotop::getBiotopTime(void)
+const BiotopTime_t& CBiotop::getBiotopTime(void)
 {
   return (m_BioTime);
 }

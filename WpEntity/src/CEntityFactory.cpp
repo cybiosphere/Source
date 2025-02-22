@@ -42,7 +42,7 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   CBasicEntity* pNewEntity = NULL;
 
   // Set defaut coord
-  Point_t coord = { invalidCoord, invalidCoord };
+  Point_t coord{ invalidCoord, invalidCoord };
   size_t layer = invalidCoord;
 
   // Create the BasicEntity derived object

@@ -386,7 +386,7 @@ private:
 public:
   void nextSecond(bool doIncreaseTime = true);
   void triggerMeasuresNextSecond(void);
-  BiotopTime_t getBiotopTime(void);
+  const BiotopTime_t& getBiotopTime(void);
   void setBiotopTime(int seconds, int hours, int days, int years);
   void setNextHourTimeOffset(unsigned char nextHourTimeOffset);
 

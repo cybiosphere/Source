@@ -181,7 +181,7 @@ void CMainFrame::OnAppNewBiotop()
   theApp.SetDefaultBiotop();
   theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->RefreshBiotop();
   theApp.GetBiotopViewPtr()->ForceRefreshDisplay(TRUE);
-  theApp.GetBioCtrlViewPtr()->UpdateTimerDisplay(&theApp.GetBiotop()->getBiotopTime());
+  theApp.GetBioCtrlViewPtr()->UpdateTimerDisplay(theApp.GetBiotop()->getBiotopTime());
   theApp.SetOpenedBiotopFile("", "");
 }
 
@@ -208,7 +208,7 @@ void CMainFrame::OnAppOpenBiotop()
     bool resu = theApp.GetBiotop()->loadFromXmlFile(fileName.GetBuffer(0),pathName.GetBuffer(0));
     theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->RefreshBiotop();
     theApp.GetBiotopViewPtr()->ForceRefreshDisplay(TRUE);
-    theApp.GetBioCtrlViewPtr()->UpdateTimerDisplay(&theApp.GetBiotop()->getBiotopTime());
+    theApp.GetBioCtrlViewPtr()->UpdateTimerDisplay(theApp.GetBiotop()->getBiotopTime());
 
     if (resu == true)
     {

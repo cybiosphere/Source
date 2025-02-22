@@ -306,10 +306,10 @@ bool CBioCtrlView::RestoreUserSpeed()
   return true;
 }
 
-void CBioCtrlView::UpdateTimerDisplay(BiotopTime_t* pNewTime)
+void CBioCtrlView::UpdateTimerDisplay(const BiotopTime_t& pNewTime)
 {
-  m_StrTime.Format(LPCTSTR("Y%d D%d %02d:%02d:%02d"), pNewTime->years, pNewTime->days,
-                   pNewTime->hours, pNewTime->seconds/60, pNewTime->seconds%60); 
+  m_StrTime.Format(LPCTSTR("Y%d D%d %02d:%02d:%02d"), pNewTime.years, pNewTime.days,
+                   pNewTime.hours, pNewTime.seconds/60, pNewTime.seconds%60); 
   UpdateData(false);
   UpdateParametersDisplay(false);
 }

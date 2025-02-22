@@ -81,7 +81,7 @@ public:
 
 public:
   bool SetBiotop(CBiotop* pBiotop);
-  void UpdateTimerDisplay(BiotopTime_t* pNewTime);
+  void UpdateTimerDisplay(const BiotopTime_t& pNewTime);
 	void UpdateParametersDisplay(bool resetMinMax);
   void ForceModeManual(BOOL newMode);
   bool ForceChangeSpeed(int rate);

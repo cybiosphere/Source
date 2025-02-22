@@ -57,7 +57,7 @@ CWater::CWater()
   // Input values
   
   // Default values 
-  Point_t coord = {invalidCoord, invalidCoord};
+  Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, 1); // Def layer is 1
   m_pGenome       = NULL;
   m_pBrain        = NULL;

@@ -664,7 +664,7 @@ void CCybiosphereApp::NextSecondRefreshAllViews()
 void CCybiosphereApp::NextSecondRefreshAllViewsLowCPU()
 {
   CheckSelectedEntity();
-  GetBioCtrlViewPtr()->UpdateTimerDisplay(&m_pBiotop->getBiotopTime());
+  GetBioCtrlViewPtr()->UpdateTimerDisplay(m_pBiotop->getBiotopTime());
 
 #ifdef USE_CLAN_SERVER
   SetModeManual(m_pServer->get_manual_mode());

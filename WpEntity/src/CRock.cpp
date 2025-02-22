@@ -57,7 +57,7 @@ CRock::CRock()
   // Input values
   
   // Default values 
-  Point_t coord = {invalidCoord, invalidCoord};
+  Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);
   m_pGenome       = NULL;
   m_pBrain        = NULL;

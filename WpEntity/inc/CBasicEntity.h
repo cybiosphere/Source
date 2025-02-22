@@ -403,12 +403,12 @@ public:
 
   const Point_t&  getGridCoord();
   Point_t         getGlobalGridCoord();
-  Point_t         getPrevGridCoord();
-  Point_t         getPrevStepCoord();
+  const Point_t&  getPrevGridCoord();
+  const Point_t&  getPrevStepCoord();
   Point_t         getAndUpdateGuiGridCoord();
   Point_t         getAndUpdateGuiStepCoord();
   Point_t         getGridCoordRelative(const RelativePos_t& relativeCoord);
-  Point_t         getStepCoord();
+  const Point_t&  getStepCoord();
   Point_t         getGlobalStepCoord();
   Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
   size_t          getLayer();

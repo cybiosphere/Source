@@ -1571,7 +1571,7 @@ void CBasicEntity::autoRemove(bool addRemoveEvent)
 
   defaultActionWhenRemovedFromBiotop();
   m_Status = STATUS_TOBEREMOVED;
-  Point_t coord = { invalidCoord, invalidCoord };
+  Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);
   if ((m_pBiotop != NULL) && addRemoveEvent)
   {
@@ -3077,12 +3077,12 @@ Point_t CBasicEntity::getGlobalGridCoord()
   }
 }
 
-Point_t CBasicEntity::getPrevGridCoord()
+const Point_t& CBasicEntity::getPrevGridCoord()
 {
   return (m_PrevGridCoord);
 }
 
-Point_t CBasicEntity::getPrevStepCoord()
+const Point_t& CBasicEntity::getPrevStepCoord()
 {
   return (m_PrevStepCoord);
 }
@@ -3159,7 +3159,7 @@ Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
   return (position);
 }
 
-Point_t CBasicEntity::getStepCoord()
+const Point_t& CBasicEntity::getStepCoord()
 {
   return (m_StepCoord);
 }
