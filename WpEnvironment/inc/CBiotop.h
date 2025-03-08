@@ -298,7 +298,7 @@ public:
   CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName = "CybioCore.log") ;
   virtual ~CBiotop();
 
-  CBiotop* extractNewBiotopFromArea(Point_t startCoord, size_t dimX, size_t dimY);
+  CBiotop* extractNewBiotopFromArea(const Point_t& startCoord, size_t dimX, size_t dimY);
 
 //---------------------------------------------------------------------------
 // Entities management
@@ -320,8 +320,8 @@ public:
 
   void displayEntities(void);
   void setDefaultEntitiesForTest(void);
-  void buildWoodenFence(Point_t startCoord, Point_t endCoord);
-  void buildRock(Point_t coord);
+  void buildWoodenFence(const Point_t& startCoord, const Point_t& endCoord);
+  void buildRock(const Point_t& coord);
 
   void deleteAllEntities(void);
   void deleteAllMeasures(void);
@@ -352,27 +352,27 @@ public:
   CBasicEntity* getEntityByIndex(size_t index);
   CBasicEntity* getEntityByName(string& entityName);
   size_t        getEntityTableIndex(CBasicEntity* pEntity);
-  CBasicEntity* findEntity(Point_t searchCoord, size_t Layer);
-  CBasicEntity* findEntityNoCheckCoord(Point_t searchCoord, size_t layer);
-  const BiotopFoundIds_t& findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater = false);
-  const BiotopFoundIds_t& findEntities(Point_t startCoord, size_t distance, bool includeWater = false);
-  const BiotopFoundIds_t& findEntities(Point_t startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
-  const BiotopFoundIds_t& findFarEntities(Point_t startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater);
-  CBasicEntity* findTopLevelEntity(Point_t searchCoord);
-  bool isCoordValidAndFree(Point_t coord, size_t layer);
-  bool isGlobalGridCoordValidAndFree(Point_t globalCoord, size_t layer);
-  bool isCoordValid(Point_t coord, size_t layer);
-  bool isCoordValid(Point_t coord);
+  CBasicEntity* findEntity(const Point_t& searchCoord, size_t Layer);
+  CBasicEntity* findEntityNoCheckCoord(const Point_t& searchCoord, size_t layer);
+  const BiotopFoundIds_t& findEntitiesInSquare(const Point_t& bottomLeftCoord, size_t squareSize, bool includeWater = false);
+  const BiotopFoundIds_t& findEntities(const Point_t& startCoord, size_t distance, bool includeWater = false);
+  const BiotopFoundIds_t& findEntities(const Point_t& startCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater = false);
+  const BiotopFoundIds_t& findFarEntities(const Point_t& startCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater);
+  CBasicEntity* findTopLevelEntity(const Point_t& searchCoord);
+  bool isCoordValidAndFree(const Point_t& coord, size_t layer);
+  bool isGlobalGridCoordValidAndFree(const Point_t& globalCoord, size_t layer);
+  bool isCoordValid(const Point_t& coord, size_t layer);
+  bool isCoordValid(const Point_t& coord);
 
-  static Point_t getGridCoordFromStepCoord(Point_t stepCoord);
-  static Point_t getStepCoordFromGridCoord(Point_t gridCoord);
-  Point_t getGlobalGridCoordFromGridCoord(Point_t localGridCoord);
-  Point_t getGridCoordFromGlobalGridCoord(Point_t globalGridCoord);
-  Point_t getGlobalStepCoordFromStepCoord(Point_t localStepCoord);
-  Point_t getStepCoordFromGlobalStepCoord(Point_t globalStepCoord);
+  static Point_t getGridCoordFromStepCoord(const Point_t& stepCoord);
+  static Point_t getStepCoordFromGridCoord(const Point_t& gridCoord);
+  Point_t getGlobalGridCoordFromGridCoord(const Point_t& localGridCoord);
+  Point_t getGridCoordFromGlobalGridCoord(const Point_t& globalGridCoord);
+  Point_t getGlobalStepCoordFromStepCoord(const Point_t& localStepCoord);
+  Point_t getStepCoordFromGlobalStepCoord(const Point_t& globalStepCoord);
 
 private:
-  void colorizeSearchNoCheckCoord(Point_t coord);
+  void colorizeSearchNoCheckCoord(const Point_t& coord);
   void putEntityInList(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater);
   void putEntityInListOptim(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, size_t layer, bool includeWater);
   void putEntitiesInListAllLayers(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t searchCoord, bool includeWater);
@@ -405,9 +405,9 @@ public:
   void initGridDefaultLayerType(void);
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
-  void ModifyGridFertilityBonus(Point_t coord, char bonusToAdd);
+  void ModifyGridFertilityBonus(const Point_t& coord, char bonusToAdd);
   void updateGridEntity(CBasicEntity* pEntity);
-  int getGridDistance(Point_t gridCoord1, Point_t gridCoord2);
+  int getGridDistance(const Point_t& gridCoord1, const Point_t& gridCoord2);
 
   void setGridGroundTypeEarth(size_t gridCoordX, size_t gridCoordY);
   void setGridGroundTypeDeepWater(size_t gridCoordX, size_t gridCoordY);
@@ -500,14 +500,14 @@ public:
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  Point_t getDimension(void);
-  Point_t getGlobalGridDimension(void);
-  double getFertility(Point_t coord);
+  const Point_t& getDimension(void) const;
+  const Point_t& getGlobalGridDimension(void) const;
+  double getFertility(const Point_t& coord);
   void   setFertilityRate(int fertility);
   double getRadioactivityRate(); 
-  double getTemperature(Point_t coord, size_t layer);
+  double getTemperature(const Point_t& coord, size_t layer);
   double getSunlight(); 
-  LayerType_e getLayerType(Point_t coord, size_t layer);
+  LayerType_e getLayerType(const Point_t& coord, size_t layer);
   size_t getNbLayer(void);
   CCyclicParam* getParamFertility();
   CCyclicParam* getParamSunlight();
@@ -515,9 +515,9 @@ public:
   CCyclicParam* getParamTemperature();
   CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string& label);
-  double getOdorTrace(Point_t coord, size_t odorIndex);
-  bool getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
-  COLORREF getCustomColor(Point_t coord);
+  double getOdorTrace(const Point_t& coord, size_t odorIndex);
+  bool getOdorLevels(const Point_t& coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
+  COLORREF getCustomColor(const Point_t& coord);
   BiotopSquare_t** getpBioSquare();
   string getLabel();
   int  getWindDirection();
@@ -530,7 +530,7 @@ public:
   CGene& getGeneToMark();
   bool getMarkDominantAlleleOnly();
   void setGlobalGridDimension(size_t dimX, size_t dimY);
-  void setGlobalGridCoordOffset(Point_t startingCoord);
+  void setGlobalGridCoordOffset(const Point_t& startingCoord);
   void setAutoSaveSpecieName(string specieName);
 
 }; // end CBiotop

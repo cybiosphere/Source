@@ -2149,7 +2149,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
 //  
 // REMARKS:      coord -1,-1 can be used to move entity out of the game
 //---------------------------------------------------------------------------
-bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer)
+bool CBasicEntity::jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer, size_t newLayer)
 {
   bool resu;
   size_t nextLayer = chooseLayer ? newLayer : m_Layer;
@@ -2196,7 +2196,7 @@ bool CBasicEntity::jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_
   return (resu);
 }
 
-bool CBasicEntity::jumpToGlobalGridCoord(Point_t newGlobalGridCoord, bool chooseLayer, size_t newLayer)
+bool CBasicEntity::jumpToGlobalGridCoord(const Point_t& newGlobalGridCoord, bool chooseLayer, size_t newLayer)
 {
   if (m_pBiotop == NULL)
   {
@@ -2220,7 +2220,7 @@ bool CBasicEntity::jumpToGlobalGridCoord(Point_t newGlobalGridCoord, bool choose
 //  
 // REMARKS:      coord -1,-1 can be used to move entity out of the game
 //---------------------------------------------------------------------------
-bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
+bool CBasicEntity::jumpToStepCoord(const Point_t& newStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
 {
   if (addMoveEvent && ((m_PrevStepCoord.x != m_StepCoord.x) || (m_PrevStepCoord.y != m_StepCoord.y)))
   {
@@ -2244,7 +2244,7 @@ bool CBasicEntity::jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_
   return (true);
 }
 
-bool CBasicEntity::jumpToGlobalStepCoord(Point_t newGlobalStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
+bool CBasicEntity::jumpToGlobalStepCoord(const Point_t& newGlobalStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
 {
   if (m_pBiotop == NULL)
   {

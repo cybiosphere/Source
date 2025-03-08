@@ -77,6 +77,7 @@ CSensorViewIdentifyFar::	CSensorViewIdentifyFar(CBrainAnimal* pBrain,
   m_pBrain = pBrain;
   m_nRangeMin = rangeMin;
   m_nRangeMax = rangeMax;
+  m_nRangeMaxAtNight = (rangeMax - rangeMin) / 2 + rangeMin;
   m_Angle = angle;
   m_bDistanceEval = distanceEvaluation;
   m_nFocusObjectsSect1 = 0; 
@@ -267,21 +268,24 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
   double viewChance;
   entitySignatureType previousEntitySignature = 0;
   double currentSunlight{ pBiotop->getSunlight() };
+  bool isBrainFocussedEntity{ false };
 
   // Find entities according to angle, distance and layer:
-  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, m_nRangeMax, true);
+  int range = (pBiotop->getSunlight() < 26.0) ? m_nRangeMaxAtNight : m_nRangeMax;
+  const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, range, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
+    isBrainFocussedEntity = (pCurEntity->getId() == m_pBrain->getBrainFocusedEntityId());
 
     if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))
     {
       viewChance = 0;
     }
-    else if (pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId())
+    else if (!isBrainFocussedEntity)
     {
       // view chance depends on vigilance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - 2*pCurEntity->getCamouflage();
@@ -303,7 +307,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyFarTab[i].signature = pCurEntity->getEntitySignature();
       offset = 0;
 
-      if (pCurEntity->getEntitySignature() != previousEntitySignature) // CPU optim
+      if (isBrainFocussedEntity || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
       {
         pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity, false);
         previousEntitySignature = pCurEntity->getEntitySignature();

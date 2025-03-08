@@ -349,10 +349,10 @@ public:
   void doNothing();
 
 
-  bool jumpToGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
-  bool jumpToGlobalGridCoord(Point_t newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
-  bool jumpToStepCoord(Point_t newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
-  bool jumpToGlobalStepCoord(Point_t newGlobalStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
+  bool jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool jumpToGlobalGridCoord(const Point_t& newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
+  bool jumpToStepCoord(const Point_t& newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
+  bool jumpToGlobalStepCoord(const Point_t& newGlobalStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
   bool moveToGridEdgePos();
   bool moveToGridCenterPos();
   bool turnToCenterDir();

@@ -265,6 +265,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   double viewChance;
   entitySignatureType previousEntitySignature = 0;
   double currentSunlight{ pBiotop->getSunlight() };
+  bool isBrainFocussedEntity{ false };
 
   // Find entities according to angle, distance and layer:
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRange, m_Layer, true);
@@ -274,12 +275,13 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   {
     pCurEntity = tFoundIds[i].pEntity;
     curWeight = 0;
+    isBrainFocussedEntity = (pCurEntity->getId() == m_pBrain->getBrainFocusedEntityId());
 
     if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))
     {
       viewChance = 0;
     }
-    else if ((pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId()) && (m_nRange>1)) // keep seeing focused and just in front entities
+    else if (!isBrainFocussedEntity && (m_nRange>1)) // keep seeing focused and just in front entities
     {
       // view chance depends on vigliance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - pCurEntity->getCamouflage();
@@ -298,7 +300,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
       m_pEntityViewIdentifyTab[i].signature = pCurEntity->getEntitySignature();
 
       offset = 0;
-      if (pCurEntity->isLiving() || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
+      if (isBrainFocussedEntity || (pCurEntity->getEntitySignature() != previousEntitySignature)) // CPU optim
       {
         pFoundIdentitiesMatrix = m_pBrain->ComputeAndGetIdentification(pCurEntity);
         previousEntitySignature = pCurEntity->getEntitySignature();

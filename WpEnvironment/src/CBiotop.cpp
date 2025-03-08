@@ -125,7 +125,7 @@ CBiotop::~CBiotop()
   CYBIOCORE_LOG_CLOSE;
 }
 
-CBiotop* CBiotop::extractNewBiotopFromArea(Point_t startCoord, size_t dimX, size_t dimY)
+CBiotop* CBiotop::extractNewBiotopFromArea(const Point_t& startCoord, size_t dimX, size_t dimY)
 {
   if ((startCoord.x > m_Dimension.x) || (startCoord.y > m_Dimension.y)
     || ((startCoord.x + dimX) > m_Dimension.x) || ((startCoord.y + dimY) > m_Dimension.y))
@@ -629,7 +629,7 @@ void CBiotop::setDefaultEntitiesForTest(void)
   }
 }
 
-void CBiotop::buildWoodenFence(Point_t startCoord, Point_t endCoord)
+void CBiotop::buildWoodenFence(const Point_t& startCoord, const Point_t& endCoord)
 {
   std::string fenceFileName = "wooden_fence.xml";
   std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
@@ -663,7 +663,7 @@ void CBiotop::buildWoodenFence(Point_t startCoord, Point_t endCoord)
   }
 }
 
-void CBiotop::buildRock(Point_t coord)
+void CBiotop::buildRock(const Point_t& coord)
 {
   std::string rockFileName = "rock.xml";
   std::string pathName = m_DefaultFilePath + "/../DataScriptMammal/";
@@ -841,7 +841,7 @@ size_t CBiotop::getEntityTableIndex(CBasicEntity* pEntity)
   return (invalidIndex);
 }
 
-void CBiotop::colorizeSearchNoCheckCoord(Point_t coord)
+void CBiotop::colorizeSearchNoCheckCoord(const Point_t& coord)
 {
   if (m_bColorizeSearch)
   {
@@ -849,7 +849,7 @@ void CBiotop::colorizeSearchNoCheckCoord(Point_t coord)
   }
 }
 
-CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
+CBasicEntity* CBiotop::findEntity(const Point_t& searchCoord, size_t layer)
 {
   if (isCoordValid(searchCoord,layer))
   {
@@ -862,7 +862,7 @@ CBasicEntity* CBiotop::findEntity(Point_t searchCoord, size_t layer)
   return NULL;
 }
 
-CBasicEntity* CBiotop::findEntityNoCheckCoord(Point_t searchCoord, size_t layer)
+CBasicEntity* CBiotop::findEntityNoCheckCoord(const Point_t& searchCoord, size_t layer)
 {
   return (m_tBioGrid[searchCoord.x][searchCoord.y][layer].pEntity);
 }
@@ -996,7 +996,7 @@ void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceTo
   return;
 }
 
-const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, size_t squareSize, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(const Point_t& bottomLeftCoord, size_t squareSize, bool includeWater)
 {
   Point_t curCoord;
   size_t i;
@@ -1016,7 +1016,7 @@ const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(Point_t bottomLeftCoord, s
   return (foundIds);
 }
 
-const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distance, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntities(const Point_t& startCoord, size_t distance, bool includeWater)
 {
   Point_t curCoord;
   int threadNum = omp_get_thread_num();
@@ -1050,7 +1050,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t startCoord, size_t distanc
 }
 
 //  startCoord entity not include
-const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findEntities(const Point_t& centerCoord, UCHAR sectorBmp, int distance, size_t layer, bool includeWater)
 {
   Point_t curCoord;
   int i, j;
@@ -1224,7 +1224,7 @@ const BiotopFoundIds_t& CBiotop::findEntities(Point_t centerCoord, UCHAR sectorB
 }
 
 //  find all entities betwen 2 range, on any layer except layer0 (under ground)
-const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater)
+const BiotopFoundIds_t& CBiotop::findFarEntities(const Point_t& centerCoord, UCHAR sectorBmp, int rangeMin, int rangeMax, bool includeWater)
 {
   Point_t curCoord;
   int entityDist;
@@ -1454,27 +1454,27 @@ const BiotopFoundIds_t& CBiotop::findFarEntities(Point_t centerCoord, UCHAR sect
   return (foundIds);
 }
 
-bool CBiotop::isCoordValidAndFree(Point_t coord, size_t layer)
+bool CBiotop::isCoordValidAndFree(const Point_t& coord, size_t layer)
 {
   return (isCoordValid(coord, layer) && (findEntityNoCheckCoord(coord, layer) == NULL));
 }
 
-bool CBiotop::isGlobalGridCoordValidAndFree(Point_t globalCoord, size_t layer)
+bool CBiotop::isGlobalGridCoordValidAndFree(const Point_t& globalCoord, size_t layer)
 {
   return isCoordValidAndFree(getGridCoordFromGlobalGridCoord(globalCoord), layer);
 }
 
-bool CBiotop::isCoordValid(Point_t coord, size_t layer)
+bool CBiotop::isCoordValid(const Point_t& coord, size_t layer)
 {
   return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y) && (layer < m_nbLayer));
 }
 
-bool CBiotop::isCoordValid(Point_t coord)
+bool CBiotop::isCoordValid(const Point_t& coord)
 {
   return ((coord.x < m_Dimension.x) && (coord.y < m_Dimension.y));
 }
 
-Point_t CBiotop::getGridCoordFromStepCoord(Point_t stepCoord)
+Point_t CBiotop::getGridCoordFromStepCoord(const Point_t& stepCoord)
 {
   Point_t gridCoord;
   gridCoord.x = stepCoord.x / NB_STEPS_PER_GRID_SQUARE;
@@ -1482,34 +1482,34 @@ Point_t CBiotop::getGridCoordFromStepCoord(Point_t stepCoord)
   return gridCoord;
 }
 
-Point_t CBiotop::getStepCoordFromGridCoord(Point_t gridCoord)
+Point_t CBiotop::getStepCoordFromGridCoord(const Point_t& gridCoord)
 {
   Point_t stepCoord{ gridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2, 
                      gridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2 };
   return stepCoord;
 }
 
-Point_t CBiotop::getGlobalGridCoordFromGridCoord(Point_t localGridCoord)
+Point_t CBiotop::getGlobalGridCoordFromGridCoord(const Point_t& localGridCoord)
 {
   return { localGridCoord.x + m_GlobalGridCoordOffset.x, localGridCoord.y + m_GlobalGridCoordOffset.y };
 }
 
-Point_t CBiotop::getGridCoordFromGlobalGridCoord(Point_t globalGridCoord)
+Point_t CBiotop::getGridCoordFromGlobalGridCoord(const Point_t& globalGridCoord)
 {
   return { globalGridCoord.x - m_GlobalGridCoordOffset.x, globalGridCoord.y - m_GlobalGridCoordOffset.y };
 }
 
-Point_t CBiotop::getGlobalStepCoordFromStepCoord(Point_t localStepCoord)
+Point_t CBiotop::getGlobalStepCoordFromStepCoord(const Point_t& localStepCoord)
 {
   return { localStepCoord.x + m_GlobalStepCoordOffset.x, localStepCoord.y + m_GlobalStepCoordOffset.y };
 }
 
-Point_t CBiotop::getStepCoordFromGlobalStepCoord(Point_t globalStepCoord)
+Point_t CBiotop::getStepCoordFromGlobalStepCoord(const Point_t& globalStepCoord)
 {
   return { globalStepCoord.x - m_GlobalStepCoordOffset.x, globalStepCoord.y - m_GlobalStepCoordOffset.y };
 }
 
-CBasicEntity* CBiotop::findTopLevelEntity(Point_t searchCoord)
+CBasicEntity* CBiotop::findTopLevelEntity(const Point_t& searchCoord)
 {
   CBasicEntity* pFoundEntity = NULL;
 
@@ -2079,7 +2079,7 @@ void CBiotop::updateGridFertilityBonus(void)
   }
 }
 
-void CBiotop::ModifyGridFertilityBonus(Point_t coord, char bonusToAdd)
+void CBiotop::ModifyGridFertilityBonus(const Point_t& coord, char bonusToAdd)
 {
   if (isCoordValid(coord))
   {
@@ -2116,7 +2116,7 @@ void CBiotop::updateGridEntity(CBasicEntity* pCurEntity)
   }
 }
 
-int CBiotop::getGridDistance(Point_t gridCoord1, Point_t gridCoord2)
+int CBiotop::getGridDistance(const Point_t& gridCoord1, const Point_t& gridCoord2)
 {
   return cybio_max(abs((int)gridCoord1.x - (int)gridCoord2.x), abs((int)gridCoord1.y - (int)gridCoord2.y));
 }
@@ -3030,17 +3030,17 @@ void CBiotop::logCpuMarkerEnd(BiotopCpuMarkerType_e markerId)
 // Get / Set for attributes
 //===========================================================================
 
-Point_t CBiotop::getDimension()
+const Point_t& CBiotop::getDimension() const
 {
   return (m_Dimension);
 }
 
-Point_t CBiotop::getGlobalGridDimension()
+const Point_t& CBiotop::getGlobalGridDimension() const
 {
   return (m_GlobalGridDimension);
 }
 
-double CBiotop::getFertility(Point_t coord)
+double CBiotop::getFertility(const Point_t& coord)
 {
   if (isCoordValid(coord))
   {
@@ -3063,7 +3063,7 @@ double CBiotop::getRadioactivityRate()
   return (m_pRadioactivity->getVal());
 }
 
-double CBiotop::getTemperature(Point_t coord, size_t layer)
+double CBiotop::getTemperature(const Point_t& coord, size_t layer)
 {
   double computedTemperature = m_pTemperature->getVal();
 
@@ -3105,7 +3105,7 @@ double CBiotop::getSunlight()
   return (m_pSunlightRate->getVal());
 }
 
-LayerType_e CBiotop::getLayerType(Point_t coord, size_t layer)
+LayerType_e CBiotop::getLayerType(const Point_t& coord, size_t layer)
 {
   LayerType_e resu = LAYER_UNDER_GROUND; // default value
   if (isCoordValid(coord,layer))
@@ -3161,12 +3161,12 @@ CGenericParam* CBiotop::getParameterByName(string& paramName)
   return (NULL);
 }
 
-double CBiotop::getOdorTrace(Point_t coord, size_t odorIndex)
+double CBiotop::getOdorTrace(const Point_t& coord, size_t odorIndex)
 {
   return isCoordValid(coord) ? ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odorIndex] / MAX_ODOR_TRACE_VAL) : 0;
 }
 
-bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
+bool CBiotop::getOdorLevels(const Point_t& coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
 {
   // Init to 0
   int i;
@@ -3209,7 +3209,7 @@ bool CBiotop::getOdorLevels(Point_t coord, int range, double odorLevel[NUMBER_OD
   return true;
 }
 
-COLORREF CBiotop::getCustomColor(Point_t coord)
+COLORREF CBiotop::getCustomColor(const Point_t& coord)
 {
   // coord may be used later
   return isCoordValid(coord) ? (m_tBioSquare[coord.x][coord.y].customColor) : 0;
@@ -3276,7 +3276,7 @@ void CBiotop::setGlobalGridDimension(size_t dimX, size_t dimY)
   m_GlobalGridDimension.y = dimY;
 }
 
-void CBiotop::setGlobalGridCoordOffset(Point_t startingCoord)
+void CBiotop::setGlobalGridCoordOffset(const Point_t& startingCoord)
 {
   m_GlobalGridCoordOffset = startingCoord;
   m_GlobalStepCoordOffset.x = startingCoord.x * NB_STEPS_PER_GRID_SQUARE;

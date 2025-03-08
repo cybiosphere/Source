@@ -83,6 +83,7 @@ class DLL_CYBIOCORE_API CSensorViewIdentifyFar : public CSensor
 private:
   int             m_nRangeMin;
   int             m_nRangeMax;
+  int             m_nRangeMaxAtNight;
   ViewAngleType_e m_Angle;
   bool            m_bDistanceEval;
   // Sect6 Sect4 Sect2
