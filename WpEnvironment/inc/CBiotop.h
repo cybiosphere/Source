@@ -476,9 +476,9 @@ public:
 public:
   bool addEntitySpawner(size_t index, string entityFileName, string pathName, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
   bool addEntitySpawner(size_t index, CBasicEntity* pModelEntity, int intensityRate, int avaragePeriod, bool isProportionalToFertility);
+  void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
 private:
   void generateRandomEntities();
-  void spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate);
   void decreaseOdorMap();
   void memorizeAllPopulationMaps();
 

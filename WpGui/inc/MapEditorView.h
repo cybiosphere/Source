@@ -49,7 +49,7 @@ public:
   int    m_radioEditMode;
   CComboBox  m_ComboGroundType;
   //}}AFX_DATA
-
+  int		m_SpawnRate{ 10 };
 // Attributes
 public:
   CStatisticDoc* GetDocument();
@@ -100,8 +100,6 @@ protected:
   afx_msg void OnSelChangeComboGround();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
-public:
-
 };
 
 

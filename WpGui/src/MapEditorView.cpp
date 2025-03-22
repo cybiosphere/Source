@@ -27,7 +27,7 @@ distribution.
 
 #include "stdafx.h"
 #include "Cybiosphere.h"
-
+#include "CEntityFactory.h"
 #include "MapEditorDoc.h"
 #include "MapEditorView.h"
 
@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(CMapEditorView, CFormView)
   ON_BN_CLICKED(IDC_RADIO3, OnRadio3)
   ON_BN_CLICKED(IDC_RADIO4, OnRadio4)
   ON_BN_CLICKED(IDC_RADIO5, OnRadio5)
-  ON_BN_CLICKED(IDC_EDIT, OnSpawnEntities)
+  ON_BN_CLICKED(IDC_EDIT_SPAWN, OnSpawnEntities)
   ON_CBN_SELCHANGE(IDC_COMBO1, OnSelChangeComboGround)
   //}}AFX_MSG_MAP
   // Standard printing commands
@@ -93,6 +93,8 @@ void CMapEditorView::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(CMapEditorView)
   DDX_Radio(pDX, IDC_RADIO1, m_radioEditMode);
   DDX_Control(pDX, IDC_COMBO1, m_ComboGroundType);
+  DDX_Text(pDX, IDC_EDIT_RATE, m_SpawnRate);
+  DDV_MinMaxInt(pDX, m_SpawnRate, 0, 100);
   //}}AFX_DATA_MAP
 }
 
@@ -207,6 +209,18 @@ void CMapEditorView::OnRadio5()
 
 void CMapEditorView::OnSpawnEntities()
 {
+  UpdateData(true);
+  CFileDialog dlg(true, "xml", "", 0, "Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
+  // Set Dialog properties
+  dlg.m_ofn.lpstrTitle = "Select entity";
+  // Open Dialog
+  long nResponse = dlg.DoModal();
+  if (nResponse == IDOK)
+  {
+    std::string fileWithPath = dlg.GetPathName();
+    CBasicEntity* pEntity = CEntityFactory::createEntity(fileWithPath);
+    m_pBiotop->spawnEntitiesRandomly(pEntity, 10 * m_SpawnRate);
+  }
 }
 
 void CMapEditorView::OnSelChangeComboGround()
