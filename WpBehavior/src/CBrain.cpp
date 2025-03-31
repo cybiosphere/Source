@@ -980,8 +980,6 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     for (rowIndex=0; rowIndex<nbRowsInFile; rowIndex++)
       for (columnIndex=0; columnIndex<nbColumnsInFile; columnIndex++)
         pBrainNeuronMatrix->SetNeuronTableData(rowIndex, columnIndex, dataMatrixInFile(rowIndex, columnIndex));*/
-
-
   }
 
   return (resu);
@@ -1089,7 +1087,6 @@ bool CBrain::HistorizeInput (void)
   return true;
 }
 
-
 //---------------------------------------------------------------------------
 // METHOD:       CBrain::SetBonusAndGetVectorChoiceThresholds
 //  
@@ -1146,7 +1143,6 @@ bool CBrain::SetBonusAndGetVectorChoiceThresholds(double curiosityRate, neuroneV
 
   return (true);
 }
-
 
 choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
 {
@@ -1495,15 +1491,12 @@ bool CBrain::IsDecisionRowSexSpecific(size_t rowIndex)
 bool CBrain::ChangeDecisionNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {
   return m_mDecisionNeuronTable.ChangeNeuronTableVal( row, col, variation, normalize);
-
 }
-
 
 bool CBrain::AddFeelingWelfareSensitivity(CSensor* pSens, size_t tableSensiSize, double* pTableSensi)
 {
   return ( m_pFeelingWelfare->AddSensitivity(pSens,tableSensiSize,pTableSensi) );
 }
-
 
 
 //---------------------------------------------------------------------------
@@ -1543,7 +1536,6 @@ size_t CBrain::GetIdentifyMatrixRowIndex(DWORD sensorUidbase, size_t subCaptorIn
   }
   return index;
 }
-
 
 bool CBrain::ChangeIdentifyNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {

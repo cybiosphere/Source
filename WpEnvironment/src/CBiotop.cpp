@@ -185,7 +185,6 @@ CBiotop* CBiotop::extractNewBiotopFromArea(const Point_t& startCoord, size_t dim
   return pExctactedBiotop;
 }
 
-
 //===========================================================================
 // Entities management
 //===========================================================================
@@ -319,7 +318,6 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   return true;
 }
 
-
 CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t globalGridCoord, size_t layer, CGenome* pGenome)
 {
   // Check coords
@@ -347,7 +345,6 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t globalGridCoord, 
   return pNewEntity;
 }
 
-
 CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Point_t globalGridCoord, size_t layer)
 {
   string fileNameWithPath = pathName + fileName;
@@ -363,7 +360,6 @@ CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Poin
   delete pXmlDoc;
   return pNewEntity;
 }
-
 
 CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t globalGridCoord, size_t layer)
 {
@@ -397,7 +393,6 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t global
 
   return pNewEntity;
 }
-
 
 CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point_t cloneGlobalCoord, size_t cloneLayer, string cloneName)
 {
@@ -438,7 +433,6 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
 
   return pNewEntity;
 }
-
 
 bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome)
 {
@@ -485,7 +479,6 @@ bool CBiotop::resetEntityGenome(entityIdType idEntity, CGenome* pNewEntityGenome
   return (true);
 }
 
-
 bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity)
 {
   CBasicEntity* pOldEntity = getEntityById(idEntity);
@@ -510,7 +503,6 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
 
   return true;
 }
-
 
 size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
 {
@@ -548,7 +540,6 @@ size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
   return (invalidIndex);
 }
 
-
 void CBiotop::deleteAllEntities()
 {
   // loop from top to bottom
@@ -560,7 +551,6 @@ void CBiotop::deleteAllEntities()
   m_tEntity.clear();
   m_IndexLastAnimal = 0;
 }
-
 
 void CBiotop::deleteAllMeasures()
 {
@@ -579,7 +569,6 @@ void CBiotop::deleteAllMeasures()
   m_tGeoMapSpecies.clear();
 }
 
-
 void CBiotop::deleteAllParameters()
 {
   // loop from top to bottom
@@ -596,7 +585,6 @@ void CBiotop::deleteAllParameters()
   m_pTemperature = NULL;
 }
 
-
 void CBiotop::displayEntities(void)
 {
   for (CBasicEntity* pEntity : m_tEntity)
@@ -606,7 +594,6 @@ void CBiotop::displayEntities(void)
     printf("ID=%3d Direction=%3u \n", pEntity->getId(), pEntity->getDirection());
   }
 }
-
 
 void CBiotop::setDefaultEntitiesForTest(void)
 {
@@ -954,18 +941,10 @@ void CBiotop::putEntitiesInListAllLayersOptim(BiotopFoundIds_t& foundIds, size_t
 
 void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  size_t startCoordX = startCoord.x;
-  size_t endCoordX = startCoordX + lenght;
-  if (startCoord.y < m_Dimension.y)
+  if (isCoordValid(startCoord))
   {
-    if (startCoordX >= m_Dimension.x)
-    {
-      startCoordX = 0;
-    }
-    if (endCoordX > m_Dimension.x)
-    {
-      endCoordX = m_Dimension.x;
-    }
+    size_t startCoordX = startCoord.x;
+    size_t endCoordX = std::min(startCoordX + lenght, m_Dimension.x);
     for (size_t i = startCoordX; i < endCoordX; i++)
     {
       putEntitiesInListAllLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
@@ -976,18 +955,10 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
 
 void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  size_t startCoordY = startCoord.y;
-  size_t endCoordY = startCoordY + lenght;
-  if (startCoord.x < m_Dimension.x)
+  if (isCoordValid(startCoord))
   {
-    if (startCoordY >= m_Dimension.y)
-    {
-      startCoordY = 0;
-    }
-    if (endCoordY > m_Dimension.y)
-    {
-      endCoordY = m_Dimension.y;
-    }
+    size_t startCoordY = startCoord.y;
+    size_t endCoordY = std::min(startCoordY + lenght, m_Dimension.y);
     for (size_t j = startCoordY; j < endCoordY; j++)
     {
       putEntitiesInListAllLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);
@@ -1476,17 +1447,13 @@ bool CBiotop::isCoordValid(const Point_t& coord)
 
 Point_t CBiotop::getGridCoordFromStepCoord(const Point_t& stepCoord)
 {
-  Point_t gridCoord;
-  gridCoord.x = stepCoord.x / NB_STEPS_PER_GRID_SQUARE;
-  gridCoord.y = stepCoord.y / NB_STEPS_PER_GRID_SQUARE;
-  return gridCoord;
+  return { stepCoord.x / NB_STEPS_PER_GRID_SQUARE, stepCoord.y / NB_STEPS_PER_GRID_SQUARE };
 }
 
 Point_t CBiotop::getStepCoordFromGridCoord(const Point_t& gridCoord)
 {
-  Point_t stepCoord{ gridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2, 
-                     gridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2 };
-  return stepCoord;
+  return { gridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2, 
+           gridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2 };
 }
 
 Point_t CBiotop::getGlobalGridCoordFromGridCoord(const Point_t& localGridCoord)
@@ -3140,14 +3107,7 @@ CCyclicParam* CBiotop::getParamTemperature()
 
 CGenericParam* CBiotop::getParameter(size_t id)
 {
-  if (id > m_tParam.size())
-  {
-    return (NULL);
-  }
-  else
-  {
-    return (m_tParam[id]);
-  }
+  return (id > m_tParam.size()) ? NULL : m_tParam[id];
 }
 
 CGenericParam* CBiotop::getParameterByName(string& paramName)

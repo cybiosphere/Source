@@ -2447,24 +2447,19 @@ void CBasicEntity::autoKill()
 //---------------------------------------------------------------------------
 bool CBasicEntity::checkHabitat(void)
 {
-  bool resu = true;
   if (m_pBiotop != NULL)
   {
     LayerType_e curLayer = m_pBiotop->getLayerType(m_GridCoord, m_Layer);
     if ((m_Habitat == HABITAT_EARTH) && (curLayer != LAYER_OVER_GROUND) && (curLayer != LAYER_OVER_WET_GROUND))
     {
-      resu = false;
+      return false;
     }
     else if ((m_Habitat == HABITAT_WATER) && (curLayer != LAYER_UNDER_WATER))
     {
-      resu = false;
-    }
-    else
-    {
-      resu = true;
+      return false;
     }
   }
-  return (resu);
+  return true;
 }
 
 //===========================================================================
@@ -3186,14 +3181,8 @@ Point_t CBasicEntity::getStepCoordRelative(const RelativePos_t& relativeCoord)
   posY = (int)m_StepCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
 
   // avoid <0 coord
-  if (posX < 0)
-    position.x = 0;
-  else
-    position.x = posX;
-  if (posY < 0)
-    position.y = 0;
-  else
-    position.y = posY;
+  position.x = (posX < 0) ? 0 : posX;
+  position.y = (posY < 0) ? 0 : posY;
 
   return (position);
 }
@@ -3365,12 +3354,8 @@ bool CBasicEntity::isRemoteControlled()
 
 void CBasicEntity::setRemoteControlled(bool active)
 {
-  if (active == true)
-    m_Control = CONTROL_REMOTE_AUTO;
-  else 
-    m_Control = CONTROL_LOCAL_AUTO;
+  m_Control = (active == true) ? CONTROL_REMOTE_AUTO : CONTROL_LOCAL_AUTO;
 }
-
 
 double CBasicEntity::getToxicity() 
 {

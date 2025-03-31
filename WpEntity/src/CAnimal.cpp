@@ -1105,7 +1105,6 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CAnimal::completeBrainSensorWithDefault(void)
 {
-
   CSensor* pSens = NULL;
   pSens = new CSensorMemoryAction((CBrainAnimal*)m_pBrain,10.0);
   if (pSens!=NULL)
@@ -1502,7 +1501,6 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       break;
     }
   }
-
 
   return (resu);
 }
@@ -2333,15 +2331,12 @@ int CAnimal::getDecompositionTime()
 //---------------------------------------------------------------------------
 bool CAnimal::checkVitalNeedsOk()
 {
-  bool resu = true;
+  if (getThirstRate() > 99.8)
+    return false;
+  else if (getFatWeight() < 0.02)
+    return false;
 
-  if (getThirstRate()>99.8)
-    resu = false;
-
-  if (getFatWeight()<0.02)
-    resu = false;
-
-  return (resu);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2796,8 +2791,6 @@ void CAnimal::stopCurrentSpeed()
 void CAnimal::changeFearRate(double variation)
 {
   getParameterNoCheck(m_id_Fear)->changeVal(variation);
-
-  return;
 }
 
 //===========================================================================
@@ -3801,10 +3794,7 @@ void CAnimal::setStomachFillingRate(double rate)
 
 double CAnimal::getResistanceToPoison()
 {
-  if (m_id_ResistanceToPoison == invalidCharIndex)
-    return 0;
-  else
-    return (getParameterNoCheck(m_id_ResistanceToPoison)->getVal());
+  return (m_id_ResistanceToPoison == invalidCharIndex) ? 0 : getParameterNoCheck(m_id_ResistanceToPoison)->getVal();
 }
 
 void CAnimal::consumeEnergy(double unit)
@@ -3814,8 +3804,5 @@ void CAnimal::consumeEnergy(double unit)
 
 double CAnimal::getAmphibianAbility()
 {
-  if (m_id_AmphibianAbility == invalidCharIndex)
-    return 0;
-  else
-    return (getParameterNoCheck(m_id_AmphibianAbility)->getVal());
+  return (m_id_AmphibianAbility == invalidCharIndex) ? 0 : getParameterNoCheck(m_id_AmphibianAbility)->getVal();
 }
