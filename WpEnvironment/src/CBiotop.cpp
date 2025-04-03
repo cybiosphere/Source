@@ -625,7 +625,7 @@ void CBiotop::buildWoodenFence(const Point_t& startCoord, const Point_t& endCoor
   if (startCoord.x == endCoord.x)
   {
     coord.x = startCoord.x;
-    for (int y = std::min(startCoord.y, endCoord.y); y < std::max(startCoord.y, endCoord.y); y++)
+    for (size_t y = std::min(startCoord.y, endCoord.y); y < std::max(startCoord.y, endCoord.y); y++)
     {
       coord.y = y;
       pEntity = createAndAddEntity(fenceFileName, pathName, coord);
@@ -638,7 +638,7 @@ void CBiotop::buildWoodenFence(const Point_t& startCoord, const Point_t& endCoor
   else if (startCoord.y == endCoord.y)
   {
     coord.y = startCoord.y;
-    for (int x = std::min(startCoord.x, endCoord.x); x < std::max(startCoord.x, endCoord.x); x++)
+    for (size_t x = std::min(startCoord.x, endCoord.x); x < std::max(startCoord.x, endCoord.x); x++)
     {
       coord.x = x;
       pEntity = createAndAddEntity(fenceFileName, pathName, coord);
@@ -950,7 +950,6 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
       putEntitiesInListAllLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
     }
   }
-  return;
 }
 
 void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
@@ -964,7 +963,6 @@ void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceTo
       putEntitiesInListAllLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);
     }
   }
-  return;
 }
 
 const BiotopFoundIds_t& CBiotop::findEntitiesInSquare(const Point_t& bottomLeftCoord, size_t squareSize, bool includeWater)

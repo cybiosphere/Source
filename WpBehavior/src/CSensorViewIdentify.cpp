@@ -274,7 +274,6 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
-    curWeight = 0;
     isBrainFocussedEntity = (pCurEntity->getId() == m_pBrain->getBrainFocusedEntityId());
 
     if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))

@@ -466,8 +466,6 @@ bool CBrain::PollAllSensors (void)
     const std::vector<sensorValType>& vectSensorVal{ pSensor->UpdateAndGetStimulationTable()};
     for (i = 0; i < vectSensorVal.size(); i++)
     {
-      bonusRate = pSensor->GetBonusRate(i);
-
       // Fill pass input (shift all InputSensors blocks down, and *m_historyWeight to give less weight to pass)
       for (int hist=(int)m_nInputHistory-1; hist>0; hist--)
       {
@@ -478,6 +476,7 @@ bool CBrain::PollAllSensors (void)
       curSensorVal = vectSensorVal[i];
       if (curSensorVal != 0) // CPU optim: curSensorVal is often 0
       {
+        bonusRate = pSensor->GetBonusRate(i);
         if (bonusRate != 100)
         {
           curSensorVal = curSensorVal * (double)bonusRate / 100.0;
@@ -537,12 +536,8 @@ bool CBrain::PollAllSensors (void)
 #endif
 
   // reset m_FocusedEntityInfo
+  clearBrainFocusedEntityInfo();
   m_FocusedEntityInfo.previousEntityId = m_FocusedEntityInfo.newEntityId;
-  m_FocusedEntityInfo.newEntityId = ENTITY_ID_INVALID;
-  m_FocusedEntityInfo.computedWeight = 0;
-  m_FocusedEntityInfo.captorUid = UID_UNSET;
-  m_FocusedEntityInfo.subcaptorIndex = invalidIndex;
-  m_FocusedEntityInfo.subcaptorsSize = 0;
   return true;
 }
 
@@ -1736,27 +1731,30 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
 void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 {
   size_t i, offset = 0;
-
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
-    for (offset=0; offset<m_nInputIdentification; offset++)
-      m_vCurrentIdentifyInput(offset,0) = 0;
+    for (i = 0; i < m_nInputIdentification; i++)
+      m_vCurrentIdentifyInput(i,0) = 0;
     return;
   }
 
   // Size big
-  m_vCurrentIdentifyInput(offset,0) = pEntity->getWeight() / m_pEntity->getWeight();
-  if (m_vCurrentIdentifyInput(offset,0) <= 1)
+  double weightRatio = pEntity->getWeight() / m_pEntity->getWeight();
+  if (weightRatio <= 1)
     m_vCurrentIdentifyInput(offset,0) = 0;
-  else if (m_vCurrentIdentifyInput(offset,0) > MAX_SENSOR_VAL)
+  else if (weightRatio > MAX_SENSOR_VAL)
     m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
+  else
+    m_vCurrentIdentifyInput(offset, 0) = weightRatio;
   offset++;
   // Size small
-  m_vCurrentIdentifyInput(offset,0) = m_pEntity->getWeight() / pEntity->getWeight();
-  if (m_vCurrentIdentifyInput(offset,0) <= 1)
-    m_vCurrentIdentifyInput(offset,0) = 0;
-  else if (m_vCurrentIdentifyInput(offset,0) > MAX_SENSOR_VAL)
-    m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
+  weightRatio = m_pEntity->getWeight() / pEntity->getWeight();
+  if (weightRatio <= 1)
+    m_vCurrentIdentifyInput(offset, 0) = 0;
+  else if (weightRatio > MAX_SENSOR_VAL)
+    m_vCurrentIdentifyInput(offset, 0) = MAX_SENSOR_VAL;
+  else
+    m_vCurrentIdentifyInput(offset, 0) = weightRatio;
   offset++;
   // Relative speed escape
   int relativeSpeed = m_pEntity->getRelativeSpeed(pEntity);
@@ -1829,7 +1827,7 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
   // Set as non static animals when dead or not sleeping nor hiding
   m_vCurrentIdentifyInput(offset, 0) = 0;
   DWORD reactionUid = 0;
-  if (pEntity->isAlive() && (pEntity->getBrain() != NULL))
+  if ((pEntity->getBrain() != NULL) && pEntity->isAlive())
   {
     reactionUid = pEntity->getBrain()->GetReactionByIndex(pEntity->getBrain()->GetCurrentReactionIndex())->GetUniqueId();
     if (((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_SLEEP) && ((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_HIDE))
@@ -1837,8 +1835,6 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
       m_vCurrentIdentifyInput(offset, 0) = MAX_SENSOR_VAL;
     }
   }
-  offset++;
-
 }
 
 CMatrix* CBrain::GetIdentifyInputVect()

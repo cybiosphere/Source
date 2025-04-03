@@ -926,33 +926,21 @@ bool CGene::buildGeneFromStringData(string rawData)
 {
   if (rawData.length() < 14)
   {
-    return (false);
+    return false;
   }
-  string tmpStr = "";
-  int geneType;
-  int geneSubType;
-  int dataLen; 
-  int muteType; 
-  int muteRate;
-  BYTE tmpData;
-  char* pEnd;
-  tmpStr = rawData.substr(0,14);
-  sscanf( tmpStr.c_str(),"%02X%04X%04X%02X%02X",&geneType,&geneSubType,&dataLen,&muteType,&muteRate);
-  m_GeneType    = (GeneType_e)geneType;
-  m_GeneSubType = geneSubType;
-  m_MuteType    = (GeneMuteType_e)muteType;
-  m_MuteRate    = muteRate;
+  m_GeneType = static_cast<GeneType_e>(std::stoi(rawData.substr(0, 2), nullptr, 16));
+  m_GeneSubType = std::stoi(rawData.substr(2, 4), nullptr, 16);
+  int dataLen = std::stoi(rawData.substr(6, 4), nullptr, 16);
+  m_MuteType = static_cast<GeneMuteType_e>(std::stoi(rawData.substr(10, 2), nullptr, 16));
+  m_MuteRate = std::stoi(rawData.substr(12, 2), nullptr, 16);
   m_pDefinitions = CGeneList::getDefinitions(m_GeneType, m_GeneSubType);
-  dataLen -= 2; // mute type and rate are include in data
-  m_RawData.resize(dataLen); // mute type and rate are include in data
-  for (int j=0;j<dataLen;j++)
+  dataLen -= 2; // mute type and rate are included in data
+  m_RawData.resize(dataLen);
+  for (int j = 0; j < dataLen; ++j)
   {
-    tmpStr = rawData.substr(14+2*j, 2);
-    tmpData = (BYTE)strtol(tmpStr.c_str(), &pEnd, 16);
-    m_RawData[j] = tmpData;
+    m_RawData[j] = static_cast<BYTE>(std::stoi(rawData.substr(14 + 2 * j, 2), nullptr, 16));
   }
-
-  return (true);
+  return true;
 }
 
 //===========================================================================

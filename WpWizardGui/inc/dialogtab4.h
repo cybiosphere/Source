@@ -109,8 +109,9 @@ protected:
     void AddGenesForBrain();
 
     void PrepareBrainInstinct(CAnimal* pAnimal);
-
     bool PrepareLearningFilesMammal(CString newFolder);
+
+		bool copy_file(char* src_filename, char* new_filename);
 
 	// Generated message map functions
 	//{{AFX_MSG(CDialogTab4)

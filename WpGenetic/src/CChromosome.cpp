@@ -171,33 +171,34 @@ bool CChromosome::buildGenesFromStringData(string rawData)
 {
   if (m_tGene.size() > 0)
   {
-    return (false);
+    return false;
   }
-  size_t geneIndex;
-  CGene* pGene = NULL;
-  string tmpStr;
-  int geneType;    // ! sscanf needs int as argument, do not use BYTE
-  int geneSubType; // ! sscanf needs int as argument, do not use BYTE
-  int dataLength;  // ! sscanf needs int as argument, do not use BYTE
-  int offset = 0;
 
+  size_t geneIndex;
+  CGene* pGene = nullptr;
+  string tmpStr;
+  int geneType;
+  int geneSubType;
+  int dataLength;
+  int offset = 0;
   size_t remainingLen = rawData.length();
-  while (remainingLen>0)
-  { 
-    tmpStr = rawData.substr(offset,10);
-    sscanf(tmpStr.c_str(),"%02X%04X%04X",&geneType,&geneSubType,&dataLength);  
-    tmpStr = rawData.substr(offset, 2*dataLength + 10);
+  while (remainingLen > 0)
+  {
+    geneType = std::stoi(rawData.substr(offset, 2), nullptr, 16);
+    geneSubType = std::stoi(rawData.substr(offset + 2, 4), nullptr, 16);
+    dataLength = std::stoi(rawData.substr(offset + 6, 4), nullptr, 16);
+    tmpStr = rawData.substr(offset, 2 * dataLength + 10);
     geneIndex = addGene();
     if (geneIndex != invalidIndex)
     {
       pGene = getGene(geneIndex);
       pGene->buildGeneFromStringData(tmpStr);
     }
-    remainingLen -= (2*dataLength + 10);
-    offset += (2*dataLength + 10);
+    remainingLen -= (2 * dataLength + 10);
+    offset += (2 * dataLength + 10);
   }
 
-  return (true);
+  return true;
 }
 
 //===========================================================================

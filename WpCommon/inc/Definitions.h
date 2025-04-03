@@ -190,8 +190,6 @@ bool DLL_CYBIOCORE_API writeStringSection(
 
 string DLL_CYBIOCORE_API FormatString( const char *szFormat, ...);
 
-bool DLL_CYBIOCORE_API copy_file(char *src_filename, char  *new_filename);
-
 std::string get_working_path();
 
 #ifndef CYBIOCORE_LOG

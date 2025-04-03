@@ -70,26 +70,13 @@ int DLL_CYBIOCORE_API cybio_round(double val)
 
 bool DLL_CYBIOCORE_API testChance(double luckRate)
 {
-  int randNb =   (int) ( 100.0 * rand() / RAND_MAX);          
-  if (randNb < luckRate)
-    return (true);
-  else
-    return (false);
+  return ((100.0 * rand() / RAND_MAX) < luckRate);
 }
 
 bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2)
 {
-  double randNb =   100.0 * 100.0 * rand() / RAND_MAX;          
-  if (randNb < luckRate1*luckRate2) 
-    return (true);
-  else
-    return (false);
+  return ((100.0 * 100.0 * rand() / RAND_MAX) < luckRate1 * luckRate2);
 }
-
-  int seconds;
-  int hours;
-  int days;
-  int years;
 
 timeCountType DLL_CYBIOCORE_API convertBioTimeToCount(BiotopTime_t bioTime)
 {
@@ -303,38 +290,6 @@ string DLL_CYBIOCORE_API FormatString( const char *szFormat, ...)
 
   return strRet; 
 } 
-
-
-bool DLL_CYBIOCORE_API copy_file(char *src_filename, char  *new_filename)
-{
-  FILE  *ptr_old, *ptr_new;
-  int  a;
-  
-  ptr_old = fopen(src_filename, "rb");
-  if(ptr_old == NULL)
-    return  false;
-
-  ptr_new = fopen(new_filename, "wb");  
-  if(ptr_new == NULL)
-  {
-    fclose(ptr_old);
-    return  false;
-  }
-  
-  while(1)
-  {
-    a  =  fgetc(ptr_old);
-    
-    if(!feof(ptr_old))
-      fputc(a, ptr_new);
-    else
-      break;
-  }
-  
-  fclose(ptr_new);
-  fclose(ptr_old);
-  return  true;
-}
 
 std::string get_working_path()
 {

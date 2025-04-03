@@ -271,14 +271,13 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
   bool isBrainFocussedEntity{ false };
 
   // Find entities according to angle, distance and layer:
-  int range = (pBiotop->getSunlight() < 26.0) ? m_nRangeMaxAtNight : m_nRangeMax;
+  int range = (currentSunlight < 26.0) ? m_nRangeMaxAtNight : m_nRangeMax;
   const BiotopFoundIds_t& biotopFoundIds = pBiotop->findFarEntities(pAnimal->getGridCoord(), visionSectorBmp, m_nRangeMin, range, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   for (i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     pCurEntity = tFoundIds[i].pEntity;
-    curWeight = 0;
     isBrainFocussedEntity = (pCurEntity->getId() == m_pBrain->getBrainFocusedEntityId());
 
     if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))

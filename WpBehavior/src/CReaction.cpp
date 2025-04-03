@@ -164,7 +164,7 @@ void CReaction::SetBonusRateToNeutral()
 void CReaction::IncreaseSuccessCount(void)
 {
   // Decrease SuccessSatisfactionFactor on each success (long time satiety)
-  if (m_SuccessSatisfactionFactor>0.1)
+  if (m_SuccessSatisfactionFactor > 0.1)
     m_SuccessSatisfactionFactor -= 0.1;
 
   m_SuccessCounter++;
@@ -173,7 +173,7 @@ void CReaction::IncreaseSuccessCount(void)
 void CReaction::IncreaseFailureCount(void)
 {
   // Decrease FailureFrustrationFactor on each failure (long time limitation)
-  if (m_FailureFrustrationFactor>0.1)
+  if (m_FailureFrustrationFactor > 0.1)
     m_FailureFrustrationFactor -= 0.1;
 
   m_FailureCounter++;
@@ -186,22 +186,12 @@ void CReaction::IncreaseExecuteCount(void)
 
 double CReaction::GetSuccessRate(void)
 {
-  double rate = -1.0;
-  if ( m_ExecuteCounter!=0 )
-  {
-    rate = 100.0 * (double)m_SuccessCounter / (double)(m_ExecuteCounter);
-  }
-  return (rate);
+  return (m_ExecuteCounter != 0) ? 100.0 * (double)m_SuccessCounter / (double)(m_ExecuteCounter) : -1.0;
 }
 
 double CReaction::GetFailureRate(void)
 {
-  double rate = -1.0;
-  if ( m_ExecuteCounter!=0 )
-  {
-    rate = 100.0 * (double)m_FailureCounter / (double)(m_ExecuteCounter);
-  }
-  return (rate);
+  return (m_ExecuteCounter != 0) ? 100.0 * (double)m_FailureCounter / (double)(m_ExecuteCounter) : -1.0;
 }
 
 void CReaction::ResetCounters(void)

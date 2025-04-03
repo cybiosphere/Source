@@ -177,15 +177,7 @@ bool CPurpose::CheckSucces(void)
 bool CPurpose::IncreaseCountAndCheckEnd(void)
 {
   m_SecondCounter++;
-
-  if (m_SecondCounter>=m_SecondDuration) 
-  {
-    return (true);
-  }
-  else
-  {
-    return (false);
-  }
+  return (m_SecondCounter >= m_SecondDuration);
 }
 
 //---------------------------------------------------------------------------

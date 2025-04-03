@@ -1456,6 +1456,37 @@ void CDialogTab4::PrepareBrainInstinct(CAnimal* pAnimal)
   brainWiz.ApplyBonusListOnBrain();
 }
 
+bool CDialogTab4::copy_file(char* src_filename, char* new_filename)
+{
+  FILE* ptr_old, * ptr_new;
+  int  a;
+
+  ptr_old = fopen(src_filename, "rb");
+  if (ptr_old == NULL)
+    return  false;
+
+  ptr_new = fopen(new_filename, "wb");
+  if (ptr_new == NULL)
+  {
+    fclose(ptr_old);
+    return  false;
+  }
+
+  while (1)
+  {
+    a = fgetc(ptr_old);
+
+    if (!feof(ptr_old))
+      fputc(a, ptr_new);
+    else
+      break;
+  }
+
+  fclose(ptr_new);
+  fclose(ptr_old);
+  return  true;
+}
+
 bool CDialogTab4::PrepareLearningFilesMammal(CString newFolder)
 {
   bool resu;
