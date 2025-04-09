@@ -1064,8 +1064,14 @@ bool CBrain::InitializeNeuronTableNeutral()
   return true;
 }
 
-bool CBrain::HistorizeInput (void)
+void CBrain::HistorizeInput (void)
 {
+  if (m_nExperienceHistory < 2)
+  {
+    // Skip use of m_mInputDecisionHistory when m_nExperienceHistory=1. Use directly m_vCurrentDecisionInput
+    return;
+  }
+
   for (int hist=(int)m_nExperienceHistory-1; hist>0; hist--)
   {
     // Fill input history (shift all Input vect on righ, and *m_historyWeight to give less weight to pass)
@@ -1079,7 +1085,6 @@ bool CBrain::HistorizeInput (void)
   {
     m_mInputDecisionHistory(i,0) = m_vCurrentDecisionInput(i,0);
   }
-  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1291,8 +1296,14 @@ bool CBrain::MemorizeExperience (feedbackValType currentFeedback, double learnin
   // The effect of an action cannot exceed 1% when learningRate is at 100%
   neuroneValType coef = currentFeedback*learningRate/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/10000; 
  
-  m_mDecisionNeuronTable.MemorizeExperience(coef, &m_mInputDecisionHistory, &m_mDecisionHistory);
-
+  if (m_nExperienceHistory > 1)
+  {
+    m_mDecisionNeuronTable.MemorizeExperience(coef, &m_mInputDecisionHistory, &m_mDecisionHistory);
+  }
+  else
+  {
+    m_mDecisionNeuronTable.MemorizeExperience(coef, &m_vCurrentDecisionInput, &m_mDecisionHistory);
+  }
   return true;
 }
 

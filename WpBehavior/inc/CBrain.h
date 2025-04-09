@@ -300,7 +300,7 @@ public:
   CFeelingWelfare* GetpFeelingWelfare();
  
   bool InitializeNeuronTableNeutral();
-  bool HistorizeInput (void);
+  void HistorizeInput (void);
   bool SetBonusAndGetVectorChoiceThresholds (double curiosityRate, neuroneValType &maxVal, neuroneValType &midThreshold, neuroneValType &lowThreshold);
   choiceIndType ComputeAndGetDecision(double curiosityRate, ReactionIntensityType_e &intensity);
   bool HistorizeDecision (choiceIndType index);
