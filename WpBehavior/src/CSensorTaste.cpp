@@ -67,7 +67,6 @@ CSensorTaste::CSensorTaste(CBrainAnimal* pBrain, std::vector<double>& tWeightRat
 
 CSensorTaste::~CSensorTaste()
 {
-
 }
 
 //===========================================================================

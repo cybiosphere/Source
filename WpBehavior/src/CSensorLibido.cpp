@@ -63,7 +63,6 @@ CSensorLibido::CSensorLibido(CBrainAnimal* pBrain, double weightRate)
 
 CSensorLibido::~CSensorLibido()
 {
-
 }
 
 //===========================================================================

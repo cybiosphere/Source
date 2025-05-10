@@ -163,7 +163,7 @@ string CGeoMap::buildStringDataFromGeoMapRecord(size_t recordIndex)
       }
     }
   }
-  return (rawDataRsp);
+  return rawDataRsp;
 }
 
 bool CGeoMap::buildGeoMapRecordFromStringData(size_t recordIndex, string rawData)
@@ -189,7 +189,7 @@ bool CGeoMap::buildGeoMapRecordFromStringData(size_t recordIndex, string rawData
       }
     }
   }
-  return (true);
+  return true;
 }
 
 //===========================================================================

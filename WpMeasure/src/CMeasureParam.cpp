@@ -48,7 +48,6 @@ CMeasureParam::CMeasureParam(CGenericParam* pParam, int period, int id, MeasureT
 
 CMeasureParam::~CMeasureParam()
 {
-
 }
 
 //===========================================================================
@@ -56,15 +55,12 @@ CMeasureParam::~CMeasureParam()
 //===========================================================================
 double CMeasureParam::GetCurrentValue()
 {
-  if (m_pParam!=NULL)
-    return(m_pParam->getVal());
-  else
-    return (0);
+  return (m_pParam != NULL) ? m_pParam->getVal() : 0;
 }
 
 bool CMeasureParam::IsStillValid()
 {
-    return (true);
+    return true;
 }
 
 //===========================================================================

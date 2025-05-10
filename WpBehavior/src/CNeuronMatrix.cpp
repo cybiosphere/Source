@@ -178,7 +178,7 @@ string CNeuronMatrix::buildStringDataFromNeuronTable()
       rawDataRsp += tmpStr;
     }
   }
-  return (rawDataRsp);
+  return rawDataRsp;
 }
 
 bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
@@ -205,7 +205,7 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
     }
   }
   NormalizeNeuronMatrix();
-  return (true);
+  return true;
 }
 
 bool CNeuronMatrix::buildNeuronLineFromRawData (size_t lineId, size_t lenData, WORD* pRawData)
@@ -213,7 +213,7 @@ bool CNeuronMatrix::buildNeuronLineFromRawData (size_t lineId, size_t lenData, W
   if ( (lenData != m_mNeuronTable.ColNo()) || (lineId >= m_mNeuronTable.RowNo()) )
   {
     ASSERT("Bad raw data lenght for brain");
-    return (false);
+    return false;
   }
 
   for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
@@ -221,7 +221,7 @@ bool CNeuronMatrix::buildNeuronLineFromRawData (size_t lineId, size_t lenData, W
     m_mNeuronTable(lineId,j) = (double)pRawData[j] / 32767.0 - 1.0;
   }
 
-  return (true);
+  return true;
 }
 
 int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
@@ -229,7 +229,7 @@ int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
   if (lineId >= m_mNeuronTable.RowNo())
   {
     ASSERT("Bad raw data lenght for brain");
-    return (false);
+    return false;
   }
 
   pRawData = new WORD[(int)m_mNeuronTable.ColNo()];
@@ -239,22 +239,22 @@ int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
     pRawData[j] = cybio_round( (m_mNeuronTable(lineId,j) + 1.0) * 32767.0 );
   }
 
-  return ( (int)m_mNeuronTable.ColNo() );
+  return (int)m_mNeuronTable.ColNo();
 }
 
 size_t CNeuronMatrix::GetNeuronTableRowCount()
 {
-  return (m_mNeuronTable.RowNo());
+  return m_mNeuronTable.RowNo();
 }
 
 size_t CNeuronMatrix::GetNeuronTableColumnCount()
 {
-  return (m_mNeuronTable.ColNo());
+  return m_mNeuronTable.ColNo();
 }
 
 neuroneValType CNeuronMatrix::GetNeuronTableData(size_t row, size_t col)
 {
-  return (m_mNeuronTable(row,col));
+  return m_mNeuronTable(row,col);
 }
 
 bool CNeuronMatrix::SetNeuronTableData(size_t row, size_t col, neuroneValType newVal)
@@ -269,7 +269,7 @@ bool CNeuronMatrix::SetNeuronTableData(size_t row, size_t col, neuroneValType ne
 bool CNeuronMatrix::ChangeNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {
   if ( (row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()) )
-    return (false);
+    return false;
 
   bool resu = true;
   m_mNeuronTable(row, col) += variation;
@@ -277,7 +277,7 @@ bool CNeuronMatrix::ChangeNeuronTableVal(size_t row, size_t col, double variatio
   if (normalize)
     resu = NormalizeNeuronMatrix();
 
-  return (resu);
+  return resu;
 
 }
 
@@ -371,7 +371,7 @@ bool CNeuronMatrix::saveInFile(string fileNameWithPath)
   f1.write(savedBrain.c_str(), savedBrain.length());
   f1.close();  
 
-  return (true);
+  return true;
 }
 
 bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
@@ -392,7 +392,7 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
 
   if ( (fLength==0) || (fLength>1000000) )
   {
-    return (false);
+    return false;
   }
 
   pbuf = new char[fLength+1];
@@ -408,5 +408,5 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
     resu = buildNeuronTableFromStringData(loadedBrain);
   }
 
-  return (resu);
+  return resu;
 }

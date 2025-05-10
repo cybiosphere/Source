@@ -130,7 +130,7 @@ CPairOfChromosome* CGenome::getPair(size_t id)
 {
   if (id > m_tPair.size())
   {
-    return (NULL);
+    return NULL;
   }
   else
   {
@@ -142,7 +142,7 @@ CPairOfChromosome* CGenome::getPairSexual()
 {
   if (m_SexualPairIndex >= m_tPair.size())
   {
-    return (NULL);
+    return NULL;
   }
   else
   {
@@ -154,7 +154,7 @@ CPairOfChromosome* CGenome::getPairBrain()
 {
   if (m_SexualPairIndex>m_tPair.size())
   {
-    return (NULL);
+    return NULL;
   }
   else
   {
@@ -176,7 +176,7 @@ bool CGenome::setSexMale(size_t indexPairSex, bool sexualDimorph)
 {
   if (indexPairSex>m_tPair.size())
   {
-    return (false);
+    return false;
   }
 
   if (m_SexualPairIndex != invalidIndex)
@@ -192,14 +192,14 @@ bool CGenome::setSexMale(size_t indexPairSex, bool sexualDimorph)
 
   m_bSexualDimorphism = sexualDimorph;
 
-  return (resu);
+  return resu;
 }
 
 bool CGenome::setSexFemale(size_t indexPairSex, bool sexualDimorph)
 {
   if (indexPairSex>m_tPair.size())
   {
-    return (false);
+    return false;
   }
 
   if (m_SexualPairIndex != invalidIndex)
@@ -215,40 +215,40 @@ bool CGenome::setSexFemale(size_t indexPairSex, bool sexualDimorph)
 
   m_bSexualDimorphism = sexualDimorph;
 
-  return (resu);
+  return resu;
 }
 
 bool CGenome::setSexNeutral(size_t indexPairSex)
 {
   if (indexPairSex>m_tPair.size())
   {
-    return (false);
+    return false;
   }
 
   bool resu = m_tPair[indexPairSex]->setAsNeutral();
   m_SexualPairIndex = invalidIndex;
 
-  return (resu);
+  return resu;
 }
 
 SexType_e CGenome::getSexType()
 {
   if (m_SexualPairIndex == invalidIndex)
   {
-    return (SEX_NONE);
+    return SEX_NONE;
   }
   
   ChromosomeType_e chromoType = m_tPair[m_SexualPairIndex]->getSex();
   switch (chromoType)
   {
   case CHROMOSOME_SEX_MALE:
-    return (SEX_MALE);
+    return SEX_MALE;
     break;
   case CHROMOSOME_SEX_FEMALE:
-    return (SEX_FEMALE);
+    return SEX_FEMALE;
     break;
   default:
-    return (SEX_NONE);
+    return SEX_NONE;
     break;
   }
 }
@@ -264,17 +264,17 @@ bool CGenome::tryMutation(int rate)
       resu = true;
     }
   }
-  return (resu);
+  return resu;
 }
 
 ClassType_e CGenome::getClass()
 {
-  return (m_class);
+  return m_class;
 }
 
 string CGenome::getSpecieName()
 {
-  return (m_SpecieName);
+  return m_SpecieName;
 }
 
 string CGenome::getOwnClassStrName()
@@ -332,7 +332,7 @@ string CGenome::getClassStrName(ClassType_e classType)
       break;
   }
 
-  return (classeName);
+  return classeName;
 }
 
 
@@ -347,7 +347,7 @@ specieSignatureType CGenome::getSpecieSignature()
   {
     signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome()->getNumGene() * (7 * i + 1));
   }
-  return (signature);
+  return signature;
 
 }
 

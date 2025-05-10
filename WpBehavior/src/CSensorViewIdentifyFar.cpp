@@ -137,7 +137,6 @@ CSensorViewIdentifyFar::	CSensorViewIdentifyFar(CBrainAnimal* pBrain,
 
 CSensorViewIdentifyFar::~CSensorViewIdentifyFar()
 {
-
 }
 
 //===========================================================================
@@ -465,7 +464,7 @@ bool CSensorViewIdentifyFar::Scan45degSector(size_t stimulationTabOffset,
     }
   }
 
-  return (true);
+  return true;
 }
 
 

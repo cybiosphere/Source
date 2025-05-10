@@ -561,12 +561,12 @@ string CGeneList::getGeneTypeStrName(GeneType_e type)
 {
   string typeName;
   typeName = GeneTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 string CGeneList::getGeneMuteTypeStrName(GeneMuteType_e muteType)
 {
   string typeName;
   typeName = GeneMuteTypeNameList[muteType];
-  return(typeName);
+  return typeName;
 }

@@ -148,8 +148,7 @@ bool CWater::completeCaractsWithDefault()
   setColor(0x00EA0F00); // Color
   setForm(FORM_PLAN_SMOOTH);
   setTexture(TEXTURE_REFLECT);
-
-  return (true);
+  return true;
 }
 
 bool CWater::isMineral()
@@ -162,11 +161,11 @@ double CWater::changeWeight(double variation)
   if (m_bInfiniteContent)
   {
     // Do nothing: infinite content
-    return (variation);
+    return variation;
   }
   else
   {
-    return(CBasicEntity::changeWeight(variation));
+    return CBasicEntity::changeWeight(variation);
   }
 }
 

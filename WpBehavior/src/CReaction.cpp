@@ -108,22 +108,22 @@ void CReaction::ExecuteAction(ReactionIntensityType_e intensity)
 
 string CReaction::GetLabel()
 {
-  return (m_Label);
+  return m_Label;
 }
 
 DWORD CReaction::GetUniqueId()
 {
-  return (m_UniqueId);
+  return m_UniqueId;
 }
 
 double CReaction::GetFailureFrustrationFactor()
 {
-  return (m_FailureFrustrationFactor);
+  return m_FailureFrustrationFactor;
 }
 
 double CReaction::GetSuccessSatisfactionFactor()
 {
-  return (m_SuccessSatisfactionFactor);
+  return m_SuccessSatisfactionFactor;
 }
 
 void CReaction::SetFailureFrustrationFactor(double newFrustration)
@@ -148,7 +148,7 @@ void CReaction::SetSuccessSatisfactionFactor(double newSatisfaction)
 
 int CReaction::GetBonusRate()
 {
-  return (m_BonusRate);
+  return m_BonusRate;
 }
 
 void CReaction::SetBonusRate(int rate)
@@ -209,10 +209,10 @@ void CReaction::ResetSuccessFailureFactor(void)
 
 int CReaction::GetUnitTimeInSecond(void)
 {
-  return (m_UnitTimeInSecond);
+  return m_UnitTimeInSecond;
 }
 
 int CReaction::GetConsecutiveFailures(void)
 {
-  return (m_ConsecutiveFailures);
+  return m_ConsecutiveFailures;
 }

@@ -110,12 +110,12 @@ CPairOfChromosome::~CPairOfChromosome()
 
 CChromosome* CPairOfChromosome::getPaterChromosome ()
 {
-  return (m_pPaterChromosome);
+  return m_pPaterChromosome;
 }
 
 CChromosome* CPairOfChromosome::getMaterChromosome ()
 {
-  return (m_pMaterChromosome);
+  return m_pMaterChromosome;
 }
 
 size_t CPairOfChromosome::getNumGenes()
@@ -171,15 +171,15 @@ CGene* CPairOfChromosome::getDominantAllele(size_t index)
       pResu = pMaterGene;
   }
 
-  return (pResu);
+  return pResu;
 }
 
 bool CPairOfChromosome::tryMutation(int rate)
 {
   if ((m_pPaterChromosome->tryMutation(rate))||(m_pMaterChromosome->tryMutation(rate)))
-    return (true);
+    return true;
   else
-    return (false);
+    return false;
 }
 
 bool CPairOfChromosome::setAsSexualMale(void)
@@ -188,7 +188,7 @@ bool CPairOfChromosome::setAsSexualMale(void)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
   if (m_pPaterChromosome!=NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_MALE);
-  return (true);
+  return true;
 }
 
 bool CPairOfChromosome::setAsSexualFemale(void)
@@ -197,7 +197,7 @@ bool CPairOfChromosome::setAsSexualFemale(void)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
   if (m_pPaterChromosome!=NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
-  return (true);
+  return true;
 }
 
 bool CPairOfChromosome::setAsNeutral(void)
@@ -206,7 +206,7 @@ bool CPairOfChromosome::setAsNeutral(void)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
   if (m_pPaterChromosome!=NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
-  return (true);
+  return true;
 }
 
 ChromosomeType_e CPairOfChromosome::getSex(void)
@@ -231,5 +231,5 @@ bool CPairOfChromosome::getCrossedChromosomeStr(CPairOfChromosome& pPair, string
 
   crossedStr = motherStr.substr(0,cutIndex) + fatherStr.substr(cutIndex);
 
-  return (true);
+  return true;
 }

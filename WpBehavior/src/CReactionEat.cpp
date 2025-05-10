@@ -65,7 +65,6 @@ CReactionEat::CReactionEat(CBrainAnimal*  pBrain, double successFactor, double f
 
 CReactionEat::~CReactionEat()
 {
-
 }
 
 //===========================================================================
@@ -92,5 +91,4 @@ void CReactionEat::ExecuteAction(ReactionIntensityType_e intensity)
     m_ConsecutiveFailures = 0;
   else
     m_ConsecutiveFailures++;  
-  return;
 }

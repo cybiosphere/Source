@@ -63,7 +63,6 @@ CReactionCopulate::CReactionCopulate(CBrainAnimal*  pBrain, double successFactor
 
 CReactionCopulate::~CReactionCopulate()
 {
-
 }
 
 //===========================================================================
@@ -90,5 +89,4 @@ void CReactionCopulate::ExecuteAction(ReactionIntensityType_e intensity)
     m_ConsecutiveFailures = 0;
   else
     m_ConsecutiveFailures++;  
-  return;
 }

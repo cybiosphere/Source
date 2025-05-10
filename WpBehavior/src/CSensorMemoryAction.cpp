@@ -64,7 +64,6 @@ CSensorMemoryAction::CSensorMemoryAction(CBrainAnimal* pBrain, double weightRate
 
 CSensorMemoryAction::~CSensorMemoryAction()
 {
-
 }
 
 //===========================================================================

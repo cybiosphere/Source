@@ -69,7 +69,6 @@ CSensorSmell::CSensorSmell(CBrainAnimal* pBrain, std::vector<double>& tWeightRat
 
 CSensorSmell::~CSensorSmell()
 {
-
 }
 
 //===========================================================================
@@ -120,11 +119,9 @@ string CSensorSmell::GetSubCaptorLabel(size_t index)
 {
   if (index>GetSubCaptorNumber())
     return ("bad index");
-  else
-  {
-    OdorType_e odorId = ODOR_FIRST_TYPE;
-    for (size_t i=0; (i<index)&&(i<ODOR_NUMBER_TYPE); i++)
-      odorId = (OdorType_e)(odorId+1);
-    return (CBasicEntity::getOdorStrName(odorId) );
-  }
+
+  OdorType_e odorId = ODOR_FIRST_TYPE;
+  for (size_t i=0; (i<index)&&(i<ODOR_NUMBER_TYPE); i++)
+    odorId = (OdorType_e)(odorId+1);
+  return (CBasicEntity::getOdorStrName(odorId) );
 }

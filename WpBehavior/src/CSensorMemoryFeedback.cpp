@@ -64,7 +64,6 @@ CSensorMemoryFeedback::CSensorMemoryFeedback(CBrainAnimal* pBrain, double weight
 
 CSensorMemoryFeedback::~CSensorMemoryFeedback()
 {
-
 }
 
 //===========================================================================

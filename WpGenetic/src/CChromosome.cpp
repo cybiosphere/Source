@@ -132,7 +132,7 @@ size_t CChromosome::getNumGene(void)
 CGene* CChromosome::getGene(size_t id)
 {
   if (id>=m_tGene.size())  {
-    return (NULL);
+    return NULL;
   }
   else
   {
@@ -219,7 +219,7 @@ bool CChromosome::tryMutation(int rate)
       }
     }
   }
-  return (resu);
+  return resu;
 }
 
 //===========================================================================
@@ -256,7 +256,7 @@ void CChromosome::setChromosomeType(ChromosomeType_e newType)
 
 ChromosomeType_e CChromosome::getChromosomeType()
 {
-  return(m_ChromosomeType);
+  return m_ChromosomeType;
 }
 
 

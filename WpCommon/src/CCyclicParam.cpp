@@ -51,7 +51,6 @@ CCyclicParam::CCyclicParam(double valMin, double valMax, int nbStepPerCycle, str
 
 CCyclicParam::~CCyclicParam()
 {
-
 }
 
 //===========================================================================

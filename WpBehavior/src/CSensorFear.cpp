@@ -63,7 +63,6 @@ CSensorFear::CSensorFear(CBrainAnimal* pBrain, double weightRate)
 
 CSensorFear::~CSensorFear()
 {
-
 }
 
 //===========================================================================

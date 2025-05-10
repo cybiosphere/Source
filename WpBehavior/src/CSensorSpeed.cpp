@@ -63,7 +63,6 @@ CSensorSpeed::CSensorSpeed(CBrainAnimal* pBrain, std::vector<double>& tWeightRat
 
 CSensorSpeed::~CSensorSpeed()
 {
-
 }
 
 //===========================================================================

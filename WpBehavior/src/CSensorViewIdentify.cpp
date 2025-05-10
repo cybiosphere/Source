@@ -137,7 +137,6 @@ CSensorViewIdentify::	CSensorViewIdentify(CBrainAnimal* pBrain,
 
 CSensorViewIdentify::~CSensorViewIdentify()
 {
-
 }
 
 //===========================================================================
@@ -449,7 +448,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
     }
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------

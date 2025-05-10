@@ -112,7 +112,7 @@ double CPhysicalWelfare::ComputeAndGetHealthVariation()
   if (!m_pEntity->checkVitalNeedsOk())
     variation -= 10.0;
 
-  return (variation);
+  return variation;
 }
 
 double CPhysicalWelfare::ComputeTemperatureHealthVariation()
@@ -236,30 +236,30 @@ double CPhysicalWelfare::GetRecoveryBonus(void)
 
 bool CPhysicalWelfare::IsTemperSensSet()
 {
-  return(m_TemperSensSet);
+  return m_TemperSensSet;
 }
 
 bool CPhysicalWelfare::IsHabitatSensSet()
 {
-  return(m_HabitatSensSet);
+  return m_HabitatSensSet;
 }
 
 bool CPhysicalWelfare::IsFertilSensSet()
 {
-  return(m_FertilSensSet);
+  return m_FertilSensSet;
 }
 
 bool CPhysicalWelfare::IsSunlightSensSet()
 {
-  return(m_SunlightSensSet);
+  return m_SunlightSensSet;
 }
 
 double CPhysicalWelfare::GetTemperatureMin()
 {
-  return(m_TemperMin);
+  return m_TemperMin;
 }
 
 double CPhysicalWelfare::GetTemperatureMax()
 {
-  return(m_TemperMax);
+  return m_TemperMax;
 }

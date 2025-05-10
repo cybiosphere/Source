@@ -63,7 +63,6 @@ CReactionRuminate::CReactionRuminate(CBrainAnimal*  pBrain, double successFactor
 
 CReactionRuminate::~CReactionRuminate()
 {
-
 }
 
 //===========================================================================
@@ -87,5 +86,4 @@ void CReactionRuminate::ExecuteAction(ReactionIntensityType_e intensity)
   m_pBrain->getAnimal()->stopCurrentSpeed();
   m_pBrain->getAnimal()->changeStomachFillingRate(-0.2);
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL);
-  return;
 }

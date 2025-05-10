@@ -78,18 +78,13 @@ CLifeStage::CLifeStage(string label, LifeStage_e type, int dayDuration)
 //---------------------------------------------------------------------------
 bool CLifeStage::increaseDayCountAndCheckEnd(void)
 {
-  bool resu;
   m_CurrentDayCounter++;
-  if (m_CurrentDayCounter>=m_TotalDayDuration)
+  if (m_CurrentDayCounter >= m_TotalDayDuration)
   {
     m_CurrentDayCounter = m_TotalDayDuration;
-    resu = true;
+    return true;
   }
-  else
-  {
-    resu = false;
-  }
-  return (resu);
+  return false;
 }
 
 //===========================================================================
@@ -98,17 +93,17 @@ bool CLifeStage::increaseDayCountAndCheckEnd(void)
 
 LifeStage_e CLifeStage::getStageType(void)
 {
-  return(m_StageType);
+  return m_StageType;
 }
 
 string CLifeStage::getLabel(void)
 {
-  return(m_Label);
+  return m_Label;
 }
 
 int CLifeStage::getTotalDayDuration(void)
 {
-  return (m_TotalDayDuration);
+  return m_TotalDayDuration;
 }
 
 void CLifeStage::setTotalDayDuration(int newDuration)
@@ -118,7 +113,7 @@ void CLifeStage::setTotalDayDuration(int newDuration)
 
 int CLifeStage::getCurDayCount(void)
 {
-  return (m_CurrentDayCounter);
+  return m_CurrentDayCounter;
 }
 
 void CLifeStage::setCurDayCount(int newDayCount)

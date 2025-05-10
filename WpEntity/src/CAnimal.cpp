@@ -340,7 +340,7 @@ bool CAnimal::setParamFromGene(CGene* pGen)
     }
   }
   // If resu is false, param is not valid for CAnimal, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -447,7 +447,7 @@ bool CAnimal::completeParamsWithDefault()
     m_id_Vigilance = addParameterCustom(0, 100, 100, 100, "Vigilance rate", PARAM_BEHAVIOR);
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -504,7 +504,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
     }
   }
 
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -522,7 +522,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
 bool CAnimal::completePhysicWelfareWithDefault(void)
 {
   if (m_pPhysicWelfare == NULL)
-    return (false);
+    return false;
 
   if (m_pPhysicWelfare->IsHabitatSensSet() == false)
   {
@@ -537,7 +537,7 @@ bool CAnimal::completePhysicWelfareWithDefault(void)
   // TBD: temporary. must be confirmed
   m_pPhysicWelfare->SetRecoveryBonus(0.02);
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -795,7 +795,7 @@ CSensor* CAnimal::getTemporarySensorFromGene (CGene* pGen)
   }
 
   // If resu is false, sensor is not valid for animaly, but it may be used by inherited class !
-  return (pSensor);
+  return pSensor;
 }
 
 //---------------------------------------------------------------------------
@@ -939,7 +939,7 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize (CGene* pGen)
     nbWeight = 0;
 
   // If resu is false, sensor is not valid for animaly, but it may be used by inherited class !
-  return (nbWeight);
+  return nbWeight;
 }
 
 //---------------------------------------------------------------------------
@@ -1088,7 +1088,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
     }
   }
   // If resu is false, reaction is not valid for animal, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1115,7 +1115,7 @@ bool CAnimal::completeBrainSensorWithDefault(void)
   pSens = new CSensorStatic((CBrainAnimal*)m_pBrain,30.0);
   if (pSens!=NULL)
     m_pBrain->AttachSensor(pSens);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1138,7 +1138,7 @@ bool CAnimal::completeBrainReactionWithDefault(void)
     m_pBrain->AttachReaction(pReaction);    
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1203,7 +1203,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
       break;
     }
   }
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1222,12 +1222,12 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   if (CBasicEntity::setBrainInstinctFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL) || ((pGen->getGeneSubType() != GENE_BRAIN_LINE) && (pGen->getGeneSubType() != GENE_BRAIN_IDENTIFY_LINE)))
   {
-    return (false);
+    return false;
   }
 
   // We are sure Gene is a Brain line
@@ -1247,7 +1247,7 @@ bool CAnimal::setBrainInstinctFromGene (CGene* pGen)
   {
     resu = m_pBrain->GetIdentifyNeuronTable()->buildNeuronLineFromRawData(lineId,len,pData+1);
   }
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1290,7 +1290,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
     break;
   }
   // If resu is false, caract is not valid for basic entity, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1307,7 +1307,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CAnimal::completeBrainInstinctWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1385,7 +1385,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
     }
   }
 
-  return (resu);
+  return resu;
 }
 
 
@@ -1502,7 +1502,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
     }
   }
 
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1596,7 +1596,7 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
     }
   }
 
-  return(welfareStr);
+  return welfareStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1723,7 +1723,7 @@ string CAnimal::buildSensorString(CGene* pGen)
     }
   }
 
-  return (paramStr);
+  return paramStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1744,19 +1744,19 @@ string CAnimal::buildReactionString(CGene* pGen)
   if (paramStr != STRING_GENE_UNUSED)
   {
     // The parameter has already been taken into account by basic entity
-    return (paramStr);
+    return paramStr;
   }
 
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_REACTION))
   {
-    return (paramStr);
+    return paramStr;
   }
   // We are sure Gene is a parameter
   size_t len = pGen->getData().size();
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
-    return (paramStr);
+    return paramStr;
   }
 
   switch(pGen->getGeneSubType())
@@ -1795,7 +1795,7 @@ string CAnimal::buildReactionString(CGene* pGen)
     }
   }
 
-  return (paramStr);
+  return paramStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1852,7 +1852,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
     }
   }
 
-  return(brainStr);
+  return brainStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1901,7 +1901,7 @@ string CAnimal::buildBrainInstinctString(CGene* pGen)
     }
   }
 
-  return(brainStr);
+  return brainStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1951,7 +1951,7 @@ string CAnimal::buildBrainConfigString(CGene* pGen)
     }
   }
 
-  return (caractStr);
+  return caractStr;
 }
 
 //---------------------------------------------------------------------------
@@ -2014,7 +2014,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
     }
   }
 
-  return(welfareStr);
+  return welfareStr;
 }
 
 //---------------------------------------------------------------------------
@@ -2113,7 +2113,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
     }
   }
 
-  return(purposeStr);
+  return purposeStr;
 }
 
 //===========================================================================
@@ -2432,10 +2432,9 @@ void CAnimal::balanceWeightAndMetabolism(bool forceGrowth)
 //---------------------------------------------------------------------------
 void CAnimal::changeHungerRate(double variation)
 {
-  getParameterNoCheck(m_id_Hunger)->changeVal(variation);
   // Hunger is just an indicator. 
   // Fat rate is the critical ressource for health
-  return;
+  getParameterNoCheck(m_id_Hunger)->changeVal(variation);
 }
 
 //---------------------------------------------------------------------------
@@ -2452,7 +2451,6 @@ void CAnimal::changeHungerRate(double variation)
 void CAnimal::changeThirstRate(double variation)
 {
   getParameterNoCheck(m_id_Thirst)->changeVal(variation);
-  return;
 }
 
 //---------------------------------------------------------------------------
@@ -2477,7 +2475,6 @@ void CAnimal::changeStomachFillingRate(double variation)
       logDeathCause("due to stomach overload\n");
     }
   }
-  return;
 }
 
 //---------------------------------------------------------------------------
@@ -2494,7 +2491,6 @@ void CAnimal::changeStomachFillingRate(double variation)
 void CAnimal::changeLibidoRate(double variation)
 {
   getParameterNoCheck(m_id_Libido)->changeVal(variation);
-  return;
 }
 
 //---------------------------------------------------------------------------
@@ -2546,7 +2542,6 @@ bool CAnimal::changeHealthRate(double variation, CBasicEntity* pAggresor, bool s
 void CAnimal::changeSufferingRate(double variation)
 {
   getParameterNoCheck(m_id_Suffering)->changeVal(variation);
-  return;
 }
 
 //---------------------------------------------------------------------------
@@ -2563,7 +2558,6 @@ void CAnimal::changeSufferingRate(double variation)
 void CAnimal::changePleasureRate(double variation)
 {
   getParameterNoCheck(m_id_Pleasure)->changeVal(variation);
-  return;
 }
 
 //---------------------------------------------------------------------------
@@ -2626,13 +2620,11 @@ void CAnimal::changeTirednessRate(double variation)
       logDeathCause("due to burnout\n");
     }
   }
-  return;
 }
 
 void CAnimal::forceTirednessRate(double newRate)
 {
   getParameterNoCheck(m_id_Tiredness)->forceVal(newRate);
-  return;
 }
 
 
@@ -2875,7 +2867,7 @@ feedbackValType CAnimal::forceNextAction(choiceIndType myChoice)
   {
     doNothing();
   }
-  return (myFeedback);
+  return myFeedback;
 }
 
 //---------------------------------------------------------------------------
@@ -2904,7 +2896,7 @@ choiceIndType CAnimal::predictNextAction()
     }
   }
 
-  return (autoChoice);
+  return autoChoice;
 }
 
 //---------------------------------------------------------------------------
@@ -2924,7 +2916,7 @@ bool CAnimal::ExecuteTurnRightAction(unsigned int nDegree)
   changeTirednessRate(0.2);
   turnRight(nDegree);
   lookForward();
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2944,7 +2936,7 @@ bool CAnimal::ExecuteTurnLeftAction(unsigned int nDegree)
   changeTirednessRate(0.2);
   turnLeft(nDegree);
   lookForward();
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -3065,10 +3057,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
   changePleasureRate(pleasureRate);
   changeTirednessRate(nbSteps * 0.02);
 
-  if (injuryLevel>0)
-    return (false);
-  else
-    return (true); 
+  return (injuryLevel > 0) ? false : true;
 }
 
 //---------------------------------------------------------------------------
@@ -3109,10 +3098,7 @@ bool CAnimal::ExecuteMoveBackwardAction(double successSatisfactionFactor, double
   changePleasureRate(pleasureRate);
   changeTirednessRate(nbSteps * 0.02);
 
-  if (pleasureRate<0)
-    return (false);
-  else
-    return (true); 
+  return (pleasureRate < 0) ? false : true;
 }
 
 //---------------------------------------------------------------------------
@@ -3138,11 +3124,11 @@ bool CAnimal::checkConsumeClass (ClassType_e eatenClass)
        && (eatenClass >= CLASS_ANIMAL_FIRST)
        && (eatenClass <= CLASS_ANIMAL_LAST) ) )
   {
-    return (true);
+    return true;
   }
   else
   {
-    return (false);
+    return false;
   }
 }
 
@@ -3283,10 +3269,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
 
   changePleasureRate(pleasureRate);
 
-  if (pleasureRate<0)
-    return (false);
-  else
-    return (true); 
+  return (pleasureRate < 0) ? false : true;
 }
 
 //---------------------------------------------------------------------------
@@ -3332,9 +3315,9 @@ bool CAnimal::ExecuteDrinkAction(double successSatisfactionFactor, double failur
   changePleasureRate(pleasureRate);
 
   if (pleasureRate<0)
-    return (false);
+    return false;
   else
-    return (true); 
+    return true; 
 }
 
 //---------------------------------------------------------------------------
@@ -3352,7 +3335,7 @@ bool CAnimal::ExecuteCopulateAction(double successSatisfactionFactor, double fai
 {
   // Reproduction is class specific
   // Has to be inherited
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -3474,7 +3457,6 @@ bool CAnimal::ExecuteSleepAction()
   return (true);
 }
 
-
 void CAnimal::setDirection(int direction)
 {
   CBasicEntity::setDirection(direction);
@@ -3528,7 +3510,7 @@ void CAnimal::lookForward(void)
 //---------------------------------------------------------------------------
 void CAnimal::turnHeadLeft(void)
 {
-  m_HeadDirection = (getDirection()+1)%8;
+  m_HeadDirection = (getDirection() + 1) % 8;
 }
 
 //---------------------------------------------------------------------------
@@ -3544,7 +3526,7 @@ void CAnimal::turnHeadLeft(void)
 //---------------------------------------------------------------------------
 void CAnimal::turnHeadRight(void)
 {
-  m_HeadDirection = (getDirection()+7)%8;
+  m_HeadDirection = (getDirection() + 7) % 8;
 }
 
 //---------------------------------------------------------------------------
@@ -3560,24 +3542,13 @@ void CAnimal::turnHeadRight(void)
 //---------------------------------------------------------------------------
 void CAnimal::setForbidenActionInd(choiceIndType actionInd)
 {
-  if (actionInd < m_pBrain->GetNumberReaction())
-  {
-    m_forbidenActionInd = actionInd;
-    m_forbidenActionCount = 0;
-  }
-  else
-  {
-    m_forbidenActionInd = invalidIndex;
-    m_forbidenActionCount = 0;
-  }
+  m_forbidenActionInd = (actionInd < m_pBrain->GetNumberReaction()) ? actionInd : invalidIndex;
+  m_forbidenActionCount = 0;
 }
 
 string CAnimal::getForbidenActionLabel()
 {
-  if (m_forbidenActionInd == invalidIndex)
-    return "None";
-  else
-    return m_pBrain->GetReactionByIndex(m_forbidenActionInd)->GetLabel();
+  return (m_forbidenActionInd == invalidIndex) ? "None" : m_pBrain->GetReactionByIndex(m_forbidenActionInd)->GetLabel();
 }
 
 int CAnimal::getForbidenActionCount()
@@ -3605,77 +3576,77 @@ bool CAnimal::isAnimal()
 
 double CAnimal::getReproductionRate() 
 {
-  return (getParameterNoCheck(m_id_ReproductionRate)->getVal());
+  return getParameterNoCheck(m_id_ReproductionRate)->getVal();
 }
     
 double CAnimal::getLifeExpectation() 
 {
-  return (getParameterNoCheck(m_id_Age)->getMax());
+  return getParameterNoCheck(m_id_Age)->getMax();
 }
 
 double CAnimal::getRotenTimeExpectation() 
 {
-  return (getParameterNoCheck(m_id_Decomposition)->getMax());
+  return getParameterNoCheck(m_id_Decomposition)->getMax();
 }
 
 double CAnimal::getHungerRate()
 {
-  return (getParameterNoCheck(m_id_Hunger)->getVal());
+  return getParameterNoCheck(m_id_Hunger)->getVal();
 }
 
 double CAnimal::getThirstRate()
 {
-  return (getParameterNoCheck(m_id_Thirst)->getVal());
+  return getParameterNoCheck(m_id_Thirst)->getVal();
 }
 
 double CAnimal::getHealthRate()
 {
-  return (getParameterNoCheck(m_id_Health)->getVal());
+  return getParameterNoCheck(m_id_Health)->getVal();
 }
 
 double CAnimal::getStomachFillingRate()
 {
-  return (getParameterNoCheck(m_id_StomachFilling)->getVal());
+  return getParameterNoCheck(m_id_StomachFilling)->getVal();
 }
 
 double CAnimal::getLibidoRate()
 {
-  return (getParameterNoCheck(m_id_Libido)->getVal());
+  return getParameterNoCheck(m_id_Libido)->getVal();
 }
 
 double CAnimal::getSufferingRate()
 {
-  return (getParameterNoCheck(m_id_Suffering)->getVal());
+  return getParameterNoCheck(m_id_Suffering)->getVal();
 }
 
 double CAnimal::getPleasureRate()
 {
-  return (getParameterNoCheck(m_id_Pleasure)->getVal());
+  return getParameterNoCheck(m_id_Pleasure)->getVal();
 }
 
 double CAnimal::getTirednessRate()
 {
-  return (getParameterNoCheck(m_id_Tiredness)->getVal());
+  return getParameterNoCheck(m_id_Tiredness)->getVal();
 }
 
 double CAnimal::getCuriosityRate()
 {
-  return (getParameterNoCheck(m_id_Curiosity)->getVal());
+  return getParameterNoCheck(m_id_Curiosity)->getVal();
 }
 
 double CAnimal::getLearningRate()
 {
-  return (getParameterNoCheck(m_id_Learning)->getVal());
+  return getParameterNoCheck(m_id_Learning)->getVal();
 }
 
 double CAnimal::getFatWeight()
 {
-  return (getParameterNoCheck(m_id_FatWeight)->getVal());
+  return getParameterNoCheck(m_id_FatWeight)->getVal();
 }
 
 double CAnimal::getMaxFatWeight()
 {
-  return (getParameterNoCheck(m_id_FatWeight)->getMax());
+  return getParameterNoCheck(m_id_FatWeight)->getMax();
 }
 
 void CAnimal::setCuriosityToNominalRatio(double ratio)
@@ -3704,12 +3675,12 @@ void CAnimal::setAttackFactorToNominalRatio(double ratio)
 
 double CAnimal::getAttackFactor()
 {
-  return (getParameterNoCheck(m_id_AttackFactor)->getVal());
+  return getParameterNoCheck(m_id_AttackFactor)->getVal();
 }
 
 bool CAnimal::isSleeping()
 {
-  return (m_bIsSleeping);
+  return m_bIsSleeping;
 }
 
 int CAnimal::getCurrentSpeed()

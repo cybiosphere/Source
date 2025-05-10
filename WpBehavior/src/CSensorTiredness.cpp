@@ -63,7 +63,6 @@ CSensorTiredness::CSensorTiredness(CBrainAnimal* pBrain, double weightRate)
 
 CSensorTiredness::~CSensorTiredness()
 {
-
 }
 
 //===========================================================================

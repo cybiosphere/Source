@@ -124,10 +124,7 @@ string CSensorTactile::GetSubCaptorLabel(size_t index)
 {
   if (index>GetSubCaptorNumber())
     return ("bad index");
-  else
-  {
-    string label;
-    label = FormatString("position %d",m_relBottomLayer+index);
-    return (label);
-  }
+
+  string label = FormatString("position %d",m_relBottomLayer+index);
+  return (label);
 }

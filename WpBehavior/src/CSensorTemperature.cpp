@@ -65,7 +65,6 @@ CSensorTemperature::CSensorTemperature(CBrainAnimal* pBrain, std::vector<double>
 
 CSensorTemperature::~CSensorTemperature()
 {
-
 }
 
 //===========================================================================

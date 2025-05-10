@@ -155,11 +155,11 @@ bool CPurpose::CheckSucces(void)
   if (((m_TriggerType == PURPOSE_TRIG_UP)   && (GetSensorLevel()<(m_StopRateThreshold*MAX_SENSOR_VAL/100.0)))
    || ((m_TriggerType == PURPOSE_TRIG_DOWN) && (GetSensorLevel()>(m_StopRateThreshold*MAX_SENSOR_VAL/100.0))))
   {
-    return (true);
+    return true;
   }
   else
   {
-    return (false);
+    return false;
   }
 }
 
@@ -177,7 +177,7 @@ bool CPurpose::CheckSucces(void)
 bool CPurpose::IncreaseCountAndCheckEnd(void)
 {
   m_SecondCounter++;
-  return (m_SecondCounter >= m_SecondDuration);
+  return m_SecondCounter >= m_SecondDuration;
 }
 
 //---------------------------------------------------------------------------
@@ -265,26 +265,26 @@ bool CPurpose::AddSensorBonus (CSensor* pSensor, std::vector<int>& bonusTable)
 {
   if ((m_nbSensorBonus>SENSOR_TABLE_SIZE-1)||(bonusTable.empty()))
   {
-    return (false);
+    return false;
   }
   
   m_tSensorBonus[m_nbSensorBonus].pSensor    = pSensor;
   m_tSensorBonus[m_nbSensorBonus].bonusTable = std::move(bonusTable);
   m_nbSensorBonus++;
-  return (true);
+  return true;
 }
 
 bool CPurpose::AddReactionBonus (CReaction* pReaction,int bonusRate)
 {
   if (m_nbReactionBonus>REACTION_TABLE_SIZE-1)
   {
-    return (false);
+    return false;
   }
   
   m_tReactionBonus[m_nbReactionBonus].pReaction = pReaction;
   m_tReactionBonus[m_nbReactionBonus].bonusRate = bonusRate;
   m_nbReactionBonus++;
-  return (true);
+  return true;
 }
 
 sensorValType CPurpose::GetSensorLevel()
@@ -294,7 +294,7 @@ sensorValType CPurpose::GetSensorLevel()
   {
     resu = m_pSensor->GetSubCaptorStimulationLevel(m_subCaptorIndex);
   }
-  return (resu);
+  return resu;
 }
 
 bool CPurpose::IsStartThresholdReached()
@@ -302,19 +302,19 @@ bool CPurpose::IsStartThresholdReached()
   sensorValType  resu = GetSensorLevel();
   if (((m_TriggerType == PURPOSE_TRIG_UP)   && (resu > (m_StartRateThreshold*MAX_SENSOR_VAL/100.0)))
    || ((m_TriggerType == PURPOSE_TRIG_DOWN) && (resu < (m_StartRateThreshold*MAX_SENSOR_VAL/100.0))))
-    return (true);
+    return true;
   else
-    return (false);
+    return false;
 }
 
 string CPurpose::GetLabel()
 {
-  return (m_Label);
+  return m_Label;
 }
 
 DWORD CPurpose::GetUniqueId()
 {
-  return (m_UniqueId);
+  return m_UniqueId;
 }
 
 DWORD CPurpose::ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorIndex)
@@ -324,12 +324,12 @@ DWORD CPurpose::ComputeUniqueId(DWORD triggerSensUid, size_t triggerSubCaptorInd
 
 int CPurpose::GetPriority()
 {
-  return (m_Priority);
+  return m_Priority;
 }
 
 double CPurpose::GetLevelBonus()
 {
-  return (m_LevelBonus);
+  return m_LevelBonus;
 }
 
 bool CPurpose::IsMemorizeSuccess()

@@ -48,7 +48,6 @@ CGeneticParam::CGeneticParam(double valMin, double valInit, double valNominal, d
 
 CGeneticParam::~CGeneticParam()
 {
-
 }
 
 string CGeneticParam::getLabel(void)

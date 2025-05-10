@@ -58,7 +58,6 @@ CMeasureBiotopParam::CMeasureBiotopParam(CBiotop* pBiotop, size_t paramIndex, in
 
 CMeasureBiotopParam::~CMeasureBiotopParam()
 {
-
 }
 
 //===========================================================================
@@ -72,5 +71,5 @@ CMeasureBiotopParam::~CMeasureBiotopParam()
 
 size_t CMeasureBiotopParam::GetSubTypeId()
 {
-  return(m_paramIndex);
+  return m_paramIndex;
 }

@@ -89,7 +89,7 @@ bool CRock::isMineral()
 
 double CRock::changeWeight(double variation)
 {
-  return (0);
+  return 0;
 }
 
 ClassType_e  CRock::getClass()

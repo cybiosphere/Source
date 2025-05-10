@@ -47,7 +47,6 @@ CGenericCaract::CGenericCaract()
 
 CGenericCaract::~CGenericCaract()
 {
-
 }
 
 //===========================================================================
@@ -65,10 +64,7 @@ void  CGenericCaract::setPresenceMask(DWORD newMask)
 
 bool  CGenericCaract::isCaractPresent(unsigned char index)
 {
-  if ((m_PresenceMask & (1<<index)) == 0)
-    return false;
-  else
-    return true;
+  return ((m_PresenceMask & (1 << index)) == 0) ? false : true;
 }
 
 void  CGenericCaract::setCaractPresent(unsigned char index)

@@ -104,7 +104,7 @@ bool CGene::setAsNeutral(void)
   m_MuteRate = 0;
   m_MuteType = GENE_MUTE_RANDOM_BIT;
   m_pDefinitions = CGeneList::getDefinitions(GENE_GENERIC, GENE_GENERIC_UNKNOWN);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -130,7 +130,7 @@ bool CGene::setAsCaracter(GeneSubTypeCaracter_e subType, int muteRate, GeneMuteT
   m_pDefinitions = CGeneList::getDefinitions(GENE_CARACTER, subType);
   m_RawData.resize(dataLen);
   memcpy(m_RawData.data(), pRawData, dataLen);
-  return (true);
+  return true;
 }
 
 bool CGene::setAsCaracterUsingDefinition(GeneSubTypeCaracter_e subType, int muteRate, DWORD value)
@@ -177,7 +177,7 @@ bool CGene::setAsParameter(GeneSubTypeParam_e subType, int muteRate, long min, l
   pWordData[1] = encodeLongOnWord(nominalVal, 1000);
   pWordData[2] = encodeLongOnWord(max, 1000);
 
-  return (true);
+  return true;
 }
 
 bool CGene::setAsParameterUsingDefinition(GeneSubTypeParam_e subType, int muteRate, double min, double nominalVal, double max)
@@ -194,7 +194,7 @@ bool CGene::setAsParameterUsingDefinition(GeneSubTypeParam_e subType, int muteRa
   setElementValue(1, nominalVal);
   setElementValue(2, max);
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -221,7 +221,7 @@ bool CGene::setAsLifeStage(GeneSubTypeLifeStage_e subType, int muteRate, long du
   WORD* pWordData = (WORD*)m_RawData.data();
   // Generic scale for LifeStage is [1..1000]
   pWordData[0] = encodeLongOnWord(durationRatio, 1000);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -252,7 +252,7 @@ bool CGene::setAsPhysicWelfare(GeneSubTypePhySensi_e subType, int muteRate, long
   pWordData[1] = encodeLongOnWord(min, 1000);
   pWordData[2] = encodeLongOnWord(nominalVal, 1000);
   pWordData[3] = encodeLongOnWord(max, 1000);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -289,7 +289,7 @@ bool CGene::setAsSensor(GeneSubTypeSensor_e subType, int muteRate, int nbWeight,
   {
     pWordData[4+i] = encodeLongOnWordSigned(pWeight[i], 1000);
   }
-  return (true);
+  return true;
 }
 
 bool CGene::setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
@@ -313,7 +313,7 @@ bool CGene::setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate
   {
     pWordData[4 + i] = encodeLongOnWordSigned(pWeight[i], 1000);
   }
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -349,7 +349,7 @@ bool CGene::setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DW
   {
     pWordData[4+i] = encodeLongOnWordSigned(pWeight[i], 1000);
   }
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -382,7 +382,7 @@ bool CGene::setAsReaction(GeneSubTypeReaction_e subType, int muteRate, long succ
   pWordData[1] = encodeLongOnWord(failure, 1000);
   pWordData[2] = encodeLongOnWord(data1, 1000);
   pWordData[3] = encodeLongOnWord(data2, 1000);
-  return (true);
+  return true;
 }
 
 bool CGene::setAsReactionUsingDefinition(GeneSubTypeReaction_e subType, int muteRate, double success, double failure, double data1, double data2)
@@ -400,7 +400,7 @@ bool CGene::setAsReactionUsingDefinition(GeneSubTypeReaction_e subType, int mute
   setElementValue(2, data1);
   setElementValue(3, data1);
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -427,7 +427,7 @@ bool CGene::setAsBrainSize(GeneSubTypeBrainSize_e subType, int muteRate, size_t 
   WORD* pWordData = (WORD*)m_RawData.data();
   // Generic scale for brainSize is [1..100]
   pWordData[0] = encodeLongOnWord((long)brainSize, 100);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -459,7 +459,7 @@ bool CGene::setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn
   {
     pWordData[i+1] = pData[i];
   }
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -491,7 +491,7 @@ bool CGene::setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nb
   {
     pWordData[i+1] = pData[i];
   }
-  return (true);
+  return true;
 }
 
 
@@ -525,9 +525,8 @@ bool CGene::setAsFeeling(GeneSubTypeFeeling_e subType, int muteRate, DWORD senso
   {
     pWordData[2+i] = encodeLongOnWordSigned(pSensi[i], 1000);
   }
-  return (true);
+  return true;
 }
-
 
 //---------------------------------------------------------------------------
 // METHOD:       CGene::setAsNewPurpose()
@@ -570,7 +569,7 @@ bool CGene::setAsPurposeTrigger(GeneSubTypePurpose_e subType, int muteRate,
   {
     pByteData[12+i] = pLabel[i];
   }
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -605,7 +604,7 @@ bool CGene::setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensor
   {
     pWordData[4+i] = encodeLongOnWord(pBonusTable[i], 2000);
   }
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -636,7 +635,7 @@ bool CGene::setAsPurposeReactionBonus(int muteRate, DWORD purposeUId, DWORD reac
   pDWordData[0] = purposeUId;
   pDWordData[1] = reactionUId;
   pWordData[4]  = encodeLongOnWord(bonus, 2000);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -662,7 +661,7 @@ bool CGene::setAsBrainConfig(GeneSubTypeBrainBehavior_e subType, int muteRate, G
   m_MuteType    = muteType;
   m_RawData.resize(dataLen);
   memcpy(m_RawData.data(), pData, dataLen);
-  return (true);
+  return true;
 }
 
 bool CGene::setAsBrainConfigUsingDefinition(GeneSubTypeBrainBehavior_e subType, int muteRate, DWORD value)
@@ -853,7 +852,7 @@ double CGene::getElementDefaultValue(size_t index)
 bool CGene::setRawDataSizeWithDefinition()
 {
   size_t dataSize = 0;
-  for (auto param : m_pDefinitions->elements)
+  for (auto& param : m_pDefinitions->elements)
   {
     dataSize += param.hexaSize;
   }
@@ -908,7 +907,7 @@ string CGene::buildStringDataFromGene()
     rawData += tempStr;
   }
 
-  return (rawData);
+  return rawData;
 }
 
 //---------------------------------------------------------------------------
@@ -968,7 +967,7 @@ int CGene::getRecessiveFactor(void)
     resu = resu + m_RawData[i];
   }
 
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -1046,7 +1045,7 @@ bool CGene::tryMutation()
   {
     resu = false;
   }
-  return (resu);
+  return resu;
 }
 
 //===========================================================================
@@ -1065,31 +1064,31 @@ string CGene::getLabel()
 
 std::vector<BYTE>& CGene::getData()
 {
-  return (m_RawData);
+  return m_RawData;
 }
 
 size_t CGene::getDataLen()
 {
-  return (m_RawData.size());
+  return m_RawData.size();
 }
 
 GeneType_e CGene::getGeneType()
 {
-  return (m_GeneType);
+  return m_GeneType;
 }
 
 int CGene::getGeneSubType()
 {
-  return (m_GeneSubType);
+  return m_GeneSubType;
 }
 
 GeneMuteType_e CGene::getMuteType()
 {
-  return (m_MuteType);
+  return m_MuteType;
 }
 
 BYTE CGene::getMuteRate()
 {
-  return (m_MuteRate);
+  return m_MuteRate;
 }
 

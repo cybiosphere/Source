@@ -240,17 +240,17 @@ void CSensor::applySubCaptorWeightRate()
 //===========================================================================
 size_t CSensor::GetSubCaptorNumber()
 {
-  return (m_SubCaptorNumber);
+  return m_SubCaptorNumber;
 }
 
 string CSensor::GetLabel()
 {
-  return (m_Label);
+  return m_Label;
 }
 
 DWORD CSensor::GetUniqueId()
 {
-  return (m_UniqueId);
+  return m_UniqueId;
 }
 
 int CSensor::GetBonusRate(size_t subCaptorInd)

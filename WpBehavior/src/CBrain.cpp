@@ -1917,7 +1917,6 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
 
 bool CBrain::ReenforceFullIdentity(feedbackValType currentFeedback, IdentificationType_e identity)
 {
-
   if (currentFeedback > MAX_FEEDBACK_VAL)
     currentFeedback = MAX_FEEDBACK_VAL;
   else if (currentFeedback < -MAX_FEEDBACK_VAL)

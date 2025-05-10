@@ -63,7 +63,6 @@ CReactionTurnLeft::CReactionTurnLeft(CBrainAnimal*  pBrain, double successFactor
 
 CReactionTurnLeft::~CReactionTurnLeft()
 {
-
 }
 
 //===========================================================================
@@ -109,6 +108,4 @@ void CReactionTurnLeft::ExecuteAction(ReactionIntensityType_e intensity)
     m_pBrain->getAnimal()->ExecuteTurnLeftAction(30);
     break;
   }
-
-  return;
 }

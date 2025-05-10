@@ -179,12 +179,12 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   if (CBasicEntity::setParamFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -193,7 +193,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   switch(pGen->getGeneSubType())
@@ -248,7 +248,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
     }
   }
   // If resu is false, param is not valid for CVegetable, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -306,7 +306,7 @@ bool CVegetable::completeParamsWithDefault()
   m_OriginalProtection = getProtection();
   m_OriginalOdor = getOdor();
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -369,7 +369,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
     }
   }
 
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -387,7 +387,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 bool CVegetable::completePhysicWelfareWithDefault(void)
 {
   if (m_pPhysicWelfare == NULL)
-    return (false);
+    return false;
 
   if (m_pPhysicWelfare->IsHabitatSensSet() == false)
   {
@@ -407,7 +407,7 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
   // TBD: temporary. must be confirmed
   m_pPhysicWelfare->SetRecoveryBonus(1.0);
 
-  return (true);
+  return true;
 }
 
 //===========================================================================
@@ -432,12 +432,12 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   if (welfareStr != STRING_GENE_UNUSED)
   {
     // The gene has already been taken into account by basic entity
-    return (welfareStr);
+    return welfareStr;
   }
 
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
   {
-    return (welfareStr);
+    return welfareStr;
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
@@ -445,7 +445,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
   if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
     // not enought data to config param
-    return (welfareStr);
+    return welfareStr;
   }
 
   double sensitivity = pGen->getElementValue(0);
@@ -483,7 +483,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
     }
   }
 
-  return(welfareStr);
+  return welfareStr;
 }
 
 //===========================================================================
@@ -634,22 +634,22 @@ bool CVegetable::isVegetal()
 
 double CVegetable::getReproductionRate() 
 {
-  return (getParameterNoCheck(m_id_ReproductionRate)->getVal());
+  return getParameterNoCheck(m_id_ReproductionRate)->getVal();
 }
     
 double CVegetable::getLifeExpectation() 
 {
-  return (getParameterNoCheck(m_id_Age)->getMax());
+  return getParameterNoCheck(m_id_Age)->getMax();
 }
 
 double CVegetable::getRotenTimeExpectation() 
 {
-  return (getParameterNoCheck(m_id_Decomposition)->getMax());
+  return getParameterNoCheck(m_id_Decomposition)->getMax();
 }
 
 double CVegetable::getReproductionRange()
 {
-  return (getParameterNoCheck(m_id_ReproductionRange)->getVal());
+  return getParameterNoCheck(m_id_ReproductionRange)->getVal();
 }
 
 

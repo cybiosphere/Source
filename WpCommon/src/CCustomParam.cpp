@@ -48,7 +48,6 @@ CCustomParam::CCustomParam(double valMin, double valInit, double valNominal, dou
 
 CCustomParam::~CCustomParam()
 {
-
 }
 
 //===========================================================================

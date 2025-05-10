@@ -85,7 +85,6 @@ CVegetable(label, model)
 
   // Parameter id pre-init
   m_id_PollenRange      = invalidCharIndex;;
-
 }
 
 //---------------------------------------------------------------------------
@@ -107,7 +106,6 @@ CVegetable(label, mother, father)
 
   // Parameter id pre-init
   m_id_PollenRange      = invalidCharIndex;;
-
 }
   
 //===========================================================================
@@ -131,12 +129,12 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
   if (CVegetable::setParamFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -165,7 +163,7 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
     }
   }
   // If resu is false, param is not valid for CVegetSpermatophyta, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -194,7 +192,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
     m_id_PollenRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_POLLEN_RANGE);
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -214,7 +212,7 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 {
   if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -223,7 +221,7 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
   if (len < sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   CLifeStage* pLifeStage = NULL;
@@ -311,7 +309,7 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
     break;
   }
   }
-  return (resu);
+  return resu;
 }
 
 //===========================================================================
@@ -520,7 +518,6 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-
 bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
 {
   string childLabel;
@@ -547,7 +544,7 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
     pChildEntity->autoRemove(); // Cannot growth in water
   }
 
-  return (true);
+  return true;
 }
 
 
@@ -562,7 +559,6 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-
 bool CVegetSpermatophyta::autoClone()
 {
   string childLabel;
@@ -604,7 +600,7 @@ bool CVegetSpermatophyta::autoClone()
     pChildEntity->autoRemove(); // Cannot growth in water
   }
 
-  return (true);
+  return true;
 }
 
 //===========================================================================
@@ -613,7 +609,7 @@ bool CVegetSpermatophyta::autoClone()
 
 double CVegetSpermatophyta::getPollenRange()
 {
-  return (getParameterNoCheck(m_id_PollenRange)->getVal());
+  return getParameterNoCheck(m_id_PollenRange)->getVal();
 }
 
 

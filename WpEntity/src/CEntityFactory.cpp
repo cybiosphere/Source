@@ -88,7 +88,7 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   // Initialise the new entity
   pNewEntity->setEntityFromGenome();
 
-  return (pNewEntity);
+  return pNewEntity;
 }
 
 CBasicEntity* CEntityFactory::createEntity(string fileNameWithPath)
@@ -102,7 +102,7 @@ CBasicEntity* CEntityFactory::createEntity(string fileNameWithPath)
   }
   CBasicEntity* pNewEntity = CEntityFactory::createEntity(pXmlDoc);
   delete pXmlDoc;
-  return (pNewEntity);
+  return pNewEntity;
 }
 
 CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
@@ -132,14 +132,14 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
     delete pTempGenome;
   }
 
-  return (pNewEntity);
+  return pNewEntity;
 }
 
 
 CBasicEntity* CEntityFactory::createCloneEntity(CBasicEntity* pModelEntity)
 {
   if (pModelEntity == NULL)
-    return (NULL);
+    return NULL;
 
   CGenome* pGenome = NULL;
   if (pModelEntity->getGenome() != NULL)
@@ -152,7 +152,7 @@ CBasicEntity* CEntityFactory::createCloneEntity(CBasicEntity* pModelEntity)
     if (pGenome != NULL)
       delete pGenome;
 
-    return (NULL);
+    return NULL;
   }
 
   // quick aging

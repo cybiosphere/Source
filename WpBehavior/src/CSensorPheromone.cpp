@@ -68,7 +68,6 @@ CSensorPheromone::CSensorPheromone(CBrainAnimal* pBrain, std::vector<double>& tW
 
 CSensorPheromone::~CSensorPheromone()
 {
-
 }
 
 //===========================================================================

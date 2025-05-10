@@ -68,5 +68,5 @@ CBrainAnimal::~CBrainAnimal()
 
 CAnimal* CBrainAnimal::getAnimal(void)
 {
-  return((CAnimal*)m_pEntity);
+  return (CAnimal*)m_pEntity;
 }

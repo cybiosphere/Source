@@ -123,7 +123,7 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
   if (m_CurSatisfaction<-100.0)
     m_CurSatisfaction = -100.0;
 
-  return (m_CurSatisfaction);
+  return m_CurSatisfaction;
 }
 
 //===========================================================================
@@ -153,7 +153,7 @@ bool CFeelingWelfare::AddSensitivity(CSensor* pSens, size_t tableMaskSize, doubl
 
 double CFeelingWelfare::GetCurFeelingWelfare()
 {
-  return (m_CurSatisfaction);
+  return m_CurSatisfaction;
 }
 
 double CFeelingWelfare::GetSensorFeelingImpact(size_t index, std::string &infoStr)
@@ -176,6 +176,6 @@ double CFeelingWelfare::GetSensorFeelingImpact(size_t index, std::string &infoSt
     infoStr = "Bad index";
   }
 
-  return (satisfaction);
+  return satisfaction;
 }
 

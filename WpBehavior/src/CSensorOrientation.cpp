@@ -65,7 +65,6 @@ CSensorOrientation::CSensorOrientation(CBrainAnimal* pBrain, std::vector<double>
 
 CSensorOrientation::~CSensorOrientation()
 {
-
 }
 
 //===========================================================================

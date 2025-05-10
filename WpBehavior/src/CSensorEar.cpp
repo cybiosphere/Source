@@ -67,7 +67,6 @@ CSensorEar::	CSensorEar(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, 
 
 CSensorEar::~CSensorEar()
 {
-
 }
 
 //===========================================================================
@@ -168,8 +167,7 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   }
 
   pStimulationVal[0] = noiseRate * MAX_SENSOR_VAL / 100.0;
-
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------

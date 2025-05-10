@@ -63,7 +63,6 @@ CSensorStatic::CSensorStatic(CBrainAnimal* pBrain, double weightRate)
 
 CSensorStatic::~CSensorStatic()
 {
-
 }
 
 //===========================================================================

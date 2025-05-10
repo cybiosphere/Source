@@ -85,7 +85,6 @@ CMeasureFeeling::CMeasureFeeling(CBasicEntity* pEntity, int period, int id, Meas
 
 CMeasureFeeling::~CMeasureFeeling()
 {
-
 }
 
 //===========================================================================
@@ -113,15 +112,12 @@ double CMeasureFeeling::GetCurrentValue()
     break;
   }
 
-  return (val);
+  return val;
 }
 
 bool CMeasureFeeling::IsStillValid()
 {
-  if (m_pEntity->isToBeRemoved())
-    return (false);
-  else
-    return (true);
+  return (m_pEntity->isToBeRemoved()) ? false : true;
 }
 
 //===========================================================================
@@ -132,15 +128,15 @@ string CMeasureFeeling::GetMeasureFeelingTypeStrName(MeasureFeelingType_e type)
 {
   string typeName;
   typeName = MeasureFeelingTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 size_t CMeasureFeeling::GetSubTypeId()
 {
-  return(m_SubType);
+  return m_SubType;
 }
 
 CBasicEntity* CMeasureFeeling::GetpEntity()
 {
-  return(m_pEntity);
+  return m_pEntity;
 }

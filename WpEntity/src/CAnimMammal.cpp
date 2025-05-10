@@ -151,12 +151,12 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   if (CAnimal::setParamFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -193,7 +193,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
     }
   }
   // If resu is false, param is not valid for CAnimMammal, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -227,7 +227,7 @@ bool CAnimMammal::completeParamsWithDefault()
     setGestationBabyNumber(0);
   }
   
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -344,7 +344,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
       break;
     }
   }
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -427,7 +427,7 @@ bool CAnimMammal::completeLifeStagesWithDefault(void)
       + (int)deathDuration - configDeathDuration + 1 );
   }
   
-  return (true);
+  return true;
 }
 
 
@@ -712,10 +712,7 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
     
     changePleasureRate(pleasureRate);
 
-    if (pleasureRate<0)
-      return (false);
-    else
-      return (true);
+    return (pleasureRate < 0) ? false : true;
   }
 }
 
@@ -773,13 +770,9 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
   }
   
   changePleasureRate(pleasureRate);
-  
   changeTirednessRate(2);
   
-  if (pleasureRate<0)
-    return (false);
-  else
-    return (true); 
+  return (pleasureRate < 0) ? false : true;
 }
 
 //---------------------------------------------------------------------------
@@ -798,7 +791,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   // TBD: Check also if reproduction age is reached
   if ((getGestationBabyNumber()!=0) || (getLibidoRate()<50))
   {
-    return (false);
+    return false;
   }
  
   // Chose a number between 0 to 10
@@ -841,7 +834,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   // Stop sexual pheromon and libido
   changeLibidoRate(-100.0);
   setPheromone(PHEROMONE_NONE);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -904,7 +897,7 @@ bool CAnimMammal::deliverAllBabies()
     getBrain()->SetHomePurposePositionInGeoMap();
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -968,7 +961,7 @@ int CAnimMammal::getGestationMinNumber()
 
 int CAnimMammal::getGestationNominalNumber()
 {
-  return (max((int)getParameterNoCheck(m_id_GestationNumberRange)->getValNominal(), 1));
+  return max((int)getParameterNoCheck(m_id_GestationNumberRange)->getValNominal(), 1);
 }
 
 int CAnimMammal::getGestationBabyNumber()

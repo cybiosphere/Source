@@ -136,7 +136,6 @@ CSensorView::	CSensorView(CBrainAnimal* pBrain,
 
 CSensorView::~CSensorView()
 {
-
 }
 
 //===========================================================================
@@ -411,7 +410,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
     }
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------

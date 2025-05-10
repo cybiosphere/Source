@@ -426,8 +426,8 @@ public:
   void            setForm(FormType_e newForm);
   TextureType_e   getTexture();
   void            setTexture(TextureType_e newText);
-  string          getLabel();
-  bool            setLabel(string newname);
+  const string&   getLabel();
+  void            setLabel(string newname);
   bool            isComestible();
   bool            isDrinkable();
   bool            isAlive();

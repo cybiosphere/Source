@@ -66,7 +66,6 @@ CSensorCompass::	CSensorCompass(CBrainAnimal* pBrain, std::vector<double>& tWeig
 
 CSensorCompass::~CSensorCompass()
 {
-
 }
 
 //===========================================================================

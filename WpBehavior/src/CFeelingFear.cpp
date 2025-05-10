@@ -124,7 +124,7 @@ double CFeelingFear::ComputeAndGetFeelingFear()
   if (m_CurFear<0.0)
     m_CurFear = -0.0;
 
-  return (m_CurFear);
+  return m_CurFear;
 }
 
 //===========================================================================
@@ -151,5 +151,5 @@ bool CFeelingFear::AddSensitivity(CSensor* pSens, size_t tableMaskSize, double* 
 
 double CFeelingFear::GetCurFeelingFear()
 {
-  return (m_CurFear);
+  return m_CurFear;
 }

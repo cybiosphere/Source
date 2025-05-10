@@ -64,7 +64,6 @@ CReactionStepBackward::CReactionStepBackward(CBrainAnimal*  pBrain, double succe
 
 CReactionStepBackward::~CReactionStepBackward()
 {
-
 }
 
 //===========================================================================
@@ -90,5 +89,4 @@ void CReactionStepBackward::ExecuteAction(ReactionIntensityType_e intensity)
     m_ConsecutiveFailures = 0;
   else
     m_ConsecutiveFailures++;  
-  return;
 }

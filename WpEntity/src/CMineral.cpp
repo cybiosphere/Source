@@ -70,7 +70,7 @@ CMineral::CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseu
 string CMineral::buildLifeStageString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 bool CMineral::isMineral()

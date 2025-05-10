@@ -72,7 +72,6 @@ CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tW
 
 CSensorComposite::~CSensorComposite()
 {
-
 }
 
 //===========================================================================

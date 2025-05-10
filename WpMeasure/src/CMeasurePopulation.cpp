@@ -95,7 +95,6 @@ CMeasurePopulation::CMeasurePopulation(CBiotop* pBiotop, int period, int id, Mea
 
 CMeasurePopulation::~CMeasurePopulation()
 {
-
 }
 
 //===========================================================================
@@ -169,15 +168,15 @@ string CMeasurePopulation::GetMeasurePopulationTypeStrName(MeasurePopulationType
 {
   string typeName;
   typeName = MeasurePopulationTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 size_t CMeasurePopulation::GetSubTypeId()
 {
-  return(m_SubType);
+  return m_SubType;
 }
 
 string  CMeasurePopulation::GetSpecieName()
 {
-  return(m_SpecieName);
+  return m_SpecieName;
 }

@@ -64,7 +64,6 @@ CSensorObscurity::CSensorObscurity(CBrainAnimal* pBrain, double weightRate)
 
 CSensorObscurity::~CSensorObscurity()
 {
-
 }
 
 //===========================================================================

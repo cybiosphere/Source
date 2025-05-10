@@ -431,7 +431,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   // Set Signature
   computeEntitySignature();
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -449,7 +449,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
 bool CBasicEntity::setSexFromGenome(void)
 {
   m_Sex = m_pGenome->getSexType();
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -468,7 +468,7 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_CARACTER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
@@ -529,7 +529,7 @@ bool CBasicEntity::setCaractFromGene (CGene* pGen)
     break;
   }
   // If resu is false, caract is not valid for basic entity, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -579,7 +579,7 @@ bool CBasicEntity::completeCaractsWithDefault(void)
   if (m_Pheromone == PHEROMONE_UNSET)
     m_Pheromone = PHEROMONE_NONE;
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -647,7 +647,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
     }
   }
   // If resu is false, param is not valid for basic entity, but it may be used by inherited class !
-  return (resu);
+  return resu;
 }
 
 
@@ -688,7 +688,7 @@ bool CBasicEntity::completeParamsWithDefault(void)
     m_id_Noise = addParameterCustom(0, 0, 0, 100, "NoiseRate", PARAM_ENVIRONMENT);
   }
   
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -706,7 +706,7 @@ bool CBasicEntity::completeParamsWithDefault(void)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setLifeStageFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -724,7 +724,7 @@ bool CBasicEntity::setLifeStageFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::completeLifeStagesWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -741,7 +741,7 @@ bool CBasicEntity::completeLifeStagesWithDefault(void)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setPhysicWelfareFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -758,7 +758,7 @@ bool CBasicEntity::setPhysicWelfareFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::completePhysicWelfareWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -776,12 +776,11 @@ bool CBasicEntity::completePhysicWelfareWithDefault(void)
 bool CBasicEntity::setBrainSensorFromGene (CGene* pGen)
 {
   CSensor* pSensor = getTemporarySensorFromGene(pGen);
-
   if ((pSensor == NULL) || (m_pBrain == NULL))
-    return(false);
+    return false;
 
   m_pBrain->AttachSensor(pSensor);
-  return(true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -798,7 +797,7 @@ bool CBasicEntity::setBrainSensorFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 CSensor* CBasicEntity::getTemporarySensorFromGene (CGene* pGen)
 {
-  return (NULL);
+  return NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -816,7 +815,7 @@ CSensor* CBasicEntity::getTemporarySensorFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 size_t  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
 {
-  return (0);
+  return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -833,7 +832,7 @@ size_t  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setBrainReactionFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -850,7 +849,7 @@ bool CBasicEntity::setBrainReactionFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::completeBrainSensorWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -867,7 +866,7 @@ bool CBasicEntity::completeBrainSensorWithDefault(void)
 //---------------------------------------------------------------------------
 bool CBasicEntity::completeBrainReactionWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -884,7 +883,7 @@ bool CBasicEntity::completeBrainReactionWithDefault(void)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setBrainSizeFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -900,7 +899,7 @@ bool CBasicEntity::setBrainSizeFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setBrainInstinctFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -916,7 +915,7 @@ bool CBasicEntity::setBrainInstinctFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setBrainConfigFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 
@@ -934,7 +933,7 @@ bool CBasicEntity::setBrainConfigFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::completeBrainInstinctWithDefault(void)
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -951,7 +950,7 @@ bool CBasicEntity::completeBrainInstinctWithDefault(void)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setFeelingFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 //---------------------------------------------------------------------------
@@ -968,7 +967,7 @@ bool CBasicEntity::setFeelingFromGene (CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::setPurposeFromGene (CGene* pGen)
 {
-  return (false);
+  return false;
 }
 
 
@@ -1073,7 +1072,7 @@ string CBasicEntity::getGeneDescriptionString(CGene* pGen)
     break;
   }
 
-  return (descStr);
+  return descStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1094,13 +1093,13 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
 
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_CARACTER))
   {
-    return (caractStr);
+    return caractStr;
   }
   // We are sure Gene is a caracteristic
   size_t len = pGen->getData().size();
   if ((len < 1) || (pGen->getNumElements() < 1))
   {
-    return (caractStr);
+    return caractStr;
   }
 
   BYTE data1 = pGen->getElementFloorValue(0);
@@ -1222,7 +1221,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   }
 
-  return (caractStr);
+  return caractStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1243,15 +1242,15 @@ string CBasicEntity::buildParameterString(CGene* pGen)
 
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (paramStr);
+    return paramStr;
   }
   // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
+  auto& rawData = pGen->getData();
   size_t len = rawData.size();
   if ((len<3*sizeof(WORD)) || (pGen->getNumElements() < 3))
   {
     // not enought data to config param
-    return (paramStr);
+    return paramStr;
   }
 
   double scaledVal0,scaledVal1,scaledVal2;
@@ -1276,7 +1275,7 @@ string CBasicEntity::buildParameterString(CGene* pGen)
     paramStr += pGen->getElementStrName(2) + tempStr;
   }
 
-  return (paramStr);
+  return paramStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1300,7 +1299,7 @@ string CBasicEntity::buildLifeStageString(CGene* pGen)
     return (paramStr);
   }
   // We are sure Gene is a parameter
-  auto rawData = pGen->getData();
+  auto& rawData = pGen->getData();
   size_t len = rawData.size();
   if (len < sizeof(WORD))
   {
@@ -1338,7 +1337,7 @@ string CBasicEntity::buildLifeStageString(CGene* pGen)
     }
   }
 
-  return (paramStr);
+  return paramStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1355,7 +1354,7 @@ string CBasicEntity::buildLifeStageString(CGene* pGen)
 string CBasicEntity::buildPhysicWellfareString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1372,7 +1371,7 @@ string CBasicEntity::buildPhysicWellfareString(CGene* pGen)
 string CBasicEntity::buildSensorString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1389,7 +1388,7 @@ string CBasicEntity::buildSensorString(CGene* pGen)
 string CBasicEntity::buildReactionString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1406,7 +1405,7 @@ string CBasicEntity::buildReactionString(CGene* pGen)
 string CBasicEntity::buildBrainSizeString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1423,7 +1422,7 @@ string CBasicEntity::buildBrainSizeString(CGene* pGen)
 string CBasicEntity::buildBrainInstinctString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1440,7 +1439,7 @@ string CBasicEntity::buildBrainInstinctString(CGene* pGen)
 string CBasicEntity::buildBrainConfigString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1457,7 +1456,7 @@ string CBasicEntity::buildBrainConfigString(CGene* pGen)
 string CBasicEntity::buildFeelingWellfareString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //---------------------------------------------------------------------------
@@ -1474,7 +1473,7 @@ string CBasicEntity::buildFeelingWellfareString(CGene* pGen)
 string CBasicEntity::buildPurposeString(CGene* pGen)
 {
   string defStr = STRING_GENE_UNUSED;
-  return(defStr);
+  return defStr;
 }
 
 //===========================================================================
@@ -1722,7 +1721,7 @@ int CBasicEntity::addParameterCustom(double valMin, double valInit, double valNo
 //---------------------------------------------------------------------------
 size_t CBasicEntity::getNumParameter()
 {
-  return(m_tParam.size());
+  return m_tParam.size();
 }
 
 //---------------------------------------------------------------------------
@@ -1742,17 +1741,17 @@ CGenericParam* CBasicEntity::getParameter(size_t id)
   {
     CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
     CYBIOCORE_LOG("ENTITY - ERROR entity name %s Cannot getParameter index %d\n", getLabel().c_str(), id);
-    return (NULL);
+    return NULL;
   }
   else
   {
-    return (m_tParam[id]);
+    return m_tParam[id];
   }
 }
 
 CGenericParam* CBasicEntity::getParameterNoCheck(size_t id)
 {
-  return (m_tParam[id]);
+  return m_tParam[id];
 }
 
 CGenericParam* CBasicEntity::getParameterByName(string paramName)
@@ -1762,7 +1761,7 @@ CGenericParam* CBasicEntity::getParameterByName(string paramName)
     if (pParam->getLabel() == paramName)
       return (pParam);
   }
-  return (NULL);
+  return NULL;
 }
 
 size_t CBasicEntity::getParamIdByName(string paramName)
@@ -1770,10 +1769,9 @@ size_t CBasicEntity::getParamIdByName(string paramName)
   for (size_t id=0; id<m_tParam.size(); id++)
   {
     if (m_tParam[id]->getLabel() == paramName)
-      return (id);
+      return id;
   }
-
-  return (invalidIndex);
+    return invalidIndex;
 }
 
 
@@ -1884,17 +1882,17 @@ void CBasicEntity::nextDay(bool forceGrowth)
 //---------------------------------------------------------------------------
 int CBasicEntity::getAge()
 {
-  return (0);
+  return 0;
 }
 
 double CBasicEntity::getLifeExpectation()
 {
-  return (0);
+  return 0;
 }
 
 int CBasicEntity::getDecompositionTime()
 {
-  return (0);
+  return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -1910,7 +1908,7 @@ int CBasicEntity::getDecompositionTime()
 //---------------------------------------------------------------------------
 bool CBasicEntity::checkVitalNeedsOk()
 {
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1968,7 +1966,7 @@ bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
     resu = true;
   }
 
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -2023,7 +2021,7 @@ bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage)
       resu = true;
     }
   }
-  return (resu);
+  return resu;
 }
 
 //---------------------------------------------------------------------------
@@ -2060,7 +2058,7 @@ void CBasicEntity::enterInNewLifeStage(CLifeStage* pLifeStage)
 feedbackValType CBasicEntity::forceNextAction(choiceIndType myChoice)
 {
   doNothing();
-  return (0);
+  return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -2077,7 +2075,7 @@ feedbackValType CBasicEntity::forceNextAction(choiceIndType myChoice)
 choiceIndType CBasicEntity::predictNextAction()
 {
   choiceIndType autoChoice = invalidIndex;
-  return (autoChoice);
+  return autoChoice;
 }
 
 //---------------------------------------------------------------------------
@@ -2193,7 +2191,7 @@ bool CBasicEntity::jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer
     }
     resu = false;
   }
-  return (resu);
+  return resu;
 }
 
 bool CBasicEntity::jumpToGlobalGridCoord(const Point_t& newGlobalGridCoord, bool chooseLayer, size_t newLayer)
@@ -2229,19 +2227,17 @@ bool CBasicEntity::jumpToStepCoord(const Point_t& newStepCoord, bool chooseLayer
 
   m_PrevStepCoord = m_StepCoord;
   // Update grid coord if needed
-  Point_t newGridCoord;
-  newGridCoord.x = newStepCoord.x / NB_STEPS_PER_GRID_SQUARE;
-  newGridCoord.y = newStepCoord.y / NB_STEPS_PER_GRID_SQUARE;
+  Point_t newGridCoord{ newStepCoord.x / NB_STEPS_PER_GRID_SQUARE, newStepCoord.y / NB_STEPS_PER_GRID_SQUARE };
   if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) || chooseLayer)
   {
     if (!jumpToGridCoord(newGridCoord, chooseLayer, newLayer))
-      return (false);
+      return false;
   }
 
   // Update new step coord
   m_StepCoord = newStepCoord;
 
-  return (true);
+  return true;
 }
 
 bool CBasicEntity::jumpToGlobalStepCoord(const Point_t& newGlobalStepCoord, bool chooseLayer, size_t newLayer, bool addMoveEvent)
@@ -2272,11 +2268,10 @@ bool CBasicEntity::moveToGridCenterPos()
 {
   // Update prev step coord
   m_PrevStepCoord = m_StepCoord;
-
   // Update new step coord
   m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2;   // center in square
   m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2;   // center in square
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2335,7 +2330,7 @@ bool CBasicEntity::moveToGridEdgePos()
     break;
   }
 
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2354,7 +2349,7 @@ bool CBasicEntity::turnToCenterDir()
   m_PrevStepDirection = m_StepDirection;
   // Go exactely in view direction
   m_StepDirection = 45*m_Direction;
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2371,7 +2366,7 @@ bool CBasicEntity::turnToCenterDir()
 bool CBasicEntity::turnRight(size_t nDegree)
 {
   setStepDirection(m_StepDirection + 360 - (int)nDegree, true);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2388,7 +2383,7 @@ bool CBasicEntity::turnRight(size_t nDegree)
 bool CBasicEntity::turnLeft(size_t nDegree)
 {
   setStepDirection(m_StepDirection + (int)nDegree, true);
-  return (true);
+  return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2935,7 +2930,6 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
   }
 
   loadBabiesFromXmlFile(pXmlDoc);
-
   return true;
 }
 
@@ -2978,8 +2972,7 @@ bool CBasicEntity::loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc)
 //---------------------------------------------------------------------------
 bool CBasicEntity::getGenomeFromXmlFile(string fileName, CGenome& genome)
 {
-  bool resu = genome.loadFromXmlFile(fileName);
-  return resu;
+  return genome.loadFromXmlFile(fileName);
 }
 
 //---------------------------------------------------------------------------
@@ -2997,8 +2990,7 @@ bool CBasicEntity::getGenomeFromXmlFile(string fileName, CGenome& genome)
 //---------------------------------------------------------------------------
 bool CBasicEntity::getGenomeFromXmlFile(TiXmlDocument *pXmlDoc, CGenome& genome)
 {
-  bool resu = genome.loadFromXmlFile(pXmlDoc);
-  return resu;
+  return genome.loadFromXmlFile(pXmlDoc);
 }
 
 //---------------------------------------------------------------------------
@@ -3034,10 +3026,7 @@ bool CBasicEntity::loadBrainFromXmlFile(string fileName)
 //---------------------------------------------------------------------------
 bool CBasicEntity::loadBrainFromXmlFile(TiXmlDocument *pXmlDoc)
 {
-  if (m_pBrain == NULL)
-    return false;
-  bool resu = m_pBrain->loadFromTiXmlFile(pXmlDoc);
-  return (resu);
+  return (m_pBrain == NULL) ? false : m_pBrain->loadFromTiXmlFile(pXmlDoc);
 }
 
 bool CBasicEntity::loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc)
@@ -3045,10 +3034,8 @@ bool CBasicEntity::loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc)
   if (m_pBrain == NULL)
     return false;
   m_pBrain->CreateGeoMapArroudCurrentPosition();
-  bool resu = m_pBrain->GetGeographicMap()->loadFromXmlFile(pXmlDoc);
-  return (resu);
+  return m_pBrain->GetGeographicMap()->loadFromXmlFile(pXmlDoc);
 }
-
 
 //===========================================================================
 // Get / Set for attributes
@@ -3056,7 +3043,7 @@ bool CBasicEntity::loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc)
     
 const Point_t& CBasicEntity::getGridCoord()
 {
-  return (m_GridCoord);
+  return m_GridCoord;
 }
 
 Point_t CBasicEntity::getGlobalGridCoord()
@@ -3074,26 +3061,26 @@ Point_t CBasicEntity::getGlobalGridCoord()
 
 const Point_t& CBasicEntity::getPrevGridCoord()
 {
-  return (m_PrevGridCoord);
+  return m_PrevGridCoord;
 }
 
 const Point_t& CBasicEntity::getPrevStepCoord()
 {
-  return (m_PrevStepCoord);
+  return m_PrevStepCoord;
 }
 
 Point_t CBasicEntity::getAndUpdateGuiGridCoord()
 {
   Point_t prevGridCoord = m_GuiGridCoord;
   m_GuiGridCoord = m_GridCoord;
-  return (prevGridCoord);
+  return prevGridCoord;
 }
 
 Point_t CBasicEntity::getAndUpdateGuiStepCoord()
 {
   Point_t prevStepCoord = m_GuiStepCoord;
   m_GuiStepCoord = m_StepCoord;
-  return (prevStepCoord);
+  return prevStepCoord;
 }
 
 Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
@@ -3151,24 +3138,17 @@ Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
     position.y= m_GridCoord.y + cybio_round(sin(aRad)*relativeCoord.x + cos(aRad)*relativeCoord.y);
   }
 
-  return (position);
+  return position;
 }
 
 const Point_t& CBasicEntity::getStepCoord()
 {
-  return (m_StepCoord);
+  return m_StepCoord;
 }
 
 Point_t CBasicEntity::getGlobalStepCoord()
 {
-  if (m_pBiotop != NULL)
-  {
-    return m_pBiotop->getGlobalStepCoordFromStepCoord(m_StepCoord);
-  }
-  else
-  {
-    return m_StepCoord;
-  }
+  return (m_pBiotop != NULL) ? m_pBiotop->getGlobalStepCoordFromStepCoord(m_StepCoord) : m_StepCoord;
 }
 
 Point_t CBasicEntity::getStepCoordRelative(const RelativePos_t& relativeCoord)
@@ -3184,27 +3164,27 @@ Point_t CBasicEntity::getStepCoordRelative(const RelativePos_t& relativeCoord)
   position.x = (posX < 0) ? 0 : posX;
   position.y = (posY < 0) ? 0 : posY;
 
-  return (position);
+  return position;
 }
 
 size_t CBasicEntity::getLayer() 
 {
-  return (m_Layer);
+  return m_Layer;
 }
 
 size_t CBasicEntity::getPrevLayer()
 {
-  return (m_PrevLayer);
+  return m_PrevLayer;
 }
 
 size_t CBasicEntity::getDefaultLayer()
 {
-  return (m_DefaultLayer);
+  return m_DefaultLayer;
 }
 
 int CBasicEntity::getDirection()
 {
-  return (m_Direction);
+  return m_Direction;
 }
 
 void CBasicEntity::setDirection(int direction)
@@ -3221,7 +3201,7 @@ void CBasicEntity::setDirection(int direction)
 
 int CBasicEntity::getStepDirection()
 {
-  return (m_StepDirection);
+  return m_StepDirection;
 }
 
 void  CBasicEntity::setStepDirection(int stepDirection, bool addMoveEvent)
@@ -3237,12 +3217,12 @@ void  CBasicEntity::setStepDirection(int stepDirection, bool addMoveEvent)
 
 int CBasicEntity::getPrevStepDirection()
 {
-  return (m_PrevStepDirection);
+  return m_PrevStepDirection;
 }
 
 entityIdType CBasicEntity::getId() 
 {
-  return (m_Id);
+  return m_Id;
 }
 
 void CBasicEntity::setId(entityIdType id) 
@@ -3252,7 +3232,7 @@ void CBasicEntity::setId(entityIdType id)
 
 COLORREF CBasicEntity::getColorRgb() 
 {
-  return (m_ColorRgb);
+  return m_ColorRgb;
 }
 
 void CBasicEntity::setColor(COLORREF newColor)
@@ -3268,7 +3248,7 @@ void CBasicEntity::setColor(COLORREF newColor)
 
 FormType_e CBasicEntity::getForm()
 {
-  return (m_Silhouette);
+  return m_Silhouette;
 }
 
 void CBasicEntity::setForm(FormType_e newForm)
@@ -3283,7 +3263,7 @@ void CBasicEntity::setForm(FormType_e newForm)
  
 TextureType_e CBasicEntity::getTexture()
 {
-  return (m_Texture);
+  return m_Texture;
 }
 
 void CBasicEntity::setTexture(TextureType_e newText)
@@ -3296,15 +3276,14 @@ void CBasicEntity::setTexture(TextureType_e newText)
   }
 }
 
-string CBasicEntity::getLabel() 
+const string& CBasicEntity::getLabel() 
 {
-  return (m_Label);
+  return m_Label;
 }
 
-bool CBasicEntity::setLabel(string newname)
+void CBasicEntity::setLabel(string newname)
 {
   m_Label = newname;
-  return (true);
 }
 
 bool CBasicEntity::isComestible() 
@@ -3316,40 +3295,37 @@ bool CBasicEntity::isComestible()
 
 bool CBasicEntity::isDrinkable()
 {
-  return (m_bIsDrinkable);  
+  return m_bIsDrinkable;  
 }
 
 bool CBasicEntity::isAlive()
 {
-  return (m_Status == STATUS_ALIVE);
+  return m_Status == STATUS_ALIVE;
 }  
 
 bool CBasicEntity::isDead()
 {
-  return (m_Status == STATUS_DEAD);
+  return m_Status == STATUS_DEAD;
 }
 
 void CBasicEntity::setUserControlled(bool active)
 {
-  if (active == true)
-    m_Control = CONTROL_LOCAL_USER;
-  else 
-    m_Control = CONTROL_LOCAL_AUTO;
+  m_Control = (active == true) ? CONTROL_LOCAL_USER : CONTROL_LOCAL_AUTO;
 }
 
 bool CBasicEntity::isUserControlled()
 {
-  return (m_Control == CONTROL_LOCAL_USER);
+  return m_Control == CONTROL_LOCAL_USER;
 }
 
 bool CBasicEntity::isLocalAutoControlled()
 {
-  return (m_Control == CONTROL_LOCAL_AUTO);
+  return m_Control == CONTROL_LOCAL_AUTO;
 }
 
 bool CBasicEntity::isRemoteControlled()
 {
-  return (m_Control == CONTROL_REMOTE_AUTO);
+  return m_Control == CONTROL_REMOTE_AUTO;
 }
 
 void CBasicEntity::setRemoteControlled(bool active)
@@ -3359,7 +3335,7 @@ void CBasicEntity::setRemoteControlled(bool active)
 
 double CBasicEntity::getToxicity() 
 {
-  return (getParameterNoCheck(m_id_Toxicity)->getVal());
+  return getParameterNoCheck(m_id_Toxicity)->getVal();
 }
 
 void CBasicEntity::setToxicity(double newRate) 
@@ -3369,7 +3345,7 @@ void CBasicEntity::setToxicity(double newRate)
 
 OdorType_e CBasicEntity::getOdor() 
 {
-  return (m_Odor);
+  return m_Odor;
 }
 
 void CBasicEntity::setOdor(OdorType_e newOdor)
@@ -3384,7 +3360,7 @@ void CBasicEntity::setOdor(OdorType_e newOdor)
 
 TasteType_e CBasicEntity::getTaste() 
 {
-  return (m_Taste);
+  return m_Taste;
 }
 
 void CBasicEntity::setTaste(TasteType_e newTaste)
@@ -3395,7 +3371,7 @@ void CBasicEntity::setTaste(TasteType_e newTaste)
 
 PheromoneType_e CBasicEntity::getPheromone()
 {
-  return (m_Pheromone);
+  return m_Pheromone;
 }
 
 void CBasicEntity::setPheromone(PheromoneType_e pheroType)
@@ -3410,7 +3386,7 @@ void CBasicEntity::setPheromone(PheromoneType_e pheroType)
 
 int CBasicEntity::getGeneration() 
 {
-  return (m_Generation);
+  return m_Generation;
 }
 
 void CBasicEntity::setGeneration(int newGeneration)
@@ -3420,7 +3396,7 @@ void CBasicEntity::setGeneration(int newGeneration)
 
 ReproType_e CBasicEntity::getTypeOfReproduction()
 {
-  return (m_TypeOfReproduction);
+  return m_TypeOfReproduction;
 }
 
 void CBasicEntity::setTypeOfReproduction(ReproType_e newType)
@@ -3430,7 +3406,7 @@ void CBasicEntity::setTypeOfReproduction(ReproType_e newType)
 
 SexType_e CBasicEntity::getSex()
 {
-  return (m_Sex);
+  return m_Sex;
 }
 
 string CBasicEntity::getSexString()
@@ -3450,23 +3426,22 @@ string CBasicEntity::getSexString()
 
 CBiotop* CBasicEntity::getBiotop() 
 {
-  return (m_pBiotop);
+  return m_pBiotop;
 }
 
 CBrain* CBasicEntity::getBrain() 
 {
-  return (m_pBrain);
+  return m_pBrain;
 }
 
 CGenome* CBasicEntity::getGenome()
 {
-  return (m_pGenome);
+  return m_pGenome;
 }
 
 double CBasicEntity::getNoise()
 {
-  // Optim CPU no check
-  return m_tParam[m_id_Noise]->getVal();
+  return getParameterNoCheck(m_id_Noise)->getVal();
 }
 
 void CBasicEntity::setNoise(int rate)
@@ -3476,18 +3451,17 @@ void CBasicEntity::setNoise(int rate)
 
 double CBasicEntity::getWeight()
 {
-  // Optim CPU no check
-  return m_tParam[m_id_Weight]->getVal();
+  return getParameterNoCheck(m_id_Weight)->getVal();
 }
 
 double CBasicEntity::getMaxWeight()
 {
-  return (getParameterNoCheck(m_id_Weight)->getMax());
+  return getParameterNoCheck(m_id_Weight)->getMax();
 }
 
 double CBasicEntity::getMinWeight()
 {
-  return (getParameterNoCheck(m_id_Weight)->getMin());
+  return getParameterNoCheck(m_id_Weight)->getMin();
 }
 
 double CBasicEntity::getSizeRate()
@@ -3515,19 +3489,19 @@ void CBasicEntity::setCamouflageToNominalRatio(double ratio)
 
 bool CBasicEntity::checkIfhasMoved()
 {
-  return (m_bHasMoved);
+  return m_bHasMoved;
 }
 
 bool CBasicEntity::checkIfhasMovedAndClear()
 {
   bool resu = m_bHasMoved;
   m_bHasMoved = false;
-  return (resu);
+  return resu;
 }
 
 double CBasicEntity::getProtection() 
 {
-  return (getParameterNoCheck(m_id_Protection)->getVal());
+  return getParameterNoCheck(m_id_Protection)->getVal();
 }
 
 void CBasicEntity::setProtection(double newRate)
@@ -3537,7 +3511,7 @@ void CBasicEntity::setProtection(double newRate)
 
 ConsumeType_e CBasicEntity::getConsumeClass()
 {
-  return (m_ConsumeClass);
+  return m_ConsumeClass;
 }
 
 ClassType_e CBasicEntity::getClass()
@@ -3548,20 +3522,15 @@ ClassType_e CBasicEntity::getClass()
 double CBasicEntity::changeWeight(double variation)
 {
   CGenericParam* pParam = getParameterNoCheck(m_id_Weight);
-  double initVal;
-  double resuVariation;
-
-  initVal = pParam->getVal();
+  double initVal = pParam->getVal();
   pParam->changeVal(variation);
-  resuVariation = pParam->getVal() - initVal;
-
+  double resuVariation = pParam->getVal() - initVal;
   if (pParam->isMinReached())
   {
     autoRemove();
   }
-  
   // return effective variation
-  return (resuVariation);
+  return resuVariation;
 }
 
 void CBasicEntity::forceWeight(double newWeight)
@@ -3571,78 +3540,72 @@ void CBasicEntity::forceWeight(double newWeight)
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 
 {
-  if (m_indCurrentLifeStage<m_tLifeStage.size())
-    return (m_tLifeStage[m_indCurrentLifeStage]);
-  else
-    return (NULL);
+  return (m_indCurrentLifeStage < m_tLifeStage.size()) ? m_tLifeStage[m_indCurrentLifeStage] : NULL;
 }
 
 CLifeStage* CBasicEntity::getLifeStage(size_t index)
 { 
-  if (index < m_tLifeStage.size())
-    return (m_tLifeStage[index]);
-  else
-    return (NULL);
+  return (index < m_tLifeStage.size()) ? m_tLifeStage[index] : NULL;
 }
 
 size_t CBasicEntity::getNbLifeStages()
 {
-  return (m_tLifeStage.size());
+  return m_tLifeStage.size();
 }
 
 string CBasicEntity::getColorStrName(ColorCaracterType_e type)
 {
-  return (ColorTypeNameList[type]);
+  return ColorTypeNameList[type];
 }
 
 string CBasicEntity::getOdorStrName(OdorType_e type)
 {
-  return (OdorTypeNameList[type]);
+  return OdorTypeNameList[type];
 }
 
 string CBasicEntity::getTasteStrName(TasteType_e type)
 {
-  return (TasteTypeNameList[type]);
+  return TasteTypeNameList[type];
 }
 
 string CBasicEntity::getPheromoneStrName(PheromoneType_e type)
 {
-  return (PheromoneTypeNameList[type]);
+  return PheromoneTypeNameList[type];
 }
 
 string CBasicEntity::getFormStrName(FormType_e type)
 {
-  return (FormTypeNameList[type]);
+  return FormTypeNameList[type];
 }
 
 string CBasicEntity::getTextureStrName(TextureType_e type)
 {
-  return (TextureTypeNameList[type]);
+  return TextureTypeNameList[type];
 }
 
 string CBasicEntity::getPhyAttributeStrName(PhyAttributeType_e type)
 {
-  return (PhyAttributeTypeNameList[type]);
+  return PhyAttributeTypeNameList[type];
 }
 
 string CBasicEntity::getHabitatStrName(HabitatType_e type)
 {
-  return (HabitatTypeNameList[type]);
+  return HabitatTypeNameList[type];
 }
 
 string CBasicEntity::getConsumeStrName(ConsumeType_e type)
 {
-  return (ConsumeTypeNameList[type]);
+  return ConsumeTypeNameList[type];
 }
 
 string CBasicEntity::getMoveStrName(MoveType_e type)
 {
-  return (MoveTypeNameList[type]);
+  return MoveTypeNameList[type];
 }
 
 string CBasicEntity::getReproStrName(ReproType_e type)
 {
-  return (ReproTypeNameList[type]);
+  return ReproTypeNameList[type];
 }
 
 string CBasicEntity::getRelativePosStrName(size_t index)
@@ -3728,7 +3691,7 @@ void CBasicEntity::setImmortal(bool isImmortal)
 
 bool CBasicEntity::isImmortal()
 {
-  return (m_bIsImmortal);
+  return m_bIsImmortal;
 }
 
 StatusType_e CBasicEntity::getStatus()
@@ -3767,15 +3730,12 @@ void CBasicEntity::setHourCounter(int newHour)
 
 CPhysicalWelfare* CBasicEntity::getpPhysicalWelfare()
 {
-  return(m_pPhysicWelfare);
+  return m_pPhysicWelfare;
 }
 
 string CBasicEntity::getSpecieName()
 {
-  if (m_pGenome!=NULL)
-    return(m_pGenome->getSpecieName());
-  else
-    return(m_Label);
+  return (m_pGenome != NULL) ? m_pGenome->getSpecieName() : m_Label;
 }
 
 entitySignatureType CBasicEntity::getEntitySignature()
@@ -3785,7 +3745,7 @@ entitySignatureType CBasicEntity::getEntitySignature()
 
 int CBasicEntity::getCurrentSpeed()
 {
-  return(0);
+  return 0;
 }
 
 int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
@@ -3814,12 +3774,12 @@ int  CBasicEntity::getRelativeSpeed(CBasicEntity* pReference)
 
 ColorCaracterType_e CBasicEntity::getColorType()
 {
-  return(m_ColorCaracter);
+  return m_ColorCaracter;
 }
 
 bool CBasicEntity::isPhyAttributePresent(PhyAttributeType_e type)
 {
-  return(m_PhyAttribute.isCaractPresent(AttributeTypeToIndex(type)));
+  return m_PhyAttribute.isCaractPresent(AttributeTypeToIndex(type));
 }
 
 void CBasicEntity::setAttribute(PhyAttributeType_e newAttrib)

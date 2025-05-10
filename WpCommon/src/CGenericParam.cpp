@@ -65,7 +65,6 @@ CGenericParam::CGenericParam(double valMin, double valInit, double valNominal, d
 
 CGenericParam::~CGenericParam()
 {
-
 }
 
 //===========================================================================
@@ -118,7 +117,7 @@ bool CGenericParam::loadFromXmlFile(TiXmlNode* pNode)
 
 double CGenericParam::getVal(void)
 {
-  return (m_ValCurrent);
+  return m_ValCurrent;
 }
 
 bool CGenericParam::setVal(double newVal)
@@ -127,16 +126,16 @@ bool CGenericParam::setVal(double newVal)
   if (m_ValCurrent>m_ValMax)
   {
     m_ValCurrent=m_ValMax;
-    return (false);
+    return false;
   }
   else if (m_ValCurrent<m_ValMin)
   {
     m_ValCurrent=m_ValMin;
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
@@ -145,17 +144,17 @@ bool CGenericParam::forceVal(double newVal)
   m_ValCurrent = newVal;
   if ((m_ValCurrent>m_ValMax)||(m_ValCurrent<m_ValMin))
   {
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
 double CGenericParam::getValNominal(void)
 {
-  return (m_ValNominal);
+  return m_ValNominal;
 }
 
 bool CGenericParam::setValNominal(double newVal)
@@ -164,16 +163,16 @@ bool CGenericParam::setValNominal(double newVal)
   if (m_ValNominal>m_ValMax)
   {
     m_ValNominal=m_ValMax;
-    return (false);
+    return false;
   }
   else if (m_ValNominal<m_ValMin)
   {
     m_ValNominal=m_ValMin;
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
@@ -183,16 +182,16 @@ bool CGenericParam::setValMax(double newVal)
   if (m_ValNominal>m_ValMax)
   {
     m_ValNominal=m_ValMax;
-    return (false);
+    return false;
   }
   else if (m_ValCurrent>m_ValMax)
   {
     m_ValCurrent=m_ValMax;
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
@@ -202,27 +201,27 @@ bool CGenericParam::setValMin(double newVal)
   if (m_ValNominal<m_ValMin)
   {
     m_ValNominal=m_ValMax;
-    return (false);
+    return false;
   }
   else if (m_ValCurrent<m_ValMin)
   {
     m_ValCurrent=m_ValMin;
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
 double CGenericParam::getMin(void)
 {
-  return (m_ValMin);
+  return m_ValMin;
 }
 
 double CGenericParam::getMax(void)
 {
-  return (m_ValMax);
+  return m_ValMax;
 }
 
 string CGenericParam::getLabel(void)
@@ -236,33 +235,27 @@ bool CGenericParam::changeVal(double variation)
   if (m_ValCurrent>m_ValMax)
   {
     m_ValCurrent=m_ValMax;
-    return (false);
+    return false;
   }
   else if (m_ValCurrent<m_ValMin)
   {
     m_ValCurrent=m_ValMin;
-    return (false);
+    return false;
   }
   else
   {
-    return (true);
+    return true;
   }
 }
 
 bool CGenericParam::isMaxReached(void)
 {
-  if (m_ValCurrent==m_ValMax)
-    return (true);
-  else
-    return (false);
+  return (m_ValCurrent == m_ValMax);
 }
 
 bool CGenericParam::isMinReached(void)
 {
-  if (m_ValCurrent==m_ValMin)
-    return (true);
-  else
-    return (false);
+  return (m_ValCurrent == m_ValMin);
 }
 
 GenericParamType_e CGenericParam::getType()

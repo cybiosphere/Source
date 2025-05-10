@@ -58,7 +58,6 @@ CMeasureEntityParam::CMeasureEntityParam(CBasicEntity* pEntity, size_t paramInde
 
 CMeasureEntityParam::~CMeasureEntityParam()
 {
-
 }
 
 //===========================================================================
@@ -68,9 +67,9 @@ CMeasureEntityParam::~CMeasureEntityParam()
 bool CMeasureEntityParam::IsStillValid()
 {
   if (m_pEntity->isToBeRemoved())
-    return (false);
+    return false;
   else
-    return (true);
+    return true;
 }
 
 //===========================================================================
@@ -79,10 +78,10 @@ bool CMeasureEntityParam::IsStillValid()
 
 size_t CMeasureEntityParam::GetSubTypeId()
 {
-  return(m_paramIndex);
+  return m_paramIndex;
 }
 
 CBasicEntity* CMeasureEntityParam::GetpEntity()
 {
-  return (m_pEntity);
+  return m_pEntity;
 }

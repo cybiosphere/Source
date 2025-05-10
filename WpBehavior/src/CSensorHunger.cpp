@@ -63,7 +63,6 @@ CSensorHunger::CSensorHunger(CBrainAnimal* pBrain, double weightRate)
 
 CSensorHunger::~CSensorHunger()
 {
-
 }
 
 //===========================================================================

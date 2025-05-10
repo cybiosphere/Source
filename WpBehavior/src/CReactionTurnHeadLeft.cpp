@@ -63,7 +63,6 @@ CReactionTurnHeadLeft::CReactionTurnHeadLeft(CBrainAnimal*  pBrain, double succe
 
 CReactionTurnHeadLeft::~CReactionTurnHeadLeft()
 {
-
 }
 
 //===========================================================================
@@ -86,5 +85,4 @@ void CReactionTurnHeadLeft::ExecuteAction(ReactionIntensityType_e intensity)
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->turnHeadLeft();
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_MAX);
-  return;
 }

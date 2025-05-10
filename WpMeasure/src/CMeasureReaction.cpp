@@ -83,7 +83,6 @@ CMeasureReaction::CMeasureReaction(CBasicEntity* pEntity, size_t reactionInd, in
 
 CMeasureReaction::~CMeasureReaction()
 {
-
 }
 
 //===========================================================================
@@ -92,10 +91,9 @@ CMeasureReaction::~CMeasureReaction()
 double CMeasureReaction::GetCurrentValue()
 {
   if (m_pReaction==NULL)
-    return (0);
+    return 0;
 
-  double val =0;
-
+  double val = 0;
   switch(m_SubType)
   {
   case  MEASURE_ACTION_SUCCESS:
@@ -108,16 +106,12 @@ double CMeasureReaction::GetCurrentValue()
     val =0;
     break;
   }
-
-  return (val);
+  return val;
 }
 
 bool CMeasureReaction::IsStillValid()
 {
-  if (m_pEntity->isToBeRemoved())
-    return (false);
-  else
-    return (true);
+  return (m_pEntity->isToBeRemoved()) ? false : true;
 }
 
 //===========================================================================
@@ -128,16 +122,16 @@ string CMeasureReaction::GetMeasureReactionTypeStrName(MeasureReactionType_e typ
 {
   string typeName;
   typeName = MeasureReactionTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 size_t CMeasureReaction::GetSubTypeId()
 {
-  return(m_SubType);
+  return m_SubType;
 }
 
 
 size_t CMeasureReaction::GetReactionIndex()
 {
-  return(m_paramIndex);
+  return m_paramIndex;
 }

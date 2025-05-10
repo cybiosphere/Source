@@ -85,7 +85,7 @@ CGrass::~CGrass()
 double CGrass::changeWeight(double variation)
 {
   // Do nothing: infinite content
-  return (variation);
+  return variation;
 }
 
 bool CGrass::isVegetal()

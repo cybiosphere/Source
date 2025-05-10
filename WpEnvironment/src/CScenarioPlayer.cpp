@@ -127,7 +127,7 @@ bool CScenarioPlayer::ReadScenarioFile(string fileName, string pathName)
     CYBIOCORE_LOG("SCENAR - ERROR: Fail loading new scenario: %s\n", fileName.c_str());
   }
 
-  return (resu);
+  return resu;
 }
 
 
@@ -146,7 +146,7 @@ bool CScenarioPlayer::PlayScenario()
     cmdFound = NextCmdNextSecond();
   }
 
-  return (true);
+  return true;
 }
 
 
@@ -321,7 +321,7 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
   {
     pBiotop->loadFromXmlFile(firstParam, path);
   }
-  return (true);
+  return true;
 }
 
 
@@ -351,7 +351,7 @@ bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string command
     pBiotop->createAndAddEntity(firstParam, path, coord);
   }
 
-  return (true);
+  return true;
 }
 
 
@@ -362,7 +362,7 @@ bool CScenarioPlayer::CmdRunBiotop(CBiotop* pBiotop, string path, string command
   for (int i=0;i<duration;i++)
     pBiotop->nextSecond();
 
-  return (true);
+  return true;
 }
 
 
@@ -377,7 +377,7 @@ bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string
       pParam->forceVal(paramValue);
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 
@@ -398,7 +398,7 @@ bool CScenarioPlayer::CmdChangeParam(CBiotop* pBiotop, string path, string comma
     }
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 
@@ -409,7 +409,7 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
   string nameWithPath;
 
   if (firstParam.find(".xml",0) < 0)
-    return (false);
+    return false;
 
   size_t indexName = firstParam.rfind("\\",firstParam.size());
 
@@ -435,7 +435,7 @@ bool CScenarioPlayer::CmdSaveEntity(CBiotop* pBiotop, string path, string comman
     pEnt->saveInXmlFile(nameWithPath.c_str(), firstParam.substr(0,indexName+1));
   }
 
-  return (true);
+  return true;
 }
 
 bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -445,7 +445,7 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
   string nameWithPath;
 
   if (firstParam.find(".xml",0) < 0)
-    return (false);
+    return false;
 
   size_t indexName = firstParam.rfind("\\",firstParam.size());
 
@@ -472,7 +472,7 @@ bool CScenarioPlayer::CmdSaveBrain(CBiotop* pBiotop, string path, string command
     pEnt->getBrain()->saveInXmlFile(nameWithPath.c_str());
   }
 
-  return (true);
+  return true;
 }
 
 bool CScenarioPlayer::CmdQuickAgeing(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -501,7 +501,7 @@ bool CScenarioPlayer::CmdQuickAgeing(CBiotop* pBiotop, string path, string comma
     pNewEntity->getBrain()->loadFromTiXmlFile(&xmlDocSavedBrain);
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -527,7 +527,7 @@ bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string comman
     }
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::CmdCheckParamOver(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -562,7 +562,7 @@ bool CScenarioPlayer::CmdCheckParamOver(CBiotop* pBiotop, string path, string co
   }
 
   (*pTotalScore)++;
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::CmdCheckParamUnder(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -611,7 +611,7 @@ bool CScenarioPlayer::CmdSetImmortal(CBiotop* pBiotop, string path, string comma
     pEntity->setImmortal(true);
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::CmdDeleteEntity(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -624,7 +624,7 @@ bool CScenarioPlayer::CmdDeleteEntity(CBiotop* pBiotop, string path, string comm
     pEntity->autoRemove();
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 
@@ -640,7 +640,7 @@ bool CScenarioPlayer::CmdSetForbidenAction   (CBiotop* pBiotop, string path, str
     ((CAnimal*)pEntity)->setForbidenActionInd(actionInd);
   }
 
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 
@@ -669,7 +669,7 @@ bool CScenarioPlayer::CmdChkForbidActCntUnder(CBiotop* pBiotop, string path, str
   }
 
   (*pTotalScore)++;
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::IsScenarioFileOpened()

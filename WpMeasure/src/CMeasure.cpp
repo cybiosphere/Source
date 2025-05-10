@@ -93,7 +93,6 @@ CMeasure::CMeasure(int period, int id, double rangeMin, double rangeMax, Measure
 
 CMeasure::~CMeasure()
 {
-
 }
 
 //===========================================================================
@@ -149,7 +148,7 @@ bool CMeasure::NextSecond()
 
 bool CMeasure::IsStillValid()
 {
-  return (true);
+  return true;
 }
 
 //===========================================================================
@@ -158,12 +157,12 @@ bool CMeasure::IsStillValid()
 bool CMeasure::SetEvent(EventType_e type, double threshold)
 {
   if ( (threshold<m_RangeMin) || (threshold>m_RangeMax) )
-    return (false);
+    return false;
 
   m_EventType = type;
   m_EventThreshold = threshold;
 
-  return (true);
+  return true;
 }
 
 bool CMeasure::CheckEvent(void)
@@ -194,7 +193,7 @@ bool CMeasure::CheckEvent(void)
     }
   }
 
-  return (resu);
+  return resu;
 }
 
 //===========================================================================
@@ -284,7 +283,7 @@ bool CMeasure::saveInFile(string fileNameWithPath)
   f1.open(fileNameWithPath.c_str(), std::ofstream::out | std::ofstream::app);
   f1.write(savedMeasure.c_str(), savedMeasure.length());
   f1.close();
-  return (true);
+  return true;
 }
 
 //===========================================================================
@@ -323,47 +322,47 @@ bool CMeasure::getMeasureFromTimeStamp(timeCountType timeCount, MeasureData_t& m
 //===========================================================================
 int CMeasure::GetId()
 {
-  return (m_Id);
+  return m_Id;
 }
 
 string CMeasure::GetLabel()
 {
-  return (m_Label);
+  return m_Label;
 }
 
 MeasureType_e CMeasure::GetType()
 {
-  return (m_Type);
+  return m_Type;
 }
 
 size_t CMeasure::GetSubTypeId()
 {
-  return(0);
+  return 0;
 }
 
 MeasureData_t* CMeasure::GetPMeasureData()
 {
-  return (m_tCurValTable);
+  return m_tCurValTable;
 }
 
 size_t CMeasure::GetIndexCurData()
 {
-  return (m_IndexCurData);
+  return m_IndexCurData;
 }
 
 timeCountType CMeasure::GetTotalMeasureNumberFromStart()
 {
-  return (m_TotalMeasNbFromStart);
+  return m_TotalMeasNbFromStart;
 }
 
 double CMeasure::GetRangeMin()
 {
-  return (m_RangeMin);
+  return m_RangeMin;
 }
 
 double CMeasure::GetRangeMax()
 {
-  return (m_RangeMax);
+  return m_RangeMax;
 }
 
 bool CMeasure::AutoUpdateRange()
@@ -392,42 +391,42 @@ string CMeasure::getMeasureTypeStrName(MeasureType_e type)
 {
   string typeName;
   typeName = MeasureTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 int CMeasure::GetPeriod()
 {
-  return (m_Period);
+  return m_Period;
 }
 
 bool CMeasure::IsRecording()
 {
-  return (m_bIsRecording);
+  return m_bIsRecording;
 }
 
 EventType_e CMeasure::GetEventType()
 {
-  return (m_EventType);
+  return m_EventType;
 }
 
 double CMeasure::GetEventThreshold()
 {
-  return (m_EventThreshold);
+  return m_EventThreshold;
 }
 
 string CMeasure::getEventTypeStrName(EventType_e type)
 {
   string typeName;
   typeName = EventTypeNameList[type];
-  return(typeName);
+  return typeName;
 }
 
 size_t CMeasure::GetParameterIndex()
 {
-  return(m_paramIndex);
+  return m_paramIndex;
 }
 
 CBasicEntity* CMeasure::GetEntity()
 {
-  return(m_pEntity);
+  return m_pEntity;
 }

@@ -67,7 +67,6 @@ CSensorHormone::CSensorHormone(CBrainAnimal* pBrain, std::vector<double>& tWeigh
 
 CSensorHormone::~CSensorHormone()
 {
-
 }
 
 //===========================================================================

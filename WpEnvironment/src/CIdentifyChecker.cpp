@@ -96,7 +96,7 @@ bool CIdentifyChecker::ReadCheckerFile(string fileName, string pathName)
     CYBIOCORE_LOG("CHECK - ERROR: Fail loading new check file: %s\n", fileName.c_str());
   }
 
-  return (resu);
+  return resu;
 }
 
 
@@ -115,7 +115,7 @@ bool CIdentifyChecker::StartCheck()
     cmdFound = NextCheck();
   }
 
-  return (true);
+  return true;
 }
 
 bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector<std::pair<std::string, int>> vectorExpected)
