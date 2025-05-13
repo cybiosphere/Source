@@ -934,10 +934,18 @@ void CBiotop::putEntitiesInListAllLayersOptim(BiotopFoundIds_t& foundIds, size_t
 
 void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  if (isCoordValid(startCoord))
+  size_t startCoordX = startCoord.x;
+  size_t endCoordX = startCoordX + lenght;
+  if (startCoord.y < m_Dimension.y)
   {
-    size_t startCoordX = startCoord.x;
-    size_t endCoordX = std::min(startCoordX + lenght, m_Dimension.x);
+    if (startCoordX >= m_Dimension.x)
+    {
+      startCoordX = 0;
+    }
+    if (endCoordX > m_Dimension.x)
+    {
+      endCoordX = m_Dimension.x;
+    }
     for (size_t i = startCoordX; i < endCoordX; i++)
     {
       putEntitiesInListAllLayers(foundIds, distanceToSet, { i, startCoord.y }, includeWater);
@@ -947,10 +955,18 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
 
 void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  if (isCoordValid(startCoord))
+  size_t startCoordY = startCoord.y;
+  size_t endCoordY = startCoordY + lenght;
+  if (startCoord.x < m_Dimension.x)
   {
-    size_t startCoordY = startCoord.y;
-    size_t endCoordY = std::min(startCoordY + lenght, m_Dimension.y);
+    if (startCoordY >= m_Dimension.y)
+    {
+      startCoordY = 0;
+    }
+    if (endCoordY > m_Dimension.y)
+    {
+      endCoordY = m_Dimension.y;
+    }
     for (size_t j = startCoordY; j < endCoordY; j++)
     {
       putEntitiesInListAllLayers(foundIds, distanceToSet, { startCoord.x, j }, includeWater);

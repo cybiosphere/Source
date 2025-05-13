@@ -536,8 +536,12 @@ bool CBrain::PollAllSensors (void)
 #endif
 
   // reset m_FocusedEntityInfo
-  clearBrainFocusedEntityInfo();
+  m_FocusedEntityInfo.computedWeight = 0;
+  m_FocusedEntityInfo.captorUid = UID_UNSET;
+  m_FocusedEntityInfo.subcaptorIndex = invalidIndex;
+  m_FocusedEntityInfo.subcaptorsSize = 0;
   m_FocusedEntityInfo.previousEntityId = m_FocusedEntityInfo.newEntityId;
+
   return true;
 }
 
