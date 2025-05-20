@@ -136,7 +136,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../WpTests;../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;../WpTests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -219,7 +219,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../WpTests;../WpGenetic/inc;../WpBehavior/inc;../WpEntity/inc;../WpEnvironment/inc;../WpCommon/inc;../WpMeasure/inc;../WpTinyXml/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;_AFXDLL;DLL_CYBIOCORE_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -238,7 +238,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>..\ExportDll_VC19\lib\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Exec\CybioCoreD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\..\Exec/Evolution2D.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -295,9 +295,11 @@
     <ClInclude Include="..\WpGenetic\inc\CGene.h" />
     <ClInclude Include="..\WpGenetic\inc\CGenome.h" />
     <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h" />
+    <ClInclude Include="..\WpTests\TestsCybioCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Evolution.cpp" />
+    <ClCompile Include="..\WpTests\TestsCybioCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

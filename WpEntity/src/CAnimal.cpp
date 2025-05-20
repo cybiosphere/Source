@@ -2892,6 +2892,7 @@ choiceIndType CAnimal::predictNextAction()
     resu = m_pBrain->PollAllSensors();	
     if (resu)
     {
+      m_pBrain->NextSecond();
       autoChoice = (choiceIndType)m_pBrain->ComputeAndGetDecision(getCuriosityRate(), autoIntensity);
     }
   }

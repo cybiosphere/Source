@@ -38,7 +38,9 @@ distribution.
 #include <ctime>
 #include "CScenarioPlayer.h"
 #include "CybioXmlDef.h"
+#include "TestsCybioCore.h"
 #include "StartupHelpers.h"
+
 
 CBiotop* pBiotop;
 CScenarioPlayer* pScenarioPlayer;
@@ -57,21 +59,23 @@ int main(int argc, char* argv[])
   int i,j;
   int score;
   int scoreHistory[10];
+  TestsCybioCore testsCybioCore("../DataScriptMammal/");
 
   while (true)
   {
-    printf ("\nACTIONS:\n");
-    printf ("0- Play scenario\n");
-    printf ("1- Display all entities\n");
-    printf ("2- Display entity details\n");
-    printf ("3- Save entity\n");
-    printf ("4- Next second\n");
-    printf ("5- Next hour\n");
-    printf ("6- Next day\n");
-    printf ("7- Next Month\n");
-    printf ("8- Save biotop\n");
-    printf ("9- Exit\n");
-    printf ("Choice: ");
+    printf("\nACTIONS:\n");
+    printf("0 - Run Tests\n");
+    printf("1 - Display all entities\n");
+    printf("2 - Display entity details\n");
+    printf("3 - Save entity\n");
+    printf("4 - Next second\n");
+    printf("5 - Next hour\n");
+    printf("6 - Next day\n");
+    printf("7 - Next Month\n");
+    printf("8 - Save biotop\n");
+    printf("9 - Exit\n");
+    printf("10- Play scenario\n");
+    printf("Choice: ");
     char choice;
     scanf("%d",&choice);
     printf ("\n");
@@ -79,55 +83,8 @@ int main(int argc, char* argv[])
     switch(choice)
     {
     case 0:
-      {
-        CScenarioPlayer player(pBiotop);
-        CScenarioPlayer playerChi(pBiotop);
-        CScenarioPlayer playerAdu(pBiotop);
-
-        int time;
-        char pathName[500];
-        string tempFileName;
-        printf ("Training files path: ");
-        scanf("%s",&pathName);
-
-        printf ("Number of iteration: ");
-        scanf("%d",&time);
-        printf ("\n");
-
-        for (int i=0; i<time; i++)
-        {
-          tempFileName = pathName; 
-          tempFileName += "\\";
-          player.ReadScenarioFile("babyLearning.scp",tempFileName);
-          player.PlayScenario();
-          printf("Baby : %d / %d\n", player.GetSuccessScore(), player.GetTotalScore());
-
-          tempFileName = pathName; 
-          tempFileName += "\\";
-          playerChi.ReadScenarioFile("childLearning.scp",tempFileName);
-          playerChi.PlayScenario();
-          printf("Child: %d / %d\n", playerChi.GetSuccessScore(), playerChi.GetTotalScore());
-
-          tempFileName = pathName; 
-          tempFileName += "\\";
-          playerAdu.ReadScenarioFile("adultLearning.scp", tempFileName);
-          playerAdu.PlayScenario();
-          printf("Adult: %d / %d\n", playerAdu.GetSuccessScore(), playerAdu.GetTotalScore());
-
-          score = 100 * (player.GetSuccessScore() + playerChi.GetSuccessScore() + playerAdu.GetSuccessScore());
-          score = score / (player.GetTotalScore() + playerChi.GetTotalScore() + playerAdu.GetTotalScore());
-          scoreHistory[i%10] = score;
-          printf("Total: %d / 100\n", score);
-
-          if ((i%10) == 9)
-          {
-            score = scoreHistory[0]+scoreHistory[1]+scoreHistory[2]+scoreHistory[3]+scoreHistory[4]+scoreHistory[5]+scoreHistory[6]+scoreHistory[7]+scoreHistory[8]+scoreHistory[9];
-            score = score/10;
-            printf("Avarage 10 run: %d / 100\n", score);
-          }
-            
-        }
-      }
+      printf("Start unit tests\n");
+      testsCybioCore.launchAllTests();
       break;
     case 1:
       pBiotop->displayEntities();
@@ -163,7 +120,7 @@ int main(int argc, char* argv[])
         CBasicEntity* pEntity = pBiotop->getEntityById(uid);
         if (pEntity!=NULL)
         {
-	        string name =  "..\\dataXml\\" + pEntity->getLabel() + ".xml";
+	        string name =  "../DataScriptMammal/" + pEntity->getLabel() + ".xml";
           pEntity->saveInXmlFile(name);
         }
         printf ("\n");
@@ -218,7 +175,7 @@ int main(int argc, char* argv[])
       {
         if (pBiotop!=NULL)
         {
-	        string name =  "..\\dataXml\\" + pBiotop->getLabel() + ".bio";
+	        string name =  "../DataScriptMammal/" + pBiotop->getLabel() + ".bio";
           pBiotop->saveInXmlFile(name, "");
           printf ("Biotop saved\n");
         }
@@ -228,6 +185,57 @@ int main(int argc, char* argv[])
       delete pBiotop;
       exit(0);
       break;
+    case 10:
+    {
+      CScenarioPlayer player(pBiotop);
+      CScenarioPlayer playerChi(pBiotop);
+      CScenarioPlayer playerAdu(pBiotop);
+
+      int time;
+      char pathName[500];
+      string tempFileName;
+      printf("Training files path: ");
+      scanf("%s", &pathName);
+
+      printf("Number of iteration: ");
+      scanf("%d", &time);
+      printf("\n");
+
+      for (int i = 0; i < time; i++)
+      {
+        tempFileName = pathName;
+        tempFileName += "\\";
+        player.ReadScenarioFile("babyLearning.scp", tempFileName);
+        player.PlayScenario();
+        printf("Baby : %d / %d\n", player.GetSuccessScore(), player.GetTotalScore());
+
+        tempFileName = pathName;
+        tempFileName += "\\";
+        playerChi.ReadScenarioFile("childLearning.scp", tempFileName);
+        playerChi.PlayScenario();
+        printf("Child: %d / %d\n", playerChi.GetSuccessScore(), playerChi.GetTotalScore());
+
+        tempFileName = pathName;
+        tempFileName += "\\";
+        playerAdu.ReadScenarioFile("adultLearning.scp", tempFileName);
+        playerAdu.PlayScenario();
+        printf("Adult: %d / %d\n", playerAdu.GetSuccessScore(), playerAdu.GetTotalScore());
+
+        score = 100 * (player.GetSuccessScore() + playerChi.GetSuccessScore() + playerAdu.GetSuccessScore());
+        score = score / (player.GetTotalScore() + playerChi.GetTotalScore() + playerAdu.GetTotalScore());
+        scoreHistory[i % 10] = score;
+        printf("Total: %d / 100\n", score);
+
+        if ((i % 10) == 9)
+        {
+          score = scoreHistory[0] + scoreHistory[1] + scoreHistory[2] + scoreHistory[3] + scoreHistory[4] + scoreHistory[5] + scoreHistory[6] + scoreHistory[7] + scoreHistory[8] + scoreHistory[9];
+          score = score / 10;
+          printf("Avarage 10 run: %d / 100\n", score);
+        }
+
+      }
+    }
+    break;
     default:
       break;
     }

@@ -1856,6 +1856,12 @@ void CBiotop::deleteGrid(void)
 
 void CBiotop::initGridDefaultLayerType(void)
 {
+  if (m_nbLayer < 3)
+  {
+    CYBIOCORE_LOG("CBiotop::initGridDefaultLayerType: Error, not enough layers\n");
+    return;
+  }
+
   size_t i, j;
   // Put Ground Everywhere:
   for (i=0;i<m_Dimension.x;i++)
@@ -1914,26 +1920,29 @@ void CBiotop::initGridEntity(void)
   //
   for (size_t i=0;i<m_Dimension.x;i++)
   {
-    for (size_t j=0;j<m_Dimension.y;j++)
+    for (size_t j = 0; j < m_Dimension.y; j++)
     {
-      for (size_t k=0;k<m_nbLayer;k++)
+      for (size_t k = 0; k < m_nbLayer; k++)
       {
         m_tBioGrid[i][j][k].pEntity = NULL;
       }
 
-      // If water present: set water global entity
-      if ( (m_tBioGrid[i][j][1].layerType == LAYER_OVER_WATER) || (m_tBioGrid[i][j][1].layerType == LAYER_OVER_WET_GROUND) )
+      if (m_nbLayer > 1)
       {
-        //m_tBioGrid[i][j][0].pEntity = m_pWaterGlobalEntity;
-        m_tBioGrid[i][j][1].pEntity = m_pWaterGlobalEntity;
-      }
-      else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_GRASS)
-      {
-        m_tBioGrid[i][j][1].pEntity = m_pGrassGlobalEntity;
-      }
-      else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_ROCK)
-      {
-        m_tBioGrid[i][j][1].pEntity = m_pRockGlobalEntity;
+        // If water present: set water global entity
+        if ((m_tBioGrid[i][j][1].layerType == LAYER_OVER_WATER) || (m_tBioGrid[i][j][1].layerType == LAYER_OVER_WET_GROUND))
+        {
+          //m_tBioGrid[i][j][0].pEntity = m_pWaterGlobalEntity;
+          m_tBioGrid[i][j][1].pEntity = m_pWaterGlobalEntity;
+        }
+        else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_GRASS)
+        {
+          m_tBioGrid[i][j][1].pEntity = m_pGrassGlobalEntity;
+        }
+        else if (m_tBioGrid[i][j][1].layerType == LAYER_GLOBAL_ROCK)
+        {
+          m_tBioGrid[i][j][1].pEntity = m_pRockGlobalEntity;
+        }
       }
 
       // reset odor traces
