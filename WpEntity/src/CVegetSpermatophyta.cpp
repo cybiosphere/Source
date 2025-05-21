@@ -143,7 +143,7 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   switch(pGen->getGeneSubType())

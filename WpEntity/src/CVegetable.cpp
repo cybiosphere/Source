@@ -325,7 +325,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -334,7 +334,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
   if ((len < sizeof(WORD)) || (pGen->getNumElements() < 4))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   double sensitivity = pGen->getElementValue(0);

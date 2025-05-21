@@ -852,7 +852,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
 
   if ( (fLength==0) || (fLength>3000000) )
   {
-    return (false);
+    return false;
   }
 
   pbuf = new char[fLength+1];
@@ -1041,7 +1041,7 @@ bool CBrain::InitializeNeuronTableNeutral()
     else
     {
       // At this point, all sensors must be attached properly
-      return (false);
+      return false;
     }
   }
   size_t nOutputReactions = m_tReactions.size();
@@ -1145,7 +1145,7 @@ bool CBrain::SetBonusAndGetVectorChoiceThresholds(double curiosityRate, neuroneV
   lowThreshold = avarageVal + (maxVal-avarageVal) * (50.0-(double)curiosityRate*2.0) / 100.0;
   midThreshold = avarageVal + (maxVal-avarageVal) * (75.0-(double)curiosityRate) / 100.0;
 
-  return (true);
+  return true;
 }
 
 choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
@@ -1682,7 +1682,7 @@ bool CBrain::GetVectorIdentifyThresholds (neuroneValType &highThreshold, neurone
   midThreshold  = avarageVal + (maxVal-avarageVal) * 75.0 / 100.0;
   highThreshold = avarageVal + (maxVal-avarageVal) * 95.0 / 100.0;
 
-  return (true);
+  return true;
 }
 
 CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdors)

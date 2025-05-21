@@ -236,12 +236,12 @@ bool CAnimal::setParamFromGene(CGene* pGen)
   if (CBasicEntity::setParamFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -250,7 +250,7 @@ bool CAnimal::setParamFromGene(CGene* pGen)
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   switch(pGen->getGeneSubType())
@@ -466,7 +466,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -475,7 +475,7 @@ bool CAnimal::setPhysicWelfareFromGene (CGene* pGen)
   if (len<4*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   double sensitivity = pGen->getElementValue(0);
@@ -959,12 +959,12 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   if (CBasicEntity::setBrainReactionFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_REACTION))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a reaction
   bool resu = false;
@@ -972,7 +972,7 @@ bool CAnimal::setBrainReactionFromGene (CGene* pGen)
   if (len<4*sizeof(WORD))
   {
     // not enought data to config reaction
-    return (false);
+    return false;
   }
 
   CReaction* pReaction = NULL;
@@ -1157,12 +1157,12 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
   if (CBasicEntity::setBrainSizeFromGene (pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
-    return (true);
+    return true;
   }
   
   if ( (pGen==NULL) || (pGen->getGeneType()!=GENE_BRAIN_SIZE) )
   {
-    return (false);
+    return false;
   }
 
   // We are sure Gene is a brain size gene
@@ -1171,7 +1171,7 @@ bool CAnimal::setBrainSizeFromGene (CGene* pGen)
   if (len<1*sizeof(WORD))
   {
     // not enought data to config brain
-    return (false);
+    return false;
   }
 
   int brainSize = pGen->getElementRoundValue(0);
@@ -1266,7 +1266,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_BRAIN_CONFIG))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
@@ -1274,7 +1274,7 @@ bool CAnimal::setBrainConfigFromGene (CGene* pGen)
   // For the moment, only size 1 is supported
   if (len < 1)
   {
-    return (false);
+    return false;
   }
 
   switch(pGen->getGeneSubType())
@@ -1326,7 +1326,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
 {
   if ((m_pBrain==NULL)||(pGen==NULL)||(pGen->getGeneType() != GENE_FEELING))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a Feeling
   bool resu = false;
@@ -1336,7 +1336,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   if ( len < (sizeof(DWORD)+sizeof(WORD)) )
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   // Get associated Sensor
@@ -1344,7 +1344,7 @@ bool CAnimal::setFeelingFromGene (CGene* pGen)
   CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
   if ( pSens == NULL )
   {
-    return (false);
+    return false;
   }
 
   GeneSubTypeFeeling_e subType = (GeneSubTypeFeeling_e)pGen->getGeneSubType();
@@ -1405,7 +1405,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
 {
   if ((m_pBrain==NULL)||(pGen==NULL)||(pGen->getGeneType() != GENE_PURPOSE))
   {
-    return (false);
+    return false;
   }
 
   // We are sure Gene is a purpose
@@ -1424,14 +1424,14 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       if ( len < (sizeof(DWORD)+4*sizeof(WORD)) )
       {
         // not enought data to config param
-        return (false);
+        return false;
       }
       // Get associated Sensor
       DWORD sensUid = pGen->getElementRawValue(4);
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
       if ( pSens == NULL )
       {
-        return (false);
+        return false;
       }
       int duration           = pGen->getElementRoundValue(0);
       int subCaptorIndex     = pGen->getElementRoundValue(1);
@@ -1456,7 +1456,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       if ( len < (2*sizeof(DWORD)) )
       {
         // not enought data to config param
-        return (false);
+        return false;
       }
       DWORD purposeUid = pGen->getElementRawValue(0);
       DWORD sensUid = pGen->getElementRawValue(1);
@@ -1466,7 +1466,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       if ( (pPurpose == NULL) || (pSensor == NULL) )
       {
         // Bad data to config param
-        return (false);
+        return false;
       }
 
       size_t  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
@@ -1483,7 +1483,7 @@ bool CAnimal::setPurposeFromGene (CGene* pGen)
       if ( len < (2*sizeof(DWORD)+sizeof(WORD)) )
       {
         // not enought data to config param
-        return (false);
+        return false;
       }
       DWORD purposeUid = pGen->getElementRawValue(0);
       DWORD reactionUid = pGen->getElementRawValue(1);
@@ -3432,9 +3432,9 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
   changeTirednessRate(0.2);
 
   if (pleasureRate<0)
-    return (false);
+    return false;
   else
-    return (true); 
+    return true; 
 }
 
 //---------------------------------------------------------------------------
@@ -3455,7 +3455,7 @@ bool CAnimal::ExecuteSleepAction()
   m_bIsSleeping = true;
   // bonus
   changeTirednessRate(-0.2);
-  return (true);
+  return true;
 }
 
 void CAnimal::setDirection(int direction)
@@ -3643,6 +3643,12 @@ double CAnimal::getLearningRate()
 double CAnimal::getFatWeight()
 {
   return getParameterNoCheck(m_id_FatWeight)->getVal();
+}
+
+double CAnimal::getFatWeightRate()
+{
+  // Note weight can never be 0
+  return getParameterNoCheck(m_id_FatWeight)->getVal() * 100.0 / getWeight();
 }
 
 double CAnimal::getMaxFatWeight()

@@ -165,7 +165,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
     
   switch(pGen->getGeneSubType())
@@ -247,7 +247,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_LIFESTAGE))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -256,7 +256,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   if (len<sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
   
   CLifeStage* pLifeStage = NULL;
@@ -685,7 +685,7 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
         CAnimMammal* pMotherEntity = (CAnimMammal*)pEatenEntity;
         eatenWeight = getWeight() / 1000.0;
         // Check if mother is fat enough to provide milk
-        if (pMotherEntity->getFatWeight() > (pMotherEntity->getMaxFatWeight() / 10.0))
+        if (pMotherEntity->getFatWeightRate() > 5.0)
         {
           // Remove fat from mother (milk generation)
           pMotherEntity->consumeFatWeight(eatenWeight / 4.0);
@@ -801,6 +801,14 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   {
     childNb = getGestationNominalNumber();
   }
+
+  if (getFatWeightRate() < 10.0)
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("MAMMAL - Fat weight is too low to allow reproduction for %s\n", getLabel().c_str());
+    childNb = 0;
+  }
+
   setGestationBabyNumber(childNb);
 
   CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());

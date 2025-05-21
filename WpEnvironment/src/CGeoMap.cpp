@@ -181,7 +181,7 @@ bool CGeoMap::buildGeoMapRecordFromStringData(size_t recordIndex, string rawData
       {
         if ((strOffset + 4) > dataLen)
         {
-          return (false);
+          return false;
         }
         tmpStr = rawData.substr(strOffset, 4);
         m_pMemoryMap[i][j][recordIndex] = (short)strtol(tmpStr.c_str(), &pEnd, 16);

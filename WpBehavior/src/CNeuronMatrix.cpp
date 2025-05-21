@@ -196,7 +196,7 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
       if ((strOffset + 4) > dataLen)
       {
         NormalizeNeuronMatrix();
-        return (false);
+        return false;
       }
       tmpStr = rawData.substr(strOffset, 4);
       tempVal = (WORD)strtol(tmpStr.c_str(), &pEnd, 16);

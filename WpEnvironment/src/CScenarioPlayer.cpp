@@ -305,7 +305,7 @@ bool CScenarioPlayer::CmdLoadBiotop(CBiotop* pBiotop, string path, string comman
   string firstParam = GetParamFromString(commandParam, 0);
 
   if (firstParam.find(".bio",0) < 0)
-    return (false);
+    return false;
 
   size_t indexName = firstParam.rfind("\\",firstParam.size());
 
@@ -330,7 +330,7 @@ bool CScenarioPlayer::CmdAddEntity(CBiotop* pBiotop, string path, string command
   string firstParam = GetParamFromString(commandParam, 0);
 
   if (firstParam.find(".xml",0) < 0)
-    return (false);
+    return false;
 
   size_t indexName = firstParam.rfind("\\",firstParam.size());
 
@@ -597,7 +597,7 @@ bool CScenarioPlayer::CmdCheckParamUnder(CBiotop* pBiotop, string path, string c
   }
 
   (*pTotalScore)++;
-  return (true); // return always true for not stopping scenario
+  return true; // return always true for not stopping scenario
 }
 
 bool CScenarioPlayer::CmdSetImmortal(CBiotop* pBiotop, string path, string commandParam, int* pSuccessScore, int* pTotalScore)
@@ -707,7 +707,7 @@ bool CScenarioPlayer::CmdAddEntitySpawner(CBiotop* pBiotop, string path, string 
   int period = atoi(GetParamFromString(commandParam, 2).c_str());
 
   if (entityName.find(".xml", 0) < 0)
-    return (false);
+    return false;
 
   pBiotop->addEntitySpawner(1, entityName, path, intensity, period, true);
   return true;

@@ -269,6 +269,7 @@ public:
   double getAttackFactor();
   bool   isSleeping();
   double getFatWeight();
+  double getFatWeightRate();
   double getMaxFatWeight();
   int    getCurrentSpeed();
   int    getHeadDirection();

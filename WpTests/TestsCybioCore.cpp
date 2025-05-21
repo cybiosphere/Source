@@ -51,7 +51,7 @@ void TestsCybioCore::testAnimalBehavior()
   CBasicEntity* pRock = pBiotop->createAndAddEntity(pathForEntityFiles + "rock.xml", pathForEntityFiles, { 116, 100 });
   pGazelle->predictNextAction();
   CBasicEntity* pFocussEntity = pBiotop->getEntityById(pGazelle->getBrain()->getBrainFocusedEntityId());
-  EXPECT_NE(pFocussEntity->getId(), NULL);
+  EXPECT_NE(pFocussEntity, NULL);
   if (pFocussEntity != NULL)
   {
     EXPECT_EQ(pFocussEntity->getId(), pRock->getId());
@@ -61,7 +61,7 @@ void TestsCybioCore::testAnimalBehavior()
   CBasicEntity* pGrass = pBiotop->createAndAddEntity(pathForEntityFiles + "grassDry.xml", pathForEntityFiles, { 125, 100 });
   pGazelle->predictNextAction();
   pFocussEntity = pBiotop->getEntityById(pGazelle->getBrain()->getBrainFocusedEntityId());
-  EXPECT_NE(pFocussEntity->getId(), NULL);
+  EXPECT_NE(pFocussEntity, NULL);
   if (pFocussEntity != NULL)
   {
     EXPECT_EQ(pFocussEntity->getId(), pRock->getId());
@@ -76,7 +76,7 @@ void TestsCybioCore::testAnimalBehavior()
   pGazelle->predictNextAction();
   pGazelle->predictNextAction(); // 2 times to be sure grass was seen
   pFocussEntity = pBiotop->getEntityById(pGazelle->getBrain()->getBrainFocusedEntityId());
-  EXPECT_NE(pFocussEntity->getId(), NULL);
+  EXPECT_NE(pFocussEntity, NULL);
   if (pFocussEntity != NULL)
   {
     EXPECT_EQ(pFocussEntity->getId(), pGrass->getId());
@@ -113,7 +113,7 @@ void TestsCybioCore::testAnimalSensors()
   pGazelle->jumpToGridCoord({ 2, 2 }, false);
   verifySensorsRange(pBiotop, pGazelle, 903, 1088, 992, 156);
 
-  printf("Verify sensor range North East position\n", pGazelle->getLabel().c_str());
+  printf("Verify sensor range North East corner position\n", pGazelle->getLabel().c_str());
   pGazelle->jumpToGridCoord({ 197, 197 }, false);
   verifySensorsRange(pBiotop, pGazelle, 646, 1088, 1056, 132);
   delete pBiotop;

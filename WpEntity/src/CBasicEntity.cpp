@@ -288,7 +288,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
     completeCaractsWithDefault();
     // Set mandatory parameters with default values
     completeParamsWithDefault();
-    return (true);
+    return true;
   }
 
   if (mutationRate>0)
@@ -598,7 +598,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
 {
   if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
   {
-    return (false);
+    return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
@@ -606,7 +606,7 @@ bool CBasicEntity::setParamFromGene (CGene* pGen)
   if (len<3*sizeof(WORD))
   {
     // not enought data to config param
-    return (false);
+    return false;
   }
 
   switch(pGen->getGeneSubType())
