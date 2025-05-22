@@ -45,11 +45,13 @@ void TestsCybioCore::testAnimalBehavior()
   EXPECT_EQ(pGazelle->getStepCoord().x, 1105);
   EXPECT_EQ(pGazelle->getStepCoord().y, 1005);
 
+  pGazelle->setVigilance(VIGILANCE_RATE_MAX);
   pGazelle->predictNextAction();
   EXPECT_EQ(pGazelle->getBrain()->getBrainFocusedEntityId(), ENTITY_ID_INVALID);
 
   CBasicEntity* pRock = pBiotop->createAndAddEntity(pathForEntityFiles + "rock.xml", pathForEntityFiles, { 116, 100 });
   pGazelle->predictNextAction();
+  pGazelle->predictNextAction(); // 2 times to be sure rock was seen
   CBasicEntity* pFocussEntity = pBiotop->getEntityById(pGazelle->getBrain()->getBrainFocusedEntityId());
   EXPECT_NE(pFocussEntity, NULL);
   if (pFocussEntity != NULL)
@@ -83,7 +85,7 @@ void TestsCybioCore::testAnimalBehavior()
     printf("%s focus is %s\n", pGazelle->getLabel().c_str(), pFocussEntity->getLabel().c_str());
   }
 
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < 200; i++)
   {
     pBiotop->nextSecond();
   }

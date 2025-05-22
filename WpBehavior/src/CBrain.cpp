@@ -163,7 +163,7 @@ void CBrain::NextSecond()
   bool purposeEnd = true;
   int curPriority = -1;
 
-  if (m_pCurrentPurpose!=NULL)
+  if (m_pCurrentPurpose != NULL)
   {
     if (m_pGeoMap == NULL)
       CreateGeoMapArroudCurrentPosition();
@@ -202,12 +202,12 @@ void CBrain::NextSecond()
   for (size_t i=0; i<m_tPurposes.size(); i++)
   {
     // Select new purpose according to highest sensor level
-    if ( (m_tPurposes[i]->GetPriority() > curPriority) && (m_tPurposes[i]->IsStartThresholdReached()) )
+    if ((m_tPurposes[i]->GetPriority() > curPriority) && (m_tPurposes[i]->IsStartThresholdReached()))
       curlevel = m_tPurposes[i]->GetSensorLevel() + m_tPurposes[i]->GetLevelBonus() + MAX_SENSOR_VAL * m_tPurposes[i]->GetPriority();
     else 
       curlevel = 0;
 
-    if (maxlevel<curlevel)
+    if (maxlevel < curlevel)
     {
       maxlevel = curlevel;
       selectId = i;
@@ -217,7 +217,7 @@ void CBrain::NextSecond()
   if (selectId != invalidIndex)
   {
     // Stop previous purpose
-    if (m_pCurrentPurpose!=NULL)
+    if (m_pCurrentPurpose != NULL)
     {  
       m_pCurrentPurpose->StopPeriod();
     }
@@ -225,7 +225,7 @@ void CBrain::NextSecond()
     // Start new purpose
     m_pCurrentPurpose->StartPeriod();
   }
-  else if ( (purposeEnd) && (m_pCurrentPurpose!=NULL) )
+  else if ((purposeEnd) && (m_pCurrentPurpose != NULL))
   {
     m_pCurrentPurpose->StopPeriod();
     m_pCurrentPurpose = NULL;
@@ -235,7 +235,7 @@ void CBrain::NextSecond()
 
 void CBrain::NextDay()
 {
-  if (m_pGeoMap!=NULL)
+  if (m_pGeoMap != NULL)
     m_pGeoMap->NextDay();
 }
 
@@ -249,19 +249,15 @@ bool CBrain::SetNumberInputHistory (size_t nbHistory)
     return false;
 
   m_nInputHistory = nbHistory;
-
   return true;
 }
 
 bool CBrain::SetNumberExperienceHistory (size_t nbHistory)
 {
   if (nbHistory == 0)
-  {
     return false;
-  }
 
   m_nExperienceHistory = nbHistory;
-
   return true;
 }
 
@@ -338,22 +334,22 @@ bool CBrain::DeleteAllBrainMemorizedEntityIdentities ()
 
 size_t CBrain::GetNumberSensor ()
 {
-  return (m_tSensors.size());
+  return m_tSensors.size();
 }
 
 size_t CBrain::GetNumberReaction ()
 {
-  return (m_tReactions.size());
+  return m_tReactions.size();
 }
 
 size_t CBrain::GetNumberPurpose ()
 {
-  return (m_tPurposes.size());
+  return m_tPurposes.size();
 }
 
 CSensor* CBrain::GetSensorByIndex (size_t index)
 {
-  return (m_tSensors[index]);
+  return m_tSensors[index];
 }
 
 CSensor* CBrain::GetSensorByUniqueId(DWORD uniqueId)
@@ -368,7 +364,7 @@ CSensor* CBrain::GetSensorByUniqueId(DWORD uniqueId)
 
 CReaction* CBrain::GetReactionByIndex (size_t index)
 {
-  return (m_tReactions[index]);
+  return m_tReactions[index];
 }
 
 CReaction* CBrain::GetReactionByUniqueId(DWORD uniqueId)
@@ -383,7 +379,7 @@ CReaction* CBrain::GetReactionByUniqueId(DWORD uniqueId)
 
 CPurpose* CBrain::GetPurposeByIndex (size_t index)
 {
-  return (m_tPurposes[index]);
+  return m_tPurposes[index];
 }
 
 CPurpose* CBrain::GetPurposeByUniqueId(DWORD uniqueId)
@@ -408,7 +404,7 @@ CPurpose* CBrain::GetPurposeByLabel(string label)
 
 CPurpose* CBrain::GetCurrentPurpose (void)
 {
-  return (m_pCurrentPurpose);
+  return m_pCurrentPurpose;
 }
 
 size_t CBrain::GetCurrentPurposeIndex(void)
@@ -418,7 +414,7 @@ size_t CBrain::GetCurrentPurposeIndex(void)
     if (m_tPurposes[i] == m_pCurrentPurpose)
       return i;
   }
-  return (invalidIndex);
+  return invalidIndex;
 }
 
 CPurpose*  CBrain::GetPurposeByTriggerSensor(DWORD sensorUniqueId, size_t sensorSubCaptorIndex)
@@ -547,7 +543,7 @@ bool CBrain::PollAllSensors (void)
 
 entityIdType CBrain::getBrainFocusedEntityId(void)
 {
-  return(m_FocusedEntityInfo.previousEntityId);
+  return m_FocusedEntityInfo.previousEntityId;
 }
 
 void CBrain::proposeNewFocusedEntityCandidate(CBasicEntity* pEntity, double computedWeight, double specialWeightBonus,
@@ -581,25 +577,25 @@ double CBrain::GetViewedEntityWeight(CBasicEntity* pEntity)
   double foundWeight = 0;
   for (auto pSensor : m_tSensors)
   {
-    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY )
+    if ((pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY)
     {
       CSensorViewIdentify* pViewSens = (CSensorViewIdentify*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
-      if (foundWeight>0)
+      if (foundWeight > 0)
         return foundWeight;
     }
-    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_FAR )
+    if ((pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_FAR)
     {
       CSensorViewFar* pViewSens = (CSensorViewFar*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
-      if (foundWeight>0)
+      if (foundWeight > 0)
         return foundWeight;
     }
-    if ( (pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY_FAR )
+    if ((pSensor->GetUniqueId() & UID_BASE_MASK) == UID_BASE_SENS_VIEW_IDENTIFY_FAR)
     {
       CSensorViewIdentifyFar* pViewSens = (CSensorViewIdentifyFar*)pSensor;
       foundWeight = pViewSens->GetViewedEntityWeight(pEntity);
-      if (foundWeight>0)
+      if (foundWeight > 0)
         return foundWeight;
     }
   }
@@ -632,7 +628,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
     return false;
 
   pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-  if (pNodeEntity==NULL)
+  if (pNodeEntity == NULL)
   {
     TiXmlElement newNode(XML_NODE_ENTITY);
     pNodeEntity = pXmlDoc->InsertEndChild(newNode);
@@ -640,7 +636,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
 
   // Actions feedback
   pNode = pNodeEntity->FirstChild(XML_NODE_ACTION_LEVEL);
-  if (pNode==NULL)
+  if (pNode == NULL)
   {
     // Create action level node
     TiXmlElement newNode(XML_NODE_ACTION_LEVEL);
@@ -668,7 +664,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
 
   // memorized visual entities
   pNode = pNodeEntity->FirstChild(XML_NODE_MEMO_ENTITY);
-  if (pNode==NULL)
+  if (pNode == NULL)
   {
     // Create action level node
     TiXmlElement newNode(XML_NODE_MEMO_ENTITY);
@@ -714,7 +710,7 @@ bool CBrain::loadFromTiXmlFile(TiXmlDocument *pXmlDoc)
 {
   bool resu = false;
 
-  if (pXmlDoc==NULL)
+  if (pXmlDoc == NULL)
     return resu;
 
   resu = GetIdentifyNeuronTable()->loadFromXmlFile(pXmlDoc);
@@ -730,9 +726,9 @@ bool CBrain::loadFromTiXmlFile(TiXmlDocument *pXmlDoc)
     // Actions feedback
     double succes, frustration;
     pNode = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-    if (pNode!=NULL)
+    if (pNode != NULL)
       pNode = pNode->FirstChild(XML_NODE_ACTION_LEVEL);
-    if (pNode!=NULL)
+    if (pNode != NULL)
     {
       pNode = pNode->FirstChild(XML_NODE_ACTION);
       while (pNode != NULL)
@@ -766,9 +762,9 @@ bool CBrain::loadFromTiXmlFile(TiXmlDocument *pXmlDoc)
     int readIntValue;
 
     pNode = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-    if (pNode!=NULL)
+    if (pNode != NULL)
       pNode = pNode->FirstChild(XML_NODE_MEMO_ENTITY);
-    if (pNode!=NULL)
+    if (pNode != NULL)
     {
       pNode = pNode->FirstChild(XML_NODE_MEMO);
       while (pNode != NULL)
@@ -791,9 +787,7 @@ bool CBrain::loadFromTiXmlFile(TiXmlDocument *pXmlDoc)
         pNode = pNode->NextSibling();
       }
     }
-
   }
-
   return resu;
 }
 
@@ -1198,7 +1192,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
 
   avarageVal = avarageVal/nOutputReactions;
 
-  if (cptMaxVal>0) // check if no error
+  if (cptMaxVal > 0) // check if no error
   {
     // Select an index with value over threshold
     size_t randomInd = getRandInt(cptMaxVal-1);
@@ -1207,9 +1201,9 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
     // Compute intensity
     double ratio = m_vCurrentDecisionChoice(resuIndex,0) / avarageVal;
     intensity = REACTION_INTENSITY_MEDIUM;
-    if (ratio<1.02)
+    if (ratio < 1.02)
       intensity = REACTION_INTENSITY_LOW;
-    else if (ratio>1.12) // Fred: a regler
+    else if (ratio > 1.12) // Fred: a regler
       intensity = REACTION_INTENSITY_HIGH;
   }
   else
@@ -1237,13 +1231,13 @@ feedbackValType CBrain::ComputeFeedback (choiceIndType myChoice, ReactionIntensi
   // Feedback is the difference between current feedback and previous...
   resu = (m_CurrentFeelingWelfare - m_PreviousFeelingWelfare) * MAX_FEEDBACK_VAL / 100.0;
 
-  if (resu>MEMORIZATION_FEEDBACK_THRESHOLD)
+  if (resu > MEMORIZATION_FEEDBACK_THRESHOLD)
     m_tReactions[myChoice]->IncreaseSuccessCount();
 
-  if (resu<-MEMORIZATION_FEEDBACK_THRESHOLD)
+  if (resu < -MEMORIZATION_FEEDBACK_THRESHOLD)
     m_tReactions[myChoice]->IncreaseFailureCount();
 
-  return (resu);
+  return resu;
 }
 
 feedbackValType CBrain::GetCurrentFeedback ()
@@ -1255,7 +1249,7 @@ feedbackValType CBrain::GetCurrentFeedback ()
   if ((-MEMORIZATION_FEEDBACK_THRESHOLD<resu)&&(resu<MEMORIZATION_FEEDBACK_THRESHOLD))
     resu = 0;
 
-  return (resu);
+  return resu;
 }
 
 bool CBrain::HistorizeDecision (choiceIndType index)
@@ -1324,17 +1318,17 @@ CMatrix* CBrain::GetInputVect()
 
 double CBrain::GetPreviousFeelingWelfare()
 {
-  return (m_PreviousFeelingWelfare);
+  return m_PreviousFeelingWelfare;
 }
 
 double CBrain::GetCurrentFeelingWelfare()
 {
-  return (m_CurrentFeelingWelfare);
+  return m_CurrentFeelingWelfare;
 }
 
 CFeelingWelfare* CBrain::GetpFeelingWelfare()
 {
-  return (m_pFeelingWelfare);
+  return m_pFeelingWelfare;
 }
 
 size_t CBrain::GetCurrentReactionIndex(void)
@@ -1350,7 +1344,7 @@ bool CBrain::SetCurrentReactionIndex(size_t index)
     m_CurrentReactionChoice = index;
     resu = true;
   }
-  return (resu);
+  return resu;
 }
 
 size_t CBrain::GetReactionIndexByLabel(string label)
@@ -1366,22 +1360,22 @@ size_t CBrain::GetReactionIndexByLabel(string label)
 size_t CBrain::GetChoiceVectSize()
 {
   
-  return (m_vCurrentDecisionChoice.RowNo()); 
+  return m_vCurrentDecisionChoice.RowNo(); 
 }
 
 neuroneValType CBrain::GetChoiceVectData(size_t pos)
 {
-  return (m_vCurrentDecisionChoice(pos,0));
+  return m_vCurrentDecisionChoice(pos, 0);
 }
 
 size_t CBrain::GetInputVectSize()
 {
-  return (m_vCurrentDecisionInput.RowNo());
+  return m_vCurrentDecisionInput.RowNo();
 }
 
 neuroneValType CBrain::GetInputVectData(size_t pos)
 {
-  return (m_vCurrentDecisionInput(pos,0));
+  return m_vCurrentDecisionInput(pos, 0);
 }
 
 string CBrain::GetColumnLabel(size_t index)
@@ -1441,7 +1435,7 @@ size_t CBrain::GetBrainMatrixColumnIndex(DWORD reactionUidBase, size_t reactionU
         foundCount++;
     }
   }
-  return (invalidIndex);
+  return invalidIndex;
 }
 
 size_t CBrain::GetBrainMatrixRowIndex(DWORD sensorUidbase, size_t sensorUidRange, size_t subCaptorIndex, 
@@ -1464,12 +1458,12 @@ size_t CBrain::GetBrainMatrixRowIndex(DWORD sensorUidbase, size_t sensorUidRange
       }
       else
       {
-        return (invalidIndex);
+        return invalidIndex;
       }
     }
     pos += pSens->GetSubCaptorNumber();
   }
-  return (invalidIndex);
+  return invalidIndex;
 }
 
 
@@ -1500,12 +1494,12 @@ bool CBrain::IsDecisionRowSexSpecific(size_t rowIndex)
 
 bool CBrain::ChangeDecisionNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {
-  return m_mDecisionNeuronTable.ChangeNeuronTableVal( row, col, variation, normalize);
+  return m_mDecisionNeuronTable.ChangeNeuronTableVal(row, col, variation, normalize);
 }
 
 bool CBrain::AddFeelingWelfareSensitivity(CSensor* pSens, size_t tableSensiSize, double* pTableSensi)
 {
-  return ( m_pFeelingWelfare->AddSensitivity(pSens,tableSensiSize,pTableSensi) );
+  return m_pFeelingWelfare->AddSensitivity(pSens, tableSensiSize, pTableSensi);
 }
 
 
@@ -1557,46 +1551,46 @@ string CBrain::getIdentificationLabel(size_t columnIndex)
 {
   string label;
   label = IdentificationTypeNameList[columnIndex];
-  return (label);
+  return label;
 }
 
 string CBrain::getIdentifyInputLabel(size_t rowIndex)
 {
   string captorStr;
   
-  if (rowIndex>IDENTIFY_INPUT_SIZE)
+  if (rowIndex > IDENTIFY_INPUT_SIZE)
     captorStr = "captor error";
   else if (rowIndex >= (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS + NUMBER_PHEROMONES))
   {
     captorStr = "non static";
   }
-  else if (rowIndex>=(VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
   {
     if (m_pSensorPheromone != NULL)
       captorStr ="phero " + m_pSensorPheromone->GetSubCaptorLabel(rowIndex - VIEW_SIZE_PER_FOCUS - NUMBER_ODORS);
     else
       captorStr = "no Pheromone captor";
   }
-  else if (rowIndex>=(VIEW_SIZE_PER_FOCUS))
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS))
   {
     if (m_pSensorSmell != NULL)
       captorStr = "odor " + m_pSensorSmell->GetSubCaptorLabel(rowIndex - VIEW_SIZE_PER_FOCUS);
     else
       captorStr = "no Smell captor";
   }
-  else if (rowIndex>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS+VIEW_NUMBER_TEXTURES))
+  else if (rowIndex > (3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS+VIEW_NUMBER_TEXTURES))
     captorStr = "attr " + CBasicEntity::getPhyAttributeStrName((PhyAttributeType_e)(rowIndex + PHY_ATTRIBUTE_NUMBER_TYPE - VIEW_SIZE_PER_FOCUS));
-  else if (rowIndex>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS))
+  else if (rowIndex > (3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS))
     captorStr = "text " + CBasicEntity::getTextureStrName(indexToTextureType(rowIndex - 4 - VIEW_NUMBER_COLORS - VIEW_NUMBER_FORMS));
-  else if (rowIndex>(3+VIEW_NUMBER_COLORS))
+  else if (rowIndex > (3+VIEW_NUMBER_COLORS))
     captorStr = "form " + CBasicEntity::getFormStrName(indexToFormType(rowIndex - 4 - VIEW_NUMBER_COLORS));
-  else if (rowIndex>3)
+  else if (rowIndex > 3)
     captorStr = "colr " + CBasicEntity::getColorStrName(indexToColorType(rowIndex - 4));
-  else if (rowIndex==3)
+  else if (rowIndex == 3)
     captorStr = "relative speed escape";
-  else if (rowIndex==2)
+  else if (rowIndex == 2)
     captorStr = "relative speed approach";
-  else if (rowIndex==1)
+  else if (rowIndex == 1)
     captorStr = "smaller";
   else
     captorStr = "bigger";
@@ -1611,7 +1605,7 @@ string CBrain::getIdentifyInputLabel(size_t rowIndex)
 
 bool CBrain::IsIdentifyRowSexSpecific(size_t rowIndex)
 {
-  if (rowIndex>IDENTIFY_INPUT_SIZE)
+  if (rowIndex > IDENTIFY_INPUT_SIZE)
   {
     return false;
   }
@@ -1619,12 +1613,12 @@ bool CBrain::IsIdentifyRowSexSpecific(size_t rowIndex)
   {
     return false;
   }
-  else if (rowIndex>=(VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS + NUMBER_ODORS))
   {
     if (m_pSensorPheromone != NULL)
       return m_pSensorPheromone->IsSexSpecific(rowIndex - VIEW_SIZE_PER_FOCUS - NUMBER_ODORS);
   }
-  else if (rowIndex>=(VIEW_SIZE_PER_FOCUS))
+  else if (rowIndex >= (VIEW_SIZE_PER_FOCUS))
   {
     if (m_pSensorSmell != NULL)
       return m_pSensorSmell->IsSexSpecific(rowIndex - VIEW_SIZE_PER_FOCUS);
@@ -1773,51 +1767,33 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
   offset++;
   // Relative speed escape
   int relativeSpeed = m_pEntity->getRelativeSpeed(pEntity);
-  if (relativeSpeed > 0)
-    m_vCurrentIdentifyInput(offset,0) = relativeSpeed;
-  else
-    m_vCurrentIdentifyInput(offset,0) = 0;
+  m_vCurrentIdentifyInput(offset, 0) = (relativeSpeed > 0) ? relativeSpeed : 0;
   offset++;
   // Relative speed approach
-  if (relativeSpeed < 0)
-    m_vCurrentIdentifyInput(offset, 0) = -relativeSpeed;
-  else
-    m_vCurrentIdentifyInput(offset, 0) = 0;
+  m_vCurrentIdentifyInput(offset, 0) = (relativeSpeed < 0) ? -relativeSpeed : 0;
   offset++;
   // Color:
   for (int color = COLOR_CARACTER_FIRST_TYPE; color < COLOR_CARACTER_NUMBER_TYPE; color++)
   {
-    if (pEntity->getColorType() == color)
-      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL ;
-    else
-      m_vCurrentIdentifyInput(offset,0) = 0;
+    m_vCurrentIdentifyInput(offset, 0) = (pEntity->getColorType() == color) ? MAX_SENSOR_VAL : 0;
     offset++;
   }
   // Form:
   for (int form = FORM_FIRST_TYPE; form < FORM_NUMBER_TYPE; form++)
   {
-    if (pEntity->getForm() == form)
-      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
-    else
-      m_vCurrentIdentifyInput(offset,0) = 0;
+    m_vCurrentIdentifyInput(offset, 0) = (pEntity->getForm() == form) ? MAX_SENSOR_VAL : 0;
     offset++;
   }
   // Texture:
   for (int textu = TEXTURE_FIRST_TYPE; textu < TEXTURE_NUMBER_TYPE; textu++)
   {
-    if (pEntity->getTexture() == textu)
-      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
-    else
-      m_vCurrentIdentifyInput(offset,0) = 0;
+    m_vCurrentIdentifyInput(offset, 0) = (pEntity->getTexture() == textu) ? MAX_SENSOR_VAL : 0;
     offset++;
   }
   // Physical attribute:
   for (int attribu = PHY_ATTRIBUTE_FIRST_TYPE; attribu < PHY_ATTRIBUTE_NUMBER_TYPE; attribu++)
   {
-    if (pEntity->isPhyAttributePresent((PhyAttributeType_e)attribu))
-      m_vCurrentIdentifyInput(offset,0) = MAX_SENSOR_VAL;
-    else
-      m_vCurrentIdentifyInput(offset,0) = 0;
+    m_vCurrentIdentifyInput(offset, 0) = (pEntity->isPhyAttributePresent((PhyAttributeType_e)attribu)) ? MAX_SENSOR_VAL : 0;
     offset++;
   }
 
@@ -2001,7 +1977,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
 {
   CPurpose* pPurpose = NULL;
 
-  if (m_bBabyStayHome==false)
+  if (m_bBabyStayHome == false)
     return false;
 
   // Delete memory map if exist and current position is outside
@@ -2032,7 +2008,7 @@ bool CBrain::SetHomePurposePositionInGeoMap()
   }
 
   // Memorize home position
-  if (m_pGeoMap!=NULL)
+  if (m_pGeoMap != NULL)
   {
     // Check if baby
     if (m_pEntity->getPheromone() == PHEROMONE_BABY)

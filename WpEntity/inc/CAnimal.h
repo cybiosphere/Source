@@ -61,7 +61,7 @@ typedef enum
 } BrainBehaviorType_e;
 
 #define VIGILANCE_RATE_MAX     100.0
-#define VIGILANCE_RATE_NORMAL   80.0
+#define VIGILANCE_RATE_NORMAL   90.0
 #define VIGILANCE_RATE_LOW      60.0
 #define VIGILANCE_RATE_SLEEP     1.0
 
