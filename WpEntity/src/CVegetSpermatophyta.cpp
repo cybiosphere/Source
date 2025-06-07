@@ -327,13 +327,13 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CVegetSpermatophyta::nextDay(bool forceGrowth)
+void CVegetSpermatophyta::nextDay(bool doQuickAgeing)
 {
-  if (isAlive())
+  if (isAlive() && !doQuickAgeing)
   {
     tryToReproduceOnceADay();
   }
-  CVegetable::nextDay(forceGrowth);
+  CVegetable::nextDay(doQuickAgeing);
 }
 
 void CVegetSpermatophyta::tryToReproduceOnceADay()

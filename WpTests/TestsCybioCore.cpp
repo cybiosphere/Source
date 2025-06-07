@@ -1,10 +1,21 @@
 #include "TestsCybioCore.h"
 
+size_t nbTestsFailed = 0;
+
 void TestsCybioCore::launchAllTests()
 {
+  nbTestsFailed = 0;
   testBiotopCreation();
   testAnimalBehavior();
   testAnimalSensors();
+  if (nbTestsFailed > 0)
+  {
+    printf("TestsCybioCore: %zu tests failed\n", nbTestsFailed);
+  }
+  else
+  {
+    printf("TestsCybioCore: All tests passed successfully!\n");
+  }
 }
 
 void TestsCybioCore::testBiotopCreation()

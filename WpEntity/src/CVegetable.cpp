@@ -529,7 +529,7 @@ void CVegetable::nextHour()
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CVegetable::nextDay(bool forceGrowth)
+void CVegetable::nextDay(bool doQuickAgeing)
 {
   // get older
   if (isAlive())
@@ -557,7 +557,7 @@ void CVegetable::nextDay(bool forceGrowth)
       autoRemove();
     }
   }
-  CBasicEntity::nextDay(forceGrowth);
+  CBasicEntity::nextDay(doQuickAgeing);
 }
 
 //---------------------------------------------------------------------------
