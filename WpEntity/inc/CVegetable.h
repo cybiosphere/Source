@@ -109,7 +109,7 @@ protected:
 //---------------------------------------------------------------------------
 public:
   void nextHour();
-  void nextDay(bool forceGrowth = false);
+  void nextDay(bool doQuickAgeing = false);
   int  getAge();
   int  getDecompositionTime();
 

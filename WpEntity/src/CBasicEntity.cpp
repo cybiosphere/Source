@@ -1851,7 +1851,7 @@ void CBasicEntity::nextHour()
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CBasicEntity::nextDay(bool forceGrowth)
+void CBasicEntity::nextDay(bool doQuickAgeing)
 {
   if (m_indCurrentLifeStage < m_tLifeStage.size())
   {

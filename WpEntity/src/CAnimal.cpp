@@ -2267,7 +2267,7 @@ void CAnimal::nextHour()
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CAnimal::nextDay(bool forceGrowth)
+void CAnimal::nextDay(bool doQuickAgeing)
 {
   // get older 
   if (isAlive())
@@ -2275,7 +2275,7 @@ void CAnimal::nextDay(bool forceGrowth)
     if (m_pBrain != NULL)
       m_pBrain->NextDay();
     getParameterNoCheck(m_id_Age)->changeVal(1);
-    balanceWeightAndMetabolism(forceGrowth);
+    balanceWeightAndMetabolism(doQuickAgeing);
     if (getParameterNoCheck(m_id_Age)->isMaxReached())
     {
       autoKill();
@@ -2294,7 +2294,7 @@ void CAnimal::nextDay(bool forceGrowth)
       }
     }
   }
-  CBasicEntity::nextDay(forceGrowth);
+  CBasicEntity::nextDay(doQuickAgeing);
 }
 
 //---------------------------------------------------------------------------

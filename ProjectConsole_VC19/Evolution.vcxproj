@@ -154,7 +154,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>..\Exec\CybioCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\Exec/Evolution2.exe</OutputFile>
+      <OutputFile>..\Exec/Evolution.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/Evolution.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>

@@ -39,6 +39,9 @@
     <Filter Include="ProjectConsole">
       <UniqueIdentifier>{95630125-7bd1-483c-9562-6a50b9204693}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WpTests">
+      <UniqueIdentifier>{9bbd287a-4081-48b1-ab8a-32113444a912}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\WpBehavior\inc\CBrain.h">
@@ -158,9 +161,15 @@
     <ClInclude Include="..\WpGenetic\inc\CPairOfChromosome.h">
       <Filter>WpGenetic\IncGenetic</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpTests\TestsCybioCore.h">
+      <Filter>WpTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Evolution.cpp" />
+    <ClCompile Include="..\WpTests\TestsCybioCore.cpp">
+      <Filter>WpTests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

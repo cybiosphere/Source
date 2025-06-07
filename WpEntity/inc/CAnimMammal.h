@@ -93,7 +93,7 @@ protected:
 //---------------------------------------------------------------------------
 public: 
   void nextHour(); 
-  void nextDay(bool forceGrowth = false);
+  void nextDay(bool doQuickAgeing = false);
 protected:
   void increaseGestationTime(int variation);
 

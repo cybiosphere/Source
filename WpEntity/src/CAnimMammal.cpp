@@ -486,18 +486,22 @@ void CAnimMammal::nextHour()
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CAnimMammal::nextDay(bool forceGrowth)
+void CAnimMammal::nextDay(bool doQuickAgeing)
 {
   // get older
   if (isAlive())
   {
-    if (getGestationBabyNumber()>0)
+    if (getGestationBabyNumber() > 0)
     {
       increaseGestationTime(1); 
     }
+    if (!doQuickAgeing)
+    {
+      tryParthenogenesis();
+    }
   }
-  tryParthenogenesis();
-  CAnimal::nextDay(forceGrowth);
+
+  CAnimal::nextDay(doQuickAgeing);
 }
 
 //---------------------------------------------------------------------------
