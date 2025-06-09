@@ -766,9 +766,6 @@
     <ClInclude Include="..\WpClanNetwork\inc\server_coprocessor.h">
       <Filter>WpClanNetwork\IncClan</Filter>
     </ClInclude>
-    <ClInclude Include="..\WpGui\inc\FindStrDlg.h">
-      <Filter>Project2D\Inc2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
       <Filter>WpCommon\IncCommon</Filter>
     </ClInclude>
@@ -776,6 +773,12 @@
       <Filter>WpGui\IncGui</Filter>
     </ClInclude>
     <ClInclude Include="..\WpGui\inc\MapEditorView.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\BiotopSizeDlg.h">
+      <Filter>WpGui\IncGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WpGui\inc\FindStrDlg.h">
       <Filter>WpGui\IncGui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1065,13 +1068,16 @@
     <ClCompile Include="..\WpClanNetwork\src\server_coprocessor.cpp">
       <Filter>WpClanNetwork\SrcClan</Filter>
     </ClCompile>
-    <ClCompile Include="..\WpGui\src\FindStrDlg.cpp">
-      <Filter>Project2D\Src2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\WpGui\src\MapEditorDoc.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
     <ClCompile Include="..\WpGui\src\MapEditorView.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\BiotopSizeDlg.cpp">
+      <Filter>WpGui\SrcGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpGui\src\FindStrDlg.cpp">
       <Filter>WpGui\SrcGui</Filter>
     </ClCompile>
   </ItemGroup>

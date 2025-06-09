@@ -59,6 +59,7 @@
 #define IDD_DIALOG_FINDSTR              213
 #define IDD_MAPEDITOR_FORMVIEW          214
 #define IDR_MAPEDITOR_TYPE              215
+#define IDD_DIALOG_BIOTOPSIZE           215
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_EDIT3                       1002
@@ -247,6 +248,8 @@
 #define IDC_CLIMATE5                    1147
 #define IDC_EDIT_SPAWN                  1148
 #define IDC_EDIT_RATE                   1149
+#define IDC_BIOTOP_SIZEX                1150
+#define IDC_BIOTOP_SIZEY                1151
 #define ID_APP_DISPLAY_GENETIC          32771
 #define ID_APP_DISPLAY_BRAIN            32772
 #define ID_GENOME_EDIT                  32773
@@ -293,7 +296,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        214
 #define _APS_NEXT_COMMAND_VALUE         32816
-#define _APS_NEXT_CONTROL_VALUE         1150
+#define _APS_NEXT_CONTROL_VALUE         1151
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

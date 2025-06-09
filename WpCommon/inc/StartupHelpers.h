@@ -97,10 +97,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   else
   {
     pBiotop = new CBiotop(100, 100, 3);
-    pBiotop->initGridEntity();
-    pBiotop->initGridDefaultLayerType();
-    pBiotop->initGridDefaultAltitude();
-    pBiotop->setDefaultEntitiesForTest();
+    pBiotop->setDefaultMapAndEntities();
   }
 
   pScenarioPlayer = new CScenarioPlayer(pBiotop);

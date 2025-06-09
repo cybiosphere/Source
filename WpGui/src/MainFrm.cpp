@@ -33,6 +33,7 @@ distribution.
 #include "EntityCreatorDlg.h"
 #include "EntityEditorDlg.h"
 #include "EntityFindDlg.h"
+#include "BiotopSizeDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -172,13 +173,17 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 
 void CMainFrame::OnAppNewBiotop() 
 {
-  if (IDNO == AfxMessageBox ("Do you realy want to reset biotop with default entities?", MB_YESNO | MB_ICONEXCLAMATION))
+  if (IDNO == AfxMessageBox("Do you realy want to create new biotop with default entities?", MB_YESNO | MB_ICONEXCLAMATION))
     return; 
 
   // Unselect entity
   theApp.setSelectedEntity(NULL);
 
-  theApp.SetDefaultBiotop();
+  CBiotopSizeDlg biotopSizeDlg;
+  if (biotopSizeDlg.DoModal() != IDOK)
+    return;
+
+  theApp.CreateNewDefaultBiotop(biotopSizeDlg.GetBiotopSizeX(), biotopSizeDlg.GetBiotopSizeY());
   theApp.GetBiotopViewPtr()->GetpBiotopDisplay()->RefreshBiotop();
   theApp.GetBiotopViewPtr()->ForceRefreshDisplay(TRUE);
   theApp.GetBioCtrlViewPtr()->UpdateTimerDisplay(theApp.GetBiotop()->getBiotopTime());

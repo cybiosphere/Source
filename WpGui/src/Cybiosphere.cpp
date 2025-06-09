@@ -706,16 +706,11 @@ CScenarioPlayer* CCybiosphereApp::GetScenarioPlayer()
   return m_pScenarioPlayer;
 }
 
-void CCybiosphereApp::SetDefaultBiotop()
+void CCybiosphereApp::CreateNewDefaultBiotop(size_t sizeX, size_t sizeY)
 {
   if (m_pBiotop!=NULL)
   {
-    m_pBiotop->deleteAllEntities();
-    m_pBiotop->deleteAllMeasures();
-    m_pBiotop->initGridDefaultLayerType();
-    m_pBiotop->initGridDefaultAltitude();
-    m_pBiotop->initGridEntity();
-    m_pBiotop->setDefaultEntitiesForTest();
+    m_pBiotop->resetResizeAndAddDefaultEntities(sizeX, sizeY);
   }
 }
 

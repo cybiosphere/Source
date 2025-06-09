@@ -123,7 +123,7 @@ public:
 
   CScenarioPlayer* GetScenarioPlayer();
 
-  void SetDefaultBiotop();
+  void CreateNewDefaultBiotop(size_t sizeX, size_t sizeY);
 
   void SetOpenedBiotopFile (CString path, CString fileName);
   CString GetOpenedBiotopFileName();

@@ -565,6 +565,7 @@
     <ClInclude Include="..\WpGui\inc\BiotopDisplayMFC.h" />
     <ClInclude Include="..\WpGui\inc\BiotopDoc.h" />
     <ClInclude Include="..\WpGui\inc\BiotopEditorDlg.h" />
+    <ClInclude Include="..\WpGui\inc\BiotopSizeDlg.h" />
     <ClInclude Include="..\WpGui\inc\BiotopView.h" />
     <ClInclude Include="..\WpGui\inc\BrainDoc.h" />
     <ClInclude Include="..\WpGui\inc\BrainEditorDlg.h" />
@@ -677,6 +678,7 @@
     <ClCompile Include="..\WpGui\src\BiotopDisplayMFC.cpp" />
     <ClCompile Include="..\WpGui\src\BiotopDoc.cpp" />
     <ClCompile Include="..\WpGui\src\BiotopEditorDlg.cpp" />
+    <ClCompile Include="..\WpGui\src\BiotopSizeDlg.cpp" />
     <ClCompile Include="..\WpGui\src\BiotopView.cpp" />
     <ClCompile Include="..\WpGui\src\BrainDoc.cpp" />
     <ClCompile Include="..\WpGui\src\BrainEditorDlg.cpp" />

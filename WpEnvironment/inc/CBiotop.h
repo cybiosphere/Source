@@ -299,6 +299,8 @@ public:
   virtual ~CBiotop();
 
   CBiotop* extractNewBiotopFromArea(const Point_t& startCoord, size_t dimX, size_t dimY);
+  void resetResizeAndAddDefaultEntities(size_t dimX, size_t dimY);
+
 
 //---------------------------------------------------------------------------
 // Entities management
@@ -306,6 +308,7 @@ public:
 private:
   size_t deleteEntity(CBasicEntity* pEntity, bool displayLog = true);
   void deleteAllParameters(void);
+  void clearAllElements(void);
 
 public:
   bool addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t newLayer = invalidCoord);
@@ -319,7 +322,7 @@ public:
   bool replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEntity);
 
   void displayEntities(void);
-  void setDefaultEntitiesForTest(void);
+  void setDefaultMapAndEntities(void);
   void buildWoodenFence(const Point_t& startCoord, const Point_t& endCoord);
   void buildRock(const Point_t& coord);
 
@@ -343,6 +346,7 @@ public:
 
 private:
   void markEntityWithGene(CBasicEntity* pEntity);
+  void setDefaultEntitiesForNewBiotop(void);
 
 //---------------------------------------------------------------------------
 // Entities access
@@ -402,9 +406,6 @@ private:
 // Grid management
 //---------------------------------------------------------------------------
 public:
-  void initGridDefaultLayerType(void);
-  void initGridDefaultAltitude(void);
-  void initGridEntity(void);
   void ModifyGridFertilityBonus(const Point_t& coord, char bonusToAdd);
   void updateGridEntity(CBasicEntity* pEntity);
   int getGridDistance(const Point_t& gridCoord1, const Point_t& gridCoord2);
@@ -416,6 +417,9 @@ public:
   void setGridGroundTypeRock(size_t gridCoordX, size_t gridCoordY);
 
 private:
+  void initGridDefaultLayerType(void);
+  void initGridDefaultAltitude(void);
+  void initGridEntity(void);
   void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);
   void updateGridAllEntities(void);

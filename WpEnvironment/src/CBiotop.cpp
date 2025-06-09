@@ -113,17 +113,42 @@ CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName)
 
 CBiotop::~CBiotop()
 {
-  deleteAllMeasures();
+  clearAllElements();
   deleteAllParameters();
-  deleteAllEntities();
-  deleteGrid();  // Delete 3D dynamic table
-
   delete m_pWaterGlobalEntity;
   delete m_pGrassGlobalEntity;
   delete m_pRockGlobalEntity;
-
   CYBIOCORE_LOG_CLOSE;
 }
+
+void CBiotop::clearAllElements(void)
+{
+  deleteAllEntities();
+  deleteAllMeasures();
+  deleteGrid();
+  clearEventMaps();
+}
+
+void CBiotop::resetResizeAndAddDefaultEntities(size_t dimX, size_t dimY)
+{
+  clearAllElements();
+  m_Dimension.x = dimX;
+  m_Dimension.y = dimY;
+  m_nbLayer = 3;
+  setGlobalGridDimension(dimX, dimY);
+  setGlobalGridCoordOffset({ 0, 0 });
+  buildGrid(m_Dimension.x, m_Dimension.y, m_nbLayer);
+  setDefaultMapAndEntities();
+}
+
+void CBiotop::setDefaultMapAndEntities(void)
+{
+  initGridEntity();
+  initGridDefaultLayerType();
+  initGridDefaultAltitude();
+  setDefaultEntitiesForNewBiotop();
+}
+
 
 CBiotop* CBiotop::extractNewBiotopFromArea(const Point_t& startCoord, size_t dimX, size_t dimY)
 {
@@ -595,7 +620,7 @@ void CBiotop::displayEntities(void)
   }
 }
 
-void CBiotop::setDefaultEntitiesForTest(void)
+void CBiotop::setDefaultEntitiesForNewBiotop(void)
 {
   // Seed the random generator
   // srand( (unsigned)time(NULL) );
@@ -1880,12 +1905,12 @@ void CBiotop::initGridDefaultLayerType(void)
   }
 
   // Add a River in the middle
-  for (j = 1; j < m_Dimension.y / 2; j++)
-  {
-    setGridGroundTypeWater(m_Dimension.x / 2 - 1, j);
-    setGridGroundTypeDeepWater(m_Dimension.x / 2, j);
-    setGridGroundTypeWater(m_Dimension.x / 2 + 1, j);
-  }
+  //for (j = 1; j < m_Dimension.y / 2; j++)
+  //{
+  //  setGridGroundTypeWater(m_Dimension.x / 2 - 1, j);
+  //  setGridGroundTypeDeepWater(m_Dimension.x / 2, j);
+  //  setGridGroundTypeWater(m_Dimension.x / 2 + 1, j);
+  //}
 
   // Add lake in the center
   for (i=(m_Dimension.x/2-5); i<(m_Dimension.x/2+5); i++)
@@ -1895,9 +1920,9 @@ void CBiotop::initGridDefaultLayerType(void)
       setGridGroundTypeWater(i, j);
     }
   }
-  for (i=(m_Dimension.x/2-4); i<(m_Dimension.x/2+4); i++)
+  for (i=(m_Dimension.x/2-2); i<(m_Dimension.x/2+2); i++)
   {
-    for (j=(m_Dimension.y/2-4); j<(m_Dimension.y/2+4); j++)
+    for (j=(m_Dimension.y/2-2); j<(m_Dimension.y/2+2); j++)
     {
       setGridGroundTypeDeepWater(i, j);
     }
@@ -2703,10 +2728,7 @@ bool CBiotop::loadFromXmlFile(TiXmlDocument *pXmlDoc, string pathNameForEntities
       offsetY = 0;
 
     // Clear Previous Biotop
-    deleteAllEntities();
-    deleteAllMeasures();
-    deleteGrid();
-    clearEventMaps();
+    clearAllElements();
 
     m_Dimension.x = sizeX;
     m_Dimension.y = sizeY;
