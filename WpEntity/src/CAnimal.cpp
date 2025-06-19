@@ -2510,11 +2510,10 @@ bool CAnimal::changeHealthRate(double variation, CBasicEntity* pAggresor, bool s
 
   if (suffering)
   {
-    // By default, suffering amplifies Health variation
-    changeSufferingRate(-10*variation);
+    changeSufferingRate(-10 * variation);
   }
 
-  if((variation<0) && (pAggresor!=NULL))
+  if((variation < 0) && (pAggresor != NULL))
   {
     // Reenforce danger recognition
     getBrain()->MemorizeIdentificationExperience(-variation, getLearningRate(), pAggresor, IDENTIFICATION_DANGER);
@@ -3099,7 +3098,7 @@ bool CAnimal::ExecuteMoveBackwardAction(double successSatisfactionFactor, double
   changePleasureRate(pleasureRate);
   changeTirednessRate(nbSteps * 0.02);
 
-  return (pleasureRate < 0) ? false : true;
+  return (pleasureRate >= 0);
 }
 
 //---------------------------------------------------------------------------
@@ -3227,7 +3226,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         if (pEatenEntity->isVegetal())
         {
           // 10% of this eaten food is digested:
-          increaseFatWeight(eatenWeight/10.0);
+          increaseFatWeight(eatenWeight * 0.10);
           changeHungerRate(-0.4);
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
@@ -3235,14 +3234,14 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         else if (pEatenEntity->isAnimal())
         {
           // Meat contains more calories
-          // 50% of this eaten food is digested:
-          increaseFatWeight(eatenWeight/2.0);
+          // 60% of this eaten food is digested:
+          increaseFatWeight(eatenWeight * 0.60);
           changeHungerRate(-0.5);
           changeThirstRate(-0.1);
           changeStomachFillingRate(0.5);
 
           // If too much meet is consumed, eaten animal becomes carrion,
-          if (pEatenEntity->getWeight() < (pEatenEntity->getMinWeight()*1.1))
+          if (pEatenEntity->getWeight() < (pEatenEntity->getMinWeight() * 1.1))
           {
             (CAnimal*)pEatenEntity->setCurrentLifeStages(STAGE_6);
           }
@@ -3270,7 +3269,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
 
   changePleasureRate(pleasureRate);
 
-  return (pleasureRate < 0) ? false : true;
+  return (pleasureRate >= 0);
 }
 
 //---------------------------------------------------------------------------
@@ -3315,10 +3314,7 @@ bool CAnimal::ExecuteDrinkAction(double successSatisfactionFactor, double failur
 
   changePleasureRate(pleasureRate);
 
-  if (pleasureRate<0)
-    return false;
-  else
-    return true; 
+  return (pleasureRate >= 0);
 }
 
 //---------------------------------------------------------------------------
@@ -3428,13 +3424,9 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
   }
 
   changePleasureRate(pleasureRate);
-
   changeTirednessRate(0.2);
 
-  if (pleasureRate<0)
-    return false;
-  else
-    return true; 
+  return (pleasureRate >= 0);
 }
 
 //---------------------------------------------------------------------------

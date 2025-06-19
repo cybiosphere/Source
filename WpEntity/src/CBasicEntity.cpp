@@ -3475,10 +3475,8 @@ double CBasicEntity::getSizeRate()
 
 double CBasicEntity::getCamouflage()
 {
-  if (getCurrentSpeed() == 0)
-    return (getParameterNoCheck(m_id_Camouflage)->getVal());
-  else
-    return (getParameterNoCheck(m_id_Camouflage)->getVal()/2);
+  return (getCurrentSpeed() == 0) ? (getParameterNoCheck(m_id_Camouflage)->getVal()) :
+                                    (getParameterNoCheck(m_id_Camouflage)->getVal() / 2); 
 }
 
 void CBasicEntity::setCamouflageToNominalRatio(double ratio)
@@ -3611,7 +3609,6 @@ string CBasicEntity::getReproStrName(ReproType_e type)
 string CBasicEntity::getRelativePosStrName(size_t index)
 {
   string directionStr;
-
   switch (index)
   {
   case 0:
@@ -3642,14 +3639,12 @@ string CBasicEntity::getRelativePosStrName(size_t index)
     directionStr = "bad index";
     break;
   }
-
   return directionStr;
 }
 
 string CBasicEntity::getAbsolutePosStrName(size_t index)
 {
   string directionStr;
-
   switch (index)
   {
   case 0:
@@ -3680,7 +3675,6 @@ string CBasicEntity::getAbsolutePosStrName(size_t index)
     directionStr = "bad index";
     break;
   }
-
   return directionStr;
 }
 

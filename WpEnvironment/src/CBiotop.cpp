@@ -1672,17 +1672,18 @@ void CBiotop::nextHour(void)
 
 void CBiotop::nextDay(void)
 {
+  size_t nbLivingAnimals = getNbOfLivingAnimals();
   CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - nextDay CPU total=%f animals=%f custom1=%f custom2=%f for %d animals\n",
+  CYBIOCORE_LOG("BIOTOP - nextDay CPU total=%f animals=%f custom1=%f custom2=%f for %d living animals\n",
     m_CpuMonitoring[BIOTOP_CPUMARKER_TOTAL].cpuTimeCumulated,
     m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated,
     m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM1].cpuTimeCumulated,
     m_CpuMonitoring[BIOTOP_CPUMARKER_CUSTOM2].cpuTimeCumulated,
-    getNbOfAnimals());
-  if (getNbOfAnimals() > 0)
+    nbLivingAnimals);
+  if (nbLivingAnimals > 0)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per living animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / getNbOfLivingAnimals());
+    CYBIOCORE_LOG("BIOTOP - nextDay CPU: average CPU per living animal=%f\n", m_CpuMonitoring[BIOTOP_CPUMARKER_ANIMALS].cpuTimeCumulated / nbLivingAnimals);
   }
 
   m_BioTime.hours = 0;

@@ -24,10 +24,7 @@ void TestsCybioCore::testBiotopCreation()
   {
     printf("testBiotopCreation %u layers\n", nbLayer);
     CBiotop* pBiotop = new CBiotop(100, 100, nbLayer);
-    pBiotop->initGridEntity();
-    pBiotop->initGridDefaultLayerType();
-    pBiotop->initGridDefaultAltitude();
-    pBiotop->setDefaultEntitiesForTest();
+    pBiotop->setDefaultMapAndEntities();
 
     EXPECT_EQ(pBiotop->getDimension().x, 100);
     EXPECT_EQ(pBiotop->getDimension().y, 100);
@@ -44,10 +41,7 @@ void TestsCybioCore::testAnimalBehavior()
 {
   printf("testAnimalBehavior\n");
   CBiotop* pBiotop = new CBiotop(400, 400, 3);
-  pBiotop->initGridEntity();
-  pBiotop->initGridDefaultLayerType();
-  pBiotop->initGridDefaultAltitude();
-  pBiotop->setDefaultEntitiesForTest();
+  pBiotop->setDefaultMapAndEntities();
 
   CAnimal* pGazelle = (CAnimal*)pBiotop->createAndAddEntity(pathForEntityFiles + "gazelleTest.xml", pathForEntityFiles, {110, 100});
   printf("Animal %s created\n", pGazelle->getLabel().c_str());
@@ -111,10 +105,7 @@ void TestsCybioCore::testAnimalSensors()
 {
   printf("testAnimalSensors\n");
   CBiotop* pBiotop = new CBiotop(200, 200, 3);
-  pBiotop->initGridEntity();
-  pBiotop->initGridDefaultLayerType();
-  pBiotop->initGridDefaultAltitude();
-  pBiotop->setDefaultEntitiesForTest();
+  pBiotop->setDefaultMapAndEntities();
 
   CAnimal* pGazelle = (CAnimal*)pBiotop->createAndAddEntity(pathForEntityFiles + "gazelleTest.xml", pathForEntityFiles, { 110, 100 });
   printf("Animal %s created\n", pGazelle->getLabel().c_str());
