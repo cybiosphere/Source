@@ -536,6 +536,8 @@ bool CMapConfigView::BuildPopulationMap(int index)
   int populationSize = 0;
   DWORD r, g, b;
   size_t day = m_SliderM1.GetPos();
+  // Estimate the global population size for the specie at current time
+  size_t globalPopulation = m_pBiotop->getNbOfSpecieEntities(m_pBiotop->getGeoMapSpecieByIndex(index)->GetSpecieName());
 
   // Trace map
   for (i = 0; i < dim.x; i++)
@@ -549,17 +551,23 @@ bool CMapConfigView::BuildPopulationMap(int index)
 
       if (populationSize > 0)
       {
-        if (populationSize < 20)
+        if (globalPopulation < 50)
         {
-          r = 230 - populationSize * 10;
-          g = 250;
-          b = 230 - populationSize * 10;
+          r = 250;
+          g = 180 - min(populationSize, 10) * 18;
+          b = 180 - min(populationSize, 10) * 18;
+        }
+        else if (globalPopulation < 500)
+        {
+          r = 240;
+          g = 240;
+          b = 180 - min(populationSize, 20) * 9;
         }
         else
         {
-          r = 180 - populationSize / 4;
-          g = 230;
-          b = 180 - populationSize / 4;
+          r = 180 - min(populationSize, 180);
+          g = 240;
+          b = 180 - min(populationSize, 180);
         }
         tBioSquare[curCoord.x][curCoord.y].customColor = (b << 0x10) + (g << 0x08) + r;
       }
