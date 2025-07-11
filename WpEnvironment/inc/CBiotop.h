@@ -328,6 +328,7 @@ public:
 
   void deleteAllEntities(void);
   void deleteAllMeasures(void);
+  void deleteAllPopulationMaps(void);
 
   size_t getNbOfEntities(void);
   size_t getNbOfAnimals(void);

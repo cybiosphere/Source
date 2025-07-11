@@ -125,6 +125,7 @@ void CBiotop::clearAllElements(void)
 {
   deleteAllEntities();
   deleteAllMeasures();
+  deleteAllPopulationMaps();
   deleteGrid();
   clearEventMaps();
 }
@@ -585,7 +586,10 @@ void CBiotop::deleteAllMeasures()
       delete (m_tMeasures[i]);
   }
   m_tMeasures.clear();
+}
 
+void CBiotop::deleteAllPopulationMaps(void)
+{
   for (size_t i = 0; i < m_tGeoMapSpecies.size(); i++)
   {
     if (m_tGeoMapSpecies[i] != NULL)

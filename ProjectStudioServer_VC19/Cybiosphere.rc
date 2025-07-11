@@ -275,7 +275,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About Cybiosphere"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    LTEXT           "Cybiosphere Version 1.16",IDC_STATIC,229,44,45,21,SS_NOPREFIX
+    LTEXT           "Cybiosphere Version 1.17",IDC_STATIC,229,44,45,21,SS_NOPREFIX
     LTEXT           "April 2024",IDC_STATIC,231,74,43,28
     DEFPUSHBUTTON   "OK",IDOK,224,141,50,14,WS_GROUP
     CONTROL         IDB_LOGO,IDC_STATIC,"Static",SS_BITMAP,7,7,213,148
@@ -609,7 +609,7 @@ BEGIN
         MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN_BIOTOP
         MENUITEM "&Save...\tCtrl+S",            ID_FILE_SAVE_BIOTOP
         MENUITEM "&Save as...\t",               ID_FILE_SAVE_AS_BIOTOP
-        MENUITEM "&Run learning scenario...\t", ID_FILE_RUN_SCENARIO_BIOTOP
+        MENUITEM "&Run scenario...\t",          ID_FILE_RUN_SCENARIO_BIOTOP
         MENUITEM SEPARATOR
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT

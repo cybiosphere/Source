@@ -19,7 +19,8 @@ LGPL like the rest of the OGRE engine.
 */
 
 #include "CybiOgre3D.h"
-
+#include "CScenarioPlayer.h"
+#include "StartupHelpers.h"
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -405,29 +406,10 @@ int getStringSectionFromFileOgre(
 
 CybiOgre3DApp::CybiOgre3DApp()
 {
-  string resuStr = "";
   string fileIni = ".\\Cybiosphere.ini";
-  BOOL resu = getStringSectionFromFileOgre("CYBIOSPHERE", "Biotop", "", resuStr, 512, fileIni);
-
-  if (resuStr != "")
-  {
-    string resuDataPath = "";
-    m_pBiotop = new CBiotop(0,0,0);
-    BOOL resu = getStringSectionFromFileOgre("CYBIOSPHERE", "DataPath", "", resuDataPath, 512, fileIni);
-    if (resuDataPath != "")
-      m_pBiotop->loadFromXmlFile(resuStr, resuDataPath);
-    else
-      m_pBiotop->loadFromXmlFile(resuStr, ".\\");
-  }
-  else
-  {
-    m_pBiotop = new CBiotop(80,40,3);
-    m_pBiotop->initGridDefaultLayerType();
-    m_pBiotop->initGridDefaultAltitude();
-    m_pBiotop->initGridEntity();
-    m_pBiotop->setDefaultEntitiesForTest();
-  }
-
+  CScenarioPlayer* pScenarioPlayer;
+  createBiotopAndScenarioFromIniFile(fileIni, &m_pBiotop, &pScenarioPlayer);
+  
   CBasicEntity* pPlayer = m_pBiotop->getEntityByName(std::string{ "player" });
   OFFSET_COORD_X = 5 * m_pBiotop->getDimension().x;
   OFFSET_COORD_Y = 5 * m_pBiotop->getDimension().y;

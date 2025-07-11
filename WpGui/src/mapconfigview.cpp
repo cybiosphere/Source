@@ -905,6 +905,7 @@ void CMapConfigView::OnButtonLoadSpecieMap()
   long nResp = fileDlg.DoModal();
   if (nResp == IDOK)
   {
+    m_pBiotop->deleteAllPopulationMaps();
     fileName = fileDlg.GetPathName();
     size_t nbSpecieMap = CGeoMapPopulation::getNumberSpeciesStoredInFile(fileName.GetBuffer(0));
     for (int indexRecord = 0; indexRecord < nbSpecieMap; indexRecord++)
