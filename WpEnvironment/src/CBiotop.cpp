@@ -963,14 +963,10 @@ void CBiotop::putEntitiesInListAllLayersOptim(BiotopFoundIds_t& foundIds, size_t
 
 void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  size_t startCoordX = startCoord.x;
-  size_t endCoordX = startCoordX + lenght;
   if (startCoord.y < m_Dimension.y)
   {
-    if (startCoordX >= m_Dimension.x)
-    {
-      startCoordX = 0;
-    }
+    size_t startCoordX = (startCoord.x < m_Dimension.x) ? startCoord.x : 0;
+    size_t endCoordX = startCoord.x + lenght;
     if (endCoordX > m_Dimension.x)
     {
       endCoordX = m_Dimension.x;
@@ -984,14 +980,10 @@ void CBiotop::findEntitiesInRow(BiotopFoundIds_t& foundIds, size_t distanceToSet
 
 void CBiotop::findEntitiesInColumn(BiotopFoundIds_t& foundIds, size_t distanceToSet, Point_t startCoord, size_t lenght, bool includeWater)
 {
-  size_t startCoordY = startCoord.y;
-  size_t endCoordY = startCoordY + lenght;
   if (startCoord.x < m_Dimension.x)
   {
-    if (startCoordY >= m_Dimension.y)
-    {
-      startCoordY = 0;
-    }
+    size_t startCoordY = (startCoord.y < m_Dimension.y) ? startCoord.y : 0;
+    size_t endCoordY = startCoord.y + lenght;
     if (endCoordY > m_Dimension.y)
     {
       endCoordY = m_Dimension.y;
@@ -2886,6 +2878,7 @@ bool CBiotop::addEntitySpawner(size_t index, string entityFileName, string pathN
     CYBIOCORE_LOG("BIOTOP - Add entity spawner : %s index%d \n", entityFileName.c_str(), index);
     return true;
   }
+  CYBIOCORE_LOG_TIME(m_BioTime);
   CYBIOCORE_LOG("BIOTOP - FAILURE entity spawner : %s index%d \n", entityFileName.c_str(), index);
   return false;
 }

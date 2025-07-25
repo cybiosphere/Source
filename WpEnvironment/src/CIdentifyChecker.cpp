@@ -89,10 +89,12 @@ bool CIdentifyChecker::ReadCheckerFile(string fileName, string pathName)
 
   if (resu)
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - New check loaded: %s\n", fileName.c_str());
   }
   else
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - ERROR: Fail loading new check file: %s\n", fileName.c_str());
   }
 
@@ -129,6 +131,7 @@ bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector
       {
         found = true;
         m_resultInfo += FormatString("CHECK - Identity %s level %d: OK\n", identityStr.c_str(), level);
+        CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
         CYBIOCORE_LOG("CHECK - Identity %s level %d: OK\n", identityStr.c_str(), level);
         m_successScore++;
       }
@@ -136,6 +139,7 @@ bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector
       {
         found = true;
         m_resultInfo += FormatString("CHECK - Identity %s level %d: WARN (expected level = %d)\n", identityStr.c_str(), level, pairChk.second);
+        CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
         CYBIOCORE_LOG("CHECK - Identity %s level %d: WARN (expected level = %d)\n", identityStr.c_str(), level, pairChk.second);
       }
     }
@@ -144,6 +148,7 @@ bool CIdentifyChecker::checkIdentify (int level, string identityStr, std::vector
   if (!found)
   {
     m_resultInfo += FormatString("CHECK - Identity %s level %d: ERR\n", identityStr.c_str(), level);
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - Identity %s level %d: ERR\n", identityStr.c_str(), level);
   }
 
@@ -193,6 +198,7 @@ bool CIdentifyChecker::NextCheck()
   TiXmlDocument *pXmlDoc = new TiXmlDocument(fileNameWithPath);
   if (!pXmlDoc->LoadFile())
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
     delete pXmlDoc;
     return true;
@@ -202,6 +208,7 @@ bool CIdentifyChecker::NextCheck()
 
   if (pTargetEntity == NULL)
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - Error: cmd: %s \n", curLine.c_str());
     return true;
   }
@@ -225,6 +232,7 @@ bool CIdentifyChecker::NextCheck()
   m_pEntity->getBrain()->GetVectorIdentifyThresholds(highThreshold, midThreshold, lowThreshold);
 
   m_resultInfo += FormatString("CHECK - entity=%s\n", pTargetEntity->getLabel().c_str());
+  CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
   CYBIOCORE_LOG("CHECK - entity=%s\n", pTargetEntity->getLabel().c_str());
 
   double curVal = 0;

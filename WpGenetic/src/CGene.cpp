@@ -995,7 +995,8 @@ bool CGene::tryMutation()
         size_t dataByteId = getRandInt(m_RawData.size()-1);
         int dataBitId = getRandInt(7);
         m_RawData[dataByteId] ^= (1<<dataBitId);
-        CYBIOCORE_LOG("                 GENETIC- Mutation type Random bit on gene: %s\n", getLabel().c_str());
+        CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+        CYBIOCORE_LOG("GENETIC- Mutation type Random bit on gene: %s\n", getLabel().c_str());
         resu = true;
         break;
       }
@@ -1007,7 +1008,8 @@ bool CGene::tryMutation()
         if ( ((addVal<0)&&(m_RawData[dataByteId]>0)) || ((addVal>0)&&(m_RawData[dataByteId]<0xFF)) )
         {
           m_RawData[dataByteId] += addVal;
-          CYBIOCORE_LOG("                 GENETIC- Mutation type Increment byte +1 or -1 on gene: %s\n", getLabel().c_str());
+          CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+          CYBIOCORE_LOG("GENETIC- Mutation type Increment byte +1 or -1 on gene: %s\n", getLabel().c_str());
           resu = true;
         }
         else
@@ -1025,7 +1027,8 @@ bool CGene::tryMutation()
         if ( ( (addVal<0)&&(pWordData[dataByteId]>-addVal) ) || ( (addVal>0)&&(pWordData[dataByteId]<(0xFFFF-addVal)) ) )
         {
           pWordData[dataByteId] += addVal;
-          CYBIOCORE_LOG("                 GENETIC- Mutation type Increment 2bytes +1 or -1 on gene: %s\n", getLabel().c_str());
+          CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+          CYBIOCORE_LOG("GENETIC- Mutation type Increment 2bytes +1 or -1 on gene: %s\n", getLabel().c_str());
           resu = true;
         }
         else

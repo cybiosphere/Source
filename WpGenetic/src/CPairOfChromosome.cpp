@@ -64,7 +64,8 @@ CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosom
     string crossedStr;
     m_pMaterChromosome = new CChromosome(m_IdNumber);
     getCrossedChromosomeStr(mother, crossedStr);
-    CYBIOCORE_LOG("                 GENETIC- Crossover on mother pair %u\n", m_IdNumber);
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- Crossover on mother pair %u\n", m_IdNumber);
     m_pMaterChromosome->buildGenesFromStringData(crossedStr);
   }
   else if (testChance(50.0))
@@ -82,7 +83,8 @@ CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosom
     string crossedStr;
     m_pPaterChromosome = new CChromosome(m_IdNumber);
     getCrossedChromosomeStr(father, crossedStr);
-    CYBIOCORE_LOG("                 GENETIC- Crossover on father pair %u\n", m_IdNumber);
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- Crossover on father pair %u\n", m_IdNumber);
     m_pPaterChromosome->buildGenesFromStringData(crossedStr);
   }
   else if (testChance(50.0))

@@ -2198,6 +2198,7 @@ bool CBasicEntity::jumpToGlobalGridCoord(const Point_t& newGlobalGridCoord, bool
 {
   if (m_pBiotop == NULL)
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("ERROR jumpToGlobalGridCoord entity not ATTACHED");
     return jumpToGridCoord(newGlobalGridCoord, chooseLayer, newLayer);
   }
@@ -2244,6 +2245,7 @@ bool CBasicEntity::jumpToGlobalStepCoord(const Point_t& newGlobalStepCoord, bool
 {
   if (m_pBiotop == NULL)
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("ERROR jumpToGlobalStepCoord entity not ATTACHED");
     return jumpToStepCoord(newGlobalStepCoord, chooseLayer, newLayer, addMoveEvent);
   }
@@ -3054,6 +3056,7 @@ Point_t CBasicEntity::getGlobalGridCoord()
   }
   else
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("ERROR getGlobalGridCoord entity not ATTACHED");
     return m_GridCoord;
   }

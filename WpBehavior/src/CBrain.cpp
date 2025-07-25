@@ -1208,6 +1208,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
   }
   else
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("BRAIN - ERROR ComputeAndGetDecision : Choice error for entity name %s \n", this->GetEntity()->getLabel().c_str());
   }
   return resuIndex;
@@ -1672,9 +1673,9 @@ bool CBrain::GetVectorIdentifyThresholds (neuroneValType &highThreshold, neurone
 
   // Process threshold value for selection 
   // (Allows to take a decison not the best choice, but among the good choices
-  lowThreshold  = avarageVal + (maxVal-avarageVal) * 50.0 / 100.0;
-  midThreshold  = avarageVal + (maxVal-avarageVal) * 75.0 / 100.0;
-  highThreshold = avarageVal + (maxVal-avarageVal) * 95.0 / 100.0;
+  lowThreshold = avarageVal + (maxVal - avarageVal) * 50.0 / 100.0;
+  midThreshold = avarageVal + (maxVal - avarageVal) * 75.0 / 100.0;
+  highThreshold = avarageVal + (maxVal - avarageVal) * 95.0 / 100.0;
 
   return true;
 }
@@ -1690,11 +1691,12 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
     m_vCurrentIdentificationChoice(i, 0) = 0;
   }
 
-  // If error, just raise NEUTRAL
+  // If error, return empty vector
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("BRAIN - ERROR ComputeAndGetIdentification : pEntity is NULL or ToBeRemoved\n");
-    m_vCurrentIdentificationChoice(IDENTIFICATION_NEUTRAL, 0) = MAX_SENSOR_VAL;
+    return &m_vCurrentIdentificationChoice;
   }
 
   UpdateIdentifyInputVector(pEntity, useOdors);
@@ -1817,10 +1819,9 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 
   // Set as non static animals when dead or not sleeping nor hiding
   m_vCurrentIdentifyInput(offset, 0) = 0;
-  DWORD reactionUid = 0;
   if ((pEntity->getBrain() != NULL) && pEntity->isAlive())
   {
-    reactionUid = pEntity->getBrain()->GetReactionByIndex(pEntity->getBrain()->GetCurrentReactionIndex())->GetUniqueId();
+    DWORD reactionUid = pEntity->getBrain()->GetReactionByIndex(pEntity->getBrain()->GetCurrentReactionIndex())->GetUniqueId();
     if (((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_SLEEP) && ((reactionUid & UID_BASE_MASK) != UID_BASE_REACT_HIDE))
     {
       m_vCurrentIdentifyInput(offset, 0) = MAX_SENSOR_VAL;
@@ -1879,7 +1880,7 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
 
   // Prepare input
   UpdateIdentifyInputVector(pEntity, true);
-  // Prepare outpu
+  // Prepare output
   for (size_t i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
   { 
     m_vCurrentIdentificationChoice(i,0) = 0;

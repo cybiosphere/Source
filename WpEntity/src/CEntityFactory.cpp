@@ -96,6 +96,7 @@ CBasicEntity* CEntityFactory::createEntity(string fileNameWithPath)
   TiXmlDocument* pXmlDoc = new TiXmlDocument(fileNameWithPath);
   if (!pXmlDoc->LoadFile())
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("CHECK - Error reading entity file: %s\n", fileNameWithPath.c_str());
     delete pXmlDoc;
     return NULL;

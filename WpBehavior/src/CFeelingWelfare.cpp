@@ -38,6 +38,7 @@ distribution.
 //===========================================================================
  
 #include "CFeelingWelfare.h"
+#include "CBiotop.h"
 
 //===========================================================================
 // Constructors / Destructors 
@@ -134,6 +135,7 @@ bool CFeelingWelfare::AddSensitivity(CSensor* pSens, size_t tableMaskSize, doubl
 {
   if (pSens->GetSubCaptorNumber() != tableMaskSize)
   {
+    CYBIOCORE_LOG_TIME(m_pEntity->getBiotop()->getBiotopTime());
     CYBIOCORE_LOG("ANIMAL - ERROR : %s incorect sensitivity size %d for sensor %s\n", m_pEntity->getLabel().c_str(), tableMaskSize, pSens->GetLabel().c_str());
     return false;
   }
