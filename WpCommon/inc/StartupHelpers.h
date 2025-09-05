@@ -72,12 +72,25 @@ inline string getIpPortStrFromIniFile(const string& fileIni)
   return serverPortStr;
 }
 
+inline size_t getNumberompThreadsFromIniFile(const string& fileIni)
+{
+  char resuBuffer[512];
+  getStringSectionFromFile("CYBIOSPHERE", "NumberOmpThreads", "4", resuBuffer, 512, fileIni);
+  size_t numThreads = atoi(resuBuffer);
+  if (numThreads > MAX_NUMBER_OMP_THREADS)
+    numThreads = MAX_NUMBER_OMP_THREADS;
+  else if (numThreads == 0)
+    numThreads = 1;
+  return numThreads;
+}
+
 inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** pNewBiotop, CScenarioPlayer** pNewScenarioPlayer)
 {
   CBiotop* pBiotop{ nullptr };
   CScenarioPlayer* pScenarioPlayer{ nullptr };
   char resuBuffer[512];
 
+  size_t nbOmpThreads = getNumberompThreadsFromIniFile(fileIni);
   getStringSectionFromFile("CYBIOSPHERE", "Biotop", "", resuBuffer, 512, fileIni);
   string biotopName = resuBuffer;
   clearWindowsEolIfNeeded(biotopName);
@@ -85,7 +98,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   if (biotopName != "")
   {
     string resuDataPath;
-    pBiotop = new CBiotop(0, 0, 0);
+    pBiotop = new CBiotop(0, 0, 0, nbOmpThreads);
     getStringSectionFromFile("CYBIOSPHERE", "DataPath", "", resuBuffer, 512, fileIni);
     resuDataPath = resuBuffer;
     clearWindowsEolIfNeeded(resuDataPath);
@@ -96,7 +109,7 @@ inline void createBiotopAndScenarioFromIniFile(const string& fileIni, CBiotop** 
   }
   else
   {
-    pBiotop = new CBiotop(100, 100, 3);
+    pBiotop = new CBiotop(100, 100, 3, nbOmpThreads);
     pBiotop->setDefaultMapAndEntities();
   }
 

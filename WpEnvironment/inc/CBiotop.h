@@ -68,7 +68,8 @@ distribution.
 class CBasicEntity;
 class CGeoMapPopulation;
 
-#define MAX_NUMBER_OMP_THREADS 4
+#define DEFAULT_NUMBER_OMP_THREADS 4
+#define MAX_NUMBER_OMP_THREADS 32
 
 #define MAX_NUMBER_ANIMALS    2000
 #define MAX_NUMBER_NON_ANIMAL_ENTITIES 200000
@@ -236,6 +237,7 @@ class DLL_CYBIOCORE_API CBiotop
 //---------------------------------------------------------------------------
 private:
   string         m_Label;
+  size_t         m_NbOmpThreads;
   Point_t        m_Dimension;
   Point_t        m_GlobalGridDimension;
   Point_t        m_GlobalGridCoordOffset;
@@ -253,7 +255,7 @@ private:
   BiotopCube_t***  m_tBioGrid;    // Contain the info for all volumes in biotop
   BiotopSquare_t** m_tBioSquare;  // Contain the info for all surfaces in biotop
 
-  std::array<BiotopFoundIds_t, MAX_NUMBER_OMP_THREADS>  m_BiotopFoundIdsArray;  // structure to store temporarily found entities 
+  std::vector<BiotopFoundIds_t>  m_BiotopFoundIdsArray;  // structure to store temporarily found entities 
 
   //        3   2   1    
   //          \ | /          
@@ -295,7 +297,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName = "CybioCore.log") ;
+  CBiotop(size_t dimX, size_t dimY, size_t dimZ, size_t nbOmpThreads = DEFAULT_NUMBER_OMP_THREADS, string logFileName = "CybioCore.log") ;
   virtual ~CBiotop();
 
   CBiotop* extractNewBiotopFromArea(const Point_t& startCoord, size_t dimX, size_t dimY);

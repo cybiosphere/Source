@@ -51,7 +51,7 @@ Client::Client(std::string serverAddr, std::string portId, std::string loginName
 
 	quit = false;
 	logged_in = false;
-  m_pBiotop = new CBiotop(200, 200, 0, "CybioCoreClient.log"); // Default empty biotop
+  m_pBiotop = new CBiotop(200, 200, 0, DEFAULT_NUMBER_OMP_THREADS, "CybioCoreClient.log"); // Default empty biotop
   m_bBiotopConfigComplete = false;
   m_bEventNextSecondStart = false;
   m_bEventNextSecondEnd = false;

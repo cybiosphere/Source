@@ -43,7 +43,7 @@ RelativePos_t vectorDirection[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}
 //===========================================================================
 // Constructors / Destructors
 //===========================================================================
-CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName)
+CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, size_t nbOmpThreads, string logFileName)
 {
   // Initialisation
   m_Label = "Default biotop";
@@ -90,6 +90,9 @@ CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName)
   m_IdLastEntity = ENTITY_ID_FIRST_USER_ENTITY;
   m_tMeasures.resize(0);
   m_tGeoMapSpecies.resize(0);
+
+  m_NbOmpThreads = nbOmpThreads;
+  m_BiotopFoundIdsArray.resize(m_NbOmpThreads);
   for (size_t i = 0; i < m_BiotopFoundIdsArray.size(); i++)
   {
     m_BiotopFoundIdsArray[i].nbFoundIds = 0;
@@ -108,7 +111,7 @@ CBiotop::CBiotop(size_t dimX, size_t dimY, size_t dimZ, string logFileName)
   m_bColorizeSearch = false;
 
   CYBIOCORE_LOG_INIT(logFileName.c_str());
-  CYBIOCORE_LOG("BIOTOP - Biotop created\n");
+  CYBIOCORE_LOG("BIOTOP - Biotop created. Number OMP threads is %u\n", m_NbOmpThreads);
 }
 
 CBiotop::~CBiotop()
@@ -161,7 +164,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(const Point_t& startCoord, size_t dim
     return NULL;
   }
 
-  CBiotop* pExctactedBiotop = new CBiotop(dimX, dimY, m_nbLayer, "CybioCoreExctracted.log");
+  CBiotop* pExctactedBiotop = new CBiotop(dimX, dimY, m_nbLayer, m_NbOmpThreads, "CybioCoreExctracted.log");
 
   if (pExctactedBiotop == NULL)
     return NULL;
@@ -1726,7 +1729,7 @@ void CBiotop::nextSecondForAllAnimals(void)
 {
   // Loop on all animals for basic action
   logCpuMarkerStart(BIOTOP_CPUMARKER_ANIMALS);
-  if (getNbOfAnimals() < 4)
+  if (getNbOfAnimals() < m_NbOmpThreads)
   {
     nextSecondForAllAnimalsSingleProcess();
   }
@@ -1755,7 +1758,7 @@ void CBiotop::nextSecondForAllAnimalsMultiProcess(void)
 {
   CBasicEntity* pEntity = NULL;
   int i;
-#pragma omp parallel for ordered private(i) num_threads(MAX_NUMBER_OMP_THREADS)
+#pragma omp parallel for ordered private(i) num_threads(m_NbOmpThreads)
   for (i = 0; i < getNbOfAnimals(); i++)
   {
     pEntity = m_tEntity[i];
