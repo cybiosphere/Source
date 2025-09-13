@@ -288,6 +288,8 @@
 #define ID_APP_MONITOR_BIOMASS          32813
 #define ID_BUTTON32814                  32814
 #define ID_APP_DISPLAY_MAPEDITOR        32814
+#define ID_EDIT_INOCULATEAPARASITE      32816
+#define ID_EDIT_INOCULATEAPARASITE32817 32817
 
 // Next default values for new objects
 // 
@@ -295,7 +297,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        214
-#define _APS_NEXT_COMMAND_VALUE         32816
+#define _APS_NEXT_COMMAND_VALUE         32818
 #define _APS_NEXT_CONTROL_VALUE         1151
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

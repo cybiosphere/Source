@@ -609,6 +609,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
     }
   case STAGE_6:
     {
+      clearParasite();
       //setToxicity(10);
       setOdor(ODOR_NAUSEOUS);
       setPheromone(PHEROMONE_NONE);

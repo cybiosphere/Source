@@ -384,6 +384,9 @@
     <ClInclude Include="..\WpCommon\inc\StartupHelpers.h">
       <Filter>WpCommon\IncCommon</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CVirus.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\WpBehavior\src\CBrain.cpp">
@@ -652,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="..\WpGenetic\src\CGeneticParam.cpp">
       <Filter>WpGenetic\SrcGenetic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WpEntity\src\CVirus.cpp">
+      <Filter>WpEntity\SrcEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

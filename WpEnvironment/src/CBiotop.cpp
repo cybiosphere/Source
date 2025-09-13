@@ -3050,19 +3050,19 @@ double CBiotop::getTemperature(const Point_t& coord, size_t layer)
   double computedTemperature = m_pTemperature->getVal();
 
 #ifdef NON_OPTIMIZED_CPU_MODE
-  ClassType_e entityClass{CLASS_UNSET};
+  CBasicEntity pEntity{NULL};
   const BiotopFoundIds_t& biotopFoundIds = findEntities(coord, 1, true);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
   // Give bonus malus on temperature according to entities around
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
-    entityClass = tFoundIds[ind].pEntity->getClass();
-    if (entityClass >= CLASS_ANIMAL_FIRST)
+    pEntity = tFoundIds[ind].pEntity;
+    if (pEntity->isAnimal())
       computedTemperature += 2.0;
-    else if (entityClass >= CLASS_VEGETAL_FIRST)
+    else if (pEntity->isVegetal())
       computedTemperature -= 1.0;
-    else if (entityClass == CLASS_WATER)
+    else if (pEntity->isDrinkable())
       computedTemperature -= 2.0;
   }
 #endif

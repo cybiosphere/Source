@@ -210,6 +210,11 @@ private:
 protected:  
   std::vector<CBasicEntity*> m_tGestationChilds;
 
+  //---------------------------------------------------------------------------
+  // Parasite
+  //---------------------------------------------------------------------------
+  CBasicEntity* m_pParasite;
+
 //===========================================================================
 // Methods 
 //===========================================================================
@@ -492,6 +497,12 @@ public:
   
   virtual int    getCurrentSpeed();
   int            getRelativeSpeed(CBasicEntity* pReference);
+
+  bool setParasite(CBasicEntity* pParasite);
+  bool setParasiteFromXmlFile(string fileNameWithPath);
+  bool clearParasite(void);
+  CBasicEntity* getParasite(void);
+  bool tryToHealParasite(void);
 
   virtual bool isAnimal();
   virtual bool isVegetal();

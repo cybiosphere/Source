@@ -440,7 +440,7 @@ void CEntityView::OnPaint()
     if (pPhysWelfare != NULL)
     {
       coord.x += 18;
-      if (pPhysWelfare->GetInjuryMalus()>0.2)
+      if (pPhysWelfare->GetInjuryMalus()>0.03)
         m_pIconHealth->Draw(pDc,1,coord,ILD_NORMAL); // Draw icon
       else if (pPhysWelfare->GetInjuryMalus()>0)
         m_pIconHealth->Draw(pDc,0,coord,ILD_NORMAL); // Draw icon
@@ -448,7 +448,7 @@ void CEntityView::OnPaint()
         coord.x -= 18;
 
       coord.x += 18;
-      if (pPhysWelfare->GetDiseaseMalus()>0.2)
+      if (pPhysWelfare->GetDiseaseMalus()>0.03)
         m_pIconHealth->Draw(pDc,3,coord,ILD_NORMAL); // Draw icon
       else if (pPhysWelfare->GetDiseaseMalus()>0)
         m_pIconHealth->Draw(pDc,2,coord,ILD_NORMAL); // Draw icon

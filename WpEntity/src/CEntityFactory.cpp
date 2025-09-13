@@ -64,7 +64,6 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
     // Animal classs
   case CLASS_MAMMAL:
     pNewEntity = new CAnimMammal(name, coord, layer, pGenome);
-
     break;
 
   case CLASS_REPTILE:
@@ -75,6 +74,10 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
 
   case CLASS_WATER:
     pNewEntity = new CWater(name, coord, pGenome);
+    break;
+
+  case CLASS_VIRUS:
+    pNewEntity = new CVirus(name, pGenome);
     break;
 
   default:

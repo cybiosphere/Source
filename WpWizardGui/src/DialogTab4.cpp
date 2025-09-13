@@ -154,7 +154,11 @@ BOOL CDialogTab4::OnInitDialog()
 
 void CDialogTab4::OnButtonCreateFemale() 
 {
-  CreateGenome(SEX_FEMALE);
+  CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
+  if ((pView->GetClassType() < CLASS_VEGETAL_FIRST) || (pView->GetClassType() > CLASS_ANIMAL_LAST))
+    CreateGenome(SEX_NONE);
+  else
+    CreateGenome(SEX_FEMALE);
 }
 
 void CDialogTab4::OnButtonCreateMale() 
@@ -314,7 +318,7 @@ void CDialogTab4::OnShowWindow(BOOL bShow, UINT nStatus)
 	CDialog::OnShowWindow(bShow, nStatus);
 	
 	CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
-    if (pView->GetClassType() < CLASS_VEGETAL_FIRST)
+    if ((pView->GetClassType() < CLASS_VEGETAL_FIRST) || (pView->GetClassType() > CLASS_ANIMAL_LAST))
     {
         m_ButtonMale.ShowWindow(SW_HIDE);
         m_ButtonFemale.SetWindowText("Create genome");
@@ -342,8 +346,14 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
   m_pGenome = new CGenome( pView->GetClassType(), 
                            pView->GetTabCaractFemale()->m_EditBoxSpecieName.GetBuffer(0));
 
-  for (int i=0; i<m_nbChromosomes+1; i++)
+  for (int i=0; i<m_nbChromosomes; i++)
   {
+    m_pGenome->addPair();
+  }
+
+  if (m_pGenome->isAnimalGenome())
+  {
+    // Add additional chromosome for brain
     m_pGenome->addPair();
   }
 
@@ -353,13 +363,10 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
     UpdateData(false);
   }
 
-  if (pView->GetClassType() > CLASS_MINERAL_LAST)
-  {
-    if (sex == SEX_FEMALE)
-      m_pGenome->setSexFemale(m_SexualChrom_Idx, pView->IsSexualDimorphism());
-    else if (sex == SEX_MALE)
-      m_pGenome->setSexMale(m_SexualChrom_Idx, pView->IsSexualDimorphism());
-  }
+  if (sex == SEX_FEMALE)
+    m_pGenome->setSexFemale(m_SexualChrom_Idx, pView->IsSexualDimorphism());
+  else if (sex == SEX_MALE)
+    m_pGenome->setSexMale(m_SexualChrom_Idx, pView->IsSexualDimorphism());
 
   /* Update entity prey and predator in Tab behavior */
   pView->GetTabBehavior()->LoadSensorsAndPredatorsEntities();
@@ -377,7 +384,7 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
   AddGenesForPhysic();
   m_CurChrom_Idx = (m_CurChrom_Idx + 1) % m_nbChromosomes;
 
-  if (pView->GetpEntity()->getClass() >= CLASS_ANIMAL_FIRST)
+  if (pView->GetpEntity()->isAnimal())
   {
     AddGenesForSensors();
     m_CurChrom_Idx = (m_CurChrom_Idx + 1) % m_nbChromosomes;
@@ -401,7 +408,7 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
   m_pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
 
   // Set instinct in brain but not yet in genome (TBC)
-  if (pView->GetpEntity()->getClass() >= CLASS_ANIMAL_FIRST)
+  if (pView->GetpEntity()->isAnimal())
   {  
     PrepareBrainInstinct((CAnimal*)m_pEntity);
   }
@@ -631,6 +638,10 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
     }
   }
 
+  // Skip other setting for parasites
+  if (m_pGenome->isParasiteGenome())
+    return;
+
   // Weight
   if (sexualDimorph && (pTabFemale->m_Weight != pTabMale->m_Weight))
     pCurPaire = m_pGenome->getPair(m_SexualChrom_Idx);
@@ -645,7 +656,7 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
   pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
-  if (pView->GetpEntity()->getClass() > CLASS_VEGETAL_LAST)
+  if (m_pGenome->isAnimalGenome())
   {
     geneIndex = pCurPaire->getMaterChromosome()->addGene();
     pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
@@ -663,7 +674,7 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
   pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
-  if (pView->GetpEntity()->getClass() > CLASS_VEGETAL_LAST)
+  if (m_pGenome->isAnimalGenome())
   {
     geneIndex = pCurPaire->getPaterChromosome()->addGene();
     pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
@@ -1363,7 +1374,7 @@ void CDialogTab4::PrepareBrainInstinct(CAnimal* pAnimal)
   {
     int deltaLayer = pPreyList[i]->getLayer() - pAnimal->getLayer();
 
-    if (pPreyList[i]->getClass() < CLASS_ANIMAL_FIRST)
+    if (pPreyList[i]->isVegetal())
     {
       attractLevel = 20 + getRandInt(m_Variation)/10 - numPrey - i;
       if (pPreyList[i]->getOdor() >= ODOR_FIRST_TYPE)
@@ -1562,7 +1573,7 @@ void CDialogTab4::OnButtonSaveEntity()
 
     learningFolderName = "..\\..\\DataTraining_" + specieName;
 
-    if (m_pEntity->getClass() >= CLASS_ANIMAL_FIRST)
+    if (m_pEntity->isAnimal())
     {
       _mkdir(learningFolderName.GetBuffer(0));
     }
@@ -1574,7 +1585,7 @@ void CDialogTab4::OnButtonSaveEntity()
       ((CAnimal*)m_pEntity)->setBrainInstinctInGenes();
     }
 
-    if ((m_pEntity->getClass() < CLASS_ANIMAL_FIRST) || (!m_IsAutoLearning))
+    if (!m_pEntity->isAnimal() || !m_IsAutoLearning)
     {
       m_pEntity->setLabel(entityName.GetBuffer(0));
       m_pEntity->quickAgeing(m_Age);

@@ -121,6 +121,7 @@ protected:
 	afx_msg void OnRadioMineral();
 	afx_msg void OnRadioVegetal();
 	afx_msg void OnRadioAnimal();
+	afx_msg void OnRadioParasite();
 	afx_msg void OnButtonColor();
 	afx_msg void OnPaint();
 	virtual BOOL OnInitDialog();

@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(CBiotopView, CView)
 	ON_COMMAND(ID_APP_MONITOR_LONG, OnAppMonitorLong)
   ON_COMMAND(ID_APP_MONITOR_SPECIE, OnAppMonitorSpecie)
   ON_COMMAND(ID_APP_MONITOR_BIOMASS, OnAppMonitorSpecieBiomass)
+  ON_COMMAND(ID_EDIT_INOCULATEAPARASITE, OnAppInoculateParasite)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -583,6 +584,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
     p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_MONITOR_SPECIE, MF_GRAYED);
     p_popup->EnableMenuItem(ID_APP_MONITOR_BIOMASS, MF_GRAYED);
+    p_popup->EnableMenuItem(ID_EDIT_INOCULATEAPARASITE, MF_GRAYED);
   }
   else 
   {
@@ -591,6 +593,7 @@ void CBiotopView::OnRButtonDown(UINT nFlags, CPoint point)
       p_popup->EnableMenuItem(ID_APP_EDIT_BRAIN, MF_GRAYED);
       p_popup->EnableMenuItem(ID_APP_EDIT_TRAIN_AND_GRADE, MF_GRAYED);
       p_popup->EnableMenuItem(ID_APP_EDIT_CHECK_IDENTIFY, MF_GRAYED);
+      p_popup->EnableMenuItem(ID_EDIT_INOCULATEAPARASITE, MF_GRAYED);
     }
     if ((theApp.GetpSelectedEntity() != NULL) && (theApp.GetpSelectedEntity()->getClass() < CLASS_ANIMAL_FIRST))
     {
@@ -1053,6 +1056,24 @@ void CBiotopView::OnAppMonitorSpecieBiomass()
   m_MenuSelCoord.x = 1;
   m_MenuSelCoord.y = 1;
   theApp.updateAllBiotopNewMeasures();
+}
+
+void CBiotopView::OnAppInoculateParasite()
+{
+  CBasicEntity* pEntity = m_pBiotop->findTopLevelEntity(m_MenuSelCoord);
+  if (pEntity == NULL)
+  {
+    AfxMessageBox("No entity selected");
+    return;
+  }
+  CFileDialog fileDlg(true, "xml", "", 0, "Entity Files (*.xml)|*.xml; *.xml|All Files (*.*)|*.*||");
+  fileDlg.m_ofn.lpstrTitle = "Select parasite entity";
+  long nResp = fileDlg.DoModal();
+  if (nResp == IDOK)
+  {
+    CString openedDirectoryName = fileDlg.GetPathName();
+    pEntity->setParasiteFromXmlFile(openedDirectoryName.GetBuffer(0));
+  }
 }
 
 void CBiotopView::ManageMapEditorModeStep1(CPoint& point)

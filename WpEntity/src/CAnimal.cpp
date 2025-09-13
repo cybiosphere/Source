@@ -2250,7 +2250,13 @@ void CAnimal::nextHour()
     }
     changeStomachFillingRate(-25);
     // reset injury malus: entity has survived
-    m_pPhysicWelfare->SetInjuryMalus(0); 
+    m_pPhysicWelfare->SetInjuryMalus(0);
+    // try to heal disease
+    if (tryToHealParasite())
+    {
+      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+      CYBIOCORE_LOG("ANIMAL - name %s is healed from parasite or virus\n", getLabel().c_str());
+    }
   }
 
   CBasicEntity::nextHour();
@@ -3102,34 +3108,26 @@ bool CAnimal::ExecuteMoveBackwardAction(double successSatisfactionFactor, double
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CAnimal::checkConsumeClass
+// METHOD:       CAnimal::checkFoodCompliantWithConsumeType(CBasicEntity eatenEntity)
 //  
 // DESCRIPTION:  Check if food class match with consume class
 // 
-// ARGUMENTS:    ClassType_e eatenClass: class of eaten entity
+// ARGUMENTS:    CBasicEntity eatenEntity: eaten entity
 //   
 // RETURN VALUE: bool : 1 food compliant / 0 food not compliant 
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-bool CAnimal::checkConsumeClass (ClassType_e eatenClass)
+bool CAnimal::checkFoodCompliantWithConsumeType(CBasicEntity& eatenEntity)
 {
-  if ( ( (getConsumeClass() == CONSUM_VEGETAL)
-       && (eatenClass >= CLASS_VEGETAL_FIRST)
-       && (eatenClass <= CLASS_VEGETAL_LAST) )
-   ||( (getConsumeClass() == CONSUM_OMNI)
-       && (eatenClass >= CLASS_VEGETAL_FIRST)
-       && (eatenClass <= CLASS_ANIMAL_LAST) )
-   ||( (getConsumeClass() == CONSUM_MEAT)
-       && (eatenClass >= CLASS_ANIMAL_FIRST)
-       && (eatenClass <= CLASS_ANIMAL_LAST) ) )
-  {
+  if ((getConsumeClass() == CONSUM_VEGETAL) && (eatenEntity.isVegetal()))
     return true;
-  }
+  else if ((getConsumeClass() == CONSUM_MEAT) && (eatenEntity.isAnimal()))
+    return true;
+  else if ((getConsumeClass() == CONSUM_OMNI) && (!eatenEntity.isMineral()))
+    return true;
   else
-  {
     return false;
-  }
 }
 
 //---------------------------------------------------------------------------
@@ -3172,7 +3170,6 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
   RelativePos_t relPos = {1,0};
   double eatenWeight = 0;
   double initialWeight = 0;
-  ClassType_e eatenClass;
   consumeEnergy(1);
 
   moveToGridEdgePos();
@@ -3188,7 +3185,6 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
   {
     if (pEatenEntity->isComestible())
     {
-      eatenClass = pEatenEntity->getClass();
       // If pEatenEntity was still alive, it will not survive...
       if (pEatenEntity->isAnimal() && pEatenEntity->isAlive())
       {
@@ -3214,7 +3210,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         }
       }
 
-      if ( checkConsumeClass(eatenClass) )
+      if (checkFoodCompliantWithConsumeType(*pEatenEntity))
       {
         // Enjoy the lunch
         // TBD Pleasure should depend of taste 

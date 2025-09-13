@@ -50,6 +50,7 @@ distribution.
 #include "CVegetSpermatophyta.h"
 #include "CAnimal.h"
 #include "CAnimMammal.h"
+#include "CVirus.h"
 
 //===========================================================================
 //                                    CLASS            

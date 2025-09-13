@@ -176,6 +176,7 @@ CBasicEntity::CBasicEntity()
   m_pBrain          = NULL;
   m_pGenome         = NULL;
   m_pPhysicWelfare  = NULL;
+  m_pParasite       = NULL;
   m_tParam.resize(0);
   m_tGestationChilds.resize(0);
   m_tLifeStage.resize(0);
@@ -259,6 +260,9 @@ CBasicEntity::~CBasicEntity()
 
   if (m_pPhysicWelfare != NULL)
     delete m_pPhysicWelfare;
+
+  if (m_pParasite != NULL)
+    delete m_pParasite;
 }
 
 
@@ -3842,4 +3846,72 @@ bool CBasicEntity::isMineral()
 bool CBasicEntity::isLiving()
 {
   return !isMineral();
+}
+
+bool CBasicEntity::setParasite(CBasicEntity* pParasite)
+{
+  if (m_pParasite != NULL)
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("ENTITY - ERROR parasite name %s is already set. Cannot set another\n", m_pParasite->getLabel().c_str());
+    return false;
+  }
+  if (pParasite && pParasite->getGenome() && pParasite->getGenome()->isParasiteGenome())
+  {
+    m_pParasite = pParasite;
+    if (m_pPhysicWelfare != NULL)
+      m_pPhysicWelfare->SetDiseaseMalus(m_pParasite->getToxicity() / 1000.0);
+    return true;
+  }
+  else
+  {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("ENTITY - ERROR enity cannot be set as parasite\n");
+    return false;
+  }
+}
+
+bool CBasicEntity::setParasiteFromXmlFile(string fileNameWithPath)
+{
+  CBasicEntity* pParasite = CEntityFactory::createEntity(fileNameWithPath);
+  if (setParasite(pParasite) == false)
+  {
+    delete pParasite;
+    return false;
+  }
+  return true;
+}
+
+CBasicEntity* CBasicEntity::getParasite(void)
+{
+  return (m_pParasite);
+}
+
+bool CBasicEntity::clearParasite(void)
+{
+  if (m_pParasite != NULL)
+  {
+    delete m_pParasite;
+    m_pParasite = NULL;
+    if (m_pPhysicWelfare != NULL)
+      m_pPhysicWelfare->SetDiseaseMalus(0);
+    return true;
+  }
+  return false;
+}
+
+bool CBasicEntity::tryToHealParasite(void)
+{
+  if (m_pParasite != NULL)
+  {
+    double healProb = 100.0 - getProtection();
+    double randVal = getRandInt(100);
+    // TODO: take into account immunity parameter
+    if (randVal < healProb)
+    {
+      clearParasite();
+      return true;
+    }
+  }
+  return false;
 }

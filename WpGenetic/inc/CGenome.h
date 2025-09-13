@@ -85,6 +85,10 @@ typedef enum
   CLASS_AVE,
   CLASS_ANIMAL_LAST = CLASS_AVE,
 
+  // Parasite classs
+  CLASS_PARASITE_FIRST,
+  CLASS_VIRUS = CLASS_PARASITE_FIRST,
+  CLASS_PARASITE_LAST = CLASS_VIRUS,
 } ClassType_e;
 
 typedef unsigned long specieSignatureType;
@@ -146,6 +150,10 @@ public:
   bool setBrainIdentifyInGenes(CBrain* pBrain);
 
   std::pair<size_t, size_t> findGeneInGenome(CGene& modelGene, bool findDominantAlleleOnly);
+
+  bool isVegetalGenome(void);
+  bool isAnimalGenome(void);
+  bool isParasiteGenome(void);
 
 private:
   void deleteAllPairs(void);

@@ -241,7 +241,7 @@ public:
   bool SetCurrentReactionIndex(size_t index);
 
 protected:
-  bool checkConsumeClass(ClassType_e eatenClass);
+  bool checkFoodCompliantWithConsumeType(CBasicEntity& eatenEntity);
   void logDeathCause(std::string deathCauseStr = "\n");
 
 //---------------------------------------------------------------------------

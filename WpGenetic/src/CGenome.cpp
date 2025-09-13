@@ -327,6 +327,9 @@ string CGenome::getClassStrName(ClassType_e classType)
     case CLASS_AVE:
       classeName = "Ave";
       break;
+    case CLASS_VIRUS:
+      classeName = "Virus";
+      break;
     default:
       classeName = "Bad Class value";
       break;
@@ -765,4 +768,19 @@ std::pair<size_t, size_t> CGenome::findGeneInGenome(CGene& modelGene, bool findD
   }
 
   return { invalidIndex , invalidIndex };
+}
+
+bool  CGenome::isVegetalGenome(void)
+{
+  return ((m_class >= CLASS_VEGETAL_FIRST) && (m_class <= CLASS_VEGETAL_LAST));
+}
+
+bool  CGenome::isAnimalGenome(void)
+{
+  return ((m_class >= CLASS_ANIMAL_FIRST) && (m_class <= CLASS_ANIMAL_LAST));
+}
+
+bool CGenome::isParasiteGenome(void)
+{
+  return ((m_class >= CLASS_PARASITE_FIRST) && (m_class <= CLASS_PARASITE_LAST));
 }

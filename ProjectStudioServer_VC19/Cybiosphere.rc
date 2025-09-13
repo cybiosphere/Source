@@ -634,6 +634,7 @@ BEGIN
         MENUITEM "Check identify",              ID_APP_EDIT_CHECK_IDENTIFY
         MENUITEM "Monitor specie population",   ID_APP_MONITOR_SPECIE
         MENUITEM "Monitor specie biomass",      ID_APP_MONITOR_BIOMASS
+        MENUITEM "Inoculate parasite or virus", ID_EDIT_INOCULATEAPARASITE
     END
     POPUP "&View"
     BEGIN

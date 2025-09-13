@@ -139,6 +139,7 @@ protected:
 	afx_msg void OnAppMonitorLong();
   afx_msg void OnAppMonitorSpecie();
 	afx_msg void OnAppMonitorSpecieBiomass();
+	afx_msg void OnAppInoculateParasite();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

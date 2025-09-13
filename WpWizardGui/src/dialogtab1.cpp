@@ -146,6 +146,7 @@ BEGIN_MESSAGE_MAP(CDialogTab1, CDialog)
 ON_BN_CLICKED(IDC_RADIO1, OnRadioMineral)
 ON_BN_CLICKED(IDC_RADIO2, OnRadioVegetal)
 ON_BN_CLICKED(IDC_RADIO3, OnRadioAnimal)
+ON_BN_CLICKED(IDC_RADIO4, OnRadioParasite)
 ON_BN_CLICKED(IDC_BUTTON_COLOR, OnButtonColor)
 ON_WM_PAINT()
 ON_EN_CHANGE(IDC_EDIT1, OnChangeEdit1)
@@ -410,6 +411,40 @@ void CDialogTab1::OnRadioAnimal()
   UpdateData(false);
 }
 
+void CDialogTab1::OnRadioParasite()
+{
+  int index = 0;
+  m_ComboClass.ResetContent();
+  for (ClassType_e i = CLASS_PARASITE_FIRST; i <= CLASS_PARASITE_LAST; i = (ClassType_e)(i + 1))
+  {
+    index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
+    m_ComboClass.SetItemData(index, (DWORD_PTR)i);
+  }
+  m_ComboClass.SetCurSel(0);
+  m_ComboClass.EnableWindow(true);
+  m_Chk_SexualDimCtrl.SetCheck(false);
+  OnCheck1();
+  m_Chk_SexualDimCtrl.EnableWindow(false);
+  m_EditWeight.EnableWindow(false);
+  m_EditWeightMin.EnableWindow(false);
+  OnSelchangeComboClass();
+  OnChangeEditWeight();
+
+  // Default values for combo
+  m_ComboForm.SetCurSel(FORM_ROUNDISH);
+  m_ComboOdor.SetCurSel(ODOR_NONE);
+  m_ComboTaste.SetCurSel(TASTE_NONE);
+  m_ComboTexture.SetCurSel(TEXTURE_NONE);
+  m_ComboAttribut.SetCurSel(PHY_ATTRIBUTE_NONE);
+  m_ComboHabitat.SetCurSel(HABITAT_EARTH);
+  m_ComboReproduct.SetCurSel(REPRODUCT_NONE);
+  m_ComboMvt.SetCurSel(MOVE_NONE);
+  m_ComboConsum.SetCurSel(CONSUM_NONE);
+
+  m_Layer = 2;
+  UpdateData(false);
+}
+
 void CDialogTab1::OnButtonColor() 
 {
   CColorDialog colorDlg;
@@ -424,12 +459,12 @@ void CDialogTab1::OnPaint()
 {
   CPaintDC dc(this); // device context for painting
   int iDpi = GetDpiForWindow(this->m_hWnd);
-  CRect rect(MulDiv(12, iDpi, 96), MulDiv(96, iDpi, 96), MulDiv(76, iDpi, 96), MulDiv(114, iDpi, 96));// 14, 120, 98, 142);
+  CRect rect(MulDiv(12, iDpi, 96), MulDiv(96, iDpi, 96), MulDiv(76, iDpi, 96), MulDiv(114, iDpi, 96));
   dc.FillSolidRect(rect,m_color);
   
   CBrush brush(0x00FFFFFF);
   CBrush brushgrey(0x00888888);
-  CRect frameRect(MulDiv(12, iDpi, 96), MulDiv(376, iDpi, 96), MulDiv(734, iDpi, 96), MulDiv(516, iDpi, 96));// 14, 465, 980, 630);
+  CRect frameRect(MulDiv(12, iDpi, 96), MulDiv(384, iDpi, 96), MulDiv(734, iDpi, 96), MulDiv(524, iDpi, 96));
   COLORREF black = 0x00000000;
   
   dc.FillRect(frameRect,&brush);

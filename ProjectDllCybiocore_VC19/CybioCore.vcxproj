@@ -87,6 +87,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -336,6 +338,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\WpCommon\inc\StartupHelpers.h" />
     <ClInclude Include="..\WpEntity\inc\CEntityFactory.h" />
     <ClInclude Include="..\WpEntity\inc\CRock.h" />
+    <ClInclude Include="..\WpEntity\inc\CVirus.h" />
     <ClInclude Include="..\WpEnvironment\inc\CGeoMap.h" />
     <ClInclude Include="..\WpEnvironment\inc\CIdentifyChecker.h" />
     <ClInclude Include="..\WpGenetic\inc\CGeneDefinitions.h" />
@@ -485,6 +488,7 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpEntity\src\CRock.cpp" />
     <ClCompile Include="..\WpEntity\src\CVegetable.cpp" />
     <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
+    <ClCompile Include="..\WpEntity\src\CVirus.cpp" />
     <ClCompile Include="..\WpEntity\src\CWater.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CGeoMap.cpp" />

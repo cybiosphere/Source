@@ -17,7 +17,7 @@
 #define IDC_RADIO1                      1008
 #define IDC_RADIO2                      1009
 #define IDC_RADIO3                      1010
-#define IDC_COMBO_CLASS                 1011
+#define IDC_RADIO4                      1011
 #define IDC_EDIT_NAME                   1012
 #define IDC_COMBO_FORM                  1013
 #define IDC_BUTTON_COLOR                1014
@@ -25,6 +25,7 @@
 #define IDC_EDIT_COLOR_NAME             1016
 #define IDC_COMBO_TASTE                 1017
 #define IDC_COMBO_REPRO                 1018
+#define IDC_COMBO_CLASS                 1019
 #define IDC_COMBO_HABITAT               1020
 #define IDC_COMBO_CONSUM                1021
 #define IDC_COMBO_MOVT                  1022
