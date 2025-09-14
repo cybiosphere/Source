@@ -2252,11 +2252,7 @@ void CAnimal::nextHour()
     // reset injury malus: entity has survived
     m_pPhysicWelfare->SetInjuryMalus(0);
     // try to heal disease
-    if (tryToHealParasite())
-    {
-      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-      CYBIOCORE_LOG("ANIMAL - name %s is healed from parasite or virus\n", getLabel().c_str());
-    }
+    tryToHealParasite();
   }
 
   CBasicEntity::nextHour();

@@ -39,6 +39,7 @@ distribution.
 #include "CSensorPheromone.h"
 #include "CBrainAnimal.h"
 #include "CAnimal.h"
+#include "CVirus.h"
 #include "CBiotop.h"
 
 //===========================================================================
@@ -100,18 +101,28 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
-    if ( (pCurEntity!=NULL) && (pCurEntity!=pAnimal) ) // Do not take into account my own pheromon
+    if ((pCurEntity!=NULL) && (pCurEntity!=pAnimal)) // Do not take into account my own pheromon
     {
-      if ((pCurEntity->getPheromone() > PHEROMONE_NONE)
-        && (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true))
+      if (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true)
       {
-        m_tStimulationValues[PheromoneTypeToIndex(pCurEntity->getPheromone())] += MAX_SENSOR_VAL / (tFoundIds[ind].distance + 1) / (tFoundIds[ind].distance + 1); // 1/R2
+        if (pCurEntity->getPheromone() > PHEROMONE_NONE)
+          m_tStimulationValues[PheromoneTypeToIndex(pCurEntity->getPheromone())] += MAX_SENSOR_VAL / (tFoundIds[ind].distance + 1) / (tFoundIds[ind].distance + 1); // 1/R2
+
+        // Check possible infection by parasite
+        if (pCurEntity->hasParasite())
+        {
+          // Todo: check parasite transmition mode (air)
+          CVirus* pParasite = (CVirus*)pCurEntity->getParasite();
+          if (tFoundIds[ind].distance <= pParasite->getReproductionRange())
+          {
+            pAnimal->tryInfectionByParasite(pParasite);
+          }
+        }
       }
     }
   }
 
   applySubCaptorWeightRate();
-
   return m_tStimulationValues;
 }
 

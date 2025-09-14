@@ -3861,6 +3861,9 @@ bool CBasicEntity::setParasite(CBasicEntity* pParasite)
     m_pParasite = pParasite;
     if (m_pPhysicWelfare != NULL)
       m_pPhysicWelfare->SetDiseaseMalus(m_pParasite->getToxicity() / 1000.0);
+
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("ENTITY - Entity %s was infected by %s\n", getLabel().c_str(), m_pParasite->getLabel().c_str());
     return true;
   }
   else
@@ -3891,6 +3894,8 @@ bool CBasicEntity::clearParasite(void)
 {
   if (m_pParasite != NULL)
   {
+    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG("ENTITY - Entity %s is healed. Recover from %s\n", getLabel().c_str(), m_pParasite->getLabel().c_str());
     delete m_pParasite;
     m_pParasite = NULL;
     if (m_pPhysicWelfare != NULL)
@@ -3904,14 +3909,40 @@ bool CBasicEntity::tryToHealParasite(void)
 {
   if (m_pParasite != NULL)
   {
-    double healProb = 100.0 - getProtection();
+    double healProbability = 100.0 - getProtection();
     double randVal = getRandInt(100);
     // TODO: take into account immunity parameter
-    if (randVal < healProb)
+    if (randVal < healProbability)
     {
       clearParasite();
       return true;
     }
+  }
+  return false;
+}
+
+bool CBasicEntity::hasParasite(void)
+{
+  return (m_pParasite != NULL);
+}
+
+bool CBasicEntity::tryInfectionByParasite(CBasicEntity* pParasite)
+{
+  if ((pParasite == NULL) || (pParasite->getGenome() == NULL) || hasParasite())
+    return false;
+  if (!pParasite->getGenome()->isParasiteGenome())
+    return false;
+  double catchProbability = ((CVirus*)pParasite)->getReproductionRate();
+  double randVal = getRandInt(100);
+  if (randVal < catchProbability)
+  {
+    CBasicEntity* pNewParasite = CEntityFactory::createCloneEntity(pParasite);
+    if (setParasite(pNewParasite) == false)
+    {
+      delete pNewParasite;
+      return false;
+    }
+    return true;
   }
   return false;
 }

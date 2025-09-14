@@ -86,6 +86,9 @@ protected:
 public:
   string buildLifeStageString(CGene* pGen);
 
+  double getReproductionRate();
+  double getReproductionRange();
+
 };// end CVirus
 
 #endif // !defined(CVirus_INCLUDED_)

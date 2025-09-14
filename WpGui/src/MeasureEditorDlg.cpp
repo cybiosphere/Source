@@ -169,6 +169,15 @@ BOOL CMeasureEditorDlg::OnInitDialog()
     {  
       m_ComboSpecie.AddString(specieName);
     }
+    if (m_pBiotop->getEntityByIndex(i)->hasParasite())
+    {
+      specieName = LPCTSTR(m_pBiotop->getEntityByIndex(i)->getParasite()->getSpecieName().c_str());
+      index = m_ComboSpecie.FindStringExact(0, specieName);
+      if (index == CB_ERR)
+      {
+        m_ComboSpecie.AddString(specieName);
+      }
+    }
   }
 
 	m_ComboEvent.ResetContent();

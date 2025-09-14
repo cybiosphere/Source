@@ -755,6 +755,10 @@ size_t CBiotop::getNbOfSpecieEntities(string& specieName)
       }
       tempCount++;
     }
+    else if ((pEntity->hasParasite() && pEntity->getParasite()->getSpecieName() == specieName))
+    {
+      tempCount++;
+    }
   }
   if (maleFound && !femaleFound)
   {

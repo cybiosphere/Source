@@ -503,6 +503,8 @@ public:
   bool clearParasite(void);
   CBasicEntity* getParasite(void);
   bool tryToHealParasite(void);
+  bool hasParasite(void);
+  bool tryInfectionByParasite(CBasicEntity* pParasite);
 
   virtual bool isAnimal();
   virtual bool isVegetal();

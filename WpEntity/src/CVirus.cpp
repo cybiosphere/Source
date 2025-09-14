@@ -173,3 +173,12 @@ string CVirus::buildLifeStageString(CGene* pGen)
   return defStr;
 }
 
+double CVirus::getReproductionRate()
+{
+  return getParameterNoCheck(m_id_ReproductionRate)->getVal();
+}
+
+double CVirus::getReproductionRange()
+{
+  return getParameterNoCheck(m_id_ReproductionRange)->getVal();
+}
