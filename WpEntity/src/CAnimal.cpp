@@ -2364,9 +2364,11 @@ std::string CAnimal::getDeathCauseString()
   if (m_pPhysicWelfare->GetInjuryMalus() > 0.01)
     deathCause += "injury ";
 
-
   if (m_pPhysicWelfare->GetDiseaseMalus() > 0.01)
     deathCause += "disease ";
+
+  if (hasParasite())
+    deathCause += getParasite()->getLabel();
 
   if (m_pPhysicWelfare->ComputeTemperatureHealthVariation() < -0.01)
     deathCause += "bad temperature ";

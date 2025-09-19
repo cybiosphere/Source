@@ -1857,6 +1857,8 @@ void CBasicEntity::nextHour()
 //---------------------------------------------------------------------------
 void CBasicEntity::nextDay(bool doQuickAgeing)
 {
+   decreaseAllImmunities();
+
   if (m_indCurrentLifeStage < m_tLifeStage.size())
   {
     CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
@@ -2528,18 +2530,22 @@ bool CBasicEntity::saveInXmlFile(TiXmlDocument* pXmlDoc, string newLabel)
     return false;
 
   pXmlDoc->Clear();
-  bool resu = addEntityInXmlFile(pXmlDoc, newLabel, this, false);
+  bool resu = addEntityInXmlFile(pXmlDoc, newLabel, this, XML_NODE_ENTITY);
 
   for (size_t i = 0; i < m_tGestationChilds.size(); i++)
   {
     CBasicEntity* pFetus = m_tGestationChilds[i];
-    addEntityInXmlFile(pXmlDoc, "", pFetus, true);
+    addEntityInXmlFile(pXmlDoc, "", pFetus, XML_NODE_FETUS_ENTITY);
   }
 
+  if (hasParasite())
+  {
+    addEntityInXmlFile(pXmlDoc, "", m_pParasite, XML_NODE_PARASITE);
+  }
   return resu;
 }
 
-bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, CBasicEntity * pEntity, bool setAsFetusEntity)
+bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, CBasicEntity * pEntity, string labelEntityNode)
 {
   bool resu = false;
   TiXmlElement* pElement;
@@ -2547,13 +2553,12 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   TiXmlNode* pNode = NULL;
   TiXmlNode* pNodeChild = NULL;
   string tempLabel;
-  string labelEntityNode;
   size_t i;
 
   if ((pXmlDoc==NULL) || (pEntity==NULL))
     return false;
 
-  setAsFetusEntity? labelEntityNode = XML_NODE_FETUS_ENTITY: labelEntityNode = XML_NODE_ENTITY;
+  bool setAsMainEntity = (labelEntityNode == XML_NODE_ENTITY) ? true : false;
   TiXmlElement newNode(labelEntityNode);
   pNodeEntity = pXmlDoc->InsertEndChild(newNode);
 
@@ -2642,7 +2647,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
     pEntity->m_pGenome->saveInXmlNode(pNodeEntity);
   }
 
-  if ((pEntity->m_pBrain!=NULL) && (!setAsFetusEntity))
+  if ((pEntity->m_pBrain != NULL) && setAsMainEntity)
   {
     pEntity->m_pBrain->saveInTiXmlFile(pXmlDoc);
   }
@@ -2936,6 +2941,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
   }
 
   loadBabiesFromXmlFile(pXmlDoc);
+  loadParasiteFromXmlFile(pXmlDoc);
   return true;
 }
 
@@ -2962,6 +2968,31 @@ bool CBasicEntity::loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc)
   }
   return true;
 }
+
+bool CBasicEntity::loadParasiteFromXmlFile(TiXmlDocument* pXmlDoc)
+{
+  if (pXmlDoc == NULL)
+    return false;
+
+  TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_PARASITE);
+  while (pNodeEntity != NULL)
+  {
+    CGenome* pParaisteGenome;
+    string parasiteyName;
+    CBasicEntity* pParasiteEntity;
+    pParaisteGenome = new CGenome(CLASS_NONE, "");
+    if (pParaisteGenome != NULL)
+    {
+      pParaisteGenome->loadFromXmlNode(pNodeEntity);
+      getEntityNameFromXmlNode(pNodeEntity, parasiteyName);
+      pParasiteEntity = CEntityFactory::createEntity(parasiteyName, pParaisteGenome);
+      setParasite(pParasiteEntity);
+    }
+    pNodeEntity = pNodeEntity->NextSibling(XML_NODE_PARASITE);
+  }
+  return true;
+}
+
 
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::getGenomeFromXmlFile
@@ -3852,7 +3883,7 @@ bool CBasicEntity::setParasite(CBasicEntity* pParasite)
 {
   if (m_pParasite != NULL)
   {
-    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("ENTITY - ERROR parasite name %s is already set. Cannot set another\n", m_pParasite->getLabel().c_str());
     return false;
   }
@@ -3861,14 +3892,17 @@ bool CBasicEntity::setParasite(CBasicEntity* pParasite)
     m_pParasite = pParasite;
     if (m_pPhysicWelfare != NULL)
       m_pPhysicWelfare->SetDiseaseMalus(m_pParasite->getToxicity() / 1000.0);
-
-    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-    CYBIOCORE_LOG("ENTITY - Entity %s was infected by %s\n", getLabel().c_str(), m_pParasite->getLabel().c_str());
+    if (m_pBiotop)
+    {
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, this);
+      CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+      CYBIOCORE_LOG("ENTITY - Entity %s was infected by %s\n", getLabel().c_str(), m_pParasite->getLabel().c_str());
+    }
     return true;
   }
   else
   {
-    CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("ENTITY - ERROR enity cannot be set as parasite\n");
     return false;
   }
@@ -3900,6 +3934,8 @@ bool CBasicEntity::clearParasite(void)
     m_pParasite = NULL;
     if (m_pPhysicWelfare != NULL)
       m_pPhysicWelfare->SetDiseaseMalus(0);
+    if (m_pBiotop)
+      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_MODIFIED, this);
     return true;
   }
   return false;
@@ -3910,10 +3946,14 @@ bool CBasicEntity::tryToHealParasite(void)
   if (m_pParasite != NULL)
   {
     double healProbability = 100.0 - getProtection();
-    double randVal = getRandInt(100);
-    // TODO: take into account immunity parameter
+    if (m_tImmunityMap.find(m_pParasite->getEntitySignature()) != m_tImmunityMap.end())
+    {
+      healProbability += m_tImmunityMap[m_pParasite->getEntitySignature()];
+    }
+    double randVal = getRandInt(2400); // Chance to heal in 1 day
     if (randVal < healProbability)
     {
+      m_tImmunityMap[m_pParasite->getEntitySignature()] = 500;
       clearParasite();
       return true;
     }
@@ -3933,7 +3973,11 @@ bool CBasicEntity::tryInfectionByParasite(CBasicEntity* pParasite)
   if (!pParasite->getGenome()->isParasiteGenome())
     return false;
   double catchProbability = ((CVirus*)pParasite)->getReproductionRate();
-  double randVal = getRandInt(100);
+  if (m_tImmunityMap.find(pParasite->getEntitySignature()) != m_tImmunityMap.end())
+  {
+    catchProbability = (m_tImmunityMap[pParasite->getEntitySignature()] > 200) ? 0 : catchProbability / 10.0;
+  }
+  double randVal = getRandInt(10000);
   if (randVal < catchProbability)
   {
     CBasicEntity* pNewParasite = CEntityFactory::createCloneEntity(pParasite);
@@ -3945,4 +3989,20 @@ bool CBasicEntity::tryInfectionByParasite(CBasicEntity* pParasite)
     return true;
   }
   return false;
+}
+
+void CBasicEntity::decreaseAllImmunities(void)
+{
+  for (auto it = m_tImmunityMap.begin(); it != m_tImmunityMap.end(); )
+  {
+    if (it->second > 2)
+    {
+      it->second = it->second / 2;
+      ++it;
+    }
+    else
+    {
+      it = m_tImmunityMap.erase(it);
+    }
+  }
 }

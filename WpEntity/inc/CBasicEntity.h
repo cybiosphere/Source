@@ -214,6 +214,7 @@ protected:
   // Parasite
   //---------------------------------------------------------------------------
   CBasicEntity* m_pParasite;
+  std::map<entitySignatureType, int> m_tImmunityMap; // Immunity map for parasites
 
 //===========================================================================
 // Methods 
@@ -369,10 +370,25 @@ protected:
   virtual void defaultActionWhenRemovedFromBiotop(void) {};
 
 //---------------------------------------------------------------------------
-// Gestation childs management management
+// Gestation childs management
 //---------------------------------------------------------------------------
 protected:
   void deleteAllGestationChilds(); 
+
+//---------------------------------------------------------------------------
+// Parasite and virus management
+//---------------------------------------------------------------------------
+public:
+  bool setParasiteFromXmlFile(string fileNameWithPath);
+  bool clearParasite(void);
+  CBasicEntity* getParasite(void);
+  bool tryToHealParasite(void);
+  bool hasParasite(void);
+  bool tryInfectionByParasite(CBasicEntity* pParasite);
+  void decreaseAllImmunities(void);
+
+protected:
+  bool setParasite(CBasicEntity* pParasite);
 
 //---------------------------------------------------------------------------
 // Save/Load in XML file
@@ -394,8 +410,9 @@ public:
   bool loadPurposeMapFromXmlFile(TiXmlDocument* pXmlDoc);
 
 private:
-  static bool addEntityInXmlFile(TiXmlDocument* pXmlDoc, string newLabel, CBasicEntity* pEntity, bool setAsFetusEntity);
+  static bool addEntityInXmlFile(TiXmlDocument* pXmlDoc, string newLabel, CBasicEntity* pEntity, string labelEntityNode);
   bool loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc);
+  bool loadParasiteFromXmlFile(TiXmlDocument* pXmlDoc);
   static bool getEntityNameFromXmlNode(TiXmlNode* pNodeEntity, string& name);
 
 //---------------------------------------------------------------------------
@@ -497,14 +514,6 @@ public:
   
   virtual int    getCurrentSpeed();
   int            getRelativeSpeed(CBasicEntity* pReference);
-
-  bool setParasite(CBasicEntity* pParasite);
-  bool setParasiteFromXmlFile(string fileNameWithPath);
-  bool clearParasite(void);
-  CBasicEntity* getParasite(void);
-  bool tryToHealParasite(void);
-  bool hasParasite(void);
-  bool tryInfectionByParasite(CBasicEntity* pParasite);
 
   virtual bool isAnimal();
   virtual bool isVegetal();
