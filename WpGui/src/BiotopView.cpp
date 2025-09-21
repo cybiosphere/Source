@@ -1073,6 +1073,12 @@ void CBiotopView::OnAppInoculateParasite()
   {
     CString openedDirectoryName = fileDlg.GetPathName();
     pEntity->setParasiteFromXmlFile(openedDirectoryName.GetBuffer(0));
+
+    if (pEntity->hasParasite())
+    {
+      theApp.setSelectedEntity(NULL); // Clear all
+      theApp.updateSelectedEntity(pEntity);
+    }
   }
 }
 

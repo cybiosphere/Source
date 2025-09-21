@@ -66,6 +66,7 @@ CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
   {"ADD_MEASURE_POPULATION",    CScenarioPlayer::CmdAddMeasurePopulation,   "ADD_MEASURE_POPULATION <specie name>"},
   {"ADD_SPAWNER_ENTITY",        CScenarioPlayer::CmdAddEntitySpawner,       "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"},
   {"CHANGE_BIOTOP_CLIMATE",     CScenarioPlayer::CmdChangeBiotopClimate,    "CHANGE_BIOTOP_CLIMATE <int climateType>"},
+  {"INOCULATE_PARASITE",        CScenarioPlayer::CmdInoculateParasite,      "INOCULATE_PARASITE <entity name> <parasite file name>"},
 };
 
 //===========================================================================
@@ -717,5 +718,17 @@ bool CScenarioPlayer::CmdChangeBiotopClimate(CBiotop* pBiotop, string path, stri
 {
   ClimateType_e climateType = (ClimateType_e)atoi(GetParamFromString(commandParam, 0).c_str());
   pBiotop->setClimateModel(climateType);
+  return true;
+}
+
+bool CScenarioPlayer::CmdInoculateParasite(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  string entityName = GetParamFromString(commandParam, 0);
+  string parasiteFileName = path + GetParamFromString(commandParam, 1);
+  CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
+  if (pEntity != NULL)
+  {
+    pEntity->setParasiteFromXmlFile(parasiteFileName);
+  }
   return true;
 }
