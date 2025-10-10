@@ -3953,7 +3953,7 @@ bool CBasicEntity::tryToHealParasite(void)
     double randVal = getRandInt(2400); // Chance to heal in 1 day
     if (randVal < healProbability)
     {
-      m_tImmunityMap[m_pParasite->getEntitySignature()] = 500;
+      m_tImmunityMap[m_pParasite->getEntitySignature()] += 600;
       clearParasite();
       return true;
     }
@@ -3975,7 +3975,7 @@ bool CBasicEntity::tryInfectionByParasite(CBasicEntity* pParasite)
   double catchProbability = ((CVirus*)pParasite)->getReproductionRate();
   if (m_tImmunityMap.find(pParasite->getEntitySignature()) != m_tImmunityMap.end())
   {
-    catchProbability = (m_tImmunityMap[pParasite->getEntitySignature()] > 200) ? 0 : catchProbability / 10.0;
+    catchProbability = (m_tImmunityMap[pParasite->getEntitySignature()] > 50) ? 0 : catchProbability / 10.0;
   }
   double randVal = getRandInt(10000);
   if (randVal < catchProbability)
@@ -3993,16 +3993,11 @@ bool CBasicEntity::tryInfectionByParasite(CBasicEntity* pParasite)
 
 void CBasicEntity::decreaseAllImmunities(void)
 {
-  for (auto it = m_tImmunityMap.begin(); it != m_tImmunityMap.end(); )
+  for (auto& immun : m_tImmunityMap)
   {
-    if (it->second > 2)
+    if (immun.second >= 2)
     {
-      it->second = it->second / 2;
-      ++it;
-    }
-    else
-    {
-      it = m_tImmunityMap.erase(it);
+      immun.second = immun.second / 2;
     }
   }
 }

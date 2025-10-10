@@ -864,20 +864,21 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
 bool CAnimMammal::deliverAllBabies()
 {
   int nbChildsAlive = 0;
-  CBasicEntity* pGestationChild = NULL;
+  CAnimMammal* pGestationChild = NULL;
 
   if (m_pBiotop!=NULL)
   {
     for (size_t i = 0; i < m_tGestationChilds.size(); i++)
     {
       consumeEnergy(10);
-      pGestationChild = m_tGestationChilds[i];
+      pGestationChild = (CAnimMammal*)m_tGestationChilds[i];
       if (pGestationChild != NULL)
       {
         int xOfset = getRandInt(2) - 1;
         int yOfset = getRandInt(2) - 1;
         Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
         pGestationChild->changeWeight(0.2); // ensure weight is more than min
+        pGestationChild->setHealthRate(60.0); // Baby is weak when born
         entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, getLayer()); 
         if (resuId == ENTITY_ID_INVALID)
         {

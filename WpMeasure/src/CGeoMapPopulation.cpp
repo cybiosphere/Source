@@ -293,9 +293,14 @@ size_t CGeoMapPopulation::CountEntitiesInMapSquare(std::string specieName, size_
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
   for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
-    if (tFoundIds[i].pEntity->getSpecieName() == specieName)
+    CBasicEntity* pEntity = tFoundIds[i].pEntity;
+    if (pEntity->getSpecieName() == specieName)
     {
       countEntities++;  
+    }
+    else if (pEntity->hasParasite() && (pEntity->getParasite()->getSpecieName() == specieName))
+    {
+      countEntities++;
     }
   }
   return countEntities;

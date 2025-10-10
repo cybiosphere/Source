@@ -135,5 +135,6 @@ namespace clan
 			return false;
 		for (auto & instance : Logger::instances)
 			return ((instance)->get_console_input(input_cmd));
+    return false;
 	}
 }

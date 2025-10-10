@@ -2354,27 +2354,27 @@ bool CAnimal::checkVitalNeedsOk()
 //---------------------------------------------------------------------------
 std::string CAnimal::getDeathCauseString()
 {
-  string deathCause{"due to "};
+  string deathCause{"due to"};
 
   if (getThirstRate() > 99.8)
-    deathCause += "dehydration ";
+    deathCause += " dehydration";
 
   if (getFatWeight() < 0.02)
-    deathCause += "hunger ";
+    deathCause += " hunger";
   if (m_pPhysicWelfare->GetInjuryMalus() > 0.01)
-    deathCause += "injury ";
+    deathCause += " injury";
 
   if (m_pPhysicWelfare->GetDiseaseMalus() > 0.01)
-    deathCause += "disease ";
+    deathCause += " disease ";
 
   if (hasParasite())
     deathCause += getParasite()->getLabel();
 
   if (m_pPhysicWelfare->ComputeTemperatureHealthVariation() < -0.01)
-    deathCause += "bad temperature ";
+    deathCause += " bad temperature";
 
   if (m_pPhysicWelfare->ComputeHabitatHealthVariation() < -0.01)
-    deathCause += "water ";
+    deathCause += " water";
 
   deathCause += "\n";
   return (deathCause);

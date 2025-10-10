@@ -171,7 +171,7 @@ void Server::process_new_events()
 
 bool Server::checkAllCoprocessorCompleteSecond()
 {
-  for (auto coprocess : m_tCoprocessors)
+  for (auto& coprocess : m_tCoprocessors)
   {
     if (coprocess.checkNextSecondComplete() == false)
     {
@@ -180,7 +180,7 @@ bool Server::checkAllCoprocessorCompleteSecond()
     }
   }
   // Every coprocess is done
-  for (auto coprocess : m_tCoprocessors)
+  for (auto& coprocess : m_tCoprocessors)
   {
     coprocess.forceNextSecondComplete(false);
     //log_event(labelServer, "Latency: coprocessor complete OK");
@@ -191,7 +191,7 @@ bool Server::checkAllCoprocessorCompleteSecond()
 ServerUser* Server::getCoprocessorOwnerUser(CBasicEntity* pEntity)
 {
   ServerUser* ownerUser = NULL;
-  for (auto coprocess : m_tCoprocessors)
+  for (auto& coprocess : m_tCoprocessors)
   {
     if (coprocess.checkIfEntityOwner(pEntity))
     {
@@ -203,12 +203,12 @@ ServerUser* Server::getCoprocessorOwnerUser(CBasicEntity* pEntity)
 
 ServerCoprocessor& Server::getCoprocessorFromUser(ServerUser* pUser)
 {
-  for (auto coprocess : m_tCoprocessors)
+  for (auto& coprocess : m_tCoprocessors)
   {
     if (coprocess.getUser() == pUser)
       return coprocess;
   }
-  ServerCoprocessor emptyServer( NULL, NULL, NULL, 0, 0 );
+  static ServerCoprocessor emptyServer( NULL, NULL, NULL, 0, 0 );
   return emptyServer;
 }
 
@@ -307,7 +307,7 @@ void Server::on_client_disconnected(NetGameConnection *connection, const std::st
       }
       log_event(labelServer, "Coprocessor removed. Update control");
       ServerCoprocessor::reset_all_entities_control(m_pBiotop);
-      for (auto coprocess : m_tCoprocessors)
+      for (auto& coprocess : m_tCoprocessors)
       {
         coprocess.assign_all_entities_control();
       }
@@ -483,7 +483,7 @@ void Server::on_event_game_requeststart(const NetGameEvent& e, ServerUser* user)
       //ServerCoprocessor::reset_all_entities_control(m_pBiotop);
       nextHourTimeOffsetForClient = m_tCoprocessors.size() * 10;
       log_event(labelServer, "New coprocessor added. Update control. Time offset = %1", nextHourTimeOffsetForClient);
-      for (auto coprocess : m_tCoprocessors)
+      for (auto& coprocess : m_tCoprocessors)
       {
         coprocess.assign_all_entities_control();
       }
@@ -526,7 +526,7 @@ void Server::on_event_biotop_updateentityposition(const NetGameEvent& e, ServerU
   UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, false);
   if (updateInfo.pEntity && (m_tCoprocessors.size() > 0))
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.update_entity_control(updateInfo.pEntity);
     }
@@ -538,7 +538,7 @@ void Server::on_event_biotop_updateentityphysic(const NetGameEvent& e, ServerUse
   UpdatedEntityInfo_t updateInfo = event_manager::handleEventUpdateEntityPosition(e, m_pBiotop, m_bManualMode, true);
   if (updateInfo.pEntity && (m_tCoprocessors.size() > 0))
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.update_entity_control(updateInfo.pEntity);
     }
@@ -558,7 +558,7 @@ void Server::on_event_biotop_changespeed(const NetGameEvent& e, ServerUser* user
   // Broadcast to all client new speed
   send_event_change_biotop_speed(m_biotopSpeed, m_bManualMode, m_bMaxSpeedMode);
   // Reset coprocess synchro
-  for (auto coprocess : m_tCoprocessors)
+  for (auto& coprocess : m_tCoprocessors)
   {
     coprocess.forceNextSecondComplete(true);
   }
@@ -653,7 +653,7 @@ void Server::send_event_add_entity(CBasicEntity* pEntity, ServerUser* user)
 
   if (pEntity && (m_tCoprocessors.size() > 0))
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.assign_entity_control(pEntity);
     }
@@ -712,7 +712,7 @@ void Server::send_event_update_entity_data(CBasicEntity* pEntity, ServerUser *us
 
   if (m_tCoprocessors.size() > 0)
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.assign_entity_control(pEntity);
     }
@@ -735,7 +735,7 @@ void Server::send_event_update_entity_position(CBasicEntity* pEntity, ServerUser
 
   if (pEntity && (m_tCoprocessors.size() > 0))
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.update_entity_control(pEntity);
     }
@@ -757,7 +757,7 @@ void Server::send_event_update_entity_physic(CBasicEntity* pEntity, ServerUser* 
 
   if (pEntity && (m_tCoprocessors.size() > 0))
   {
-    for (auto coprocess : m_tCoprocessors)
+    for (auto& coprocess : m_tCoprocessors)
     {
       coprocess.update_entity_control(pEntity);
     }

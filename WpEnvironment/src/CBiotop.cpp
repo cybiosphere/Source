@@ -1762,7 +1762,8 @@ void CBiotop::nextSecondForAllAnimalsMultiProcess(void)
 {
   CBasicEntity* pEntity = NULL;
   int i;
-#pragma omp parallel for ordered private(i) num_threads(m_NbOmpThreads)
+#pragma omp parallel private(i) num_threads(m_NbOmpThreads)
+#pragma omp for ordered
   for (i = 0; i < getNbOfAnimals(); i++)
   {
     pEntity = m_tEntity[i];

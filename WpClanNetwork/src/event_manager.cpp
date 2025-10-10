@@ -407,7 +407,7 @@ namespace clan
     string label = e.get_argument(1);
     int needToAddEntity = e.get_argument(2);
     log_event(labelEvent, "Reqest entity refresh: entity Id=%1 label %2 need Add %3", entityId, label, needToAddEntity);
-    EntityRefreshInfo_t refreshInfo{ needToAddEntity, pBiotop->getEntityById(entityId) };
+    EntityRefreshInfo_t refreshInfo{ (bool)needToAddEntity, pBiotop->getEntityById(entityId) };
     return refreshInfo;
   }
 
@@ -688,7 +688,7 @@ namespace clan
         pNewEntity->getLabel(), pNewEntity->getStatus(), stepCoordX, stepCoordY, layer, (int)entityId);
     }
 
-    Point_t stepCoord{ stepCoordX , stepCoordY };
+    Point_t stepCoord{ (size_t)stepCoordX , (size_t)stepCoordY };
 
     if (entityId != ENTITY_ID_INVALID)
     {

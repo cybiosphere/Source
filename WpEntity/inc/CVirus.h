@@ -74,7 +74,7 @@ public:
   CVirus(string label, CGenome* pPseudoGenome);
 
 private:
-  void CVirus::initVirusParamIds();
+  void initVirusParamIds();
 
   //---------------------------------------------------------------------------
   // Genetic settings
