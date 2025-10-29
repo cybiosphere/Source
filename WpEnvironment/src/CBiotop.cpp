@@ -535,39 +535,47 @@ bool CBiotop::replaceEntityByAnother(entityIdType idEntity, CBasicEntity* pNewEn
 
 size_t CBiotop::deleteEntity(CBasicEntity* pEntity, bool displayLog)
 {
+  size_t index = getEntityTableIndex(pEntity);
+  deleteEntityByIndex(index, displayLog);
+  return index;
+}
+
+void CBiotop::deleteEntityByIndex(const size_t index, const bool displayLog)
+{
+  if (index > m_tEntity.size())
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR Try to remove wrong entity index\n");
+    return;
+  }
+
+  CBasicEntity* pEntity = m_tEntity[index];
+
   if (pEntity == NULL)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - ERROR Try to remove NULL entity\n");
-    return invalidIndex;
+    return;
   }
+
   if (isCoordValid(pEntity->getGridCoord(), pEntity->getLayer()))
   {
     m_tBioGrid[pEntity->getGridCoord().x][pEntity->getGridCoord().y][pEntity->getLayer()].pEntity = NULL;
   }
-  for (size_t i = 0; i < getNbOfEntities(); i++)
+  if (pEntity->isAnimal())
   {
-    if (m_tEntity[i] == pEntity)
-    {
-      if (pEntity->isAnimal())
-      {
-        m_IndexLastAnimal--;
-      }
-      if (displayLog)
-      {
-        CYBIOCORE_LOG_TIME(m_BioTime);
-        CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
-      }
-      delete (m_tEntity[i]);
-      m_tEntity.erase(m_tEntity.begin()+i);
-      return i;
-    }
+    m_IndexLastAnimal--;
   }
-  // If not found
-  CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP - ERROR Try to remove entity not found\n");
-  return invalidIndex;
+  if (displayLog)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - Entity removed : specie %s name %s\n", pEntity->getSpecieName().c_str(), pEntity->getLabel().c_str());
+  }
+
+  delete (pEntity);
+  m_tEntity.erase(m_tEntity.begin() + index);
 }
+
 
 void CBiotop::deleteAllEntities()
 {
@@ -1719,7 +1727,7 @@ void CBiotop::nextHourForAllEntities(void)
     {
       if (pEntity->isToBeRemoved())
       {
-        deleteEntity(pEntity, false);
+        deleteEntityByIndex(i, false);
       }
       else
       {

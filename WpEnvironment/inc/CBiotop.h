@@ -309,6 +309,7 @@ public:
 //---------------------------------------------------------------------------
 private:
   size_t deleteEntity(CBasicEntity* pEntity, bool displayLog = true);
+  void deleteEntityByIndex(const size_t index, const bool displayLog = true);
   void deleteAllParameters(void);
   void clearAllElements(void);
 

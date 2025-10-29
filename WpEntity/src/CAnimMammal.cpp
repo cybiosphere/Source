@@ -878,7 +878,7 @@ bool CAnimMammal::deliverAllBabies()
         int yOfset = getRandInt(2) - 1;
         Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
         pGestationChild->changeWeight(0.2); // ensure weight is more than min
-        pGestationChild->setHealthRate(60.0); // Baby is weak when born
+        pGestationChild->setHealthRate(80.0); // Baby is weak when born
         entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, getLayer()); 
         if (resuId == ENTITY_ID_INVALID)
         {
