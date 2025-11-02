@@ -84,7 +84,7 @@ CSensorObscurity::~CSensorObscurity()
 //---------------------------------------------------------------------------
 const std::vector<sensorValType>& CSensorObscurity::UpdateAndGetStimulationTable()
 {
-  m_tStimulationValues[0] = (double)(100.0-m_pBrain->getAnimal()->getBiotop()->getSunlight()) * MAX_SENSOR_VAL / 100.0;
+  m_tStimulationValues[0] = (double)(100.0 - m_pBrain->getAnimal()->getBiotop()->getSunlight()) * MAX_SENSOR_VAL / 100.0;
   applySubCaptorWeightRate();
 
   return m_tStimulationValues;

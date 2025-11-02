@@ -57,13 +57,13 @@ CReaction::CReaction(double successSatisfactionFactor, double failureFrustration
   m_SuccessSatisfactionFactor = successSatisfactionFactor;
   m_FailureFrustrationFactor  = failureFrustrationFactor;
 
-  if (m_SuccessSatisfactionFactor<0)
+  if (m_SuccessSatisfactionFactor < 0)
     m_SuccessSatisfactionFactor = 0;
-  if (m_SuccessSatisfactionFactor>100.0)
+  if (m_SuccessSatisfactionFactor > 100.0)
     m_SuccessSatisfactionFactor = 100.0;
-  if (m_FailureFrustrationFactor<0)
+  if (m_FailureFrustrationFactor < 0)
     m_FailureFrustrationFactor = 0;
-  if (m_FailureFrustrationFactor>100.0)
+  if (m_FailureFrustrationFactor > 100.0)
     m_FailureFrustrationFactor = 100.0;
 
   m_InitialSuccessSatisfactionFactor = m_SuccessSatisfactionFactor;
@@ -79,7 +79,6 @@ CReaction::CReaction(double successSatisfactionFactor, double failureFrustration
 
 CReaction::~CReaction()
 {
-
 }
 
 //===========================================================================
@@ -99,7 +98,6 @@ CReaction::~CReaction()
 //---------------------------------------------------------------------------
 void CReaction::ExecuteAction(ReactionIntensityType_e intensity)
 {
-
 }
 
 //===========================================================================
@@ -130,9 +128,9 @@ void CReaction::SetFailureFrustrationFactor(double newFrustration)
 {
   m_FailureFrustrationFactor  = newFrustration;
 
-  if (m_FailureFrustrationFactor<0)
+  if (m_FailureFrustrationFactor < 0)
     m_FailureFrustrationFactor = 0;
-  if (m_FailureFrustrationFactor>100.0)
+  if (m_FailureFrustrationFactor > 100.0)
     m_FailureFrustrationFactor = 100.0;
 }
 
@@ -140,9 +138,9 @@ void CReaction::SetSuccessSatisfactionFactor(double newSatisfaction)
 {
   m_SuccessSatisfactionFactor = newSatisfaction;
 
-  if (m_SuccessSatisfactionFactor<0)
+  if (m_SuccessSatisfactionFactor < 0)
     m_SuccessSatisfactionFactor = 0;
-  if (m_SuccessSatisfactionFactor>100.0)
+  if (m_SuccessSatisfactionFactor > 100.0)
     m_SuccessSatisfactionFactor = 100.0;
 }
 
@@ -204,7 +202,7 @@ void CReaction::ResetCounters(void)
 void CReaction::ResetSuccessFailureFactor(void)
 {
   m_SuccessSatisfactionFactor = m_InitialSuccessSatisfactionFactor;
-  m_FailureFrustrationFactor  = m_InitialFailureFrustrationFactor;
+  m_FailureFrustrationFactor = m_InitialFailureFrustrationFactor;
 }
 
 int CReaction::GetUnitTimeInSecond(void)

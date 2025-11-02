@@ -57,7 +57,7 @@ CGenome::CGenome(CGenome& model)
   m_SexualPairIndex = model.m_SexualPairIndex;
   m_bSexualDimorphism = model.m_bSexualDimorphism;
   CPairOfChromosome* tempPair = NULL;
-  for (size_t i=0; i<model.m_tPair.size(); i++)
+  for (size_t  i= 0; i < model.m_tPair.size(); i++)
   {
     tempPair = new CPairOfChromosome(*model.m_tPair[i]);
     m_tPair.push_back(tempPair);
@@ -71,9 +71,9 @@ CGenome::CGenome(CGenome& mother, CGenome& father, double crossoverRate)
   m_SexualPairIndex = mother.m_SexualPairIndex;
   m_bSexualDimorphism = mother.m_bSexualDimorphism;
   CPairOfChromosome* tempPair = NULL;
-  for (size_t i=0; i<mother.m_tPair.size(); i++)
+  for (size_t i = 0; i < mother.m_tPair.size(); i++)
   {
-    tempPair = new CPairOfChromosome(*mother.m_tPair[i],*father.m_tPair[i],crossoverRate);
+    tempPair = new CPairOfChromosome(*mother.m_tPair[i], *father.m_tPair[i], crossoverRate);
     m_tPair.push_back(tempPair);
   }
 }
@@ -102,7 +102,7 @@ size_t CGenome::addPair()
 
 bool CGenome::removePairFromIndex(size_t index)
 {
-  if (index > (m_tPair.size() - 1) )
+  if (index > (m_tPair.size() - 1))
     return false;
 
   m_tPair.erase(m_tPair.begin()+index);
@@ -158,7 +158,7 @@ CPairOfChromosome* CGenome::getPairBrain()
   }
   else
   {
-    return (m_tPair[(m_tPair.size()-1)]); // return last pair
+    return (m_tPair[(m_tPair.size() - 1)]); // return last pair
   }
 }
 
@@ -256,7 +256,7 @@ SexType_e CGenome::getSexType()
 bool CGenome::tryMutation(int rate)
 {
   bool resu = false;
-  for (size_t i=0; i<m_tPair.size(); i++)
+  for (size_t i = 0; i < m_tPair.size(); i++)
   {
     if (m_tPair[i]->tryMutation(rate))
     {
@@ -346,7 +346,7 @@ specieSignatureType CGenome::getSpecieSignature()
   //return (1000000*m_class + 10000*m_tPair.size());
   
   specieSignatureType signature = 1000000*m_class;
-  for (size_t i=0; i<m_tPair.size(); i++)
+  for (size_t i = 0; i < m_tPair.size(); i++)
   {
     signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome()->getNumGene() * (7 * i + 1));
   }
@@ -439,7 +439,7 @@ bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
   size_t i,j;
   CChromosome* pCurChroM = NULL;
   CChromosome* pCurChroP = NULL;
-  for (i=0; i<getNumPair(); i++)
+  for (i = 0; i < getNumPair(); i++)
   {
     TiXmlElement newNodePair(XML_NODE_PAIR);
     pNodePair = pNodeGenome->InsertEndChild(newNodePair);
@@ -453,7 +453,7 @@ bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
       pCurChroM = getPair(i)->getMaterChromosome();
       pCurChroP = getPair(i)->getPaterChromosome();
 
-      for (j=0; j<pCurChroM->getNumGene(); j++)
+      for (j = 0; j < pCurChroM->getNumGene(); j++)
       {
         TiXmlElement newNodeGeneM(XML_NODE_GENE);
         pNodeGene = pNodePair->InsertEndChild(newNodeGeneM);
@@ -637,7 +637,7 @@ bool CGenome::setBrainInstinctInGenes(CBrain* pBrain)
   CChromosome* pChromoSexP = pPaireSex->getPaterChromosome();
 
   // Store Decision table
-  for (i=0; i<pBrain->GetDecisionNeuronTable()->GetNeuronTableRowCount(); i++)
+  for (i = 0; i < pBrain->GetDecisionNeuronTable()->GetNeuronTableRowCount(); i++)
   {
     if (pBrain->IsDecisionRowSexSpecific(i))
     {
@@ -715,7 +715,7 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
   CChromosome* pChromoSexP = pPaireSex->getPaterChromosome();
 
   // Store Identification table
-  for (i=0; i<pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
+  for (i = 0; i < pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
   {
     if (pBrain->IsIdentifyRowSexSpecific(i))
     {

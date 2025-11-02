@@ -176,13 +176,13 @@ void CVegetable::initVegetableParamIds()
 //---------------------------------------------------------------------------
 bool CVegetable::setParamFromGene(CGene* pGen)
 {
-  if (CBasicEntity::setParamFromGene (pGen) == true)
+  if (CBasicEntity::setParamFromGene(pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
     return true;
   }
   
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
@@ -190,7 +190,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
+  if (len < 3 * sizeof(WORD))
   {
     // not enought data to config param
     return false;
@@ -323,7 +323,7 @@ bool CVegetable::completeParamsWithDefault()
 //---------------------------------------------------------------------------
 bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 {
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PHY_WELFARE))
   {
     return false;
   }
@@ -435,7 +435,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
     return welfareStr;
   }
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PHY_WELFARE))
   {
     return welfareStr;
   }
@@ -578,9 +578,8 @@ int CVegetable::getAge()
 
 void CVegetable::forceAgeValue(int newAge)
 {
-  getParameterNoCheck(m_id_Age)->forceVal(newAge);
+  getParameterNoCheck(m_id_Age)->setVal(newAge);
 }
-
 
 int CVegetable::getDecompositionTime()
 {

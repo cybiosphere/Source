@@ -60,8 +60,7 @@ CAnimMammal::CAnimMammal(string label, Point_t initCoord, size_t layer, CGenome*
 CAnimal(label, initCoord, layer, pGenome)
 {  
   // Default values          
-  m_Status      = STATUS_ALIVE; 
-  
+  m_Status = STATUS_ALIVE; 
   // Parameter id pre-init
   initMammalParamIds();
 }
@@ -81,8 +80,7 @@ CAnimMammal::CAnimMammal(string label, CAnimMammal& model):
 CAnimal(label, model)
 {  
   // Default values          
-  m_Status      = STATUS_ALIVE; 
-  
+  m_Status = STATUS_ALIVE; 
   // Parameter id pre-init
   initMammalParamIds();
 }
@@ -102,8 +100,7 @@ CAnimMammal::CAnimMammal(string label, CAnimMammal& mother,CAnimMammal& father):
 CAnimal(label, mother, father)
 {  
   // Default values          
-  m_Status      = STATUS_ALIVE; 
-  
+  m_Status = STATUS_ALIVE; 
   // Parameter id pre-init
   initMammalParamIds();
 }
@@ -146,15 +143,15 @@ void CAnimMammal::initMammalParamIds()
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CAnimMammal::setParamFromGene (CGene* pGen)
+bool CAnimMammal::setParamFromGene(CGene* pGen)
 {
-  if (CAnimal::setParamFromGene (pGen) == true)
+  if (CAnimal::setParamFromGene(pGen) == true)
   {
-    // The parameter has already been taken into account by basic entity
+    // The parameter has already been taken into account by animal
     return true;
   }
   
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen==NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
@@ -162,7 +159,7 @@ bool CAnimMammal::setParamFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
+  if (len < 3 * sizeof(WORD))
   {
     // not enought data to config param
     return false;
@@ -219,7 +216,7 @@ bool CAnimMammal::completeParamsWithDefault()
   // CAnimMammal specific
   if (m_id_GestationTime == invalidCharIndex)
   {
-    m_id_GestationTime    = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_TIME);
+    m_id_GestationTime = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_GESTA_TIME);
   }
   if (m_id_GestationNumberRange == invalidCharIndex)
   {
@@ -243,9 +240,9 @@ bool CAnimMammal::completeParamsWithDefault()
 // REMARKS:      Should NOT be called by derived method. 
 //               All stages must be supported at the same inheritage level
 //---------------------------------------------------------------------------
-bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
+bool CAnimMammal::setLifeStageFromGene(CGene* pGen)
 {
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_LIFESTAGE))
+  if ((pGen==NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
   {
     return false;
   }
@@ -253,7 +250,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if (len<sizeof(WORD))
+  if (len < sizeof(WORD))
   {
     // not enought data to config param
     return false;
@@ -269,7 +266,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
   {
   case GENE_STAGE_0:
     {
-      duration  = 0; // Age during gestation is not counted.
+      duration = 0; // Age during gestation is not counted.
       pLifeStage = new CLifeStage("Fetus",STAGE_0,duration);
       if (!addLifeStage(pLifeStage))
         delete pLifeStage;
@@ -279,7 +276,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
     }
   case GENE_STAGE_1:
     {
-      duration  = (int)(scaledRate*lifeDuration);
+      duration = (int)(scaledRate*lifeDuration);
       pLifeStage = new CLifeStage("Baby",STAGE_1,duration);
       if (!addLifeStage(pLifeStage))
         delete pLifeStage;
@@ -289,7 +286,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
     }
   case GENE_STAGE_2:
     {
-      duration  = (int)(scaledRate*lifeDuration);
+      duration = (int)(scaledRate*lifeDuration);
       pLifeStage = new CLifeStage("Child",STAGE_2,duration);
       if (!addLifeStage(pLifeStage))
         delete pLifeStage;
@@ -299,7 +296,7 @@ bool CAnimMammal::setLifeStageFromGene (CGene* pGen)
     }
   case GENE_STAGE_3:
     {
-      duration  = (int)(scaledRate*lifeDuration);
+      duration = (int)(scaledRate*lifeDuration);
       pLifeStage = new CLifeStage("Adult",STAGE_3,duration);
       if (!addLifeStage(pLifeStage))
         delete pLifeStage;
@@ -404,27 +401,24 @@ bool CAnimMammal::completeLifeStagesWithDefault(void)
   
   // Adjust lasts stage duration so that sums = lifeDuration and deathDuration
   int configLifeDuration = 0;
-  int i;
-  for (i=1;i<5;i++)
+  for (int i = STAGE_1; i <= STAGE_4; i++)
   {
     configLifeDuration += getLifeStage(i)->getTotalDayDuration();
   }
   if (lifeDuration > configLifeDuration)
   {
     // Enlarge Old stage
-    getLifeStage(4)->setTotalDayDuration( getLifeStage(4)->getTotalDayDuration() 
-      + (int)lifeDuration - configLifeDuration + 1 );
+    getLifeStage(STAGE_4)->setTotalDayDuration(
+      getLifeStage(STAGE_4)->getTotalDayDuration() + (int)lifeDuration - configLifeDuration + 1);
   }
-  int configDeathDuration = 0;
-  for (i=5;i<7;i++)
-  {
-    configDeathDuration += getLifeStage(i)->getTotalDayDuration();
-  }
+  int configDeathDuration = getLifeStage(STAGE_5)->getTotalDayDuration();
+  configDeathDuration += getLifeStage(STAGE_6)->getTotalDayDuration();
+
   if (deathDuration > configDeathDuration)
   {
     // Enlarge Roten stage
-    getLifeStage(6)->setTotalDayDuration( getLifeStage(6)->getTotalDayDuration() 
-      + (int)deathDuration - configDeathDuration + 1 );
+    getLifeStage(STAGE_6)->setTotalDayDuration(
+      getLifeStage(STAGE_6)->getTotalDayDuration() + (int)deathDuration - configDeathDuration + 1);
   }
   
   return true;
@@ -676,7 +670,7 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
     Point_t newCoord = getGridCoordRelative(relPos);
     
     CBasicEntity* pEatenEntity = m_pBiotop->findEntity(newCoord,getLayer()+relLayer);
-    if ( (pEatenEntity==NULL) || ( (pEatenEntity!=NULL) && (pEatenEntity->getId()==ENTITY_ID_WATER) ) )// Rq: Water (id=0) cannot be eaten
+    if ((pEatenEntity == NULL) || ((pEatenEntity != NULL) && (pEatenEntity->getId() == ENTITY_ID_WATER)))// Rq: Water (id=0) cannot be eaten
     {
       // Nothing to eat: small frustration
       pleasureRate = -failureFrustrationFactor;
@@ -830,7 +824,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
 
   CBasicEntity* pGestationChild = NULL;
   deleteAllGestationChilds();
-  for(int i=0; i<childNb; i++)
+  for(int i = 0; i < childNb; i++)
   {
     string childLabel;
     childLabel = FormatString("j%d", m_TotalChildNumber);
@@ -842,7 +836,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
     m_tGestationChilds.push_back(pGestationChild);
   }
   // Pleasure for female
-  changePleasureRate( getLibidoRate() );
+  changePleasureRate(getLibidoRate());
   
   // Stop sexual pheromon and libido
   changeLibidoRate(-100.0);
@@ -900,7 +894,7 @@ bool CAnimMammal::deliverAllBabies()
   forceTirednessRate(80.0);
   changeHungerRate(-80.0); // Reduce hunger to focus on baby care
   setGestationBabyNumber(0);
-  getParameterNoCheck(m_id_GestationTime)->forceVal(0);
+  getParameterNoCheck(m_id_GestationTime)->setVal(0);
   // Set maternal pheromon reset libido
   changeLibidoRate(-100.0);
   setPheromone(PHEROMONE_MATERNAL);
@@ -985,7 +979,7 @@ int CAnimMammal::getGestationBabyNumber()
 
 void CAnimMammal::setGestationBabyNumber(int nbBaby)
 {
-  getParameterNoCheck(m_id_GestationNumberRange)->forceVal(nbBaby);
+  getParameterNoCheck(m_id_GestationNumberRange)->setVal(nbBaby);
 }
 
 int CAnimMammal::getGestationTime()

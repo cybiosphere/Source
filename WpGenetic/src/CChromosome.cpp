@@ -74,7 +74,7 @@ CChromosome::CChromosome(CChromosome& model)
   m_IdNumber       = model.m_IdNumber;
   m_ChromosomeType = model.m_ChromosomeType;
   CGene* tempGen   = NULL;
-  for (size_t i=0; i<model.m_tGene.size(); i++)
+  for (size_t i = 0; i<model.m_tGene.size(); i++)
   {
     tempGen = new CGene(*model.m_tGene[i]);
     m_tGene.push_back(tempGen);
@@ -105,7 +105,7 @@ size_t CChromosome::addGene()
 
 bool CChromosome::removeGeneFromIndex(size_t index)
 {
-  if (index>(m_tGene.size()-1))
+  if (index > (m_tGene.size() - 1))
     return false;
 
   m_tGene.erase(m_tGene.begin()+index);
@@ -131,7 +131,7 @@ size_t CChromosome::getNumGene(void)
 
 CGene* CChromosome::getGene(size_t id)
 {
-  if (id>=m_tGene.size())  {
+  if (id >= m_tGene.size())  {
     return NULL;
   }
   else
@@ -158,7 +158,7 @@ string CChromosome::buildStringDataFromGenes()
   string rawData = "";
   CGene* pGene = NULL;
 
-  for (size_t i=0;i<m_tGene.size();i++)
+  for (size_t i = 0; i < m_tGene.size(); i++)
   {
     pGene = m_tGene[i];
     rawData = rawData + pGene->buildStringDataFromGene();
@@ -208,7 +208,7 @@ bool CChromosome::buildGenesFromStringData(string rawData)
 bool CChromosome::tryMutation(int rate)
 {
   bool resu = false;
-  for (size_t i=0; i<m_tGene.size(); i++)
+  for (size_t i = 0; i < m_tGene.size(); i++)
   {
     if (testChance(rate))
     {

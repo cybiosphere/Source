@@ -99,10 +99,10 @@ CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosom
 
 CPairOfChromosome::~CPairOfChromosome()
 {
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
     delete m_pPaterChromosome;
 
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
     delete m_pMaterChromosome;
 }
 
@@ -125,12 +125,12 @@ size_t CPairOfChromosome::getNumGenes()
   size_t materNumGen = 0;
   size_t paterNumGen = 0;
 
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
      materNumGen = m_pMaterChromosome->getNumGene();
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
      paterNumGen = m_pPaterChromosome->getNumGene();
 
-  if (paterNumGen>materNumGen)
+  if (paterNumGen > materNumGen)
     return (paterNumGen);
   else
     return (materNumGen);
@@ -142,12 +142,12 @@ CGene* CPairOfChromosome::getDominantAllele(size_t index)
   CGene* pMaterGene = NULL;
   CGene* pPaterGene = NULL;
 
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
      pMaterGene = m_pMaterChromosome->getGene(index);
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
      pPaterGene = m_pPaterChromosome->getGene(index);
 
-  if ((pMaterGene == NULL)&&(pPaterGene == NULL))
+  if ((pMaterGene == NULL) && (pPaterGene == NULL))
   {
     pResu = NULL;
   }
@@ -186,27 +186,27 @@ bool CPairOfChromosome::tryMutation(int rate)
 
 bool CPairOfChromosome::setAsSexualMale(void)
 {
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_MALE);
   return true;
 }
 
 bool CPairOfChromosome::setAsSexualFemale(void)
 {
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
   return true;
 }
 
 bool CPairOfChromosome::setAsNeutral(void)
 {
-  if (m_pMaterChromosome!=NULL)
+  if (m_pMaterChromosome != NULL)
     m_pMaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
-  if (m_pPaterChromosome!=NULL)
+  if (m_pPaterChromosome != NULL)
     m_pPaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
   return true;
 }

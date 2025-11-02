@@ -88,9 +88,9 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
   CPurpose* pPurpose = m_pBrain->GetCurrentPurpose();
-  CGeoMapPurpose*  pMap = m_pBrain->GetGeographicMap();
+  CGeoMapPurpose* pMap = m_pBrain->GetGeographicMap();
 
-  if ( (pPurpose != NULL) && (pMap != NULL) && (pPurpose->IsMemorizeSuccess()) )
+  if ((pPurpose != NULL) && (pMap != NULL) && (pPurpose->IsMemorizeSuccess()))
   {
     int targetDirection;
     int curDirection = m_pBrain->getAnimal()->getDirection();
@@ -102,7 +102,7 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
       {
         m_tStimulationValues[0] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }
-      else if (((360 + (targetDirection-curDirection)*45) % 360) < 180)
+      else if (((360 + (targetDirection-curDirection) * 45) % 360) < 180)
       {
         m_tStimulationValues[1] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }

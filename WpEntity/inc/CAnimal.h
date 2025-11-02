@@ -131,29 +131,29 @@ private:
 // Genetic settings
 //---------------------------------------------------------------------------
 protected: 
-  bool setParamFromGene (CGene* pGen);
+  bool setParamFromGene(CGene* pGen);
   bool completeParamsWithDefault();
-  bool setPhysicWelfareFromGene (CGene* pGen);
+  bool setPhysicWelfareFromGene(CGene* pGen);
   bool completePhysicWelfareWithDefault();
-  bool setBrainReactionFromGene (CGene* pGen);
+  bool setBrainReactionFromGene(CGene* pGen);
   bool completeBrainSensorWithDefault();
   bool completeBrainReactionWithDefault();
-  bool setBrainSizeFromGene (CGene* pGen);
-  bool setBrainInstinctFromGene (CGene* pGen);
-  bool setBrainConfigFromGene (CGene* pGen);
+  bool setBrainSizeFromGene(CGene* pGen);
+  bool setBrainInstinctFromGene(CGene* pGen);
+  bool setBrainConfigFromGene(CGene* pGen);
   bool completeBrainInstinctWithDefault(void);
-  bool setFeelingFromGene (CGene* pGen);
-  bool setPurposeFromGene (CGene* pGen);
+  bool setFeelingFromGene(CGene* pGen);
+  bool setPurposeFromGene(CGene* pGen);
 
 public: 
   bool setBrainInstinctInGenes(void);
-  CSensor* getTemporarySensorFromGene (CGene* pGen);
+  CSensor* getTemporarySensorFromGene(CGene* pGen);
 
 //---------------------------------------------------------------------------
 // Genetic description
 //---------------------------------------------------------------------------
 public:
-  size_t getExpectedBrainSensorWeightSize (CGene* pGen);
+  size_t getExpectedBrainSensorWeightSize(CGene* pGen);
 
 protected:
   string buildPhysicWellfareString(CGene* pGen);

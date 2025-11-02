@@ -89,9 +89,9 @@ private:
 // Genetic settings
 //---------------------------------------------------------------------------
 protected: 
-  bool setParamFromGene (CGene* pGen);
+  bool setParamFromGene(CGene* pGen);
   bool completeParamsWithDefault();
-  bool setPhysicWelfareFromGene (CGene* pGen);
+  bool setPhysicWelfareFromGene(CGene* pGen);
   bool completePhysicWelfareWithDefault();
 
 //---------------------------------------------------------------------------

@@ -83,7 +83,7 @@ void CReactionAttack::ExecuteAction(ReactionIntensityType_e intensity)
 {
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL);
-  if (m_pBrain->getAnimal()->ExecuteAttackAction(m_relativeLayer,10,m_SuccessSatisfactionFactor,m_FailureFrustrationFactor, intensity))
+  if (m_pBrain->getAnimal()->ExecuteAttackAction(m_relativeLayer, 10, m_SuccessSatisfactionFactor, m_FailureFrustrationFactor, intensity))
     m_ConsecutiveFailures = 0;
   else
     m_ConsecutiveFailures++;  

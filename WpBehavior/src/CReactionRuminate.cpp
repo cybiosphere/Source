@@ -57,7 +57,7 @@ distribution.
 CReactionRuminate::CReactionRuminate(CBrainAnimal*  pBrain, double successFactor, double failureFactor)
 :CReaction(successFactor, failureFactor, UID_BASE_REACT_RUMINATE, 2)
 {
-  m_pBrain        = pBrain;
+  m_pBrain = pBrain;
   m_Label = "Ruminate";
 }
 

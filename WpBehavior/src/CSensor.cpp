@@ -85,7 +85,7 @@ CSensor::CSensor(size_t subCaptorNumber, std::vector<double>& tSubCaptorWeightRa
   m_tBonusRate.resize(subCaptorNumber);
   m_UniqueId  = uniqueId;
 
-  for (size_t i=0; i<m_SubCaptorNumber; i++)
+  for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
     m_tSubCaptorWeightRate[i] = tSubCaptorWeightRate[i];
     m_tStimulationValues[i] = 0;
@@ -114,7 +114,7 @@ CSensor::CSensor(size_t subCaptorNumber, double SubCaptorsWeightRate, DWORD uniq
   m_tBonusRate.resize(subCaptorNumber);
   m_UniqueId  = uniqueId;
 
-  for (size_t i=0; i<m_SubCaptorNumber; i++)
+  for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
     m_tSubCaptorWeightRate[i] = SubCaptorsWeightRate;
     m_tStimulationValues[i] = 0;
@@ -155,7 +155,7 @@ CSensor::~CSensor()
 const std::vector<sensorValType>& CSensor::UpdateAndGetStimulationTable()
 {
   // Default sensor: detect nothing
-  for (size_t i=0; i<m_SubCaptorNumber; i++)
+  for (size_t i = 0; i < m_SubCaptorNumber; i++)
   {
     m_tStimulationValues[i] = 0;
   }
@@ -294,7 +294,7 @@ bool CSensor::SetBonusRate(const std::vector<int>& tBonus)
 
 void CSensor::SetBonusRateToNeutral()
 {
-  for (size_t i=0; i< m_tBonusRate.size(); i++)
+  for (size_t i = 0; i < m_tBonusRate.size(); i++)
   {
     m_tBonusRate[i] = 100;
   }

@@ -94,7 +94,7 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
   CBasicEntity* pCurEntity = NULL;
 
   // Process level
-  RelativePos_t relPos = {1,0};
+  RelativePos_t relPos = {1, 0};
   const BiotopFoundIds_t& biotopFoundIds = pAnimal->getBiotop()->findEntities(pAnimal->getGridCoordRelative(relPos), m_nRange);
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
 
@@ -143,10 +143,8 @@ string CSensorPheromone::GetSubCaptorLabel(size_t index)
     return ("bad index");
   else
   {
-    PheromoneType_e pheromoneId = PHEROMONE_FIRST_TYPE;
-    for (size_t i=0; (i<index)&&(i<PHEROMONE_NUMBER_TYPE); i++)
-      pheromoneId = (PheromoneType_e)(pheromoneId+1);
-    return (CBasicEntity::getPheromoneStrName(pheromoneId) );
+    PheromoneType_e pheromoneId = (PheromoneType_e)(index + 1);
+    return (CBasicEntity::getPheromoneStrName(pheromoneId));
   }
 }
 

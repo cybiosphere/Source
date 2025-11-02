@@ -84,15 +84,15 @@ CGeoMap::CGeoMap(Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize,
   // Build 3D dynamic table
   m_pMemoryMap   = new short**[m_GeoMapSize.x];
   ASSERT( m_pMemoryMap != NULL );
-  for (size_t i=0;i<m_GeoMapSize.x;i++)
+  for (size_t i = 0; i < m_GeoMapSize.x; i++)
   {
     m_pMemoryMap[i]   = new short*[m_GeoMapSize.y];
     ASSERT( m_pMemoryMap[i] != NULL );
-    for (size_t j=0;j<m_GeoMapSize.y;j++)
+    for (size_t j = 0; j < m_GeoMapSize.y; j++)
     {
       m_pMemoryMap[i][j] = new short[m_nbRecords];
       ASSERT( m_pMemoryMap[i][j] != NULL );
-      for (size_t k=0; k< m_nbRecords; k++)
+      for (size_t k = 0; k < m_nbRecords; k++)
         m_pMemoryMap[i][j][k] = 0;
     }
   }
@@ -101,9 +101,9 @@ CGeoMap::CGeoMap(Point_t globalGridCoordCenterPos, Point_t globalGridBiotopSize,
 CGeoMap::~CGeoMap()
 {
   // Delete 3D dynamic table 
-  for (size_t i=0; i<m_GeoMapSize.x; i++)
+  for (size_t i = 0; i < m_GeoMapSize.x; i++)
   {
-    for (size_t j=0; j<m_GeoMapSize.y; j++)
+    for (size_t j = 0; j < m_GeoMapSize.y; j++)
     {
       delete [] m_pMemoryMap[i][j];
     }
@@ -132,9 +132,9 @@ void CGeoMap::ClearRecordOnFullMap(size_t recordIndex)
 
 void CGeoMap::ConvergeAllRecordsToNeutral()
 {
-  for (size_t i=0; i<m_GeoMapSize.x; i++)
+  for (size_t i = 0; i < m_GeoMapSize.x; i++)
   {
-    for (size_t j=0; j<m_GeoMapSize.y; j++)
+    for (size_t j = 0; j < m_GeoMapSize.y; j++)
     {
       for (size_t k = 0; k < m_nbRecords; k++)
       {

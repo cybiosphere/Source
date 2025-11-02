@@ -276,7 +276,7 @@ namespace clan
       for (size_t i = 0; i < pEntity->getNumParameter(); i++)
       {
         paramValue = e.get_argument(index);
-        pEntity->getParameter(i)->forceVal(paramValue);
+        pEntity->getParameter(i)->setVal(paramValue);
         index++;
       }
       // Additional infos

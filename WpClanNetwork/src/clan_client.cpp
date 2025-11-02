@@ -302,9 +302,9 @@ void Client::on_event_biotop_nextsecond_start(const NetGameEvent &e)
   float temperature = e.get_argument(3);
   m_bEventNextSecondStart = true;
   m_bEventNextSecondEnd = false;
-  m_pBiotop->getParamSunlight()->forceVal(sunlight);
-  m_pBiotop->getParamFertility()->forceVal(fertility);
-  m_pBiotop->getParamTemperature()->forceVal(temperature);
+  m_pBiotop->getParamSunlight()->setVal(sunlight);
+  m_pBiotop->getParamFertility()->setVal(fertility);
+  m_pBiotop->getParamTemperature()->setVal(temperature);
   m_pBiotop->nextSecond(false);
   send_event_new_second_end();
 }

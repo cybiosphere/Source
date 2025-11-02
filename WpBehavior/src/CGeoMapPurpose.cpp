@@ -71,8 +71,8 @@ CGeoMapPurpose::CGeoMapPurpose(CBrain* pBrain, Point_t globalGridCoordCenterPos,
   m_curTargetTimout   = 0;
 
   m_tPurposeUniqueId.resize(nbPurposeRec);
-  for (size_t idx=0; idx<nbPurposeRec; idx++)
-    m_tPurposeUniqueId[idx] = 0;
+  for (size_t i = 0; i < nbPurposeRec; i++)
+    m_tPurposeUniqueId[i] = 0;
 }
 
 CGeoMapPurpose::~CGeoMapPurpose()
@@ -124,14 +124,14 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
     if (GridCoordToGeoMapCoord(globalGridCenterPos, centerMapCoord) == true)
     {
       curWeight = GetSuccessWeight(UidIdx, centerMapCoord);
-      if (curWeight>0)
+      if (curWeight > 0)
         return foundIntensity; // Success already exists on current position. no need to guide anywhere else
 
       maxWeight = curWeight;
       initialWeight = curWeight;
-      for (range=1; range<m_GeoMapSize.x; range++)
+      for (range = 1; range < m_GeoMapSize.x; range++)
       {
-        for(size_t i=0; i<(2*range); i++)
+        for(size_t i = 0; i < (2 * range); i++)
         {
           currentMapCoord.x = centerMapCoord.x + range;
           currentMapCoord.y = centerMapCoord.y - range + i + 1;
@@ -183,10 +183,10 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
     vectorDir.x = (int)foundMapPos.x - (int)centerMapCoord.x;
     vectorDir.y = (int)foundMapPos.y - (int)centerMapCoord.y;
 
-    if ( (vectorDir.x != 0) || (vectorDir.y != 0) )
+    if ((vectorDir.x != 0) || (vectorDir.y != 0))
     {
-      double norm= sqrt((double)(vectorDir.x * vectorDir.x + vectorDir.y * vectorDir.y));
-      double adj= (double)(vectorDir.x) / norm;
+      double norm = sqrt((double)(vectorDir.x * vectorDir.x + vectorDir.y * vectorDir.y));
+      double adj = (double)(vectorDir.x) / norm;
       double angle = acos(adj);
       if (vectorDir.y < 0)
         angle = -angle;
@@ -206,7 +206,7 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
     if ((m_curPurposeUidIdx == UidIdx) && (m_curTargetMapPos.x == foundMapPos.x) && (m_curTargetMapPos.y == foundMapPos.y))
     {
       m_curTargetTimout--;
-      if (m_curTargetTimout<1)
+      if (m_curTargetTimout < 1)
       {
         // Give a negative weight to target position to switch to another place
         MemorizePurposeSuccessGeoPos(m_curPurposeUidIdx, m_curTargetMapPos, -1);
@@ -218,8 +218,8 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
       // Set new target position info
       m_curTargetMapPos.x = foundMapPos.x;
       m_curTargetMapPos.y = foundMapPos.y;
-      m_curPurposeUidIdx  = UidIdx;
-      m_curTargetTimout   = range * 240; // Give 4 minutes per range to reach target position
+      m_curPurposeUidIdx = UidIdx;
+      m_curTargetTimout = range * 240; // Give 4 minutes per range to reach target position
     }
   }
 
@@ -332,14 +332,14 @@ size_t CGeoMapPurpose::GetPurposeUidTabIndex(DWORD purposeUid)
 {
   size_t i;
   // Check if purpose already exist
-  for (i=0; i<m_NbPurposeRec; i++)
+  for (i = 0; i < m_NbPurposeRec; i++)
   {
     if (purposeUid == m_tPurposeUniqueId[i])
       return i;
   }
 
   // Check if there are free id in table
-  for (i=0; i<m_NbPurposeRec; i++)
+  for (i = 0; i < m_NbPurposeRec; i++)
   {
     if (m_tPurposeUniqueId[i] == 0)
     {
@@ -381,7 +381,7 @@ void CGeoMapPurpose::GetSuccessWeightAndCheckMax(const size_t purposeIdx, const 
 
 int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
 {
-  if ((geoMapPos.x<m_GeoMapSize.x) && (geoMapPos.y<m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
+  if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y) && (purposeIndex < m_NbPurposeRec))
   {
     return m_pMemoryMap[geoMapPos.x][geoMapPos.y][purposeIndex];
   }

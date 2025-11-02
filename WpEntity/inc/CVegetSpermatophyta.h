@@ -78,7 +78,7 @@ public:
 // Genetic settings
 //---------------------------------------------------------------------------
 protected:
-  bool setParamFromGene (CGene* pGen);
+  bool setParamFromGene(CGene* pGen);
   bool completeParamsWithDefault();
   bool setLifeStageFromGene(CGene* pGen);
 

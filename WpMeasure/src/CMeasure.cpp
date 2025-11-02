@@ -84,7 +84,7 @@ CMeasure::CMeasure(int period, int id, double rangeMin, double rangeMax, Measure
   m_EventType = EVENT_TYPE_NONE;
   m_EventThreshold = 0;
 
-  for (int i=0; i<MAX_MEASUREMENT_DATA_SIZE; i++)
+  for (int i = 0; i < MAX_MEASUREMENT_DATA_SIZE; i++)
   {
     m_tCurValTable[i].value = 0;
     m_tCurValTable[i].timeCount = 0;
@@ -368,7 +368,7 @@ double CMeasure::GetRangeMax()
 bool CMeasure::AutoUpdateRange()
 {
   bool resu = false;
-  for (int i=0; i<MAX_MEASUREMENT_DATA_SIZE; i++)
+  for (int i = 0; i < MAX_MEASUREMENT_DATA_SIZE; i++)
   {
     if ( m_tCurValTable[i].timeCount != 0 )
     {

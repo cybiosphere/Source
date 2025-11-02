@@ -83,8 +83,8 @@ private:
 // Genetic settings
 //---------------------------------------------------------------------------
 protected: 
-  bool setParamFromGene (CGene* pGen);
-  bool setLifeStageFromGene (CGene* pGen);
+  bool setParamFromGene(CGene* pGen);
+  bool setLifeStageFromGene(CGene* pGen);
   bool completeParamsWithDefault();
   bool completeLifeStagesWithDefault();
 

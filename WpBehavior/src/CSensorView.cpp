@@ -169,7 +169,7 @@ const std::vector<sensorValType>& CSensorView::UpdateAndGetStimulationTable()
 
   bool tScanDirections[8] = {false,false,false,false,false,false,false,false};
   int viewDirection = pAnimal->getHeadDirection();
-  for (i = 0; i<(m_Angle+1); i++)
+  for (i = 0; i < (m_Angle + 1); i++)
   {
     tScanDirections[(viewDirection+i)%8]   = true;
     tScanDirections[(viewDirection+8-i)%8] = true;
@@ -342,7 +342,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
 
       // Compute weight and computedWeight sum
       m_pEntityViewTab[i].computedWeight = 0;
-      for (j=0; j<VIEW_SIZE_PER_FOCUS; j++)
+      for (j = 0; j < VIEW_SIZE_PER_FOCUS; j++)
       {
         // Use weight
         m_pEntityViewTab[i].weightTab[j] = m_pEntityViewTab[i].weightTab[j] * m_tSubCaptorWeightRate[stimulationTabOffset+j] / 100.0;
@@ -365,7 +365,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
   // Now choose the most significant entities
   offset = stimulationTabOffset;
 
-  for (j=0; j<maxNumFocusObject; j++)
+  for (j = 0; j < maxNumFocusObject; j++)
   {
     // 1 Find max weight
     maxComputedWeight = 0;
@@ -396,7 +396,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
                                                GetUniqueId(), offset, VIEW_SIZE_PER_FOCUS);
 
     // 4 Fill m_tStimulationValues
-    for (i=0; i<VIEW_SIZE_PER_FOCUS; i++)
+    for (i = 0; i < VIEW_SIZE_PER_FOCUS; i++)
     {
       m_tStimulationValues[offset] = m_pEntityViewTab[maxWeightViewTabIndex].weightTab[i];
       offset++;

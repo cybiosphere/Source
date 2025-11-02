@@ -73,7 +73,7 @@ bool DLL_CYBIOCORE_API testChance(double luckRate)
   return ((100.0 * rand() / RAND_MAX) < luckRate);
 }
 
-bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2)
+bool DLL_CYBIOCORE_API testChance(double luckRate1,double luckRate2)
 {
   return ((100.0 * 100.0 * rand() / RAND_MAX) < luckRate1 * luckRate2);
 }

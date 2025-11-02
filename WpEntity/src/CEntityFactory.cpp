@@ -188,7 +188,7 @@ CBasicEntity* CEntityFactory::createCloneEntity(CBasicEntity* pModelEntity)
     pParam->setValMin(pModelParam->getMin());
     pParam->setValMax(pModelParam->getMax());
     pParam->setValNominal(pModelParam->getValNominal());
-    pParam->forceVal(pModelParam->getVal());
+    pParam->setVal(pModelParam->getVal());
   }
 
   // Copy other infos

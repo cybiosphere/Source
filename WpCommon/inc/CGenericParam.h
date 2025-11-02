@@ -106,15 +106,14 @@ public:
 //---------------------------------------------------------------------------
 public:
   double getVal(void);
-  bool setVal(double newVal);
-  bool forceVal(double newVal);
+  void setVal(double newVal);
   double getValNominal(void);
-  bool setValNominal(double newVal);
-  bool setValMax(double newVal);
-  bool setValMin(double newVal);
+  void setValNominal(double newVal);
+  void setValMax(double newVal);
+  void setValMin(double newVal);
   double getMin(void);
   double getMax(void);
-  bool changeVal(double variation);
+  void changeVal(double variation);
   bool isMaxReached(void);
   bool isMinReached(void);
   GenericParamType_e getType();

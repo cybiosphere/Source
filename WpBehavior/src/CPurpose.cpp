@@ -75,14 +75,14 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
   m_bMemorizeSuccess = false;
   m_LevelBonus = 0;
   m_nbSensorBonus = 0;
-  for (i=0; i<SENSOR_TABLE_SIZE; i++)
+  for (i = 0; i < SENSOR_TABLE_SIZE; i++)
   {
     m_tSensorBonus[i].pSensor = NULL;
     m_tSensorBonus[i].bonusTable.clear();
   }
 
   m_nbReactionBonus = 0;
-  for (i=0; i<REACTION_TABLE_SIZE; i++)
+  for (i = 0; i < REACTION_TABLE_SIZE; i++)
   {
     m_tReactionBonus[i].pReaction = NULL;
     m_tReactionBonus[i].bonusRate = 100;
@@ -128,7 +128,7 @@ CPurpose::CPurpose(string label, int minuteDuration, CSensor* pSens, size_t subC
       break;
   }
 
-  m_UniqueId = ComputeUniqueId (pSens->GetUniqueId(), subCaptorIndex);
+  m_UniqueId = ComputeUniqueId(pSens->GetUniqueId(), subCaptorIndex);
 }
 
 CPurpose::~CPurpose()
@@ -199,10 +199,10 @@ void CPurpose::StartPeriod(void)
 
   // Set specific bonus on each sensor
   CSensor* curSens = NULL;
-  for (i=0; i<m_nbSensorBonus; i++)
+  for (i = 0; i < m_nbSensorBonus; i++)
   {
     curSens = m_tSensorBonus[i].pSensor; 
-    if (curSens!=NULL)
+    if (curSens != NULL)
     {
       curSens->SetBonusRate(m_tSensorBonus[i].bonusTable);
     }
@@ -210,10 +210,10 @@ void CPurpose::StartPeriod(void)
 
   // Set specific bonus on each reaction
   CReaction* curReact = NULL;
-  for (i=0; i<m_nbReactionBonus; i++)
+  for (i = 0; i < m_nbReactionBonus; i++)
   {
     curReact = m_tReactionBonus[i].pReaction; 
-    if (curReact!=NULL)
+    if (curReact != NULL)
     {
       curReact->SetBonusRate(m_tReactionBonus[i].bonusRate);
     }
@@ -236,10 +236,10 @@ void CPurpose::StopPeriod(void)
   size_t i;
   // Reset bonus to neutral on each sensor
   CSensor* curSens = NULL;
-  for (i=0; i<m_nbSensorBonus; i++)
+  for (i = 0; i < m_nbSensorBonus; i++)
   {
     curSens = m_tSensorBonus[i].pSensor;
-    if (curSens!=NULL)
+    if (curSens != NULL)
     {
       curSens->SetBonusRateToNeutral();
     }
@@ -247,7 +247,7 @@ void CPurpose::StopPeriod(void)
 
   // Reset bonus to neutral on each reaction
   CReaction* curReact = NULL;
-  for (i=0; i<m_nbReactionBonus; i++)
+  for (i = 0; i < m_nbReactionBonus; i++)
   {
     curReact = m_tReactionBonus[i].pReaction;
     if (curReact!=NULL)
@@ -263,7 +263,7 @@ void CPurpose::StopPeriod(void)
 
 bool CPurpose::AddSensorBonus (CSensor* pSensor, std::vector<int>& bonusTable)
 {
-  if ((m_nbSensorBonus>SENSOR_TABLE_SIZE-1)||(bonusTable.empty()))
+  if ((m_nbSensorBonus > SENSOR_TABLE_SIZE - 1) || bonusTable.empty())
   {
     return false;
   }
@@ -276,7 +276,7 @@ bool CPurpose::AddSensorBonus (CSensor* pSensor, std::vector<int>& bonusTable)
 
 bool CPurpose::AddReactionBonus (CReaction* pReaction,int bonusRate)
 {
-  if (m_nbReactionBonus>REACTION_TABLE_SIZE-1)
+  if (m_nbReactionBonus > REACTION_TABLE_SIZE-1)
   {
     return false;
   }

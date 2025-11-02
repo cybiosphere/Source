@@ -98,16 +98,16 @@ public:
   bool setAsParameterUsingDefinition(GeneSubTypeParam_e subType, int muteRate, double min, double nominalVal, double max);
   bool setAsLifeStage(GeneSubTypeLifeStage_e subType, int muteRate, long duration);
   bool setAsPhysicWelfare(GeneSubTypePhySensi_e subType, int muteRate, long sensitivity, long min, long nominalVal, long max);
-  bool setAsSensor   (GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
+  bool setAsSensor(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
     long data1 = 0, long data2 = 0, long data3 = 0, long data4 = 0);
   bool setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate, int nbWeight, short* pWeight,
     double data1 = 0, double data2 = 0, double data3 = 0, double data4 = 0);
   bool setAsSensorComposite(int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId);
-  bool setAsReaction (GeneSubTypeReaction_e subType, int muteRate, long success, long failure, long data1 = 0, long data2 = 0);
+  bool setAsReaction(GeneSubTypeReaction_e subType, int muteRate, long success, long failure, long data1 = 0, long data2 = 0);
   bool setAsReactionUsingDefinition(GeneSubTypeReaction_e subType, int muteRate, double success, double failure, double data1 = 0, double data2 = 0);
-  bool setAsBrainSize (GeneSubTypeBrainSize_e subType, int muteRate, size_t brainSize);
-  bool setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
-  bool setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
+  bool setAsBrainSize(GeneSubTypeBrainSize_e subType, int muteRate, size_t brainSize);
+  bool setAsBrainInstinctLine(int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
+  bool setAsBrainIdentificationLine(int muteRate, size_t lineId, size_t nbColumn, WORD* pData);
   bool setAsFeeling(GeneSubTypeFeeling_e subType, int muteRate, DWORD sensorUId, int nbSensi, short* pSensi);
 
   bool setAsPurposeTrigger(GeneSubTypePurpose_e subType, int muteRate, DWORD sensorUId, int duration, int subCaptorIndex, int startThreshold, int stopThreshold, int labelLen, char* pLabel);

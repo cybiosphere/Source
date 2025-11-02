@@ -57,7 +57,7 @@ distribution.
 CReactionStepBackward::CReactionStepBackward(CBrainAnimal*  pBrain, double successFactor, double failureFactor, int stepSpeed)
 :CReaction(successFactor, failureFactor, UID_BASE_REACT_STEPBACKWARD,1)
 {
-  m_pBrain    = pBrain;
+  m_pBrain = pBrain;
   m_stepSpeed = stepSpeed;
   m_Label = FormatString("StepBack");
 }

@@ -112,16 +112,16 @@ double CFeelingWelfare::ComputeAndGetFeelingWelfare()
   for (auto pSensitivity : m_tSensitivity)
   {
     const std::vector<sensorValType>& vectStimulation{ pSensitivity->m_pSens->UpdateAndGetStimulationTable() };
-    for (size_t j=0; j< vectStimulation.size(); j++)
+    for (size_t j = 0; j < vectStimulation.size(); j++)
     {
       m_CurSatisfaction += pSensitivity->m_pSensitivityTableMask[j] * vectStimulation[j];
     }
   }
 
-  if (m_CurSatisfaction>100.0)
+  if (m_CurSatisfaction > 100.0)
     m_CurSatisfaction = 100.0;
 
-  if (m_CurSatisfaction<-100.0)
+  if (m_CurSatisfaction < -100.0)
     m_CurSatisfaction = -100.0;
 
   return m_CurSatisfaction;

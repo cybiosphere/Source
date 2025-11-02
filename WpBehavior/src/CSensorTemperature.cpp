@@ -125,9 +125,9 @@ string CSensorTemperature::GetSubCaptorLabel(size_t index)
 
   switch(index)
   {
-  case TEMPERATURE_TOO_HOT:  label = "too hot";   break;
-  case TEMPERATURE_TOO_COLD:  label = "too cold";   break;
-  case TEMPERATURE_COLD_WATER:  label = "cold water";   break;
+  case TEMPERATURE_TOO_HOT: label = "too hot"; break;
+  case TEMPERATURE_TOO_COLD: label = "too cold"; break;
+  case TEMPERATURE_COLD_WATER: label = "cold water"; break;
   default: label = "bad index"; break;
   }
 

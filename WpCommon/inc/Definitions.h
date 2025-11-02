@@ -148,8 +148,8 @@ template <class type> type getRandInt(type max)
 {
   return ((int)((max + 1.0) * rand() / (RAND_MAX + 1.0)));
 };
-bool DLL_CYBIOCORE_API testChance (double luckRate);
-bool DLL_CYBIOCORE_API testChance (double luckRate1,double luckRate2);
+bool DLL_CYBIOCORE_API testChance(double luckRate);
+bool DLL_CYBIOCORE_API testChance(double luckRate1,double luckRate2);
 
 timeCountType DLL_CYBIOCORE_API convertBioTimeToCount(BiotopTime_t bioTime);
 BiotopTime_t DLL_CYBIOCORE_API convertCountToBioTime(timeCountType count);

@@ -199,7 +199,7 @@ void CBrain::NextSecond()
   size_t selectId = invalidIndex;
 
   // TBD Select 1 purpose randomely among max levels or specify this order in biorules
-  for (size_t i=0; i<m_tPurposes.size(); i++)
+  for (size_t i = 0; i<m_tPurposes.size(); i++)
   {
     // Select new purpose according to highest sensor level
     if ((m_tPurposes[i]->GetPriority() > curPriority) && (m_tPurposes[i]->IsStartThresholdReached()))
@@ -243,7 +243,7 @@ void CBrain::NextDay()
 // Feeling/sensors/reactions/geomap management
 //---------------------------------------------------------------------------
 
-bool CBrain::SetNumberInputHistory (size_t nbHistory)
+bool CBrain::SetNumberInputHistory(size_t nbHistory)
 {
   if (nbHistory == 0)
     return false;
@@ -261,7 +261,7 @@ bool CBrain::SetNumberExperienceHistory (size_t nbHistory)
   return true;
 }
 
-size_t CBrain::AttachSensor (CSensor* pSensor)
+size_t CBrain::AttachSensor(CSensor* pSensor)
 {
   m_tSensors.push_back(pSensor);
 
@@ -275,19 +275,19 @@ size_t CBrain::AttachSensor (CSensor* pSensor)
   return (m_tSensors.size()-1);
 }
 
-size_t CBrain::AttachReaction (CReaction* pReaction)
+size_t CBrain::AttachReaction(CReaction* pReaction)
 {
   m_tReactions.push_back(pReaction);
   return (m_tReactions.size()-1);
 }
 
-size_t CBrain::AttachPurpose (CPurpose* pPurpose)
+size_t CBrain::AttachPurpose(CPurpose* pPurpose)
 {
   m_tPurposes.push_back(pPurpose);
   return (m_tPurposes.size()-1);
 }
 
-bool CBrain::DeleteAllSensors ()
+bool CBrain::DeleteAllSensors()
 {
   for (size_t i = 0; i < m_tSensors.size(); i++)
   {
@@ -298,7 +298,7 @@ bool CBrain::DeleteAllSensors ()
   return true;
 }
 
-bool CBrain::DeleteAllReactions ()
+bool CBrain::DeleteAllReactions()
 {
   for (size_t i = 0; i < m_tReactions.size(); i++)
   {
@@ -309,7 +309,7 @@ bool CBrain::DeleteAllReactions ()
   return true;
 }
 
-bool CBrain::DeleteAllPurposes ()
+bool CBrain::DeleteAllPurposes()
 {
   for (size_t i = 0; i < m_tPurposes.size(); i++)
   {
@@ -320,7 +320,7 @@ bool CBrain::DeleteAllPurposes ()
   return true;
 }
 
-bool CBrain::DeleteAllBrainMemorizedEntityIdentities ()
+bool CBrain::DeleteAllBrainMemorizedEntityIdentities()
 {
   // loop from top to bottom 
   for (size_t i = 0; i < m_tBrainMemorizedEntityIdentities.size(); i++)
@@ -332,29 +332,29 @@ bool CBrain::DeleteAllBrainMemorizedEntityIdentities ()
   return true;
 }
 
-size_t CBrain::GetNumberSensor ()
+size_t CBrain::GetNumberSensor()
 {
   return m_tSensors.size();
 }
 
-size_t CBrain::GetNumberReaction ()
+size_t CBrain::GetNumberReaction()
 {
   return m_tReactions.size();
 }
 
-size_t CBrain::GetNumberPurpose ()
+size_t CBrain::GetNumberPurpose()
 {
   return m_tPurposes.size();
 }
 
-CSensor* CBrain::GetSensorByIndex (size_t index)
+CSensor* CBrain::GetSensorByIndex(size_t index)
 {
   return m_tSensors[index];
 }
 
 CSensor* CBrain::GetSensorByUniqueId(DWORD uniqueId)
 {
-  for (size_t i=0; i<m_tSensors.size(); i++) 
+  for (size_t i = 0; i < m_tSensors.size(); i++) 
   {
     if (m_tSensors[i]->GetUniqueId() == uniqueId)
       return m_tSensors[i];
@@ -362,14 +362,14 @@ CSensor* CBrain::GetSensorByUniqueId(DWORD uniqueId)
   return NULL;
 }
 
-CReaction* CBrain::GetReactionByIndex (size_t index)
+CReaction* CBrain::GetReactionByIndex(size_t index)
 {
   return m_tReactions[index];
 }
 
 CReaction* CBrain::GetReactionByUniqueId(DWORD uniqueId)
 {
-  for (size_t i=0; i<m_tReactions.size(); i++) 
+  for (size_t i = 0; i < m_tReactions.size(); i++) 
   {
     if (m_tReactions[i]->GetUniqueId() == uniqueId)
       return m_tReactions[i];
@@ -377,14 +377,14 @@ CReaction* CBrain::GetReactionByUniqueId(DWORD uniqueId)
   return NULL;
 }
 
-CPurpose* CBrain::GetPurposeByIndex (size_t index)
+CPurpose* CBrain::GetPurposeByIndex(size_t index)
 {
   return m_tPurposes[index];
 }
 
 CPurpose* CBrain::GetPurposeByUniqueId(DWORD uniqueId)
 {
-  for (size_t i=0; i<m_tPurposes.size(); i++) 
+  for (size_t i = 0; i < m_tPurposes.size(); i++) 
   {
     if (m_tPurposes[i]->GetUniqueId() == uniqueId)
       return m_tPurposes[i];
@@ -402,7 +402,7 @@ CPurpose* CBrain::GetPurposeByLabel(string label)
   return NULL;
 }
 
-CPurpose* CBrain::GetCurrentPurpose (void)
+CPurpose* CBrain::GetCurrentPurpose(void)
 {
   return m_pCurrentPurpose;
 }
@@ -450,7 +450,7 @@ void CBrain::ForceCurrentPurpose(size_t purposeIndex)
   }
 }
 
-bool CBrain::PollAllSensors (void)
+bool CBrain::PollAllSensors(void)
 {
   sensorValType curSensorVal = 0;
   int bonusRate;
@@ -497,7 +497,7 @@ bool CBrain::PollAllSensors (void)
     cpt = GetBrainMatrixRowIndex (m_FocusedEntityInfo.captorUid, 1, m_FocusedEntityInfo.subcaptorIndex, 0);
     if (cpt != invalidIndex)
     {
-      for (i=0; i<m_FocusedEntityInfo.subcaptorsSize;i++)
+      for (i = 0; i < m_FocusedEntityInfo.subcaptorsSize; i++)
       {
         curSensorVal = m_vCurrentDecisionInput(cpt, 0);
         if (curSensorVal != 0) // CPU optim: curSensorVal is often 0
@@ -566,7 +566,7 @@ void CBrain::ForceBrainFocusedEntityId(entityIdType focusedEntityId)
 
 void CBrain::ResetReactionsFailureSuccessFactor()
 {
-  for (size_t i=0; i<m_tReactions.size(); i++) 
+  for (size_t i = 0; i < m_tReactions.size(); i++) 
   {
     m_tReactions[i]->ResetSuccessFailureFactor();
   }
@@ -649,7 +649,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
       pNode->RemoveChild(pNode->FirstChild());
   }
 
-  for (i=0; i<GetNumberReaction(); i++)
+  for (i = 0; i < GetNumberReaction(); i++)
   {
     TiXmlElement newAction(XML_NODE_ACTION);
     pNodeChild = pNode->InsertEndChild(newAction);
@@ -677,7 +677,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
       pNode->RemoveChild(pNode->FirstChild());
   }
 
-  for (i=0; i<m_tBrainMemorizedEntityIdentities.size(); i++)
+  for (i = 0; i < m_tBrainMemorizedEntityIdentities.size(); i++)
   {
     TiXmlElement newMemo(XML_NODE_MEMO);
     pNodeChild = pNode->InsertEndChild(newMemo);
@@ -799,21 +799,21 @@ bool CBrain::exportDecisionInCsvFile(string fileNameWithPath)
   string savedBrain = " ;";
 
   // First line
-  for (j=0; j<m_mDecisionNeuronTable.GetNeuronTableColumnCount(); j++)
+  for (j = 0; j < m_mDecisionNeuronTable.GetNeuronTableColumnCount(); j++)
   {
     savedBrain += GetColumnLabel(j) + ";";
   }
   savedBrain += "\n";
 
   // Next lines
-  for (i=0; i<m_mDecisionNeuronTable.GetNeuronTableRowCount(); i++)
+  for (i = 0; i < m_mDecisionNeuronTable.GetNeuronTableRowCount(); i++)
   {
     // First column
     savedBrain += GetRowLabel(i) + ";";
     // Next columns
-    for (j=0; j<m_mDecisionNeuronTable.GetNeuronTableColumnCount();j++)
+    for (j = 0; j < m_mDecisionNeuronTable.GetNeuronTableColumnCount(); j++)
     {
-      tmpStr = FormatString("%02.8f", m_mDecisionNeuronTable.GetNeuronTableData(i,j));
+      tmpStr = FormatString("%02.8f", m_mDecisionNeuronTable.GetNeuronTableData(i, j));
       savedBrain += tmpStr + ";";
     }
     savedBrain += "\n";
@@ -844,20 +844,20 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
   fLength = (end - begin);
   f1.seekg(0, ios::beg);
 
-  if ( (fLength==0) || (fLength>3000000) )
+  if ((fLength == 0) || (fLength > 3000000))
   {
     return false;
   }
 
-  pbuf = new char[fLength+1];
-  memset(pbuf,0,fLength+1);
-  f1.read(pbuf,fLength);
+  pbuf = new char[fLength + 1];
+  memset(pbuf, 0, fLength + 1);
+  f1.read(pbuf, fLength);
   loadedBrain = pbuf;
   f1.close();
 
   delete[] pbuf;
 
-  if (loadedBrain.length()>0)
+  if (loadedBrain.length() > 0)
   {
     std::vector<std::string> vectColumnLabel;
     std::vector<std::string> vectRowLabel;
@@ -869,7 +869,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
 
     // skip 1st column that should be empty
     indexStart = loadedBrain.find(";",0) + 1;
-    if ((indexStart<2) || (indexStart>3))
+    if ((indexStart < 2) || (indexStart > 3))
       return false; // format error, first element should be empty
 
     // parse 1st row. count nb of columns
@@ -912,7 +912,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
       readLine = loadedBrain.substr(indexStartLine,indexEndLine-indexStartLine);
       indexStart = 0;
 
-      for (columnIndex=0; columnIndex<nbColumnsInFile; columnIndex++)
+      for (columnIndex = 0; columnIndex < nbColumnsInFile; columnIndex++)
       {
         indexEnd = readLine.find(";",indexStart);
         readStr = readLine.substr(indexStart,indexEnd-indexStart);
@@ -937,7 +937,7 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     for (i = 0; i < columnMaping.size(); i++)
     {
       columnMaping[i] = -1;
-      for(j=0; j<nbColumnsInFile; j++)
+      for(j = 0; j < nbColumnsInFile; j++)
       {
         if (GetColumnLabel(i).find(vectColumnLabel[j], 0) == 0)
         {
@@ -950,13 +950,13 @@ bool CBrain::importDecisionFromCsvFile(string fileNameWithPath)
     // For each line in brain try to find corresponding line in csv file
     double scale = avarageValInBrain / avarageValInFile;
     double newValue;
-    for (i=0; i<m_mDecisionNeuronTable.GetNeuronTableRowCount(); i++)
+    for (i = 0; i < m_mDecisionNeuronTable.GetNeuronTableRowCount(); i++)
     {
-      for(j=0; j<nbRowsInFile; j++)
+      for(j = 0; j < nbRowsInFile; j++)
       {
         if (GetRowLabel(i).find(vectRowLabel[j], 0) == 0)
         {
-          for (columnIndex=0; columnIndex<GetNumberReaction(); columnIndex++)
+          for (columnIndex = 0; columnIndex < GetNumberReaction(); columnIndex++)
           {
             newValue = scale * dataMatrixInFile.GetNeuronTableData(j, columnMaping[columnIndex]);
             pBrainNeuronMatrix->SetNeuronTableData(i, columnIndex, newValue);
@@ -1040,9 +1040,9 @@ bool CBrain::InitializeNeuronTableNeutral()
   }
   size_t nOutputReactions = m_tReactions.size();
   m_vCurrentDecisionInput.SetSize(m_nInputSensors*m_nInputHistory,1);
-  for (size_t i=0; i<m_vCurrentDecisionInput.RowNo(); i++)
+  for (size_t i = 0; i < m_vCurrentDecisionInput.RowNo(); i++)
   {
-    m_vCurrentDecisionInput(i,0) = 0;
+    m_vCurrentDecisionInput(i, 0) = 0;
   }
   m_mDecisionNeuronTable.InitializeNeuronMatrixNeutral(XML_NODE_BRAIN, m_nInputSensors*m_nInputHistory,nOutputReactions);
   m_mInputDecisionHistory.SetSize(m_nInputSensors*m_nInputHistory,m_nExperienceHistory);
@@ -1070,16 +1070,16 @@ void CBrain::HistorizeInput (void)
     return;
   }
 
-  for (int hist=(int)m_nExperienceHistory-1; hist>0; hist--)
+  for (int hist = (int)m_nExperienceHistory - 1; hist > 0; hist--)
   {
     // Fill input history (shift all Input vect on righ, and *m_historyWeight to give less weight to pass)
-    for (size_t i=0; i<m_mInputDecisionHistory.RowNo(); i++)
+    for (size_t i = 0; i < m_mInputDecisionHistory.RowNo(); i++)
     {
       m_mInputDecisionHistory(i,hist) = m_mInputDecisionHistory(i,hist-1)*m_historyWeight;
     }
   }
   // Insert current input
-  for (size_t i=0; i<m_mInputDecisionHistory.RowNo(); i++)
+  for (size_t i = 0; i < m_mInputDecisionHistory.RowNo(); i++)
   {
     m_mInputDecisionHistory(i,0) = m_vCurrentDecisionInput(i,0);
   }
@@ -1112,7 +1112,7 @@ bool CBrain::SetBonusAndGetVectorChoiceThresholds(double curiosityRate, neuroneV
 
   // Find max value
   maxVal = -100;
-  for (i=0; i<nOutputReactions; i++)
+  for (i = 0; i < nOutputReactions; i++)
   {
     // Add purpose bonus
     bonusRate = m_tReactions[i]->GetBonusRate();
@@ -1142,7 +1142,7 @@ bool CBrain::SetBonusAndGetVectorChoiceThresholds(double curiosityRate, neuroneV
   return true;
 }
 
-choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionIntensityType_e &intensity)
+choiceIndType CBrain::ComputeAndGetDecision(double curiosityRate, ReactionIntensityType_e &intensity)
 {
   size_t i, j;
   neuroneValType maxVal = -100;
@@ -1159,14 +1159,14 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
   SetBonusAndGetVectorChoiceThresholds(curiosityRate, maxVal, thresholdMidVal, thresholdVal);
 
   // Count values over threshold
-  for (i=0; i<nOutputReactions; i++)
+  for (i = 0; i < nOutputReactions; i++)
   {
     curVal = m_vCurrentDecisionChoice(i,0);
     avarageVal += curVal;
 
     if (curVal == maxVal) // Give MAX_CHOICE_BUFFER_SIZE_PER_CHOICE chances to maxVal
     {
-      for (j=0;j<MAX_CHOICE_BUFFER_SIZE_PER_CHOICE;j++)
+      for (j = 0; j < MAX_CHOICE_BUFFER_SIZE_PER_CHOICE; j++)
       {
         m_pChoiceDecisionBuffer[cptMaxVal] = i;
         cptMaxVal++;
@@ -1174,7 +1174,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
     }
     else if (curVal > thresholdMidVal) // Give 2 chances 
     {
-      for (j=0;j<2;j++)
+      for (j = 0; j < 2; j++)
       {
         m_pChoiceDecisionBuffer[cptMaxVal] = i;
         cptMaxVal++;
@@ -1182,7 +1182,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
     }
     else if (curVal > thresholdVal) // Give 1 chance
     {
-      for (j=0;j<1;j++)
+      for (j = 0; j < 1; j++)
       {
         m_pChoiceDecisionBuffer[cptMaxVal] = i;
         cptMaxVal++;
@@ -1214,7 +1214,7 @@ choiceIndType CBrain::ComputeAndGetDecision (double curiosityRate, ReactionInten
   return resuIndex;
 }
 
-feedbackValType CBrain::ComputeFeedback (choiceIndType myChoice, ReactionIntensityType_e myIntensity)
+feedbackValType CBrain::ComputeFeedback(choiceIndType myChoice, ReactionIntensityType_e myIntensity)
 {
   feedbackValType resu;
   if (m_tReactions[myChoice] == NULL)
@@ -1253,27 +1253,27 @@ feedbackValType CBrain::GetCurrentFeedback ()
   return resu;
 }
 
-bool CBrain::HistorizeDecision (choiceIndType index)
+bool CBrain::HistorizeDecision(choiceIndType index)
 {
-  for (int hist=(int)m_nExperienceHistory-1; hist>0; hist--)
+  for (int hist = (int)m_nExperienceHistory - 1; hist>0; hist--)
   {
     // Fill input history (shift all Input vect on righ)
-    for (size_t i=0; i<m_mDecisionHistory.RowNo(); i++)
+    for (size_t i = 0; i < m_mDecisionHistory.RowNo(); i++)
     {
-      m_mDecisionHistory(i,hist) = m_mDecisionHistory(i,hist-1);
+      m_mDecisionHistory(i, hist) = m_mDecisionHistory(i, hist - 1);
     }
   }
     // Insert current input
-  for (size_t i=0; i<m_mDecisionHistory.RowNo(); i++)
+  for (size_t i = 0; i < m_mDecisionHistory.RowNo(); i++)
   {
-    m_mDecisionHistory(i,0) = 0;
+    m_mDecisionHistory(i, 0) = 0;
   }
-  m_mDecisionHistory(index,0) = 1;
+  m_mDecisionHistory(index, 0) = 1;
 
   return true;
 }
 
-bool CBrain::MemorizeExperience (feedbackValType currentFeedback, double learningRate)
+bool CBrain::MemorizeExperience(feedbackValType currentFeedback, double learningRate)
 {
   // Small feedback should not be memorize because it is most of the time non significative but occurs very often
   if ((currentFeedback < MEMORIZATION_FEEDBACK_THRESHOLD) && (currentFeedback > -MEMORIZATION_FEEDBACK_THRESHOLD))
@@ -1350,7 +1350,7 @@ bool CBrain::SetCurrentReactionIndex(size_t index)
 
 size_t CBrain::GetReactionIndexByLabel(string label)
 {
-  for (size_t i=0; i<m_tReactions.size(); i++) 
+  for (size_t i = 0; i < m_tReactions.size(); i++) 
   {
     if (m_tReactions[i]->GetLabel() == label)
       return i;
@@ -1409,7 +1409,6 @@ string CBrain::GetRowLabel(size_t index)
         label = FormatString("T-%d ", offset);
         label += GetSensorByIndex(sensId)->GetLabel() + " " + GetSensorByIndex(sensId)->GetSubCaptorLabel(index-pos);
 
-        // FRED temp
         if (IsDecisionRowSexSpecific(index))
           label += " (sex)";
 
@@ -1425,10 +1424,10 @@ string CBrain::GetRowLabel(size_t index)
 size_t CBrain::GetBrainMatrixColumnIndex(DWORD reactionUidBase, size_t reactionUidRange, size_t foundIndex)
 {
   size_t foundCount = 0;
-  for (size_t reacId=0; reacId<GetNumberReaction(); reacId++)
+  for (size_t reacId = 0; reacId < GetNumberReaction(); reacId++)
   {
     DWORD uid = GetReactionByIndex(reacId)->GetUniqueId();
-    if ( ( uid >= reactionUidBase) && (uid < (reactionUidBase + reactionUidRange)) )
+    if ((uid >= reactionUidBase) && (uid < (reactionUidBase + reactionUidRange)))
     {
       if (foundCount == foundIndex)
         return (reacId);
@@ -1479,11 +1478,11 @@ bool CBrain::IsDecisionRowSexSpecific(size_t rowIndex)
   else
   {
     size_t pos = 0;
-    for (size_t sensId=0; sensId<GetNumberSensor(); sensId++)
+    for (size_t sensId = 0; sensId < GetNumberSensor(); sensId++)
     {
-      if ( (pos <= index) && (index < pos+GetSensorByIndex(sensId)->GetSubCaptorNumber()) )
+      if ((pos <= index) && (index < pos + GetSensorByIndex(sensId)->GetSubCaptorNumber()))
       {
-        return (GetSensorByIndex(sensId)->IsSexSpecific(index-pos));
+        return (GetSensorByIndex(sensId)->IsSexSpecific(index - pos));
       }
       pos += GetSensorByIndex(sensId)->GetSubCaptorNumber();
     }
@@ -1656,15 +1655,15 @@ bool CBrain::GetVectorIdentifyThresholds (neuroneValType &highThreshold, neurone
   neuroneValType avarageVal = 0;
 
   // Find max value
-  for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+  for (i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
   {   
     // compute avarage
-    avarageVal += m_vCurrentIdentifyOutput(i,0);
+    avarageVal += m_vCurrentIdentifyOutput(i, 0);
     // compute max
-    if (m_vCurrentIdentifyOutput(i,0) > maxVal)
+    if (m_vCurrentIdentifyOutput(i, 0) > maxVal)
     {
       // New max
-      maxVal = m_vCurrentIdentifyOutput(i,0);
+      maxVal = m_vCurrentIdentifyOutput(i, 0);
     }
   }
 
@@ -1686,7 +1685,7 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   neuroneValType highThreshold, midThreshold, lowThreshold;
 
   // Initialize m_vCurrentIdentificationChoice
-  for (i = 0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+  for (i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
   {
     m_vCurrentIdentificationChoice(i, 0) = 0;
   }
@@ -1711,7 +1710,7 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   else
   {
     double count=0;
-    for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+    for (i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
     { 
       if (m_vCurrentIdentifyOutput(i,0) >= highThreshold)
       {
@@ -1730,7 +1729,7 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
       }
     }
     // Adjust weight
-    for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+    for (i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
     { 
       m_vCurrentIdentificationChoice(i,0) = m_vCurrentIdentificationChoice(i,0) * 16.0 / count;
     }
@@ -1801,12 +1800,12 @@ void CBrain::UpdateIdentifyInputVector(CBasicEntity* pEntity, bool useOdors)
 
   if (useOdors)
   {
-    for (i=0; i<NUMBER_ODORS; i++)
+    for (i = 0; i < NUMBER_ODORS; i++)
     {
       m_vCurrentIdentifyInput(offset,0) = m_pSensorSmell->GetSubCaptorStimulationLevel(i) / 2; // reduce weight because not directional
       offset++;
     }
-    for (i=0; i<NUMBER_PHEROMONES; i++)
+    for (i = 0; i < NUMBER_PHEROMONES; i++)
     {
       m_vCurrentIdentifyInput(offset,0) = m_pSensorPheromone->GetSubCaptorStimulationLevel(i) / 2; // reduce weight because not directional
       offset++;
@@ -1843,7 +1842,7 @@ bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignatu
 {
   BrainMemorizedEntityIdentity_t* pEntityMem=NULL;
 
-  for (size_t i=0; i<m_tBrainMemorizedEntityIdentities.size(); i++) 
+  for (size_t i = 0; i < m_tBrainMemorizedEntityIdentities.size(); i++) 
   {
     if ((m_tBrainMemorizedEntityIdentities[i]->identity == identity) && (m_tBrainMemorizedEntityIdentities[i]->entitySignature == entitySignature))
       return false;
@@ -1860,7 +1859,7 @@ bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignatu
   // Memorize
   pEntityMem = new BrainMemorizedEntityIdentity_t;
   pEntityMem->entitySignature = entitySignature;
-  pEntityMem->identity        = identity;
+  pEntityMem->identity = identity;
   m_tBrainMemorizedEntityIdentities.push_back(pEntityMem);
 
   return true;
@@ -1870,7 +1869,7 @@ bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignatu
 bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,double learningRate, CBasicEntity* pEntity, IdentificationType_e identity)
 {
   // skip small memorizations
-  if (((currentFeedback<1) && (currentFeedback>-1)) || (pEntity==NULL) || (CheckIfEntityIdentityNotMemorized(pEntity->getEntitySignature(), identity)==false) )
+  if (((currentFeedback < 1) && (currentFeedback > -1)) || (pEntity == NULL) || (CheckIfEntityIdentityNotMemorized(pEntity->getEntitySignature(), identity) == false) )
     return false;
 
   if (currentFeedback > MAX_FEEDBACK_VAL)
@@ -1881,13 +1880,13 @@ bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,do
   // Prepare input
   UpdateIdentifyInputVector(pEntity, true);
   // Prepare output
-  for (size_t i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+  for (size_t i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
   { 
     m_vCurrentIdentificationChoice(i,0) = 0;
   }
   m_vCurrentIdentificationChoice(identity,0) = MAX_FEEDBACK_VAL;
 
-  neuroneValType coef = currentFeedback*learningRate/MAX_FEEDBACK_VAL/MAX_SENSOR_VAL/10000; 
+  neuroneValType coef = currentFeedback*learningRate / MAX_FEEDBACK_VAL / MAX_SENSOR_VAL / 10000; 
 
   CYBIOCORE_LOG_TIME(GetEntity()->getBiotop()->getBiotopTime());
   CYBIOCORE_LOG("BRAIN  - MemorizeIdentificationExperience : name %s currentFeedback=%.1f learningRate=%.1f identity=%s entity=%s coef=%1.4f\n", 
@@ -1905,12 +1904,12 @@ bool CBrain::ReenforceFullIdentity(feedbackValType currentFeedback, Identificati
 
   // Prepare input
   size_t i;
-  for (i=0; i<m_nInputIdentification; i++)
+  for (i = 0; i < m_nInputIdentification; i++)
   { 
     m_vCurrentIdentifyInput(i,0) = MAX_SENSOR_VAL;
   }
   // Prepare output
-  for (i=0; i<IDENTIFICATION_NUMBER_TYPE; i++)
+  for (i = 0; i < IDENTIFICATION_NUMBER_TYPE; i++)
   { 
     m_vCurrentIdentificationChoice(i,0) = 0;
   }

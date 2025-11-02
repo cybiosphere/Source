@@ -98,7 +98,7 @@ const std::vector<sensorValType>& CSensorTactile::UpdateAndGetStimulationTable()
   // Process level
   for (size_t layer = 0; layer < (size_t)(m_relTopLayer - m_relBottomLayer + 1); layer++)
   {
-    pTouchedEntity = pAnimal->getBiotop()->findEntity(relCoord,pAnimal->getLayer()+m_relBottomLayer+layer);
+    pTouchedEntity = pAnimal->getBiotop()->findEntity(relCoord, pAnimal->getLayer() + m_relBottomLayer + layer);
     if (pTouchedEntity != NULL)
     {
       m_tStimulationValues[layer] = MAX_SENSOR_VAL; // bool 0 or MAX_SENSOR_VAL

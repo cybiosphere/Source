@@ -60,9 +60,9 @@ CReactionVarySpeed::CReactionVarySpeed(CBrainAnimal*  pBrain, double successFact
 {
   m_pBrain    = pBrain;
   m_stepSpeed = stepSpeed;
-  if (m_stepSpeed>12)
+  if (m_stepSpeed > 12)
     m_Label = "Run";
-  else if (m_stepSpeed<=0)
+  else if (m_stepSpeed <= 0)
     m_Label = "BadSpeed";
   else
     m_Label = "Walk";
@@ -93,7 +93,7 @@ void CReactionVarySpeed::ExecuteAction(ReactionIntensityType_e intensity)
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL);
 
-  double accelerationRate = 50 + (intensity-2) * 10;  // Use value from new parameter
+  double accelerationRate = 50 + (intensity - 2) * 10;  // Use value from new parameter
   double targetSpeed = m_stepSpeed;
 
   int stepVariation = cybio_round((targetSpeed - (double)m_pBrain->getAnimal()->getCurrentSpeed()) * accelerationRate / 100.0);

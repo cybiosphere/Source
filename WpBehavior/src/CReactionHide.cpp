@@ -84,6 +84,6 @@ void CReactionHide::ExecuteAction(ReactionIntensityType_e intensity)
 {
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->stopCurrentSpeed();
-  m_pBrain->getAnimal()->setCamouflageToNominalRatio(200+intensity*100);
+  m_pBrain->getAnimal()->setCamouflageToNominalRatio(200 + intensity * 100);
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_NORMAL); // Animal is vigilant, but malus due to hiden state
 }

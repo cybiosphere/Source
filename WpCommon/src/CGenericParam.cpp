@@ -49,17 +49,17 @@ CGenericParam::CGenericParam(double valMin, double valInit, double valNominal, d
   m_Type       = type;
 
   // Corrections
-  if (m_ValMax<m_ValMin)
+  if (m_ValMax < m_ValMin)
     m_ValMax = m_ValMin;
 
-  if (m_ValCurrent<m_ValMin)
+  if (m_ValCurrent < m_ValMin)
     m_ValCurrent = m_ValMin;
-  if (m_ValCurrent>m_ValMax)
+  if (m_ValCurrent > m_ValMax)
     m_ValCurrent = m_ValMax;
 
-  if (m_ValNominal<m_ValMin)
+  if (m_ValNominal < m_ValMin)
     m_ValNominal = m_ValMin;
-  if (m_ValNominal>m_ValMax)
+  if (m_ValNominal > m_ValMax)
     m_ValNominal = m_ValMax;
 }
 
@@ -120,35 +120,16 @@ double CGenericParam::getVal(void)
   return m_ValCurrent;
 }
 
-bool CGenericParam::setVal(double newVal)
+void CGenericParam::setVal(double newVal)
 {
   m_ValCurrent = newVal;
-  if (m_ValCurrent>m_ValMax)
+  if (m_ValCurrent > m_ValMax)
   {
-    m_ValCurrent=m_ValMax;
-    return false;
+    m_ValCurrent = m_ValMax;
   }
-  else if (m_ValCurrent<m_ValMin)
+  else if (m_ValCurrent < m_ValMin)
   {
-    m_ValCurrent=m_ValMin;
-    return false;
-  }
-  else
-  {
-    return true;
-  }
-}
-
-bool CGenericParam::forceVal(double newVal)
-{
-  m_ValCurrent = newVal;
-  if ((m_ValCurrent>m_ValMax)||(m_ValCurrent<m_ValMin))
-  {
-    return false;
-  }
-  else
-  {
-    return true;
+    m_ValCurrent = m_ValMin;
   }
 }
 
@@ -157,60 +138,42 @@ double CGenericParam::getValNominal(void)
   return m_ValNominal;
 }
 
-bool CGenericParam::setValNominal(double newVal)
+void CGenericParam::setValNominal(double newVal)
 {
   m_ValNominal = newVal;
-  if (m_ValNominal>m_ValMax)
+  if (m_ValNominal > m_ValMax)
   {
-    m_ValNominal=m_ValMax;
-    return false;
+    m_ValNominal = m_ValMax;
   }
-  else if (m_ValNominal<m_ValMin)
+  else if (m_ValNominal < m_ValMin)
   {
-    m_ValNominal=m_ValMin;
-    return false;
-  }
-  else
-  {
-    return true;
+    m_ValNominal = m_ValMin;
   }
 }
 
-bool CGenericParam::setValMax(double newVal)
+void CGenericParam::setValMax(double newVal)
 {
   m_ValMax = newVal;
-  if (m_ValNominal>m_ValMax)
+  if (m_ValNominal > m_ValMax)
   {
-    m_ValNominal=m_ValMax;
-    return false;
+    m_ValNominal = m_ValMax;
   }
-  else if (m_ValCurrent>m_ValMax)
+  if (m_ValCurrent > m_ValMax)
   {
-    m_ValCurrent=m_ValMax;
-    return false;
-  }
-  else
-  {
-    return true;
+    m_ValCurrent = m_ValMax;
   }
 }
 
-bool CGenericParam::setValMin(double newVal)
+void CGenericParam::setValMin(double newVal)
 {
   m_ValMin = newVal;
-  if (m_ValNominal<m_ValMin)
+  if (m_ValNominal < m_ValMin)
   {
-    m_ValNominal=m_ValMax;
-    return false;
+    m_ValNominal = m_ValMin;
   }
-  else if (m_ValCurrent<m_ValMin)
+  else if (m_ValCurrent < m_ValMin)
   {
-    m_ValCurrent=m_ValMin;
-    return false;
-  }
-  else
-  {
-    return true;
+    m_ValCurrent = m_ValMin;
   }
 }
 
@@ -229,22 +192,16 @@ string CGenericParam::getLabel(void)
   return ("Unset");
 }
 
-bool CGenericParam::changeVal(double variation)
+void CGenericParam::changeVal(double variation)
 {
   m_ValCurrent += variation;
-  if (m_ValCurrent>m_ValMax)
+  if (m_ValCurrent > m_ValMax)
   {
-    m_ValCurrent=m_ValMax;
-    return false;
+    m_ValCurrent = m_ValMax;
   }
-  else if (m_ValCurrent<m_ValMin)
+  else if (m_ValCurrent < m_ValMin)
   {
-    m_ValCurrent=m_ValMin;
-    return false;
-  }
-  else
-  {
-    return true;
+    m_ValCurrent = m_ValMin;
   }
 }
 

@@ -81,7 +81,7 @@ void CReactionDrink::ExecuteAction(ReactionIntensityType_e intensity)
   m_pBrain->getAnimal()->wakeUp();
   m_pBrain->getAnimal()->stopCurrentSpeed();
   m_pBrain->getAnimal()->setVigilance(VIGILANCE_RATE_LOW);
-  if (m_pBrain->getAnimal()->ExecuteDrinkAction(m_SuccessSatisfactionFactor,m_FailureFrustrationFactor))
+  if (m_pBrain->getAnimal()->ExecuteDrinkAction(m_SuccessSatisfactionFactor, m_FailureFrustrationFactor))
     m_ConsecutiveFailures = 0;
   else
     m_ConsecutiveFailures++;  

@@ -87,8 +87,8 @@ public:
 
   string buildStringDataFromNeuronTable();
   bool buildNeuronTableFromStringData(string rawData);
-  bool buildNeuronLineFromRawData (size_t lineId, size_t lenData, WORD* pRawData);
-  int  buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData);
+  bool buildNeuronLineFromRawData(size_t lineId, size_t lenData, WORD* pRawData);
+  int  buildRawDataFromNeuronLine(size_t lineId, WORD*& pRawData);
 
   size_t GetNeuronTableRowCount();
   size_t GetNeuronTableColumnCount();

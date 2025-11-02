@@ -234,29 +234,29 @@ public:
   bool setEntityFromGenome(double mutationRate = 0);
 
 protected:
-  virtual bool setSexFromGenome ();
-  virtual bool setCaractFromGene (CGene* pGen);
+  virtual bool setSexFromGenome();
+  virtual bool setCaractFromGene(CGene* pGen);
   virtual bool completeCaractsWithDefault();
-  virtual bool setParamFromGene (CGene* pGen);
+  virtual bool setParamFromGene(CGene* pGen);
   virtual bool completeParamsWithDefault();
-  virtual bool setLifeStageFromGene (CGene* pGen);
+  virtual bool setLifeStageFromGene(CGene* pGen);
   virtual bool completeLifeStagesWithDefault();
-  virtual bool setPhysicWelfareFromGene (CGene* pGen);
+  virtual bool setPhysicWelfareFromGene(CGene* pGen);
   virtual bool completePhysicWelfareWithDefault();
-  bool setBrainSensorFromGene (CGene* pGen);
-  virtual bool setBrainReactionFromGene (CGene* pGen);
+  bool setBrainSensorFromGene(CGene* pGen);
+  virtual bool setBrainReactionFromGene(CGene* pGen);
   virtual bool completeBrainSensorWithDefault();
   virtual bool completeBrainReactionWithDefault();
-  virtual bool setBrainSizeFromGene (CGene* pGen);
-  virtual bool setBrainInstinctFromGene (CGene* pGen);
-  virtual bool setBrainConfigFromGene (CGene* pGen);
+  virtual bool setBrainSizeFromGene(CGene* pGen);
+  virtual bool setBrainInstinctFromGene(CGene* pGen);
+  virtual bool setBrainConfigFromGene(CGene* pGen);
   virtual bool completeBrainInstinctWithDefault();
-  virtual bool setFeelingFromGene (CGene* pGen);
-  virtual bool setPurposeFromGene (CGene* pGen);
+  virtual bool setFeelingFromGene(CGene* pGen);
+  virtual bool setPurposeFromGene(CGene* pGen);
   void         computeEntitySignature();
 
 public:
-  virtual CSensor* getTemporarySensorFromGene (CGene* pGen);
+  virtual CSensor* getTemporarySensorFromGene(CGene* pGen);
 
 //---------------------------------------------------------------------------
 // Genetic description
@@ -264,7 +264,7 @@ public:
 public:
   string getGeneDescriptionString(CGene* pGen);
 
-  virtual size_t getExpectedBrainSensorWeightSize (CGene* pGen);
+  virtual size_t getExpectedBrainSensorWeightSize(CGene* pGen);
 
 protected:
   virtual string buildCaracterString(CGene* pGen);

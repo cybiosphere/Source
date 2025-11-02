@@ -285,7 +285,7 @@ bool CGene::setAsSensor(GeneSubTypeSensor_e subType, int muteRate, int nbWeight,
   pWordData[1] = encodeLongOnWord(data2, 1000);
   pWordData[2] = encodeLongOnWord(data3, 1000);
   pWordData[3] = encodeLongOnWord(data4, 1000);
-  for (int i=0; i<nbWeight; i++)
+  for (int i = 0; i < nbWeight; i++)
   {
     pWordData[4+i] = encodeLongOnWordSigned(pWeight[i], 1000);
   }
@@ -329,7 +329,7 @@ bool CGene::setAsSensorUsingDefinition(GeneSubTypeSensor_e subType, int muteRate
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId)
+bool CGene::setAsSensorComposite(int muteRate, int nbWeight, short* pWeight, DWORD sensorUId, int paramId)
 {
   m_RawData.clear();
 
@@ -345,7 +345,7 @@ bool CGene::setAsSensorComposite (int muteRate, int nbWeight, short* pWeight, DW
   pWordData[1] = sensorUId&0xFFFF;
   pWordData[2] = encodeLongOnWord(paramId, 1000);
   pWordData[3] = 0;
-  for (int i=0; i<nbWeight; i++)
+  for (int i = 0; i < nbWeight; i++)
   {
     pWordData[4+i] = encodeLongOnWordSigned(pWeight[i], 1000);
   }
@@ -441,7 +441,7 @@ bool CGene::setAsBrainSize(GeneSubTypeBrainSize_e subType, int muteRate, size_t 
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
+bool CGene::setAsBrainInstinctLine(int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
 {
   m_RawData.clear();
 
@@ -455,7 +455,7 @@ bool CGene::setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn
   // Set 1st Word as lineId. Generic scale is [0..10000]
   pWordData[0] = encodeLongOnWord((long)lineId, 10000);
   // Set all other words as brain line data
-  for (size_t i=0;i<nbColumn;i++)
+  for (size_t i = 0; i < nbColumn; i++)
   {
     pWordData[i+1] = pData[i];
   }
@@ -473,7 +473,7 @@ bool CGene::setAsBrainInstinctLine (int muteRate, size_t lineId, size_t nbColumn
 //  
 // REMARKS:      Erase previous data and resize memory
 //---------------------------------------------------------------------------
-bool CGene::setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
+bool CGene::setAsBrainIdentificationLine(int muteRate, size_t lineId, size_t nbColumn, WORD* pData)
 {
   m_RawData.clear();
 
@@ -487,9 +487,9 @@ bool CGene::setAsBrainIdentificationLine (int muteRate, size_t lineId, size_t nb
   // Set 1st Word as lineId. Generic scale is [0..10000]
   pWordData[0] = encodeLongOnWord((long)lineId, 10000);
   // Set all other words as brain line data
-  for (size_t i=0;i<nbColumn;i++)
+  for (size_t i = 0; i < nbColumn; i++)
   {
-    pWordData[i+1] = pData[i];
+    pWordData[i + 1] = pData[i];
   }
   return true;
 }
@@ -521,9 +521,9 @@ bool CGene::setAsFeeling(GeneSubTypeFeeling_e subType, int muteRate, DWORD senso
   DWORD* pDWordData = (DWORD*)m_RawData.data();
   pDWordData[0] = sensorUId;
   // Generic scale for all values is [0..1000]
-  for (int i=0; i<nbSensi; i++)
+  for (int i = 0; i < nbSensi; i++)
   {
-    pWordData[2+i] = encodeLongOnWordSigned(pSensi[i], 1000);
+    pWordData[2 + i] = encodeLongOnWordSigned(pSensi[i], 1000);
   }
   return true;
 }
@@ -565,9 +565,9 @@ bool CGene::setAsPurposeTrigger(GeneSubTypePurpose_e subType, int muteRate,
   pWordData[3]  = encodeLongOnWord(stopThreshold, 1000);
   pDWordData[2] = sensorUId;
 
-  for (int i=0; i<labelLen; i++)
+  for (int i = 0; i < labelLen; i++)
   {
-    pByteData[12+i] = pLabel[i];
+    pByteData[12 + i] = pLabel[i];
   }
   return true;
 }
@@ -600,7 +600,7 @@ bool CGene::setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensor
   DWORD* pDWordData = (DWORD*)m_RawData.data();
   pDWordData[0] = purposeUId;
   pDWordData[1] = sensorUId;
-  for (int i=0; i<nbBonus; i++)
+  for (int i = 0; i < nbBonus; i++)
   {
     pWordData[4+i] = encodeLongOnWord(pBonusTable[i], 2000);
   }
@@ -901,7 +901,7 @@ string CGene::buildStringDataFromGene()
                   m_RawData.size()+2, // include mute type and mute rate
                   m_MuteType,m_MuteRate);
   rawData += tempStr;
-  for (size_t j=0; j<m_RawData.size(); j++)
+  for (size_t j = 0; j < m_RawData.size(); j++)
   {
     tempStr = FormatString("%02X",m_RawData[j]);
     rawData += tempStr;
@@ -962,7 +962,7 @@ int CGene::getRecessiveFactor(void)
   int resu=0;
   
   // Each BYTE has same weight
-  for (size_t i=0;i<m_RawData.size();i++)
+  for (size_t i = 0; i < m_RawData.size(); i++)
   {
     resu = resu + m_RawData[i];
   }

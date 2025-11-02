@@ -286,7 +286,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
 {
   bool resu = false;
   size_t i,j;
-  if (m_pGenome==NULL)
+  if (m_pGenome == NULL)
   {
     // Set mandatory caracters with default values
     completeCaractsWithDefault();
@@ -295,7 +295,7 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
     return true;
   }
 
-  if (mutationRate>0)
+  if (mutationRate > 0)
   {
     m_pGenome->tryMutation((int)floor(mutationRate));
   }
@@ -305,9 +305,9 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
 
   // 2- Set other caracters and parameters according to genome
   CGene* pGen = NULL;
-  for (i=0; i<m_pGenome->getNumPair();i++)
+  for (i = 0; i < m_pGenome->getNumPair(); i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
+    for (j = 0; j < m_pGenome->getPair(i)->getNumGenes(); j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -330,9 +330,9 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
 
   // 3- Set parameter/caracter dependant object according to genome
   // As initialisation of parameter must be finished, don't handle them in prev loop!
-  for (i=0; i<m_pGenome->getNumPair();i++)
+  for (i = 0; i < m_pGenome->getNumPair(); i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
+    for (j = 0; j < m_pGenome->getPair(i)->getNumGenes(); j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -360,9 +360,9 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   }
 
   // 4- Set Brain Reactions and Sensors and size according to genome
-  for (i=0; i<m_pGenome->getNumPair();i++)
+  for (i = 0; i < m_pGenome->getNumPair(); i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
+    for (j = 0; j < m_pGenome->getPair(i)->getNumGenes(); j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -395,9 +395,9 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
   }
 
   resu = false;
-  for (i=0; i<m_pGenome->getNumPair();i++)
+  for (i = 0; i < m_pGenome->getNumPair(); i++)
   {
-    for (j=0; j<m_pGenome->getPair(i)->getNumGenes();j++)
+    for (j = 0; j < m_pGenome->getPair(i)->getNumGenes(); j++)
     {
       pGen = m_pGenome->getPair(i)->getDominantAllele(j);
       switch (pGen->getGeneType())
@@ -468,9 +468,9 @@ bool CBasicEntity::setSexFromGenome(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CBasicEntity::setCaractFromGene (CGene* pGen)
+bool CBasicEntity::setCaractFromGene(CGene* pGen)
 {
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_CARACTER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_CARACTER))
   {
     return false;
   }
@@ -598,16 +598,16 @@ bool CBasicEntity::completeCaractsWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CBasicEntity::setParamFromGene (CGene* pGen)
+bool CBasicEntity::setParamFromGene(CGene* pGen)
 {
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
   // We are sure Gene is a parameter
   bool resu = false;
   size_t len = pGen->getData().size();
-  if (len<3*sizeof(WORD))
+  if (len < 3 * sizeof(WORD))
   {
     // not enought data to config param
     return false;
@@ -708,7 +708,7 @@ bool CBasicEntity::completeParamsWithDefault(void)
 // REMARKS:      Should NOT be called by derived method. 
 //               All stages must be supported at the same inheritage level
 //---------------------------------------------------------------------------
-bool CBasicEntity::setLifeStageFromGene (CGene* pGen)
+bool CBasicEntity::setLifeStageFromGene(CGene* pGen)
 {
   return false;
 }
@@ -743,7 +743,7 @@ bool CBasicEntity::completeLifeStagesWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CBasicEntity::setPhysicWelfareFromGene (CGene* pGen)
+bool CBasicEntity::setPhysicWelfareFromGene(CGene* pGen)
 {
   return false;
 }
@@ -777,7 +777,7 @@ bool CBasicEntity::completePhysicWelfareWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-bool CBasicEntity::setBrainSensorFromGene (CGene* pGen)
+bool CBasicEntity::setBrainSensorFromGene(CGene* pGen)
 {
   CSensor* pSensor = getTemporarySensorFromGene(pGen);
   if ((pSensor == NULL) || (m_pBrain == NULL))
@@ -799,7 +799,7 @@ bool CBasicEntity::setBrainSensorFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-CSensor* CBasicEntity::getTemporarySensorFromGene (CGene* pGen)
+CSensor* CBasicEntity::getTemporarySensorFromGene(CGene* pGen)
 {
   return NULL;
 }
@@ -817,7 +817,7 @@ CSensor* CBasicEntity::getTemporarySensorFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-size_t  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
+size_t  CBasicEntity::getExpectedBrainSensorWeightSize(CGene* pGen)
 {
   return 0;
 }
@@ -834,7 +834,7 @@ size_t  CBasicEntity::getExpectedBrainSensorWeightSize (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-bool CBasicEntity::setBrainReactionFromGene (CGene* pGen)
+bool CBasicEntity::setBrainReactionFromGene(CGene* pGen)
 {
   return false;
 }
@@ -885,7 +885,7 @@ bool CBasicEntity::completeBrainReactionWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-bool CBasicEntity::setBrainSizeFromGene (CGene* pGen)
+bool CBasicEntity::setBrainSizeFromGene(CGene* pGen)
 {
   return false;
 }
@@ -901,7 +901,7 @@ bool CBasicEntity::setBrainSizeFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-bool CBasicEntity::setBrainInstinctFromGene (CGene* pGen)
+bool CBasicEntity::setBrainInstinctFromGene(CGene* pGen)
 {
   return false;
 }
@@ -917,7 +917,7 @@ bool CBasicEntity::setBrainInstinctFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-bool CBasicEntity::setBrainConfigFromGene (CGene* pGen)
+bool CBasicEntity::setBrainConfigFromGene(CGene* pGen)
 {
   return false;
 }
@@ -952,7 +952,7 @@ bool CBasicEntity::completeBrainInstinctWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CBasicEntity::setFeelingFromGene (CGene* pGen)
+bool CBasicEntity::setFeelingFromGene(CGene* pGen)
 {
   return false;
 }
@@ -969,7 +969,7 @@ bool CBasicEntity::setFeelingFromGene (CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CBasicEntity::setPurposeFromGene (CGene* pGen)
+bool CBasicEntity::setPurposeFromGene(CGene* pGen)
 {
   return false;
 }
@@ -1095,7 +1095,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
   string caractStr = STRING_GENE_UNUSED;
   string tempStr;
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_CARACTER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_CARACTER))
   {
     return caractStr;
   }
@@ -1130,7 +1130,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_ODOR:
     {
-      if (data1<ODOR_NUMBER_TYPE)
+      if (data1 < ODOR_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += OdorTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1139,7 +1139,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_PHEROMONE:
     {
-      if (data1<PHEROMONE_NUMBER_TYPE)
+      if (data1 < PHEROMONE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PheromoneTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1148,7 +1148,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_TASTE:
     {
-      if (data1<TASTE_NUMBER_TYPE)
+      if (data1 < TASTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TasteTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1157,7 +1157,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_FORM:
     {
-      if (data1<FORM_NUMBER_TYPE)
+      if (data1 < FORM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += FormTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1166,7 +1166,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_REPRO_TYPE:
     {
-      if (data1<REPRODUCT_NUMBER_TYPE)
+      if (data1 < REPRODUCT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ReproTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1175,7 +1175,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_HABITAT:
     {
-      if (data1<HABITAT_NUMBER_TYPE)
+      if (data1 < HABITAT_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += HabitatTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1184,7 +1184,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_CONSUME_TYPE:
     {
-      if (data1<CONSUM_NUMBER_TYPE)
+      if (data1 < CONSUM_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += ConsumeTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1193,7 +1193,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_MOVE_TYPE:
     {
-      if (data1<MOVE_NUMBER_TYPE)
+      if (data1 < MOVE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += MoveTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1202,7 +1202,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_TEXTURE:
     {
-      if (data1<TEXTURE_NUMBER_TYPE)
+      if (data1 < TEXTURE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += TextureTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1211,7 +1211,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
     }
   case GENE_CARACT_PHY_ATTRIBUTE:
     {
-      if (data1<PHY_ATTRIBUTE_NUMBER_TYPE)
+      if (data1 < PHY_ATTRIBUTE_NUMBER_TYPE)
       {
         tempStr = "="; tempStr += PhyAttributeTypeNameList[data1]; tempStr += " ";
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1244,14 +1244,14 @@ string CBasicEntity::buildParameterString(CGene* pGen)
   string paramStr = STRING_GENE_UNUSED;
   string tempStr;
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return paramStr;
   }
   // We are sure Gene is a parameter
   auto& rawData = pGen->getData();
   size_t len = rawData.size();
-  if ((len<3*sizeof(WORD)) || (pGen->getNumElements() < 3))
+  if ((len < 3 * sizeof(WORD)) || (pGen->getNumElements() < 3))
   {
     // not enought data to config param
     return paramStr;
@@ -1864,7 +1864,7 @@ void CBasicEntity::nextDay(bool doQuickAgeing)
     CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
     if (pLifeStage->increaseDayCountAndCheckEnd())
     {
-      if (m_indCurrentLifeStage<(m_tLifeStage.size()-1))
+      if (m_indCurrentLifeStage < (m_tLifeStage.size() - 1))
       {
         m_indCurrentLifeStage++;
         pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
@@ -1930,7 +1930,7 @@ bool CBasicEntity::checkVitalNeedsOk()
 //---------------------------------------------------------------------------
 void CBasicEntity::quickAgeing(int nbDays)
 {
-  for(int i=0; i<nbDays; i++)
+  for(int i = 0; i < nbDays; i++)
   {
     nextDay(true);
   }
@@ -1965,8 +1965,8 @@ bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
   }
   
   // if stage already exist, don't insert it
-  if ( (index>=m_tLifeStage.size())
-     ||(pLifeStage->getStageType() != m_tLifeStage[index]->getStageType()) )
+  if ((index >= m_tLifeStage.size())
+     || (pLifeStage->getStageType() != m_tLifeStage[index]->getStageType()))
   {
     m_tLifeStage.insert(m_tLifeStage.begin()+index, 1, pLifeStage);
     resu = true;
@@ -2016,7 +2016,7 @@ bool CBasicEntity::setCurrentLifeStages(LifeStage_e newStage)
     return true;
 
   bool resu = false;
-  for (size_t i=0; i<m_tLifeStage.size(); i++)
+  for (size_t i = 0; i < m_tLifeStage.size(); i++)
   {
     if (newStage == m_tLifeStage[i]->getStageType())
     {
@@ -2111,7 +2111,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
 
   Point_t nextGridCoord = m_GridCoord;
   bool resu = true;
-  for (int i=0; i<nbGridMove; i++)
+  for (int i = 0; i < nbGridMove; i++)
   {
     if (newGridCoordX > nextGridCoord.x)
        nextGridCoord.x++;
@@ -2170,8 +2170,8 @@ bool CBasicEntity::jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer
     m_PrevLayer = m_Layer;
     resu = true;
   }
-  else if ( m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid
-         || ( (newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord) ) )  // or out
+  else if (m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid
+         || ((newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord)))  // or out
   {
     // newCoord valid ... Move
     m_PrevGridCoord = m_GridCoord;
@@ -2356,7 +2356,7 @@ bool CBasicEntity::turnToCenterDir()
 {
   m_PrevStepDirection = m_StepDirection;
   // Go exactely in view direction
-  m_StepDirection = 45*m_Direction;
+  m_StepDirection = 45 * m_Direction;
   return true;
 }
 
@@ -2590,7 +2590,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
     pElement = (TiXmlElement*)pNode;
     pElement->SetAttribute( XML_ATTR_CURRENT_IND, (int)pEntity->m_indCurrentLifeStage);
 
-    for (i=0; i< pEntity->getNbLifeStages(); i++)
+    for (i = 0; i < pEntity->getNbLifeStages(); i++)
     {
       TiXmlElement newLifeStage(XML_NODE_LIFE_STAGE);
       pNodeChild = pNode->InsertEndChild(newLifeStage);
@@ -2604,7 +2604,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   }
 
   // Save parameters
-  for (i=0; i<pEntity->getNumParameter(); i++)
+  for (i = 0; i < pEntity->getNumParameter(); i++)
   {
     // Save Min, Max for entities without genome definitions
     bool doSaveMinMax = ((pEntity->getGenome() == NULL) || (pEntity->getGenome()->getNumPair() == 0)) ? true : false;
@@ -2701,7 +2701,7 @@ bool CBasicEntity::getDefaultLayerFromXmlFile(string fileName, int& layer)
 //---------------------------------------------------------------------------
 bool CBasicEntity::getDefaultLayerFromXmlFile(TiXmlDocument *pXmlDoc, int& layer)
 {
-  if (pXmlDoc==NULL)
+  if (pXmlDoc == NULL)
     return false;
 
   TiXmlNode* pNode = pXmlDoc->FirstChild(XML_NODE_ENTITY);
@@ -2758,7 +2758,7 @@ bool CBasicEntity::getEntityNameFromXmlFile(TiXmlDocument* pXmlDoc, string& name
 
 bool CBasicEntity::getEntityNameFromXmlNode(TiXmlNode * pNodeEntity, string & name)
 {
-  if((pNodeEntity !=NULL)&&(pNodeEntity->Type() == TiXmlNode::TINYXML_ELEMENT))
+  if((pNodeEntity != NULL) && (pNodeEntity->Type() == TiXmlNode::TINYXML_ELEMENT))
   {
     TiXmlElement* pElement = (TiXmlElement*)pNodeEntity;
     if ( pElement->QueryStringAttribute(XML_ATTR_LABEL,  &name) == TIXML_NO_ATTRIBUTE)
@@ -2803,7 +2803,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
   TiXmlElement* pElement;
   TiXmlNode* pNode = NULL;
 
-  if (pXmlDoc==NULL)
+  if (pXmlDoc == NULL)
     return false;
 
   TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
@@ -2836,7 +2836,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
     if ( pElement->QueryIntAttribute(XML_ATTR_IMMORTAL,  &immortal) == TIXML_NO_ATTRIBUTE)
       immortal = 0;
 
-    if (immortal!=0)
+    if (immortal != 0)
       m_bIsImmortal = true;
 
     // Life stage management
@@ -2846,12 +2846,12 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
     if ((pNode!=NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
     {
       pElement = (TiXmlElement*)pNode;
-      if ( pElement->QueryIntAttribute(XML_ATTR_CURRENT_IND,  &readIndLifeStage) == TIXML_NO_ATTRIBUTE)
+      if (pElement->QueryIntAttribute(XML_ATTR_CURRENT_IND, &readIndLifeStage) == TIXML_NO_ATTRIBUTE)
         m_indCurrentLifeStage = 0;
       else
         m_indCurrentLifeStage = readIndLifeStage;
 
-      if ( (m_indCurrentLifeStage != prevLifeStage) && (getNbLifeStages()>0) && (m_indCurrentLifeStage<getNbLifeStages()) )
+      if ((m_indCurrentLifeStage != prevLifeStage) && (getNbLifeStages() > 0) && (m_indCurrentLifeStage<getNbLifeStages()))
       {
         CLifeStage* pLifeStage = m_tLifeStage[m_indCurrentLifeStage];
         enterInNewLifeStage(pLifeStage);
@@ -2951,7 +2951,7 @@ bool CBasicEntity::loadBabiesFromXmlFile(TiXmlDocument* pXmlDoc)
     return false;
 
   TiXmlNode* pNodeEntity = pXmlDoc->FirstChild(XML_NODE_FETUS_ENTITY);
-  while (pNodeEntity!=NULL)
+  while (pNodeEntity != NULL)
   {
     CGenome* pBabyGenome;
     string babyName;
@@ -3125,7 +3125,7 @@ Point_t CBasicEntity::getGridCoordRelative(const RelativePos_t& relativeCoord)
 {
   Point_t position;
   //  Optimisation
-  if ( (abs(relativeCoord.x) < 3) && (relativeCoord.y == 0) )
+  if ((abs(relativeCoord.x) < 3) && (relativeCoord.y == 0))
   {
     // In line cells
     switch (m_Direction)
@@ -3506,7 +3506,7 @@ double CBasicEntity::getSizeRate()
 {
   // return the scale of the entity compared to its max size
   double rate = 0;
-  if (getMaxWeight()>0)
+  if (getMaxWeight() > 0)
     rate=pow( getWeight()/getMaxWeight(), 0.33333333 );
   return rate;
 }
@@ -3571,7 +3571,7 @@ double CBasicEntity::changeWeight(double variation)
 
 void CBasicEntity::forceWeight(double newWeight)
 {
-  getParameterNoCheck(m_id_Weight)->forceVal(newWeight);
+  getParameterNoCheck(m_id_Weight)->setVal(newWeight);
 }
 
 CLifeStage* CBasicEntity::getCurrentLifeStage() 

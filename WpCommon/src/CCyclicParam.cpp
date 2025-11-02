@@ -113,11 +113,11 @@ bool CCyclicParam::loadFromXmlFile(TiXmlNode* pNode)
 void CCyclicParam::nextStep(void)
 {
   m_CurPhase += m_PhaseStep;
-  if (m_CurPhase>2*CYBIO_PI)
+  if (m_CurPhase > 2 * CYBIO_PI)
   {
     m_CurPhase = 0;
   }
-  setVal( (getMax()-getMin()) * (cos(m_CurPhase)+1) / 2 + getMin() );
+  setVal((getMax() - getMin()) * (cos(m_CurPhase) + 1) / 2 + getMin());
 }
 
 void CCyclicParam::reconfigure(double valMin, double valMax, int nbStepPerCycle)

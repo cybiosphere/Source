@@ -91,7 +91,7 @@ const std::vector<sensorValType>& CSensorMemoryFeedback::UpdateAndGetStimulation
   {
     double curFeedback = m_pBrain->GetCurrentFeedback();
     // give more weight to negative feedbacks according to consecutive failures
-    if (curFeedback<=0)
+    if (curFeedback <= 0)
     {
       curFeedback = curFeedback - m_pBrain->GetReactionByIndex(reactInd)->GetConsecutiveFailures();
     }

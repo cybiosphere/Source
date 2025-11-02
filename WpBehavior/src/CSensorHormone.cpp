@@ -112,15 +112,11 @@ const std::vector<sensorValType>& CSensorHormone::UpdateAndGetStimulationTable()
 //---------------------------------------------------------------------------
 string CSensorHormone::GetSubCaptorLabel(size_t index)
 {
-  if (index>GetSubCaptorNumber())
+  if (index > GetSubCaptorNumber())
     return ("bad index");
-  else
-  {
-    PheromoneType_e pheromoneId = PHEROMONE_FIRST_TYPE;
-    for (size_t i=0; (i<index)&&(i<PHEROMONE_NUMBER_TYPE); i++)
-      pheromoneId = (PheromoneType_e)(pheromoneId+1);
-    return (CBasicEntity::getPheromoneStrName(pheromoneId) );
-  }
+
+  PheromoneType_e pheromoneId = (PheromoneType_e)(index + 1);
+  return (CBasicEntity::getPheromoneStrName(pheromoneId));
 }
 
 //---------------------------------------------------------------------------

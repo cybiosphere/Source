@@ -229,7 +229,7 @@ bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string 
     listSize = SCENARIO_CMD_NUMBER;
   }
 
-  for(int i=0; i<listSize; i++)
+  for(int i = 0; i < listSize; i++)
   {
     startInd = commandString.find(pCmdList[i].commandName, 0);
     if (startInd != string::npos)
@@ -360,7 +360,7 @@ bool CScenarioPlayer::CmdRunBiotop(CBiotop* pBiotop, string path, string command
 {
   int duration = atoi(GetParamFromString(commandParam,0).c_str());
 
-  for (int i=0;i<duration;i++)
+  for (int i = 0; i < duration; i++)
     pBiotop->nextSecond();
 
   return true;
@@ -375,7 +375,7 @@ bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string
   CGenericParam* pParam = pBiotop->getParameterByName(paramName);
   if (pParam!=NULL)
   {
-      pParam->forceVal(paramValue);
+      pParam->setVal(paramValue);
   }
 
   return true; // return always true for not stopping scenario
@@ -395,7 +395,7 @@ bool CScenarioPlayer::CmdChangeParam(CBiotop* pBiotop, string path, string comma
     CGenericParam* pParam = pEntity->getParameterByName(paramName);
     if (pParam != NULL)
     {
-      pParam->forceVal(paramValue);
+      pParam->setVal(paramValue);
     }
   }
 
@@ -652,7 +652,7 @@ bool CScenarioPlayer::CmdChkForbidActCntUnder(CBiotop* pBiotop, string path, str
   int maxCount = atoi(GetParamFromString(commandParam,1).c_str());
   CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
 
-  if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) )
+  if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
   {
     if (((CAnimal*)pEntity)->getForbidenActionCount() < maxCount)
     {

@@ -65,13 +65,13 @@ bool CNeuronMatrix::NormalizeNeuronMatrix()
   bool resu = false;
   double norm = 0;
 
-  for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
+  for (size_t i = 0; i < m_mNeuronTable.RowNo(); i++)
   {
     //Process vector norm
     norm = 0;
-    for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+    for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
     {
-      norm += pow(m_mNeuronTable(i,j),2.0);
+      norm += pow(m_mNeuronTable(i, j), 2.0);
     }
     
     if (norm == 0)
@@ -82,9 +82,9 @@ bool CNeuronMatrix::NormalizeNeuronMatrix()
     {
       norm = sqrt(norm);
       // divide vector by its norm
-      for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+      for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
       {
-        m_mNeuronTable(i,j)=m_mNeuronTable(i,j)/norm;
+        m_mNeuronTable(i, j) = m_mNeuronTable(i, j) / norm;
       }
       resu = true;
     }
@@ -106,11 +106,11 @@ bool CNeuronMatrix::InitializeNeuronMatrixNeutral(string xmlFileLabel, size_t si
 
 bool CNeuronMatrix::ResetNeuronMatrixNeutral()
 {
-  for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
+  for (size_t i = 0; i < m_mNeuronTable.RowNo(); i++)
   {
-    for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+    for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
     {
-      m_mNeuronTable(i,j) = 1;
+      m_mNeuronTable(i, j) = 1;
     }
   }
   return NormalizeNeuronMatrix();
@@ -120,7 +120,7 @@ bool CNeuronMatrix::ResetNeuronMatrixNeutral()
 // Process
 //////////////////////////////////////////////////////////////////////
 
-void CNeuronMatrix::ComputeVectorChoice (CMatrix& pVectorInput, CMatrix& pVectorChoice)
+void CNeuronMatrix::ComputeVectorChoice(CMatrix& pVectorInput, CMatrix& pVectorChoice)
 {
   // Optim CPU
   //*pVectorChoice = ~(~(*pVectorInput)*m_mNeuronTable);
@@ -144,14 +144,14 @@ void CNeuronMatrix::ComputeVectorChoice (CMatrix& pVectorInput, CMatrix& pVector
   }
 }
 
-bool CNeuronMatrix::MemorizeExperience (neuroneValType coefFeedback, CMatrix* pMatrixInputHistory, CMatrix* pVectorDecisionHistory)
+bool CNeuronMatrix::MemorizeExperience(neuroneValType coefFeedback, CMatrix* pMatrixInputHistory, CMatrix* pVectorDecisionHistory)
 {
   // coef is the coefficient of effect of the previous action
   // The effect of an action cannot exceed 1% when learningRate is at 100%
   CMatrix expMatrix = (*pMatrixInputHistory) * ~(*pVectorDecisionHistory);
-  for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
+  for (size_t i = 0; i < m_mNeuronTable.RowNo(); i++)
   {
-    for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+    for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
     {
       if (expMatrix(i, j) != 0.0) // CPU optim. expMatrix is often 0
       {
@@ -169,11 +169,11 @@ string CNeuronMatrix::buildStringDataFromNeuronTable()
   string tmpStr;
   WORD tempVal;
   string rawDataRsp = "";
-  for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
+  for (size_t i = 0; i < m_mNeuronTable.RowNo(); i++)
   {
-    for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+    for (size_t j = 0; j < m_mNeuronTable.ColNo();j++)
     {
-      tempVal = (WORD)( (1.0 + m_mNeuronTable(i,j)) * 32767.0);
+      tempVal = (WORD)( (1.0 + m_mNeuronTable(i, j)) * 32767.0);
       tmpStr = FormatString("%4X",tempVal);
       rawDataRsp += tmpStr;
     }
@@ -189,9 +189,9 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
   size_t strOffset = 0;
   size_t dataLen = rawData.length();
   char* pEnd;
-  for (size_t i=0; i<m_mNeuronTable.RowNo(); i++)
+  for (size_t i = 0; i < m_mNeuronTable.RowNo(); i++)
   {
-    for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+    for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
     {
       if ((strOffset + 4) > dataLen)
       {
@@ -200,7 +200,7 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
       }
       tmpStr = rawData.substr(strOffset, 4);
       tempVal = (WORD)strtol(tmpStr.c_str(), &pEnd, 16);
-      m_mNeuronTable(i,j) = (double)tempVal / 32767.0 - 1.0;
+      m_mNeuronTable(i, j) = (double)tempVal / 32767.0 - 1.0;
       strOffset += 4;
     }
   }
@@ -208,23 +208,23 @@ bool CNeuronMatrix::buildNeuronTableFromStringData(string rawData)
   return true;
 }
 
-bool CNeuronMatrix::buildNeuronLineFromRawData (size_t lineId, size_t lenData, WORD* pRawData)
+bool CNeuronMatrix::buildNeuronLineFromRawData(size_t lineId, size_t lenData, WORD* pRawData)
 {
-  if ( (lenData != m_mNeuronTable.ColNo()) || (lineId >= m_mNeuronTable.RowNo()) )
+  if ((lenData != m_mNeuronTable.ColNo()) || (lineId >= m_mNeuronTable.RowNo()))
   {
     ASSERT("Bad raw data lenght for brain");
     return false;
   }
 
-  for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+  for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
   {
-    m_mNeuronTable(lineId,j) = (double)pRawData[j] / 32767.0 - 1.0;
+    m_mNeuronTable(lineId, j) = (double)pRawData[j] / 32767.0 - 1.0;
   }
 
   return true;
 }
 
-int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
+int CNeuronMatrix::buildRawDataFromNeuronLine(size_t lineId, WORD*& pRawData)
 {
   if (lineId >= m_mNeuronTable.RowNo())
   {
@@ -234,9 +234,9 @@ int CNeuronMatrix::buildRawDataFromNeuronLine (size_t lineId, WORD*& pRawData)
 
   pRawData = new WORD[(int)m_mNeuronTable.ColNo()];
 
-  for (size_t j=0; j<m_mNeuronTable.ColNo();j++)
+  for (size_t j = 0; j < m_mNeuronTable.ColNo(); j++)
   {
-    pRawData[j] = cybio_round( (m_mNeuronTable(lineId,j) + 1.0) * 32767.0 );
+    pRawData[j] = cybio_round((m_mNeuronTable(lineId, j) + 1.0) * 32767.0);
   }
 
   return (int)m_mNeuronTable.ColNo();
@@ -259,7 +259,7 @@ neuroneValType CNeuronMatrix::GetNeuronTableData(size_t row, size_t col)
 
 bool CNeuronMatrix::SetNeuronTableData(size_t row, size_t col, neuroneValType newVal)
 {
-  if ( (row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()) )
+  if ((row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()))
      return false;
 
   m_mNeuronTable(row,col) = newVal;
@@ -268,7 +268,7 @@ bool CNeuronMatrix::SetNeuronTableData(size_t row, size_t col, neuroneValType ne
 
 bool CNeuronMatrix::ChangeNeuronTableVal(size_t row, size_t col, double variation, bool normalize)
 {
-  if ( (row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()) )
+  if ((row >= m_mNeuronTable.RowNo()) || (col >= m_mNeuronTable.ColNo()))
     return false;
 
   bool resu = true;
@@ -296,18 +296,18 @@ bool CNeuronMatrix::saveInXmlFile(TiXmlDocument *pXmlDoc)
   TiXmlNode* pNodeEntity = NULL;
   TiXmlNode* pNodeBrain = NULL;
 
-  if (pXmlDoc==NULL) 
+  if (pXmlDoc == NULL) 
     return false;
 
   pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-  if (pNodeEntity==NULL)
+  if (pNodeEntity == NULL)
   {
     TiXmlElement newNode(XML_NODE_ENTITY);
     pNodeEntity = pXmlDoc->InsertEndChild(newNode);
   }
 
   pNodeBrain = pNodeEntity->FirstChild(m_xmlFileLabel);
-  if (pNodeBrain==NULL)
+  if (pNodeBrain == NULL)
   {
     // Create Brain node
     TiXmlElement newNode(m_xmlFileLabel);
@@ -343,17 +343,17 @@ bool CNeuronMatrix::loadFromXmlFile(TiXmlDocument *pXmlDoc)
 {
   bool resu = false;
 
-  if (pXmlDoc==NULL)
+  if (pXmlDoc == NULL)
     return false;
 
   TiXmlNode* pNode = pXmlDoc->FirstChild(XML_NODE_ENTITY);
-  if (pNode!=NULL)
+  if (pNode != NULL)
   {
     pNode = pNode->FirstChild(m_xmlFileLabel);
-    if (pNode!=NULL)
+    if (pNode != NULL)
     {
       pNode = pNode->FirstChild();
-      if ((pNode!=NULL) && (pNode->Type() == TiXmlNode::TINYXML_TEXT))
+      if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_TEXT))
         resu = buildNeuronTableFromStringData(pNode->Value());
     }
   }
@@ -403,7 +403,7 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
 
   delete[] pbuf;
 
-  if (loadedBrain.length()>0)
+  if (loadedBrain.length() > 0)
   {
     resu = buildNeuronTableFromStringData(loadedBrain);
   }

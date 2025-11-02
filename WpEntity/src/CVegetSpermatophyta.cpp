@@ -126,13 +126,13 @@ CVegetable(label, mother, father)
 //---------------------------------------------------------------------------
 bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
 {
-  if (CVegetable::setParamFromGene (pGen) == true)
+  if (CVegetable::setParamFromGene(pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
     return true;
   }
   
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
@@ -140,7 +140,7 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
   bool resu = false;
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if (len<3*sizeof(WORD))
+  if (len < 3 * sizeof(WORD))
   {
     // not enought data to config param
     return false;
@@ -529,8 +529,8 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
   pChildEntity->setEntityFromGenome(m_pBiotop->getRadioactivityRate());
 
   int range = (int)getReproductionRange();
-  int xOfset = getRandInt(2*range) - range;
-  int yOfset = getRandInt(2*range) - range;
+  int xOfset = getRandInt(2 * range) - range;
+  int yOfset = getRandInt(2 * range) - range;
   Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
   pChildEntity->changeWeight(0.1); // ensure weight is more than min
   entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
@@ -578,7 +578,7 @@ bool CVegetSpermatophyta::autoClone()
     pParam->setValMin(pModelParam->getMin());
     pParam->setValMax(pModelParam->getMax());
     pParam->setValNominal(pModelParam->getValNominal());
-    pParam->forceVal(pModelParam->getVal());
+    pParam->setVal(pModelParam->getVal());
   }
 
   // Reset some paramters
