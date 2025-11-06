@@ -49,19 +49,19 @@ ofstream gLogFile;
 
 int DLL_CYBIOCORE_API cybio_round(double val)
 {
-  if (val==0.0)
+  if (val == 0.0)
     return 0;
 
-  if (val>0)
+  if (val > 0)
   {
-    if (val-floor(val)>0.5)
+    if (val - floor(val) > 0.5)
       return (int)ceil(val);
     else
       return (int)floor(val);
   }
   else
   {
-    if (ceil(val)-val>0.5)
+    if (ceil(val)-val > 0.5)
       return (int)floor(val);
     else
       return (int)ceil(val);
@@ -128,7 +128,7 @@ size_t DLL_CYBIOCORE_API getStringSectionFromFile(
   fLength = (end - begin);
   f1.seekg(0, ios::beg);
 
-  if ( (fLength==0) || (fLength>1000000) )
+  if ((fLength == 0) || (fLength > 1000000))
   {
     lpReturnedString[0] = '\0';
     f1.close();
@@ -142,7 +142,7 @@ size_t DLL_CYBIOCORE_API getStringSectionFromFile(
   f1.close();
   delete[] pbuf;
 
-  return ( getStringSection(lpAppName,lpKeyName,lpDefault,lpReturnedString,nSize,fileString) );
+  return ( getStringSection(lpAppName,lpKeyName,lpDefault,lpReturnedString,nSize,fileString));
 }
 
 size_t DLL_CYBIOCORE_API getStringSection(
@@ -204,7 +204,7 @@ bool DLL_CYBIOCORE_API writeStringSectionToFile(
   fLength = (end - begin);
   f1.seekg(0, ios::beg);
 
-  if ( (fLength>0) && (fLength<1000000) )
+  if ((fLength > 0) && (fLength < 1000000))
   {
     pbuf = new char[fLength+1];
     memset(pbuf,0,fLength+1);
@@ -273,7 +273,7 @@ bool DLL_CYBIOCORE_API writeStringSection(
 
 string DLL_CYBIOCORE_API FormatString( const char *szFormat, ...) 
 { 
-  if(szFormat==NULL) 
+  if(szFormat == NULL) 
     return "";
 
   std::string strRet;

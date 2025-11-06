@@ -170,7 +170,7 @@ bool CScenarioPlayer::NextCmdNextSecond()
 
   getline(m_curScenarioFile, curLine);
 
-  if ( m_curScenarioFile.rdstate() !=  ios::goodbit )
+  if (m_curScenarioFile.rdstate() !=  ios::goodbit)
     return false;
 
   // Check if line is comment
@@ -223,7 +223,7 @@ bool CScenarioPlayer::ExecuteCmd(CBiotop* pBiotop, string commandString, string 
   int listSize = customCmdListSize;
 
   // If no custom command, use ScenarioCmdNameList
-  if (pCmdList==NULL)
+  if (pCmdList == NULL)
   {
     pCmdList = ScenarioCmdNameList;
     listSize = SCENARIO_CMD_NUMBER;
@@ -373,7 +373,7 @@ bool CScenarioPlayer::CmdChangeBiotopParam(CBiotop* pBiotop, string path, string
   double paramValue = atof(GetParamFromString(commandParam,1).c_str());
 
   CGenericParam* pParam = pBiotop->getParameterByName(paramName);
-  if (pParam!=NULL)
+  if (pParam != NULL)
   {
       pParam->setVal(paramValue);
   }
@@ -518,7 +518,7 @@ bool CScenarioPlayer::CmdMoveEntity(CBiotop* pBiotop, string path, string comman
   if (pEntity != NULL)
   {
     pEntity->jumpToGridCoord(coord, false);
-    if ( (direction>=0) && (direction<=7) )
+    if ((direction >= 0) && (direction <= 7))
       pEntity->setDirection(direction);
 
     // Set home position if needed
@@ -635,7 +635,7 @@ bool CScenarioPlayer::CmdSetForbidenAction   (CBiotop* pBiotop, string path, str
   string actionName = GetParamFromString(commandParam, 1);
   CBasicEntity* pEntity = pBiotop->getEntityByName(entityName);
 
-  if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) )
+  if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
   {
     size_t actionInd = pEntity->getBrain()->GetReactionIndexByLabel(actionName);
     ((CAnimal*)pEntity)->setForbidenActionInd(actionInd);

@@ -172,19 +172,19 @@ const char* PhyAttributeTypeNameList[PHY_ATTRIBUTE_NUMBER_TYPE] =
 CBasicEntity::CBasicEntity()
 {
   // system initialisation
-  m_pBiotop         = NULL;
-  m_pBrain          = NULL;
-  m_pGenome         = NULL;
-  m_pPhysicWelfare  = NULL;
-  m_pParasite       = NULL;
+  m_pBiotop = NULL;
+  m_pBrain = NULL;
+  m_pGenome = NULL;
+  m_pPhysicWelfare = NULL;
+  m_pParasite = NULL;
   m_tParam.resize(0);
   m_tGestationChilds.resize(0);
   m_tLifeStage.resize(0);
-  m_bHasMoved   = true;
+  m_bHasMoved = true;
   m_indCurrentLifeStage = invalidIndex;
   m_HourCounter = 0;
   m_Id = ENTITY_ID_INVALID;
-  m_Direction   = 0;
+  m_Direction = 0;
   m_StepDirection   = 0;
   m_Layer = invalidCoord;
   m_DefaultLayer = invalidCoord;
@@ -1112,7 +1112,7 @@ string CBasicEntity::buildCaracterString(CGene* pGen)
   {
   case GENE_CARACT_COLOR:
     {
-      if (len>=sizeof(DWORD))
+      if (len >= sizeof(DWORD))
       {
         tempStr = FormatString("=%03d ", pGen->getElementFloorValue(0));
         caractStr = pGen->getLabel() + " : " + pGen->getElementStrName(0) + tempStr;
@@ -1300,7 +1300,7 @@ string CBasicEntity::buildLifeStageString(CGene* pGen)
 
   if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
   {
-    return (paramStr);
+    return paramStr;
   }
   // We are sure Gene is a parameter
   auto& rawData = pGen->getData();
@@ -1308,7 +1308,7 @@ string CBasicEntity::buildLifeStageString(CGene* pGen)
   if (len < sizeof(WORD))
   {
     // not enought data to config param
-    return (paramStr);
+    return paramStr;
   }
 
   double scaledVal1 = pGen->getElementValue(0);
@@ -1604,9 +1604,9 @@ ColorCaracterType_e CBasicEntity::convertRgbColorInCaracter(COLORREF rbg)
 {
   double r,g,b,h,s,v,l;
 
-  r = double( (rbg&0xFF) );
-  g = double( (rbg&0xFF00)>>8 );
-  b = double( (rbg&0xFF0000)>>16 ); 
+  r = double(rbg & 0xFF);
+  g = double((rbg & 0xFF00) >> 8);
+  b = double((rbg & 0xFF0000) >> 16); 
 
   PIX_RGB_TO_HSVL_COMMON(r,g,b,h,s,v,l,1);
 
@@ -1621,9 +1621,9 @@ ColorCaracterType_e CBasicEntity::convertRgbColorInCaracter(COLORREF rbg)
     return COLOR_CARACTER_GREY;
 
   // Check on H => Colors
-  if ( (h < 15) || (h > 345) )
+  if ((h < 15) || (h > 345))
   {
-    if ( (l < 90) || ( (s < 60) && (l < 140) ) )
+    if ((l < 90) || ((s < 60) && (l < 140)))
       return COLOR_CARACTER_BROWN;
     else if (l > 150)
       return COLOR_CARACTER_PINK;
@@ -1681,7 +1681,7 @@ ColorCaracterType_e CBasicEntity::convertRgbColorInCaracter(COLORREF rbg)
 int CBasicEntity::addParameter(CGenericParam* pParam)
 {
   m_tParam.push_back(pParam);
-  return ((int)m_tParam.size()-1);
+  return ((int)m_tParam.size() - 1);
 }
 
 int CBasicEntity::addParameterFromGene(CGene* pGen, GenericParamType_e paramType)
@@ -1770,7 +1770,7 @@ CGenericParam* CBasicEntity::getParameterByName(string paramName)
 
 size_t CBasicEntity::getParamIdByName(string paramName)
 {
-  for (size_t id=0; id<m_tParam.size(); id++)
+  for (size_t id = 0; id < m_tParam.size(); id++)
   {
     if (m_tParam[id]->getLabel() == paramName)
       return id;
@@ -1958,8 +1958,7 @@ bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
   size_t index = 0;
   bool resu = false;
 
-  while ( (index<m_tLifeStage.size()) 
-        &&(pLifeStage->getStageType() > m_tLifeStage[index]->getStageType()) )
+  while ((index < m_tLifeStage.size()) && (pLifeStage->getStageType() > m_tLifeStage[index]->getStageType()))
   {
     index++;
   }
@@ -1968,7 +1967,7 @@ bool CBasicEntity::addLifeStage(CLifeStage* pLifeStage)
   if ((index >= m_tLifeStage.size())
      || (pLifeStage->getStageType() != m_tLifeStage[index]->getStageType()))
   {
-    m_tLifeStage.insert(m_tLifeStage.begin()+index, 1, pLifeStage);
+    m_tLifeStage.insert(m_tLifeStage.begin() + index, 1, pLifeStage);
     resu = true;
   }
 
@@ -2107,7 +2106,7 @@ bool CBasicEntity::moveLinear(int nbSteps)
   newGridCoordX = getGridPosFromStepPos(newStepCoord.x);
   newGridCoordY = getGridPosFromStepPos(newStepCoord.y);
 
-  int nbGridMove = cybio_max( abs((int)newGridCoordX - (int)m_GridCoord.x), abs((int)newGridCoordY - (int)m_GridCoord.y) );
+  int nbGridMove = cybio_max(abs((int)newGridCoordX - (int)m_GridCoord.x), abs((int)newGridCoordY - (int)m_GridCoord.y));
 
   Point_t nextGridCoord = m_GridCoord;
   bool resu = true;
@@ -2158,7 +2157,7 @@ bool CBasicEntity::jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer
   bool resu;
   size_t nextLayer = chooseLayer ? newLayer : m_Layer;
 
-  if (m_pBiotop==NULL)
+  if (m_pBiotop == NULL)
   {
     m_GridCoord = newGridCoord;
     m_bHasMoved  = true;
@@ -2235,7 +2234,7 @@ bool CBasicEntity::jumpToStepCoord(const Point_t& newStepCoord, bool chooseLayer
   m_PrevStepCoord = m_StepCoord;
   // Update grid coord if needed
   Point_t newGridCoord{ newStepCoord.x / NB_STEPS_PER_GRID_SQUARE, newStepCoord.y / NB_STEPS_PER_GRID_SQUARE };
-  if ( (m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) || chooseLayer)
+  if ((m_GridCoord.x != newGridCoord.x) || (m_GridCoord.y != newGridCoord.y) || chooseLayer)
   {
     if (!jumpToGridCoord(newGridCoord, chooseLayer, newLayer))
       return false;
@@ -2425,8 +2424,8 @@ void CBasicEntity::autoKill()
 {
   if ( isAlive() && !m_bIsImmortal )
   {
-    m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
+    m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2; // center in square
+    m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE / 2; // center in square
     setStatus(STATUS_DEAD);
     if (!checkHabitat())
     {
@@ -2555,7 +2554,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
   string tempLabel;
   size_t i;
 
-  if ((pXmlDoc==NULL) || (pEntity==NULL))
+  if ((pXmlDoc == NULL) || (pEntity == NULL))
     return false;
 
   bool setAsMainEntity = (labelEntityNode == XML_NODE_ENTITY) ? true : false;
@@ -2642,7 +2641,7 @@ bool CBasicEntity::addEntityInXmlFile(TiXmlDocument * pXmlDoc, string newLabel, 
     pElement->SetAttribute(XML_ATTR_TOTAL_CHILDS, pEntity->m_TotalChildNumber);
   }
 
-  if (pEntity->m_pGenome!=NULL)
+  if (pEntity->m_pGenome != NULL)
   {
     pEntity->m_pGenome->saveInXmlNode(pNodeEntity);
   }
@@ -2843,7 +2842,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
     size_t prevLifeStage = m_indCurrentLifeStage;
     int readIndLifeStage;
     pNode = pNodeEntity->FirstChild(XML_NODE_LIFE_STAGES);
-    if ((pNode!=NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+    if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
     {
       pElement = (TiXmlElement*)pNode;
       if (pElement->QueryIntAttribute(XML_ATTR_CURRENT_IND, &readIndLifeStage) == TIXML_NO_ATTRIBUTE)
@@ -2932,7 +2931,7 @@ bool CBasicEntity::loadDataFromXmlFile(TiXmlDocument *pXmlDoc)
 
     // Gestation Babies
     pNode = pNodeEntity->FirstChild(XML_NODE_GESTATION);
-    if ((pNode!=NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
+    if ((pNode != NULL) && (pNode->Type() == TiXmlNode::TINYXML_ELEMENT))
     {
       pElement = (TiXmlElement*)pNode;
       if ( pElement->QueryIntAttribute(XML_ATTR_TOTAL_CHILDS,  &m_TotalChildNumber) == TIXML_NO_ATTRIBUTE)
@@ -3507,7 +3506,7 @@ double CBasicEntity::getSizeRate()
   // return the scale of the entity compared to its max size
   double rate = 0;
   if (getMaxWeight() > 0)
-    rate=pow( getWeight()/getMaxWeight(), 0.33333333 );
+    rate=pow(getWeight() / getMaxWeight(), 0.33333333);
   return rate;
 }
 
@@ -3921,7 +3920,7 @@ bool CBasicEntity::setParasiteFromXmlFile(string fileNameWithPath)
 
 CBasicEntity* CBasicEntity::getParasite(void)
 {
-  return (m_pParasite);
+  return m_pParasite;
 }
 
 bool CBasicEntity::clearParasite(void)

@@ -179,7 +179,7 @@ const std::vector<sensorValType>& CSensorViewIdentifyFar::UpdateAndGetStimulatio
   }
 
   // Prepare followed entity
-  if (m_pFollowedEntity!=NULL)
+  if (m_pFollowedEntity != NULL)
   {
     m_followedEntityWeight.pEntity = NULL;
     m_followedEntityWeight.index = invalidIndex;

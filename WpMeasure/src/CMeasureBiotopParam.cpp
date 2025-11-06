@@ -46,7 +46,7 @@ CMeasureBiotopParam::CMeasureBiotopParam(CBiotop* pBiotop, size_t paramIndex, in
   m_pBiotop = pBiotop;
   m_paramIndex = paramIndex;
 
-  if ( (pBiotop!=NULL) && (pBiotop->getParameter(paramIndex)!=NULL) )
+  if ((pBiotop != NULL) && (pBiotop->getParameter(paramIndex) != NULL))
   {
     m_Label = "Biotop - " + pBiotop->getParameter(paramIndex)->getLabel();
   }

@@ -114,6 +114,6 @@ string CSensorTaste::GetSubCaptorLabel(size_t index)
   else
   {
     TasteType_e tasteId = (TasteType_e)(index + 1);
-    return (CBasicEntity::getTasteStrName(tasteId) );
+    return (CBasicEntity::getTasteStrName(tasteId));
   }
 }

@@ -60,7 +60,7 @@ distribution.
 // REMARKS:      None
 //---------------------------------------------------------------------------
 CSensorComposite::CSensorComposite(CBrainAnimal* pBrain, std::vector<double>& tWeightRate, size_t subCaptorNumber, DWORD baseSensUId, size_t paramIndex)
-:CSensor(subCaptorNumber, tWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + ((DWORD)paramIndex * 256) )
+:CSensor(subCaptorNumber, tWeightRate, UID_BASE_SENS_COMPOSITE + (baseSensUId & UID_BASE_MASK)/256 + (baseSensUId & 0xFF) + ((DWORD)paramIndex * 256))
 {
   m_pBrain      = pBrain;
   m_Label       = "Comp";
@@ -148,7 +148,7 @@ string CSensorComposite::GetSubCaptorLabel(size_t index)
     return ("bad index");
   else
   {
-    return (m_pParam->getLabel() + " x " + m_pBaseSens->GetLabel() + " " + m_pBaseSens->GetSubCaptorLabel(index) );
+    return (m_pParam->getLabel() + " x " + m_pBaseSens->GetLabel() + " " + m_pBaseSens->GetSubCaptorLabel(index));
   }
 }
 

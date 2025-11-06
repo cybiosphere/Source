@@ -250,7 +250,7 @@ void CPurpose::StopPeriod(void)
   for (i = 0; i < m_nbReactionBonus; i++)
   {
     curReact = m_tReactionBonus[i].pReaction;
-    if (curReact!=NULL)
+    if (curReact != NULL)
     {
       curReact->SetBonusRateToNeutral();
     }

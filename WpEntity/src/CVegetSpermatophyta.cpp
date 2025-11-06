@@ -60,10 +60,10 @@ CVegetSpermatophyta::CVegetSpermatophyta(string label, Point_t initCoord, size_t
 CVegetable(label, initCoord, layer, pGenome)
 {
   // Default values          
-  m_Status      = STATUS_ALIVE; 
+  m_Status = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = invalidCharIndex;;
+  m_id_PollenRange = invalidCharIndex;;
 }
 
 //---------------------------------------------------------------------------
@@ -81,10 +81,10 @@ CVegetSpermatophyta::CVegetSpermatophyta(string label, CVegetSpermatophyta& mode
 CVegetable(label, model)
 { 
   // Default values          
-  m_Status      = STATUS_ALIVE; 
+  m_Status = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = invalidCharIndex;;
+  m_id_PollenRange = invalidCharIndex;;
 }
 
 //---------------------------------------------------------------------------
@@ -102,10 +102,10 @@ CVegetSpermatophyta::CVegetSpermatophyta(string label, CVegetSpermatophyta& moth
 CVegetable(label, mother, father)
 { 
   // Default values          
-  m_Status      = STATUS_ALIVE; 
+  m_Status = STATUS_ALIVE; 
 
   // Parameter id pre-init
-  m_id_PollenRange      = invalidCharIndex;;
+  m_id_PollenRange = invalidCharIndex;;
 }
   
 //===========================================================================

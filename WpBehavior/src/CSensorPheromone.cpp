@@ -101,7 +101,7 @@ const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity;
-    if ((pCurEntity!=NULL) && (pCurEntity!=pAnimal)) // Do not take into account my own pheromon
+    if ((pCurEntity != NULL) && (pCurEntity != pAnimal)) // Do not take into account my own pheromon
     {
       if (pAnimal->getGenome()->checkSpecieCompatibility(pCurEntity->getGenome()) == true)
       {

@@ -274,7 +274,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
       viewChance = 100;
     }
 
-    if ((pCurEntity!=NULL)&&(testChance(viewChance)))
+    if ((pCurEntity != NULL) && (testChance(viewChance)))
     {
       m_pEntityViewTab[i].index = i;
       m_pEntityViewTab[i].pEntity = pCurEntity;
@@ -500,7 +500,7 @@ string CSensorView::GetSubCaptorLabel(size_t index)
     else if (pos>(3+VIEW_NUMBER_COLORS+VIEW_NUMBER_FORMS))
       captorStr = "text " + CBasicEntity::getTextureStrName(indexToTextureType(pos - 4 - VIEW_NUMBER_COLORS - VIEW_NUMBER_FORMS));
     else if (pos>(3+VIEW_NUMBER_COLORS))
-      captorStr = "form " + CBasicEntity::getFormStrName(indexToFormType(pos - 4 - VIEW_NUMBER_COLORS) );
+      captorStr = "form " + CBasicEntity::getFormStrName(indexToFormType(pos - 4 - VIEW_NUMBER_COLORS));
     else if (pos>3)
       captorStr = "colr " + CBasicEntity::getColorStrName(indexToColorType(pos - 4));
     else if (pos==3)

@@ -173,7 +173,7 @@ string CNeuronMatrix::buildStringDataFromNeuronTable()
   {
     for (size_t j = 0; j < m_mNeuronTable.ColNo();j++)
     {
-      tempVal = (WORD)( (1.0 + m_mNeuronTable(i, j)) * 32767.0);
+      tempVal = (WORD)((1.0 + m_mNeuronTable(i, j)) * 32767.0);
       tmpStr = FormatString("%4X",tempVal);
       rawDataRsp += tmpStr;
     }
@@ -390,7 +390,7 @@ bool CNeuronMatrix::loadFromFile(string fileNameWithPath)
   fLength = ((long)end - (long)begin);
   f1.seekg(0, ios::beg);
 
-  if ( (fLength==0) || (fLength>1000000) )
+  if ((fLength==0) || (fLength>1000000))
   {
     return false;
   }

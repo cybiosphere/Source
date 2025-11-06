@@ -55,7 +55,7 @@ CMeasureReaction::CMeasureReaction(CBasicEntity* pEntity, size_t reactionInd, in
 {
   m_paramIndex = reactionInd;
 
-  if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) && (pEntity->getBrain()->GetReactionByIndex(reactionInd) != NULL))
+  if ((pEntity != NULL) && (pEntity->getBrain() != NULL) && (pEntity->getBrain()->GetReactionByIndex(reactionInd) != NULL))
   {
     m_SubType = type;
     m_pReaction = pEntity->getBrain()->GetReactionByIndex(reactionInd);
@@ -90,7 +90,7 @@ CMeasureReaction::~CMeasureReaction()
 //===========================================================================
 double CMeasureReaction::GetCurrentValue()
 {
-  if (m_pReaction==NULL)
+  if (m_pReaction == NULL)
     return 0;
 
   double val = 0;

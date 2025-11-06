@@ -199,7 +199,7 @@ protected:
   void changeHungerRate(double variation);
   void changeThirstRate(double variation);
   void changeLibidoRate(double variation);
-  bool changeHealthRate(double variation, CBasicEntity* pAggresor=NULL, bool suffering = true);
+  bool changeHealthRate(double variation, CBasicEntity* pAggresor = NULL, bool suffering = true);
   void changeSufferingRate(double variation);
   void changePleasureRate(double variation);
   void convergePleasureRateToNeutral(double variation);

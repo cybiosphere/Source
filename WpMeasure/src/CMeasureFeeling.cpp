@@ -55,7 +55,7 @@ CMeasureFeeling::CMeasureFeeling(CBasicEntity* pEntity, int period, int id, Meas
 {
   m_pEntity = pEntity;
 
-  if ( (pEntity != NULL) && (pEntity->getBrain() != NULL) )
+  if ((pEntity != NULL) && (pEntity->getBrain() != NULL))
   {
     m_SubType = type;
     m_pBrain = pEntity->getBrain();
@@ -92,8 +92,8 @@ CMeasureFeeling::~CMeasureFeeling()
 //===========================================================================
 double CMeasureFeeling::GetCurrentValue()
 {
-  if (m_pBrain==NULL)
-    return (0);
+  if (m_pBrain == NULL)
+    return 0;
 
   double val;
 

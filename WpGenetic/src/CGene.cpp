@@ -457,7 +457,7 @@ bool CGene::setAsBrainInstinctLine(int muteRate, size_t lineId, size_t nbColumn,
   // Set all other words as brain line data
   for (size_t i = 0; i < nbColumn; i++)
   {
-    pWordData[i+1] = pData[i];
+    pWordData[i + 1] = pData[i];
   }
   return true;
 }
@@ -602,7 +602,7 @@ bool CGene::setAsPurposeSensorBonus(int muteRate, DWORD purposeUId, DWORD sensor
   pDWordData[1] = sensorUId;
   for (int i = 0; i < nbBonus; i++)
   {
-    pWordData[4+i] = encodeLongOnWord(pBonusTable[i], 2000);
+    pWordData[4 + i] = encodeLongOnWord(pBonusTable[i], 2000);
   }
   return true;
 }
@@ -1005,7 +1005,7 @@ bool CGene::tryMutation()
         // Select 1 byte and increment or decrement it by 1.
         size_t dataByteId = getRandInt(m_RawData.size()-1);
         int addVal = getRandInt(2) - 1;
-        if ( ((addVal<0)&&(m_RawData[dataByteId]>0)) || ((addVal>0)&&(m_RawData[dataByteId]<0xFF)) )
+        if (((addVal<0)&&(m_RawData[dataByteId]>0)) || ((addVal>0)&&(m_RawData[dataByteId]<0xFF)))
         {
           m_RawData[dataByteId] += addVal;
           CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
@@ -1024,7 +1024,7 @@ bool CGene::tryMutation()
         size_t dataByteId = getRandInt(m_RawData.size()-1)/2;
         int addVal = (getRandInt(2) - 1) * 66; // 66 in order to increment of 1 per 1000
         WORD* pWordData = (WORD*)m_RawData.data();
-        if ( ( (addVal<0)&&(pWordData[dataByteId]>-addVal) ) || ( (addVal>0)&&(pWordData[dataByteId]<(0xFFFF-addVal)) ) )
+        if (((addVal < 0) && (pWordData[dataByteId] > -addVal)) || ((addVal > 0) && (pWordData[dataByteId] < (0xFFFF - addVal))))
         {
           pWordData[dataByteId] += addVal;
           CYBIOCORE_LOG_TIME_NOT_AVAILABLE;

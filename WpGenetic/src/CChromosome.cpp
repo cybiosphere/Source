@@ -74,7 +74,7 @@ CChromosome::CChromosome(CChromosome& model)
   m_IdNumber       = model.m_IdNumber;
   m_ChromosomeType = model.m_ChromosomeType;
   CGene* tempGen   = NULL;
-  for (size_t i = 0; i<model.m_tGene.size(); i++)
+  for (size_t i = 0; i < model.m_tGene.size(); i++)
   {
     tempGen = new CGene(*model.m_tGene[i]);
     m_tGene.push_back(tempGen);
@@ -131,7 +131,8 @@ size_t CChromosome::getNumGene(void)
 
 CGene* CChromosome::getGene(size_t id)
 {
-  if (id >= m_tGene.size())  {
+  if (id >= m_tGene.size())
+  {
     return NULL;
   }
   else

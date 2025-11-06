@@ -60,14 +60,14 @@ CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* p
 { 
   // Input values
   jumpToGridCoord(initCoord, true, layer);
-  m_pGenome         = pGenome;
-  m_pBrain          = NULL;
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
+  m_pGenome = pGenome;
+  m_pBrain = NULL;
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
 
   // Default values          
-  m_Status      = STATUS_ALIVE; 
-  m_Label       = label;
-  m_Generation	= 0;
+  m_Status = STATUS_ALIVE; 
+  m_Label = label;
+  m_Generation = 0;
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
@@ -93,16 +93,16 @@ CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* p
 //---------------------------------------------------------------------------     
 CVegetable::CVegetable(string label, CVegetable& model) 
 { 
-  m_Label         = label;
+  m_Label = label;
   // inherited
   jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
-  m_Generation		= model.m_Generation + 1;
-  m_pGenome       = new CGenome(*model.m_pGenome);
+  m_Generation = model.m_Generation + 1;
+  m_pGenome = new CGenome(*model.m_pGenome);
 
   // reset
-  m_pBrain          = NULL;
-  m_Status          = STATUS_ALIVE; 
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
+  m_pBrain = NULL;
+  m_Status = STATUS_ALIVE; 
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
@@ -131,16 +131,16 @@ CVegetable::CVegetable(string label, CVegetable& model)
 //---------------------------------------------------------------------------     
 CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father) 
 { 
-  m_Label         = label;
+  m_Label = label;
   // inherited
   jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
-  m_Generation		= mother.m_Generation + 1;
-  m_pGenome       = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0);
+  m_Generation = mother.m_Generation + 1;
+  m_pGenome = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0);
 
   // reset
-  m_pBrain          = NULL;
-  m_Status          = STATUS_ALIVE; 
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
+  m_pBrain = NULL;
+  m_Status = STATUS_ALIVE; 
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init

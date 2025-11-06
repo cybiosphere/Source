@@ -114,7 +114,7 @@ const std::vector<sensorValType>& CSensorMemoryFeedback::UpdateAndGetStimulation
 //---------------------------------------------------------------------------
 string CSensorMemoryFeedback::GetSubCaptorLabel(size_t index)
 {
-  if ( (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
+  if ((index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()))
     return ("bad index");
   else
   {

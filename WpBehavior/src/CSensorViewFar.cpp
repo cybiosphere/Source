@@ -176,7 +176,7 @@ const std::vector<sensorValType>& CSensorViewFar::UpdateAndGetStimulationTable()
   }
 
   // Prepare followed entity
-  if (m_pFollowedEntity!=NULL)
+  if (m_pFollowedEntity != NULL)
   {
     m_followedEntityWeight.pEntity = NULL;
     m_followedEntityWeight.index = invalidIndex;
@@ -274,7 +274,7 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
     else if (pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId())
     {
       // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
-      viewChance = 100.0 - 2*pCurEntity->getCamouflage(); 
+      viewChance = 100.0 - 2 * pCurEntity->getCamouflage(); 
       if (pBiotop->getSunlight() < 20)
         viewChance = viewChance/2; 
     }
@@ -284,9 +284,9 @@ bool CSensorViewFar::Scan45degSector(size_t stimulationTabOffset,
     }
     // Reduce again chance for very low luminosity
     if (pBiotop->getSunlight() < 10)
-        viewChance = viewChance/2;
+        viewChance = viewChance / 2;
 
-    if ((pCurEntity!=NULL)&&(testChance(viewChance)))
+    if ((pCurEntity != NULL) && testChance(viewChance))
     {
       m_pEntityViewFarTab[i].index = i;
       m_pEntityViewFarTab[i].pEntity = pCurEntity;

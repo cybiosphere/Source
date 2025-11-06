@@ -59,12 +59,12 @@ CWater::CWater()
   // Default values 
   Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, 1); // Def layer is 1
-  m_pGenome       = NULL;
-  m_pBrain        = NULL;
+  m_pGenome = NULL;
+  m_pBrain = NULL;
 
-  m_Status      = STATUS_STATIC;
-  m_Label       = "Water";
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = "Water";
+  m_Generation = 0;
   m_TotalChildNumber = 0;
   m_bIsDrinkable = true;
   m_bInfiniteContent = true;
@@ -91,12 +91,12 @@ CWater::CWater(string label, Point_t initCoord, CGenome* pPseudoGenome)
   
   // Default values 
   jumpToGridCoord(initCoord, true, 1); // Def layer is 1
-  m_pGenome       = pPseudoGenome;
-  m_pBrain        = NULL;
+  m_pGenome = pPseudoGenome;
+  m_pBrain = NULL;
 
-  m_Status      = STATUS_STATIC;
-  m_Label       = label;
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = label;
+  m_Generation = 0;
   m_TotalChildNumber = 0;
   m_bIsDrinkable = true;
   m_bInfiniteContent = false;
@@ -115,16 +115,16 @@ CWater::CWater(string label, Point_t initCoord, CGenome* pPseudoGenome)
 //---------------------------------------------------------------------------     
 CWater::CWater(string label, CWater& model) 
 { 
-  m_Label         = label;
+  m_Label = label;
   // inherited
   jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
-  m_Generation		= model.m_Generation + 1;
-  m_pGenome       = new CGenome(*model.m_pGenome);
+  m_Generation = model.m_Generation + 1;
+  m_pGenome = new CGenome(*model.m_pGenome);
 
   // reset
-  m_pBrain          = NULL;
-  m_Status      = STATUS_STATIC;
-  m_Generation  = 0;
+  m_pBrain = NULL;
+  m_Status = STATUS_STATIC;
+  m_Generation = 0;
   m_TotalChildNumber = 0;
   m_bIsDrinkable = true;
   m_bInfiniteContent = false;

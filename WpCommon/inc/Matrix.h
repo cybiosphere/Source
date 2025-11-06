@@ -719,7 +719,7 @@ matrixT::pivot (size_t row)
 
   amax = -1;
   for (size_t i=row; i < _m->Row; i++)
-    if ( (temp = abs( _m->Val[i][row])) > amax && temp != 0.0)
+    if ((temp = abs( _m->Val[i][row])) > amax && temp != 0.0)
      {
        amax = temp;
        k = i;

@@ -102,8 +102,8 @@ CMeasurePopulation::~CMeasurePopulation()
 //===========================================================================
 double CMeasurePopulation::GetCurrentValue()
 {
-  if (m_pBiotop==NULL)
-    return (0);
+  if (m_pBiotop == NULL)
+    return 0;
 
   size_t val =0;
 

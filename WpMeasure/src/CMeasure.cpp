@@ -156,7 +156,7 @@ bool CMeasure::IsStillValid()
 //===========================================================================
 bool CMeasure::SetEvent(EventType_e type, double threshold)
 {
-  if ( (threshold<m_RangeMin) || (threshold>m_RangeMax) )
+  if ((threshold < m_RangeMin) || (threshold > m_RangeMax))
     return false;
 
   m_EventType = type;
@@ -173,17 +173,17 @@ bool CMeasure::CheckEvent(void)
   {
   case EVENT_TYPE_UNDER_THRESHOLD:
     {
-      resu = (GetCurrentValue()<m_EventThreshold);
+      resu = (GetCurrentValue() < m_EventThreshold);
       break;
     }
   case EVENT_TYPE_EGAL_THRESHOLD:
     {
-      resu = ( fabs(GetCurrentValue()-m_EventThreshold)<0.01 );
+      resu = (fabs(GetCurrentValue() - m_EventThreshold) < 0.01);
       break;
     }
   case EVENT_TYPE_OVER_THRESHOLD:
     {
-      resu = (GetCurrentValue()>m_EventThreshold);
+      resu = (GetCurrentValue() > m_EventThreshold);
       break;
     }
   default:
@@ -370,16 +370,16 @@ bool CMeasure::AutoUpdateRange()
   bool resu = false;
   for (int i = 0; i < MAX_MEASUREMENT_DATA_SIZE; i++)
   {
-    if ( m_tCurValTable[i].timeCount != 0 )
+    if (m_tCurValTable[i].timeCount != 0)
     {
       if (m_tCurValTable[i].value > m_RangeMax)
       {
-        m_RangeMax = 120 * ( floor(m_tCurValTable[i].value / 100.0) + 1 ); // RangeMax 20% over real max
+        m_RangeMax = 120 * (floor(m_tCurValTable[i].value / 100.0) + 1); // RangeMax 20% over real max
         resu = true;
       }
       if (m_tCurValTable[i].value < m_RangeMin)
       {
-        m_RangeMin = 120 * ( floor(m_tCurValTable[i].value / 100.0) - 1 ); // RangeMin 20% under real min
+        m_RangeMin = 120 * (floor(m_tCurValTable[i].value / 100.0) - 1); // RangeMin 20% under real min
         resu = true;
       }
     }

@@ -86,7 +86,7 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   }
 
   if (pNewEntity == NULL)
-    return (NULL);
+    return NULL;
 
   // Initialise the new entity
   pNewEntity->setEntityFromGenome();

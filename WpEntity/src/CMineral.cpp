@@ -56,13 +56,13 @@ CMineral::CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseu
 {
   // Input values 
   jumpToGridCoord(initCoord, layer);
-  m_pGenome       = pPseudoGenome;
-  m_pBrain        = NULL;
+  m_pGenome = pPseudoGenome;
+  m_pBrain = NULL;
 
   // Default values   
-  m_Status      = STATUS_STATIC;
-  m_Label       = label;
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = label;
+  m_Generation = 0;
   m_TotalChildNumber = 0;
 
 }

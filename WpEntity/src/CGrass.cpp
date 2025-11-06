@@ -59,12 +59,12 @@ CGrass::CGrass()
   // Default values 
   Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);
-  m_pGenome       = NULL;
-  m_pBrain        = NULL;
+  m_pGenome = NULL;
+  m_pBrain = NULL;
 
-  m_Status      = STATUS_STATIC;
-  m_Label       = "Generic grass";
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = "Generic grass";
+  m_Generation = 0;
   m_TotalChildNumber = 0;
  
   setColor(0x000ABF0A); // Color

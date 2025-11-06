@@ -59,12 +59,12 @@ CRock::CRock()
   // Default values 
   Point_t coord{ invalidCoord, invalidCoord };
   jumpToGridCoord(coord, true, invalidCoord);
-  m_pGenome       = NULL;
-  m_pBrain        = NULL;
+  m_pGenome = NULL;
+  m_pBrain = NULL;
 
-  m_Status      = STATUS_STATIC;
-  m_Label       = "Generic rock";
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = "Generic rock";
+  m_Generation = 0;
   m_TotalChildNumber = 0;
  
   setColor(0x008A8F8A); // Color

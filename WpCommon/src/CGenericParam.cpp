@@ -42,11 +42,11 @@ distribution.
 
 CGenericParam::CGenericParam(double valMin, double valInit, double valNominal, double valMax, GenericParamType_e type)
 {
-  m_ValMin     = valMin;
+  m_ValMin = valMin;
   m_ValCurrent = valInit;
   m_ValNominal = valNominal;
-  m_ValMax     = valMax;
-  m_Type       = type;
+  m_ValMax = valMax;
+  m_Type = type;
 
   // Corrections
   if (m_ValMax < m_ValMin)

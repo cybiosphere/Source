@@ -141,11 +141,11 @@ CBrain::~CBrain()
   DeleteAllSensors();
   DeleteAllReactions();
   DeleteAllBrainMemorizedEntityIdentities();
-  if (m_pFeelingWelfare!=NULL)
+  if (m_pFeelingWelfare != NULL)
     delete m_pFeelingWelfare;
-  if (m_pChoiceDecisionBuffer!=NULL)
+  if (m_pChoiceDecisionBuffer != NULL)
     delete [] m_pChoiceDecisionBuffer;
-  if(m_pGeoMap!=NULL)
+  if(m_pGeoMap != NULL)
     delete m_pGeoMap;
 }
 
@@ -624,7 +624,7 @@ bool CBrain::saveInTiXmlFile(TiXmlDocument *pXmlDoc)
   TiXmlElement* pElement = NULL;
   int i;
 
-  if (pXmlDoc==NULL) 
+  if (pXmlDoc == NULL) 
     return false;
 
   pNodeEntity = pXmlDoc->FirstChild(XML_NODE_ENTITY);
@@ -1047,7 +1047,7 @@ bool CBrain::InitializeNeuronTableNeutral()
   m_mDecisionNeuronTable.InitializeNeuronMatrixNeutral(XML_NODE_BRAIN, m_nInputSensors*m_nInputHistory,nOutputReactions);
   m_mInputDecisionHistory.SetSize(m_nInputSensors*m_nInputHistory,m_nExperienceHistory);
   m_vCurrentDecisionChoice.SetSize(nOutputReactions,1);
-  if (m_pChoiceDecisionBuffer!=NULL)
+  if (m_pChoiceDecisionBuffer != NULL)
     delete [] m_pChoiceDecisionBuffer;
   m_pChoiceDecisionBuffer = new size_t[MAX_CHOICE_BUFFER_SIZE_PER_CHOICE*nOutputReactions];
   m_mDecisionHistory.SetSize(nOutputReactions,m_nExperienceHistory);
@@ -1403,7 +1403,7 @@ string CBrain::GetRowLabel(size_t index)
     size_t pos = offset * m_nInputSensors;
     for (size_t sensId=0; sensId<GetNumberSensor(); sensId++)
     {
-      if ( (pos <= index) && (index < pos+GetSensorByIndex(sensId)->GetSubCaptorNumber()) )
+      if ((pos <= index) && (index < pos+GetSensorByIndex(sensId)->GetSubCaptorNumber()))
       {
         string label;
         label = FormatString("T-%d ", offset);
@@ -1446,7 +1446,7 @@ size_t CBrain::GetBrainMatrixRowIndex(DWORD sensorUidbase, size_t sensorUidRange
   for (size_t sensId = 0; sensId<GetNumberSensor(); sensId++)
   {
     CSensor* pSens = GetSensorByIndex(sensId);
-    if ( ( pSens->GetUniqueId() >= sensorUidbase) && (pSens->GetUniqueId() < (sensorUidbase + sensorUidRange)) )
+    if ((pSens->GetUniqueId() >= sensorUidbase) && (pSens->GetUniqueId() < (sensorUidbase + sensorUidRange)))
     {
       size_t resu = timeHistory * m_nInputSensors + pos + subCaptorIndex;
       if (resu < m_mDecisionNeuronTable.GetNeuronTableRowCount())
@@ -1840,7 +1840,7 @@ CMatrix* CBrain::GetIdentifyOutputVect()
 
 bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignature, IdentificationType_e identity)
 {
-  BrainMemorizedEntityIdentity_t* pEntityMem=NULL;
+  BrainMemorizedEntityIdentity_t* pEntityMem = NULL;
 
   for (size_t i = 0; i < m_tBrainMemorizedEntityIdentities.size(); i++) 
   {
@@ -1869,7 +1869,7 @@ bool CBrain::CheckIfEntityIdentityNotMemorized(entitySignatureType entitySignatu
 bool CBrain::MemorizeIdentificationExperience(feedbackValType currentFeedback,double learningRate, CBasicEntity* pEntity, IdentificationType_e identity)
 {
   // skip small memorizations
-  if (((currentFeedback < 1) && (currentFeedback > -1)) || (pEntity == NULL) || (CheckIfEntityIdentityNotMemorized(pEntity->getEntitySignature(), identity) == false) )
+  if (((currentFeedback < 1) && (currentFeedback > -1)) || (pEntity == NULL) || (CheckIfEntityIdentityNotMemorized(pEntity->getEntitySignature(), identity) == false))
     return false;
 
   if (currentFeedback > MAX_FEEDBACK_VAL)

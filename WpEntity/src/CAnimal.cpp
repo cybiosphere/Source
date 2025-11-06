@@ -70,15 +70,15 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
 { 
   // Input values
   jumpToGridCoord(initCoord, layer);
-  m_pGenome         = pGenome;
-  m_pBrain          = new CBrainAnimal(this);
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
+  m_pGenome = pGenome;
+  m_pBrain = new CBrainAnimal(this);
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
 
   // Default values          
-  m_Status      = STATUS_ALIVE; 
+  m_Status = STATUS_ALIVE; 
   
-  m_Label       = label;
-  m_Generation	= 0;
+  m_Label = label;
+  m_Generation= 0;
   m_TotalChildNumber = 0;
   m_HeadDirection = 0;
   m_ConsumedEnergy = 0;
@@ -109,15 +109,15 @@ CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome
 //---------------------------------------------------------------------------    
 CAnimal::CAnimal(string label, CAnimal& model)
 { 
-  m_Label         = label;
+  m_Label = label;
   // inherited
   jumpToGridCoord(model.getGridCoord(), true,  model.getLayer());
-  m_Generation		= model.m_Generation + 1;
-  m_pGenome       = new CGenome(*model.m_pGenome);
+  m_Generation = model.m_Generation + 1;
+  m_pGenome = new CGenome(*model.m_pGenome);
   // reset
-  m_pBrain          = new CBrainAnimal(this);
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
-  m_Status          = STATUS_ALIVE; 
+  m_pBrain = new CBrainAnimal(this);
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
+  m_Status = STATUS_ALIVE; 
   m_TotalChildNumber = 0;
   m_HeadDirection = 0;
 
@@ -147,15 +147,15 @@ CAnimal::CAnimal(string label, CAnimal& model)
 //--------------------------------------------------------------------------- 
 CAnimal::CAnimal(string label, CAnimal& mother, CAnimal& father)
 { 
-  m_Label         = label;
+  m_Label = label;
   // inherited
   jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
-  m_Generation		= mother.m_Generation + 1;
-  m_pGenome       = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0); // Fred: default crossover rate 1%
+  m_Generation = mother.m_Generation + 1;
+  m_pGenome = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0); // Fred: default crossover rate 1%
   // reset
-  m_pPhysicWelfare  = new CPhysicalWelfare(this);
-  m_pBrain          = new CBrainAnimal(this);
-  m_Status          = STATUS_ALIVE; 
+  m_pPhysicWelfare = new CPhysicalWelfare(this);
+  m_pBrain = new CBrainAnimal(this);
+  m_Status = STATUS_ALIVE; 
   m_TotalChildNumber = 0;
   m_HeadDirection = 0;
 
@@ -239,7 +239,7 @@ bool CAnimal::setParamFromGene(CGene* pGen)
     return true;
   }
   
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
@@ -464,7 +464,7 @@ bool CAnimal::completeParamsWithDefault()
 //---------------------------------------------------------------------------
 bool CAnimal::setPhysicWelfareFromGene(CGene* pGen)
 {
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PHY_WELFARE))
   {
     return false;
   }
@@ -559,7 +559,7 @@ CSensor* CAnimal::getTemporarySensorFromGene(CGene* pGen)
     // The parameter has already been taken into account by basic entity
     return NULL;
   }
-  if ((pGen==NULL) || (pGen->getGeneType() != GENE_SENSOR))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_SENSOR))
   {
     return NULL;
   }
@@ -814,16 +814,16 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize(CGene* pGen)
 {
   size_t nbWeight = CBasicEntity::getExpectedBrainSensorWeightSize (pGen);
 
-  if ( nbWeight > 0)
+  if (nbWeight > 0)
   {
     // The parameter has already been taken into account by basic entity
-    return (nbWeight);
+    return nbWeight;
   }
   
-  if ((pGen==NULL) || (pGen->getGeneType() != GENE_SENSOR))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_SENSOR))
   {
     // error in pGen
-    return (0);
+    return 0;
   }
 
   // We are sure Gene is a sensor
@@ -833,7 +833,7 @@ size_t  CAnimal::getExpectedBrainSensorWeightSize(CGene* pGen)
   if (len < 4 * sizeof(WORD))
   {
     // not enought data to config sensor
-    return (0);
+    return 0;
   }
 
   int scaledVal1{ 0 }, scaledVal2{ 0 }, scaledVal3{ 0 }, scaledVal4{ 0 };
@@ -1159,7 +1159,7 @@ bool CAnimal::setBrainSizeFromGene(CGene* pGen)
     return true;
   }
   
-  if ( (pGen == NULL) || (pGen->getGeneType() != GENE_BRAIN_SIZE) )
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_BRAIN_SIZE))
   {
     return false;
   }
@@ -1167,7 +1167,7 @@ bool CAnimal::setBrainSizeFromGene(CGene* pGen)
   // We are sure Gene is a brain size gene
   bool resu = false;
   size_t len = pGen->getData().size();
-  if (len<1*sizeof(WORD))
+  if (len < 1 * sizeof(WORD))
   {
     // not enought data to config brain
     return false;
@@ -1240,11 +1240,11 @@ bool CAnimal::setBrainInstinctFromGene(CGene* pGen)
   // Build Line
   if (subType == GENE_BRAIN_LINE)
   {
-    resu = m_pBrain->GetDecisionNeuronTable()->buildNeuronLineFromRawData(lineId,len,pData+1);
+    resu = m_pBrain->GetDecisionNeuronTable()->buildNeuronLineFromRawData(lineId, len, pData + 1);
   }
   else if (subType == GENE_BRAIN_IDENTIFY_LINE)
   {
-    resu = m_pBrain->GetIdentifyNeuronTable()->buildNeuronLineFromRawData(lineId,len,pData+1);
+    resu = m_pBrain->GetIdentifyNeuronTable()->buildNeuronLineFromRawData(lineId, len, pData + 1);
   }
   return resu;
 }
@@ -1332,7 +1332,7 @@ bool CAnimal::setFeelingFromGene(CGene* pGen)
   auto rawData = pGen->getData();
   WORD* pData = (WORD*)rawData.data();
   size_t len = rawData.size();
-  if ( len < (sizeof(DWORD)+sizeof(WORD)) )
+  if ( len < (sizeof(DWORD)+sizeof(WORD)))
   {
     // not enought data to config param
     return false;
@@ -1443,7 +1443,7 @@ bool CAnimal::setPurposeFromGene(CGene* pGen)
         trigType = PURPOSE_TRIG_DOWN;
 
       CPurpose* pPurpose = new CPurpose(pLabel, duration, pSens, subCaptorIndex, startRateThreshold, stopRateThreshold, trigType);
-      if ( pPurpose != NULL )
+      if (pPurpose != NULL)
       {
         m_pBrain->AttachPurpose(pPurpose);
         resu = true;
@@ -1462,13 +1462,13 @@ bool CAnimal::setPurposeFromGene(CGene* pGen)
       CPurpose* pPurpose = m_pBrain->GetPurposeByUniqueId(purposeUid);
       CSensor* pSensor = m_pBrain->GetSensorByUniqueId(sensUid);
 
-      if ( (pPurpose == NULL) || (pSensor == NULL) )
+      if ((pPurpose == NULL) || (pSensor == NULL))
       {
         // Bad data to config param
         return false;
       }
 
-      size_t  bonusTableSize = (len - (2*sizeof(DWORD))) / sizeof(WORD);
+      size_t  bonusTableSize = (len - (2 * sizeof(DWORD))) / sizeof(WORD);
       std::vector<int> bonusTable(bonusTableSize);
       for (size_t index = 0; index < bonusTableSize; index++)
       {
@@ -1479,7 +1479,7 @@ bool CAnimal::setPurposeFromGene(CGene* pGen)
     }
   case GENE_PURPOSE_REACTION:
     {
-      if ( len < (2*sizeof(DWORD)+sizeof(WORD)) )
+      if (len < (2 * sizeof(DWORD) + sizeof(WORD)))
       {
         // not enought data to config param
         return false;
@@ -1548,7 +1548,7 @@ string CAnimal::buildPhysicWellfareString(CGene* pGen)
     return (welfareStr);
   }
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_PHY_WELFARE))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PHY_WELFARE))
   {
     return (welfareStr);
   }
@@ -1619,14 +1619,14 @@ string CAnimal::buildSensorString(CGene* pGen)
     return (paramStr);
   }
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_SENSOR))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_SENSOR))
   {
     return (paramStr);
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if (len<4*sizeof(WORD))
+  if (len < 4 * sizeof(WORD))
   {
     // not enought data to config param
     return (paramStr);
@@ -1703,12 +1703,12 @@ string CAnimal::buildSensorString(CGene* pGen)
       CGenericParam* pParam = getParameter(scaledVal3);
       paramStr = pGen->getLabel();
 
-      if (pParam!=NULL)
+      if (pParam != NULL)
         paramStr = paramStr + " " + pParam->getLabel();
       else
         paramStr = paramStr + " Bad param ";
 
-      if (pSens!=NULL)
+      if (pSens != NULL)
         paramStr = paramStr + " x " + pSens->GetLabel();
       else
         paramStr = paramStr + " x Bad sensor ";
@@ -1746,13 +1746,13 @@ string CAnimal::buildReactionString(CGene* pGen)
     return paramStr;
   }
 
-  if ((pGen==NULL)||(pGen->getGeneType() != GENE_REACTION))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_REACTION))
   {
     return paramStr;
   }
   // We are sure Gene is a parameter
   size_t len = pGen->getData().size();
-  if (len<4*sizeof(WORD))
+  if (len < 4 * sizeof(WORD))
   {
     // not enought data to config param
     return paramStr;
@@ -1818,7 +1818,7 @@ string CAnimal::buildBrainSizeString(CGene* pGen)
     return (brainStr);
   }
 
-  if ( (pGen==NULL) || (pGen->getGeneType() != GENE_BRAIN_SIZE) )
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_BRAIN_SIZE))
   {
     return (brainStr);
   }
@@ -1974,14 +1974,14 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
     return (welfareStr);
   }
 
-  if ((m_pBrain==NULL) || (pGen==NULL) || (pGen->getGeneType() != GENE_FEELING))
+  if ((m_pBrain == NULL) || (pGen == NULL) || (pGen->getGeneType() != GENE_FEELING))
   {
     return (welfareStr);
   }
   // We are sure Gene is a parameter
   auto rawData = pGen->getData();
   size_t len = rawData.size();
-  if ( len < (sizeof(DWORD)+sizeof(WORD)) )
+  if (len < (sizeof(DWORD) + sizeof(WORD)))
   {
     // not enought data to config param
     return (welfareStr);
@@ -1990,7 +1990,7 @@ string CAnimal::buildFeelingWellfareString(CGene* pGen)
   // Get associated Sensor
   DWORD sensUid = pGen->getElementRawValue(0);
   CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
-  if ( pSens == NULL )
+  if (pSens == NULL)
   {
     return (welfareStr);
   }
@@ -2037,7 +2037,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
     return (purposeStr);
   }
 
-  if ((m_pBrain==NULL)||(pGen==NULL)||(pGen->getGeneType() != GENE_PURPOSE))
+  if ((m_pBrain == NULL) || (pGen == NULL) || (pGen->getGeneType() != GENE_PURPOSE))
   {
     return (purposeStr);
   }
@@ -2053,12 +2053,12 @@ string CAnimal::buildPurposeString(CGene* pGen)
   case GENE_PURPOSE_TRIGGER_UP:
   case GENE_PURPOSE_TRIGGER_DOWN:
     {
-      if ( len < (sizeof(DWORD)+4*sizeof(WORD)) )
+      if (len < (sizeof(DWORD)+4*sizeof(WORD)))
         break;
       // Get associated Sensor
       DWORD sensUid = pGen->getElementRawValue(4);
       CSensor* pSens = m_pBrain->GetSensorByUniqueId(sensUid);
-      if ( pSens == NULL )
+      if (pSens == NULL)
         break;
       int duration           = pGen->getElementRoundValue(0);
       int subCaptorIndex     = pGen->getElementRoundValue(1);
@@ -2079,7 +2079,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
     }
   case GENE_PURPOSE_SENSOR:
     {
-      if ( len < (2 * sizeof(DWORD)) )
+      if (len < (2 * sizeof(DWORD)))
         break;
 
       DWORD purposeUid = pGen->getElementRawValue(0);
@@ -2092,7 +2092,7 @@ string CAnimal::buildPurposeString(CGene* pGen)
     }
   case GENE_PURPOSE_REACTION:
     {
-      if ( len < (2 * sizeof(DWORD)+sizeof(WORD)) )
+      if (len < (2 * sizeof(DWORD)+sizeof(WORD)))
         break;
 
       DWORD purposeUid = pGen->getElementRawValue(0);
@@ -2970,10 +2970,10 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
   double injuryLevel=0;
   // Check if we are on the edge of water
   Point_t curCoord;
-  int i,j, totalLayerType=0;
-  for (i=-1; i<2; i++)
+  int i, j, totalLayerType=0;
+  for (i = -1; i < 2; i++)
   {
-    for (j=-1; j<2; j++)
+    for (j = -1; j < 2; j++)
     {
         curCoord.x = getGridCoord().x + i;
         curCoord.y = getGridCoord().y + j;
@@ -3182,7 +3182,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
   Point_t newCoord = getGridCoordRelative(relPos);
 
   CBasicEntity* pEatenEntity = m_pBiotop->findEntity(newCoord,getLayer()+relLayer);
-  if ( (pEatenEntity == NULL) || ( (pEatenEntity != NULL) && (pEatenEntity->getId() == ENTITY_ID_WATER) ) )// Rq: Water (id=0) cannot be eaten
+  if ((pEatenEntity == NULL) || ((pEatenEntity != NULL) && (pEatenEntity->getId() == ENTITY_ID_WATER))) // Rq: Water (id=0) cannot be eaten
   {
     // Nothing to eat: small frustration
     pleasureRate = -failureFrustrationFactor;
@@ -3252,7 +3252,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
       else
       {
         // It is not the expected food        
-        pleasureRate = (getHungerRate()-80.0) / 2 - toxicityRate; // Under 80%, no benefits
+        pleasureRate = (getHungerRate() - 80.0) / 2 - toxicityRate; // Under 80%, no benefits
         changeHungerRate(-0.1);
         changeThirstRate(-0.1);
         // No possible digestion
@@ -3364,7 +3364,7 @@ bool CAnimal::ExecuteAttackAction(int relLayer, int stepRange, double successSat
   Point_t newCoord = getGridCoordRelative(relPos);
 
   CBasicEntity* pAttackedEntity = m_pBiotop->findEntity(newCoord,getLayer() + relLayer);
-  if ((pAttackedEntity == NULL) || ( (pAttackedEntity != NULL) && (pAttackedEntity->isDrinkable() == true))) // Rq: Water (id=0) cannot be attacked
+  if ((pAttackedEntity == NULL) || ((pAttackedEntity != NULL) && (pAttackedEntity->isDrinkable() == true))) // Rq: Water (id=0) cannot be attacked
   {
     // Nothing to attack: small frustration
     pleasureRate = -failureFrustrationFactor; // -1

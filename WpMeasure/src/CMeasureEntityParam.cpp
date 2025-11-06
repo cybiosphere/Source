@@ -46,7 +46,7 @@ CMeasureEntityParam::CMeasureEntityParam(CBasicEntity* pEntity, size_t paramInde
   m_pEntity = pEntity;
   m_paramIndex = paramIndex;
 
-  if ( (pEntity!=NULL) && (pEntity->getParameter(paramIndex)!=NULL) )
+  if ((pEntity != NULL) && (pEntity->getParameter(paramIndex) != NULL))
   {
     m_Label = pEntity->getLabel() + " - " + pEntity->getParameter(paramIndex)->getLabel();
   }

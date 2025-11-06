@@ -151,7 +151,7 @@ bool CAnimMammal::setParamFromGene(CGene* pGen)
     return true;
   }
   
-  if ((pGen==NULL) || (pGen->getGeneType() != GENE_PARAMETER))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_PARAMETER))
   {
     return false;
   }
@@ -242,7 +242,7 @@ bool CAnimMammal::completeParamsWithDefault()
 //---------------------------------------------------------------------------
 bool CAnimMammal::setLifeStageFromGene(CGene* pGen)
 {
-  if ((pGen==NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
+  if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
   {
     return false;
   }
@@ -365,37 +365,37 @@ bool CAnimMammal::completeLifeStagesWithDefault(void)
   double deathDuration = getRotenTimeExpectation();
   
   duration  = 0; // Age during gestation is not counted.
-  pLifeStage = new CLifeStage("Fetus",STAGE_0,0);
+  pLifeStage = new CLifeStage("Fetus", STAGE_0, 0);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.05*lifeDuration);
-  pLifeStage = new CLifeStage("Baby",STAGE_1,duration);
+  pLifeStage = new CLifeStage("Baby", STAGE_1, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.15*lifeDuration);
-  pLifeStage = new CLifeStage("Child",STAGE_2,duration);
+  pLifeStage = new CLifeStage("Child", STAGE_2, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.70*lifeDuration);
-  pLifeStage = new CLifeStage("Adult",STAGE_3,duration);
+  pLifeStage = new CLifeStage("Adult", STAGE_3, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.10*lifeDuration);
-  pLifeStage = new CLifeStage("Old",STAGE_4,duration);
+  pLifeStage = new CLifeStage("Old", STAGE_4, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.4*deathDuration);
-  pLifeStage = new CLifeStage("Dead",STAGE_5,duration);
+  pLifeStage = new CLifeStage("Dead", STAGE_5, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
   duration  = (int)(0.6*deathDuration);
-  pLifeStage = new CLifeStage("Roten",STAGE_6,duration);
+  pLifeStage = new CLifeStage("Roten", STAGE_6, duration);
   if (!addLifeStage(pLifeStage))
     delete(pLifeStage); // stage was already set by genome
   
@@ -656,7 +656,7 @@ void CAnimMammal::autoKill()
 //---------------------------------------------------------------------------
 bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, double failureFrustrationFactor)
 {
-  if ( getPheromone() != PHEROMONE_BABY )
+  if (getPheromone() != PHEROMONE_BABY)
   {
     return CAnimal::ExecuteEatAction(relLayer, successSatisfactionFactor, failureFrustrationFactor);
   }
@@ -678,8 +678,8 @@ bool CAnimMammal::ExecuteEatAction(int relLayer, double successSatisfactionFacto
     else
     {
       // Check that suckling entity is a mother female of the same specie 
-      if ( (m_pGenome->checkSpecieCompatibility(pEatenEntity->getGenome()) == true)
-        && (pEatenEntity->isAlive()) && (pEatenEntity->getPheromone() == PHEROMONE_MATERNAL) )
+      if ((m_pGenome->checkSpecieCompatibility(pEatenEntity->getGenome()) == true)
+        && (pEatenEntity->isAlive()) && (pEatenEntity->getPheromone() == PHEROMONE_MATERNAL))
       {
         CAnimMammal* pMotherEntity = (CAnimMammal*)pEatenEntity;
         eatenWeight = getWeight() / 1000.0;
@@ -736,17 +736,17 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
   moveToGridEdgePos();
   
   CBasicEntity* pPartnerEntity = m_pBiotop->findEntity(newCoord,getLayer());
-  if ( (pPartnerEntity==NULL) || (getSex()==SEX_FEMALE) )
+  if ((pPartnerEntity == NULL) || (getSex()==SEX_FEMALE))
   {
     // No partner: small frustration
     pleasureRate = -failureFrustrationFactor;  // -1
   }
   else
   {
-    if ( (m_pGenome->checkSpecieCompatibility(pPartnerEntity->getGenome()) == true) && (getPheromone() == PHEROMONE_SEXUAL_MALE)
-      && pPartnerEntity->isAlive() && (pPartnerEntity->getSex() == SEX_FEMALE) && pPartnerEntity->isLocalAutoControlled() )
+    if ((m_pGenome->checkSpecieCompatibility(pPartnerEntity->getGenome()) == true) && (getPheromone() == PHEROMONE_SEXUAL_MALE)
+      && pPartnerEntity->isAlive() && (pPartnerEntity->getSex() == SEX_FEMALE) && pPartnerEntity->isLocalAutoControlled())
     {
-      if ( ((CAnimMammal*)pPartnerEntity)->reproductWith(this) )
+      if (((CAnimMammal*)pPartnerEntity)->reproductWith(this))
       {
         pleasureRate = getLibidoRate() + successSatisfactionFactor;  // +10
         changeLibidoRate(-20.0);
@@ -788,7 +788,7 @@ bool CAnimMammal::ExecuteCopulateAction(double successSatisfactionFactor, double
 bool CAnimMammal::reproductWith(CAnimMammal* partner)
 {
   // TBD: Check also if reproduction age is reached
-  if ((getGestationBabyNumber()!=0) || (getLibidoRate()<50))
+  if ((getGestationBabyNumber() != 0) || (getLibidoRate() < 50))
   {
     return false;
   }
@@ -796,7 +796,7 @@ bool CAnimMammal::reproductWith(CAnimMammal* partner)
   // Chose a number between 0 to 10
   int childNb = getRandInt(10);
   // If out of range, give nominal value
-  if ( (childNb>getGestationMaxNumber()) || (childNb<getGestationMinNumber()) )
+  if ((childNb>getGestationMaxNumber()) || (childNb<getGestationMinNumber()))
   {
     childNb = getGestationNominalNumber();
   }
@@ -860,7 +860,7 @@ bool CAnimMammal::deliverAllBabies()
   int nbChildsAlive = 0;
   CAnimMammal* pGestationChild = NULL;
 
-  if (m_pBiotop!=NULL)
+  if (m_pBiotop != NULL)
   {
     for (size_t i = 0; i < m_tGestationChilds.size(); i++)
     {
@@ -900,7 +900,7 @@ bool CAnimMammal::deliverAllBabies()
   setPheromone(PHEROMONE_MATERNAL);
   setAttribute(PHY_ATTRIBUTE_UDDER);
   
-  if (nbChildsAlive>0)
+  if (nbChildsAlive > 0)
   {
     getBrain()->SetHomePurposePositionInGeoMap();
   }

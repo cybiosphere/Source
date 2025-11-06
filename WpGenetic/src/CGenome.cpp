@@ -57,7 +57,7 @@ CGenome::CGenome(CGenome& model)
   m_SexualPairIndex = model.m_SexualPairIndex;
   m_bSexualDimorphism = model.m_bSexualDimorphism;
   CPairOfChromosome* tempPair = NULL;
-  for (size_t  i= 0; i < model.m_tPair.size(); i++)
+  for (size_t  i = 0; i < model.m_tPair.size(); i++)
   {
     tempPair = new CPairOfChromosome(*model.m_tPair[i]);
     m_tPair.push_back(tempPair);
@@ -94,7 +94,7 @@ size_t CGenome::addPair()
   if (pPair != NULL)
   {
     m_tPair.push_back(pPair);
-    return (m_tPair.size()-1);
+    return (m_tPair.size() - 1);
   }
   else
     return (invalidIndex);
@@ -105,7 +105,7 @@ bool CGenome::removePairFromIndex(size_t index)
   if (index > (m_tPair.size() - 1))
     return false;
 
-  m_tPair.erase(m_tPair.begin()+index);
+  m_tPair.erase(m_tPair.begin() + index);
   return true;
 }
 
@@ -407,13 +407,13 @@ bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
   TiXmlNode* pNodePair = NULL;
   TiXmlNode* pNodeGene = NULL;
 
-  if (pNodeEntity==NULL)
+  if (pNodeEntity == NULL)
   {
     return false;
   }
 
   pNodeGenome = pNodeEntity->FirstChild(XML_NODE_GENOME);
-  if (pNodeGenome==NULL)
+  if (pNodeGenome == NULL)
   {
     // Create Genome node
     TiXmlElement newNode(XML_NODE_GENOME);
@@ -495,7 +495,7 @@ bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
   TiXmlNode* pNodeGene = NULL;
   bool resu = false;
 
-  if (pNodeEntity!=NULL)
+  if (pNodeEntity != NULL)
     pNodeGenome = pNodeEntity->FirstChild(XML_NODE_GENOME);
 
   if ((pNodeGenome != NULL) && (pNodeGenome->Type() == TiXmlNode::TINYXML_ELEMENT))

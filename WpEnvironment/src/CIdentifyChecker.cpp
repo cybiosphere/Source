@@ -167,7 +167,7 @@ bool CIdentifyChecker::NextCheck()
 
   getline(m_curCheckerFile, curLine);
 
-  if ( m_curCheckerFile.rdstate() !=  ios::goodbit )
+  if (m_curCheckerFile.rdstate() !=  ios::goodbit)
     return false;
 
   // Check if line is comment

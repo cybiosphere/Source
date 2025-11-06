@@ -55,13 +55,13 @@ distribution.
 CVirus::CVirus(string label, CGenome* pGenome)
 {
   // Input values 
-  m_pGenome       = pGenome;
-  m_pBrain        = NULL;
+  m_pGenome = pGenome;
+  m_pBrain = NULL;
 
   // Default values   
-  m_Status      = STATUS_STATIC;
-  m_Label       = label;
-  m_Generation  = 0;
+  m_Status = STATUS_STATIC;
+  m_Label = label;
+  m_Generation = 0;
   m_TotalChildNumber = 0;
 
   initVirusParamIds();

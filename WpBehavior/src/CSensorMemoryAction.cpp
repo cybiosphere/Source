@@ -106,7 +106,7 @@ const std::vector<sensorValType>& CSensorMemoryAction::UpdateAndGetStimulationTa
 //---------------------------------------------------------------------------
 string CSensorMemoryAction::GetSubCaptorLabel(size_t index)
 {
-  if ( (index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()) )
+  if ((index>GetSubCaptorNumber()) || (index>m_pBrain->GetNumberReaction()))
     return ("bad index");
   else
   {
