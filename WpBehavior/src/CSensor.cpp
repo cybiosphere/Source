@@ -178,7 +178,7 @@ sensorValType CSensor::GetSubCaptorStimulationLevel(size_t captorIndex)
   if (captorIndex < m_SubCaptorNumber)
     return (m_tStimulationValues[captorIndex] * 100 / m_tSubCaptorWeightRate[captorIndex]);
   else
-    return (0);
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -255,22 +255,18 @@ DWORD CSensor::GetUniqueId()
 
 int CSensor::GetBonusRate(size_t subCaptorInd)
 {
-  return (m_tBonusRate[subCaptorInd]);
-}
 
-bool CSensor::SetBonusRate(size_t subCaptorInd, int bonus)
-{
-  if (GetSubCaptorNumber() >= subCaptorInd)
-    return false;
-
-  m_tBonusRate[subCaptorInd] = bonus;
-  return true;
+  return (subCaptorInd < m_tBonusRate.size()) ? m_tBonusRate[subCaptorInd] : 0;
 }
 
 bool CSensor::SetBonusRate(const std::vector<int>& tBonus)
 {
-  if (GetSubCaptorNumber() != tBonus.size())
+  if (m_tBonusRate.size() != tBonus.size())
+  {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("BRAIN  - ERROR CSensor SetBonusRate: wrong table size\n");
     return false;
+  }
 
   for (size_t i = 0; i < tBonus.size(); i++)
   {

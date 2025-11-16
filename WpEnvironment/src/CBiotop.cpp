@@ -1726,7 +1726,7 @@ void CBiotop::nextHourForAllEntities(void)
     {
       if (pEntity->isToBeRemoved())
       {
-        deleteEntityByIndex(i, false);
+        deleteEntityByIndex(i, pEntity->isAnimal());
       }
       else
       {
@@ -3154,10 +3154,10 @@ bool CBiotop::getOdorLevels(const Point_t& coord, int range, double odorLevel[NU
   // Init to 0
   int i;
   for (i = 0; i < NUMBER_ODORS; i++)
-    odorLevel[i]=0;
+    odorLevel[i] = 0;
 
   Point_t coordWind = coord;
-  if (m_WindStrenght>0)
+  if (m_WindStrenght > 0)
   {
     coordWind.x -= vectorDirection[m_WindDirection].x;
     coordWind.y -= vectorDirection[m_WindDirection].y;

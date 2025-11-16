@@ -1472,7 +1472,7 @@ bool CAnimal::setPurposeFromGene(CGene* pGen)
       std::vector<int> bonusTable(bonusTableSize);
       for (size_t index = 0; index < bonusTableSize; index++)
       {
-        bonusTable[index] = pGen->computeBonusFromData(pData[4+index]);
+        bonusTable[index] = pGen->computeBonusFromData(pData[4 + index]);
       }
       resu = pPurpose->AddSensorBonus(pSensor, bonusTable);
       break;

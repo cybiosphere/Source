@@ -1209,7 +1209,7 @@ choiceIndType CBrain::ComputeAndGetDecision(double curiosityRate, ReactionIntens
   else
   {
     CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
-    CYBIOCORE_LOG("BRAIN - ERROR ComputeAndGetDecision : Choice error for entity name %s \n", this->GetEntity()->getLabel().c_str());
+    CYBIOCORE_LOG("BRAIN  - ERROR ComputeAndGetDecision : Choice error for entity name %s \n", this->GetEntity()->getLabel().c_str());
   }
   return resuIndex;
 }
@@ -1694,7 +1694,14 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
   if ((pEntity == NULL) || (pEntity->isToBeRemoved()))
   {
     CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
-    CYBIOCORE_LOG("BRAIN - ERROR ComputeAndGetIdentification : pEntity is NULL or ToBeRemoved\n");
+    if (pEntity == NULL)
+    {
+      CYBIOCORE_LOG("BRAIN  - ERROR ComputeAndGetIdentification : pEntity is NULL\n");
+    }
+    else
+    {
+      CYBIOCORE_LOG("BRAIN  - ERROR ComputeAndGetIdentification : entity %s is ToBeRemoved\n", pEntity->getLabel().c_str());
+    }
     return &m_vCurrentIdentificationChoice;
   }
 

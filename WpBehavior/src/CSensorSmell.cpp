@@ -88,7 +88,7 @@ CSensorSmell::~CSensorSmell()
 //---------------------------------------------------------------------------
 const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
 {
-  std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
+  //std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0); // Optime CPU done in getOdorLevels
 
   CAnimal* pAnimal = m_pBrain->getAnimal();
 

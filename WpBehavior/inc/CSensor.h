@@ -112,7 +112,6 @@ public:
   string        GetLabel();
   DWORD         GetUniqueId();
   int           GetBonusRate(size_t subCaptorInd);
-  bool          SetBonusRate(size_t subCaptorInd, int bonus);
   bool          SetBonusRate(const std::vector<int>& tBonus);
   void          SetBonusRateToNeutral();
   sensorValType GetSubCaptorStimulationLevel(size_t captorIndex = 0);
