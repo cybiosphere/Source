@@ -2967,20 +2967,20 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
 {
   double pleasureRate = 0;
   CBasicEntity* pWater = NULL;
-  double injuryLevel=0;
+  double injuryLevel = 0;
   // Check if we are on the edge of water
   Point_t curCoord;
-  int i, j, totalLayerType=0;
-  for (i = -1; i < 2; i++)
+  int totalLayerType = 0;
+  for (int i = -1; i < 2; i++)
   {
-    for (j = -1; j < 2; j++)
+    for (int j = -1; j < 2; j++)
     {
         curCoord.x = getGridCoord().x + i;
         curCoord.y = getGridCoord().y + j;
-        totalLayerType += m_pBiotop->getLayerType(curCoord,1);
+        totalLayerType += m_pBiotop->getLayerType(curCoord, 1);
     }
   }
-  if (totalLayerType != 9 * m_pBiotop->getLayerType(getGridCoord(),1))
+  if (totalLayerType != 9 * m_pBiotop->getLayerType(getGridCoord(), 1))
   {
     turnToCenterDir();      // Center in direction pos to avoid border issue
   }
@@ -2993,7 +2993,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
     if ((layerType == LAYER_OVER_WET_GROUND) || (layerType == LAYER_OVER_WATER))
     {
       stopCurrentSpeed();
-      pWater = m_pBiotop->findEntity(getGridCoord(),0);
+      pWater = m_pBiotop->findEntity(getGridCoord(), 0);
     }
 
     if (checkHabitat())
@@ -3012,7 +3012,7 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
   else
   {
     moveToGridEdgePos();  // Center in grid pos to avoid corner blocked issue
-    turnToCenterDir();      // Center in direction pos to avoid border  issue
+    turnToCenterDir();    // Center in direction pos to avoid border  issue
     if (CBasicEntity::moveLinear(nbSteps / 2))
     {
       if (checkHabitat())
@@ -3034,34 +3034,13 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
       stopCurrentSpeed();
 
       // Find hit entity
-      RelativePos_t relPos = {1,0};
+      RelativePos_t relPos = {1, 0};
       Point_t newCoord = getGridCoordRelative(relPos);
       CBasicEntity* pHitEntity = m_pBiotop->findEntity(newCoord,getLayer());
 
       if (pHitEntity != NULL)
       {
-        // Hurt moving entity
-        if (pHitEntity->getProtection() > getProtection())
-        {
-          injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(pHitEntity->getProtection() - getProtection()) / 100.0;
-          if (changeHealthRate(-injuryLevel) == false)
-          {
-            logDeathCause(FormatString("due to run in obstacle %s\n", pHitEntity->getLabel().c_str()));
-          }
-        }
-
-        // Hurt hit entity
-        if (getAttackFactor() > pHitEntity->getProtection())
-        {
-          if (pHitEntity->isAnimal() && (pHitEntity->isAlive()))
-          {
-            injuryLevel = (double)nbSteps / (double)NB_STEPS_PER_GRID_SQUARE*(getAttackFactor() - pHitEntity->getProtection()) / 100.0;
-            if (((CAnimal*)pHitEntity)->changeHealthRate(-injuryLevel, this) == false)
-            {
-              ((CAnimal*)pHitEntity)->logDeathCause(FormatString("due to shock by animal %s\n", getLabel().c_str()));
-            }
-          }
-        }
+        injuryLevel += handleColisionWithEntity(*pHitEntity, nbSteps);
       }
     }  
   }
@@ -3071,6 +3050,41 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
 
   return (injuryLevel > 0) ? false : true;
 }
+
+double CAnimal::handleColisionWithEntity(CBasicEntity& otherEntity, int speedInSteps)
+{
+  double injuryLevel = 0;
+  // Hurt moving entity
+  if (otherEntity.getProtection() > getProtection())
+  {
+    injuryLevel = (double)speedInSteps / (double)NB_STEPS_PER_GRID_SQUARE * (otherEntity.getProtection() - getProtection()) / 100.0;
+    if (changeHealthRate(-injuryLevel) == false)
+    {
+      logDeathCause(FormatString("due to run in obstacle %s\n", otherEntity.getLabel().c_str()));
+    }
+  }
+
+  // Hurt hit entity
+  double impactFactor = getWeight() / otherEntity.getWeight() * 10.0;
+  if (isPhyAttributePresent(PHY_ATTRIBUTE_HORNS) || isPhyAttributePresent(PHY_ATTRIBUTE_TUSKS))
+  {
+    impactFactor *= 2.0;
+  }
+
+  if (impactFactor > otherEntity.getProtection())
+  {
+    if (otherEntity.isAnimal() && (otherEntity.isAlive()))
+    {
+      double heartingLevel = (double)speedInSteps / (double)NB_STEPS_PER_GRID_SQUARE * (impactFactor - otherEntity.getProtection()) / 10.0;
+      if (((CAnimal&)otherEntity).changeHealthRate(-heartingLevel, this) == false)
+      {
+        ((CAnimal&)otherEntity).logDeathCause(FormatString("due to shock by animal %s\n", getLabel().c_str()));
+      }
+    }
+  }
+  return injuryLevel;
+}
+
 
 //---------------------------------------------------------------------------
 // METHOD:       CAnimal::ExecuteMoveBackwardAction

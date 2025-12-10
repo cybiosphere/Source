@@ -82,7 +82,7 @@ private:
 private:
   CBrain*       m_pBrain;
   std::vector<DWORD> m_tPurposeUniqueId;
-
+  std::vector<Point_t> candidates;
 
 //===========================================================================
 // Methods 
@@ -111,16 +111,15 @@ public:
   bool saveInXmlFile(TiXmlDocument* pXmlDoc);
   bool loadFromXmlFile(TiXmlDocument* pXmlDoc);
 
-private:
-  void GetSuccessWeightAndCheckMax(const size_t purposeIdx, const Point_t currentMapCoord, const int initialWeight, 
-                                   int& maxWeight, Point_t& foundMapPos, int& rotationCount);
-
 //---------------------------------------------------------------------------
 // private methods
 //---------------------------------------------------------------------------
 private:
   size_t GetPurposeUidTabIndex(DWORD purposeUid);
   bool MemorizePurposeSuccessGeoPos(size_t purposeIndex, Point_t geoMapPos, int weight);
+
+  void storeSuccessWeightIfMaxReached(const size_t purposeIdx, const Point_t currentMapCoord, 
+    const int initialWeight, int& maxWeight, std::vector<Point_t>& candidates);
 
 };
 

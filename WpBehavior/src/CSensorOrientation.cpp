@@ -87,6 +87,12 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
 { 
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
+  if (m_pBrain->getAnimal()->isSleeping())
+  {
+    // No stimulation when sleeping...
+    return m_tStimulationValues;
+  }
+
   CPurpose* pPurpose = m_pBrain->GetCurrentPurpose();
   CGeoMapPurpose* pMap = m_pBrain->GetGeographicMap();
 
@@ -96,13 +102,14 @@ const std::vector<sensorValType>& CSensorOrientation::UpdateAndGetStimulationTab
     int curDirection = m_pBrain->getAnimal()->getDirection();
     int hours = m_pBrain->getAnimal()->getBiotop()->getBiotopTime().hours;
     GeoMapIntensityType_e intensity = pMap->GetClosestSuccessPos(pPurpose->GetUniqueId(), m_pBrain->getAnimal()->getGlobalGridCoord(), targetDirection, hours);
+
     if (intensity > GeoMapIntensityType_e::FOUND_INTENSITY_NULL)
     {
       if (targetDirection == curDirection)
       {
         m_tStimulationValues[0] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }
-      else if (((360 + (targetDirection-curDirection) * 45) % 360) < 180)
+      else if (((360 + (targetDirection - curDirection) * 45) % 360) < 180)
       {
         m_tStimulationValues[1] = MAX_SENSOR_VAL * (double)intensity / (double)GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
       }

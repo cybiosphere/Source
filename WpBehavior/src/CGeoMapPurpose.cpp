@@ -104,6 +104,7 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
 {
   size_t range = 0;
   int maxWeight = 0;
+  int maxWeightPrevRing = 0;
   int curWeight = 0;
   int initialWeight = 0;
   Point_t foundMapPos;
@@ -111,9 +112,6 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
   foundMapPos.y = invalidCoord;
   absoluteDirection = -1;
   Point_t centerMapCoord;
-  int delta = 0;
-  int rotationCount = hourCount % 8;
-
   bool foundSuccess = false;
   GeoMapIntensityType_e foundIntensity = GeoMapIntensityType_e::FOUND_INTENSITY_NULL;
 
@@ -127,30 +125,39 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
       if (curWeight > 0)
         return foundIntensity; // Success already exists on current position. no need to guide anywhere else
 
-      maxWeight = curWeight;
       initialWeight = curWeight;
+      maxWeight = curWeight;
+      maxWeightPrevRing = curWeight;
       for (range = 1; range < m_GeoMapSize.x; range++)
       {
-        for(size_t i = 0; i < (2 * range); i++)
+        // Collect candidates within this ring (closest-first). Choose randomly among equal max weights.
+        candidates.clear();
+        for (size_t i = 0; i < (2 * range); i++)
         {
-          currentMapCoord.x = centerMapCoord.x + range;
-          currentMapCoord.y = centerMapCoord.y - range + i + 1;
-          GetSuccessWeightAndCheckMax(UidIdx, currentMapCoord, initialWeight, maxWeight, foundMapPos, rotationCount);
-          currentMapCoord.x = centerMapCoord.x - range + i;
-          currentMapCoord.y = centerMapCoord.y + range;
-          GetSuccessWeightAndCheckMax(UidIdx, currentMapCoord, initialWeight, maxWeight, foundMapPos, rotationCount);
-          currentMapCoord.x = centerMapCoord.x - range + i + 1;
-          currentMapCoord.y = centerMapCoord.y - range;
-          GetSuccessWeightAndCheckMax(UidIdx, currentMapCoord, initialWeight, maxWeight, foundMapPos, rotationCount);
+          // Four perimeter positions (walk the square)
+          // 1
           currentMapCoord.x = centerMapCoord.x - range;
           currentMapCoord.y = centerMapCoord.y - range + i;
-          GetSuccessWeightAndCheckMax(UidIdx, currentMapCoord, initialWeight, maxWeight, foundMapPos, rotationCount);
+          storeSuccessWeightIfMaxReached(UidIdx, currentMapCoord, maxWeightPrevRing, maxWeight, candidates);
+          // 2
+          currentMapCoord.x = centerMapCoord.x + range;
+          currentMapCoord.y = centerMapCoord.y - range + i + 1;
+          storeSuccessWeightIfMaxReached(UidIdx, currentMapCoord, maxWeightPrevRing, maxWeight, candidates);
+          // 3
+          currentMapCoord.x = centerMapCoord.x - range + i;
+          currentMapCoord.y = centerMapCoord.y + range;
+          storeSuccessWeightIfMaxReached(UidIdx, currentMapCoord, maxWeightPrevRing, maxWeight, candidates);
+          // 4
+          currentMapCoord.x = centerMapCoord.x - range + i + 1;
+          currentMapCoord.y = centerMapCoord.y - range;
+          storeSuccessWeightIfMaxReached(UidIdx, currentMapCoord, maxWeightPrevRing, maxWeight, candidates);
         }
-        // Exit at first found success
-        if (maxWeight>initialWeight)
+        // Exit at first found success (closest ring with an improvement)
+        if (maxWeight > maxWeightPrevRing)
         {
           foundSuccess = true;
-          delta = maxWeight-initialWeight;
+          foundMapPos = candidates[hourCount % candidates.size()];
+          int delta = maxWeight - initialWeight;
           if (delta > 12)
           {
             foundIntensity = GeoMapIntensityType_e::FOUND_INTENSITY_HIGH;
@@ -159,7 +166,7 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
           else if (delta > 2)
           {
             foundIntensity = GeoMapIntensityType_e::FOUND_INTENSITY_MEDIUM;
-            break; 
+            // No break: try to find better
           }
           else
           {
@@ -167,6 +174,7 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
             // No break: try to find better
           }
         }
+        maxWeightPrevRing = maxWeight;
       }
     }
     else // Entity is out of GeoMap: Go back to territory
@@ -226,6 +234,24 @@ GeoMapIntensityType_e CGeoMapPurpose::GetClosestSuccessPos(DWORD purposeUid, Poi
   return foundIntensity;
 }
 
+void CGeoMapPurpose::storeSuccessWeightIfMaxReached(const size_t purposeIdx, const Point_t currentMapCoord, 
+  const int initialWeight, int& maxWeight, std::vector<Point_t>& candidates)
+{
+  int curW = GetSuccessWeight(purposeIdx, currentMapCoord);
+  if (curW > initialWeight)
+  {
+    if (curW > maxWeight)
+    {
+      maxWeight = curW;
+      candidates.clear();
+      candidates.push_back(currentMapCoord);
+    }
+    else if (curW == maxWeight)
+    {
+      candidates.push_back(currentMapCoord);
+    }
+  }
+}
 
 void CGeoMapPurpose::NextDay()
 {
@@ -356,27 +382,6 @@ DWORD CGeoMapPurpose::GettPurposeUniqueId (size_t index)
     return 0;
   else
     return m_tPurposeUniqueId[index];
-}
-
-void CGeoMapPurpose::GetSuccessWeightAndCheckMax(const size_t purposeIdx, const Point_t currentMapCoord, const int initialWeight, 
-                                                 int& maxWeight, Point_t& foundMapPos, int& rotationCount)
-{
-  int curWeight = GetSuccessWeight(purposeIdx, currentMapCoord);
-  if (curWeight > initialWeight)
-  {
-    if ((curWeight == maxWeight) && (rotationCount > 0))
-    {
-      foundMapPos.x = currentMapCoord.x;
-      foundMapPos.y = currentMapCoord.y;
-      rotationCount--;
-    }
-    else if (curWeight > maxWeight)
-    {
-      foundMapPos.x = currentMapCoord.x;
-      foundMapPos.y = currentMapCoord.y;
-      maxWeight = curWeight;
-    }
-  }
 }
 
 int CGeoMapPurpose::GetSuccessWeight(size_t purposeIndex, Point_t geoMapPos)
