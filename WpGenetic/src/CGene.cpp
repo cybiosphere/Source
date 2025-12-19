@@ -923,8 +923,11 @@ string CGene::buildStringDataFromGene()
 //---------------------------------------------------------------------------
 bool CGene::buildGeneFromStringData(string rawData)
 {
-  if (rawData.length() < 14)
+  constexpr size_t headerLength = 14;
+  if (rawData.length() < headerLength)
   {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- ERROR buildGeneFromStringData: raw lenght=%d\n", rawData.length());
     return false;
   }
   m_GeneType = static_cast<GeneType_e>(std::stoi(rawData.substr(0, 2), nullptr, 16));
@@ -934,10 +937,16 @@ bool CGene::buildGeneFromStringData(string rawData)
   m_MuteRate = std::stoi(rawData.substr(12, 2), nullptr, 16);
   m_pDefinitions = CGeneList::getDefinitions(m_GeneType, m_GeneSubType);
   dataLen -= 2; // mute type and rate are included in data
+  if (rawData.length() < (headerLength + 2 * dataLen))
+  {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- ERROR buildGeneFromStringData: data lenght=%d type=%d subType=%d\n", dataLen, m_GeneType, m_GeneSubType);
+    return false;
+  }
   m_RawData.resize(dataLen);
   for (int j = 0; j < dataLen; ++j)
   {
-    m_RawData[j] = static_cast<BYTE>(std::stoi(rawData.substr(14 + 2 * j, 2), nullptr, 16));
+    m_RawData[j] = static_cast<BYTE>(std::stoi(rawData.substr(headerLength + 2 * j, 2), nullptr, 16));
   }
   return true;
 }
@@ -992,9 +1001,9 @@ bool CGene::tryMutation()
       {
         // Do mutation randomly. 
         // Effect efficiency depends of the weight of the bit muted.
-        size_t dataByteId = getRandInt(m_RawData.size()-1);
+        size_t dataByteId = getRandInt(m_RawData.size() - 1);
         int dataBitId = getRandInt(7);
-        m_RawData[dataByteId] ^= (1<<dataBitId);
+        m_RawData[dataByteId] ^= (1 << dataBitId);
         CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
         CYBIOCORE_LOG("GENETIC- Mutation type Random bit on gene: %s\n", getLabel().c_str());
         resu = true;
@@ -1005,7 +1014,7 @@ bool CGene::tryMutation()
         // Select 1 byte and increment or decrement it by 1.
         size_t dataByteId = getRandInt(m_RawData.size()-1);
         int addVal = getRandInt(2) - 1;
-        if (((addVal<0)&&(m_RawData[dataByteId]>0)) || ((addVal>0)&&(m_RawData[dataByteId]<0xFF)))
+        if (((addVal < 0) && (m_RawData[dataByteId] > 0)) || ((addVal > 0) && (m_RawData[dataByteId] < 0xFF)))
         {
           m_RawData[dataByteId] += addVal;
           CYBIOCORE_LOG_TIME_NOT_AVAILABLE;

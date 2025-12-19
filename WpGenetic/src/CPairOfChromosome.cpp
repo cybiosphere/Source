@@ -229,9 +229,16 @@ bool CPairOfChromosome::getCrossedChromosomeStr(CPairOfChromosome& pPair, string
   motherStr = pPair.m_pMaterChromosome->buildStringDataFromGenes();
   fatherStr = pPair.m_pPaterChromosome->buildStringDataFromGenes();
 
-  size_t cutIndex = getRandInt(motherStr.length());
+  if (motherStr.size() != fatherStr.size())
+  {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- ERROR getCrossedChromosomeStr: lenghtFather=%u lenghMother=%u\n", fatherStr.size(), motherStr.size());
+    crossedStr = motherStr;
+    return false;
+  }
 
-  crossedStr = motherStr.substr(0,cutIndex) + fatherStr.substr(cutIndex);
+  size_t splitIndex = getRandInt(motherStr.length() - 2) + 1;
+  crossedStr = motherStr.substr(0, splitIndex) + fatherStr.substr(splitIndex);
 
   return true;
 }
