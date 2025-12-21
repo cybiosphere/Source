@@ -2081,7 +2081,7 @@ bool CBrain::SelectAndReachNewHomeInGeoMapIfNeeded()
   CPurpose* pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_SMELL, OdorTypeToIndex(m_pEntity->getOdor()));
   if (pPurpose != NULL)
   {
-    m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 800);
+    m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), newHomeGridPosition, 80);
   }
 
   return true;
