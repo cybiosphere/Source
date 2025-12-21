@@ -115,6 +115,7 @@ CBrain::CBrain()
   m_pSensorSmell = NULL;
 
   m_bBabyStayHome = false;
+  m_bAdultLeaveHome = false;
   m_bIdentificationUsed=false;
 
   clearBrainFocusedEntityInfo();
@@ -1700,7 +1701,7 @@ CMatrix* CBrain::ComputeAndGetIdentification(CBasicEntity* pEntity, bool useOdor
     }
     else
     {
-      CYBIOCORE_LOG("BRAIN  - ERROR ComputeAndGetIdentification : entity %s is ToBeRemoved\n", pEntity->getLabel().c_str());
+      CYBIOCORE_LOG("BRAIN  - WARNING ComputeAndGetIdentification : entity %s is ToBeRemoved\n", pEntity->getLabel().c_str());
     }
     return &m_vCurrentIdentificationChoice;
   }
@@ -1940,6 +1941,7 @@ string CBrain::getIdentityStrName(IdentificationType_e type)
 void CBrain::SetBabyStayHome(bool stay)
 {
   m_bBabyStayHome = stay;
+  m_bAdultLeaveHome = stay; // Adult leave home if baby stay home (FRED TBC)
 }
 
 bool CBrain::IsBabyStayHome()
@@ -1973,10 +1975,15 @@ void CBrain::UpdateDefaultTerritorySize()
 
 void CBrain::CreateGeoMapArroudCurrentPosition()
 {
+  CreateGeoMapArroudGridPosition(m_pEntity->getGlobalGridCoord());
+}
+
+void CBrain::CreateGeoMapArroudGridPosition(Point_t globalGridCoord)
+{
   constexpr size_t maxNumberMemorizedPurpose{ 6 };
   if ((m_pGeoMap == NULL) && (m_pEntity != NULL) && (m_pEntity->getBiotop() != NULL))
   {
-    m_pGeoMap = new CGeoMapPurpose(this, m_pEntity->getGlobalGridCoord(), m_pEntity->getBiotop()->getGlobalGridDimension(), m_TerritorySize, maxNumberMemorizedPurpose);
+    m_pGeoMap = new CGeoMapPurpose(this, globalGridCoord, m_pEntity->getBiotop()->getGlobalGridDimension(), m_TerritorySize, maxNumberMemorizedPurpose);
   }
 }
 
@@ -2037,6 +2044,44 @@ bool CBrain::SetHomePurposePositionInGeoMap()
         m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 800);
       }
     }
+  }
+  return true;
+}
+
+bool CBrain::SelectAndReachNewHomeInGeoMapIfNeeded()
+{
+  if ((m_bAdultLeaveHome == false) || (m_pEntity == NULL) || (m_pEntity->getBiotop() == NULL))
+    return false;
+
+  Point_t newHomeGridPosition{ 0, 0 };
+  Point_t previousHomeGridPosition{ 0, 0 };
+
+  if (m_pGeoMap != NULL)
+  {
+    newHomeGridPosition = m_pGeoMap->getRandomGridCoordInGeoMapEdge();
+    previousHomeGridPosition = m_pGeoMap->getMapCenterGridCoord();
+    // Delete old geo map
+    delete m_pGeoMap;
+    m_pGeoMap = NULL;
+  }
+  else
+  {
+    newHomeGridPosition.x = getRandInt(m_pEntity->getBiotop()->getDimension().x);
+    newHomeGridPosition.y = getRandInt(m_pEntity->getBiotop()->getDimension().y);
+  }
+
+  CreateGeoMapArroudGridPosition(newHomeGridPosition);
+
+  CYBIOCORE_LOG_TIME(m_pEntity->getBiotop()->getBiotopTime());
+  CYBIOCORE_LOG("BRAIN  - Animal %s is moving Home from x=%d y=%d to x=%d y=%d\n", 
+    this->GetEntity()->getLabel().c_str(), previousHomeGridPosition.x, previousHomeGridPosition.y,
+    newHomeGridPosition.x, newHomeGridPosition.y);
+
+  // Memorize purpos regroup o target position
+  CPurpose* pPurpose = GetPurposeByTriggerSensor(UID_BASE_SENS_SMELL, OdorTypeToIndex(m_pEntity->getOdor()));
+  if (pPurpose != NULL)
+  {
+    m_pGeoMap->MemorizePurposeSuccessPos(pPurpose->GetUniqueId(), m_pEntity->getGlobalGridCoord(), 800);
   }
 
   return true;

@@ -574,6 +574,7 @@ void CAnimMammal::enterInNewLifeStage(CLifeStage* pLifeStage)
       setLearningToNominalRatio(60);
       setGrowthSpeedToNominalRatio(0);
       setAttackFactorToNominalRatio(100);
+      m_pBrain->SelectAndReachNewHomeInGeoMapIfNeeded();
       if (getSex() == SEX_MALE)
         setPheromone(PHEROMONE_SEXUAL_MALE);
       break;

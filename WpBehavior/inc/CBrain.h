@@ -206,6 +206,7 @@ public:
 //---------------------------------------------------------------------------
 private:
     bool m_bBabyStayHome;
+    bool m_bAdultLeaveHome;
 
 //===========================================================================
 // Methods 
@@ -359,9 +360,11 @@ public:
   bool SetTerritorySize(size_t geoMapSize);
   void UpdateDefaultTerritorySize();
   void CreateGeoMapArroudCurrentPosition();
+  void CreateGeoMapArroudGridPosition(Point_t globalGridCoord);
   void SetBabyStayHome(bool stay);
   bool IsBabyStayHome();
   bool SetHomePurposePositionInGeoMap();
+  bool SelectAndReachNewHomeInGeoMapIfNeeded();
 
 };
 

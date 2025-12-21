@@ -142,7 +142,6 @@ void CGeoMap::ConvergeAllRecordsToNeutral()
           m_pMemoryMap[i][j][k]--;
         else if (m_pMemoryMap[i][j][k] < 0)
           m_pMemoryMap[i][j][k]++; 
-
       }
     }
   }
@@ -227,4 +226,38 @@ bool CGeoMap::GridCoordToGeoMapCoord(Point_t globalGridPos, Point_t &geoMapPos, 
   geoMapPos.x = geoMapCoord.x - m_GeoCoordStart.x;
   geoMapPos.y = geoMapCoord.y - m_GeoCoordStart.y;
   return gridPosIsInsideGeoMap;
+}
+
+Point_t CGeoMap::getRandomGridCoordInGeoMapEdge()
+{
+  size_t direction = getRandInt(3);
+  Point_t gridCoord{ 0, 0 };
+  switch (direction)
+  {
+  case 0:
+    gridCoord.x = (m_GeoCoordStart.x + getRandInt((int)m_GeoMapSize.x - 1)) * NB_GRID_PER_GEOMAP_SQUARE;
+    gridCoord.y = m_GeoCoordStart.y * NB_GRID_PER_GEOMAP_SQUARE + 1;
+    break;
+  case 1:
+    gridCoord.x = m_GeoCoordStart.x * NB_GRID_PER_GEOMAP_SQUARE + 1;
+    gridCoord.y = (m_GeoCoordStart.y + getRandInt((int)m_GeoMapSize.y - 1)) * NB_GRID_PER_GEOMAP_SQUARE;
+    break;
+  case 2:
+    gridCoord.x = (m_GeoCoordStart.x + getRandInt((int)m_GeoMapSize.x - 1)) * NB_GRID_PER_GEOMAP_SQUARE;
+    gridCoord.y = (m_GeoCoordStart.y + m_GeoMapSize.y) * NB_GRID_PER_GEOMAP_SQUARE - 1;
+    break;
+  case 3:
+    gridCoord.x = (m_GeoCoordStart.x + m_GeoMapSize.x) * NB_GRID_PER_GEOMAP_SQUARE - 1;
+    gridCoord.y = (m_GeoCoordStart.y + getRandInt((int)m_GeoMapSize.y - 1)) * NB_GRID_PER_GEOMAP_SQUARE;
+    break;
+  }
+  return gridCoord;
+}
+
+Point_t CGeoMap::getMapCenterGridCoord()
+{
+  Point_t center;
+  center.x = (m_GeoCoordStart.x + m_GeoMapSize.x / 2) * NB_GRID_PER_GEOMAP_SQUARE;
+  center.y = (m_GeoCoordStart.y + m_GeoMapSize.y / 2) * NB_GRID_PER_GEOMAP_SQUARE;
+  return center;
 }

@@ -770,12 +770,12 @@ size_t CBiotop::getNbOfSpecieEntities(string& specieName)
   if (maleFound && !femaleFound)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Specie going to extinction: %s: No more female\n", specieName.c_str());
+    CYBIOCORE_LOG("BIOTOP - Specie %s going to extinction: No more female\n", specieName.c_str());
   }
   else if (femaleFound && !maleFound)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Specie going to extinction: %s: No more male\n", specieName.c_str());
+    CYBIOCORE_LOG("BIOTOP - Specie %s going to extinction: No more male\n", specieName.c_str());
   }
   return tempCount;
 }

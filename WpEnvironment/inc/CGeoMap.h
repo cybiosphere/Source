@@ -87,6 +87,8 @@ public:
   //---------------------------------------------------------------------------
 public:
   bool GridCoordToGeoMapCoord(Point_t globalGridPos, Point_t& geoMapPos, bool giveEdgePositionWhenOut = false);
+  Point_t getRandomGridCoordInGeoMapEdge();
+  Point_t getMapCenterGridCoord();
 
 //---------------------------------------------------------------------------
 // protected methods
