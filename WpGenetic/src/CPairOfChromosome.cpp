@@ -40,112 +40,94 @@ distribution.
 // constructors
 
 CPairOfChromosome::CPairOfChromosome(size_t number)
+  : m_IdNumber(number)
+  , m_PaterChromosome(number)
+  , m_MaterChromosome(number)
 {
-  m_IdNumber = number;
-  m_pPaterChromosome = new CChromosome(number);
-  m_pMaterChromosome = new CChromosome(number);
 }
 
 CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& model)
+  : m_IdNumber(model.m_IdNumber)
+  , m_PaterChromosome(model.m_PaterChromosome)
+  , m_MaterChromosome(model.m_MaterChromosome)
 {
-  // inherite both chromosome from model (clonage)
-  m_IdNumber = model.m_IdNumber;
-  m_pMaterChromosome = new CChromosome(*model.m_pMaterChromosome);
-  m_pPaterChromosome = new CChromosome(*model.m_pPaterChromosome);
+  // copy constructor: members copied via their copy constructors
 }
 
 CPairOfChromosome::CPairOfChromosome(CPairOfChromosome& mother, CPairOfChromosome& father, double crossoverRate)
+  : m_IdNumber(mother.m_IdNumber)
+  , m_PaterChromosome(m_IdNumber)
+  , m_MaterChromosome(m_IdNumber)
 {
-  m_IdNumber = mother.m_IdNumber;
-
   // inherite 1 chromosome from mother
-  if ((mother.m_pMaterChromosome->getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
+  if ((mother.m_MaterChromosome.getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
   {
     string crossedStr;
-    m_pMaterChromosome = new CChromosome(m_IdNumber);
     getCrossedChromosomeStr(mother, crossedStr);
     CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("GENETIC- Crossover on mother pair %u\n", m_IdNumber);
-    m_pMaterChromosome->buildGenesFromStringData(crossedStr);
+    m_MaterChromosome.buildGenesFromStringData(crossedStr);
   }
   else if (testChance(50.0))
   {
-    m_pMaterChromosome = new CChromosome(*mother.m_pMaterChromosome);
+    m_MaterChromosome = mother.m_MaterChromosome;
   }
   else
   {
-    m_pMaterChromosome = new CChromosome(*mother.m_pPaterChromosome);
+    m_MaterChromosome = mother.m_PaterChromosome;
   }
 
   // inherite 1 chromosome from father
-  if ((father.m_pMaterChromosome->getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
+  if ((father.m_MaterChromosome.getChromosomeType() == CHROMOSOME_NEUTRAL) && testChance(crossoverRate))
   {
     string crossedStr;
-    m_pPaterChromosome = new CChromosome(m_IdNumber);
     getCrossedChromosomeStr(father, crossedStr);
     CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
     CYBIOCORE_LOG("GENETIC- Crossover on father pair %u\n", m_IdNumber);
-    m_pPaterChromosome->buildGenesFromStringData(crossedStr);
+    m_PaterChromosome.buildGenesFromStringData(crossedStr);
   }
   else if (testChance(50.0))
   {
-    m_pPaterChromosome = new CChromosome(*father.m_pMaterChromosome);
+    m_PaterChromosome = father.m_MaterChromosome;
   }
   else
   {
-    m_pPaterChromosome = new CChromosome(*father.m_pPaterChromosome);
+    m_PaterChromosome = father.m_PaterChromosome;
   }
 }
 
 CPairOfChromosome::~CPairOfChromosome()
 {
-  if (m_pPaterChromosome != NULL)
-    delete m_pPaterChromosome;
-
-  if (m_pMaterChromosome != NULL)
-    delete m_pMaterChromosome;
+  // members are value objects now; no explicit delete required
 }
 
 
 ///////////////////////////////////////
 // methods
 
-CChromosome* CPairOfChromosome::getPaterChromosome ()
+CChromosome& CPairOfChromosome::getPaterChromosome()
 {
-  return m_pPaterChromosome;
+  return m_PaterChromosome;
 }
 
-CChromosome* CPairOfChromosome::getMaterChromosome ()
+CChromosome& CPairOfChromosome::getMaterChromosome()
 {
-  return m_pMaterChromosome;
+  return m_MaterChromosome;
 }
 
 size_t CPairOfChromosome::getNumGenes()
 {
-  size_t materNumGen = 0;
-  size_t paterNumGen = 0;
+  size_t materNumGen = m_MaterChromosome.getNumGene();
+  size_t paterNumGen = m_PaterChromosome.getNumGene();
 
-  if (m_pMaterChromosome != NULL)
-     materNumGen = m_pMaterChromosome->getNumGene();
-  if (m_pPaterChromosome != NULL)
-     paterNumGen = m_pPaterChromosome->getNumGene();
-
-  if (paterNumGen > materNumGen)
-    return (paterNumGen);
-  else
-    return (materNumGen);
+  return (paterNumGen > materNumGen) ? paterNumGen : materNumGen;
 }
 
 CGene* CPairOfChromosome::getDominantAllele(size_t index)
 {
   CGene* pResu = NULL;
-  CGene* pMaterGene = NULL;
-  CGene* pPaterGene = NULL;
-
-  if (m_pMaterChromosome != NULL)
-     pMaterGene = m_pMaterChromosome->getGene(index);
-  if (m_pPaterChromosome != NULL)
-     pPaterGene = m_pPaterChromosome->getGene(index);
+  CGene* pMaterGene = m_MaterChromosome.getGene(index);
+  CGene* pPaterGene = m_PaterChromosome.getGene(index);
 
   if ((pMaterGene == NULL) && (pPaterGene == NULL))
   {
@@ -159,7 +141,7 @@ CGene* CPairOfChromosome::getDominantAllele(size_t index)
   {
     pResu = pMaterGene;
   }
-  else if (m_pPaterChromosome->getChromosomeType() == CHROMOSOME_SEX_MALE) // Rule: sexual male chromo always dominant
+  else if (m_PaterChromosome.getChromosomeType() == CHROMOSOME_SEX_MALE) // Rule: sexual male chromo always dominant
   {
     pResu = pPaterGene;
   }
@@ -178,7 +160,7 @@ CGene* CPairOfChromosome::getDominantAllele(size_t index)
 
 bool CPairOfChromosome::tryMutation(int rate)
 {
-  if ((m_pPaterChromosome->tryMutation(rate))||(m_pMaterChromosome->tryMutation(rate)))
+  if ((m_PaterChromosome.tryMutation(rate)) || (m_MaterChromosome.tryMutation(rate)))
     return true;
   else
     return false;
@@ -186,39 +168,33 @@ bool CPairOfChromosome::tryMutation(int rate)
 
 bool CPairOfChromosome::setAsSexualMale(void)
 {
-  if (m_pMaterChromosome != NULL)
-    m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
-  if (m_pPaterChromosome != NULL)
-    m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_MALE);
+  m_MaterChromosome.setChromosomeType(CHROMOSOME_SEX_FEMALE);
+  m_PaterChromosome.setChromosomeType(CHROMOSOME_SEX_MALE);
   return true;
 }
 
 bool CPairOfChromosome::setAsSexualFemale(void)
 {
-  if (m_pMaterChromosome != NULL)
-    m_pMaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
-  if (m_pPaterChromosome != NULL)
-    m_pPaterChromosome->setChromosomeType(CHROMOSOME_SEX_FEMALE);
+  m_MaterChromosome.setChromosomeType(CHROMOSOME_SEX_FEMALE);
+  m_PaterChromosome.setChromosomeType(CHROMOSOME_SEX_FEMALE);
   return true;
 }
 
 bool CPairOfChromosome::setAsNeutral(void)
 {
-  if (m_pMaterChromosome != NULL)
-    m_pMaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
-  if (m_pPaterChromosome != NULL)
-    m_pPaterChromosome->setChromosomeType(CHROMOSOME_NEUTRAL);
+  m_MaterChromosome.setChromosomeType(CHROMOSOME_NEUTRAL);
+  m_PaterChromosome.setChromosomeType(CHROMOSOME_NEUTRAL);
   return true;
 }
 
 ChromosomeType_e CPairOfChromosome::getSex(void)
 {
-  return (m_pPaterChromosome->getChromosomeType());
+  return (m_PaterChromosome.getChromosomeType());
 }
 
 size_t CPairOfChromosome::getIdNumber(void)
 {
-    return m_IdNumber;
+  return m_IdNumber;
 }
 
 bool CPairOfChromosome::getCrossedChromosomeStr(CPairOfChromosome& pPair, string& crossedStr)
@@ -226,8 +202,8 @@ bool CPairOfChromosome::getCrossedChromosomeStr(CPairOfChromosome& pPair, string
   string motherStr;
   string fatherStr;
 
-  motherStr = pPair.m_pMaterChromosome->buildStringDataFromGenes();
-  fatherStr = pPair.m_pPaterChromosome->buildStringDataFromGenes();
+  motherStr = pPair.m_MaterChromosome.buildStringDataFromGenes();
+  fatherStr = pPair.m_PaterChromosome.buildStringDataFromGenes();
 
   if (motherStr.size() != fatherStr.size())
   {

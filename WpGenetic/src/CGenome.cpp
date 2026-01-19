@@ -348,7 +348,7 @@ specieSignatureType CGenome::getSpecieSignature()
   specieSignatureType signature = 1000000*m_class;
   for (size_t i = 0; i < m_tPair.size(); i++)
   {
-    signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome()->getNumGene() * (7 * i + 1));
+    signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome().getNumGene() * (7 * i + 1));
   }
   return signature;
 
@@ -437,8 +437,6 @@ bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
   }
 
   size_t i,j;
-  CChromosome* pCurChroM = NULL;
-  CChromosome* pCurChroP = NULL;
   for (i = 0; i < getNumPair(); i++)
   {
     TiXmlElement newNodePair(XML_NODE_PAIR);
@@ -450,18 +448,18 @@ bool CGenome::saveInXmlNode(TiXmlNode * pNodeEntity)
       pElement = (TiXmlElement*)pNodePair;
       pElement->SetAttribute( XML_ATTR_TYPE, (int)getPair(i)->getSex());
 
-      pCurChroM = getPair(i)->getMaterChromosome();
-      pCurChroP = getPair(i)->getPaterChromosome();
+      CChromosome& pCurChroM{ getPair(i)->getMaterChromosome() };
+      CChromosome& pCurChroP{ getPair(i)->getPaterChromosome() };
 
-      for (j = 0; j < pCurChroM->getNumGene(); j++)
+      for (j = 0; j < pCurChroM.getNumGene(); j++)
       {
         TiXmlElement newNodeGeneM(XML_NODE_GENE);
         pNodeGene = pNodePair->InsertEndChild(newNodeGeneM);
         if (pNodeGene != NULL) 
         {
           pElement = (TiXmlElement*)pNodeGene;
-          pElement->SetAttribute( XML_ATTR_GENE_DATA_M, pCurChroM->getGene(j)->buildStringDataFromGene());
-          pElement->SetAttribute( XML_ATTR_GENE_DATA_P, pCurChroP->getGene(j)->buildStringDataFromGene());
+          pElement->SetAttribute( XML_ATTR_GENE_DATA_M, pCurChroM.getGene(j)->buildStringDataFromGene());
+          pElement->SetAttribute( XML_ATTR_GENE_DATA_P, pCurChroP.getGene(j)->buildStringDataFromGene());
         }
       }
     }
@@ -528,7 +526,6 @@ bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
     int type;
     size_t geneIndex;
     CGene* pGene;
-    CChromosome* pCurChro;
 
     pNodePair = pNodeGenome->FirstChild();
     while (pNodePair != NULL)
@@ -563,16 +560,16 @@ bool CGenome::loadFromXmlNode(TiXmlNode* pNodeEntity)
             pElement = (TiXmlElement*)pNodeGene;
             if ( pElement->QueryStringAttribute(XML_ATTR_GENE_DATA_M, &geneStrM) != TIXML_NO_ATTRIBUTE)
             {
-              pCurChro = getPair(indexPair)->getMaterChromosome();
-              geneIndex = pCurChro->addGene();
-              pGene = pCurChro->getGene(geneIndex);
+              CChromosome& curChromosome = getPair(indexPair)->getMaterChromosome();
+              geneIndex = curChromosome.addGene();
+              pGene = curChromosome.getGene(geneIndex);
               pGene->buildGeneFromStringData(geneStrM);
             }
             if ( pElement->QueryStringAttribute(XML_ATTR_GENE_DATA_P, &geneStrP) != TIXML_NO_ATTRIBUTE)
             {
-              pCurChro = getPair(indexPair)->getPaterChromosome();
-              geneIndex = pCurChro->addGene();
-              pGene = pCurChro->getGene(geneIndex);
+              CChromosome& curChromosome = getPair(indexPair)->getPaterChromosome();
+              geneIndex = curChromosome.addGene();
+              pGene = curChromosome.getGene(geneIndex);
               pGene->buildGeneFromStringData(geneStrP);
             }
           }
@@ -613,16 +610,16 @@ bool CGenome::setBrainInstinctInGenes(CBrain* pBrain)
   for (int pairId = (numPairs - 1); pairId > -1; pairId--)
   {
     CPairOfChromosome* pCurPair = getPair(pairId);
-    CChromosome* pCurChromoM = pCurPair->getMaterChromosome();
-    CChromosome* pCurChromoP = pCurPair->getPaterChromosome();
+    CChromosome& curChromoM = pCurPair->getMaterChromosome();
+    CChromosome& curChromoP = pCurPair->getPaterChromosome();
 
-    int numGenes = (int)pCurChromoM->getNumGene();
+    int numGenes = (int)curChromoM.getNumGene();
     for (int geneId = (numGenes - 1); geneId > -1; geneId--)
     {
-      if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_LINE)
+      if (curChromoM.getGene(geneId)->getGeneSubType() == GENE_BRAIN_LINE)
       {
-        pCurChromoM->removeGeneFromIndex(geneId);
-        pCurChromoP->removeGeneFromIndex(geneId);
+        curChromoM.removeGeneFromIndex(geneId);
+        curChromoP.removeGeneFromIndex(geneId);
       }
     }
   }
@@ -630,28 +627,28 @@ bool CGenome::setBrainInstinctInGenes(CBrain* pBrain)
   CPairOfChromosome* pPaireBrain = getPairBrain();
   CPairOfChromosome* pPaireSex   = getPairSexual();
 
-  CChromosome* pChromoBrainM = pPaireBrain->getMaterChromosome();
-  CChromosome* pChromoBrainP = pPaireBrain->getPaterChromosome();
+  CChromosome& chromoBrainM = pPaireBrain->getMaterChromosome();
+  CChromosome& chromoBrainP = pPaireBrain->getPaterChromosome();
 
-  CChromosome* pChromoSexM = pPaireSex->getMaterChromosome();
-  CChromosome* pChromoSexP = pPaireSex->getPaterChromosome();
+  CChromosome& chromoSexM = pPaireSex->getMaterChromosome();
+  CChromosome& chromoSexP = pPaireSex->getPaterChromosome();
 
   // Store Decision table
   for (i = 0; i < pBrain->GetDecisionNeuronTable()->GetNeuronTableRowCount(); i++)
   {
     if (pBrain->IsDecisionRowSexSpecific(i))
     {
-      indexGen = pChromoSexM->addGene();
-      pGen1M = pChromoSexM->getGene(indexGen);
-      indexGen = pChromoSexP->addGene();
-      pGen1P = pChromoSexP->getGene(indexGen);
+      indexGen = chromoSexM.addGene();
+      pGen1M = chromoSexM.getGene(indexGen);
+      indexGen = chromoSexP.addGene();
+      pGen1P =chromoSexP.getGene(indexGen);
     }
     else
     {
-      indexGen = pChromoBrainM->addGene();
-      pGen1M = pChromoBrainM->getGene(indexGen);
-      indexGen = pChromoBrainP->addGene();
-      pGen1P = pChromoBrainP->getGene(indexGen);
+      indexGen = chromoBrainM.addGene();
+      pGen1M = chromoBrainM.getGene(indexGen);
+      indexGen = chromoBrainP.addGene();
+      pGen1P = chromoBrainP.getGene(indexGen);
     }
 
     lineSize = pBrain->GetDecisionNeuronTable()->buildRawDataFromNeuronLine(i,pData);
@@ -691,16 +688,16 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
   for (int pairId = (numPairs - 1); pairId > -1; pairId--)
   {
     CPairOfChromosome* pCurPair = getPair(pairId);
-    CChromosome* pCurChromoM = pCurPair->getMaterChromosome();
-    CChromosome* pCurChromoP = pCurPair->getPaterChromosome();
+    CChromosome& curChromoM = pCurPair->getMaterChromosome();
+    CChromosome& curChromoP = pCurPair->getPaterChromosome();
 
-    int numGenes = (int)pCurChromoM->getNumGene();
+    int numGenes = (int)curChromoM.getNumGene();
     for (int geneId = (numGenes - 1); geneId > -1; geneId--)
     {
-      if (pCurChromoM->getGene(geneId)->getGeneSubType() == GENE_BRAIN_IDENTIFY_LINE)
+      if (curChromoM.getGene(geneId)->getGeneSubType() == GENE_BRAIN_IDENTIFY_LINE)
       {
-        pCurChromoM->removeGeneFromIndex(geneId);
-        pCurChromoP->removeGeneFromIndex(geneId);
+        curChromoM.removeGeneFromIndex(geneId);
+        curChromoP.removeGeneFromIndex(geneId);
       }
     }
   }
@@ -708,28 +705,28 @@ bool CGenome::setBrainIdentifyInGenes(CBrain* pBrain)
   CPairOfChromosome* pPaireBrain = getPairBrain();
   CPairOfChromosome* pPaireSex   = getPairSexual();
 
-  CChromosome* pChromoBrainM = pPaireBrain->getMaterChromosome();
-  CChromosome* pChromoBrainP = pPaireBrain->getPaterChromosome();
+  CChromosome& chromoBrainM = pPaireBrain->getMaterChromosome();
+  CChromosome& chromoBrainP = pPaireBrain->getPaterChromosome();
 
-  CChromosome* pChromoSexM = pPaireSex->getMaterChromosome();
-  CChromosome* pChromoSexP = pPaireSex->getPaterChromosome();
+  CChromosome& chromoSexM = pPaireSex->getMaterChromosome();
+  CChromosome& chromoSexP = pPaireSex->getPaterChromosome();
 
   // Store Identification table
   for (i = 0; i < pBrain->GetIdentifyNeuronTable()->GetNeuronTableRowCount(); i++)
   {
     if (pBrain->IsIdentifyRowSexSpecific(i))
     {
-      indexGen = pChromoSexM->addGene();
-      pGen1M = pChromoSexM->getGene(indexGen);
-      indexGen = pChromoSexP->addGene();
-      pGen1P = pChromoSexP->getGene(indexGen);
+      indexGen = chromoSexM.addGene();
+      pGen1M = chromoSexM.getGene(indexGen);
+      indexGen = chromoSexP.addGene();
+      pGen1P = chromoSexP.getGene(indexGen);
     }
     else
     {
-      indexGen = pChromoBrainM->addGene();
-      pGen1M = pChromoBrainM->getGene(indexGen);
-      indexGen = pChromoBrainP->addGene();
-      pGen1P = pChromoBrainP->getGene(indexGen);
+      indexGen = chromoBrainM.addGene();
+      pGen1M = chromoBrainM.getGene(indexGen);
+      indexGen = chromoBrainP.addGene();
+      pGen1P = chromoBrainP.getGene(indexGen);
     }
 
     lineSize = pBrain->GetIdentifyNeuronTable()->buildRawDataFromNeuronLine(i,pData);
@@ -759,9 +756,9 @@ std::pair<size_t, size_t> CGenome::findGeneInGenome(CGene& modelGene, bool findD
       }
       else
       {
-        if (pPaire->getMaterChromosome()->getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
+        if (pPaire->getMaterChromosome().getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
           return { paireIndex , geneIndex };
-        else if (pPaire->getPaterChromosome()->getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
+        else if (pPaire->getPaterChromosome().getGene(geneIndex)->buildStringDataFromGene() == modelGeneString)
           return { paireIndex , geneIndex };
       }
     }

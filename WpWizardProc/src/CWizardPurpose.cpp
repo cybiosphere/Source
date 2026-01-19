@@ -449,12 +449,12 @@ bool CWizardPurpose::AddPurposeSensorGene(int mutationRate, int paireIndex, DWOR
       && (pSensor->GetUniqueId() < (sensBonus.sensorUniqueId + sensBonus.sensorUniqueIdRange)) ) 
     {
       sensorUid = pSensor->GetUniqueId();
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeSensorBonus(mutationRate, purposeUid, sensorUid, sensBonus.nbBonus, sensBonus.pBonusTable); 
 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeSensorBonus(mutationRate, purposeUid, sensorUid, sensBonus.nbBonus, sensBonus.pBonusTable); 
     }
   }
@@ -480,12 +480,12 @@ bool CWizardPurpose::AddPurposeReactionGene(int mutationRate, int paireIndex, DW
     {
       reactionUid = pReaction->GetUniqueId();
 
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeReactionBonus(mutationRate, purposeUid, reactionUid, reactionBonus.bonus); 
 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeReactionBonus(mutationRate, purposeUid, reactionUid, reactionBonus.bonus); 
     }
   }
@@ -538,15 +538,15 @@ bool CWizardPurpose::AddAllPurposeGenesToAnimal(int mutationRate)
       if (sensorUid == UID_UNSET)
         continue;
 
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeTrigger(curGeneSubType, mutationRate, sensorUid, 
                                     pCurPurpose->purposeDuration, pCurPurpose->triggerSubCaptorIndex, 
                                     pCurPurpose->triggerStartThreshold, pCurPurpose->triggerStopThreshold,
                                     pCurPurpose->purposeName.GetLength()+1, pCurPurpose->purposeName.GetBuffer(0));
                                     
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsPurposeTrigger(curGeneSubType, mutationRate, sensorUid, 
                                     pCurPurpose->purposeDuration, pCurPurpose->triggerSubCaptorIndex, 
                                     pCurPurpose->triggerStartThreshold, pCurPurpose->triggerStopThreshold,

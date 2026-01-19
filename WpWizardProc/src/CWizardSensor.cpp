@@ -270,13 +270,13 @@ bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int r
     {
       // view adjacent
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW, mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0,
                             m_tViewDesc[i].range0, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle0, m_tViewDesc[i].nbFocus0);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW, mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0,
                             m_tViewDesc[i].range0, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle0, m_tViewDesc[i].nbFocus0);
@@ -284,21 +284,21 @@ bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int r
       // Add composite view/speed
       DWORD sensorUID = UID_BASE_SENS_VIEW + 10*m_tViewDesc[i].layer + m_tViewDesc[i].angle0;
       int paramId = m_pAnimal->getParamIdByName("Speed");      
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorComposite(mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0, sensorUID, paramId); 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorComposite(mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0, sensorUID, paramId); 
 
       // view medium
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW, mutationRate, m_tViewDesc[i].nbWeight1, m_tViewDesc[i].pWeight1,
                             m_tViewDesc[i].range1, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle1, m_tViewDesc[i].nbFocus1);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW, mutationRate, m_tViewDesc[i].nbWeight1, m_tViewDesc[i].pWeight1,
                             m_tViewDesc[i].range1, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle1, m_tViewDesc[i].nbFocus1); 
@@ -309,12 +309,12 @@ bool CWizardSensor::AddGenesVisualSensors(int chromoIdx, int mutationRate, int r
   if (range > VIEW_FAR_MIN_RANGE)
   {
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_FAR, mutationRate, nbWeightViewFar, pWeightViewFar,
                             (VIEW_FAR_MIN_RANGE+1), range, angle, nbFocus);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_FAR, mutationRate, nbWeightViewFar, pWeightViewFar,
                             (VIEW_FAR_MIN_RANGE+1), range, angle, nbFocus);
   }
@@ -401,13 +401,13 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
     {
       // view adjacent
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENTIFY, mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0,
                             m_tViewDesc[i].range0, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle0, m_tViewDesc[i].nbFocus0);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENTIFY, mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0,
                             m_tViewDesc[i].range0, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle0, m_tViewDesc[i].nbFocus0);
@@ -415,21 +415,21 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
       // Add composite view/speed
       DWORD sensorUID = UID_BASE_SENS_VIEW_IDENTIFY + 10*m_tViewDesc[i].layer + m_tViewDesc[i].angle0;
       int paramId = m_pAnimal->getParamIdByName("Speed");      
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorComposite(mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0, sensorUID, paramId); 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorComposite(mutationRate, m_tViewDesc[i].nbWeight0, m_tViewDesc[i].pWeight0, sensorUID, paramId); 
 
       // view medium
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENTIFY, mutationRate, m_tViewDesc[i].nbWeight1, m_tViewDesc[i].pWeight1,
                             m_tViewDesc[i].range1, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle1, m_tViewDesc[i].nbFocus1);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENTIFY, mutationRate, m_tViewDesc[i].nbWeight1, m_tViewDesc[i].pWeight1,
                             m_tViewDesc[i].range1, m_tViewDesc[i].layer,
                             m_tViewDesc[i].angle1, m_tViewDesc[i].nbFocus1); 
@@ -439,12 +439,12 @@ bool CWizardSensor::AddGenesVisualIdentifySensors(int chromoIdx, int mutationRat
   if (range > VIEW_FAR_MIN_RANGE)
   {
       pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENT_FAR, mutationRate, nbWeightViewFar, pWeightViewFar,
                             (VIEW_FAR_MIN_RANGE+1), range, angle, nbFocus);
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsSensorUsingDefinition(GENE_SENS_VIEW_IDENT_FAR, mutationRate, nbWeightViewFar, pWeightViewFar,
                             (VIEW_FAR_MIN_RANGE+1), range, angle, nbFocus);
   }
@@ -481,11 +481,11 @@ bool CWizardSensor::AddGenesSmellSensor(int chromoIdx, int mutationRate, int ran
   CGene* pCurGene = NULL;
 
   pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsSensorUsingDefinition(GENE_SENS_SMELL, mutationRate, NUMBER_ODORS, pWeightSmell, range);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsSensorUsingDefinition(GENE_SENS_SMELL, mutationRate, NUMBER_ODORS, pWeightSmell, range);
 
   delete[] pWeightSmell;
@@ -525,11 +525,11 @@ bool CWizardSensor::AddGenesGenericSensor(GeneSubTypeSensor_e geneSubType, int d
     delete pTmpSens;
 
   pCurPaire = m_pAnimal->getGenome()->getPair(chromoIdx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsSensorUsingDefinition(geneSubType, mutationRate, weightSize, weightTab, param1, param2);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsSensorUsingDefinition(geneSubType, mutationRate, weightSize, weightTab, param1, param2);
 
   delete[] weightTab;

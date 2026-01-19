@@ -62,15 +62,15 @@ public:
 
 private:
   size_t m_IdNumber;
-  CChromosome* m_pPaterChromosome;
-  CChromosome* m_pMaterChromosome;
+  CChromosome m_PaterChromosome;
+  CChromosome m_MaterChromosome;
 
   ///////////////////////////////////////
   // methods
 
 public:
-  CChromosome* getPaterChromosome ();
-  CChromosome* getMaterChromosome ();
+  CChromosome& getPaterChromosome ();
+  CChromosome& getMaterChromosome ();
 
   size_t getNumGenes();
   CGene* getDominantAllele (size_t index);

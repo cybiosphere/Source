@@ -72,7 +72,6 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
   HTREEITEM hGenomeNode, hPairNode, hChromoNode, hGeneNode;
   CString tmpLabel;
   int nPair,nGene;
-  CChromosome* pChromo = NULL;
   hGenomeNode = InsertItem(LPCTSTR(m_pGenome->getSpecieName().c_str()), 0, 1, TVI_ROOT);
   DWORD_PTR addr = (DWORD_PTR)m_pGenome;
   SetItemData(hGenomeNode, addr);
@@ -86,14 +85,14 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
     hChromoNode = InsertItem(LPCTSTR("mother"), 4, 5, hPairNode);
     if (showChromos)
       EnsureVisible(hChromoNode);
-    pChromo = m_pGenome->getPair(nPair)->getMaterChromosome();
-    SetItemData(hChromoNode,(DWORD_PTR)pChromo);
-    for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
+    CChromosome& chromoM = m_pGenome->getPair(nPair)->getMaterChromosome();
+    SetItemData(hChromoNode,(DWORD_PTR)&chromoM);
+    for (nGene  =0; nGene < chromoM.getNumGene(); nGene++)
     {
-      tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
+      tmpLabel = CGeneList::getGeneTypeStrName(chromoM.getGene(nGene)->getGeneType()).c_str();
       tmpLabel +=  " ";
-      tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
-      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == pChromo->getGene(nGene))
+      tmpLabel += chromoM.getGene(nGene)->getLabel().c_str();
+      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == chromoM.getGene(nGene))
       {
         hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       }
@@ -103,18 +102,18 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       }
       if (showGenes)
         EnsureVisible(hGeneNode);
-      SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
+      SetItemData(hGeneNode,(DWORD_PTR)chromoM.getGene(nGene));
     }
 
     hChromoNode = InsertItem(LPCTSTR("father"), 4, 5, hPairNode);
-    pChromo = m_pGenome->getPair(nPair)->getPaterChromosome();
-    SetItemData(hChromoNode,(DWORD_PTR)pChromo);
-    for (nGene=0; nGene<pChromo->getNumGene(); nGene++)
+    CChromosome& chromoP = m_pGenome->getPair(nPair)->getPaterChromosome();
+    SetItemData(hChromoNode,(DWORD_PTR)&chromoP);
+    for (nGene = 0; nGene < chromoP.getNumGene(); nGene++)
     {
-      tmpLabel = CGeneList::getGeneTypeStrName(pChromo->getGene(nGene)->getGeneType()).c_str();
+      tmpLabel = CGeneList::getGeneTypeStrName(chromoP.getGene(nGene)->getGeneType()).c_str();
       tmpLabel += " ";
-      tmpLabel += pChromo->getGene(nGene)->getLabel().c_str();
-      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == pChromo->getGene(nGene))
+      tmpLabel += chromoP.getGene(nGene)->getLabel().c_str();
+      if (m_pGenome->getPair(nPair)->getDominantAllele(nGene) == chromoP.getGene(nGene))
       {
         hGeneNode = InsertItem(tmpLabel, 6, 7, hChromoNode);
       }
@@ -124,7 +123,7 @@ void CGenomeTreeCtrl::SetGenome(CGenome* pGenome, bool showChromos, bool showGen
       }
       if (showGenes)
         EnsureVisible(hGeneNode);
-      SetItemData(hGeneNode,(DWORD_PTR)pChromo->getGene(nGene));
+      SetItemData(hGeneNode,(DWORD_PTR)chromoP.getGene(nGene));
     }
   }
 }
@@ -250,15 +249,15 @@ CGene* CGenomeTreeCtrl::GetCurrentMotherAllele()
   pTmpItem = GetParentItem(pTmpItem);
   CPairOfChromosome* pCurPair = (CPairOfChromosome*)GetItemData(pTmpItem);
 
-  CChromosome* pMotherChromo = pCurPair->getMaterChromosome();
-  CChromosome* pFatherChromo = pCurPair->getPaterChromosome();
+  CChromosome& motherChromo = pCurPair->getMaterChromosome();
+  CChromosome& fatherChromo = pCurPair->getPaterChromosome();
   CGene* pMotherGene = NULL;
   CGene* pFatherGene = NULL;
 
   for (int i=0; i<pCurPair->getNumGenes(); i++)
   {
-    pMotherGene = pMotherChromo->getGene(i);
-    pFatherGene = pFatherChromo->getGene(i);
+    pMotherGene = motherChromo.getGene(i);
+    pFatherGene = fatherChromo.getGene(i);
     
     if ((pMotherGene == pCurGene) || (pFatherGene == pCurGene))
     {
@@ -286,15 +285,15 @@ CGene* CGenomeTreeCtrl::GetCurrentFatherAllele()
   pTmpItem = GetParentItem(pTmpItem);
   CPairOfChromosome* pCurPair = (CPairOfChromosome*)GetItemData(pTmpItem);
 
-  CChromosome* pMotherChromo = pCurPair->getMaterChromosome();
-  CChromosome* pFatherChromo = pCurPair->getPaterChromosome();
+  CChromosome& motherChromo = pCurPair->getMaterChromosome();
+  CChromosome& fatherChromo = pCurPair->getPaterChromosome();
   CGene* pMotherGene = NULL;
   CGene* pFatherGene = NULL;
 
   for (int i=0; i<pCurPair->getNumGenes(); i++)
   {
-    pMotherGene = pMotherChromo->getGene(i);
-    pFatherGene = pFatherChromo->getGene(i);
+    pMotherGene = motherChromo.getGene(i);
+    pFatherGene = fatherChromo.getGene(i);
     
     if ((pMotherGene == pCurGene) || (pFatherGene == pCurGene))
     {

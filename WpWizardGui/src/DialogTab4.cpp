@@ -445,14 +445,14 @@ void CDialogTab4::AddGenesForCaracters(SexType_e sex)
   else
     pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsCaracter(GENE_CARACT_COLOR, 1, GENE_MUTE_RANDOM_BIT, 4, (BYTE*)&(pTabFemale->m_color));
   if (m_Variation > 50)
     pCurGene->tryMutation();
 
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsCaracter(GENE_CARACT_COLOR, 1, GENE_MUTE_RANDOM_BIT, 4, (BYTE*)&(pTabCurCar->m_color));
   if (m_Variation > 50)
     pCurGene->tryMutation();
@@ -519,14 +519,14 @@ void CDialogTab4::AddGenesCarFromCombo(CComboBox* pComboFemale, CComboBox* pComb
   else
     pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
   
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsCaracterUsingDefinition(subtype, 1, dataFemale);
   if (m_Variation > 50)
     pCurGene->tryMutation();
 
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsCaracterUsingDefinition(subtype, 1, dataMale);
   if (m_Variation > 50)
     pCurGene->tryMutation();
@@ -606,8 +606,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         paramNominal = pParamFemale->getVal();
         paramMax     = pParamFemale->getMax();
       }
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(curGeneSubType, 10, paramMin, paramNominal, paramMax);
 
       curGeneSubType = pParamCurrent->getCodingGeneSubtype();
@@ -630,8 +630,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         paramNominal = pParamFemale->getVal();
         paramMax     = pParamFemale->getMax();
       }
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(curGeneSubType, 10, paramMin, paramNominal, paramMax);
 
       m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
@@ -652,14 +652,14 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
   paramMax     = (double)(pTabFemale->m_Weight);
   paramNominal = paramMin + (paramMax - paramMin) * 0.1;
 
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
   if (m_pGenome->isAnimalGenome())
   {
-    geneIndex = pCurPaire->getMaterChromosome()->addGene();
-    pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+    geneIndex = pCurPaire->getMaterChromosome().addGene();
+    pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
     pCurGene->setAsParameterUsingDefinition(GENE_PARAM_FAT_WEIGHT, 10, paramMin / 2.0 + 0.1, paramNominal / 2.0 + 0.1, paramMax / 2.0);
   }
 
@@ -670,14 +670,14 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
     paramMax     = (double)(pTabMale->m_Weight);
   }
 
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsParameterUsingDefinition(GENE_PARAM_WEIGHT, 10, paramMin, paramNominal, paramMax);
 
   if (m_pGenome->isAnimalGenome())
   {
-    geneIndex = pCurPaire->getPaterChromosome()->addGene();
-    pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+    geneIndex = pCurPaire->getPaterChromosome().addGene();
+    pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
     pCurGene->setAsParameterUsingDefinition(GENE_PARAM_FAT_WEIGHT, 10, paramMin / 2.0 + 0.1, paramNominal / 2.0 + 0.1, paramMax / 2.0);
   }
 
@@ -693,8 +693,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       paramNominal = 0;
       paramMax     = (double)(pTabFemale->m_LifeExpectency);
 
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
 
       if (sexualDimorph && (sex == SEX_MALE))
@@ -704,8 +704,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         paramMax     = (double)(pTabMale->m_LifeExpectency);
       }
 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(GENE_PARAM_AGE, 10, paramMin, paramNominal, paramMax);
 
       // Decomposition
@@ -718,8 +718,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
       paramNominal = 0;
       paramMax     = (double)(pTabFemale->m_DecompositionTime);
 
-      geneIndex = pCurPaire->getMaterChromosome()->addGene();
-      pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getMaterChromosome().addGene();
+      pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
 
       if (sexualDimorph && (sex == SEX_MALE))
@@ -729,8 +729,8 @@ void CDialogTab4::AddGenesForParameters(SexType_e sex)
         paramMax     = (double)(pTabMale->m_DecompositionTime);
       }
 
-      geneIndex = pCurPaire->getPaterChromosome()->addGene();
-      pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+      geneIndex = pCurPaire->getPaterChromosome().addGene();
+      pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
       pCurGene->setAsParameterUsingDefinition(GENE_PARAM_DECOMPOSITION, 10, paramMin, paramNominal, paramMax);
   }
 }
@@ -829,22 +829,22 @@ void CDialogTab4::AddGenesForFeelings()
   
   sensi = -500 + getRandInt(m_Variation);
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_WELFARE, 10.0, UID_BASE_SENS_SUFFER, 1, &sensi);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_WELFARE, 10.0, UID_BASE_SENS_SUFFER, 1, &sensi);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
   sensi = 100 + getRandInt(m_Variation);
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_WELFARE, 10.0, UID_BASE_SENS_PLEASURE, 1, &sensi);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_WELFARE, 10.0, UID_BASE_SENS_PLEASURE, 1, &sensi);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
@@ -895,11 +895,11 @@ void CDialogTab4::AddGenesForFeelings()
   sensiNoise[6]=sensiNoise[5]; // keep symetri
   sensiNoise[7]=8*fearLevel + getRandInt(m_Variation);
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_FEAR, 10.0, UID_BASE_SENS_EAR, 8, sensiNoise);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_FEAR, 10.0, UID_BASE_SENS_EAR, 8, sensiNoise);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
@@ -942,11 +942,11 @@ void CDialogTab4::AddGenesForFeelings()
       sensiOdor[i] = 1000;
 
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_FEAR, 10.0, UID_BASE_SENS_SMELL, NUMBER_ODORS, sensiOdor);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsFeeling(GENE_FEEL_FEAR, 10.0, UID_BASE_SENS_SMELL, NUMBER_ODORS, sensiOdor);
 
 }
@@ -966,22 +966,22 @@ void CDialogTab4::AddGenesForReactions()
   failure = 0;
   param1  = 8 + m_EntitySpeedMax/50;
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
   param1  = m_EntitySpeedMax;
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsReactionUsingDefinition(GENE_REACT_MOVEFORWARD, 1.0, succes, failure, param1);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
@@ -1030,11 +1030,11 @@ void CDialogTab4::AddGenesForReactions()
               failure = atoi(param2Str);
               param1  = j - (int)pView->GetTabCaractFemale()->m_Layer;
               pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-              geneIndex = pCurPaire->getMaterChromosome()->addGene();
-              pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+              geneIndex = pCurPaire->getMaterChromosome().addGene();
+              pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
               pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
-              geneIndex = pCurPaire->getPaterChromosome()->addGene();
-              pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+              geneIndex = pCurPaire->getPaterChromosome().addGene();
+              pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
               pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
             }
           }
@@ -1045,11 +1045,11 @@ void CDialogTab4::AddGenesForReactions()
           failure = atoi(param2Str);
           param1  = 0;
           pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-          geneIndex = pCurPaire->getMaterChromosome()->addGene();
-          pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+          geneIndex = pCurPaire->getMaterChromosome().addGene();
+          pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
           pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
-          geneIndex = pCurPaire->getPaterChromosome()->addGene();
-          pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+          geneIndex = pCurPaire->getPaterChromosome().addGene();
+          pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
           pCurGene->setAsReactionUsingDefinition(type, 1.0, succes, failure, param1);
         }
     }
@@ -1245,31 +1245,31 @@ void CDialogTab4::AddGenesForBrain()
   int geneIndex;
 
   pCurPaire = m_pGenome->getPair(m_CurChrom_Idx);
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 2.0);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_IN, 1.0, 2.0);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
-  geneIndex = pCurPaire->getMaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getMaterChromosome().addGene();
+  pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
   pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_EXP, 1.0, 3.0);
-  geneIndex = pCurPaire->getPaterChromosome()->addGene();
-  pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+  geneIndex = pCurPaire->getPaterChromosome().addGene();
+  pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
   pCurGene->setAsBrainSize(GENE_BRAIN_SIZE_HIST_EXP, 1.0, 3.0);
 
   m_CurChrom_Idx = (m_CurChrom_Idx + m_GeneSpreadFactor) % m_nbChromosomes;
 
   if (pTabBehavior->m_bBabiesStayHome)
   {
-    geneIndex = pCurPaire->getMaterChromosome()->addGene();
-    pCurGene  = pCurPaire->getMaterChromosome()->getGene(geneIndex);
+    geneIndex = pCurPaire->getMaterChromosome().addGene();
+    pCurGene  = pCurPaire->getMaterChromosome().getGene(geneIndex);
     pCurGene->setAsBrainConfigUsingDefinition(GENE_BRAIN_BEHAVIOR, 1, BRAIN_BEHAVIOR_BABY_STAY_HOME);
-    geneIndex = pCurPaire->getPaterChromosome()->addGene();
-    pCurGene  = pCurPaire->getPaterChromosome()->getGene(geneIndex);
+    geneIndex = pCurPaire->getPaterChromosome().addGene();
+    pCurGene  = pCurPaire->getPaterChromosome().getGene(geneIndex);
     pCurGene->setAsBrainConfigUsingDefinition(GENE_BRAIN_BEHAVIOR, 1, BRAIN_BEHAVIOR_BABY_STAY_HOME);
   }
 

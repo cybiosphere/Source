@@ -253,7 +253,7 @@ bool CMapConfigView::BuildOdorMap(OdorType_e odorType)
   BiotopSquare_t** tBioSquare;
   tBioSquare = m_pBiotop->getpBioSquare();
 
-  double odorLevel[NUMBER_ODORS];
+  std::vector<sensorValType> odorLevel(NUMBER_ODORS);
   Point_t coord;
   // Trace odor map
   for (i=0;i<m_pBiotop->getDimension().x;i++)

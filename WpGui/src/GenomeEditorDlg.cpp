@@ -433,11 +433,11 @@ void CGenomeEditorDlg::OnButtonAdd()
   }
 	else if (m_EditMode == EDIT_MODE_PAIRE)
   {
-    int indexM = m_pCurrentPair->getMaterChromosome()->addGene();
-    int indexP = m_pCurrentPair->getPaterChromosome()->addGene();
+    int indexM = m_pCurrentPair->getMaterChromosome().addGene();
+    int indexP = m_pCurrentPair->getPaterChromosome().addGene();
     
-    CGene* pGeneM = m_pCurrentPair->getMaterChromosome()->getGene(indexM);
-    CGene* pGeneP = m_pCurrentPair->getPaterChromosome()->getGene(indexP);
+    CGene* pGeneM = m_pCurrentPair->getMaterChromosome().getGene(indexM);
+    CGene* pGeneP = m_pCurrentPair->getPaterChromosome().getGene(indexP);
     
     if ((pGeneP!=NULL)&&(pGeneM!=NULL))
     {    
@@ -454,11 +454,11 @@ void CGenomeEditorDlg::OnButtonAdd()
   {
     CPairOfChromosome* pCurrentPair = m_pNewGenome->getPair(m_pCurrentChromosome->getIdNumber()); 
 
-    int indexM = pCurrentPair->getMaterChromosome()->addGene();
-    int indexP = pCurrentPair->getPaterChromosome()->addGene();
+    int indexM = pCurrentPair->getMaterChromosome().addGene();
+    int indexP = pCurrentPair->getPaterChromosome().addGene();
     
-    CGene* pGeneM = pCurrentPair->getMaterChromosome()->getGene(indexM);
-    CGene* pGeneP = pCurrentPair->getPaterChromosome()->getGene(indexP);
+    CGene* pGeneM = pCurrentPair->getMaterChromosome().getGene(indexM);
+    CGene* pGeneP = pCurrentPair->getPaterChromosome().getGene(indexP);
     
     if ((pGeneP!=NULL)&&(pGeneM!=NULL))
     {    
@@ -1605,8 +1605,8 @@ void CGenomeEditorDlg::OnKeydownTreeGenome(NMHDR* pNMHDR, LRESULT* pResult)
       if (answer == IDYES)
       {
         CPairOfChromosome* pCurrentPair = m_GenomeTreeEdit.GetCurrentPairOfChromosome();
-        pCurrentPair->getMaterChromosome()->removeGene(m_pCurrentEditGeneM);
-        pCurrentPair->getPaterChromosome()->removeGene(m_pCurrentEditGeneP);
+        pCurrentPair->getMaterChromosome().removeGene(m_pCurrentEditGeneM);
+        pCurrentPair->getPaterChromosome().removeGene(m_pCurrentEditGeneP);
         m_GenomeTreeEdit.SetGenome(m_pNewGenome, true, true);
       }
     }
