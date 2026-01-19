@@ -97,7 +97,7 @@ const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
   Point_t frontPos = pAnimal->getGridCoordRelative(relPos);
 
   // Get odor in biotop, excluding own odor
-  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, &(m_tStimulationValues[0]), pAnimal->getId());
+  pAnimal->getBiotop()->getOdorLevels(frontPos, m_nRange, m_tStimulationValues, pAnimal->getId());
   
   applySubCaptorWeightRate();
 

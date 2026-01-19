@@ -524,7 +524,7 @@ public:
   CGenericParam* getParameter(size_t id);
   CGenericParam* getParameterByName(string& label);
   double getOdorTrace(const Point_t& coord, size_t odorIndex);
-  bool getOdorLevels(const Point_t& coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId = ENTITY_ID_INVALID);
+  bool getOdorLevels(const Point_t& coord, int range, std::vector<sensorValType>& odorLevel, entityIdType excludedEntityId = ENTITY_ID_INVALID);
   COLORREF getCustomColor(const Point_t& coord);
   BiotopSquare_t** getpBioSquare();
   string getLabel();

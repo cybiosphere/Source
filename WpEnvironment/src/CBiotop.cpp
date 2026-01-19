@@ -3149,8 +3149,15 @@ double CBiotop::getOdorTrace(const Point_t& coord, size_t odorIndex)
   return isCoordValid(coord) ? ((double)m_tBioSquare[coord.x][coord.y].odorTrace[odorIndex] / MAX_ODOR_TRACE_VAL) : 0;
 }
 
-bool CBiotop::getOdorLevels(const Point_t& coord, int range, double odorLevel[NUMBER_ODORS], entityIdType excludedEntityId)
+bool CBiotop::getOdorLevels(const Point_t& coord, int range, std::vector<sensorValType>& odorLevel, entityIdType excludedEntityId)
 {
+  if (odorLevel.size() != NUMBER_ODORS)
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("ERROR  - Try to get odor with incorect vector size\n");
+    return false;
+  }
+
   // Init to 0
   int i;
   for (i = 0; i < NUMBER_ODORS; i++)
@@ -3174,7 +3181,7 @@ bool CBiotop::getOdorLevels(const Point_t& coord, int range, double odorLevel[NU
     pCurEntity = tFoundIds[ind].pEntity;
     if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getOdor() > ODOR_NONE) && (pCurEntity->getId() != excludedEntityId))
     {
-      odorLevel[OdorTypeToIndex(pCurEntity->getOdor())] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
+      odorLevel.at(OdorTypeToIndex(pCurEntity->getOdor())) += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
     }
   }
 

@@ -476,6 +476,7 @@ bool CBasicEntity::setCaractFromGene(CGene* pGen)
   }
   // We are sure Gene is a caracteristic
   bool resu = false;
+  int valueToSet = std::max(pGen->getElementFloorValue(0), 0);
   
   switch(pGen->getGeneSubType())
   {
@@ -488,43 +489,43 @@ bool CBasicEntity::setCaractFromGene(CGene* pGen)
     }
     break;
   case GENE_CARACT_ODOR:
-    m_Odor = (OdorType_e)pGen->getElementFloorValue(0);
+    m_Odor = (valueToSet < ODOR_NUMBER_TYPE) ? (OdorType_e)valueToSet : ODOR_NONE;
     resu = true;
     break;
   case GENE_CARACT_PHEROMONE:
-    m_Pheromone = (PheromoneType_e)pGen->getElementFloorValue(0);
+    m_Pheromone = (valueToSet < PHEROMONE_NUMBER_TYPE) ? (PheromoneType_e)valueToSet : PHEROMONE_NONE;
     resu = true;
     break;
   case GENE_CARACT_TASTE:
-    m_Taste = (TasteType_e)pGen->getElementFloorValue(0);
+    m_Taste = (valueToSet < TASTE_NUMBER_TYPE) ? (TasteType_e)valueToSet : TASTE_NONE;
     resu = true;
     break;
   case GENE_CARACT_FORM:
-    m_Silhouette = (FormType_e)pGen->getElementFloorValue(0);
+    m_Silhouette = (valueToSet < FORM_NUMBER_TYPE) ? (FormType_e)valueToSet : FORM_UNKNOWN;
     resu = true;
     break;
   case GENE_CARACT_REPRO_TYPE:
-    m_TypeOfReproduction = (ReproType_e)pGen->getElementFloorValue(0);
+    m_TypeOfReproduction = (valueToSet < REPRODUCT_NUMBER_TYPE) ? (ReproType_e)valueToSet : REPRODUCT_SEXUAL;
     resu = true;
     break;
   case GENE_CARACT_HABITAT:
-    m_Habitat = (HabitatType_e)pGen->getElementFloorValue(0);
+    m_Habitat = (valueToSet < HABITAT_NUMBER_TYPE) ? (HabitatType_e)valueToSet : HABITAT_EARTH;
     resu = true;
     break;
   case GENE_CARACT_CONSUME_TYPE:
-    m_ConsumeClass = (ConsumeType_e)pGen->getElementFloorValue(0);
+    m_ConsumeClass = (valueToSet < CONSUM_NUMBER_TYPE) ? (ConsumeType_e)valueToSet : CONSUM_NONE;
     resu = true;
     break;
   case GENE_CARACT_MOVE_TYPE:
-    m_MoveType = (MoveType_e)pGen->getElementFloorValue(0);
+    m_MoveType = (valueToSet < MOVE_NUMBER_TYPE) ? (MoveType_e)valueToSet : MOVE_WALK;
     resu = true;
     break;
   case GENE_CARACT_TEXTURE:
-    m_Texture = (TextureType_e)pGen->getElementFloorValue(0);
+    m_Texture = (valueToSet < TEXTURE_NUMBER_TYPE) ? (TextureType_e)valueToSet : TEXTURE_NONE;
     resu = true;
     break;
   case GENE_CARACT_PHY_ATTRIBUTE:
-    setAttribute((PhyAttributeType_e)pGen->getElementFloorValue(0));
+    setAttribute((PhyAttributeType_e)valueToSet);
     resu = true;
     break;
   default:
