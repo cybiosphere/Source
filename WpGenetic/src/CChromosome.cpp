@@ -69,23 +69,42 @@ CChromosome::CChromosome(size_t number)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CChromosome::CChromosome(CChromosome& model)
+CChromosome::CChromosome(const CChromosome& model)
 {
-  m_IdNumber       = model.m_IdNumber;
+  m_IdNumber = model.m_IdNumber;
   m_ChromosomeType = model.m_ChromosomeType;
-  CGene* tempGen   = NULL;
-  for (size_t i = 0; i < model.m_tGene.size(); i++)
+  m_tGene.clear();
+  CGene* tempGen = NULL;
+  for (size_t i = 0; i < model.m_tGene.size(); ++i)
   {
-    tempGen = new CGene(*model.m_tGene[i]);
+    tempGen = new CGene(*model.m_tGene[i]); // deep copy of each gene
     m_tGene.push_back(tempGen);
   }
+}
+
+// copy-and-swap assignment -> safe strong exception guarantee
+CChromosome& CChromosome::operator=(const CChromosome& rhs)
+{
+  if (this != &rhs)
+  {
+    CChromosome tmp(rhs); // uses copy ctor (deep copy)
+    swap(tmp);            // swap with tmp
+  }
+  return *this;
+}
+
+void CChromosome::swap(CChromosome& other) noexcept
+{
+  using std::swap;
+  swap(m_IdNumber, other.m_IdNumber);
+  swap(m_ChromosomeType, other.m_ChromosomeType);
+  swap(m_tGene, other.m_tGene); // vector swap is cheap
 }
 
 CChromosome::~CChromosome()
 {
   deleteAllGenes();
 }
-
 
 //===========================================================================
 // Gene table mgt
@@ -100,7 +119,11 @@ size_t CChromosome::addGene()
     return (m_tGene.size()-1);
   }
   else
+  {
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("GENETIC- ERROR addGene failed\n");
     return (invalidIndex);
+  }
 }
 
 bool CChromosome::removeGeneFromIndex(size_t index)

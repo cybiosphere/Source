@@ -45,8 +45,7 @@ distribution.
 // Includes 
 //===========================================================================
 
-//#include <afxwin.h>
-//#include <afxtempl.h>
+#include <algorithm> // for std::swap
 #include "CGene.h"
 
 //===========================================================================
@@ -86,7 +85,9 @@ private:
 //---------------------------------------------------------------------------
 public:
   CChromosome(size_t number);
-  CChromosome(CChromosome& model);
+  CChromosome(const CChromosome& model);          // note const
+  CChromosome& operator=(const CChromosome& rhs); // copy-assignment
+  void swap(CChromosome& other) noexcept;
   virtual ~CChromosome();
 
 //---------------------------------------------------------------------------
