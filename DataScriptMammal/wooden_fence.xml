@@ -1,10 +1,10 @@
 <ENTITY Label="wooden_fence" Generation="0" Status="0" Layer="2" Direction="0" HourCounter="0" Immortal="0">
     <LIFE_STAGES CurrentIndex="-1" />
-    <PARAMETER Name="Toxicity rate" Value="0" />
-    <PARAMETER Name="Protection factor" Value="99.9985" />
-    <PARAMETER Name="Camouflage factor" Value="0.999451" />
-    <PARAMETER Name="Weight" Value="99.99" />
-    <PARAMETER Name="NoiseRate" Value="0" />
+    <PARAMETER Name="Toxicity" Value="0" Min="0" Max="100" />
+    <PARAMETER Name="Protection" Value="100" Min="0" Max="100" />
+    <PARAMETER Name="Camouflage" Value="0.999466" Min="0" Max="100" />
+    <PARAMETER Name="Weight" Value="99.9924" Min="99.9924" Max="99.9924" />
+    <PARAMETER Name="NoiseRate" Value="0" Min="0" Max="100" />
     <CARACTER Name="ColorRGB" Value="32896" />
     <CARACTER Name="Odor" Value="0" />
     <CARACTER Name="Pheromone" Value="0" />
@@ -12,22 +12,4 @@
     <CARACTER Name="Texture" Value="0" />
     <CARACTER Name="Attribute" Value="0" />
     <GESTATION TotalChildNumber="0" />
-    <GENOME ClassName="Rock" ClassId="1" Specie="wooden_fence" Dimorphism="0">
-        <PAIR Type="0">
-            <GENE DataM="0100010006000180800000" DataP="0100010006000180800000" />
-            <GENE DataM="010005000601014F000000" DataP="010005000601014F000000" />
-            <GENE DataM="0100020003010101" DataP="0100020003010101" />
-            <GENE DataM="01000A0003010101" DataP="01000A0003010101" />
-            <GENE DataM="0100040003010101" DataP="0100040003010101" />
-            <GENE DataM="0100060003010101" DataP="0100060003010101" />
-            <GENE DataM="0100090003010101" DataP="0100090003010101" />
-            <GENE DataM="0100070003010101" DataP="0100070003010101" />
-            <GENE DataM="0100080003010101" DataP="0100080003010101" />
-            <GENE DataM="01000B0003010101" DataP="01000B0003010101" />
-            <GENE DataM="02000F0008020A000000000000" DataP="02000F0008020A000000000000" />
-            <GENE DataM="0200100008020A0000FFFF0000" DataP="0200100008020A0000FFFF0000" />
-            <GENE DataM="0200110008020A00008F020000" DataP="0200110008020A00008F020000" />
-            <GENE DataM="02000E0008020A470189019919" DataP="02000E0008020A470189019919" />
-        </PAIR>
-    </GENOME>
 </ENTITY>

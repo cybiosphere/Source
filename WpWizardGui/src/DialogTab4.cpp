@@ -318,18 +318,24 @@ void CDialogTab4::OnShowWindow(BOOL bShow, UINT nStatus)
 	CDialog::OnShowWindow(bShow, nStatus);
 	
 	CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
-    if ((pView->GetClassType() < CLASS_VEGETAL_FIRST) || (pView->GetClassType() > CLASS_ANIMAL_LAST))
-    {
-        m_ButtonMale.ShowWindow(SW_HIDE);
-        m_ButtonFemale.SetWindowText("Create genome");
-        m_EditSexChromIdx.EnableWindow(false);
-    }
-    else
-    {
-        m_ButtonMale.ShowWindow(SW_SHOW);
-        m_ButtonFemale.SetWindowText("Create female");
-        m_EditSexChromIdx.EnableWindow(true);
-    }
+  if (pView->GetClassType() < CLASS_VEGETAL_FIRST)
+  {
+    m_ButtonMale.ShowWindow(SW_HIDE);
+    m_ButtonFemale.SetWindowText("Create entity");
+    m_EditSexChromIdx.EnableWindow(false);
+  }
+  else if (pView->GetClassType() > CLASS_ANIMAL_LAST)
+  {
+      m_ButtonMale.ShowWindow(SW_HIDE);
+      m_ButtonFemale.SetWindowText("Create genome");
+      m_EditSexChromIdx.EnableWindow(false);
+  }
+  else
+  {
+      m_ButtonMale.ShowWindow(SW_SHOW);
+      m_ButtonFemale.SetWindowText("Create female");
+      m_EditSexChromIdx.EnableWindow(true);
+  }
 }
 
 
@@ -404,8 +410,7 @@ bool CDialogTab4::CreateGenome(SexType_e sex)
   // create new entity
   CDialogTab1* pTabFemale = pView->GetTabCaractFemale();
   m_pEntity = CEntityFactory::createEntity(pTabFemale->m_EditBoxSpecieName.GetBuffer(0), m_pGenome);
-  Point_t coor = {0,0};
-  m_pEntity->jumpToGridCoord(coor, true, pTabFemale->m_Layer);
+  m_pEntity->setDefaultLayer(pTabFemale->m_Layer);
 
   // Set instinct in brain but not yet in genome (TBC)
   if (pView->GetpEntity()->isAnimal())
@@ -1588,7 +1593,16 @@ void CDialogTab4::OnButtonSaveEntity()
     if (!m_pEntity->isAnimal() || !m_IsAutoLearning)
     {
       m_pEntity->setLabel(entityName.GetBuffer(0));
-      m_pEntity->quickAgeing(m_Age);
+      if (m_pEntity->isMineral())
+      {
+        // For minerals, delete genome to have smaller file
+        m_pEntity->deleteGenome();
+      }
+      else
+      {
+        m_pEntity->quickAgeing(m_Age);
+      }
+
       bool resu = m_pEntity->saveInXmlFile(fileNameWithPath.GetBuffer(0));
       if (!resu)
       {
@@ -1602,6 +1616,7 @@ void CDialogTab4::OnButtonSaveEntity()
       coord.y = 10;
       // Prepare temporary files to be used by script
       m_pEntity->setLabel("newEntity");
+      m_pEntity->setDefaultLayer(pTabFemale->m_Layer);
       m_pEntity->jumpToGridCoord(coord, true, pTabFemale->m_Layer);
 
       tempFileName = learningFolderName + "\\newEntity.xml";
@@ -1619,6 +1634,7 @@ void CDialogTab4::OnButtonSaveEntity()
       coord.x = 20;
       coord.y = 20;
       pMother->jumpToGridCoord(coord, true, pTabFemale->m_Layer);
+      pMother->setDefaultLayer(pTabFemale->m_Layer);
 
       tempFileName = learningFolderName + "\\mother.xml";   
       remove(tempFileName.GetBuffer(0));

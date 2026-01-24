@@ -275,11 +275,7 @@ bool CSensorViewIdentify::Scan45degSector(size_t stimulationTabOffset,
     pCurEntity = tFoundIds[i].pEntity;
     isBrainFocussedEntity = (pCurEntity->getId() == m_pBrain->getBrainFocusedEntityId());
 
-    if ((pCurEntity == NULL) || (pCurEntity->isToBeRemoved()))
-    {
-      viewChance = 0;
-    }
-    else if (!isBrainFocussedEntity && (m_nRange > 1)) // keep seeing focused and just in front entities
+    if (!isBrainFocussedEntity && (m_nRange > 1)) // keep seeing focused and just in front entities
     {
       // view chance depends on vigliance, target camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = pAnimal->getVigilance() - pCurEntity->getCamouflage();

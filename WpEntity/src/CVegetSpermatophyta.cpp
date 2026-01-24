@@ -356,7 +356,6 @@ void CVegetSpermatophyta::tryToReproduceOnceADay()
         for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
         {
           pFoundEntity = tFoundIds[i].pEntity;
-          ASSERT(pFoundEntity != NULL);
           if ((pFoundEntity->getSex() == SEX_MALE) && (m_pGenome->checkSpecieCompatibility(pFoundEntity->getGenome()) == true))
           {
             // TBD: Select 1 random compatible male among different parters

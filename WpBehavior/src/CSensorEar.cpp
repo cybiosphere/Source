@@ -148,7 +148,6 @@ const std::vector<sensorValType>& CSensorEar::UpdateAndGetStimulationTable()
 bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
                                  int direction)
 {
-  CBasicEntity* pCurEntity = NULL;
   CAnimal* pAnimal = m_pBrain->getAnimal();
   CBiotop* pBiotop = pAnimal->getBiotop();
   UCHAR visionSectorBmp = 0x01 << direction;
@@ -159,11 +158,7 @@ bool CSensorEar::Scan45degSector(sensorValType* pStimulationVal,
   const BiotopFoundIdsList& tFoundIds = biotopFoundIds.tFoundIds;
   for (size_t j = 0; j < biotopFoundIds.nbFoundIds; j++)
   {
-    pCurEntity = tFoundIds[j].pEntity;
-    if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved())
-    {
-      noiseRate += pCurEntity->getNoise() / (tFoundIds[j].distance);
-    }
+    noiseRate += tFoundIds[j].pEntity->getNoise() / (tFoundIds[j].distance);
   }
 
   pStimulationVal[0] = noiseRate * MAX_SENSOR_VAL / 100.0;

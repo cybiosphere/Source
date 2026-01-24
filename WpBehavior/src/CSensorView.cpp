@@ -257,12 +257,8 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
   {
     pCurEntity = tFoundIds[i].pEntity;
     distanceWeight = 0;
-    
-    if (pCurEntity == NULL)
-    {
-      viewChance = 0;
-    }
-    else if ((pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId()) && (m_nRange>1))
+
+    if ((pCurEntity->getId() != m_pBrain->getBrainFocusedEntityId()) && (m_nRange > 1))
     {
       // view chance depends of camouflage and sunlight. TBD can include view accuity of entity and distance
       viewChance = 100.0 - pCurEntity->getCamouflage(); 
@@ -274,7 +270,7 @@ bool CSensorView::Scan45degSector(size_t stimulationTabOffset,
       viewChance = 100;
     }
 
-    if ((pCurEntity != NULL) && (testChance(viewChance)))
+    if (testChance(viewChance))
     {
       m_pEntityViewTab[i].index = i;
       m_pEntityViewTab[i].pEntity = pCurEntity;

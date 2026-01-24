@@ -232,6 +232,7 @@ public:
 //---------------------------------------------------------------------------
 public:
   bool setEntityFromGenome(double mutationRate = 0);
+  void deleteGenome();
 
 protected:
   virtual bool setSexFromGenome();
@@ -435,6 +436,7 @@ public:
   Point_t         getStepCoordRelative(const RelativePos_t& relativeCoord);
   size_t          getLayer();
   size_t          getPrevLayer();
+  void            setDefaultLayer(size_t layer);
   size_t          getDefaultLayer();
   int             getDirection();
   int             getStepDirection();

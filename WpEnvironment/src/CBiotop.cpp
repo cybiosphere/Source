@@ -3178,8 +3178,8 @@ bool CBiotop::getOdorLevels(const Point_t& coord, int range, std::vector<sensorV
 
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
-    pCurEntity = tFoundIds[ind].pEntity;
-    if ((pCurEntity != NULL) && !pCurEntity->isToBeRemoved() && (pCurEntity->getOdor() > ODOR_NONE) && (pCurEntity->getId() != excludedEntityId))
+    pCurEntity = tFoundIds[ind].pEntity; // No need to check for NULL, done in findEntities
+    if ((pCurEntity->getOdor() > ODOR_NONE) && (pCurEntity->getId() != excludedEntityId))
     {
       odorLevel.at(OdorTypeToIndex(pCurEntity->getOdor())) += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
     }

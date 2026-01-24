@@ -251,12 +251,10 @@ CBasicEntity::~CBasicEntity()
   deleteAllParameters();
   deleteAllLifeStages();
   deleteAllGestationChilds();
+  deleteGenome();
 
   if (m_pBrain != NULL)
     delete m_pBrain;
-
-  if (m_pGenome != NULL)
-    delete m_pGenome;
 
   if (m_pPhysicWelfare != NULL)
     delete m_pPhysicWelfare;
@@ -269,6 +267,15 @@ CBasicEntity::~CBasicEntity()
 //===========================================================================
 // Genetic settings
 //===========================================================================
+
+void CBasicEntity::deleteGenome()
+{
+  if (m_pGenome != NULL)
+  {
+    delete m_pGenome;
+    m_pGenome = NULL;
+  }
+}
 
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::setEntityFromGenome 
@@ -3213,6 +3220,11 @@ size_t CBasicEntity::getLayer()
 size_t CBasicEntity::getPrevLayer()
 {
   return m_PrevLayer;
+}
+
+void CBasicEntity::setDefaultLayer(size_t layer)
+{
+  m_DefaultLayer = layer;
 }
 
 size_t CBasicEntity::getDefaultLayer()
