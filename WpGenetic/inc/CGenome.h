@@ -113,6 +113,7 @@ private:
   string m_SpecieName; 
   size_t m_SexualPairIndex;
   bool m_bSexualDimorphism;
+  specieSignatureType m_specieSignature;
   std::vector<CPairOfChromosome*> m_tPair;
 
   ///////////////////////////////////////
@@ -136,6 +137,7 @@ public:
   ClassType_e getClass();
   string getSpecieName();
   
+  void computeAndSetSpecieSignature();
   specieSignatureType getSpecieSignature();
   bool checkSpecieCompatibility(CGenome* pOther);
 

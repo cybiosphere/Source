@@ -338,38 +338,28 @@ string CGenome::getClassStrName(ClassType_e classType)
   return classeName;
 }
 
+void  CGenome::computeAndSetSpecieSignature()
+{
+  m_specieSignature = 0;
+  for (size_t i = 0; i < m_tPair.size(); i++)
+  {
+    m_specieSignature = 100 * m_specieSignature + m_tPair[i]->getMaterChromosome().getNumGene();
+  }
+  m_specieSignature = m_specieSignature * 10 + m_class;
+}
 
 specieSignatureType CGenome::getSpecieSignature()
 {
-  // Specie is determine by class, nb of pair, .... 
-  // TBD : complete Specie signature
-  //return (1000000*m_class + 10000*m_tPair.size());
-  
-  specieSignatureType signature = 1000000*m_class;
-  for (size_t i = 0; i < m_tPair.size(); i++)
-  {
-    signature += (specieSignatureType)(m_tPair[i]->getMaterChromosome().getNumGene() * (7 * i + 1));
-  }
-  return signature;
-
+  return m_specieSignature;
 }
 
 bool CGenome::checkSpecieCompatibility(CGenome* pOther)
 {
-  bool resu = false;
   if (pOther == NULL)
   {
-    resu = false;
+    return false;
   }
-  else if (fabs((double)getSpecieSignature() - (double)pOther->getSpecieSignature())<2)
-  {
-    resu = true;
-  }
-  else
-  {
-    resu = false;
-  }
-  return resu;
+  return (getSpecieSignature() == pOther->getSpecieSignature());
 }
 
 

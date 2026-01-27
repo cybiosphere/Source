@@ -439,8 +439,9 @@ bool CBasicEntity::setEntityFromGenome(double mutationRate)
     m_pBrain->GetDecisionNeuronTable()->NormalizeNeuronMatrix();
   }
 
-  // Set Signature
+  // Set Signatures
   computeEntitySignature();
+  m_pGenome->computeAndSetSpecieSignature();
 
   return true;
 }

@@ -263,7 +263,7 @@ void CGeneticView::DisplayGenome(CGenome* pGenome)
     m_strData1 = pGenome->getSpecieName().c_str();
     m_strData2 = pGenome->getOwnClassStrName().c_str();
     CString tmpStr;
-    tmpStr.Format(LPCTSTR("%d"),pGenome->getSpecieSignature());
+    tmpStr.Format(LPCTSTR("%lu"),pGenome->getSpecieSignature());
     m_strData3 = tmpStr;
     m_strData4 = LPCTSTR("");
     m_strData5 = LPCTSTR("");
