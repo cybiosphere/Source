@@ -85,12 +85,12 @@ CWater::CWater()
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CWater::CWater(string label, Point_t initCoord, CGenome* pPseudoGenome)
+CWater::CWater(string label, CGenome* pPseudoGenome)
 {
   // Input values
   
   // Default values 
-  jumpToGridCoord(initCoord, true, 1); // Def layer is 1
+  setLayerAndDefaultLayer(1); // Def layer is 1
   m_pGenome = pPseudoGenome;
   m_pBrain = NULL;
 

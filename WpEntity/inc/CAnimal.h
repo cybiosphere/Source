@@ -120,7 +120,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public: 
-  CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
+  CAnimal(string label, size_t layer, CGenome* pGenome);
   CAnimal(string label, CAnimal& model);
   CAnimal(string label, CAnimal& mother,CAnimal& father);
   ~CAnimal();

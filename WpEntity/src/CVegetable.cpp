@@ -49,17 +49,16 @@ distribution.
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing label
-//               Point_t initCoord, int layer : Born coordinate
 //               CGenome* pGenome : Ptr on a valid Genome object
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetable::CVegetable(string label, Point_t initCoord, size_t layer, CGenome* pGenome)
+CVegetable::CVegetable(string label, size_t layer, CGenome* pGenome)
 { 
   // Input values
-  jumpToGridCoord(initCoord, true, layer);
+  setLayerAndDefaultLayer(layer);
   m_pGenome = pGenome;
   m_pBrain = NULL;
   m_pPhysicWelfare = new CPhysicalWelfare(this);
@@ -95,7 +94,7 @@ CVegetable::CVegetable(string label, CVegetable& model)
 { 
   m_Label = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), true, model.getLayer()); 
+  setLayerAndDefaultLayer(model.getLayer());
   m_Generation = model.m_Generation + 1;
   m_pGenome = new CGenome(*model.m_pGenome);
 
@@ -133,7 +132,7 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
 { 
   m_Label = label;
   // inherited
-  jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
+  setLayerAndDefaultLayer(mother.getLayer());
   m_Generation = mother.m_Generation + 1;
   m_pGenome = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0);
 

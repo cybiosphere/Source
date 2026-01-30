@@ -70,7 +70,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CAnimMammal(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
+  CAnimMammal(string label, size_t layer, CGenome* pGenome);
   CAnimMammal(string label, CAnimMammal& model);
   CAnimMammal(string label, CAnimMammal& mother,CAnimMammal& father);
 

@@ -355,7 +355,6 @@ public:
   bool turnLeft(size_t nDegree);
   void doNothing();
 
-
   bool jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
   bool jumpToGlobalGridCoord(const Point_t& newGridCoord, bool chooseLayer, size_t newLayer = invalidCoord);
   bool jumpToStepCoord(const Point_t& newStepCoord, bool chooseLayer, size_t newLayer = invalidCoord, bool addMoveEvent = false);
@@ -363,6 +362,7 @@ public:
   bool moveToGridEdgePos();
   bool moveToGridCenterPos();
   bool turnToCenterDir();
+  void setLayerAndDefaultLayer(size_t layer);
 
   bool checkHabitat(void);
 

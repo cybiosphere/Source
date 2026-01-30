@@ -78,7 +78,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CVegetable(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
+  CVegetable(string label, size_t layer, CGenome* pGenome);
   CVegetable(string label, CVegetable& model);
   CVegetable(string label, CVegetable& mother,CVegetable& father);  
 

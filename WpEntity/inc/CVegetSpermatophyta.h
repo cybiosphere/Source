@@ -70,7 +70,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CVegetSpermatophyta(string label, Point_t initCoord, size_t layer, CGenome* pGenome);
+  CVegetSpermatophyta(string label, size_t layer, CGenome* pGenome);
   CVegetSpermatophyta(string label, CVegetSpermatophyta& model);
   CVegetSpermatophyta(string label, CVegetSpermatophyta& mother,CVegetSpermatophyta& father);
 

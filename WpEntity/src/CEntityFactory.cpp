@@ -42,7 +42,6 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   CBasicEntity* pNewEntity = NULL;
 
   // Set defaut coord
-  Point_t coord{ invalidCoord, invalidCoord };
   size_t layer = invalidCoord;
 
   // Create the BasicEntity derived object
@@ -54,26 +53,26 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   case CLASS_MYCOPHYTA:
   case CLASS_BRYOPHYTA:
   case CLASS_PTERIDOPHYTA:
-    pNewEntity = new CVegetable(name, coord, layer, pGenome);
+    pNewEntity = new CVegetable(name, layer, pGenome);
     break;
 
   case CLASS_SPERMATOPHYTA:
-    pNewEntity = new CVegetSpermatophyta(name, coord, layer, pGenome);
+    pNewEntity = new CVegetSpermatophyta(name, layer, pGenome);
     break;
 
     // Animal classs
   case CLASS_MAMMAL:
-    pNewEntity = new CAnimMammal(name, coord, layer, pGenome);
+    pNewEntity = new CAnimMammal(name, layer, pGenome);
     break;
 
   case CLASS_REPTILE:
   case CLASS_ARTHROPOD:
   case CLASS_AVE:
-    pNewEntity = new CAnimal(name, coord, layer, pGenome);
+    pNewEntity = new CAnimal(name, layer, pGenome);
     break;
 
   case CLASS_WATER:
-    pNewEntity = new CWater(name, coord, pGenome);
+    pNewEntity = new CWater(name, pGenome);
     break;
 
   case CLASS_VIRUS:
@@ -81,7 +80,7 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
     break;
 
   default:
-    pNewEntity = new CMineral(name, coord, layer, pGenome);
+    pNewEntity = new CMineral(name, layer, pGenome);
 
   }
 
@@ -127,7 +126,7 @@ CBasicEntity* CEntityFactory::createEntity(TiXmlDocument* pXmlDoc)
   
   if (pNewEntity != NULL)
   {
-    pNewEntity->jumpToGridCoord({ invalidCoord, invalidCoord }, true, startLayer);
+    pNewEntity->setLayerAndDefaultLayer(startLayer);
     pNewEntity->loadDataFromXmlFile(pXmlDoc);
     pNewEntity->loadBrainFromXmlFile(pXmlDoc);
   }

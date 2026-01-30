@@ -2149,7 +2149,6 @@ bool CBasicEntity::moveLinear(int nbSteps)
   return resu;
 }
 
-
 //---------------------------------------------------------------------------
 // METHOD:       CBasicEntity::jumpToGridCoord
 //  
@@ -2168,17 +2167,12 @@ bool CBasicEntity::jumpToGridCoord(const Point_t& newGridCoord, bool chooseLayer
 
   if (m_pBiotop == NULL)
   {
-    m_GridCoord = newGridCoord;
-    m_bHasMoved  = true;
-    m_StepCoord.x = m_GridCoord.x * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_StepCoord.y = m_GridCoord.y * NB_STEPS_PER_GRID_SQUARE + NB_STEPS_PER_GRID_SQUARE/2; // center in square
-    m_PrevGridCoord = m_GridCoord;
-    m_PrevStepCoord = m_StepCoord;
-    m_Layer = nextLayer;
-    m_PrevLayer = m_Layer;
-    resu = true;
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("ENTITY - ERROR : move entity not attached to biotop.\n", getLabel().c_str());
+    return false;
   }
-  else if (m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid
+
+  if (m_pBiotop->isCoordValidAndFree(newGridCoord, nextLayer)  // valid
          || ((newGridCoord.x == invalidCoord) && (newGridCoord.y == invalidCoord)))  // or out
   {
     // newCoord valid ... Move
@@ -2366,6 +2360,13 @@ bool CBasicEntity::turnToCenterDir()
   // Go exactely in view direction
   m_StepDirection = 45 * m_Direction;
   return true;
+}
+
+void CBasicEntity::setLayerAndDefaultLayer(size_t layer)
+{
+  m_Layer = layer;
+  m_PrevLayer = layer;
+  m_DefaultLayer = layer;
 }
 
 //---------------------------------------------------------------------------

@@ -59,17 +59,16 @@ const char* BrainBehaviorTypeNameList[BRAIN_BEHAVIOR_NUMBER_TYPE] =
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing label
-//               Point_t initCoord, int layer : Born coordinate
 //               CGenome* pGenome : Ptr on a valid Genome object
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CAnimal::CAnimal(string label, Point_t initCoord, size_t layer, CGenome* pGenome)
+CAnimal::CAnimal(string label, size_t layer, CGenome* pGenome)
 { 
   // Input values
-  jumpToGridCoord(initCoord, layer);
+  setLayerAndDefaultLayer(layer);
   m_pGenome = pGenome;
   m_pBrain = new CBrainAnimal(this);
   m_pPhysicWelfare = new CPhysicalWelfare(this);
@@ -111,7 +110,7 @@ CAnimal::CAnimal(string label, CAnimal& model)
 { 
   m_Label = label;
   // inherited
-  jumpToGridCoord(model.getGridCoord(), true,  model.getLayer());
+  setLayerAndDefaultLayer(model.getLayer());
   m_Generation = model.m_Generation + 1;
   m_pGenome = new CGenome(*model.m_pGenome);
   // reset
@@ -149,7 +148,7 @@ CAnimal::CAnimal(string label, CAnimal& mother, CAnimal& father)
 { 
   m_Label = label;
   // inherited
-  jumpToGridCoord(mother.getGridCoord(), true, mother.getLayer()); 
+  setLayerAndDefaultLayer(mother.getLayer());
   m_Generation = mother.m_Generation + 1;
   m_pGenome = new CGenome(*mother.m_pGenome, *father.m_pGenome, 1.0); // Fred: default crossover rate 1%
   // reset

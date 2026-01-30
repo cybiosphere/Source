@@ -46,7 +46,6 @@ distribution.
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing label
-//               Point_t initCoord, int layer : Born coordinate
 //   
 // RETURN VALUE: None
 //  

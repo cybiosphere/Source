@@ -2932,7 +2932,10 @@ void CBiotop::spawnEntitiesRandomly(CBasicEntity* pModelEntity, int coverRate)
       coord.x = getRandInt(m_Dimension.x) + 2;
       coord.y = getRandInt(m_Dimension.y) + 2;
       CBasicEntity* pNewEntity = CEntityFactory::createCloneEntity(pModelEntity);
-      this->addEntity(pNewEntity, coord, pModelEntity->getLayer());
+      if (addEntity(pNewEntity, coord, pModelEntity->getLayer()) == false)
+      {
+        delete pNewEntity;
+      }
     }
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - Spread entities randomly : %d %ss\n", nbEntities, pModelEntity->getLabel().c_str());
@@ -3179,9 +3182,10 @@ bool CBiotop::getOdorLevels(const Point_t& coord, int range, std::vector<sensorV
   for (size_t ind = 0; ind < biotopFoundIds.nbFoundIds; ind++)
   {
     pCurEntity = tFoundIds[ind].pEntity; // No need to check for NULL, done in findEntities
-    if ((pCurEntity->getOdor() > ODOR_NONE) && (pCurEntity->getId() != excludedEntityId))
+    OdorType_e odor = pCurEntity->getOdor();
+    if ((odor > ODOR_NONE) && (odor < ODOR_NUMBER_TYPE) && (pCurEntity->getId() != excludedEntityId))
     {
-      odorLevel.at(OdorTypeToIndex(pCurEntity->getOdor())) += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
+      odorLevel[OdorTypeToIndex(odor)] += MAX_SENSOR_VAL / ((double)tFoundIds[ind].distance + 2); // 1/R
     }
   }
 

@@ -49,15 +49,14 @@ distribution.
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing label
-//               Point_t initCoord, int layer : Born coordinate
 //               CGenome* pGenome : Ptr on a valid Genome object
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetSpermatophyta::CVegetSpermatophyta(string label, Point_t initCoord, size_t layer, CGenome* pGenome):
-CVegetable(label, initCoord, layer, pGenome)
+CVegetSpermatophyta::CVegetSpermatophyta(string label, size_t layer, CGenome* pGenome):
+CVegetable(label, layer, pGenome)
 {
   // Default values          
   m_Status = STATUS_ALIVE; 
@@ -530,11 +529,10 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
   int range = (int)getReproductionRange();
   int xOfset = getRandInt(2 * range) - range;
   int yOfset = getRandInt(2 * range) - range;
-  Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
+  Point_t newCoord = { getGlobalGridCoord().x + xOfset, getGlobalGridCoord().y + yOfset};
   pChildEntity->changeWeight(0.1); // ensure weight is more than min
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
-
-  if (resuId == ENTITY_ID_INVALID)
+  bool resu = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
+  if (resu == false)
   {
     delete pChildEntity;
   }
@@ -587,10 +585,9 @@ bool CVegetSpermatophyta::autoClone()
   int range = (int)getReproductionRange();
   int xOfset = getRandInt(2*range) - range;
   int yOfset = getRandInt(2*range) - range;
-  Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
-  entityIdType resuId = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
-
-  if (resuId == ENTITY_ID_INVALID)
+  Point_t newCoord = { getGlobalGridCoord().x + xOfset, getGlobalGridCoord().y + yOfset};
+  bool resu = m_pBiotop->addEntity(pChildEntity, newCoord, getLayer());
+  if (resu == false)
   {
     delete pChildEntity;
   }

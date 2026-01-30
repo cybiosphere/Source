@@ -69,7 +69,7 @@ protected:
 //---------------------------------------------------------------------------     
 public:
   CWater();
-  CWater(string label, Point_t initCoord, CGenome* pPseudoGenome);
+  CWater(string label, CGenome* pPseudoGenome);
   CWater(string label, CWater& model);
 
   bool isMineral();

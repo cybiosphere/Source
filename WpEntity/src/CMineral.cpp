@@ -46,16 +46,15 @@ distribution.
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing label
-//               Point_t initCoord, int layer : Born coordinate
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CMineral::CMineral(string label, Point_t initCoord, size_t layer, CGenome* pPseudoGenome)
+CMineral::CMineral(string label, size_t layer, CGenome* pPseudoGenome)
 {
   // Input values 
-  jumpToGridCoord(initCoord, layer);
+  setLayerAndDefaultLayer(layer);
   m_pGenome = pPseudoGenome;
   m_pBrain = NULL;
 

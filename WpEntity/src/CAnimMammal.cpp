@@ -49,15 +49,14 @@ distribution.
 // DESCRIPTION:  Constructor 
 // 
 // ARGUMENTS:    string label : String containing name
-//               Point_t initCoord, int layer : Born coordinate
 //               CGenome* pGenome : Ptr on a valid Genome object
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CAnimMammal::CAnimMammal(string label, Point_t initCoord, size_t layer, CGenome* pGenome):
-CAnimal(label, initCoord, layer, pGenome)
+CAnimMammal::CAnimMammal(string label, size_t layer, CGenome* pGenome):
+CAnimal(label, layer, pGenome)
 {  
   // Default values          
   m_Status = STATUS_ALIVE; 
@@ -871,11 +870,11 @@ bool CAnimMammal::deliverAllBabies()
       {
         int xOfset = getRandInt(2) - 1;
         int yOfset = getRandInt(2) - 1;
-        Point_t newCoord = {getGridCoord().x + xOfset, getGridCoord().y + yOfset};
+        Point_t newCoord = { getGlobalGridCoord().x + xOfset, getGlobalGridCoord().y + yOfset};
         pGestationChild->changeWeight(0.2); // ensure weight is more than min
         pGestationChild->setHealthRate(80.0); // Baby is weak when born
-        entityIdType resuId = m_pBiotop->addEntity(pGestationChild, newCoord, getLayer()); 
-        if (resuId == ENTITY_ID_INVALID)
+        bool resu = m_pBiotop->addEntity(pGestationChild, newCoord, getLayer()); 
+        if (resu == false)
         {
           delete (pGestationChild);
         }
