@@ -449,8 +449,8 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
       defaultActionWhenRemovedFromBiotop();
       if (!moveToLayerIfPossible(1))
       {
-        CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("VEGETAL - Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
+        //CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
+        //CYBIOCORE_LOG("VEGETAL- Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
         defaultActionWhenAttachedToBiotop();
         autoRemove();
       }
@@ -467,7 +467,7 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
       if (!moveToLayerIfPossible(getDefaultLayer()))
       {
         CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("VEGETAL - Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
+        CYBIOCORE_LOG("VEGETAL- Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
         autoRemove();
       }
       else

@@ -426,7 +426,6 @@ private:
   void initGridEntity(void);
   void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);
-  void updateGridAllEntities(void);
   void updateGridFertilityBonus(void);
 
 //---------------------------------------------------------------------------

@@ -358,12 +358,6 @@ CBasicEntity* CBiotop::createAndAddEntity(string name, Point_t globalGridCoord, 
   if (pNewEntity == NULL)
     return NULL;
 
-  /*if (pNewEntity->isLiving())
-  {
-    CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - New entity from genome : specie %s name %s\n", pNewEntity->getSpecieName().c_str(), name.c_str());
-  }*/
-
   // Put it in the biotop (with check coord);
   if (addEntity(pNewEntity, globalGridCoord, layer) == false)
   {
@@ -401,7 +395,7 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t global
   if (layer == invalidCoord)
     layer = pNewEntity->getDefaultLayer();
 
-  if (!isGlobalGridCoordValidAndFree(globalGridCoord, layer))
+  if (addEntity(pNewEntity, globalGridCoord, layer) == false)
   {
     delete pNewEntity;
     return NULL;
@@ -411,13 +405,6 @@ CBasicEntity* CBiotop::createAndAddEntity(TiXmlDocument *pXmlDoc, Point_t global
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
     CYBIOCORE_LOG("BIOTOP - New entity: specie %s name %s\n", pNewEntity->getSpecieName().c_str(), pNewEntity->getLabel().c_str());
-  }
-
-  // Put it in the biotop (with check coord);
-  if (addEntity(pNewEntity, globalGridCoord, layer) == false)
-  {
-    delete pNewEntity;
-    return NULL;
   }
 
   return pNewEntity;
@@ -1993,7 +1980,6 @@ void CBiotop::initGridEntity(void)
     }
   }
 
-  updateGridAllEntities();
   updateGridFertilityBonus();
 }
 
@@ -2141,38 +2127,6 @@ int CBiotop::getGridDistance(const Point_t& gridCoord1, const Point_t& gridCoord
   return cybio_max(abs((int)gridCoord1.x - (int)gridCoord2.x), abs((int)gridCoord1.y - (int)gridCoord2.y));
 }
 
-void CBiotop::updateGridAllEntities(void)
-{
-  Point_t tmpCoord;
-  size_t tmpLayer;
-
-  // Clear previous positions
-  for (CBasicEntity* pCurEntity : m_tEntity)
-  {
-    if ((pCurEntity) && (pCurEntity->checkIfhasMovedAndClear()))
-    {
-      tmpCoord = pCurEntity->getPrevGridCoord();
-      tmpLayer = pCurEntity->getPrevLayer();
-      if (isCoordValid(tmpCoord,tmpLayer))
-      {
-        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = NULL;
-      }
-    }
-  }
-  // Set new positions
-  for (CBasicEntity* pCurEntity : m_tEntity)
-  {
-    if (pCurEntity)
-    {
-      tmpCoord = pCurEntity->getGridCoord();
-      tmpLayer = pCurEntity->getLayer();
-      if (isCoordValid(tmpCoord,tmpLayer))
-      {
-        m_tBioGrid[tmpCoord.x][tmpCoord.y][tmpLayer].pEntity  = pCurEntity;
-      }
-    }
-  }
-}
 
 //===========================================================================
 // Measure management

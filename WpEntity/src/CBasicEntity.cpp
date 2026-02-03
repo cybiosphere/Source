@@ -1506,20 +1506,17 @@ string CBasicEntity::buildPurposeString(CGene* pGen)
 //---------------------------------------------------------------------------
 bool CBasicEntity::attachToBiotop(CBiotop* pBiotop, Point_t globalStepCoord, size_t layer)
 {   
-  if (pBiotop != NULL)
+  m_pBiotop = pBiotop;
+  if (jumpToGlobalStepCoord(globalStepCoord, true, layer))
   {
-    m_pBiotop = pBiotop;
-    if (jumpToGlobalStepCoord(globalStepCoord, true, layer))
-    {
-      m_pBiotop->updateGridEntity(this);
-      getAndUpdateGuiGridCoord();
-      getAndUpdateGuiStepCoord();
-      turnToCenterDir();
-      m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
-      m_DefaultLayer = m_Layer;
-      defaultActionWhenAttachedToBiotop();
-      return true;
-    }
+    m_pBiotop->updateGridEntity(this);
+    getAndUpdateGuiGridCoord();
+    getAndUpdateGuiStepCoord();
+    turnToCenterDir();
+    m_pBiotop->addBiotopEvent(BIOTOP_EVENT_ENTITY_ADDED, this);
+    m_DefaultLayer = m_Layer;
+    defaultActionWhenAttachedToBiotop();
+    return true;
   }
   return false;
 }
