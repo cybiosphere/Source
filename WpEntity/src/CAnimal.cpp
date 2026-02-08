@@ -3053,6 +3053,11 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
 double CAnimal::handleColisionWithEntity(CBasicEntity& otherEntity, int speedInSteps)
 {
   double injuryLevel = 0;
+  if (speedInSteps < 8)
+  {
+    return injuryLevel; 
+  }
+
   // Hurt moving entity
   if (otherEntity.getProtection() > getProtection())
   {

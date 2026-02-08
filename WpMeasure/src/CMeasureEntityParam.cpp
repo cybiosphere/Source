@@ -66,10 +66,7 @@ CMeasureEntityParam::~CMeasureEntityParam()
 
 bool CMeasureEntityParam::IsStillValid()
 {
-  if (m_pEntity->isToBeRemoved())
-    return false;
-  else
-    return true;
+  return (!m_pEntity->isToBeRemoved());
 }
 
 //===========================================================================

@@ -294,7 +294,7 @@ size_t CGeoMapPopulation::CountEntitiesInMapSquare(std::string specieName, size_
   for (size_t i = 0; i < biotopFoundIds.nbFoundIds; i++)
   {
     CBasicEntity* pEntity = tFoundIds[i].pEntity;
-    if (pEntity->getSpecieName() == specieName)
+    if ((pEntity->getSpecieName() == specieName) && (pEntity->isAlive() || (pEntity->getStatus() == STATUS_STATIC)))
     {
       countEntities++;  
     }

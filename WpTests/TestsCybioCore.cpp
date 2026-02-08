@@ -110,14 +110,14 @@ void TestsCybioCore::testAnimalSensors()
   CAnimal* pGazelle = (CAnimal*)pBiotop->createAndAddEntity(pathForEntityFiles + "gazelleTest.xml", pathForEntityFiles, { 110, 100 });
   printf("Animal %s created\n", pGazelle->getLabel().c_str());
 
-  printf("Verify sensor range center position\n", pGazelle->getLabel().c_str());
+  printf("Verify sensor range center position\n");
   verifySensorsRange(pBiotop, pGazelle, 2783, 3720, 3481, 361);
 
-  printf("Verify sensor range South West corner position\n", pGazelle->getLabel().c_str());
+  printf("Verify sensor range South West corner position\n");
   pGazelle->jumpToGridCoord({ 2, 2 }, false);
   verifySensorsRange(pBiotop, pGazelle, 903, 1088, 992, 156);
 
-  printf("Verify sensor range North East corner position\n", pGazelle->getLabel().c_str());
+  printf("Verify sensor range North East corner position\n");
   pGazelle->jumpToGridCoord({ 197, 197 }, false);
   verifySensorsRange(pBiotop, pGazelle, 646, 1088, 1056, 132);
   delete pBiotop;

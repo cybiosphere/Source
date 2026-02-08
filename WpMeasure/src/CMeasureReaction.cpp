@@ -111,7 +111,7 @@ double CMeasureReaction::GetCurrentValue()
 
 bool CMeasureReaction::IsStillValid()
 {
-  return (m_pEntity->isToBeRemoved()) ? false : true;
+  return (!m_pEntity->isToBeRemoved());
 }
 
 //===========================================================================

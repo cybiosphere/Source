@@ -117,7 +117,7 @@ double CMeasureFeeling::GetCurrentValue()
 
 bool CMeasureFeeling::IsStillValid()
 {
-  return (m_pEntity->isToBeRemoved()) ? false : true;
+  return (!m_pEntity->isToBeRemoved());
 }
 
 //===========================================================================
