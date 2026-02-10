@@ -160,7 +160,7 @@ CBiotop* CBiotop::extractNewBiotopFromArea(const Point_t& startCoord, size_t dim
     || ((startCoord.x + dimX) > m_Dimension.x) || ((startCoord.y + dimY) > m_Dimension.y))
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - Try to exctract Arean with invalid coord startX=%u sizeX=%u\n", startCoord.x, dimX);
+    CYBIOCORE_LOG("BIOTOP - ERROR: Try to exctract Arean with invalid coord startX=%u sizeX=%u\n", startCoord.x, dimX);
     return NULL;
   }
 
@@ -223,7 +223,7 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t l
   if ((pEntity == NULL) || !isGlobalGridCoordValidAndFree(globalGridCoord, layer))
   {
     //CYBIOCORE_LOG_TIME(m_BioTime);
-    //CYBIOCORE_LOG("ERROR  - addEntity Failed NULL entity or coord not free\n");
+    //CYBIOCORE_LOG("BIOTOP - ERROR: addEntity Failed NULL entity or coord not free\n");
     return false;
   }
 
@@ -232,7 +232,7 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t l
     if (getNbOfAnimals() >= MAX_NUMBER_ANIMALS)
     {
       CYBIOCORE_LOG_TIME(m_BioTime);
-      CYBIOCORE_LOG("ERROR  - Too many animals. Cannot add entity name %s\n", pEntity->getLabel().c_str());
+      CYBIOCORE_LOG("BIOTOP - ERROR: Too many animals. Cannot add entity name %s\n", pEntity->getLabel().c_str());
       return false;
     }
   }
@@ -249,7 +249,7 @@ bool CBiotop::addEntity(CBasicEntity* pEntity, Point_t globalGridCoord, size_t l
   if (pEntity->attachToBiotop(this, getStepCoordFromGridCoord(globalGridCoord), layer) == false)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR: attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
     return false;
   }
 
@@ -300,7 +300,7 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   if (getEntityById(idEntity) != NULL)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - getEntityById failed for entity id %lu\n", idEntity);
+    CYBIOCORE_LOG("BIOTOP - ERROR: getEntityById failed for entity id %lu\n", idEntity);
     return false;
   }
 
@@ -310,7 +310,7 @@ bool CBiotop::addEntityWithPresetId(entityIdType idEntity, CBasicEntity* pEntity
   if (pEntity->attachToBiotop(this, globalStepCoord, layer) == false)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR: attachToBiotop failed for entity name %s\n", pEntity->getLabel().c_str());
     return false;
   }
 
@@ -375,7 +375,7 @@ CBasicEntity* CBiotop::createAndAddEntity(string fileName, string pathName, Poin
   if (!pXmlDoc->LoadFile())
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Error loading entity file: %s\n", fileNameWithPath.c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR loading entity file: %s\n", fileNameWithPath.c_str());
     delete pXmlDoc;
     return NULL;
   }
@@ -433,7 +433,7 @@ CBasicEntity* CBiotop::createAndAddCloneEntity(entityIdType idModelEntity, Point
   if (pNewEntity == NULL)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Error copy clone Entity : %s\n", pModelEntity->getLabel().c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR copy clone Entity : %s\n", pModelEntity->getLabel().c_str());
     return NULL;
   }
 
@@ -1882,7 +1882,8 @@ void CBiotop::initGridDefaultLayerType(void)
 {
   if (m_nbLayer < 3)
   {
-    CYBIOCORE_LOG("CBiotop::initGridDefaultLayerType: Error, not enough layers\n");
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR: not enough layers\n");
     return;
   }
 
@@ -1981,6 +1982,67 @@ void CBiotop::initGridEntity(void)
   }
 
   updateGridFertilityBonus();
+}
+
+// For debug purpose
+void CBiotop::checkGridEntityIntegrity(void)
+{
+  size_t nbFoundEntity = 0;
+  size_t nbFoundAnimal = 0;
+  for (size_t i = 0; i < m_Dimension.x; i++)
+  {
+    for (size_t j = 0; j < m_Dimension.y; j++)
+    {
+      for (size_t k = 0; k < m_nbLayer; k++)
+      {
+        if (m_tBioGrid[i][j][k].pEntity != NULL)
+        {
+          CBasicEntity* pEntityGrid = m_tBioGrid[i][j][k].pEntity;
+          CBasicEntity* pEntityTab = getEntityById(pEntityGrid->getId());
+          if (pEntityTab != pEntityGrid)
+          {
+            CYBIOCORE_LOG_TIME(m_BioTime);
+            CYBIOCORE_LOG("BIOTOP - ERROR: entity with id %d not found in entity list\n", pEntityGrid->getId());
+          }
+          else if (pEntityGrid->getId() >= ENTITY_ID_FIRST_USER_ENTITY)
+          {
+            nbFoundEntity++;
+            if (pEntityGrid->isAnimal())
+              nbFoundAnimal++;
+            Point_t entityCoord = pEntityGrid->getGridCoord();
+            pEntityGrid->setMarked(true);
+            if ((entityCoord.x != i) || (entityCoord.y != j))
+            {
+              CYBIOCORE_LOG_TIME(m_BioTime);
+              CYBIOCORE_LOG("BIOTOP - ERROR: entity with id %d has coord (%d,%d) but is in grid coord (%d,%d)\n",
+                pEntityGrid->getId(), entityCoord.x, entityCoord.y, i, j);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (nbFoundEntity != getNbOfEntities())
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR: found %d entities in grid but %d in entity list\n", nbFoundEntity, getNbOfEntities());
+    for (size_t i = 0; i < m_tEntity.size(); i++)
+    {
+      CBasicEntity* pEntity = m_tEntity[i];
+      if (!pEntity->isMarked())
+      {
+        CYBIOCORE_LOG_TIME(m_BioTime);
+        CYBIOCORE_LOG("BIOTOP - ERROR: Missing entity with id %d in grid, coord (%d,%d) label=%s\n", 
+          pEntity->getId(), pEntity->getGridCoord().x, pEntity->getGridCoord().y, pEntity->getLabel().c_str());
+        pEntity->setMarked(false);
+      }
+    }
+  }
+  if (nbFoundAnimal != getNbOfAnimals())
+  {
+    CYBIOCORE_LOG_TIME(m_BioTime);
+    CYBIOCORE_LOG("BIOTOP - ERROR: found %d animals in grid but %d animals in entity list\n", nbFoundAnimal, getNbOfLivingAnimals());
+  } 
 }
 
 void CBiotop::setGridGroundTypeEarth(size_t gridCoordX, size_t gridCoordY)
@@ -2371,7 +2433,7 @@ void CBiotop::saveAllEntitiesOfSpecie(string specieName)
 {
   string path = m_DefaultFilePath + "/AutoSave/";
   CYBIOCORE_LOG_TIME(m_BioTime);
-  CYBIOCORE_LOG("BIOTOP  - Save all entities of specie name %s path %s\n", specieName.c_str(), path.c_str());
+  CYBIOCORE_LOG("BIOTOP - Save all entities of specie name %s path %s\n", specieName.c_str(), path.c_str());
 
   for (CBasicEntity* pCurEntity : m_tEntity)
   {
@@ -2648,7 +2710,7 @@ bool CBiotop::loadFromXmlFile(string fileName, string pathName)
   if (xmlDoc.LoadFile() == false)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("BIOTOP - Error loading biotop file: %s %s\n", pathName.c_str(), fileName.c_str());
+    CYBIOCORE_LOG("BIOTOP - ERROR loading biotop file: %s %s\n", pathName.c_str(), fileName.c_str());
     return false;
   }
 
@@ -3111,7 +3173,7 @@ bool CBiotop::getOdorLevels(const Point_t& coord, int range, std::vector<sensorV
   if (odorLevel.size() != NUMBER_ODORS)
   {
     CYBIOCORE_LOG_TIME(m_BioTime);
-    CYBIOCORE_LOG("ERROR  - Try to get odor with incorect vector size\n");
+    CYBIOCORE_LOG("BIOTOP - ERROR Try to get odor with incorect vector size\n");
     return false;
   }
 

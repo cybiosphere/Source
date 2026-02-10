@@ -49,7 +49,7 @@ distribution.
 //===========================================================================
 //#include <afxtempl.h>
 
-#include "CBasicEntity.h"
+#include "CSensor.h"
 
 //===========================================================================
 // Definitions            
@@ -75,9 +75,6 @@ class DLL_CYBIOCORE_API CFeelingWelfare
 // internal proprieties:
 //---------------------------------------------------------------------------
 protected:
-
-  CBasicEntity* m_pEntity;
-
   // FearSensitivity_t table
   std::vector<Sensitivity_t*> m_tSensitivity;
 
@@ -91,7 +88,7 @@ protected:
 // Constructors / Destructors
 //---------------------------------------------------------------------------  
 public:
-  CFeelingWelfare(CBasicEntity* pEntity);
+  CFeelingWelfare();
 	virtual ~CFeelingWelfare();
 
 //---------------------------------------------------------------------------

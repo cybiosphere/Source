@@ -38,7 +38,6 @@ distribution.
 //===========================================================================
  
 #include "CFeelingWelfare.h"
-#include "CBiotop.h"
 
 //===========================================================================
 // Constructors / Destructors 
@@ -49,16 +48,15 @@ distribution.
 //  
 // DESCRIPTION:  Constructor 
 // 
-// ARGUMENTS:    CBasicEntity* pEntity
+// ARGUMENTS:    None
 //               
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CFeelingWelfare::CFeelingWelfare(CBasicEntity* pEntity)
+CFeelingWelfare::CFeelingWelfare()
 {
-  m_pEntity = pEntity;
   m_CurSatisfaction = 0;
 
   // Sensitivity table
@@ -135,8 +133,8 @@ bool CFeelingWelfare::AddSensitivity(CSensor* pSens, size_t tableMaskSize, doubl
 {
   if (pSens->GetSubCaptorNumber() != tableMaskSize)
   {
-    CYBIOCORE_LOG_TIME(m_pEntity->getBiotop()->getBiotopTime());
-    CYBIOCORE_LOG("ANIMAL - ERROR : %s incorect sensitivity size %d for sensor %s\n", m_pEntity->getLabel().c_str(), tableMaskSize, pSens->GetLabel().c_str());
+    CYBIOCORE_LOG_TIME_NOT_AVAILABLE;
+    CYBIOCORE_LOG("ANIMAL - ERROR : Incorect sensitivity size %d for sensor %s\n", tableMaskSize, pSens->GetLabel().c_str());
     return false;
   }
 

@@ -424,6 +424,7 @@ private:
   void initGridDefaultLayerType(void);
   void initGridDefaultAltitude(void);
   void initGridEntity(void);
+  void checkGridEntityIntegrity(void);
   void buildGrid(size_t dimX, size_t dimY, size_t dimZ);
   void deleteGrid(void);
   void updateGridFertilityBonus(void);

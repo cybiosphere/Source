@@ -208,19 +208,19 @@ BOOL CEntityEditorDlg::OnInitDialog()
 
   // Fill feeling welfare string
   m_FeelingWelfareText = "";
-  if ((m_pEntity != NULL) && (m_pEntity->getBrain() != NULL) && (m_pEntity->getBrain()->GetpFeelingWelfare() != NULL))
+  if ((m_pEntity != NULL) && (m_pEntity->getBrain() != NULL))
   {
-    CFeelingWelfare* pFeeling = m_pEntity->getBrain()->GetpFeelingWelfare();
+    CFeelingWelfare& feeling = m_pEntity->getBrain()->GetFeelingWelfare();
     CString tempStr;
     std::string sensorStr;
     double level = 0;
-    level = pFeeling->GetSensorFeelingImpact(0, sensorStr);
+    level = feeling.GetSensorFeelingImpact(0, sensorStr);
     tempStr.Format(" :\t\t %f \r\n", level);
     m_FeelingWelfareText += sensorStr.c_str() + tempStr;
-    level = pFeeling->GetSensorFeelingImpact(1, sensorStr);
+    level = feeling.GetSensorFeelingImpact(1, sensorStr);
     tempStr.Format(" :\t\t %f \r\n", level);
     m_FeelingWelfareText += sensorStr.c_str() + tempStr;
-    tempStr.Format("\r\nTotal :\t\t %f \r\n", pFeeling->ComputeAndGetFeelingWelfare());
+    tempStr.Format("\r\nTotal :\t\t %f \r\n", feeling.ComputeAndGetFeelingWelfare());
     m_FeelingWelfareText += tempStr;
   }
 

@@ -105,7 +105,6 @@ CBrain::CBrain()
 
   m_pCurrentPurpose = NULL;
   m_pGeoMap = NULL;
-  m_pFeelingWelfare = new CFeelingWelfare(m_pEntity);
   m_PreviousFeelingWelfare = 0;
   m_CurrentFeelingWelfare = 0;
   m_CurrentReactionChoice = 0;
@@ -142,8 +141,6 @@ CBrain::~CBrain()
   DeleteAllSensors();
   DeleteAllReactions();
   DeleteAllBrainMemorizedEntityIdentities();
-  if (m_pFeelingWelfare != NULL)
-    delete m_pFeelingWelfare;
   if (m_pChoiceDecisionBuffer != NULL)
     delete [] m_pChoiceDecisionBuffer;
   if(m_pGeoMap != NULL)
@@ -1228,7 +1225,7 @@ feedbackValType CBrain::ComputeFeedback(choiceIndType myChoice, ReactionIntensit
   m_tReactions[myChoice]->IncreaseExecuteCount();
 
   m_PreviousFeelingWelfare = m_CurrentFeelingWelfare;
-  m_CurrentFeelingWelfare  = m_pFeelingWelfare->ComputeAndGetFeelingWelfare();
+  m_CurrentFeelingWelfare  = m_FeelingWelfare.ComputeAndGetFeelingWelfare();
 
   // Feedback is the difference between current feedback and previous...
   resu = (m_CurrentFeelingWelfare - m_PreviousFeelingWelfare) * MAX_FEEDBACK_VAL / 100.0;
@@ -1328,9 +1325,9 @@ double CBrain::GetCurrentFeelingWelfare()
   return m_CurrentFeelingWelfare;
 }
 
-CFeelingWelfare* CBrain::GetpFeelingWelfare()
+CFeelingWelfare& CBrain::GetFeelingWelfare()
 {
-  return m_pFeelingWelfare;
+  return m_FeelingWelfare;
 }
 
 size_t CBrain::GetCurrentReactionIndex(void)
@@ -1500,7 +1497,7 @@ bool CBrain::ChangeDecisionNeuronTableVal(size_t row, size_t col, double variati
 
 bool CBrain::AddFeelingWelfareSensitivity(CSensor* pSens, size_t tableSensiSize, double* pTableSensi)
 {
-  return m_pFeelingWelfare->AddSensitivity(pSens, tableSensiSize, pTableSensi);
+  return m_FeelingWelfare.AddSensitivity(pSens, tableSensiSize, pTableSensi);
 }
 
 

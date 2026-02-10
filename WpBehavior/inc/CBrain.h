@@ -49,6 +49,7 @@ typedef size_t choiceIndType;
 #include "CPurpose.h"
 #include "CGenome.h"
 #include "CybioXmlDef.h"
+#include "CFeelingWelfare.h"
 
 //===========================================================================
 // Definitions            
@@ -63,7 +64,6 @@ class CSensor;
 class CReaction;
 class CPurpose;
 class CBasicEntity;
-class CFeelingWelfare;
 class CGeoMapPurpose;
 class CSensorPheromone;
 class CSensorSmell;
@@ -129,7 +129,7 @@ protected:
 // Feeling/sensors/reactions/geomap management
 //---------------------------------------------------------------------------
 private:
-  CFeelingWelfare* m_pFeelingWelfare;
+  CFeelingWelfare m_FeelingWelfare{};
   double m_PreviousFeelingWelfare;
   double m_CurrentFeelingWelfare;
 
@@ -298,7 +298,7 @@ public:
   size_t  GetReactionIndexByLabel(string label);
   double GetPreviousFeelingWelfare();
   double GetCurrentFeelingWelfare();
-  CFeelingWelfare* GetpFeelingWelfare();
+  CFeelingWelfare& GetFeelingWelfare();
  
   bool InitializeNeuronTableNeutral();
   void HistorizeInput (void);
