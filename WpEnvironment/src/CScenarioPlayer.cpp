@@ -61,12 +61,13 @@ CommandHandler_t ScenarioCmdNameList[SCENARIO_CMD_NUMBER] =
   {"DELETE_ENTITY",              CScenarioPlayer::CmdDeleteEntity,          "DELETE_ENTITY <entity name>"}, 
   {"SET_FORBIDEN_ACTION",        CScenarioPlayer::CmdSetForbidenAction,     "SET_FORBIDEN_ACTION <entity name> <action name>"}, 
   {"CHECK_FORBID_ACT_CNT_UNDER", CScenarioPlayer::CmdChkForbidActCntUnder,  "CHECK_FORBID_ACT_CNT_UNDER <entity name> <max forbiden action>"},
-  {"SET_BIOTOP_WIND_SPEED",     CScenarioPlayer::CmdSetBiotopWindSpeed,     "SET_BIOTOP_WIND_SPEED <speed int>"},
-  {"SET_BIOTOP_WIND_DIRECTION", CScenarioPlayer::CmdSetBiotopWindDirection, "SET_BIOTOP_WIND_DIRECTION <direction 0..7>"},
-  {"ADD_MEASURE_POPULATION",    CScenarioPlayer::CmdAddMeasurePopulation,   "ADD_MEASURE_POPULATION <specie name>"},
-  {"ADD_SPAWNER_ENTITY",        CScenarioPlayer::CmdAddEntitySpawner,       "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"},
-  {"CHANGE_BIOTOP_CLIMATE",     CScenarioPlayer::CmdChangeBiotopClimate,    "CHANGE_BIOTOP_CLIMATE <int climateType>"},
-  {"INOCULATE_PARASITE",        CScenarioPlayer::CmdInoculateParasite,      "INOCULATE_PARASITE <entity name> <parasite file name>"},
+  {"SET_BIOTOP_WIND_SPEED",      CScenarioPlayer::CmdSetBiotopWindSpeed,    "SET_BIOTOP_WIND_SPEED <speed int>"},
+  {"SET_BIOTOP_WIND_DIRECTION",  CScenarioPlayer::CmdSetBiotopWindDirection,"SET_BIOTOP_WIND_DIRECTION <direction 0..7>"},
+  {"ADD_MEASURE_POPULATION",     CScenarioPlayer::CmdAddMeasurePopulation,  "ADD_MEASURE_POPULATION <specie name>"},
+  {"ADD_SPAWNER_ENTITY",         CScenarioPlayer::CmdAddEntitySpawner,      "ADD_SPAWNER_ENTITY <entity name> <int intensity> <int period>"},
+  {"CHANGE_BIOTOP_CLIMATE",      CScenarioPlayer::CmdChangeBiotopClimate,   "CHANGE_BIOTOP_CLIMATE <int climateType>"},
+  {"INOCULATE_PARASITE",         CScenarioPlayer::CmdInoculateParasite,     "INOCULATE_PARASITE <entity name> <parasite file name>"},
+  {"ADD_MEASURE_BIOMASS",        CScenarioPlayer::CmdAddMeasureBiomass,     "ADD_MEASURE_POPULATION <specie name>"},
 };
 
 //===========================================================================
@@ -700,6 +701,12 @@ bool CScenarioPlayer::CmdAddMeasurePopulation(CBiotop* pBiotop, string path, str
   return true;
 }
 
+bool CScenarioPlayer::CmdAddMeasureBiomass(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
+{
+  string specieName = GetParamFromString(commandParam, 0);
+  pBiotop->addMeasurePopulation(43200, pBiotop->getUnusedMeasureId(10), MEASURE_POPULATION_SPECIFIC_BIOMASS, 10 * (int)(pBiotop->getNbOfSpecieEntities(specieName) + 1), specieName);
+  return true;
+}
 
 bool CScenarioPlayer::CmdAddEntitySpawner(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2)
 {
