@@ -328,11 +328,11 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //---------------------------------------------------------------------------
 void CVegetSpermatophyta::nextDay(bool doQuickAgeing)
 {
+  CVegetable::nextDay(doQuickAgeing);
   if (isAlive() && !doQuickAgeing)
   {
     tryToReproduceOnceADay();
   }
-  CVegetable::nextDay(doQuickAgeing);
 }
 
 void CVegetSpermatophyta::tryToReproduceOnceADay()
