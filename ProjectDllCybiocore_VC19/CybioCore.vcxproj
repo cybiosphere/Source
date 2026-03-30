@@ -25,25 +25,25 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -399,8 +399,8 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClInclude Include="..\WpEntity\inc\CLifeStage.h" />
     <ClInclude Include="..\WpEntity\inc\CMineral.h" />
     <ClInclude Include="..\WpEntity\inc\CPhysicalWelfare.h" />
-    <ClInclude Include="..\WpEntity\inc\CVegetable.h" />
-    <ClInclude Include="..\WpEntity\inc\CVegetSpermatophyta.h" />
+    <ClInclude Include="..\WpEntity\inc\CPlant.h" />
+    <ClInclude Include="..\WpEntity\inc\CPlantSpermatophyta.h" />
     <ClInclude Include="..\WpEntity\inc\CWater.h" />
     <ClInclude Include="..\WpEnvironment\inc\CBiotop.h" />
     <ClInclude Include="..\WpEnvironment\inc\CScenarioPlayer.h" />
@@ -486,8 +486,8 @@ copy  ..\Exec\CybioCore.dll   ..\ExecOgre\
     <ClCompile Include="..\WpEntity\src\CMineral.cpp" />
     <ClCompile Include="..\WpEntity\src\CPhysicalWelfare.cpp" />
     <ClCompile Include="..\WpEntity\src\CRock.cpp" />
-    <ClCompile Include="..\WpEntity\src\CVegetable.cpp" />
-    <ClCompile Include="..\WpEntity\src\CVegetSpermatophyta.cpp" />
+    <ClCompile Include="..\WpEntity\src\CPlant.cpp" />
+    <ClCompile Include="..\WpEntity\src\CPlantSpermatophyta.cpp" />
     <ClCompile Include="..\WpEntity\src\CVirus.cpp" />
     <ClCompile Include="..\WpEntity\src\CWater.cpp" />
     <ClCompile Include="..\WpEnvironment\src\CBiotop.cpp" />

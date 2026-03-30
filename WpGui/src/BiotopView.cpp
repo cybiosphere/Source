@@ -934,7 +934,7 @@ void CBiotopView::OnAppMonitorShort()
 
   if (pEntity!=NULL)
   {
-    if (pEntity->getClass()>=CLASS_VEGETAL_FIRST)
+    if (pEntity->getClass()>=CLASS_PLANT_FIRST)
     {
       m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Weight"), 1, 0);
       m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 1, 1); 
@@ -960,9 +960,9 @@ void CBiotopView::OnAppMonitorShort()
     m_pBiotop->addMeasureBiotopParam(BIO_PARAM_FERTILITY,  3600, 1);
     m_pBiotop->addMeasureBiotopParam(BIO_PARAM_TEMPERATURE,3600, 2);
 
-    m_pBiotop->addMeasurePopulation(3600, 3, MEASURE_POPULATION_TOTAL,   10*m_pBiotop->getNbOfEntities());
-    m_pBiotop->addMeasurePopulation(3600, 4, MEASURE_POPULATION_ANIMAL,  10*m_pBiotop->getNbOfAnimals());
-    m_pBiotop->addMeasurePopulation(3600, 5, MEASURE_POPULATION_VEGETAL, 10*m_pBiotop->getNbOfVegetals());
+    m_pBiotop->addMeasurePopulation(3600, 3, MEASURE_POPULATION_TOTAL, 10*m_pBiotop->getNbOfEntities());
+    m_pBiotop->addMeasurePopulation(3600, 4, MEASURE_POPULATION_ANIMAL, 10*m_pBiotop->getNbOfAnimals());
+    m_pBiotop->addMeasurePopulation(3600, 5, MEASURE_POPULATION_PLANT, 10*m_pBiotop->getNbOfPlants());
     m_pBiotop->addMeasurePopulation(3600, 6, MEASURE_POPULATION_MINERAL, 10*m_pBiotop->getNbOfMinerals());
   }
 	m_MenuSelCoord.x = 1;
@@ -985,7 +985,7 @@ void CBiotopView::OnAppMonitorLong()
     m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Protection factor"), 3600, 1);
     m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Weight"), 3600, 2);
 
-    if (pEntity->getClass() >= CLASS_VEGETAL_FIRST)
+    if (pEntity->getClass() >= CLASS_PLANT_FIRST)
     {
       m_pBiotop->addMeasureEntityParam(pEntity, pEntity->getParamIdByName("Health rate"), 3600, 3);
     }
@@ -1009,9 +1009,9 @@ void CBiotopView::OnAppMonitorLong()
     m_pBiotop->addMeasureBiotopParam(BIO_PARAM_FERTILITY,  43200, 1);
     m_pBiotop->addMeasureBiotopParam(BIO_PARAM_TEMPERATURE,43200, 2);
 
-    m_pBiotop->addMeasurePopulation(43200, 3, MEASURE_POPULATION_TOTAL,   10*m_pBiotop->getNbOfEntities());
-    m_pBiotop->addMeasurePopulation(43200, 4, MEASURE_POPULATION_ANIMAL,  10*m_pBiotop->getNbOfAnimals());
-    m_pBiotop->addMeasurePopulation(43200, 5, MEASURE_POPULATION_VEGETAL, 10*m_pBiotop->getNbOfVegetals());
+    m_pBiotop->addMeasurePopulation(43200, 3, MEASURE_POPULATION_TOTAL, 10*m_pBiotop->getNbOfEntities());
+    m_pBiotop->addMeasurePopulation(43200, 4, MEASURE_POPULATION_ANIMAL, 10*m_pBiotop->getNbOfAnimals());
+    m_pBiotop->addMeasurePopulation(43200, 5, MEASURE_POPULATION_PLANT, 10*m_pBiotop->getNbOfPlants());
     m_pBiotop->addMeasurePopulation(43200, 6, MEASURE_POPULATION_MINERAL, 10*m_pBiotop->getNbOfMinerals());
   }
 	m_MenuSelCoord.x = 1;

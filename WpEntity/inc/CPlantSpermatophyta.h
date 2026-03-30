@@ -23,10 +23,11 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CVegetable.h
+// FILE: CPlantSpermatophyta.h
 //   
 // GENERAL DESCRIPTION:
-//         This CLASS represents a vegetal entity
+//         This CLASS represents a a Spermatophyta entity
+//         => a plant using flowers for reproduction
 //     
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
@@ -34,22 +35,22 @@ distribution.
 //
 //===========================================================================
 
-#if !defined( CVEGETABLE_INCLUDED_)
-#define CVEGETABLE_INCLUDED_
+#if !defined( CPLANTSPERMATOPHYTA_INCLUDED_)
+#define CPLANTSPERMATOPHYTA_INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
- 
+
 //===========================================================================
 // Includes 
-//===========================================================================
-#include "CBasicEntity.h" 
+//=========================================================================== 
+#include "CPlant.h" 
 
 //===========================================================================
 //                                    CLASS            
 //===========================================================================
-class DLL_CYBIOCORE_API CVegetable : public CBasicEntity 
+class DLL_CYBIOCORE_API CPlantSpermatophyta : public CPlant 
 {  
 //===========================================================================
 // Attributes 
@@ -59,16 +60,7 @@ class DLL_CYBIOCORE_API CVegetable : public CBasicEntity
 // Parameters Ids
 //---------------------------------------------------------------------------
 private:
-  char m_id_Age;
-  char m_id_Decomposition;
-  char m_id_ReproductionRate;
-  char m_id_Health;
-  char m_id_GrowthSpeed;
-  char m_id_ReproductionRange;
-  char m_id_ResistanceToConsumption;
-  COLORREF   m_OriginalColorRgb;           // Color in RGB when vegetal is healthy (could be in basicEntity)
-  double     m_OriginalProtection;         // Protection when vegetal is healthy
-  OdorType_e m_OriginalOdor;               // Odor when vegetal is healthy
+  char m_id_PollenRange;
 
 //===========================================================================
 // methods 
@@ -78,67 +70,51 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:       
-  CVegetable(string label, size_t layer, CGenome* pGenome);
-  CVegetable(string label, CVegetable& model);
-  CVegetable(string label, CVegetable& mother,CVegetable& father);  
-
-private:
-  void initVegetableParamIds();
+  CPlantSpermatophyta(string label, size_t layer, CGenome* pGenome);
+  CPlantSpermatophyta(string label, CPlantSpermatophyta& model);
+  CPlantSpermatophyta(string label, CPlantSpermatophyta& mother,CPlantSpermatophyta& father);
 
 //---------------------------------------------------------------------------
 // Genetic settings
 //---------------------------------------------------------------------------
-protected: 
+protected:
   bool setParamFromGene(CGene* pGen);
   bool completeParamsWithDefault();
-  bool setPhysicWelfareFromGene(CGene* pGen);
-  bool completePhysicWelfareWithDefault();
-
-//---------------------------------------------------------------------------
-// Genetic description
-//---------------------------------------------------------------------------
-protected:
-  string buildPhysicWellfareString(CGene* pGen);
-
-//---------------------------------------------------------------------------
-// Biotop Connection
-//---------------------------------------------------------------------------
+  bool setLifeStageFromGene(CGene* pGen);
 
 //---------------------------------------------------------------------------
 // Time management
 //---------------------------------------------------------------------------
 public:
-  void nextHour();
   void nextDay(bool doQuickAgeing = false);
-  int  getAge();
-  int  getDecompositionTime();
 
+//---------------------------------------------------------------------------
+// Life stages management
+//---------------------------------------------------------------------------
 protected:
-  bool changeHealthRate(double variation);
-  void setHealthRate(double rate);
-  void forceAgeValue(int newAge);
+  void enterInNewLifeStage(CLifeStage* pLifeStage);
 
 //---------------------------------------------------------------------------
 // Behavior  
 //---------------------------------------------------------------------------
-  void autoKill();
+protected:
+  bool reproductWith(CPlantSpermatophyta* partner);
+  bool autoClone();
+  void tryToReproduceOnceADay();
+
+  void defaultActionWhenAttachedToBiotop(void);
+  void defaultActionWhenRemovedFromBiotop(void);
 
 //---------------------------------------------------------------------------
 // Get / Set for attributes
 //---------------------------------------------------------------------------
 public:
-  bool isVegetal();
-  double changeWeight(double variation); // Overload
-  double getReproductionRate(); 
-  double getLifeExpectation();
-  double getRotenTimeExpectation();
-  double getReproductionRange();
-  void setResistanceToConsumptionToNominalRatio(double ratio);
-  void setReproductionRateToNominalRatio(double ratio);
+  double getPollenRange();
 
-}; // end CVegetable
 
-#endif // !defined(CVEGETABLE_INCLUDED_)
+}; // end CPlantSpermatophyta
+
+#endif // !defined(CPLANTSPERMATOPHYTA_INCLUDED_)
 
 
 

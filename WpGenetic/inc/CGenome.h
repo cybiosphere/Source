@@ -68,14 +68,14 @@ typedef enum
   CLASS_WATER,                            // Water entity
   CLASS_MINERAL_LAST  = CLASS_WATER,
 
-  // Vegetal classs
-  CLASS_VEGETAL_FIRST,                     
-  CLASS_PHYCOPHYTA = CLASS_VEGETAL_FIRST, // Containing alga 
+  // Plant classs
+  CLASS_PLANT_FIRST,                     
+  CLASS_PHYCOPHYTA = CLASS_PLANT_FIRST,   // Containing alga 
   CLASS_MYCOPHYTA,                        // Containing mushrooms
   CLASS_BRYOPHYTA,                        // Containing the mosses 
   CLASS_PTERIDOPHYTA,                     // Containing ferns 
   CLASS_SPERMATOPHYTA,                    // Containing plants with seeds
-  CLASS_VEGETAL_LAST = CLASS_SPERMATOPHYTA,
+  CLASS_PLANT_LAST = CLASS_SPERMATOPHYTA,
 
   // Animal classs
   CLASS_ANIMAL_FIRST,
@@ -153,7 +153,7 @@ public:
 
   std::pair<size_t, size_t> findGeneInGenome(CGene& modelGene, bool findDominantAlleleOnly);
 
-  bool isVegetalGenome(void);
+  bool isPlantGenome(void);
   bool isAnimalGenome(void);
   bool isParasiteGenome(void);
 

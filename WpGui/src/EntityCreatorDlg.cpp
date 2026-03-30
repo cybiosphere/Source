@@ -116,7 +116,7 @@ void CEntityCreatorDlg::OnRadioVegetal()
 {
   int index = 0;
 	m_ComboClass.ResetContent();
-  for (ClassType_e i=CLASS_VEGETAL_FIRST;i<=CLASS_VEGETAL_LAST;i=(ClassType_e)(i+1))
+  for (ClassType_e i=CLASS_PLANT_FIRST;i<=CLASS_PLANT_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(LPCTSTR(CGenome::getClassStrName(i).c_str()));
     m_ComboClass.SetItemData(index,(DWORD_PTR)i);

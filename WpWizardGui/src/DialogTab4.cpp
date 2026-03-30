@@ -155,7 +155,7 @@ BOOL CDialogTab4::OnInitDialog()
 void CDialogTab4::OnButtonCreateFemale() 
 {
   CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
-  if ((pView->GetClassType() < CLASS_VEGETAL_FIRST) || (pView->GetClassType() > CLASS_ANIMAL_LAST))
+  if ((pView->GetClassType() < CLASS_PLANT_FIRST) || (pView->GetClassType() > CLASS_ANIMAL_LAST))
     CreateGenome(SEX_NONE);
   else
     CreateGenome(SEX_FEMALE);
@@ -318,7 +318,7 @@ void CDialogTab4::OnShowWindow(BOOL bShow, UINT nStatus)
 	CDialog::OnShowWindow(bShow, nStatus);
 	
 	CProjectWizardView* pView = (CProjectWizardView*)GetParentFrame()->GetActiveView();
-  if (pView->GetClassType() < CLASS_VEGETAL_FIRST)
+  if (pView->GetClassType() < CLASS_PLANT_FIRST)
   {
     m_ButtonMale.ShowWindow(SW_HIDE);
     m_ButtonFemale.SetWindowText("Create entity");
@@ -1296,9 +1296,9 @@ void CDialogTab4::PrepareBrainInstinct(CAnimal* pAnimal)
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_PLAN_ROUGH,      COLOR_CARACTER_BLACK, TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_ROUNDISH,        COLOR_CARACTER_GREY,  TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_GEOMETRIC,       COLOR_CARACTER_RED,   TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
-  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_VEGET_LONG_LEEF, COLOR_CARACTER_BLUE,  TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
-  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_VEGET_BUSH,      COLOR_CARACTER_GREEN, TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
-  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_VEGET_TREE,      COLOR_CARACTER_YELLOW,TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
+  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_PLANT_LONG_LEEF, COLOR_CARACTER_BLUE,  TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
+  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_PLANT_BUSH,      COLOR_CARACTER_GREEN, TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
+  brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_PLANT_TREE,      COLOR_CARACTER_YELLOW,TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_QUADRIPED_THIN,  COLOR_CARACTER_ORANGE,TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_QUADRIPED_FAT,   COLOR_CARACTER_PINK,  TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
   brainWiz.AddVisualObstacle (20, pAnimal->getLayer(), FORM_BIPED,           COLOR_CARACTER_BEIGE, TEXTURE_NONE, PHY_ATTRIBUTE_NONE, true);
@@ -1379,7 +1379,7 @@ void CDialogTab4::PrepareBrainInstinct(CAnimal* pAnimal)
   {
     int deltaLayer = pPreyList[i]->getLayer() - pAnimal->getLayer();
 
-    if (pPreyList[i]->isVegetal())
+    if (pPreyList[i]->isPlant())
     {
       attractLevel = 20 + getRandInt(m_Variation)/10 - numPrey - i;
       if (pPreyList[i]->getOdor() >= ODOR_FIRST_TYPE)
@@ -1647,7 +1647,7 @@ void CDialogTab4::OnButtonSaveEntity()
       int numPrey = pTabBehavior->GetPreyEntityList(&pPreyList,false);
       int numPred = pTabBehavior->GetPredatorEntityList(&pPredList);
       int i;
-      CMineral emptyEntity("obstacle", coord, 2, NULL);
+      CMineral emptyEntity("obstacle", 2, NULL);
 
       for (i=0;i<3;i++)
       {

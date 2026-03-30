@@ -62,28 +62,30 @@ double getYOffsetForWater(CBasicEntity* pBasicEntity)
     {
       return -2.0;
     }
+    else if (curLayer == LAYER_OVER_WET_GROUND)
+    {
+      return -0.2;
+    }
   }
   return 0;
 }
 
-bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
+bool createMeshEntity(SceneManager* pSceneMgr, CBasicEntity* pBasicEntity, const Point_t& stepCoord)
 {
   if ((pBasicEntity == NULL) || (pBasicEntity->isToBeRemoved()))
   {
     return false;
   }
 
-  Point_t coord = pBasicEntity->getStepCoord();
-
   Entity *meshEnt;
-  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(pBasicEntity->getId());
+  string nameEnt =  pBasicEntity->getSpecieName() + StringConverter::toString(m_tMesh.size());
   string nameFile = pBasicEntity->getSpecieName() + ".mesh";
   double scale = pBasicEntity->getSizeRate();
   if (pBasicEntity->getCurrentLifeStage() != NULL)
   {
     if (pBasicEntity->getCurrentLifeStage()->getStageType() == STAGE_1)
     {
-      if (pBasicEntity->getForm() == FORM_VEGET_TREE)
+      if (pBasicEntity->getForm() == FORM_PLANT_TREE)
       {
         scale = scale * 0.20; // Reduce Mesh size for juvenile trees
       }
@@ -102,14 +104,14 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
     pNewMesh->pBasicEntity = pBasicEntity;
     pNewMesh->entityId = pBasicEntity->getId();
     pNewMesh->pMeshEnt = meshEnt;
-    pNewMesh->targetBiotopCoord = coord;
+    pNewMesh->targetBiotopCoord = stepCoord;
     pNewMesh->curDirection = pBasicEntity->getStepDirection();
     pNewMesh->isMoving = false;
     pNewMesh->scale = scale;
     pNewMesh->yPos = scale-1.0;
     pNewMesh->pMeshNode = pSceneMgr->getRootSceneNode()->createChildSceneNode();
     pNewMesh->pMeshNode->attachObject(meshEnt);
-    pNewMesh->pMeshNode->setPosition( Vector3((int)coord.y-OFFSET_COORD_Y, pNewMesh->yPos + getYOffsetForWater(pBasicEntity), (int)coord.x-OFFSET_COORD_X) );
+    pNewMesh->pMeshNode->setPosition( Vector3((int)stepCoord.y-OFFSET_COORD_Y, pNewMesh->yPos + getYOffsetForWater(pBasicEntity), (int)stepCoord.x-OFFSET_COORD_X) );
     pNewMesh->pMeshNode->yaw(Degree(pBasicEntity->getStepDirection()),Ogre::Node::TS_WORLD);
     pNewMesh->pMeshNode->setScale(scale,scale,scale);
     pNewMesh->strCurACtion = "";
@@ -137,6 +139,11 @@ bool createMeshEntity (SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
   }
 
   return true;
+}
+
+bool createMeshEntity(SceneManager* pSceneMgr, CBasicEntity* pBasicEntity)
+{
+  return(createMeshEntity(pSceneMgr, pBasicEntity, pBasicEntity->getStepCoord()));
 }
 
 void updateMeshEntityPtr(int meshIndex, CBasicEntity* pBasicEntity)
@@ -613,13 +620,8 @@ void CybiOgre3DApp::createScene(void)
   OFFSET_COORD_X = 5 * m_pBiotop->getDimension().x;
   OFFSET_COORD_Y = 5 * m_pBiotop->getDimension().y;
 
-  CWater* waterGlobalEntity = new CWater();
-  CGrass* grassGlobalEntity = new CGrass();
-  CRock* rockGlobalEntity = new CRock();
-
   Point_t coord;
   int x,y;
-  waterGlobalEntity->setLabel("water");
   for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
     for (y=0; y<m_pBiotop->getDimension().y; y++)
@@ -628,26 +630,25 @@ void CybiOgre3DApp::createScene(void)
       coord.y = y;
       if (m_pBiotop->getLayerType(coord,1) == LAYER_OVER_WET_GROUND)
       {
-        waterGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(mSceneMgr, waterGlobalEntity);
-        waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
+        CBasicEntity* pWaterEntity = m_pBiotop->findEntity(coord, 1);
+        pWaterEntity->setLabel("water");
+        createMeshEntity(mSceneMgr, pWaterEntity, CBiotop::getStepCoordFromGridCoord(coord));
       }
       else if (m_pBiotop->getLayerType(coord,1) == LAYER_GLOBAL_GRASS)
       {
-        grassGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(mSceneMgr, grassGlobalEntity);
-        grassGlobalEntity->setId(grassGlobalEntity->getId()+1);
+        CBasicEntity* pGrassEntity = m_pBiotop->findEntity(coord, 1);
+        pGrassEntity->setLabel("grass");
+        createMeshEntity(mSceneMgr, pGrassEntity, CBiotop::getStepCoordFromGridCoord(coord));
       }
       else if (m_pBiotop->getLayerType(coord, 1) == LAYER_GLOBAL_ROCK)
       {
-        rockGlobalEntity->jumpToGridCoord(coord, 0);
-        createMeshEntity(mSceneMgr, rockGlobalEntity);
-        rockGlobalEntity->setId(rockGlobalEntity->getId() + 1);
+        CBasicEntity* pRockEntity = m_pBiotop->findEntity(coord, 1);
+        pRockEntity->setLabel("rock");
+        createMeshEntity(mSceneMgr, pRockEntity, CBiotop::getStepCoordFromGridCoord(coord));
       }
     }
   }
 
-  waterGlobalEntity->setLabel("water_deap");
   for (x=0; x<m_pBiotop->getDimension().x; x++)
   {
     for (y=0; y<m_pBiotop->getDimension().y; y++)
@@ -656,9 +657,9 @@ void CybiOgre3DApp::createScene(void)
       coord.y = y;
       if (m_pBiotop->getLayerType(coord,1) == LAYER_OVER_WATER)
       {
-        waterGlobalEntity->jumpToGridCoord(coord,0);
-        createMeshEntity(mSceneMgr, waterGlobalEntity);
-        waterGlobalEntity->setId(waterGlobalEntity->getId()+1);
+        CBasicEntity* pWaterEntity = m_pBiotop->findEntity(coord, 1);
+        pWaterEntity->setLabel("water_deap");
+        createMeshEntity(mSceneMgr, pWaterEntity, CBiotop::getStepCoordFromGridCoord(coord));
       }
     }
   }

@@ -145,6 +145,7 @@ protected:
   void createFrameListener(void);
 
   bool createMeshEntity (CBasicEntity* pBasicEntity, int insertIndex);
+  bool createMeshEntity(CBasicEntity* pBasicEntity, const Point_t& stepCoord, int insertIndex);
   bool SetEntityPlayer(CBasicEntity* pEntity);
 };
 

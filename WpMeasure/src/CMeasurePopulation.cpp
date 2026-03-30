@@ -45,7 +45,7 @@ const char* MeasurePopulationTypeNameList[MEASURE_POPULATION_NUMBER_TYPE] =
 {
   "Total",
   "Animals",
-  "Vegetals",
+  "Plants",
   "Minerals",
   "Specific",
   "Specific biomass",
@@ -71,8 +71,8 @@ CMeasurePopulation::CMeasurePopulation(CBiotop* pBiotop, int period, int id, Mea
   case  MEASURE_POPULATION_ANIMAL:
     m_Label = "Population animal"; 
     break;
-  case  MEASURE_POPULATION_VEGETAL:
-    m_Label = "Population vegetal"; 
+  case  MEASURE_POPULATION_PLANT:
+    m_Label = "Population plant"; 
     break;
   case  MEASURE_POPULATION_MINERAL:
     m_Label = "Population mineral"; 
@@ -115,8 +115,8 @@ double CMeasurePopulation::GetCurrentValue()
   case  MEASURE_POPULATION_ANIMAL:
     val = m_pBiotop->getNbOfAnimals();
     break;
-  case  MEASURE_POPULATION_VEGETAL:
-    val = m_pBiotop->getNbOfVegetals(); 
+  case  MEASURE_POPULATION_PLANT:
+    val = m_pBiotop->getNbOfPlants(); 
     break;
   case  MEASURE_POPULATION_MINERAL:
     val = m_pBiotop->getNbOfMinerals();

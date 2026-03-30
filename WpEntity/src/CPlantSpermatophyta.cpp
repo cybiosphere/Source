@@ -23,11 +23,11 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CVegetSpermatophyta.cpp
+// FILE: CPlantSpermatophyta.cpp
 //   
 // GENERAL DESCRIPTION:
 //         This CLASS represents a a Spermatophyta entity
-//         => a vegetable using flowers for reproduction
+//         => a plant using flowers for reproduction
 //     
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
@@ -35,7 +35,7 @@ distribution.
 //
 //===========================================================================
  
-#include "CVegetSpermatophyta.h"
+#include "CPlantSpermatophyta.h"
 #include "CBiotop.h" 
 #include "Definitions.h"
 
@@ -44,7 +44,7 @@ distribution.
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::CVegetSpermatophyta
+// METHOD:       CPlantSpermatophyta::CPlantSpermatophyta
 //  
 // DESCRIPTION:  Constructor 
 // 
@@ -55,8 +55,8 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetSpermatophyta::CVegetSpermatophyta(string label, size_t layer, CGenome* pGenome):
-CVegetable(label, layer, pGenome)
+CPlantSpermatophyta::CPlantSpermatophyta(string label, size_t layer, CGenome* pGenome):
+CPlant(label, layer, pGenome)
 {
   // Default values          
   m_Status = STATUS_ALIVE; 
@@ -66,18 +66,18 @@ CVegetable(label, layer, pGenome)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::CVegetSpermatophyta
+// METHOD:       CPlantSpermatophyta::CPlantSpermatophyta
 //  
 // DESCRIPTION:  Constructor 
 // 
-// ARGUMENTS:    CVegetSpermatophyta& model : Clonage reproduction
+// ARGUMENTS:    CPlantSpermatophyta& model : Clonage reproduction
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //--------------------------------------------------------------------------- 
-CVegetSpermatophyta::CVegetSpermatophyta(string label, CVegetSpermatophyta& model):
-CVegetable(label, model)
+CPlantSpermatophyta::CPlantSpermatophyta(string label, CPlantSpermatophyta& model):
+CPlant(label, model)
 { 
   // Default values          
   m_Status = STATUS_ALIVE; 
@@ -87,18 +87,18 @@ CVegetable(label, model)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::CVegetSpermatophyta
+// METHOD:       CPlantSpermatophyta::CPlantSpermatophyta
 //  
 // DESCRIPTION:  Constructor 
 // 
-// ARGUMENTS:    CVegetSpermatophyta& mother,father : Parents for sexual reproduction
+// ARGUMENTS:    CPlantSpermatophyta& mother,father : Parents for sexual reproduction
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //--------------------------------------------------------------------------- 
-CVegetSpermatophyta::CVegetSpermatophyta(string label, CVegetSpermatophyta& mother,CVegetSpermatophyta& father):
-CVegetable(label, mother, father)
+CPlantSpermatophyta::CPlantSpermatophyta(string label, CPlantSpermatophyta& mother,CPlantSpermatophyta& father):
+CPlant(label, mother, father)
 { 
   // Default values          
   m_Status = STATUS_ALIVE; 
@@ -112,20 +112,20 @@ CVegetable(label, mother, father)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::setParamFromGene 
+// METHOD:       CPlantSpermatophyta::setParamFromGene 
 //  
 // DESCRIPTION:  Set parameter according to genome.
 //               Automatically called by setEntityFromGenome for each genes
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CVegetable parameter
+// RETURN VALUE: bool : false if gene not a CPlant parameter
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
+bool CPlantSpermatophyta::setParamFromGene(CGene* pGen)
 {
-  if (CVegetable::setParamFromGene(pGen) == true)
+  if (CPlant::setParamFromGene(pGen) == true)
   {
     // The parameter has already been taken into account by basic entity
     return true;
@@ -161,12 +161,12 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
       break;
     }
   }
-  // If resu is false, param is not valid for CVegetSpermatophyta, but it may be used by inherited class !
+  // If resu is false, param is not valid for CPlantSpermatophyta, but it may be used by inherited class !
   return resu;
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::completeParamsWithDefault 
+// METHOD:       CPlantSpermatophyta::completeParamsWithDefault 
 //  
 // DESCRIPTION:  Complete parameters unset by genome with default values.
 //               Automatically called by setEntityFromGenome
@@ -177,15 +177,15 @@ bool CVegetSpermatophyta::setParamFromGene(CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::completeParamsWithDefault()
+bool CPlantSpermatophyta::completeParamsWithDefault()
 {
   // Check if all mandatory parameters were set by genome
   // If not, use default value
 
   // In base class
-  CVegetable::completeParamsWithDefault();
+  CPlant::completeParamsWithDefault();
 
-  // CVegetable specific
+  // CPlant specific
   if (m_id_PollenRange == invalidCharIndex)
   {
     m_id_PollenRange = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_POLLEN_RANGE);
@@ -195,7 +195,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::setLifeStageFromGene 
+// METHOD:       CPlantSpermatophyta::setLifeStageFromGene 
 //  
 // DESCRIPTION:  Set a Life stage according to genome.
 //               Automatically called by setEntityFromGenome for each genes
@@ -207,7 +207,7 @@ bool CVegetSpermatophyta::completeParamsWithDefault()
 // REMARKS:      Should NOT be called by derived method. 
 //               All stages must be supported at the same inheritage level
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
+bool CPlantSpermatophyta::setLifeStageFromGene(CGene* pGen)
 {
   if ((pGen == NULL) || (pGen->getGeneType() != GENE_LIFESTAGE))
   {
@@ -316,7 +316,7 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::nextDay
+// METHOD:       CPlantSpermatophyta::nextDay
 //  
 // DESCRIPTION:  Daily action: reproduction
 // 
@@ -326,16 +326,16 @@ bool CVegetSpermatophyta::setLifeStageFromGene(CGene* pGen)
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CVegetSpermatophyta::nextDay(bool doQuickAgeing)
+void CPlantSpermatophyta::nextDay(bool doQuickAgeing)
 {
-  CVegetable::nextDay(doQuickAgeing);
+  CPlant::nextDay(doQuickAgeing);
   if (isAlive() && !doQuickAgeing)
   {
     tryToReproduceOnceADay();
   }
 }
 
-void CVegetSpermatophyta::tryToReproduceOnceADay()
+void CPlantSpermatophyta::tryToReproduceOnceADay()
 {
   if (m_pBiotop && testChance(getReproductionRate(), m_pBiotop->getFertility(getGridCoord())))
   {
@@ -358,7 +358,7 @@ void CVegetSpermatophyta::tryToReproduceOnceADay()
           if ((pFoundEntity->getSex() == SEX_MALE) && (m_pGenome->checkSpecieCompatibility(pFoundEntity->getGenome()) == true))
           {
             // TBD: Select 1 random compatible male among different parters
-            reproductWith((CVegetSpermatophyta*)tFoundIds[i].pEntity);
+            reproductWith((CPlantSpermatophyta*)tFoundIds[i].pEntity);
             break;
           }
         }
@@ -367,7 +367,7 @@ void CVegetSpermatophyta::tryToReproduceOnceADay()
   }
 }
 
-void CVegetSpermatophyta::defaultActionWhenAttachedToBiotop(void)
+void CPlantSpermatophyta::defaultActionWhenAttachedToBiotop(void)
 {
   if (m_pBiotop && (getLayer() > 1))
   {
@@ -393,7 +393,7 @@ void CVegetSpermatophyta::defaultActionWhenAttachedToBiotop(void)
   }
 }
 
-void CVegetSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
+void CPlantSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
 {
   if (m_pBiotop && (getLayer() > 1))
   {
@@ -424,7 +424,7 @@ void CVegetSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::enterInNewLifeStage
+// METHOD:       CPlantSpermatophyta::enterInNewLifeStage
 //  
 // DESCRIPTION:  Change parameters according to new stage
 // 
@@ -434,7 +434,7 @@ void CVegetSpermatophyta::defaultActionWhenRemovedFromBiotop(void)
 //  
 // REMARKS:       
 //---------------------------------------------------------------------------
-void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
+void CPlantSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
 {
   switch (pLifeStage->getStageType())
   {
@@ -450,7 +450,7 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
       if (!moveToLayerIfPossible(1))
       {
         //CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        //CYBIOCORE_LOG("VEGETAL- Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
+        //CYBIOCORE_LOG("PLANT  - Layer not free for juvenil life stage. Entity  %s removed\n", getLabel().c_str());
         defaultActionWhenAttachedToBiotop();
         autoRemove();
       }
@@ -467,7 +467,7 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
       if (!moveToLayerIfPossible(getDefaultLayer()))
       {
         CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-        CYBIOCORE_LOG("VEGETAL- Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
+        CYBIOCORE_LOG("PLANT  - Layer not free for adult life stage. Entity  %s removed\n", getLabel().c_str());
         autoRemove();
       }
       else
@@ -506,22 +506,22 @@ void CVegetSpermatophyta::enterInNewLifeStage(CLifeStage* pLifeStage)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::reproductWith
+// METHOD:       CPlantSpermatophyta::reproductWith
 //  
 // DESCRIPTION:  Clone entity
 // 
-// ARGUMENTS:    CVegetSpermatophyta* partner : male entity to make child
+// ARGUMENTS:    CPlantSpermatophyta* partner : male entity to make child
 //   
 // RETURN VALUE: bool: Success
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
+bool CPlantSpermatophyta::reproductWith(CPlantSpermatophyta* partner)
 {
   string childLabel;
   childLabel = FormatString("j%d", m_TotalChildNumber);
   childLabel = m_Label + childLabel;
-  CVegetSpermatophyta* pChildEntity = new CVegetSpermatophyta(childLabel,*this,*partner);
+  CPlantSpermatophyta* pChildEntity = new CPlantSpermatophyta(childLabel,*this,*partner);
   m_TotalChildNumber++;
   // Caracter from genetic after mutation:
   pChildEntity->setEntityFromGenome(m_pBiotop->getRadioactivityRate());
@@ -546,7 +546,7 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
 
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetSpermatophyta::autoClone
+// METHOD:       CPlantSpermatophyta::autoClone
 //  
 // DESCRIPTION:  Clone entity
 // 
@@ -556,11 +556,11 @@ bool CVegetSpermatophyta::reproductWith(CVegetSpermatophyta* partner)
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-bool CVegetSpermatophyta::autoClone()
+bool CPlantSpermatophyta::autoClone()
 {
   string childLabel;
   childLabel = m_Label;
-  CVegetSpermatophyta* pChildEntity = new CVegetSpermatophyta(childLabel,*this);
+  CPlantSpermatophyta* pChildEntity = new CPlantSpermatophyta(childLabel,*this);
   m_TotalChildNumber++;
   // Caracter from genetic after mutation:
   pChildEntity->setEntityFromGenome(m_pBiotop->getRadioactivityRate());
@@ -603,7 +603,7 @@ bool CVegetSpermatophyta::autoClone()
 // Get / Set for attributes
 //===========================================================================
 
-double CVegetSpermatophyta::getPollenRange()
+double CPlantSpermatophyta::getPollenRange()
 {
   return getParameterNoCheck(m_id_PollenRange)->getVal();
 }

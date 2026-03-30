@@ -88,7 +88,7 @@ double CGrass::changeWeight(double variation)
   return variation;
 }
 
-bool CGrass::isVegetal()
+bool CGrass::isPlant()
 {
   return true;
 }

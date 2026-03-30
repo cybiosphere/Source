@@ -709,12 +709,12 @@ size_t CBiotop::getNbOfLivingAnimals()
   return nbLivingAnimals;
 }
 
-size_t CBiotop::getNbOfVegetals()
+size_t CBiotop::getNbOfPlants()
 {
   size_t tempCount = 0;
   for (CBasicEntity* pEntity : m_tEntity)
   {
-    if (pEntity->isVegetal() && (pEntity->getId() > 0))
+    if (pEntity->isPlant() && (pEntity->getId() > 0))
       tempCount++;
   }
   return tempCount;
@@ -3091,7 +3091,7 @@ double CBiotop::getTemperature(const Point_t& coord, size_t layer)
     pEntity = tFoundIds[ind].pEntity;
     if (pEntity->isAnimal())
       computedTemperature += 2.0;
-    else if (pEntity->isVegetal())
+    else if (pEntity->isPlant())
       computedTemperature -= 1.0;
     else if (pEntity->isDrinkable())
       computedTemperature -= 2.0;

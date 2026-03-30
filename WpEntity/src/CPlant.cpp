@@ -23,10 +23,10 @@ distribution.
 */
 
 //===========================================================================
-// FILE: CVegetable.cpp
+// FILE: CPlant.cpp
 //   
 // GENERAL DESCRIPTION:
-//         This CLASS represents a vegetal entity
+//         This CLASS represents a plant entity
 //     
 // (C) COPYRIGHT 2005.  All Rights Reserved.
 //
@@ -34,7 +34,7 @@ distribution.
 //
 //===========================================================================
  
-#include "CVegetable.h"
+#include "CPlant.h"
 #include "CBiotop.h" 
 #include "Definitions.h"
 #include "CPhysicalWelfare.h"
@@ -44,7 +44,7 @@ distribution.
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::CVegetable
+// METHOD:       CPlant::CPlant
 //  
 // DESCRIPTION:  Constructor 
 // 
@@ -55,7 +55,7 @@ distribution.
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-CVegetable::CVegetable(string label, size_t layer, CGenome* pGenome)
+CPlant::CPlant(string label, size_t layer, CGenome* pGenome)
 { 
   // Input values
   setLayerAndDefaultLayer(layer);
@@ -70,7 +70,7 @@ CVegetable::CVegetable(string label, size_t layer, CGenome* pGenome)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  initVegetableParamIds();
+  initPlantParamIds();
 
   // Give default values for attributes
   setColor(0x00A6E0F9);
@@ -80,17 +80,17 @@ CVegetable::CVegetable(string label, size_t layer, CGenome* pGenome)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::CVegetable
+// METHOD:       CPlant::CPlant
 //  
 // DESCRIPTION:  Constructor 
 // 
-// ARGUMENTS:    CVegetable& model : Single parent constructor for cloning
+// ARGUMENTS:    CPlant& model : Single parent constructor for cloning
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------     
-CVegetable::CVegetable(string label, CVegetable& model) 
+CPlant::CPlant(string label, CPlant& model) 
 { 
   m_Label = label;
   // inherited
@@ -105,7 +105,7 @@ CVegetable::CVegetable(string label, CVegetable& model)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  initVegetableParamIds();
+  initPlantParamIds();
 
   // Give default values for attributes
   setOdor(model.getOdor());
@@ -118,17 +118,17 @@ CVegetable::CVegetable(string label, CVegetable& model)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::CVegetable
+// METHOD:       CPlant::CPlant
 //  
 // DESCRIPTION:  Constructor 
 // 
-// ARGUMENTS:    CVegetable& mother,father : Parents for sexual reproduction
+// ARGUMENTS:    CPlant& mother,father : Parents for sexual reproduction
 //   
 // RETURN VALUE: None
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------     
-CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father) 
+CPlant::CPlant(string label, CPlant& mother,CPlant& father) 
 { 
   m_Label = label;
   // inherited
@@ -143,10 +143,10 @@ CVegetable::CVegetable(string label, CVegetable& mother,CVegetable& father)
   m_TotalChildNumber = 0;
 
   // Parameter id pre-init
-  initVegetableParamIds();
+  initPlantParamIds();
 }  
 
-void CVegetable::initVegetableParamIds()
+void CPlant::initPlantParamIds()
 {
   m_id_Age = invalidCharIndex;
   m_id_Decomposition = invalidCharIndex;
@@ -162,18 +162,18 @@ void CVegetable::initVegetableParamIds()
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::setParamFromGene 
+// METHOD:       CPlant::setParamFromGene 
 //  
 // DESCRIPTION:  Set parameter according to genome.
 //               Automatically called by setEntityFromGenome for each genes
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CVegetable parameter
+// RETURN VALUE: bool : false if gene not a CPlant parameter
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::setParamFromGene(CGene* pGen)
+bool CPlant::setParamFromGene(CGene* pGen)
 {
   if (CBasicEntity::setParamFromGene(pGen) == true)
   {
@@ -246,12 +246,12 @@ bool CVegetable::setParamFromGene(CGene* pGen)
       break;
     }
   }
-  // If resu is false, param is not valid for CVegetable, but it may be used by inherited class !
+  // If resu is false, param is not valid for CPlant, but it may be used by inherited class !
   return resu;
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::completeParamsWithDefault 
+// METHOD:       CPlant::completeParamsWithDefault 
 //  
 // DESCRIPTION:  Complete parameters unset by genome with default values.
 //               Automatically called by setEntityFromGenome
@@ -262,7 +262,7 @@ bool CVegetable::setParamFromGene(CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::completeParamsWithDefault()
+bool CPlant::completeParamsWithDefault()
 {
   // Check if all mandatory parameters were set by genome
   // If not, use default value
@@ -270,7 +270,7 @@ bool CVegetable::completeParamsWithDefault()
   // In base class
   CBasicEntity::completeParamsWithDefault();
 
-  // CVegetable specific
+  // CPlant specific
   if (m_id_Age == invalidCharIndex)
   {
     m_id_Age = addParameterFromGeneDefinition(PARAM_DURATION, GENE_PARAM_AGE);
@@ -300,7 +300,7 @@ bool CVegetable::completeParamsWithDefault()
     m_id_ResistanceToConsumption = addParameterFromGeneDefinition(PARAM_PHYSICAL, GENE_PARAM_RESISTANCE_TO_CONSUMPTION);
   }
 
-  // keep info to restore when vegetable is healthy
+  // keep info to restore when plant is healthy
   m_OriginalColorRgb = getColorRgb();
   m_OriginalProtection = getProtection();
   m_OriginalOdor = getOdor();
@@ -309,7 +309,7 @@ bool CVegetable::completeParamsWithDefault()
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::setPhysicWelfareFromGene 
+// METHOD:       CPlant::setPhysicWelfareFromGene 
 //  
 // DESCRIPTION:  Set a Physic Welfare sensitivity according to genome.
 //               Automatically called by setEntityFromGenome for each genes
@@ -320,7 +320,7 @@ bool CVegetable::completeParamsWithDefault()
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
+bool CPlant::setPhysicWelfareFromGene(CGene* pGen)
 {
   if ((pGen == NULL) || (pGen->getGeneType() != GENE_PHY_WELFARE))
   {
@@ -372,7 +372,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::completePhysicWelfareWithDefault 
+// METHOD:       CPlant::completePhysicWelfareWithDefault 
 //  
 // DESCRIPTION:  Complete Physic Welfare sensitivity unset by genome 
 //               Automatically called by setEntityFromGenome
@@ -383,7 +383,7 @@ bool CVegetable::setPhysicWelfareFromGene(CGene* pGen)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
-bool CVegetable::completePhysicWelfareWithDefault(void)
+bool CPlant::completePhysicWelfareWithDefault(void)
 {
   if (m_pPhysicWelfare == NULL)
     return false;
@@ -414,7 +414,7 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::buildPhysicWellfareString 
+// METHOD:       CPlant::buildPhysicWellfareString 
 //  
 // DESCRIPTION:  Give info string on Physic Wellfare interpretation.
 // 
@@ -424,7 +424,7 @@ bool CVegetable::completePhysicWelfareWithDefault(void)
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere 
 //---------------------------------------------------------------------------
-string CVegetable::buildPhysicWellfareString(CGene* pGen)
+string CPlant::buildPhysicWellfareString(CGene* pGen)
 {
   string welfareStr = CBasicEntity::buildPhysicWellfareString(pGen);
   string tempStr;
@@ -490,7 +490,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
 //===========================================================================
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::nextHour
+// METHOD:       CPlant::nextHour
 //  
 // DESCRIPTION:  Secondary action: parameters update and checkup
 // 
@@ -500,7 +500,7 @@ string CVegetable::buildPhysicWellfareString(CGene* pGen)
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CVegetable::nextHour() 
+void CPlant::nextHour() 
 {
   if (isAlive() && isLocalAutoControlled())
   {
@@ -509,7 +509,7 @@ void CVegetable::nextHour()
     if (changeHealthRate(healthVar) == false)
     {
       CYBIOCORE_LOG_TIME(m_pBiotop->getBiotopTime());
-      CYBIOCORE_LOG("VEGETAL- Death : specie %s name %s is dead due to bad environment conditions\n", 
+      CYBIOCORE_LOG("PLANT  - Death : specie %s name %s is dead due to bad environment conditions\n", 
                      getSpecieName().c_str(), getLabel().c_str());
     }
   }
@@ -518,7 +518,7 @@ void CVegetable::nextHour()
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::nextDay
+// METHOD:       CPlant::nextDay
 //  
 // DESCRIPTION:  Living day trigger called by CBasicEntity every day
 // 
@@ -528,7 +528,7 @@ void CVegetable::nextHour()
 //  
 // REMARKS:      Global application speed impacted by this method
 //---------------------------------------------------------------------------
-void CVegetable::nextDay(bool doQuickAgeing)
+void CPlant::nextDay(bool doQuickAgeing)
 {
   // get older
   if (isAlive())
@@ -560,7 +560,7 @@ void CVegetable::nextDay(bool doQuickAgeing)
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::getAge
+// METHOD:       CPlant::getAge
 //  
 // DESCRIPTION:  Return Age in days
 // 
@@ -570,23 +570,23 @@ void CVegetable::nextDay(bool doQuickAgeing)
 //  
 // REMARKS:      
 //---------------------------------------------------------------------------
-int CVegetable::getAge()
+int CPlant::getAge()
 {
   return ((int)getParameterNoCheck(m_id_Age)->getVal());
 }
 
-void CVegetable::forceAgeValue(int newAge)
+void CPlant::forceAgeValue(int newAge)
 {
   getParameterNoCheck(m_id_Age)->setVal(newAge);
 }
 
-int CVegetable::getDecompositionTime()
+int CPlant::getDecompositionTime()
 {
   return ((int)getParameterNoCheck(m_id_Decomposition)->getVal());
 }
 
 //---------------------------------------------------------------------------
-// METHOD:       CVegetable::changeHealthRate
+// METHOD:       CPlant::changeHealthRate
 //  
 // DESCRIPTION:  Make animal more Thirsty
 // 
@@ -596,7 +596,7 @@ int CVegetable::getDecompositionTime()
 //  
 // REMARKS:      None
 //---------------------------------------------------------------------------
-bool CVegetable::changeHealthRate(double variation)
+bool CPlant::changeHealthRate(double variation)
 {
   getParameterNoCheck(m_id_Health)->changeVal(variation);
 
@@ -608,7 +608,7 @@ bool CVegetable::changeHealthRate(double variation)
   return true;
 }
 
-void CVegetable::setHealthRate(double rate)
+void CPlant::setHealthRate(double rate)
 {
   getParameterNoCheck(m_id_Health)->setVal(rate);
 }
@@ -616,42 +616,42 @@ void CVegetable::setHealthRate(double rate)
 //===========================================================================
 // Behavior  
 //===========================================================================
-void CVegetable::autoKill()
+void CPlant::autoKill()
 {
-  setColor(0x00008080);  // Color Brown when vegetal is dead
+  setColor(0x00008080);  // Color Brown when plant is dead
   CBasicEntity::autoKill();
 }
 
 //===========================================================================
 // Get / Set for attributes
 //===========================================================================
-bool CVegetable::isVegetal()
+bool CPlant::isPlant()
 {
   return true;
 }
 
-double CVegetable::getReproductionRate() 
+double CPlant::getReproductionRate() 
 {
   return getParameterNoCheck(m_id_ReproductionRate)->getVal();
 }
     
-double CVegetable::getLifeExpectation() 
+double CPlant::getLifeExpectation() 
 {
   return getParameterNoCheck(m_id_Age)->getMax();
 }
 
-double CVegetable::getRotenTimeExpectation() 
+double CPlant::getRotenTimeExpectation() 
 {
   return getParameterNoCheck(m_id_Decomposition)->getMax();
 }
 
-double CVegetable::getReproductionRange()
+double CPlant::getReproductionRange()
 {
   return getParameterNoCheck(m_id_ReproductionRange)->getVal();
 }
 
 
-double CVegetable::changeWeight(double variation)
+double CPlant::changeWeight(double variation)
 {
   if (variation > 0)
   {
@@ -667,11 +667,11 @@ double CVegetable::changeWeight(double variation)
 
     if ((-variation > remaining) && testChance(getParameterNoCheck(m_id_ResistanceToConsumption)->getVal()))
     {
-      // Vegetal is totaly eaten but can survive
+      // Plant is totaly eaten but can survive
       // change temporaly color and protection
-      setColor(0x00008080);  // Color Brown when vegetal has no more leafs
-      setProtection(50.0);   // Protection when vegetal has no more leafs 
-      setOdor(ODOR_NONE);    // Odor when vegetal has no more leafs
+      setColor(0x00008080);  // Color Brown when plant has no more leafs
+      setProtection(50.0);   // Protection when plant has no more leafs 
+      setOdor(ODOR_NONE);    // Odor when plant has no more leafs
       changeHealthRate(-10);
       return CBasicEntity::changeWeight(-remaining + 0.01);
     }
@@ -682,13 +682,13 @@ double CVegetable::changeWeight(double variation)
   }
 }
 
-void CVegetable::setResistanceToConsumptionToNominalRatio(double ratio)
+void CPlant::setResistanceToConsumptionToNominalRatio(double ratio)
 {
   double newResistance = getParameterNoCheck(m_id_ResistanceToConsumption)->getValNominal() * ratio / 100.0;
   getParameterNoCheck(m_id_ResistanceToConsumption)->setVal(newResistance);
 }
 
-void CVegetable::setReproductionRateToNominalRatio(double ratio)
+void CPlant::setReproductionRateToNominalRatio(double ratio)
 {
   double newReproRate = getParameterNoCheck(m_id_ReproductionRate)->getValNominal() * ratio / 100.0;
   getParameterNoCheck(m_id_ReproductionRate)->setVal(newReproRate);

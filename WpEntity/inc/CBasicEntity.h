@@ -518,7 +518,7 @@ public:
   int            getRelativeSpeed(CBasicEntity* pReference);
 
   virtual bool isAnimal();
-  virtual bool isVegetal();
+  virtual bool isPlant();
   virtual bool isMineral();
   bool isLiving();
 

@@ -48,16 +48,16 @@ CBasicEntity* CEntityFactory::createEntity(string name, CGenome* pGenome)
   ClassType_e entityClass = (pGenome != NULL) ? pGenome->getClass() : CLASS_SOLID;
   switch (entityClass)
   {
-    // Vegetable classs
+    // Plant classs
   case CLASS_PHYCOPHYTA:
   case CLASS_MYCOPHYTA:
   case CLASS_BRYOPHYTA:
   case CLASS_PTERIDOPHYTA:
-    pNewEntity = new CVegetable(name, layer, pGenome);
+    pNewEntity = new CPlant(name, layer, pGenome);
     break;
 
   case CLASS_SPERMATOPHYTA:
-    pNewEntity = new CVegetSpermatophyta(name, layer, pGenome);
+    pNewEntity = new CPlantSpermatophyta(name, layer, pGenome);
     break;
 
     // Animal classs

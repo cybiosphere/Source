@@ -351,7 +351,7 @@ void CDialogTab1::OnRadioVegetal()
 {
   int index = 0;
   m_ComboClass.ResetContent();
-  for (ClassType_e i=CLASS_VEGETAL_FIRST;i<=CLASS_VEGETAL_LAST;i=(ClassType_e)(i+1))
+  for (ClassType_e i=CLASS_PLANT_FIRST;i<=CLASS_PLANT_LAST;i=(ClassType_e)(i+1))
   {
     index = m_ComboClass.AddString(CGenome::getClassStrName(i).c_str());
     m_ComboClass.SetItemData(index,(DWORD_PTR)i);
@@ -366,7 +366,7 @@ void CDialogTab1::OnRadioVegetal()
   OnChangeEditWeightMin();
 
 // Default values for combo
-  m_ComboForm.SetCurSel(FORM_VEGET_LONG_LEEF);
+  m_ComboForm.SetCurSel(FORM_PLANT_LONG_LEEF);
   m_ComboOdor.SetCurSel(ODOR_AROMATIC);
   m_ComboTaste.SetCurSel(TASTE_BITTER);
   m_ComboTexture.SetCurSel(TEXTURE_NONE);
@@ -405,7 +405,7 @@ void CDialogTab1::OnRadioAnimal()
   m_ComboHabitat.SetCurSel(HABITAT_EARTH);
   m_ComboReproduct.SetCurSel(REPRODUCT_SEXUAL);
   m_ComboMvt.SetCurSel(MOVE_WALK);
-  m_ComboConsum.SetCurSel(CONSUM_VEGETAL);
+  m_ComboConsum.SetCurSel(CONSUM_VEGAN);
 
   m_Layer = 2;
   UpdateData(false);

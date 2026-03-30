@@ -757,9 +757,9 @@ std::pair<size_t, size_t> CGenome::findGeneInGenome(CGene& modelGene, bool findD
   return { invalidIndex , invalidIndex };
 }
 
-bool  CGenome::isVegetalGenome(void)
+bool  CGenome::isPlantGenome(void)
 {
-  return ((m_class >= CLASS_VEGETAL_FIRST) && (m_class <= CLASS_VEGETAL_LAST));
+  return ((m_class >= CLASS_PLANT_FIRST) && (m_class <= CLASS_PLANT_LAST));
 }
 
 bool  CGenome::isAnimalGenome(void)

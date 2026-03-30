@@ -94,7 +94,7 @@ CPhysicalWelfare::CPhysicalWelfare(CBasicEntity* pEntity)
 //   
 // RETURN VALUE: double : -100.0 = immediate death .. +100.0 = max recovery
 //  
-// REMARKS:      Can be called every sec for animal, every hour for vegetable
+// REMARKS:      Can be called every sec for animal, every hour for plant
 //---------------------------------------------------------------------------
 double CPhysicalWelfare::ComputeAndGetHealthVariation()
 {

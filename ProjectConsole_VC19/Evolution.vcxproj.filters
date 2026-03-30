@@ -164,6 +164,9 @@
     <ClInclude Include="..\WpTests\TestsCybioCore.h">
       <Filter>WpTests</Filter>
     </ClInclude>
+    <ClInclude Include="..\WpEntity\inc\CEntityFactory.h">
+      <Filter>WpEntity\IncEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Evolution.cpp" />

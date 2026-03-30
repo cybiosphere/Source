@@ -28,7 +28,7 @@ distribution.
 //#include "CBrain.h"
 #include "CBiotop.h"
 #include "CMineral.h"
-#include "CVegetSpermatophyta.h"
+#include "CPlantSpermatophyta.h"
 #include "CAnimMammal.h"
 #include "CGenome.h"
 #include <stdio.h> 

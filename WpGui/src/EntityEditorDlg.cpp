@@ -187,7 +187,7 @@ BOOL CEntityEditorDlg::OnInitDialog()
       m_pEntity->getpPhysicalWelfare()->GetInjuryMalus());
     m_PhysWelfareText += tempStr;
 
-    if ((m_pEntity->getClass() >= CLASS_VEGETAL_FIRST) && (m_pEntity->getClass() < CLASS_ANIMAL_FIRST))
+    if (m_pEntity->isPlant())
     {
       tempStr.Format("Fertility :\t\t %f \r\nSunlight :\t\t %f \r\n",
         m_pEntity->getpPhysicalWelfare()->ComputeFertilityHealthVariation(),

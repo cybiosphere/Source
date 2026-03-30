@@ -46,8 +46,8 @@ distribution.
 //===========================================================================
 #include "CMineral.h"
 #include "CWater.h"
-#include "CVegetable.h"
-#include "CVegetSpermatophyta.h"
+#include "CPlant.h"
+#include "CPlantSpermatophyta.h"
 #include "CAnimal.h"
 #include "CAnimMammal.h"
 #include "CVirus.h"

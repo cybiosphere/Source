@@ -30,7 +30,7 @@ void TestsCybioCore::testBiotopCreation()
     EXPECT_EQ(pBiotop->getDimension().y, 100);
     EXPECT_EQ(pBiotop->getNbOfEntities(), ((nbLayer > 2) ? 390 : 0));
     EXPECT_EQ(pBiotop->getNbOfMinerals(), ((nbLayer > 2) ? 390 : 0));
-    EXPECT_EQ(pBiotop->getNbOfVegetals(), 0);
+    EXPECT_EQ(pBiotop->getNbOfPlants(), 0);
     EXPECT_EQ(pBiotop->getNbOfAnimals(), 0);
     EXPECT_EQ(pBiotop->getNbOfLivingAnimals(), 0);
     delete pBiotop;

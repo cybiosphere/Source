@@ -80,7 +80,7 @@ void CVirus::initVirusParamIds()
 // 
 // ARGUMENTS:    CGene* pGen : 1 gene from genome
 //   
-// RETURN VALUE: bool : false if gene not a CVegetable parameter
+// RETURN VALUE: bool : false if gene not a CVirus parameter
 //  
 // REMARKS:      Should be called by all derived method but not elsewhere
 //---------------------------------------------------------------------------
@@ -129,7 +129,7 @@ bool CVirus::setParamFromGene(CGene* pGen)
     break;
   }
   }
-  // If resu is false, param is not valid for CVegetable, but it may be used by inherited class !
+  // If resu is false, param is not valid for CVirus, but it may be used by inherited class !
   return resu;
 }
 
@@ -153,7 +153,7 @@ bool CVirus::completeParamsWithDefault()
   // In base class
   CBasicEntity::completeParamsWithDefault();
 
-  // CVegetable specific
+  // CVirus specific
   if (m_id_ReproductionRate == invalidCharIndex)
   {
     m_id_ReproductionRate = addParameterFromGeneDefinition(PARAM_REPRODUCTION, GENE_PARAM_REPRO_RATE);

@@ -2240,7 +2240,7 @@ void CAnimal::nextHour()
     }
     else
     {
-      if (getConsumeClass() == CONSUM_VEGETAL)
+      if (getConsumeClass() == CONSUM_VEGAN)
       {
         changeHungerRate(4);
       }
@@ -3144,7 +3144,7 @@ bool CAnimal::ExecuteMoveBackwardAction(double successSatisfactionFactor, double
 //---------------------------------------------------------------------------
 bool CAnimal::checkFoodCompliantWithConsumeType(CBasicEntity& eatenEntity)
 {
-  if ((getConsumeClass() == CONSUM_VEGETAL) && (eatenEntity.isVegetal()))
+  if ((getConsumeClass() == CONSUM_VEGAN) && (eatenEntity.isPlant()))
     return true;
   else if ((getConsumeClass() == CONSUM_MEAT) && (eatenEntity.isAnimal()))
     return true;
@@ -3243,7 +3243,7 @@ bool CAnimal::ExecuteEatAction(int relLayer, double successSatisfactionFactor, d
         getBrain()->MemorizeIdentificationExperience(pleasureRate, getLearningRate(), pEatenEntity, IDENTIFICATION_FOOD);
       
 
-        if (pEatenEntity->isVegetal())
+        if (pEatenEntity->isPlant())
         {
           // 10% of this eaten food is digested:
           increaseFatWeight(eatenWeight * 0.10);

@@ -95,9 +95,9 @@ const char* FormTypeNameList[FORM_NUMBER_TYPE] =
   "Plan rough",
   "Roundish",
   "Geometric",
-  "Vegetal long leef",
-  "Vegetal bush",
-  "Vegetal tree",
+  "Plant long leef",
+  "Plant bush",
+  "Plant tree",
   "Quadriped thin",
   "Quadriped long neck",
   "Quadriped fat",
@@ -126,7 +126,7 @@ const char* HabitatTypeNameList[HABITAT_NUMBER_TYPE] =
 const char* ConsumeTypeNameList[CONSUM_NUMBER_TYPE] =
 {
   "None",
-  "Vegetarian",
+  "Vegan",
   "Omnivor",
   "Carnivor"
 };
@@ -3875,7 +3875,7 @@ bool CBasicEntity::isAnimal()
   return false;
 }
 
-bool CBasicEntity::isVegetal()
+bool CBasicEntity::isPlant()
 {
   return false;
 }

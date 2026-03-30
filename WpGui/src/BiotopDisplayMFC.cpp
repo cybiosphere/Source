@@ -251,9 +251,9 @@ void CBiotopDisplayMFC::RedrawScene()
         // Display bitmap when zoom is max or squares with smaller zoom
         if (m_nBitmapPixSizeX == 16)
         {
-          if ((pEntity->getClass() >= CLASS_VEGETAL_FIRST) && (pEntity->getClass() <= CLASS_VEGETAL_LAST))
+          if (pEntity->isPlant())
             MemDCEnt.SelectObject(&m_bmpVeget);
-          else if ((pEntity->getClass() >= CLASS_ANIMAL_FIRST) && (pEntity->getClass() <= CLASS_ANIMAL_LAST))
+          else if (pEntity->isAnimal())
             MemDCEnt.SelectObject(&m_bmpAnim[pEntity->getCurrentLifeStage()->getStageType()]);
           else
             MemDCEnt.SelectObject(&m_bmpMineral);

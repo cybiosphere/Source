@@ -101,7 +101,7 @@ CFeelingWelfare::~CFeelingWelfare()
 //   
 // RETURN VALUE: double : -100.0 = worst feeling .. +100.0 = best feeling
 //  
-// REMARKS:      Can be called every sec for animal, every hour for vegetable
+// REMARKS:      Can be called every sec for animal, every hour for plant
 //---------------------------------------------------------------------------
 double CFeelingWelfare::ComputeAndGetFeelingWelfare()
 {
