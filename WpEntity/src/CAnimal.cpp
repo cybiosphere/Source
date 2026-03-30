@@ -2407,7 +2407,7 @@ void CAnimal::balanceWeightAndMetabolism(bool forceGrowth)
   else
   {
     // Use Fat for energy and growth
-    constexpr double basalMetabolism{ 1.0 };
+    double basalMetabolism{ (getSex() == SEX_MALE) ? 1.2 : 1.0 }; // basalMetabolism is higher for a male
     double abilitiesEnergyCost{ (getProtection() + getAttackFactor()) / 100.0 };
     double consumedEnergyRate{ m_ConsumedEnergy / maximumConsumedEnergyPerDay + abilitiesEnergyCost + basalMetabolism };
     double consumedFatWeight{ getWeight() * consumedEnergyRate / 100.0 };
