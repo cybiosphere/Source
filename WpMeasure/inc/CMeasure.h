@@ -53,7 +53,7 @@ distribution.
 // Definitions            
 //===========================================================================
 
-#define MAX_MEASUREMENT_DATA_SIZE 1000
+#define MAX_MEASUREMENT_DATA_SIZE 10000
 
 typedef struct 
 {
