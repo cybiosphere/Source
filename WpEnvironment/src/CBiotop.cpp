@@ -2981,8 +2981,8 @@ void CBiotop::setClimateModel(const ClimateType_e newClimateType, const int newP
     }
   case CLIMATE_SEMI_ARID:
   {
-    getParamFertility()->reconfigure(10, 50, seasonPeriod);
-    getParamTemperature()->reconfigure(20, 26, seasonPeriod);
+    getParamFertility()->reconfigure(20, 50, seasonPeriod);
+    getParamTemperature()->reconfigure(15, 28, seasonPeriod);
     break;
   }
   case CLIMATE_ARID:
@@ -2994,13 +2994,13 @@ void CBiotop::setClimateModel(const ClimateType_e newClimateType, const int newP
   case CLIMATE_TEMPERATE:
   {
     getParamFertility()->reconfigure(30, 80, seasonPeriod);
-    getParamTemperature()->reconfigure(5, 25, seasonPeriod);
+    getParamTemperature()->reconfigure(8, 25, seasonPeriod);
     break;
   }
   case CLIMATE_CONTINENTAL:
   {
     getParamFertility()->reconfigure(20, 80, seasonPeriod);
-    getParamTemperature()->reconfigure(10, 25, seasonPeriod);
+    getParamTemperature()->reconfigure(5, 30, seasonPeriod);
     break;
   }
   case CLIMATE_POLAR:
