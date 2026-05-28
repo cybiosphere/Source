@@ -655,6 +655,7 @@ double CPlant::changeWeight(double variation)
 {
   if (variation > 0)
   {
+    changeHealthRate(-0.1);
     return CBasicEntity::changeWeight(variation);
   }
   else // variation<0
@@ -672,7 +673,7 @@ double CPlant::changeWeight(double variation)
       setColor(0x00008080);  // Color Brown when plant has no more leafs
       setProtection(50.0);   // Protection when plant has no more leafs 
       setOdor(ODOR_NONE);    // Odor when plant has no more leafs
-      changeHealthRate(-10);
+      changeHealthRate(-30);
       return CBasicEntity::changeWeight(-remaining + 0.01);
     }
     else

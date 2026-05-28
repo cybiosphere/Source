@@ -565,9 +565,9 @@ bool CMapConfigView::BuildPopulationMap(int index)
         }
         else
         {
-          r = 180 - min(populationSize, 180);
-          g = 240;
-          b = 180 - min(populationSize, 180);
+          r = 200 - min(populationSize, 200);
+          g = 250;
+          b = 200 - min(populationSize, 200);
         }
         tBioSquare[curCoord.x][curCoord.y].customColor = (b << 0x10) + (g << 0x08) + r;
       }
@@ -728,7 +728,7 @@ void CMapConfigView::OnCheck5()
   UpdateData(TRUE);
   OnRadioPopulation1();
 
-  m_SliderM1.SetRange(0, 364);
+  m_SliderM1.SetRange(0, 500);
   m_SliderM1.SetPos(0);
   m_SliderM1.SetPageSize(1);
 
@@ -915,6 +915,9 @@ void CMapConfigView::OnButtonLoadSpecieMap()
       if (pGeoMapPopu != NULL)
       {
         pGeoMapPopu->loadFromXmlFile(fileName.GetBuffer(0), indexRecord);
+        m_SliderM1.SetRange(0, pGeoMapPopu->GetCurrentNumberRecords() - 1);
+        m_SliderM1.SetPos(0);
+        m_SliderM1.SetPageSize(1);
       }
     }
     OnCheck5();

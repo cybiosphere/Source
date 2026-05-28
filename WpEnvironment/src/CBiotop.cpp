@@ -1616,7 +1616,6 @@ void CBiotop::nextSecond(bool doIncreaseTime)
       // Next hour for biotop
       nextHour();
       generateRandomEntities();
-      memorizeAllPopulationMaps();
     }
   }
 
@@ -1663,6 +1662,7 @@ void CBiotop::nextHour(void)
   m_pTemperature->nextStep();
   if (m_BioTime.hours >= NUMBER_HOURS_PER_DAY)
   {
+    memorizeAllPopulationMaps();
     nextDay();
   }
 }

@@ -39,6 +39,7 @@ distribution.
 #include "CBrainAnimal.h"
 #include "Definitions.h"
 #include "CPhysicalWelfare.h"
+#include "CPlant.h"
 
 //===========================================================================
 // Definitions 
@@ -2993,6 +2994,21 @@ bool CAnimal::ExecuteMoveForwardAction(double successSatisfactionFactor, double 
     {
       stopCurrentSpeed();
       pWater = m_pBiotop->findEntity(getGridCoord(), 0);
+    }
+    else if (getLayer() > 1)
+    {
+      CBasicEntity* pCrushedEntity = m_pBiotop->findEntity(getGridCoord(), 1);
+      if ((pCrushedEntity != NULL) && pCrushedEntity->isPlant())
+      {
+        if (pCrushedEntity->isAlive())
+        {
+          ((CPlant*)pCrushedEntity)->changeHealthRate(-1);
+        }
+        else
+        {
+          ((CPlant*)pCrushedEntity)->changeWeight(-0.1);
+        }  
+      }
     }
 
     if (checkHabitat())

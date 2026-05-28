@@ -112,9 +112,9 @@ public:
   void nextDay(bool doQuickAgeing = false);
   int  getAge();
   int  getDecompositionTime();
+  bool changeHealthRate(double variation);
 
 protected:
-  bool changeHealthRate(double variation);
   void setHealthRate(double rate);
   void forceAgeValue(int newAge);
 

@@ -50,7 +50,7 @@ distribution.
 //===========================================================================
 // Definitions            
 //===========================================================================
-
+#define MAX_NB_RECORDS_GEO_MAP_POPULATION 1000
 
 //===========================================================================
 //                                    CLASS            
@@ -74,7 +74,7 @@ private:
 // Constructors / Destructors
 //---------------------------------------------------------------------------
 public:
-  CGeoMapPopulation(CBiotop* pBiotop, Point_t globalGridBiotopSize, std::string specieName, size_t maxNumberRecords = 500);
+  CGeoMapPopulation(CBiotop* pBiotop, Point_t globalGridBiotopSize, std::string specieName, size_t maxNumberRecords = MAX_NB_RECORDS_GEO_MAP_POPULATION);
   ~CGeoMapPopulation();
 
 //---------------------------------------------------------------------------
@@ -84,6 +84,7 @@ public:
   bool MemorizePopulationMap(size_t dayIndex);
   size_t GetPopulationInSquareMap(size_t dayIndex, Point_t geoMapPos);
   string GetSpecieName();
+  size_t GetCurrentNumberRecords();
 
   //---------------------------------------------------------------------------
   // File management
@@ -91,8 +92,8 @@ public:
   bool saveInXmlFile(string fileNameWithPath);
   bool saveInXmlFile(TiXmlDocument* pXmlDoc);
   static size_t getNumberSpeciesStoredInFile(string fileNameWithPath);
-  bool loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile);
-  bool loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRecordInFile);
+  bool loadFromXmlFile(string fileNameWithPath, size_t indexOfSpecieInFile);
+  bool loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfSpecieInFile);
 
 //---------------------------------------------------------------------------
 // private methods

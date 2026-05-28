@@ -83,22 +83,25 @@ bool CGeoMapPopulation::MemorizePopulationMap(size_t dayIndex)
   return true;
 }
 
-size_t CGeoMapPopulation::GetPopulationInSquareMap(size_t dayIndex, Point_t geoMapPos)
+size_t CGeoMapPopulation::GetPopulationInSquareMap(size_t indexRecord, Point_t geoMapPos)
 {
-  size_t indexRecord = GetTableIndex(dayIndex);
   size_t population = 0;
 
-  if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y))
+  if ((geoMapPos.x < m_GeoMapSize.x) && (geoMapPos.y < m_GeoMapSize.y) && (indexRecord < m_CurrentNumberRecords))
   {
     population = m_pMemoryMap[geoMapPos.x][geoMapPos.y][indexRecord];
   }
-
   return population;
 }
 
 string CGeoMapPopulation::GetSpecieName()
 {
   return m_specieName;
+}
+
+size_t CGeoMapPopulation::GetCurrentNumberRecords()
+{
+  return m_CurrentNumberRecords;
 }
 
 //===========================================================================
@@ -188,16 +191,16 @@ size_t CGeoMapPopulation::getNumberSpeciesStoredInFile(string fileNameWithPath)
   return (size_t)nbSpecies;
 }
 
-bool CGeoMapPopulation::loadFromXmlFile(string fileNameWithPath, size_t indexOfRecordInFile)
+bool CGeoMapPopulation::loadFromXmlFile(string fileNameWithPath, size_t indexOfSpecieInFile)
 {
   bool resu = false;
   TiXmlDocument xmlDoc(fileNameWithPath);
   resu = xmlDoc.LoadFile();
-  loadFromXmlFile(&xmlDoc, indexOfRecordInFile);
+  loadFromXmlFile(&xmlDoc, indexOfSpecieInFile);
   return resu;
 }
 
-bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRecordInFile)
+bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfSpecieInFile)
 {
   bool recordFound = false;
   TiXmlElement* pElement;
@@ -224,11 +227,12 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
     // Record management
     string specieName;
     int dayOfRecord;
+    size_t indexRecord = 0;
     string rawData;
     pNodeRecord = pNodeBiotop->FirstChild(XML_NODE_RECORDS);
     if (pNodeRecord != NULL)
     {
-      for (size_t index = 0; index < indexOfRecordInFile; index++)
+      for (size_t index = 0; index < indexOfSpecieInFile; index++)
         pNodeRecord = pNodeRecord->NextSibling();
 
       if ((pNodeRecord->Type() == TiXmlNode::TINYXML_ELEMENT) && (pNodeRecord->ValueStr() == XML_NODE_RECORDS))
@@ -246,8 +250,14 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
               pElement->QueryIntAttribute(XML_ATTR_BIO_DAY, &dayOfRecord);
               if (pElement->QueryStringAttribute(XML_ATTR_RAW_DATA, &rawData) != TIXML_NO_ATTRIBUTE)
               {
-                size_t indexRecord = GetTableIndex(dayOfRecord);
-                buildGeoMapRecordFromStringData(indexRecord, rawData);
+                if (indexRecord < MAX_NB_RECORDS_GEO_MAP_POPULATION)
+                {
+                  buildGeoMapRecordFromStringData(indexRecord, rawData);
+                  m_tTimeStamps[indexRecord] = (size_t)dayOfRecord;
+                  indexRecord++;
+                  m_CurrentNumberRecords = indexRecord;
+                  recordFound = true;
+                }
               }
             }
             pNode = pNode->NextSibling();
@@ -264,24 +274,14 @@ bool CGeoMapPopulation::loadFromXmlFile(TiXmlDocument* pXmlDoc, size_t indexOfRe
 //===========================================================================
 size_t CGeoMapPopulation::GetTableIndex(size_t dayIndex)
 {
-  size_t i;
   // Check if dayIndex already exist
-  for (i = 0; i < m_CurrentNumberRecords; i++)
+  if (m_CurrentNumberRecords < MAX_NB_RECORDS_GEO_MAP_POPULATION)
   {
-    if (dayIndex == m_tTimeStamps[i])
-      return i;
+    m_tTimeStamps[m_CurrentNumberRecords] = dayIndex;
+    m_CurrentNumberRecords++;
+    return m_CurrentNumberRecords - 1;
   }
-  // Check if there are free id in table
-  for (i = 0; i < m_nbRecords; i++)
-  {
-    if (m_tTimeStamps[i] == 0)
-    {
-      m_tTimeStamps[i] = dayIndex;
-      m_CurrentNumberRecords++;
-      return i;
-    }
-  }
-  return invalidIndex;
+  return MAX_NB_RECORDS_GEO_MAP_POPULATION - 1;
 }
 
 size_t CGeoMapPopulation::CountEntitiesInMapSquare(std::string specieName, size_t geoMapPosX, size_t geoMapPosY)
