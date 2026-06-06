@@ -88,9 +88,11 @@ CSensorSmell::~CSensorSmell()
 //---------------------------------------------------------------------------
 const std::vector<sensorValType>& CSensorSmell::UpdateAndGetStimulationTable()
 {
-  //std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0); // Optime CPU done in getOdorLevels
-
   CAnimal* pAnimal = m_pBrain->getAnimal();
+
+  // Update stimulation table only every 2 seconds to save CPU time
+  if ((pAnimal->getBiotop()->getBiotopTime().seconds % 2) == 1)
+    return m_tStimulationValues;
 
   // Process level
   RelativePos_t relPos = {1, 0};
