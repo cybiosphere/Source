@@ -88,9 +88,14 @@ CSensorPheromone::~CSensorPheromone()
 //---------------------------------------------------------------------------
 const std::vector<sensorValType>& CSensorPheromone::UpdateAndGetStimulationTable()
 {
+  CAnimal* pAnimal = m_pBrain->getAnimal();
+
+  // Update stimulation table only every 2 seconds to save CPU time
+  if ((pAnimal->getBiotop()->getBiotopTime().seconds % 2) == 0)
+    return m_tStimulationValues;
+
   std::fill(m_tStimulationValues.begin(), m_tStimulationValues.end(), 0);
 
-  CAnimal* pAnimal = m_pBrain->getAnimal();
   CBasicEntity* pCurEntity = NULL;
 
   // Process level
