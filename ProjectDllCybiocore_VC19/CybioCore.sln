@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34031.279
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11801.241 oobstable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CybioCore", "CybioCore.vcxproj", "{010BC237-F114-4FB0-B294-A2CBAA050DD9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerformanceTests1", "PerformanceTests1\PerformanceTests1.vcxproj", "{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Release|Win32.Build.0 = Release|x64
 		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Release|x64.ActiveCfg = Release|x64
 		{010BC237-F114-4FB0-B294-A2CBAA050DD9}.Release|x64.Build.0 = Release|x64
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Debug|Win32.Build.0 = Debug|Win32
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Debug|x64.ActiveCfg = Debug|x64
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Debug|x64.Build.0 = Debug|x64
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Release|Win32.ActiveCfg = Release|Win32
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Release|Win32.Build.0 = Release|Win32
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Release|x64.ActiveCfg = Release|x64
+		{F3079C99-44B3-CEC6-C1D0-E54F888F4D80}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

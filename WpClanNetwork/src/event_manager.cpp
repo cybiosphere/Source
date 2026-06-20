@@ -40,6 +40,11 @@ namespace clan
 
   bool event_manager::buildEventsAddEntity(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector)
   {
+    return buildEventsAddEntityWithCoord(pEntity, pEntity->getGlobalStepCoord(), eventVector);
+  }
+
+  bool event_manager::buildEventsAddEntityWithCoord(CBasicEntity* pEntity, Point_t globalStepCoord, std::vector<NetGameEvent>& eventVector)
+  {
     TiXmlDocument xmlDoc;
     pEntity->saveInXmlFile(&xmlDoc);
     TiXmlPrinter xmlPrinter;
@@ -51,10 +56,9 @@ namespace clan
     DataBuffer xmlZipBuffer = ZLibCompression::compress(xmlBuffer, false);
 
     return (buildEventsLongString(labelEventAddEntity, xmlZipBuffer, pEntity->getId(),
-                                     pEntity->getGlobalStepCoord().x, pEntity->getGlobalStepCoord().y, pEntity->getLayer(), pEntity->getStepDirection(),
-                                     eventVector));
+      globalStepCoord.x, globalStepCoord.y, pEntity->getLayer(), pEntity->getStepDirection(),
+      eventVector));
   }
-
 
   CBasicEntity* event_manager::handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl)
   {

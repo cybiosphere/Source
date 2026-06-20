@@ -151,7 +151,7 @@ void Client::processBiotopEvents()
       {
         if (!bioEvent->pEntity->isRemoteControlled())
         {
-          send_event_add_entity(bioEvent->pEntity);
+          send_event_add_entity(bioEvent->pEntity, bioEvent->pEntity->getGlobalStepCoord());
         }
       }
       else if (bioEvent->eventList.test(BIOTOP_EVENT_ENTITY_PHYSICAL_CHANGE))
@@ -453,7 +453,7 @@ bool Client::CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam
   return true;
 }
 
-void Client::send_event_add_entity(CBasicEntity* pEntity)
+void Client::send_event_add_entity(CBasicEntity* pEntity, Point_t globalStepCoord)
 {
   if (pEntity == NULL)
   {
@@ -471,10 +471,10 @@ void Client::send_event_add_entity(CBasicEntity* pEntity)
   }
   if (pEntity->isAnimal())
   {
-    log_event(labelClient, "Add entity: %1 grid coordX %2 coordY %3", pEntity->getLabel(), pEntity->getGridCoord().x, pEntity->getGridCoord().y);
+    log_event(labelClient, "Add entity: %1 step coordX %2 coordY %3", pEntity->getLabel(), globalStepCoord.x, globalStepCoord.y);
   }
   std::vector<NetGameEvent> eventVector;
-  if (event_manager::buildEventsAddEntity(pEntity, eventVector))
+  if (event_manager::buildEventsAddEntityWithCoord(pEntity, globalStepCoord, eventVector))
   {
     for (NetGameEvent eventToSend : eventVector)
     {

@@ -34,7 +34,7 @@ public:
   static bool CmdHelp(CBiotop* pBiotop, string path, string commandParam, int* unused1, int* unused2);
   static bool CmdDisplayBiotop(CBiotop* pBiotop, string path, string commandParam, int* pBiotopSpeed, int* unused);
 
-  void send_event_add_entity(CBasicEntity* pEntity);
+  void send_event_add_entity(CBasicEntity* pEntity, Point_t globalStepCoord);
   void send_events_add_clone_entities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions);
   void send_event_update_entity_data(CBasicEntity* pEntity);
   void send_event_update_entity_position(CBasicEntity* pEntity);

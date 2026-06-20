@@ -37,6 +37,7 @@ namespace clan
     void handleEventCreateBiotop(const NetGameEvent& e, CBiotop* pBiotop);
 
 	  static bool buildEventsAddEntity(CBasicEntity* pEntity, std::vector<NetGameEvent>& eventVector);
+    static bool buildEventsAddEntityWithCoord(CBasicEntity* pEntity, Point_t globalStepCoord, std::vector<NetGameEvent>& eventVector);
     CBasicEntity* handleEventAddEntity(const NetGameEvent& e, CBiotop* pBiotop, bool setAsRemoteControl);
 
     static bool buildEventsAddCloneEntities(entityIdType modelEntityId, std::vector<BiotopEntityPosition_t> vectPositions, std::vector<NetGameEvent>& eventVector);

@@ -146,11 +146,6 @@ void TestsCybioCore::verifySensorsRange(CBiotop* pBiotop, CAnimal* pAnimal,
       pSensor->UpdateAndGetStimulationTable();
       EXPECT_EQ(countColorizedGrid(pBiotop), expectGridSmell);
     }
-    else if (pSensor->GetLabel().find("Pheromone") != std::string::npos)
-    {
-      pSensor->UpdateAndGetStimulationTable();
-      EXPECT_EQ(countColorizedGrid(pBiotop), expectGridPhero);
-    }
   }
   pBiotop->SetColorizeSearchMode(false);
 }

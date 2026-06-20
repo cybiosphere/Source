@@ -751,8 +751,7 @@ void CCybiosphereApp::addEntityFromFileInBiotop(string fileName, string pathName
   CBasicEntity* pEntity = CEntityFactory::createEntity(pathName + fileName);
   if (pEntity != NULL)
   {
-    pEntity->jumpToGridCoord(globalCoord, false);
-    m_pClient->send_event_add_entity(pEntity);
+    m_pClient->send_event_add_entity(pEntity, CBiotop::getStepCoordFromGridCoord(globalCoord));
     // Wait for creation by server
     WaitForEventRefreshEntity();
   }
